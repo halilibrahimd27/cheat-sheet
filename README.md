@@ -4,13 +4,13 @@
 
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![Docker](https://img.shields.io/badge/docker-ready-2496ED)
-![Commands](https://img.shields.io/badge/commands-1280%2B-green)
+![Commands](https://img.shields.io/badge/commands-3000%2B-green)
 
 ---
 
 ## Features
 
-- **1280+ commands** across 23 categories covering the full penetration testing lifecycle
+- **3000+ commands** across 23 categories covering the full penetration testing lifecycle
 - **Full CRUD** — Add, edit, and delete your own categories, subcategories, and commands
 - **Instant search** with `Ctrl+K` keyboard shortcut
 - **One-click copy** on every command block
