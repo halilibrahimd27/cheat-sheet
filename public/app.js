@@ -243,7 +243,8 @@
     render();
   }
 
-  // ── Write-ups (server-backed) ──
+  // ── Write-ups (server-backed, file-style) ──
+  let openWriteupId = null;
   async function loadWriteups() { writeups = await api("GET", "/api/writeups"); }
   async function createWriteup() {
     openModal("New Write-up", [
@@ -251,55 +252,133 @@
       { key: "tags", label: "Tags", placeholder: "HTB, OSCP, Linux, Easy (comma-separated)" }
     ], {}, async fd => {
       const tags = fd.tags.split(",").map(s => s.trim()).filter(Boolean);
-      await api("POST", "/api/writeups", { title: fd.title, tags, content: "" });
-      await loadWriteups(); render();
+      const wu = await api("POST", "/api/writeups", { title: fd.title, tags, content: "" });
+      await loadWriteups();
+      openWriteupId = wu.id;
+      render();
     });
   }
-  async function deleteWriteup(id) {
+  async function deleteWriteup(id, e) {
+    if (e) e.stopPropagation();
     if (!confirm("Delete this write-up?")) return;
     await api("DELETE", "/api/writeups/" + id);
+    if (openWriteupId === id) openWriteupId = null;
     await loadWriteups(); render();
   }
   let wuTimer = null;
-  function saveWriteupContent(id, content) {
+  function saveWu(id, data) {
     clearTimeout(wuTimer);
-    wuTimer = setTimeout(() => api("PUT", "/api/writeups/" + id, { content }), 500);
+    wuTimer = setTimeout(() => api("PUT", "/api/writeups/" + id, data), 400);
   }
-  function saveWriteupTitle(id, title) { api("PUT", "/api/writeups/" + id, { title }); }
 
   function renderWriteupsPage() {
     currentSection.textContent = "Write-ups"; hero.style.display = "none";
     contentArea.innerHTML = "";
-    // Header
+
+    // If a write-up is open, show editor view
+    if (openWriteupId) {
+      const wu = writeups.find(w => w.id === openWriteupId);
+      if (!wu) { openWriteupId = null; renderWriteupsPage(); return; }
+      renderWriteupEditor(wu);
+      return;
+    }
+
+    // File list view
     const hdr = document.createElement("div"); hdr.className = "writeups-header";
-    hdr.innerHTML = '<h2>📝 Write-ups</h2><p>' + (lang === "tr" ? "Pentest notlarinizi ve write-up\'larinizi buraya yazin." : "Document your pentest findings and write-ups here.") + '</p><button class="btn btn-primary" id="newWriteupBtn">+ New Write-up</button>';
+    hdr.innerHTML = '<div class="wu-header-top"><h2>📝 Write-ups</h2><button class="btn btn-primary" id="newWuBtn">+ New Write-up</button></div>' +
+      '<p>' + (lang === "tr" ? "Pentest notlarinizi ve write-up\'larinizi buraya yazin. Tiklayin ve duzenlemeye baslayin." : "Document your pentest findings and write-ups. Click to open and edit.") + '</p>';
     contentArea.appendChild(hdr);
-    hdr.querySelector("#newWriteupBtn").addEventListener("click", createWriteup);
+    hdr.querySelector("#newWuBtn").addEventListener("click", createWriteup);
 
     if (writeups.length === 0) {
       const empty = document.createElement("div"); empty.className = "no-results";
-      empty.innerHTML = '<h3>No write-ups yet</h3><p>' + (lang === "tr" ? "Ilk write-up\'inizi olusturun." : "Create your first write-up to get started.") + '</p>';
+      empty.innerHTML = '<h3>' + (lang === "tr" ? "Henuz write-up yok" : "No write-ups yet") + '</h3><p>' + (lang === "tr" ? "Ilk write-up\'inizi olusturun." : "Create your first write-up.") + '</p>';
       contentArea.appendChild(empty);
       return;
     }
+
+    const grid = document.createElement("div"); grid.className = "wu-file-grid";
     writeups.forEach(wu => {
-      const card = document.createElement("div"); card.className = "writeup-card";
+      const file = document.createElement("div"); file.className = "wu-file-card";
       const tagsH = (wu.tags || []).map(t => '<span class="wu-tag">' + escapeHtml(t) + '</span>').join("");
       const date = new Date(wu.updatedAt).toLocaleDateString();
-      card.innerHTML =
-        '<div class="wu-card-header">' +
-          '<div class="wu-card-title-row">' +
-            '<input class="wu-title-input" value="' + escapeHtml(wu.title) + '" />' +
-            '<div class="wu-card-meta"><span class="wu-date">' + date + '</span>' + tagsH + '</div>' +
-          '</div>' +
-          '<button class="cmd-action-btn delete-btn wu-delete" title="Delete">✕</button>' +
+      const preview = (wu.content || "").substring(0, 120).replace(/\n/g, " ");
+      file.innerHTML =
+        '<div class="wu-file-icon">📄</div>' +
+        '<div class="wu-file-info">' +
+          '<div class="wu-file-name">' + escapeHtml(wu.title) + '</div>' +
+          '<div class="wu-file-preview">' + escapeHtml(preview) + (preview.length >= 120 ? "..." : "") + '</div>' +
+          '<div class="wu-file-meta"><span class="wu-date">' + date + '</span>' + tagsH + '</div>' +
         '</div>' +
-        '<textarea class="wu-editor" placeholder="' + (lang === "tr" ? "Write-up iceriginizi buraya yazin..." : "Write your findings, steps, and notes here...") + '">' + escapeHtml(wu.content || "") + '</textarea>';
-      card.querySelector(".wu-title-input").addEventListener("change", e => saveWriteupTitle(wu.id, e.target.value));
-      card.querySelector(".wu-editor").addEventListener("input", e => saveWriteupContent(wu.id, e.target.value));
-      card.querySelector(".wu-delete").addEventListener("click", () => deleteWriteup(wu.id));
-      contentArea.appendChild(card);
+        '<button class="wu-file-delete" title="Delete">🗑</button>';
+      file.addEventListener("click", () => { openWriteupId = wu.id; render(); });
+      file.querySelector(".wu-file-delete").addEventListener("click", e => deleteWriteup(wu.id, e));
+      grid.appendChild(file);
     });
+    contentArea.appendChild(grid);
+  }
+
+  function renderWriteupEditor(wu) {
+    const page = document.createElement("div"); page.className = "wu-editor-page";
+
+    // Back button + title bar
+    const topbar = document.createElement("div"); topbar.className = "wu-editor-topbar";
+    topbar.innerHTML =
+      '<button class="wu-back-btn">← ' + (lang === "tr" ? "Geri" : "Back") + '</button>' +
+      '<div class="wu-editor-status" id="wuStatus"></div>' +
+      '<button class="wu-delete-btn">🗑 ' + (lang === "tr" ? "Sil" : "Delete") + '</button>';
+    topbar.querySelector(".wu-back-btn").addEventListener("click", () => { openWriteupId = null; render(); });
+    topbar.querySelector(".wu-delete-btn").addEventListener("click", () => deleteWriteup(wu.id));
+    page.appendChild(topbar);
+
+    // Title
+    const titleInput = document.createElement("input"); titleInput.className = "wu-page-title";
+    titleInput.value = wu.title; titleInput.placeholder = "Write-up title...";
+    titleInput.addEventListener("input", () => {
+      saveWu(wu.id, { title: titleInput.value });
+      showWuStatus();
+    });
+    page.appendChild(titleInput);
+
+    // Tags
+    const tagsRow = document.createElement("div"); tagsRow.className = "wu-page-tags";
+    const tagsH = (wu.tags || []).map(t => '<span class="wu-tag">' + escapeHtml(t) + '</span>').join("");
+    tagsRow.innerHTML = tagsH + '<button class="wu-edit-tags-btn">✎ tags</button>';
+    tagsRow.querySelector(".wu-edit-tags-btn").addEventListener("click", () => {
+      openModal("Edit Tags", [{ key: "tags", label: "Tags", placeholder: "HTB, OSCP, Linux (comma-separated)" }],
+        { tags: (wu.tags || []).join(", ") },
+        async fd => {
+          const tags = fd.tags.split(",").map(s => s.trim()).filter(Boolean);
+          await api("PUT", "/api/writeups/" + wu.id, { tags });
+          await loadWriteups(); render();
+        });
+    });
+    page.appendChild(tagsRow);
+
+    // Date
+    const dateLine = document.createElement("div"); dateLine.className = "wu-page-date";
+    dateLine.textContent = (lang === "tr" ? "Son guncelleme: " : "Last updated: ") + new Date(wu.updatedAt).toLocaleString();
+    page.appendChild(dateLine);
+
+    // Editor
+    const editor = document.createElement("textarea"); editor.className = "wu-page-editor";
+    editor.value = wu.content || "";
+    editor.placeholder = lang === "tr" ? "Write-up iceriginizi buraya yazin...\n\n## Keşif\nnmap -sC -sV ...\n\n## Ilk Erisim\n...\n\n## Yetki Yukseltme\n..." :
+      "Write your content here...\n\n## Reconnaissance\nnmap -sC -sV ...\n\n## Initial Access\n...\n\n## Privilege Escalation\n...";
+    editor.addEventListener("input", () => {
+      saveWu(wu.id, { content: editor.value });
+      showWuStatus();
+    });
+    page.appendChild(editor);
+    contentArea.appendChild(page);
+
+    // Auto-focus editor
+    setTimeout(() => editor.focus(), 100);
+
+    function showWuStatus() {
+      const st = document.getElementById("wuStatus");
+      if (st) { st.textContent = "saving..."; clearTimeout(st._t); st._t = setTimeout(() => st.textContent = "✓ saved", 600); }
+    }
   }
 
   // ── Import/Export ──
