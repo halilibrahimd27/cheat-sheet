@@ -1,6 +1,6 @@
 # cheat-sheet
 
-**Offensive Security Command Reference** — A comprehensive, searchable cheat sheet for penetration testing and security certification exams (OSCP, PEN-200, etc.).
+**Offensive Security Command Reference** — A comprehensive, searchable cheat sheet for penetration testing and security certification exams (OSCP, OSWE, OSEP, OSDA , OSWA etc.).
 
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![Docker](https://img.shields.io/badge/docker-ready-2496ED)
