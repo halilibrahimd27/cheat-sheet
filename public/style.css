@@ -1201,19 +1201,103 @@ body {
    Category Notes
    ============================================ */
 .category-notes { padding: 0 0 12px; }
+.note-header { display: flex; align-items: center; gap: 8px; }
 .note-toggle {
     background: none; border: none; color: var(--text-tertiary); font-size: 12px;
     cursor: pointer; padding: 4px 0; font-family: inherit; transition: color var(--transition);
 }
 .note-toggle:hover { color: var(--accent-secondary); }
+.note-delete-btn {
+    background: none; border: none; color: var(--text-tertiary); font-size: 12px;
+    cursor: pointer; padding: 2px 4px; transition: color var(--transition);
+}
+.note-delete-btn:hover { color: var(--accent-red); }
 .note-editor {
-    width: 100%; min-height: 60px; max-height: 200px; padding: 10px 12px; margin-top: 6px;
+    width: 100%; min-height: 80px; max-height: 300px; padding: 12px 14px; margin-top: 6px;
     background: var(--bg-code); border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
     color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: 12px;
-    resize: vertical; outline: none; line-height: 1.5;
+    resize: vertical; outline: none; line-height: 1.6;
 }
-.note-editor:focus { border-color: var(--accent-primary); }
+.note-editor:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 2px var(--accent-glow); }
 .note-editor.hidden { display: none; }
+
+/* ============================================
+   Write-ups
+   ============================================ */
+.writeups-header {
+    padding: 20px 0 24px;
+    border-bottom: 1px solid var(--border-primary);
+    margin-bottom: 24px;
+}
+.writeups-header h2 { font-size: 24px; font-weight: 700; color: var(--text-heading); margin-bottom: 6px; }
+.writeups-header p { font-size: 13px; color: var(--text-tertiary); margin-bottom: 16px; line-height: 1.5; }
+
+.writeup-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: border-color var(--transition);
+}
+.writeup-card:hover { border-color: var(--border-secondary); }
+
+.wu-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 14px 16px 10px;
+    gap: 12px;
+}
+.wu-card-title-row { flex: 1; }
+.wu-title-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid transparent;
+    color: var(--text-heading);
+    font-size: 16px;
+    font-weight: 600;
+    font-family: inherit;
+    padding: 4px 0;
+    outline: none;
+    transition: border-color var(--transition);
+}
+.wu-title-input:focus { border-bottom-color: var(--accent-primary); }
+.wu-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+}
+.wu-date { font-size: 11px; color: var(--text-tertiary); }
+.wu-tag {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(99, 102, 241, 0.12);
+    color: var(--accent-secondary);
+    font-weight: 500;
+}
+.wu-delete { flex-shrink: 0; opacity: 0.3; }
+.writeup-card:hover .wu-delete { opacity: 1; }
+
+.wu-editor {
+    width: 100%;
+    min-height: 200px;
+    padding: 16px;
+    background: var(--bg-code);
+    border: none;
+    border-top: 1px solid var(--border-primary);
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    resize: vertical;
+    outline: none;
+}
+.wu-editor:focus { background: var(--bg-tertiary); }
 
 /* ============================================
    Drag & Drop

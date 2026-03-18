@@ -12,7 +12,8 @@
   let collapsedSections = new Set();
   let favorites = JSON.parse(localStorage.getItem("cs-favorites") || "[]");
   let activeTag = "all";
-  let categoryNotes = JSON.parse(localStorage.getItem("cs-notes") || "{}");
+  let categoryNotes = {};
+  let writeups = [];
   let lang = localStorage.getItem("cs-lang") || "en";
   let dragSrcCatIdx = null;
 
@@ -81,7 +82,12 @@
     if (body) o.body = JSON.stringify(body);
     return (await fetch(url, o)).json();
   }
-  async function loadData() { CATEGORIES = await api("GET", "/api/categories"); render(); }
+  async function loadData() {
+    CATEGORIES = await api("GET", "/api/categories");
+    await loadNotes();
+    await loadWriteups();
+    render();
+  }
 
   function getStats() {
     let tc = 0, ts = 0;
@@ -223,8 +229,76 @@
     await api("DELETE", "/api/categories/" + catId + "/subcategories/" + subIdx + "/commands/" + cmdIdx); await loadData();
   }
 
-  // ── Notes ──
-  function saveNote(catId, text) { categoryNotes[catId] = text; localStorage.setItem("cs-notes", JSON.stringify(categoryNotes)); }
+  // ── Notes (server-backed) ──
+  async function loadNotes() { categoryNotes = await api("GET", "/api/notes"); }
+  let noteTimer = null;
+  function saveNote(catId, text) {
+    categoryNotes[catId] = text;
+    clearTimeout(noteTimer);
+    noteTimer = setTimeout(() => api("PUT", "/api/notes/" + catId, { text }), 500);
+  }
+  async function deleteNote(catId) {
+    delete categoryNotes[catId];
+    await api("DELETE", "/api/notes/" + catId);
+    render();
+  }
+
+  // ── Write-ups (server-backed) ──
+  async function loadWriteups() { writeups = await api("GET", "/api/writeups"); }
+  async function createWriteup() {
+    openModal("New Write-up", [
+      { key: "title", label: "Title", placeholder: "e.g., HackTheBox — Lame" },
+      { key: "tags", label: "Tags", placeholder: "HTB, OSCP, Linux, Easy (comma-separated)" }
+    ], {}, async fd => {
+      const tags = fd.tags.split(",").map(s => s.trim()).filter(Boolean);
+      await api("POST", "/api/writeups", { title: fd.title, tags, content: "" });
+      await loadWriteups(); render();
+    });
+  }
+  async function deleteWriteup(id) {
+    if (!confirm("Delete this write-up?")) return;
+    await api("DELETE", "/api/writeups/" + id);
+    await loadWriteups(); render();
+  }
+  let wuTimer = null;
+  function saveWriteupContent(id, content) {
+    clearTimeout(wuTimer);
+    wuTimer = setTimeout(() => api("PUT", "/api/writeups/" + id, { content }), 500);
+  }
+  function saveWriteupTitle(id, title) { api("PUT", "/api/writeups/" + id, { title }); }
+
+  function renderWriteupsPage() {
+    currentSection.textContent = "Write-ups"; hero.style.display = "none";
+    contentArea.innerHTML = "";
+    // Header
+    const hdr = document.createElement("div"); hdr.className = "writeups-header";
+    hdr.innerHTML = '<h2>📝 Write-ups</h2><p>' + (lang === "tr" ? "Pentest notlarinizi ve write-up\'larinizi buraya yazin." : "Document your pentest findings and write-ups here.") + '</p><button class="btn btn-primary" id="newWriteupBtn">+ New Write-up</button>';
+    contentArea.appendChild(hdr);
+    hdr.querySelector("#newWriteupBtn").addEventListener("click", createWriteup);
+
+    if (writeups.length === 0) {
+      contentArea.innerHTML += '<div class="no-results"><h3>No write-ups yet</h3><p>' + (lang === "tr" ? "Ilk write-up\'inizi olusturun." : "Create your first write-up to get started.") + '</p></div>';
+      return;
+    }
+    writeups.forEach(wu => {
+      const card = document.createElement("div"); card.className = "writeup-card";
+      const tagsH = (wu.tags || []).map(t => '<span class="wu-tag">' + escapeHtml(t) + '</span>').join("");
+      const date = new Date(wu.updatedAt).toLocaleDateString();
+      card.innerHTML =
+        '<div class="wu-card-header">' +
+          '<div class="wu-card-title-row">' +
+            '<input class="wu-title-input" value="' + escapeHtml(wu.title) + '" />' +
+            '<div class="wu-card-meta"><span class="wu-date">' + date + '</span>' + tagsH + '</div>' +
+          '</div>' +
+          '<button class="cmd-action-btn delete-btn wu-delete" title="Delete">✕</button>' +
+        '</div>' +
+        '<textarea class="wu-editor" placeholder="' + (lang === "tr" ? "Write-up iceriginizi buraya yazin..." : "Write your findings, steps, and notes here...") + '">' + escapeHtml(wu.content || "") + '</textarea>';
+      card.querySelector(".wu-title-input").addEventListener("change", e => saveWriteupTitle(wu.id, e.target.value));
+      card.querySelector(".wu-editor").addEventListener("input", e => saveWriteupContent(wu.id, e.target.value));
+      card.querySelector(".wu-delete").addEventListener("click", () => deleteWriteup(wu.id));
+      contentArea.appendChild(card);
+    });
+  }
 
   // ── Import/Export ──
   $("exportBtn").addEventListener("click", () => {
@@ -293,6 +367,8 @@
     // Favorites
     const favCount = getFavCommands().length;
     mkNavItem("⭐", t("favorites"), favCount, activeCategory === "favs", () => { activeCategory = "favs"; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); });
+    // Write-ups
+    mkNavItem("📝", "Write-ups", writeups.length, activeCategory === "writeups", () => { activeCategory = "writeups"; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); });
     // Categories
     CATEGORIES.forEach((cat, idx) => {
       let cnt = 0; cat.subcategories.forEach(s => (cnt += s.commands.length));
@@ -386,15 +462,22 @@
 
     if (!collapsed) {
       if (cat.description) { const d = document.createElement("p"); d.className = "category-desc"; d.textContent = cat.description; sec.appendChild(d); }
-      // Notes area
+      // Notes area with CRUD
       const noteArea = document.createElement("div"); noteArea.className = "category-notes";
+      const noteHeader = document.createElement("div"); noteHeader.className = "note-header";
       const noteToggle = document.createElement("button"); noteToggle.className = "note-toggle";
       noteToggle.textContent = categoryNotes[cat.id] ? "📝 Notes ▾" : "📝 Add Notes";
+      noteHeader.appendChild(noteToggle);
+      if (categoryNotes[cat.id]) {
+        const noteDelBtn = document.createElement("button"); noteDelBtn.className = "note-delete-btn"; noteDelBtn.textContent = "✕"; noteDelBtn.title = "Delete note";
+        noteDelBtn.addEventListener("click", e => { e.stopPropagation(); deleteNote(cat.id); });
+        noteHeader.appendChild(noteDelBtn);
+      }
       const noteEditor = document.createElement("textarea"); noteEditor.className = "note-editor" + (categoryNotes[cat.id] ? "" : " hidden");
       noteEditor.placeholder = t("notePlaceholder"); noteEditor.value = categoryNotes[cat.id] || "";
-      noteEditor.addEventListener("input", () => saveNote(cat.id, noteEditor.value));
+      noteEditor.addEventListener("input", () => { saveNote(cat.id, noteEditor.value); });
       noteToggle.addEventListener("click", () => { noteEditor.classList.toggle("hidden"); if (!noteEditor.classList.contains("hidden")) noteEditor.focus(); });
-      noteArea.appendChild(noteToggle); noteArea.appendChild(noteEditor); sec.appendChild(noteArea);
+      noteArea.appendChild(noteHeader); noteArea.appendChild(noteEditor); sec.appendChild(noteArea);
 
       const body = document.createElement("div"); body.className = "category-body";
       cat.subcategories.forEach((sub, subIdx) => {
@@ -428,6 +511,9 @@
 
   function render() {
     buildSidebar(); contentArea.innerHTML = "";
+
+    // Write-ups view
+    if (activeCategory === "writeups") { renderWriteupsPage(); return; }
 
     // Favorites view
     if (activeCategory === "favs") {

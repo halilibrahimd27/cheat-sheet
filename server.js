@@ -160,16 +160,82 @@ app.delete("/api/categories/:id/subcategories/:subIdx/commands/:cmdIdx", (req, r
   res.json({ ok: true });
 });
 
+// ── Notes (per-category) ──
+const NOTES_FILE = path.join(__dirname, "data", "notes.json");
+function readNotes() {
+  if (!fs.existsSync(NOTES_FILE)) fs.writeFileSync(NOTES_FILE, "{}", "utf8");
+  return JSON.parse(fs.readFileSync(NOTES_FILE, "utf8"));
+}
+function writeNotes(d) { fs.writeFileSync(NOTES_FILE, JSON.stringify(d, null, 2), "utf8"); }
+
+app.get("/api/notes", (req, res) => res.json(readNotes()));
+app.put("/api/notes/:catId", (req, res) => {
+  const notes = readNotes();
+  notes[req.params.catId] = req.body.text || "";
+  if (!notes[req.params.catId]) delete notes[req.params.catId];
+  writeNotes(notes);
+  res.json({ ok: true });
+});
+app.delete("/api/notes/:catId", (req, res) => {
+  const notes = readNotes();
+  delete notes[req.params.catId];
+  writeNotes(notes);
+  res.json({ ok: true });
+});
+
+// ── Write-ups ──
+const WRITEUPS_FILE = path.join(__dirname, "data", "writeups.json");
+function readWriteups() {
+  if (!fs.existsSync(WRITEUPS_FILE)) fs.writeFileSync(WRITEUPS_FILE, "[]", "utf8");
+  return JSON.parse(fs.readFileSync(WRITEUPS_FILE, "utf8"));
+}
+function writeWriteups(d) { fs.writeFileSync(WRITEUPS_FILE, JSON.stringify(d, null, 2), "utf8"); }
+
+app.get("/api/writeups", (req, res) => res.json(readWriteups()));
+app.post("/api/writeups", (req, res) => {
+  const wups = readWriteups();
+  const { title, tags, content } = req.body;
+  if (!title) return res.status(400).json({ error: "title required" });
+  const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const wu = { id, title, tags: tags || [], content: content || "", createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+  wups.unshift(wu);
+  writeWriteups(wups);
+  res.status(201).json(wu);
+});
+app.put("/api/writeups/:id", (req, res) => {
+  const wups = readWriteups();
+  const wu = wups.find(w => w.id === req.params.id);
+  if (!wu) return res.status(404).json({ error: "not found" });
+  if (req.body.title !== undefined) wu.title = req.body.title;
+  if (req.body.tags !== undefined) wu.tags = req.body.tags;
+  if (req.body.content !== undefined) wu.content = req.body.content;
+  wu.updatedAt = new Date().toISOString();
+  writeWriteups(wups);
+  res.json(wu);
+});
+app.delete("/api/writeups/:id", (req, res) => {
+  let wups = readWriteups();
+  wups = wups.filter(w => w.id !== req.params.id);
+  writeWriteups(wups);
+  res.json({ ok: true });
+});
+
 // ── Export / Import ──
 app.get("/api/export", (req, res) => {
-  res.setHeader("Content-Disposition", "attachment; filename=cyberlens-backup.json");
-  res.json(readData());
+  res.setHeader("Content-Disposition", "attachment; filename=cheatsheet-backup.json");
+  res.json({ categories: readData(), notes: readNotes(), writeups: readWriteups() });
 });
 
 app.post("/api/import", (req, res) => {
-  if (!Array.isArray(req.body)) return res.status(400).json({ error: "Expected array" });
-  writeData(req.body);
-  res.json({ ok: true, categories: req.body.length });
+  // Support both old format (array) and new format (object with categories/notes/writeups)
+  if (Array.isArray(req.body)) {
+    writeData(req.body);
+    return res.json({ ok: true, categories: req.body.length });
+  }
+  if (req.body.categories) writeData(req.body.categories);
+  if (req.body.notes) writeNotes(req.body.notes);
+  if (req.body.writeups) writeWriteups(req.body.writeups);
+  res.json({ ok: true });
 });
 
 // ── Reset to defaults ──
