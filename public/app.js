@@ -277,7 +277,9 @@
     hdr.querySelector("#newWriteupBtn").addEventListener("click", createWriteup);
 
     if (writeups.length === 0) {
-      contentArea.innerHTML += '<div class="no-results"><h3>No write-ups yet</h3><p>' + (lang === "tr" ? "Ilk write-up\'inizi olusturun." : "Create your first write-up to get started.") + '</p></div>';
+      const empty = document.createElement("div"); empty.className = "no-results";
+      empty.innerHTML = '<h3>No write-ups yet</h3><p>' + (lang === "tr" ? "Ilk write-up\'inizi olusturun." : "Create your first write-up to get started.") + '</p>';
+      contentArea.appendChild(empty);
       return;
     }
     writeups.forEach(wu => {
@@ -468,14 +470,21 @@
       const noteToggle = document.createElement("button"); noteToggle.className = "note-toggle";
       noteToggle.textContent = categoryNotes[cat.id] ? "📝 Notes ▾" : "📝 Add Notes";
       noteHeader.appendChild(noteToggle);
-      if (categoryNotes[cat.id]) {
-        const noteDelBtn = document.createElement("button"); noteDelBtn.className = "note-delete-btn"; noteDelBtn.textContent = "✕"; noteDelBtn.title = "Delete note";
-        noteDelBtn.addEventListener("click", e => { e.stopPropagation(); deleteNote(cat.id); });
-        noteHeader.appendChild(noteDelBtn);
-      }
+      const noteDelBtn = document.createElement("button"); noteDelBtn.className = "note-delete-btn"; noteDelBtn.textContent = "🗑"; noteDelBtn.title = "Delete note";
+      noteDelBtn.style.display = categoryNotes[cat.id] ? "" : "none";
+      noteDelBtn.addEventListener("click", e => { e.stopPropagation(); deleteNote(cat.id); });
+      noteHeader.appendChild(noteDelBtn);
+      const noteSaved = document.createElement("span"); noteSaved.className = "note-saved"; noteSaved.textContent = "";
+      noteHeader.appendChild(noteSaved);
       const noteEditor = document.createElement("textarea"); noteEditor.className = "note-editor" + (categoryNotes[cat.id] ? "" : " hidden");
       noteEditor.placeholder = t("notePlaceholder"); noteEditor.value = categoryNotes[cat.id] || "";
-      noteEditor.addEventListener("input", () => { saveNote(cat.id, noteEditor.value); });
+      noteEditor.addEventListener("input", () => {
+        saveNote(cat.id, noteEditor.value);
+        noteDelBtn.style.display = noteEditor.value ? "" : "none";
+        noteSaved.textContent = "saving...";
+        clearTimeout(noteEditor._savedTimer);
+        noteEditor._savedTimer = setTimeout(() => { noteSaved.textContent = "✓ saved"; setTimeout(() => noteSaved.textContent = "", 2000); }, 700);
+      });
       noteToggle.addEventListener("click", () => { noteEditor.classList.toggle("hidden"); if (!noteEditor.classList.contains("hidden")) noteEditor.focus(); });
       noteArea.appendChild(noteHeader); noteArea.appendChild(noteEditor); sec.appendChild(noteArea);
 

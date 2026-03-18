@@ -1212,6 +1212,7 @@ body {
     cursor: pointer; padding: 2px 4px; transition: color var(--transition);
 }
 .note-delete-btn:hover { color: var(--accent-red); }
+.note-saved { font-size: 11px; color: var(--accent-green); margin-left: 4px; }
 .note-editor {
     width: 100%; min-height: 80px; max-height: 300px; padding: 12px 14px; margin-top: 6px;
     background: var(--bg-code); border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
