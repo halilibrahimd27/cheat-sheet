@@ -1,0 +1,13 @@
+{
+  "name": "cyberlens",
+  "version": "1.0.0",
+  "description": "Offensive Security Command Reference — Penetration Testing Cheat Sheet",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}
