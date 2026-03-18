@@ -6,8 +6,27 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const DATA_FILE = path.join(__dirname, "data", "commands.json");
 
-app.use(express.json({ limit: "10mb" }));
+app.use(express.json({ limit: "50mb" }));
 app.use(express.static(path.join(__dirname, "public")));
+
+// ── Image Upload for Write-ups ──
+const UPLOADS_DIR = path.join(__dirname, "data", "uploads");
+if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+
+app.use("/uploads", express.static(UPLOADS_DIR));
+
+app.post("/api/upload", (req, res) => {
+  const { data, filename } = req.body; // data = base64 string
+  if (!data) return res.status(400).json({ error: "no data" });
+  const ext = (filename || "image.png").split(".").pop().toLowerCase();
+  const allowed = ["png", "jpg", "jpeg", "gif", "webp", "svg", "bmp"];
+  if (!allowed.includes(ext)) return res.status(400).json({ error: "invalid file type" });
+  const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const fname = id + "." + ext;
+  const buf = Buffer.from(data.replace(/^data:image\/\w+;base64,/, ""), "base64");
+  fs.writeFileSync(path.join(UPLOADS_DIR, fname), buf);
+  res.json({ url: "/uploads/" + fname });
+});
 
 // Ensure data directory and seed file exist
 function ensureDataFile() {

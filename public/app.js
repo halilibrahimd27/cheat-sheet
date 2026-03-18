@@ -370,10 +370,38 @@
       });
       page.appendChild(tagsRow);
 
+      // Image upload button
+      const imgBar = document.createElement("div"); imgBar.className = "wu-img-bar";
+      imgBar.innerHTML = '<button class="btn btn-secondary btn-sm wu-img-btn">📷 ' + (lang === "tr" ? "Gorsel Ekle" : "Add Image") + '</button>' +
+        '<input type="file" class="wu-img-input" accept="image/*" style="display:none">' +
+        '<span class="wu-img-hint">' + (lang === "tr" ? "Gorsel yukleyin, link otomatik eklenir" : "Upload image, link auto-inserted") + '</span>';
+      const imgInput = imgBar.querySelector(".wu-img-input");
+      imgBar.querySelector(".wu-img-btn").addEventListener("click", () => imgInput.click());
+      page.appendChild(imgBar);
+
       const editor = document.createElement("textarea"); editor.className = "wu-page-editor";
       editor.value = wu.content || "";
       editor.placeholder = lang === "tr" ? "Write-up iceriginizi buraya yazin..." : "Write your content here...";
       editor.addEventListener("input", () => { saveWu(wu.id, { content: editor.value }); showStatus(); });
+
+      imgInput.addEventListener("change", async e => {
+        const file = e.target.files[0]; if (!file) return;
+        const reader = new FileReader();
+        reader.onload = async () => {
+          const res = await api("POST", "/api/upload", { data: reader.result, filename: file.name });
+          if (res.url) {
+            const pos = editor.selectionStart;
+            const text = editor.value;
+            const imgTag = "\n![" + file.name + "](" + res.url + ")\n";
+            editor.value = text.slice(0, pos) + imgTag + text.slice(pos);
+            saveWu(wu.id, { content: editor.value });
+            showStatus();
+          }
+        };
+        reader.readAsDataURL(file);
+        e.target.value = "";
+      });
+
       page.appendChild(editor);
       setTimeout(() => editor.focus(), 100);
     } else {
@@ -397,6 +425,7 @@
         .replace(/^(```[\s\S]*?```)$/gm, '<pre class="wu-code-block">$1</pre>')
         .replace(/`([^`]+)`/g, '<code class="wu-inline-code">$1</code>')
         .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<div class="wu-img-container"><img src="$2" alt="$1" class="wu-read-img"><span class="wu-img-caption">$1</span></div>')
         .replace(/\n/g, '<br>');
       page.appendChild(body);
     }
@@ -605,6 +634,14 @@
       sec.appendChild(noteArea);
 
       const body = document.createElement("div"); body.className = "category-body";
+      // Empty state for categories with no subcategories
+      if (cat.subcategories.length === 0) {
+        const empty = document.createElement("div"); empty.className = "cat-empty-state";
+        empty.innerHTML = '<div class="cat-empty-icon">📂</div><p>' + (lang === "tr" ? "Bu kategoride henuz alt kategori ve komut yok." : "No subcategories or commands yet.") + '</p>' +
+          '<button class="btn btn-primary btn-sm cat-empty-btn">+ ' + (lang === "tr" ? "Alt Kategori Ekle" : "Add Subcategory") + '</button>';
+        empty.querySelector(".cat-empty-btn").addEventListener("click", () => addSubcategory(cat.id));
+        body.appendChild(empty);
+      }
       cat.subcategories.forEach((sub, subIdx) => {
         const filtered = filterCmds(sub.commands);
         if (searchQuery && filtered.length === 0) return;

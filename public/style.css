@@ -1320,6 +1320,21 @@ body {
     color: var(--text-code); overflow-x: auto; line-height: 1.6; white-space: pre-wrap;
 }
 .wu-read-body strong { color: var(--text-heading); }
+.wu-img-container { margin: 16px 0; text-align: center; }
+.wu-read-img { max-width: 100%; border-radius: var(--radius-md); border: 1px solid var(--border-primary); box-shadow: var(--shadow-md); }
+.wu-img-caption { display: block; font-size: 11px; color: var(--text-tertiary); margin-top: 6px; }
+
+/* Write-up Image Upload Bar */
+.wu-img-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.wu-img-hint { font-size: 11px; color: var(--text-tertiary); }
+
+/* Category Empty State */
+.cat-empty-state {
+    text-align: center; padding: 40px 20px;
+    border: 2px dashed var(--border-primary); border-radius: var(--radius-md);
+}
+.cat-empty-icon { font-size: 40px; margin-bottom: 10px; }
+.cat-empty-state p { font-size: 13px; color: var(--text-tertiary); margin-bottom: 14px; }
 
 .wu-topbar-actions { display: flex; align-items: center; gap: 6px; }
 .wu-delete-btn {

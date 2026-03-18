@@ -8,7 +8,7 @@ RUN npm install --production
 COPY server.js seed.js ./
 COPY public ./public/
 
-RUN mkdir -p /app/data
+RUN mkdir -p /app/data/uploads
 
 EXPOSE 3000
 
