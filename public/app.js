@@ -229,18 +229,24 @@
     await api("DELETE", "/api/categories/" + catId + "/subcategories/" + subIdx + "/commands/" + cmdIdx); await loadData();
   }
 
-  // ── Notes (server-backed) ──
+  // ── Notes (multiple per category, server-backed) ──
   async function loadNotes() { categoryNotes = await api("GET", "/api/notes"); }
-  let noteTimer = null;
-  function saveNote(catId, text) {
-    categoryNotes[catId] = text;
-    clearTimeout(noteTimer);
-    noteTimer = setTimeout(() => api("PUT", "/api/notes/" + catId, { text }), 500);
+  function getNotes(catId) { return categoryNotes[catId] || []; }
+  function getNotesCount(catId) { return (categoryNotes[catId] || []).length; }
+  function getTotalNotesCount() { let c = 0; Object.values(categoryNotes).forEach(arr => { if (Array.isArray(arr)) c += arr.length; }); return c; }
+  async function addNote(catId) {
+    const note = await api("POST", "/api/notes/" + catId, { text: "" });
+    await loadNotes(); render();
   }
-  async function deleteNote(catId) {
-    delete categoryNotes[catId];
-    await api("DELETE", "/api/notes/" + catId);
-    render();
+  let noteTimers = {};
+  function saveNoteText(catId, noteId, text) {
+    clearTimeout(noteTimers[noteId]);
+    noteTimers[noteId] = setTimeout(() => api("PUT", "/api/notes/" + catId + "/" + noteId, { text }), 400);
+  }
+  async function deleteNote(catId, noteId) {
+    if (!confirm(lang === "tr" ? "Bu notu silinsin mi?" : "Delete this note?")) return;
+    await api("DELETE", "/api/notes/" + catId + "/" + noteId);
+    await loadNotes(); render();
   }
 
   // ── Write-ups (server-backed, file-style) ──
@@ -318,64 +324,86 @@
     contentArea.appendChild(grid);
   }
 
+  let wuEditMode = false;
+
   function renderWriteupEditor(wu) {
     const page = document.createElement("div"); page.className = "wu-editor-page";
 
-    // Back button + title bar
+    // Top bar
     const topbar = document.createElement("div"); topbar.className = "wu-editor-topbar";
     topbar.innerHTML =
       '<button class="wu-back-btn">← ' + (lang === "tr" ? "Geri" : "Back") + '</button>' +
       '<div class="wu-editor-status" id="wuStatus"></div>' +
-      '<button class="wu-delete-btn">🗑 ' + (lang === "tr" ? "Sil" : "Delete") + '</button>';
-    topbar.querySelector(".wu-back-btn").addEventListener("click", () => { openWriteupId = null; render(); });
+      '<div class="wu-topbar-actions">' +
+        (wuEditMode
+          ? '<button class="btn btn-primary btn-sm wu-save-btn">💾 ' + (lang === "tr" ? "Kaydet" : "Save") + '</button>'
+          : '<button class="btn btn-secondary btn-sm wu-edit-btn">✎ ' + (lang === "tr" ? "Duzenle" : "Edit") + '</button>'
+        ) +
+        '<button class="wu-delete-btn">🗑</button>' +
+      '</div>';
+    topbar.querySelector(".wu-back-btn").addEventListener("click", () => { openWriteupId = null; wuEditMode = false; render(); });
     topbar.querySelector(".wu-delete-btn").addEventListener("click", () => deleteWriteup(wu.id));
+    if (wuEditMode) {
+      topbar.querySelector(".wu-save-btn").addEventListener("click", async () => {
+        wuEditMode = false;
+        await loadWriteups(); render();
+      });
+    } else {
+      topbar.querySelector(".wu-edit-btn").addEventListener("click", () => { wuEditMode = true; render(); });
+    }
     page.appendChild(topbar);
 
-    // Title
-    const titleInput = document.createElement("input"); titleInput.className = "wu-page-title";
-    titleInput.value = wu.title; titleInput.placeholder = "Write-up title...";
-    titleInput.addEventListener("input", () => {
-      saveWu(wu.id, { title: titleInput.value });
-      showWuStatus();
-    });
-    page.appendChild(titleInput);
+    if (wuEditMode) {
+      // ── EDIT MODE ──
+      const titleInput = document.createElement("input"); titleInput.className = "wu-page-title";
+      titleInput.value = wu.title; titleInput.placeholder = "Write-up title...";
+      titleInput.addEventListener("input", () => { saveWu(wu.id, { title: titleInput.value }); showStatus(); });
+      page.appendChild(titleInput);
 
-    // Tags
-    const tagsRow = document.createElement("div"); tagsRow.className = "wu-page-tags";
-    const tagsH = (wu.tags || []).map(t => '<span class="wu-tag">' + escapeHtml(t) + '</span>').join("");
-    tagsRow.innerHTML = tagsH + '<button class="wu-edit-tags-btn">✎ tags</button>';
-    tagsRow.querySelector(".wu-edit-tags-btn").addEventListener("click", () => {
-      openModal("Edit Tags", [{ key: "tags", label: "Tags", placeholder: "HTB, OSCP, Linux (comma-separated)" }],
-        { tags: (wu.tags || []).join(", ") },
-        async fd => {
-          const tags = fd.tags.split(",").map(s => s.trim()).filter(Boolean);
-          await api("PUT", "/api/writeups/" + wu.id, { tags });
-          await loadWriteups(); render();
-        });
-    });
-    page.appendChild(tagsRow);
+      const tagsRow = document.createElement("div"); tagsRow.className = "wu-page-tags";
+      const tagsH = (wu.tags || []).map(t => '<span class="wu-tag">' + escapeHtml(t) + '</span>').join("");
+      tagsRow.innerHTML = tagsH + '<button class="wu-edit-tags-btn">✎ tags</button>';
+      tagsRow.querySelector(".wu-edit-tags-btn").addEventListener("click", () => {
+        openModal("Edit Tags", [{ key: "tags", label: "Tags", placeholder: "HTB, OSCP, Linux" }],
+          { tags: (wu.tags || []).join(", ") },
+          async fd => { const tags = fd.tags.split(",").map(s => s.trim()).filter(Boolean); await api("PUT", "/api/writeups/" + wu.id, { tags }); await loadWriteups(); render(); });
+      });
+      page.appendChild(tagsRow);
 
-    // Date
-    const dateLine = document.createElement("div"); dateLine.className = "wu-page-date";
-    dateLine.textContent = (lang === "tr" ? "Son guncelleme: " : "Last updated: ") + new Date(wu.updatedAt).toLocaleString();
-    page.appendChild(dateLine);
+      const editor = document.createElement("textarea"); editor.className = "wu-page-editor";
+      editor.value = wu.content || "";
+      editor.placeholder = lang === "tr" ? "Write-up iceriginizi buraya yazin..." : "Write your content here...";
+      editor.addEventListener("input", () => { saveWu(wu.id, { content: editor.value }); showStatus(); });
+      page.appendChild(editor);
+      setTimeout(() => editor.focus(), 100);
+    } else {
+      // ── READ MODE ──
+      const title = document.createElement("h1"); title.className = "wu-read-title"; title.textContent = wu.title;
+      page.appendChild(title);
 
-    // Editor
-    const editor = document.createElement("textarea"); editor.className = "wu-page-editor";
-    editor.value = wu.content || "";
-    editor.placeholder = lang === "tr" ? "Write-up iceriginizi buraya yazin...\n\n## Keşif\nnmap -sC -sV ...\n\n## Ilk Erisim\n...\n\n## Yetki Yukseltme\n..." :
-      "Write your content here...\n\n## Reconnaissance\nnmap -sC -sV ...\n\n## Initial Access\n...\n\n## Privilege Escalation\n...";
-    editor.addEventListener("input", () => {
-      saveWu(wu.id, { content: editor.value });
-      showWuStatus();
-    });
-    page.appendChild(editor);
+      const tagsRow = document.createElement("div"); tagsRow.className = "wu-page-tags";
+      tagsRow.innerHTML = (wu.tags || []).map(t => '<span class="wu-tag">' + escapeHtml(t) + '</span>').join("");
+      page.appendChild(tagsRow);
+
+      const dateLine = document.createElement("div"); dateLine.className = "wu-page-date";
+      dateLine.textContent = (lang === "tr" ? "Son guncelleme: " : "Last updated: ") + new Date(wu.updatedAt).toLocaleString();
+      page.appendChild(dateLine);
+
+      const body = document.createElement("div"); body.className = "wu-read-body";
+      // Simple rendering: preserve line breaks, highlight code-like lines
+      const content = wu.content || (lang === "tr" ? "Henuz icerik yok. Duzenle butonuna tiklayin." : "No content yet. Click Edit to start writing.");
+      body.innerHTML = escapeHtml(content)
+        .replace(/^(#{1,3})\s+(.*)$/gm, (m, h, t) => '<h' + (h.length + 1) + ' class="wu-heading">' + t + '</h' + (h.length + 1) + '>')
+        .replace(/^(```[\s\S]*?```)$/gm, '<pre class="wu-code-block">$1</pre>')
+        .replace(/`([^`]+)`/g, '<code class="wu-inline-code">$1</code>')
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n/g, '<br>');
+      page.appendChild(body);
+    }
+
     contentArea.appendChild(page);
 
-    // Auto-focus editor
-    setTimeout(() => editor.focus(), 100);
-
-    function showWuStatus() {
+    function showStatus() {
       const st = document.getElementById("wuStatus");
       if (st) { st.textContent = "saving..."; clearTimeout(st._t); st._t = setTimeout(() => st.textContent = "✓ saved", 600); }
     }
@@ -453,7 +481,9 @@
     // Categories
     CATEGORIES.forEach((cat, idx) => {
       let cnt = 0; cat.subcategories.forEach(s => (cnt += s.commands.length));
-      const item = mkNavItem(cat.icon, cat.name, cnt, activeCategory === cat.id, () => { activeCategory = cat.id; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); window.scrollTo({ top: 0, behavior: "smooth" }); });
+      const nc = getNotesCount(cat.id);
+      const label = cnt + (nc > 0 ? " + " + nc + "📝" : "");
+      const item = mkNavItem(cat.icon, cat.name, label, activeCategory === cat.id, () => { activeCategory = cat.id; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); window.scrollTo({ top: 0, behavior: "smooth" }); });
       item.draggable = true;
       item.addEventListener("dragstart", e => handleDragStart(e, idx));
       item.addEventListener("dragover", handleDragOver);
@@ -543,29 +573,36 @@
 
     if (!collapsed) {
       if (cat.description) { const d = document.createElement("p"); d.className = "category-desc"; d.textContent = cat.description; sec.appendChild(d); }
-      // Notes area with CRUD
+      // Notes area — multiple notes per category
       const noteArea = document.createElement("div"); noteArea.className = "category-notes";
+      const notes = getNotes(cat.id);
       const noteHeader = document.createElement("div"); noteHeader.className = "note-header";
-      const noteToggle = document.createElement("button"); noteToggle.className = "note-toggle";
-      noteToggle.textContent = categoryNotes[cat.id] ? "📝 Notes ▾" : "📝 Add Notes";
-      noteHeader.appendChild(noteToggle);
-      const noteDelBtn = document.createElement("button"); noteDelBtn.className = "note-delete-btn"; noteDelBtn.textContent = "🗑"; noteDelBtn.title = "Delete note";
-      noteDelBtn.style.display = categoryNotes[cat.id] ? "" : "none";
-      noteDelBtn.addEventListener("click", e => { e.stopPropagation(); deleteNote(cat.id); });
-      noteHeader.appendChild(noteDelBtn);
-      const noteSaved = document.createElement("span"); noteSaved.className = "note-saved"; noteSaved.textContent = "";
-      noteHeader.appendChild(noteSaved);
-      const noteEditor = document.createElement("textarea"); noteEditor.className = "note-editor" + (categoryNotes[cat.id] ? "" : " hidden");
-      noteEditor.placeholder = t("notePlaceholder"); noteEditor.value = categoryNotes[cat.id] || "";
-      noteEditor.addEventListener("input", () => {
-        saveNote(cat.id, noteEditor.value);
-        noteDelBtn.style.display = noteEditor.value ? "" : "none";
-        noteSaved.textContent = "saving...";
-        clearTimeout(noteEditor._savedTimer);
-        noteEditor._savedTimer = setTimeout(() => { noteSaved.textContent = "✓ saved"; setTimeout(() => noteSaved.textContent = "", 2000); }, 700);
+      noteHeader.innerHTML = '<button class="note-add-btn">+ ' + (lang === "tr" ? "Not Ekle" : "Add Note") + '</button>' +
+        (notes.length > 0 ? '<span class="note-count">' + notes.length + ' ' + (lang === "tr" ? "not" : "note" + (notes.length > 1 ? "s" : "")) + '</span>' : '');
+      noteHeader.querySelector(".note-add-btn").addEventListener("click", () => addNote(cat.id));
+      noteArea.appendChild(noteHeader);
+
+      notes.forEach(note => {
+        const noteCard = document.createElement("div"); noteCard.className = "note-card";
+        const noteTop = document.createElement("div"); noteTop.className = "note-card-top";
+        const noteSaved = document.createElement("span"); noteSaved.className = "note-saved";
+        const noteDelBtn = document.createElement("button"); noteDelBtn.className = "note-delete-btn"; noteDelBtn.textContent = "🗑"; noteDelBtn.title = "Delete";
+        noteDelBtn.addEventListener("click", () => deleteNote(cat.id, note.id));
+        noteTop.appendChild(noteSaved); noteTop.appendChild(noteDelBtn);
+        noteCard.appendChild(noteTop);
+
+        const noteEditor = document.createElement("textarea"); noteEditor.className = "note-editor";
+        noteEditor.placeholder = t("notePlaceholder"); noteEditor.value = note.text || "";
+        noteEditor.addEventListener("input", () => {
+          saveNoteText(cat.id, note.id, noteEditor.value);
+          noteSaved.textContent = "saving...";
+          clearTimeout(noteEditor._st);
+          noteEditor._st = setTimeout(() => { noteSaved.textContent = "✓ saved"; setTimeout(() => noteSaved.textContent = "", 2000); }, 600);
+        });
+        noteCard.appendChild(noteEditor);
+        noteArea.appendChild(noteCard);
       });
-      noteToggle.addEventListener("click", () => { noteEditor.classList.toggle("hidden"); if (!noteEditor.classList.contains("hidden")) noteEditor.focus(); });
-      noteArea.appendChild(noteHeader); noteArea.appendChild(noteEditor); sec.appendChild(noteArea);
+      sec.appendChild(noteArea);
 
       const body = document.createElement("div"); body.className = "category-body";
       cat.subcategories.forEach((sub, subIdx) => {

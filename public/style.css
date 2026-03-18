@@ -1300,6 +1300,52 @@ body {
 }
 .wu-page-editor:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 3px var(--accent-glow); }
 
+/* Write-up Read Mode */
+.wu-read-title { font-size: 32px; font-weight: 700; color: var(--text-heading); margin-bottom: 12px; letter-spacing: -0.5px; line-height: 1.3; }
+.wu-read-body {
+    font-size: 14px; color: var(--text-primary); line-height: 1.9;
+    padding: 20px 0; word-wrap: break-word;
+}
+.wu-read-body .wu-heading { font-weight: 700; color: var(--text-heading); margin: 24px 0 8px; }
+.wu-read-body h2.wu-heading { font-size: 22px; border-bottom: 1px solid var(--border-primary); padding-bottom: 6px; }
+.wu-read-body h3.wu-heading { font-size: 18px; }
+.wu-read-body h4.wu-heading { font-size: 15px; }
+.wu-read-body .wu-inline-code {
+    background: var(--bg-code); padding: 2px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent-cyan);
+}
+.wu-read-body .wu-code-block {
+    background: var(--bg-code); border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
+    padding: 14px; margin: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+    color: var(--text-code); overflow-x: auto; line-height: 1.6; white-space: pre-wrap;
+}
+.wu-read-body strong { color: var(--text-heading); }
+
+.wu-topbar-actions { display: flex; align-items: center; gap: 6px; }
+.wu-delete-btn {
+    background: none; border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
+    color: var(--text-tertiary); padding: 6px 10px; font-size: 14px; cursor: pointer;
+    transition: all var(--transition); line-height: 1;
+}
+.wu-delete-btn:hover { background: var(--accent-red); color: white; border-color: var(--accent-red); }
+
+/* Note Cards */
+.note-card {
+    background: var(--bg-code); border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
+    margin-bottom: 8px; overflow: hidden;
+}
+.note-card-top {
+    display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+    padding: 4px 8px; border-bottom: 1px solid var(--border-primary); min-height: 24px;
+}
+.note-add-btn {
+    background: none; border: 1px dashed var(--border-primary); border-radius: var(--radius-sm);
+    color: var(--text-tertiary); font-size: 12px; padding: 4px 10px; cursor: pointer; font-family: inherit;
+    transition: all var(--transition);
+}
+.note-add-btn:hover { border-color: var(--accent-primary); color: var(--accent-secondary); }
+.note-count { font-size: 11px; color: var(--text-tertiary); }
+
 /* ============================================
    Drag & Drop
    ============================================ */

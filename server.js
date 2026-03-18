@@ -160,7 +160,7 @@ app.delete("/api/categories/:id/subcategories/:subIdx/commands/:cmdIdx", (req, r
   res.json({ ok: true });
 });
 
-// ── Notes (per-category) ──
+// ── Notes (multiple per category) ──
 const NOTES_FILE = path.join(__dirname, "data", "notes.json");
 function readNotes() {
   if (!fs.existsSync(NOTES_FILE)) fs.writeFileSync(NOTES_FILE, "{}", "utf8");
@@ -169,16 +169,41 @@ function readNotes() {
 function writeNotes(d) { fs.writeFileSync(NOTES_FILE, JSON.stringify(d, null, 2), "utf8"); }
 
 app.get("/api/notes", (req, res) => res.json(readNotes()));
-app.put("/api/notes/:catId", (req, res) => {
+
+// Get notes for a specific category
+app.get("/api/notes/:catId", (req, res) => {
   const notes = readNotes();
-  notes[req.params.catId] = req.body.text || "";
-  if (!notes[req.params.catId]) delete notes[req.params.catId];
-  writeNotes(notes);
-  res.json({ ok: true });
+  res.json(notes[req.params.catId] || []);
 });
-app.delete("/api/notes/:catId", (req, res) => {
+
+// Add a note to a category
+app.post("/api/notes/:catId", (req, res) => {
   const notes = readNotes();
-  delete notes[req.params.catId];
+  if (!notes[req.params.catId]) notes[req.params.catId] = [];
+  const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+  const note = { id, text: req.body.text || "", createdAt: new Date().toISOString() };
+  notes[req.params.catId].push(note);
+  writeNotes(notes);
+  res.status(201).json(note);
+});
+
+// Update a specific note
+app.put("/api/notes/:catId/:noteId", (req, res) => {
+  const notes = readNotes();
+  const arr = notes[req.params.catId] || [];
+  const note = arr.find(n => n.id === req.params.noteId);
+  if (!note) return res.status(404).json({ error: "not found" });
+  if (req.body.text !== undefined) note.text = req.body.text;
+  writeNotes(notes);
+  res.json(note);
+});
+
+// Delete a specific note
+app.delete("/api/notes/:catId/:noteId", (req, res) => {
+  const notes = readNotes();
+  if (!notes[req.params.catId]) return res.json({ ok: true });
+  notes[req.params.catId] = notes[req.params.catId].filter(n => n.id !== req.params.noteId);
+  if (notes[req.params.catId].length === 0) delete notes[req.params.catId];
   writeNotes(notes);
   res.json({ ok: true });
 });
