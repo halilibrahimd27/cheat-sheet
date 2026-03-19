@@ -1,5 +1,5 @@
 node_modules/
-data/commands.json
+data/
 *.log
 .DS_Store
 Thumbs.db

