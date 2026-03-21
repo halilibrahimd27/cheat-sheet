@@ -14,8 +14,11 @@
   let activeTag = "all";
   let categoryNotes = {};
   let writeups = [];
+  let machines = [];
   let lang = localStorage.getItem("cs-lang") || "en";
   let dragSrcCatIdx = null;
+  let focusedCmdIdx = -1;
+  let pendingGo = false; // for g+key combos
 
   // i18n
   const T = {
@@ -37,7 +40,12 @@
       fillVars: "Fill Placeholders", applyCopy: "Apply & Copy",
       notePlaceholder: "Write your notes here (Markdown supported)...",
       heroDesc: "A comprehensive collection of penetration testing commands organized by attack phase. Built for certification preparation and ethical security assessments.",
-      educational: "Educational purposes only.", useResp: "Use responsibly and ethically."
+      educational: "Educational purposes only.", useResp: "Use responsibly and ethically.",
+      machines: "Machines", addMachine: "+ New Machine", noMachines: "No machines yet",
+      addMachineDesc: "Track target machines, services, credentials, and progress.",
+      machineName: "Machine Name", machineIP: "IP Address", machineOS: "Operating System",
+      services: "Services", credentials: "Credentials", notes: "Notes",
+      exportMd: "Export MD", exportPdf: "Export PDF", termCopy: "Terminal Copy"
     },
     tr: {
       allCommands: "Tum Komutlar", favorites: "Favoriler", search: "Komut ara...",
@@ -57,7 +65,12 @@
       fillVars: "Degiskenleri Doldur", applyCopy: "Uygula ve Kopyala",
       notePlaceholder: "Notlarinizi buraya yazin...",
       heroDesc: "Sizma testi komutlarinin saldiri asamalarina gore duzenlenmis kapsamli bir koleksiyonu. Sertifika hazirlik ve etik guvenlik degerlendirmeleri icin.",
-      educational: "Sadece egitim amaclidir.", useResp: "Sorumlu ve etik kullanin."
+      educational: "Sadece egitim amaclidir.", useResp: "Sorumlu ve etik kullanin.",
+      machines: "Makineler", addMachine: "+ Yeni Makine", noMachines: "Henuz makine yok",
+      addMachineDesc: "Hedef makineleri, servisleri, kimlik bilgilerini ve ilerlemeyi takip edin.",
+      machineName: "Makine Adi", machineIP: "IP Adresi", machineOS: "Isletim Sistemi",
+      services: "Servisler", credentials: "Kimlik Bilgileri", notes: "Notlar",
+      exportMd: "MD Aktar", exportPdf: "PDF Aktar", termCopy: "Terminal Kopyala"
     }
   };
   function t(key) { return (T[lang] && T[lang][key]) || T.en[key] || key; }
@@ -86,6 +99,7 @@
     CATEGORIES = await api("GET", "/api/categories");
     await loadNotes();
     await loadWriteups();
+    await loadMachines();
     render();
   }
 
@@ -148,6 +162,39 @@
       setTimeout(() => { $("varBarApply").textContent = t("applyCopy"); varBar.classList.remove("active"); }, 1200);
     });
   });
+
+  // ── Quick IP Changer ──
+  const ipBar = $("ipChangerBar");
+  const ipFields = { LHOST: $("ipLhost"), RHOST: $("ipRhost"), LPORT: $("ipLport"), DOMAIN: $("ipDomain"), USER: $("ipUser") };
+  const ipMap = { LHOST: ["<LHOST>", "<ATTACKER_IP>"], RHOST: ["<RHOST>", "<TARGET_IP>", "<RHOST_IP>"], LPORT: ["<LPORT>"], DOMAIN: ["<DOMAIN>", "<TARGET_DOMAIN>"], USER: ["<USER>", "<USERNAME>"] };
+  function loadIpValues() { Object.keys(ipFields).forEach(k => { ipFields[k].value = localStorage.getItem("cs-ip-" + k) || ""; }); }
+  function saveIpValues() {
+    Object.keys(ipFields).forEach(k => {
+      const v = ipFields[k].value.trim();
+      localStorage.setItem("cs-ip-" + k, v);
+      // Also sync with var-bar values
+      (ipMap[k] || []).forEach(ph => { if (v) localStorage.setItem("cs-var-" + ph, v); });
+    });
+  }
+  function applyIpToCode(code) {
+    let result = code;
+    Object.keys(ipFields).forEach(k => {
+      const v = localStorage.getItem("cs-ip-" + k);
+      if (v) (ipMap[k] || []).forEach(ph => { result = result.split(ph).join(v); });
+    });
+    return result;
+  }
+  loadIpValues();
+  $("ipChangerToggle").addEventListener("click", () => ipBar.classList.toggle("active"));
+  $("ipSaveBtn").addEventListener("click", () => {
+    saveIpValues();
+    $("ipSaveBtn").textContent = "Saved!"; setTimeout(() => $("ipSaveBtn").textContent = "Save", 1200);
+  });
+  $("ipClearBtn").addEventListener("click", () => {
+    Object.keys(ipFields).forEach(k => { ipFields[k].value = ""; localStorage.removeItem("cs-ip-" + k); });
+  });
+  // Auto-save on Enter in ip fields
+  Object.values(ipFields).forEach(inp => inp.addEventListener("keydown", e => { if (e.key === "Enter") { saveIpValues(); $("ipSaveBtn").textContent = "Saved!"; setTimeout(() => $("ipSaveBtn").textContent = "Save", 1200); } }));
 
   // ── Modal ──
   let modalCallback = null;
@@ -332,17 +379,21 @@
     // Top bar
     const topbar = document.createElement("div"); topbar.className = "wu-editor-topbar";
     topbar.innerHTML =
-      '<button class="wu-back-btn">← ' + (lang === "tr" ? "Geri" : "Back") + '</button>' +
+      '<button class="wu-back-btn">\u2190 ' + (lang === "tr" ? "Geri" : "Back") + '</button>' +
       '<div class="wu-editor-status" id="wuStatus"></div>' +
       '<div class="wu-topbar-actions">' +
+        '<button class="btn btn-secondary btn-sm wu-export-md-btn">' + t("exportMd") + '</button>' +
+        '<button class="btn btn-secondary btn-sm wu-export-pdf-btn">' + t("exportPdf") + '</button>' +
         (wuEditMode
-          ? '<button class="btn btn-primary btn-sm wu-save-btn">💾 ' + (lang === "tr" ? "Kaydet" : "Save") + '</button>'
-          : '<button class="btn btn-secondary btn-sm wu-edit-btn">✎ ' + (lang === "tr" ? "Duzenle" : "Edit") + '</button>'
+          ? '<button class="btn btn-primary btn-sm wu-save-btn">\uD83D\uDCBE ' + (lang === "tr" ? "Kaydet" : "Save") + '</button>'
+          : '<button class="btn btn-secondary btn-sm wu-edit-btn">\u270E ' + (lang === "tr" ? "Duzenle" : "Edit") + '</button>'
         ) +
-        '<button class="wu-delete-btn">🗑</button>' +
+        '<button class="wu-delete-btn">\uD83D\uDDD1</button>' +
       '</div>';
     topbar.querySelector(".wu-back-btn").addEventListener("click", () => { openWriteupId = null; wuEditMode = false; render(); });
     topbar.querySelector(".wu-delete-btn").addEventListener("click", () => deleteWriteup(wu.id));
+    topbar.querySelector(".wu-export-md-btn").addEventListener("click", () => exportWriteupMd(wu));
+    topbar.querySelector(".wu-export-pdf-btn").addEventListener("click", () => exportWriteupPdf(wu));
     if (wuEditMode) {
       topbar.querySelector(".wu-save-btn").addEventListener("click", async () => {
         wuEditMode = false;
@@ -438,6 +489,151 @@
     }
   }
 
+  // ── Machines (target tracking) ──
+  let openMachineId = null;
+  async function loadMachines() { machines = await api("GET", "/api/machines"); }
+  async function createMachine() {
+    openModal(t("addMachine"), [
+      { key: "name", label: t("machineName"), placeholder: "e.g., Lame" },
+      { key: "ip", label: t("machineIP"), placeholder: "10.10.10.3" },
+      { key: "os", label: t("machineOS"), placeholder: "Linux / Windows" }
+    ], {}, async fd => {
+      const m = await api("POST", "/api/machines", { name: fd.name, ip: fd.ip, os: fd.os });
+      await loadMachines(); openMachineId = m.id; render();
+    });
+  }
+  async function deleteMachine(id, e) {
+    if (e) e.stopPropagation();
+    if (!confirm(lang === "tr" ? "Bu makineyi silinsin mi?" : "Delete this machine?")) return;
+    await api("DELETE", "/api/machines/" + id);
+    if (openMachineId === id) openMachineId = null;
+    await loadMachines(); render();
+  }
+  let machineTimer = null;
+  function saveMachine(id, data) {
+    clearTimeout(machineTimer);
+    machineTimer = setTimeout(() => api("PUT", "/api/machines/" + id, data), 400);
+  }
+
+  function renderMachinesPage() {
+    currentSection.textContent = t("machines"); hero.style.display = "none"; contentArea.innerHTML = "";
+
+    if (openMachineId) {
+      const m = machines.find(x => x.id === openMachineId);
+      if (!m) { openMachineId = null; renderMachinesPage(); return; }
+      renderMachineDetail(m);
+      return;
+    }
+
+    const hdr = document.createElement("div"); hdr.className = "writeups-header";
+    hdr.innerHTML = '<div class="wu-header-top"><h2>🖥 ' + t("machines") + '</h2><button class="btn btn-primary" id="newMachineBtn">' + t("addMachine") + '</button></div>' +
+      '<p>' + t("addMachineDesc") + '</p>';
+    contentArea.appendChild(hdr);
+    hdr.querySelector("#newMachineBtn").addEventListener("click", createMachine);
+
+    if (machines.length === 0) {
+      const empty = document.createElement("div"); empty.className = "no-results";
+      empty.innerHTML = '<h3>' + t("noMachines") + '</h3><p>' + t("addMachineDesc") + '</p>';
+      contentArea.appendChild(empty);
+      return;
+    }
+
+    const grid = document.createElement("div"); grid.className = "machine-grid";
+    machines.forEach(m => {
+      const done = (m.checklist || []).filter(c => c.done).length;
+      const total = (m.checklist || []).length;
+      const pct = total > 0 ? Math.round(done / total * 100) : 0;
+      const osIcon = (m.os || "").toLowerCase().includes("windows") ? "🪟" : (m.os || "").toLowerCase().includes("linux") ? "🐧" : "🖥";
+      const card = document.createElement("div"); card.className = "machine-card";
+      card.innerHTML =
+        '<div class="machine-card-top">' +
+          '<span class="machine-os-icon">' + osIcon + '</span>' +
+          '<div class="machine-info"><div class="machine-name">' + escapeHtml(m.name) + '</div><div class="machine-ip">' + escapeHtml(m.ip || "No IP") + '</div></div>' +
+          '<button class="machine-del-btn" title="Delete">🗑</button>' +
+        '</div>' +
+        '<div class="machine-progress"><div class="machine-progress-bar"><div class="machine-progress-fill" style="width:' + pct + '%"></div></div><span class="machine-progress-text">' + done + '/' + total + ' (' + pct + '%)</span></div>';
+      card.addEventListener("click", () => { openMachineId = m.id; render(); });
+      card.querySelector(".machine-del-btn").addEventListener("click", e => deleteMachine(m.id, e));
+      grid.appendChild(card);
+    });
+    contentArea.appendChild(grid);
+  }
+
+  function renderMachineDetail(m) {
+    const page = document.createElement("div"); page.className = "machine-detail";
+
+    // Top bar
+    const topbar = document.createElement("div"); topbar.className = "wu-editor-topbar";
+    topbar.innerHTML = '<button class="wu-back-btn">\u2190 ' + (lang === "tr" ? "Geri" : "Back") + '</button>' +
+      '<div class="wu-editor-status" id="machineStatus"></div>' +
+      '<button class="wu-delete-btn">🗑</button>';
+    topbar.querySelector(".wu-back-btn").addEventListener("click", () => { openMachineId = null; render(); });
+    topbar.querySelector(".wu-delete-btn").addEventListener("click", () => deleteMachine(m.id));
+    page.appendChild(topbar);
+
+    // Machine header info
+    const info = document.createElement("div"); info.className = "machine-info-section";
+    const osIcon = (m.os || "").toLowerCase().includes("windows") ? "🪟" : (m.os || "").toLowerCase().includes("linux") ? "🐧" : "🖥";
+    info.innerHTML =
+      '<div class="machine-detail-header">' +
+        '<span class="machine-detail-icon">' + osIcon + '</span>' +
+        '<div><h1 class="machine-detail-name">' + escapeHtml(m.name) + '</h1><span class="machine-detail-ip">' + escapeHtml(m.ip || "") + '</span> <span class="machine-detail-os">' + escapeHtml(m.os || "") + '</span></div>' +
+      '</div>';
+    page.appendChild(info);
+
+    // Checklist
+    const checkSection = document.createElement("div"); checkSection.className = "machine-section";
+    checkSection.innerHTML = '<h3>Checklist</h3>';
+    const checkList = document.createElement("div"); checkList.className = "machine-checklist";
+    (m.checklist || []).forEach((item, idx) => {
+      const row = document.createElement("label"); row.className = "checklist-item" + (item.done ? " done" : "");
+      row.innerHTML = '<input type="checkbox"' + (item.done ? " checked" : "") + '><span>' + escapeHtml(item.label) + '</span>';
+      row.querySelector("input").addEventListener("change", e => {
+        m.checklist[idx].done = e.target.checked;
+        saveMachine(m.id, { checklist: m.checklist });
+        row.classList.toggle("done", e.target.checked);
+        showMachineStatus();
+      });
+      checkList.appendChild(row);
+    });
+    checkSection.appendChild(checkList);
+    page.appendChild(checkSection);
+
+    // Services
+    const svcSection = document.createElement("div"); svcSection.className = "machine-section";
+    svcSection.innerHTML = '<h3>' + t("services") + '</h3>';
+    const svcArea = document.createElement("textarea"); svcArea.className = "machine-textarea";
+    svcArea.placeholder = "22/tcp  SSH  OpenSSH 7.9\n80/tcp  HTTP Apache 2.4\n445/tcp SMB  Samba 4.9";
+    svcArea.value = (m.services || []).join("\n");
+    svcArea.addEventListener("input", () => { saveMachine(m.id, { services: svcArea.value.split("\n").filter(Boolean) }); showMachineStatus(); });
+    svcSection.appendChild(svcArea); page.appendChild(svcSection);
+
+    // Credentials
+    const credSection = document.createElement("div"); credSection.className = "machine-section";
+    credSection.innerHTML = '<h3>' + t("credentials") + '</h3>';
+    const credArea = document.createElement("textarea"); credArea.className = "machine-textarea";
+    credArea.placeholder = "admin:password123\nroot:toor\nuser:hash:abc123...";
+    credArea.value = (m.credentials || []).join("\n");
+    credArea.addEventListener("input", () => { saveMachine(m.id, { credentials: credArea.value.split("\n").filter(Boolean) }); showMachineStatus(); });
+    credSection.appendChild(credArea); page.appendChild(credSection);
+
+    // Notes
+    const noteSection = document.createElement("div"); noteSection.className = "machine-section";
+    noteSection.innerHTML = '<h3>' + t("notes") + '</h3>';
+    const noteArea = document.createElement("textarea"); noteArea.className = "machine-textarea machine-notes-area";
+    noteArea.placeholder = lang === "tr" ? "Makine notlari..." : "Machine notes...";
+    noteArea.value = m.notes || "";
+    noteArea.addEventListener("input", () => { saveMachine(m.id, { notes: noteArea.value }); showMachineStatus(); });
+    noteSection.appendChild(noteArea); page.appendChild(noteSection);
+
+    contentArea.appendChild(page);
+
+    function showMachineStatus() {
+      const st = document.getElementById("machineStatus");
+      if (st) { st.textContent = "saving..."; clearTimeout(st._t); st._t = setTimeout(() => st.textContent = "\u2713 saved", 600); }
+    }
+  }
+
   // ── Import/Export ──
   $("exportBtn").addEventListener("click", () => {
     const a = document.createElement("a");
@@ -507,12 +703,15 @@
     mkNavItem("⭐", t("favorites"), favCount, activeCategory === "favs", () => { activeCategory = "favs"; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); });
     // Write-ups
     mkNavItem("📝", "Write-ups", writeups.length, activeCategory === "writeups", () => { activeCategory = "writeups"; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); });
+    // Machines
+    mkNavItem("🖥", t("machines"), machines.length, activeCategory === "machines", () => { activeCategory = "machines"; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); });
     // Categories
     CATEGORIES.forEach((cat, idx) => {
       let cnt = 0; cat.subcategories.forEach(s => (cnt += s.commands.length));
       const nc = getNotesCount(cat.id);
       const label = cnt + (nc > 0 ? " + " + nc + "📝" : "");
-      const item = mkNavItem(cat.icon, cat.name, label, activeCategory === cat.id, () => { activeCategory = cat.id; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); window.scrollTo({ top: 0, behavior: "smooth" }); });
+      const catName = (lang === "tr" && cat.name_tr) ? cat.name_tr : cat.name;
+      const item = mkNavItem(cat.icon, catName, label, activeCategory === cat.id, () => { activeCategory = cat.id; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); window.scrollTo({ top: 0, behavior: "smooth" }); });
       item.draggable = true;
       item.addEventListener("dragstart", e => handleDragStart(e, idx));
       item.addEventListener("dragover", handleDragOver);
@@ -544,7 +743,8 @@
     hdr.querySelector(".edit-btn").addEventListener("click", e => { e.stopPropagation(); editCommand(catId, subIdx, cmdIdx, cmd); });
     hdr.querySelector(".delete-btn").addEventListener("click", e => { e.stopPropagation(); deleteCommand(catId, subIdx, cmdIdx); });
     card.appendChild(hdr);
-    if (cmd.desc) { const d = document.createElement("div"); d.className = "cmd-desc"; d.innerHTML = hl(cmd.desc); card.appendChild(d); }
+    const descText = (lang === "tr" && cmd.desc_tr) ? cmd.desc_tr : cmd.desc;
+    if (descText) { const d = document.createElement("div"); d.className = "cmd-desc"; d.innerHTML = hl(descText); card.appendChild(d); }
     const cmds = cmd.cmds || (cmd.cmd ? [cmd.cmd] : []);
     if (cmds.length === 1) card.appendChild(mkCode(cmds[0]));
     else if (cmds.length > 1) { const m = document.createElement("div"); m.className = "cmd-multi"; cmds.forEach(c => m.appendChild(mkCode(c))); card.appendChild(m); }
@@ -562,9 +762,10 @@
     const b = document.createElement("button"); b.className = "cmd-copy-btn"; b.textContent = t("copy");
     b.addEventListener("click", e => {
       e.stopPropagation();
-      const hasVars = /<[A-Z_]+>/.test(code);
-      if (hasVars) { openVarBar(code); return; }
-      navigator.clipboard.writeText(code).then(() => { b.textContent = t("copied"); b.classList.add("copied"); setTimeout(() => { b.textContent = t("copy"); b.classList.remove("copied"); }, 1500); });
+      const applied = applyIpToCode(code);
+      const hasVars = /<[A-Z_]+>/.test(applied);
+      if (hasVars) { openVarBar(applied); return; }
+      navigator.clipboard.writeText(applied).then(() => { b.textContent = t("copied"); b.classList.add("copied"); setTimeout(() => { b.textContent = t("copy"); b.classList.remove("copied"); }, 1500); });
     });
     w.appendChild(c); w.appendChild(b); return w;
   }
@@ -593,7 +794,8 @@
     hdr.addEventListener("drop", e => handleDrop(e, catIdx));
     hdr.addEventListener("dragend", handleDragEnd);
     hdr.innerHTML = '<span class="category-icon">' + cat.icon + '</span><span class="category-title">' + cat.name + '</span><span class="category-count">' + cnt + ' ' + t("commands") + '</span>' +
-      '<div class="category-actions"><button class="cat-action-btn" data-act="sub">' + t("addSub") + '</button><button class="cat-action-btn" data-act="edit">✎</button><button class="cat-action-btn delete-btn" data-act="del">✕</button></div><span class="category-toggle">▼</span>';
+      '<div class="category-actions"><button class="cat-action-btn" data-act="term" title="' + t("termCopy") + '">📋</button><button class="cat-action-btn" data-act="sub">' + t("addSub") + '</button><button class="cat-action-btn" data-act="edit">✎</button><button class="cat-action-btn delete-btn" data-act="del">✕</button></div><span class="category-toggle">▼</span>';
+    hdr.querySelector('[data-act="term"]').addEventListener("click", e => { e.stopPropagation(); copyTerminalFormat(cat.id); });
     hdr.querySelector('[data-act="sub"]').addEventListener("click", e => { e.stopPropagation(); addSubcategory(cat.id); });
     hdr.querySelector('[data-act="edit"]').addEventListener("click", e => { e.stopPropagation(); editCategory(cat); });
     hdr.querySelector('[data-act="del"]').addEventListener("click", e => { e.stopPropagation(); deleteCategory(cat); });
@@ -601,7 +803,8 @@
     sec.appendChild(hdr);
 
     if (!collapsed) {
-      if (cat.description) { const d = document.createElement("p"); d.className = "category-desc"; d.textContent = cat.description; sec.appendChild(d); }
+      const catDesc = (lang === "tr" && cat.description_tr) ? cat.description_tr : cat.description;
+      if (catDesc) { const d = document.createElement("p"); d.className = "category-desc"; d.textContent = catDesc; sec.appendChild(d); }
       // Notes area — multiple notes per category
       const noteArea = document.createElement("div"); noteArea.className = "category-notes";
       const notes = getNotes(cat.id);
@@ -647,7 +850,8 @@
         if (searchQuery && filtered.length === 0) return;
         const subDiv = document.createElement("div"); subDiv.className = "subcategory";
         const subH = document.createElement("div"); subH.className = "subcategory-title";
-        subH.innerHTML = '<span>' + sub.name + '</span><div class="sub-actions"><button class="sub-action-btn" data-act="cmd">' + t("addCmd") + '</button><button class="sub-action-btn" data-act="edit">✎</button><button class="sub-action-btn delete-btn" data-act="del">✕</button></div>';
+        const subName = (lang === "tr" && sub.name_tr) ? sub.name_tr : sub.name;
+        subH.innerHTML = '<span>' + subName + '</span><div class="sub-actions"><button class="sub-action-btn" data-act="cmd">' + t("addCmd") + '</button><button class="sub-action-btn" data-act="edit">✎</button><button class="sub-action-btn delete-btn" data-act="del">✕</button></div>';
         subH.querySelector('[data-act="cmd"]').addEventListener("click", () => addCommand(cat.id, subIdx));
         subH.querySelector('[data-act="edit"]').addEventListener("click", () => editSubcategory(cat.id, subIdx, sub));
         subH.querySelector('[data-act="del"]').addEventListener("click", () => deleteSubcategory(cat.id, subIdx));
@@ -672,10 +876,12 @@
   function catHasResults(cat) { return cat.subcategories.some(s => filterCmds(s.commands).length > 0); }
 
   function render() {
-    buildSidebar(); contentArea.innerHTML = "";
+    buildSidebar(); contentArea.innerHTML = ""; focusedCmdIdx = -1;
 
     // Write-ups view
     if (activeCategory === "writeups") { renderWriteupsPage(); return; }
+    // Machines view
+    if (activeCategory === "machines") { renderMachinesPage(); return; }
 
     // Favorites view
     if (activeCategory === "favs") {
@@ -690,7 +896,7 @@
     }
 
     let cats = CATEGORIES;
-    if (activeCategory) { cats = CATEGORIES.filter(c => c.id === activeCategory); currentSection.textContent = cats.length ? cats[0].name : t("allCommands"); hero.style.display = "none"; }
+    if (activeCategory) { cats = CATEGORIES.filter(c => c.id === activeCategory); currentSection.textContent = cats.length ? ((lang === "tr" && cats[0].name_tr) ? cats[0].name_tr : cats[0].name) : t("allCommands"); hero.style.display = "none"; }
     else { currentSection.textContent = searchQuery ? t("searchResults") + ': "' + searchQuery + '"' : t("allCommands"); hero.style.display = searchQuery ? "none" : ""; }
 
     if (searchQuery) {
@@ -703,11 +909,125 @@
     cats.forEach((c, i) => { if (searchQuery && !catHasResults(c)) return; contentArea.appendChild(renderCat(c, CATEGORIES.indexOf(c))); });
   }
 
+  // ── PDF/Markdown Export for Write-ups ──
+  function exportWriteupMd(wu) {
+    let md = "# " + wu.title + "\n\n";
+    md += "**Tags:** " + (wu.tags || []).join(", ") + "\n";
+    md += "**Date:** " + new Date(wu.updatedAt).toLocaleString() + "\n\n---\n\n";
+    md += wu.content || "";
+    const blob = new Blob([md], { type: "text/markdown" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = (wu.title || "writeup").replace(/[^a-z0-9]/gi, "_") + ".md";
+    a.click(); URL.revokeObjectURL(a.href);
+  }
+  function exportWriteupPdf(wu) {
+    const win = window.open("", "_blank");
+    let html = "<!DOCTYPE html><html><head><meta charset='utf-8'><title>" + escapeHtml(wu.title) + "</title>";
+    html += "<style>body{font-family:Arial,sans-serif;max-width:800px;margin:40px auto;padding:0 20px;line-height:1.6}h1{border-bottom:2px solid #333;padding-bottom:8px}pre{background:#f4f4f4;padding:12px;border-radius:4px;overflow-x:auto;font-size:13px}code{background:#f4f4f4;padding:2px 4px;border-radius:3px;font-size:13px}.meta{color:#666;font-size:13px;margin-bottom:20px}img{max-width:100%}</style></head><body>";
+    html += "<h1>" + escapeHtml(wu.title) + "</h1>";
+    html += '<div class="meta">Tags: ' + (wu.tags || []).join(", ") + " | " + new Date(wu.updatedAt).toLocaleString() + "</div><hr>";
+    // Simple markdown rendering for print
+    let content = escapeHtml(wu.content || "");
+    content = content.replace(/^(#{1,3})\s+(.*)$/gm, (m, h, t) => "<h" + (h.length + 1) + ">" + t + "</h" + (h.length + 1) + ">");
+    content = content.replace(/`([^`]+)`/g, "<code>$1</code>");
+    content = content.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    content = content.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+    content = content.replace(/\n/g, "<br>");
+    html += content + "</body></html>";
+    win.document.write(html);
+    win.document.close();
+    setTimeout(() => { win.print(); }, 500);
+  }
+
+  // ── Terminal Integration (copy all commands as terminal-friendly format) ──
+  function copyTerminalFormat(catId) {
+    const cat = CATEGORIES.find(c => c.id === catId);
+    if (!cat) return;
+    let output = "# " + cat.name + "\n";
+    cat.subcategories.forEach(sub => {
+      output += "\n## " + sub.name + "\n";
+      sub.commands.forEach(cmd => {
+        output += "\n# " + cmd.title + (cmd.desc ? " - " + cmd.desc : "") + "\n";
+        const cmds = cmd.cmds || (cmd.cmd ? [cmd.cmd] : []);
+        cmds.forEach(c => { output += applyIpToCode(c) + "\n"; });
+      });
+    });
+    navigator.clipboard.writeText(output).then(() => alert(lang === "tr" ? "Terminal formatinda kopyalandi!" : "Copied in terminal format!"));
+  }
+
   // ── Search ──
   let st; searchInput.addEventListener("input", () => { clearTimeout(st); st = setTimeout(() => { searchQuery = searchInput.value.trim(); if (searchQuery) activeCategory = null; render(); }, 200); });
+
+  // ── Keyboard Navigation ──
+  const kbdHelp = $("kbdHelp");
+  $("kbdHelpClose").addEventListener("click", () => kbdHelp.classList.remove("active"));
+  kbdHelp.addEventListener("click", e => { if (e.target === kbdHelp) kbdHelp.classList.remove("active"); });
+
+  function getFocusableCards() { return Array.from(contentArea.querySelectorAll(".cmd-card")); }
+  function moveFocus(dir) {
+    const cards = getFocusableCards(); if (cards.length === 0) return;
+    cards.forEach(c => c.classList.remove("kbd-focused"));
+    focusedCmdIdx += dir;
+    if (focusedCmdIdx < 0) focusedCmdIdx = 0;
+    if (focusedCmdIdx >= cards.length) focusedCmdIdx = cards.length - 1;
+    cards[focusedCmdIdx].classList.add("kbd-focused");
+    cards[focusedCmdIdx].scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+  function copyFocused() {
+    const cards = getFocusableCards();
+    if (focusedCmdIdx < 0 || focusedCmdIdx >= cards.length) return;
+    const codeEl = cards[focusedCmdIdx].querySelector(".cmd-code");
+    if (codeEl) {
+      const code = codeEl.textContent;
+      const applied = applyIpToCode(code);
+      if (/<[A-Z_]+>/.test(applied)) openVarBar(code);
+      else navigator.clipboard.writeText(applied).then(() => {
+        const btn = cards[focusedCmdIdx].querySelector(".cmd-copy-btn");
+        if (btn) { btn.textContent = t("copied"); btn.classList.add("copied"); setTimeout(() => { btn.textContent = t("copy"); btn.classList.remove("copied"); }, 1500); }
+      });
+    }
+  }
+
   document.addEventListener("keydown", e => {
-    if ((e.ctrlKey || e.metaKey) && e.key === "k") { e.preventDefault(); searchInput.focus(); searchInput.select(); }
-    if (e.key === "Escape") { if (varBar.classList.contains("active")) varBar.classList.remove("active"); else if (modalOverlay.classList.contains("active")) closeModal(); else if (searchQuery) { searchQuery = ""; searchInput.value = ""; render(); } closeMobile(); }
+    const active = document.activeElement;
+    const isInput = active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA" || active.isContentEditable);
+
+    // Ctrl+K — search
+    if ((e.ctrlKey || e.metaKey) && e.key === "k") { e.preventDefault(); searchInput.focus(); searchInput.select(); return; }
+    // Ctrl+I — IP changer
+    if ((e.ctrlKey || e.metaKey) && e.key === "i") { e.preventDefault(); ipBar.classList.toggle("active"); if (ipBar.classList.contains("active")) ipFields.LHOST.focus(); return; }
+    // Escape
+    if (e.key === "Escape") {
+      if (kbdHelp.classList.contains("active")) { kbdHelp.classList.remove("active"); return; }
+      if (ipBar.classList.contains("active")) { ipBar.classList.remove("active"); return; }
+      if (varBar.classList.contains("active")) { varBar.classList.remove("active"); return; }
+      if (modalOverlay.classList.contains("active")) { closeModal(); return; }
+      if (searchQuery) { searchQuery = ""; searchInput.value = ""; render(); }
+      closeMobile(); return;
+    }
+
+    // Non-input keys
+    if (isInput) return;
+
+    // ? — show keyboard shortcuts
+    if (e.key === "?") { e.preventDefault(); kbdHelp.classList.toggle("active"); return; }
+    // j/k — navigate
+    if (e.key === "j") { e.preventDefault(); moveFocus(1); return; }
+    if (e.key === "k") { e.preventDefault(); moveFocus(-1); return; }
+    // Enter — copy focused
+    if (e.key === "Enter" && focusedCmdIdx >= 0) { e.preventDefault(); copyFocused(); return; }
+    // / — focus search
+    if (e.key === "/") { e.preventDefault(); searchInput.focus(); searchInput.select(); return; }
+    // g combos
+    if (e.key === "g" && !pendingGo) { pendingGo = true; setTimeout(() => { pendingGo = false; }, 800); return; }
+    if (pendingGo) {
+      pendingGo = false;
+      if (e.key === "h") { activeCategory = null; searchQuery = ""; searchInput.value = ""; render(); return; }
+      if (e.key === "f") { activeCategory = "favs"; render(); return; }
+      if (e.key === "w") { activeCategory = "writeups"; render(); return; }
+      if (e.key === "m") { activeCategory = "machines"; render(); return; }
+    }
   });
 
   function closeMobile() { sidebar.classList.remove("open"); overlay.classList.remove("active"); }

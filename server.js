@@ -264,10 +264,64 @@ app.delete("/api/writeups/:id", (req, res) => {
   res.json({ ok: true });
 });
 
+// ── Machines (target tracking for OSCP) ──
+const MACHINES_FILE = path.join(__dirname, "data", "machines.json");
+function readMachines() {
+  if (!fs.existsSync(MACHINES_FILE)) fs.writeFileSync(MACHINES_FILE, "[]", "utf8");
+  return JSON.parse(fs.readFileSync(MACHINES_FILE, "utf8"));
+}
+function writeMachines(d) { fs.writeFileSync(MACHINES_FILE, JSON.stringify(d, null, 2), "utf8"); }
+
+app.get("/api/machines", (req, res) => res.json(readMachines()));
+app.post("/api/machines", (req, res) => {
+  const machines = readMachines();
+  const { name, ip, os } = req.body;
+  if (!name) return res.status(400).json({ error: "name required" });
+  const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const machine = {
+    id, name, ip: ip || "", os: os || "unknown",
+    services: [], credentials: [], notes: "",
+    checklist: [
+      { id: "nmap", label: "Initial Nmap Scan", done: false },
+      { id: "services", label: "Service Enumeration", done: false },
+      { id: "web", label: "Web Application Testing", done: false },
+      { id: "vuln", label: "Vulnerability Identified", done: false },
+      { id: "exploit", label: "Exploit Found", done: false },
+      { id: "foothold", label: "Initial Foothold", done: false },
+      { id: "user-flag", label: "User Flag / local.txt", done: false },
+      { id: "privesc", label: "Privilege Escalation", done: false },
+      { id: "root-flag", label: "Root Flag / proof.txt", done: false },
+      { id: "screenshots", label: "Screenshots Taken", done: false },
+      { id: "report", label: "Documentation Complete", done: false }
+    ],
+    createdAt: new Date().toISOString(), updatedAt: new Date().toISOString()
+  };
+  machines.push(machine);
+  writeMachines(machines);
+  res.status(201).json(machine);
+});
+app.put("/api/machines/:id", (req, res) => {
+  const machines = readMachines();
+  const m = machines.find(x => x.id === req.params.id);
+  if (!m) return res.status(404).json({ error: "not found" });
+  for (const key of ["name", "ip", "os", "services", "credentials", "notes", "checklist"]) {
+    if (req.body[key] !== undefined) m[key] = req.body[key];
+  }
+  m.updatedAt = new Date().toISOString();
+  writeMachines(machines);
+  res.json(m);
+});
+app.delete("/api/machines/:id", (req, res) => {
+  let machines = readMachines();
+  machines = machines.filter(x => x.id !== req.params.id);
+  writeMachines(machines);
+  res.json({ ok: true });
+});
+
 // ── Export / Import ──
 app.get("/api/export", (req, res) => {
   res.setHeader("Content-Disposition", "attachment; filename=cheatsheet-backup.json");
-  res.json({ categories: readData(), notes: readNotes(), writeups: readWriteups() });
+  res.json({ categories: readData(), notes: readNotes(), writeups: readWriteups(), machines: readMachines() });
 });
 
 app.post("/api/import", (req, res) => {
@@ -279,6 +333,7 @@ app.post("/api/import", (req, res) => {
   if (req.body.categories) writeData(req.body.categories);
   if (req.body.notes) writeNotes(req.body.notes);
   if (req.body.writeups) writeWriteups(req.body.writeups);
+  if (req.body.machines) writeMachines(req.body.machines);
   res.json({ ok: true });
 });
 

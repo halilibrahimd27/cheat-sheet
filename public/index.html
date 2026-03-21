@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>cheat-sheet — Pentest Command Handbook</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f1117">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -57,11 +59,26 @@
                 <span id="currentSection">All Commands</span>
             </div>
             <div class="top-actions">
+                <button class="btn-icon" id="ipChangerToggle" title="Quick IP Changer (Ctrl+I)">🌐</button>
                 <button class="btn-icon" id="expandAll" title="Expand all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M7 10l5 5 5-5"/></svg></button>
                 <button class="btn-icon" id="collapseAll" title="Collapse all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M7 14l5-5 5 5"/></svg></button>
                 <button class="btn-icon theme-toggle" id="themeToggle" title="Toggle theme">◐</button>
             </div>
         </header>
+        <!-- Quick IP Changer Bar -->
+        <div class="ip-changer-bar" id="ipChangerBar">
+            <div class="ip-changer-fields">
+                <div class="ip-field"><label>LHOST</label><input type="text" id="ipLhost" placeholder="10.10.14.x" autocomplete="off"></div>
+                <div class="ip-field"><label>RHOST</label><input type="text" id="ipRhost" placeholder="10.10.10.x" autocomplete="off"></div>
+                <div class="ip-field"><label>LPORT</label><input type="text" id="ipLport" placeholder="4444" autocomplete="off"></div>
+                <div class="ip-field"><label>DOMAIN</label><input type="text" id="ipDomain" placeholder="target.htb" autocomplete="off"></div>
+                <div class="ip-field"><label>USER</label><input type="text" id="ipUser" placeholder="admin" autocomplete="off"></div>
+            </div>
+            <div class="ip-changer-actions">
+                <button class="btn btn-primary btn-sm" id="ipSaveBtn">Save</button>
+                <button class="btn btn-secondary btn-sm" id="ipClearBtn">Clear</button>
+            </div>
+        </div>
         <section class="hero" id="hero">
             <h1>cheat-sheet</h1>
             <p class="hero-subtitle">Pentest Command Handbook</p>
@@ -98,6 +115,30 @@
         </div>
     </div>
 
+    <!-- Keyboard Shortcuts Help -->
+    <div class="kbd-help-overlay" id="kbdHelp">
+        <div class="kbd-help-panel">
+            <div class="kbd-help-header"><h3>Keyboard Shortcuts</h3><button class="kbd-help-close" id="kbdHelpClose">&times;</button></div>
+            <div class="kbd-help-body">
+                <div class="kbd-row"><kbd>Ctrl+K</kbd><span>Search</span></div>
+                <div class="kbd-row"><kbd>Ctrl+I</kbd><span>Quick IP Changer</span></div>
+                <div class="kbd-row"><kbd>?</kbd><span>Show shortcuts</span></div>
+                <div class="kbd-row"><kbd>j / k</kbd><span>Navigate commands</span></div>
+                <div class="kbd-row"><kbd>Enter</kbd><span>Copy focused command</span></div>
+                <div class="kbd-row"><kbd>Escape</kbd><span>Close / Clear</span></div>
+                <div class="kbd-row"><kbd>g h</kbd><span>Go Home (All Commands)</span></div>
+                <div class="kbd-row"><kbd>g f</kbd><span>Go to Favorites</span></div>
+                <div class="kbd-row"><kbd>g w</kbd><span>Go to Write-ups</span></div>
+                <div class="kbd-row"><kbd>g m</kbd><span>Go to Machines</span></div>
+            </div>
+        </div>
+    </div>
+
     <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js').catch(() => {});
+        }
+    </script>
 </body>
 </html>

@@ -1369,3 +1369,138 @@ body {
 .nav-item.dragging { opacity: 0.4; }
 .category-header[draggable="true"] { cursor: grab; }
 .category-header.dragging { opacity: 0.4; }
+
+/* ============================================
+   Quick IP Changer Bar
+   ============================================ */
+.ip-changer-bar {
+    display: none;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-primary);
+    padding: 10px 24px;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    animation: slideDown 0.2s ease;
+}
+.ip-changer-bar.active { display: flex; }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+.ip-changer-fields {
+    display: flex; gap: 8px; flex-wrap: wrap; flex: 1;
+}
+.ip-field { display: flex; align-items: center; gap: 4px; }
+.ip-field label {
+    font-size: 10px; font-weight: 600; color: var(--accent-cyan);
+    font-family: 'JetBrains Mono', monospace; text-transform: uppercase; min-width: 48px;
+}
+.ip-field input {
+    width: 130px; padding: 5px 8px; background: var(--bg-input); border: 1px solid var(--border-primary);
+    border-radius: var(--radius-sm); color: var(--text-primary); font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; transition: border-color var(--transition);
+}
+.ip-field input:focus { border-color: var(--accent-primary); outline: none; box-shadow: 0 0 0 2px var(--accent-glow); }
+.ip-changer-actions { display: flex; gap: 6px; }
+
+/* ============================================
+   Machine Tracking
+   ============================================ */
+.machine-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px; padding: 16px 0;
+}
+.machine-card {
+    background: var(--bg-card); border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md); padding: 16px; cursor: pointer;
+    transition: all var(--transition);
+}
+.machine-card:hover { border-color: var(--accent-primary); background: var(--bg-card-hover); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.machine-card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.machine-os-icon { font-size: 28px; }
+.machine-info { flex: 1; }
+.machine-name { font-weight: 600; font-size: 15px; color: var(--text-heading); }
+.machine-ip { font-size: 12px; color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace; }
+.machine-del-btn {
+    background: none; border: none; font-size: 16px; cursor: pointer;
+    opacity: 0; transition: opacity var(--transition); padding: 4px;
+}
+.machine-card:hover .machine-del-btn { opacity: 1; }
+.machine-del-btn:hover { transform: scale(1.1); }
+.machine-progress { display: flex; align-items: center; gap: 8px; }
+.machine-progress-bar { flex: 1; height: 6px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden; }
+.machine-progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-green)); border-radius: 3px; transition: width 0.3s ease; }
+.machine-progress-text { font-size: 11px; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; min-width: 70px; text-align: right; }
+
+/* Machine Detail */
+.machine-detail { max-width: 800px; }
+.machine-detail-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+.machine-detail-icon { font-size: 48px; }
+.machine-detail-name { font-size: 28px; font-weight: 700; color: var(--text-heading); }
+.machine-detail-ip { font-size: 14px; color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace; }
+.machine-detail-os { font-size: 12px; color: var(--text-tertiary); margin-left: 8px; }
+.machine-section { margin-bottom: 24px; }
+.machine-section h3 { font-size: 14px; font-weight: 600; color: var(--text-heading); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+.machine-textarea {
+    width: 100%; min-height: 80px; padding: 12px; background: var(--bg-code);
+    border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
+    color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    resize: vertical; line-height: 1.6; transition: border-color var(--transition);
+}
+.machine-textarea:focus { border-color: var(--accent-primary); outline: none; box-shadow: 0 0 0 2px var(--accent-glow); }
+.machine-notes-area { min-height: 150px; }
+.machine-checklist { display: flex; flex-direction: column; gap: 4px; }
+.checklist-item {
+    display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+    background: var(--bg-card); border: 1px solid var(--border-primary);
+    border-radius: var(--radius-sm); cursor: pointer; transition: all var(--transition);
+    font-size: 13px; color: var(--text-primary);
+}
+.checklist-item:hover { border-color: var(--accent-primary); background: var(--bg-card-hover); }
+.checklist-item.done { opacity: 0.6; }
+.checklist-item.done span { text-decoration: line-through; color: var(--text-tertiary); }
+.checklist-item input[type="checkbox"] {
+    width: 16px; height: 16px; accent-color: var(--accent-green); cursor: pointer;
+}
+
+/* ============================================
+   Keyboard Shortcuts Help
+   ============================================ */
+.kbd-help-overlay {
+    display: none; position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center;
+}
+.kbd-help-overlay.active { display: flex; }
+.kbd-help-panel {
+    background: var(--bg-secondary); border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg); padding: 0; width: 380px; max-width: 90vw;
+    box-shadow: var(--shadow-lg); overflow: hidden;
+}
+.kbd-help-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px; border-bottom: 1px solid var(--border-primary);
+}
+.kbd-help-header h3 { font-size: 15px; font-weight: 600; color: var(--text-heading); }
+.kbd-help-close {
+    background: none; border: none; color: var(--text-tertiary); font-size: 20px;
+    cursor: pointer; padding: 0 4px; line-height: 1;
+}
+.kbd-help-close:hover { color: var(--text-primary); }
+.kbd-help-body { padding: 12px 20px 20px; }
+.kbd-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 0; border-bottom: 1px solid var(--border-primary);
+}
+.kbd-row:last-child { border-bottom: none; }
+.kbd-row kbd {
+    background: var(--bg-tertiary); border: 1px solid var(--border-secondary);
+    border-radius: 4px; padding: 2px 8px; font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--text-primary); min-width: 60px; text-align: center;
+}
+.kbd-row span { font-size: 13px; color: var(--text-secondary); }
+
+/* Keyboard focused command card */
+.cmd-card.kbd-focused {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+    box-shadow: 0 0 12px var(--accent-glow);
+}
