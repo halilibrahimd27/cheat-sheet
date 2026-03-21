@@ -39,6 +39,7 @@
       confirmDelSub: "Delete this subcategory?", confirmDelCmd: "Delete this command?",
       fillVars: "Fill Placeholders", applyCopy: "Apply & Copy",
       notePlaceholder: "Write your notes here (Markdown supported)...",
+      heroSubtitle: "Pentest Command Handbook",
       heroDesc: "A comprehensive collection of penetration testing commands organized by attack phase. Built for certification preparation and ethical security assessments.",
       educational: "Educational purposes only.", useResp: "Use responsibly and ethically.",
       machines: "Machines", addMachine: "+ New Machine", noMachines: "No machines yet",
@@ -64,6 +65,7 @@
       confirmDelSub: "Bu alt kategori silinsin mi?", confirmDelCmd: "Bu komut silinsin mi?",
       fillVars: "Degiskenleri Doldur", applyCopy: "Uygula ve Kopyala",
       notePlaceholder: "Notlarinizi buraya yazin...",
+      heroSubtitle: "Sizma Testi Komut El Kitabi",
       heroDesc: "Sizma testi komutlarinin saldiri asamalarina gore duzenlenmis kapsamli bir koleksiyonu. Sertifika hazirlik ve etik guvenlik degerlendirmeleri icin.",
       educational: "Sadece egitim amaclidir.", useResp: "Sorumlu ve etik kullanin.",
       machines: "Makineler", addMachine: "+ Yeni Makine", noMachines: "Henuz makine yok",
@@ -690,6 +692,9 @@
   function buildSidebar() {
     const s = getStats();
     statsEl.textContent = s.tc + " " + t("commands") + " · " + s.cats + " " + t("categories");
+    $("heroSubtitle").textContent = t("heroSubtitle");
+    $("heroDesc").textContent = t("heroDesc");
+    $("disclaimer").innerHTML = t("educational") + "<br>" + t("useResp");
     heroStats.innerHTML =
       '<div class="hero-stat"><div class="hero-stat-num">' + s.tc + '</div><div class="hero-stat-label">' + t("commands") + '</div></div>' +
       '<div class="hero-stat"><div class="hero-stat-num">' + s.cats + '</div><div class="hero-stat-label">' + t("categories") + '</div></div>' +
