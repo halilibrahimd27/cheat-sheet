@@ -1,5 +1,5 @@
 {
-  "name": "cyberlens",
+  "name": "cheat-sheet",
   "version": "1.0.0",
   "description": "Offensive Security Command Reference — Penetration Testing Cheat Sheet",
   "main": "server.js",

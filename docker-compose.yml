@@ -1,14 +1,14 @@
 services:
-  cyberlens:
+  cheat-sheet:
     build: .
-    container_name: cyberlens
+    container_name: cheat-sheet
     ports:
       - "8899:3000"
     volumes:
-      - cyberlens-data:/app/data
+      - cheat-sheet-data:/app/data
     restart: unless-stopped
     environment:
       - PORT=3000
 
 volumes:
-  cyberlens-data:
+  cheat-sheet-data:
