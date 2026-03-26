@@ -19273,6 +19273,84 @@ module.exports = [
             "desc_tr": "Collectipass-the-hash kullanarak üzerinde"
           },
           {
+            "title": "BloodHound.py with Nameserver",
+            "desc": "Specify DNS nameserver for name resolution (critical when not using target DNS)",
+            "cmd": "bloodhound-python -u <USER> -p '<PASS>' -d <DOMAIN> -dc <DC_FQDN> -ns <DC_IP> -c All --zip",
+            "tags": [
+              "essential"
+            ],
+            "note": "-ns is critical when your /etc/resolv.conf doesn't point to the DC",
+            "desc_tr": "DNS nameserver belirt (hedef DNS kullanmıyorsan kritik)"
+          },
+          {
+            "title": "BloodHound.py Kerberos Auth",
+            "desc": "Collect using Kerberos authentication with ccache",
+            "cmd": "export KRB5CCNAME=<USER>.ccache && bloodhound-python -u <USER> -d <DOMAIN> -dc <DC_FQDN> -k -c All --zip",
+            "tags": [
+              "advanced"
+            ],
+            "desc_tr": "Kerberos ccache ile veri topla"
+          },
+          {
+            "title": "BloodHound.py DCOnly Collection",
+            "desc": "Only query DC via LDAP — stealthier, no SMB connections to workstations",
+            "cmd": "bloodhound-python -u <USER> -p '<PASS>' -d <DOMAIN> -dc <DC_IP> -c DCOnly --zip",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "Sadece DC'den LDAP ile topla — daha gizli, workstation'lara SMB bağlantısı yok"
+          },
+          {
+            "title": "BloodHound.py Specific Collection Methods",
+            "desc": "Choose specific collection methods instead of All",
+            "cmd": "bloodhound-python -u <USER> -p '<PASS>' -d <DOMAIN> -dc <DC_IP> -c Group,LocalAdmin,Session,Trusts,ACL --zip",
+            "tags": [
+              "tool"
+            ],
+            "note": "Methods: Default, Group, LocalAdmin, Session, Trusts, ACL, Container, RDP, DCOM, PSRemote, ObjectProps, DCOnly, All",
+            "desc_tr": "All yerine belirli collection method'ları seç"
+          },
+          {
+            "title": "BloodHound.py via Proxychains",
+            "desc": "Collect BloodHound data through SOCKS proxy (pivoting)",
+            "cmd": "proxychains -q bloodhound-python -u <USER> -p '<PASS>' -d <DOMAIN> -dc <DC_IP> -ns <DC_IP> -c All --zip",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "SOCKS proxy üzerinden BloodHound verisi topla (pivoting)"
+          },
+          {
+            "title": "BloodHound.py Custom Output Directory",
+            "desc": "Save output to specific directory with prefix",
+            "cmd": "bloodhound-python -u <USER> -p '<PASS>' -d <DOMAIN> -dc <DC_IP> -c All --zip -o /tmp/bloodhound/",
+            "tags": [
+              "tool"
+            ],
+            "desc_tr": "Çıktıyı belirli dizine kaydet"
+          },
+          {
+            "title": "BloodHound.py Disable Pooling",
+            "desc": "Use single connection (slower but avoids detection by EDR monitoring concurrent LDAP)",
+            "cmd": "bloodhound-python -u <USER> -p '<PASS>' -d <DOMAIN> -dc <DC_IP> -c All --zip --disable-pooling",
+            "tags": [
+              "advanced"
+            ],
+            "desc_tr": "Tek bağlantı kullan (yavaş ama EDR tespitinden kaçınır)"
+          },
+          {
+            "title": "BloodHound.py DNS Lookup Fix",
+            "desc": "When DC hostname can't resolve, add to /etc/hosts first then collect",
+            "cmds": [
+              "echo '<DC_IP> <DC_FQDN>' | sudo tee -a /etc/hosts",
+              "bloodhound-python -u <USER> -p '<PASS>' -d <DOMAIN> -dc <DC_FQDN> -ns <DC_IP> -c All --zip"
+            ],
+            "tags": [
+              "essential"
+            ],
+            "note": "bloodhound-python often fails if DC FQDN can't resolve — /etc/hosts fix is the most common solution",
+            "desc_tr": "DC hostname çözümlenemezse /etc/hosts'a ekle sonra topla"
+          },
+          {
             "title": "RustHound Collection",
             "desc": "Rust-based BloodHound collector",
             "cmd": "rusthound -d <DOMAIN> -u '<USER>@<DOMAIN>' -p '<PASS>' -i <DC_IP> -o /tmp/bh --zip",
