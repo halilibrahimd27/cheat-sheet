@@ -1,0 +1,31 @@
+name: 🔧 Correction / bug
+description: Wrong command, broken link, typo, outdated info
+title: "[Fix] "
+labels: ["bug", "documentation"]
+body:
+  - type: input
+    id: location
+    attributes:
+      label: Where? (file / category / command)
+      placeholder: "Category 14 (AD Recon) — bloodhound-python command"
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What's wrong?
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested fix (optional)
+
+  - type: checkboxes
+    id: contribute
+    attributes:
+      label: Will you fix it?
+      options:
+        - label: I'll open a PR with the fix

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussions
+    url: https://github.com/halilibrahimd27/cheat-sheet/discussions
+    about: General discussion, ideas, "how do you use this?"
+  - name: 📚 README
+    url: https://github.com/halilibrahimd27/cheat-sheet#readme
+    about: Quick start, features, placeholder convention

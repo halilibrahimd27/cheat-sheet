@@ -1,0 +1,91 @@
+name: 💡 Command suggestion
+description: Suggest a new command, technique or category
+title: "[Command] "
+labels: ["enhancement", "command"]
+body:
+  - type: dropdown
+    id: category
+    attributes:
+      label: Which category does it belong to?
+      options:
+        - "1. Target Profiling & Network Mapping"
+        - "2. Weakness Identification & Scanning"
+        - "3. Web Attack Techniques"
+        - "4. Database Exploitation via Injection"
+        - "5. Browser-Side Exploitation"
+        - "6. Payload Engineering & Delivery"
+        - "7. Shells, Listeners & Stabilization"
+        - "8. Windows Privilege Escalation"
+        - "9. Linux Privilege Escalation"
+        - "10. Credential Attacks & Hash Cracking"
+        - "11. Defense Evasion & AV Bypass"
+        - "12. Network Pivoting & Traffic Routing"
+        - "13. Metasploit Operations"
+        - "14. Active Directory Reconnaissance"
+        - "15. Active Directory Exploitation"
+        - "16. Lateral Movement Techniques"
+        - "17. AWS Cloud Security Testing"
+        - "18. File Transfer Arsenal"
+        - "19. Protocol Tunneling & Firewall Evasion"
+        - "20. Social Engineering & Phishing"
+        - "21. Exploit Research & Development"
+        - "22. Engagement Methodology & Playbook"
+        - "23. Container & Infrastructure Testing"
+        - "24. NetExec / CrackMapExec"
+        - "25. BloodHound & SharpHound"
+        - "26. ADCS — Certificate Services Attacks"
+        - "27. Network Service Exploitation"
+        - "28. PowerShell for Pentesters"
+        - "29. Impacket Toolsuite"
+        - "30. Mimikatz Commands"
+        - "31. Windows Post-Exploitation"
+        - "32. Linux Post-Exploitation"
+        - "33. Wireless Security Testing"
+        - "Other / new category"
+    validations:
+      required: true
+
+  - type: textarea
+    id: command
+    attributes:
+      label: The command (use placeholders!)
+      description: Use `<TARGET_IP>`, `<DOMAIN>`, etc. — never real values
+      render: shell
+      placeholder: |
+        nmap -sC -sV -p- <TARGET_IP> -oA scan
+    validations:
+      required: true
+
+  - type: textarea
+    id: explanation
+    attributes:
+      label: What does it do?
+      placeholder: "Service version detection with default scripts on all ports"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: tags
+    attributes:
+      label: Tags
+      multiple: true
+      options:
+        - essential
+        - tool
+        - advanced
+        - oscp
+        - oswe
+        - osep
+        - ad
+        - cloud
+        - mobile
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: This command uses placeholders (no real IPs/credentials)
+          required: true
+        - label: This command is for authorized security testing / education
+          required: true

@@ -1,0 +1,54 @@
+name: 🐛 App bug report
+description: Bug in the application (search, CRUD, theme, import/export)
+title: "[Bug] "
+labels: ["bug", "app"]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Version / commit
+      placeholder: "main @ commit abc1234"
+
+  - type: dropdown
+    id: install
+    attributes:
+      label: How did you install?
+      options:
+        - "Docker"
+        - "npm start"
+        - "Other"
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Click search button
+        2. Type "nmap"
+        3. Press enter
+        4. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: What actually happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      placeholder: |
+        - OS: Ubuntu 22.04
+        - Browser: Firefox 130
+        - Docker version: 24.0

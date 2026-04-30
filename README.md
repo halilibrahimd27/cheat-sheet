@@ -1,11 +1,21 @@
-# cheat-sheet
+<div align="center">
 
-**Offensive Security Command Reference** — A comprehensive, interactive cheat sheet for penetration testing and security certification exams (OSCP+, OSWE, OSEP, OSDA, OSWA, PNPT, CPTS etc.).
+# 🛡️ Offensive Security Cheat Sheet
 
-![License](https://img.shields.io/badge/license-MIT-blue)
-![Docker](https://img.shields.io/badge/docker-ready-2496ED)
-![Commands](https://img.shields.io/badge/commands-2000%2B-green)
-![Categories](https://img.shields.io/badge/categories-33-orange)
+### *Interactive command reference for penetration testing & certification prep*
+
+OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS
+
+[![GitHub Stars](https://img.shields.io/github/stars/halilibrahimd27/cheat-sheet?style=flat-square&color=yellow&logo=github)](https://github.com/halilibrahimd27/cheat-sheet/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/halilibrahimd27/cheat-sheet?style=flat-square&color=blue&logo=github)](https://github.com/halilibrahimd27/cheat-sheet/network/members)
+[![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
+[![Docker](https://img.shields.io/badge/docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)](#docker-recommended)
+[![Commands](https://img.shields.io/badge/commands-2000%2B-success?style=flat-square)](#categories)
+[![Categories](https://img.shields.io/badge/categories-33-orange?style=flat-square)](#categories)
+
+> **⭐ If this saved you time, please leave a star.** It's the simplest way to support this work.
+
+</div>
 
 ---
 
@@ -188,6 +198,30 @@ Contributions are welcome! If you want to add commands, fix errors, or improve t
 ## License
 
 MIT License — Feel free to use, modify, and distribute. See [LICENSE](LICENSE) for full text.
+
+---
+
+<div align="center">
+
+## 🌟 Support this project
+
+| Time | How you can help |
+|---|---|
+| **5 seconds** | Click the **⭐ Star** button at the top |
+| **30 seconds** | Share on Twitter / LinkedIn / your Discord |
+| **5 minutes** | Open an [issue](../../issues/new/choose) for a missing command |
+| **30 minutes** | Submit a PR with new commands or fixes |
+| **2 hours** | Add a whole new category |
+
+**Star history:**
+
+[![Star History Chart](https://api.star-history.com/svg?repos=halilibrahimd27/cheat-sheet&type=Date)](https://star-history.com/#halilibrahimd27/cheat-sheet&Date)
+
+</div>
+
+---
+
+## Screenshots
 
 ![alt text](image.png)
 ![alt text](image-1.png)
