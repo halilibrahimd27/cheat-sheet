@@ -80,7 +80,7 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS
 ### Docker (Recommended)
 
 ```bash
-git clone [https://github.com/<your-username>/cheat-sheet.git](https://github.com/halilibrahimd27/cheat-sheet.git)
+git clone [[https://github.com/<your-username>/cheat-sheet.git](https://github.com/halilibrahimd27/cheat-sheet.git)](https://github.com/halilibrahimd27/cheat-sheet.git)
 cd cheat-sheet
 docker compose up -d
 ```
@@ -92,7 +92,7 @@ Open **http://localhost:8899** in your browser.
 ### Without Docker
 
 ```bash
-git clone [https://github.com/<your-username>/cheat-sheet.gi](https://github.com/halilibrahimd27/cheat-sheet.git)
+git clone [[https://github.com/<your-username>/cheat-sheet.gi](https://github.com/halilibrahimd27/cheat-sheet.git)](https://github.com/halilibrahimd27/cheat-sheet.git)
 cd cheat-sheet
 npm install
 npm start
