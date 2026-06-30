@@ -162,7 +162,7 @@
       "id": "secrets-mgmt",
       "name": "Secrets Management",
       "icon": "🗝️",
-      "status": "pending",
+      "status": "done",
       "description": "Managing and protecting secrets: HashiCorp Vault, SOPS, sealed-secrets, cloud secret managers, and secret detection.",
       "subcategories": [
         "HashiCorp Vault (kv, auth, policies, dynamic secrets, transit)",
@@ -170,7 +170,8 @@
         "Kubernetes Secrets (sealed-secrets, external-secrets)",
         "Cloud Secret Managers (AWS/GCP/Azure)",
         "Secret Detection & Remediation"
-      ]
+      ],
+      "commands_added": 139
     },
     {
       "id": "cloud-native-runtime",

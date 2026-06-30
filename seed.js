@@ -41743,5 +41743,1478 @@ module.exports = [
         ]
       }
     ]
+  },
+  {
+    "id": "secrets-mgmt",
+    "name": "Secrets Management",
+    "name_tr": "Gizli Bilgi (Secrets) Yönetimi",
+    "icon": "🗝️",
+    "description": "Managing and protecting secrets: HashiCorp Vault, SOPS, sealed-secrets, cloud secret managers, and secret detection.",
+    "description_tr": "Gizli bilgileri yönetme ve koruma: HashiCorp Vault, SOPS, sealed-secrets, bulut secret managerları ve secret tespiti.",
+    "subcategories": [
+      {
+        "name": "HashiCorp Vault (kv, auth, policies, dynamic secrets, transit)",
+        "commands": [
+          {
+            "title": "Set Vault address & token env vars",
+            "desc": "Configure CLI to talk to a Vault server",
+            "desc_tr": "CLI'nin Vault sunucusuyla konusmasi icin ortam degiskenlerini ayarla",
+            "cmd": "export VAULT_ADDR='https://<TARGET_IP>:8200' && export VAULT_TOKEN='<TOKEN>'",
+            "tags": [
+              "essential"
+            ],
+            "note": "Use VAULT_SKIP_VERIFY=true only for self-signed certs in testing, never in production."
+          },
+          {
+            "title": "Check Vault server status / seal state",
+            "desc": "Show seal status, version and HA mode",
+            "desc_tr": "Muhur durumunu, surumu ve HA modunu goster",
+            "cmd": "vault status",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Initialize a new Vault",
+            "desc": "Generate unseal keys and initial root token",
+            "desc_tr": "Muhur acma anahtarlarini ve ilk root token'i uret",
+            "cmd": "vault operator init -key-shares=5 -key-threshold=3",
+            "tags": [
+              "essential"
+            ],
+            "note": "Store the unseal keys and root token securely; this output is shown only once."
+          },
+          {
+            "title": "Unseal Vault",
+            "desc": "Provide an unseal key share to unseal the server",
+            "desc_tr": "Sunucuyu muhuru acmak icin bir anahtar parcasi gir",
+            "cmd": "vault operator unseal <UNSEAL_KEY>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Repeat with different key shares until the threshold is reached."
+          },
+          {
+            "title": "Login with a token",
+            "desc": "Authenticate the CLI session using a token",
+            "desc_tr": "Token kullanarak CLI oturumunda kimlik dogrula",
+            "cmd": "vault login <TOKEN>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Enable KV v2 secrets engine",
+            "desc": "Mount a versioned key/value engine at a path",
+            "desc_tr": "Bir yola surumlu anahtar/deger motoru bagla",
+            "cmd": "vault secrets enable -path=<PATH> -version=2 kv",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Write a KV v2 secret",
+            "desc": "Store key/value pairs in a KV v2 path",
+            "desc_tr": "KV v2 yoluna anahtar/deger ciftleri yaz",
+            "cmd": "vault kv put <PATH>/<NAME> username=<USER> password=<PASSWORD>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Read a KV v2 secret",
+            "desc": "Retrieve the latest version of a secret",
+            "desc_tr": "Bir secret'in en son surumunu getir",
+            "cmd": "vault kv get <PATH>/<NAME>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Read a single field from a secret",
+            "desc": "Output one field, ideal for scripting",
+            "desc_tr": "Tek bir alani cikar, scriptler icin ideal",
+            "cmd": "vault kv get -field=password <PATH>/<NAME>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Patch a secret without overwriting",
+            "desc": "Update specific keys, keeping the rest",
+            "desc_tr": "Belirli anahtarlari guncelle, gerisini koru",
+            "cmd": "vault kv patch <PATH>/<NAME> password=<NEW_PASSWORD>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List secrets at a path",
+            "desc": "Enumerate keys under a KV path",
+            "desc_tr": "Bir KV yolu altindaki anahtarlari listele",
+            "cmd": "vault kv list <PATH>/",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Read a specific secret version",
+            "desc": "Fetch a historical version of a KV v2 secret",
+            "desc_tr": "KV v2 secret'inin gecmis bir surumunu getir",
+            "cmd": "vault kv get -version=2 <PATH>/<NAME>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Soft-delete and undelete a secret version",
+            "desc": "Mark a version deleted, then restore it",
+            "desc_tr": "Bir surumu silinmis isaretle, sonra geri yukle",
+            "cmds": [
+              "vault kv delete -versions=2 <PATH>/<NAME>",
+              "vault kv undelete -versions=2 <PATH>/<NAME>"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Permanently destroy a secret version",
+            "desc": "Irreversibly remove a specific version's data",
+            "desc_tr": "Belirli bir surumun verisini geri donulmez sekilde sil",
+            "cmd": "vault kv destroy -versions=2 <PATH>/<NAME>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Write a policy from an HCL file",
+            "desc": "Create/update an ACL policy defining path permissions",
+            "desc_tr": "Yol izinlerini tanimlayan ACL politikasi olustur/guncelle",
+            "cmd": "vault policy write <NAME> <FILE>.hcl",
+            "tags": [
+              "essential"
+            ],
+            "note": "KV v2 data lives under <mount>/data/<path>, so policies must target that prefix."
+          },
+          {
+            "title": "List and read policies",
+            "desc": "Show all policies and the rules of one",
+            "desc_tr": "Tum politikalari ve birinin kurallarini goster",
+            "cmds": [
+              "vault policy list",
+              "vault policy read <NAME>"
+            ],
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Enable AppRole auth method",
+            "desc": "Turn on AppRole for machine-to-machine auth",
+            "desc_tr": "Makineden makineye kimlik dogrulama icin AppRole'u ac",
+            "cmd": "vault auth enable approle",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Create an AppRole and bind a policy",
+            "desc": "Define a role with TTLs and attached policies",
+            "desc_tr": "TTL'ler ve bagli politikalarla bir rol tanimla",
+            "cmd": "vault write auth/approle/role/<NAME> token_policies=\"<POLICY>\" token_ttl=1h token_max_ttl=4h",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Fetch AppRole RoleID and SecretID",
+            "desc": "Retrieve credentials apps use to login",
+            "desc_tr": "Uygulamalarin giris icin kullandigi kimlik bilgilerini al",
+            "cmds": [
+              "vault read auth/approle/role/<NAME>/role-id",
+              "vault write -f auth/approle/role/<NAME>/secret-id"
+            ],
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Login via AppRole",
+            "desc": "Authenticate using RoleID and SecretID",
+            "desc_tr": "RoleID ve SecretID ile kimlik dogrula",
+            "cmd": "vault write auth/approle/login role_id=<ROLE_ID> secret_id=<SECRET_ID>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Enable userpass and create a user",
+            "desc": "Simple username/password auth backend",
+            "desc_tr": "Basit kullanici adi/parola kimlik dogrulama arka ucu",
+            "cmds": [
+              "vault auth enable userpass",
+              "vault write auth/userpass/users/<USER> password=<PASSWORD> policies=<POLICY>"
+            ],
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Enable database engine & configure connection",
+            "desc": "Set up dynamic database credential generation",
+            "desc_tr": "Dinamik veritabani kimlik bilgisi uretimini kur",
+            "cmd": "vault secrets enable database && vault write database/config/<NAME> plugin_name=postgresql-database-plugin allowed_roles=\"<ROLE>\" connection_url=\"postgresql://{{username}}:{{password}}@<TARGET_IP>:5432/<DB>?sslmode=disable\" username=<USER> password=<PASSWORD>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Use the {{username}}/{{password}} templating so Vault can rotate the root credential."
+          },
+          {
+            "title": "Create a dynamic DB role",
+            "desc": "Define SQL creation statements and credential TTLs",
+            "desc_tr": "SQL olusturma ifadelerini ve kimlik bilgisi TTL'lerini tanimla",
+            "cmd": "vault write database/roles/<ROLE> db_name=<NAME> creation_statements=\"CREATE ROLE \\\"{{name}}\\\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}'; GRANT SELECT ON ALL TABLES IN SCHEMA public TO \\\"{{name}}\\\";\" default_ttl=1h max_ttl=24h",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Generate dynamic database credentials",
+            "desc": "Get short-lived, on-demand DB credentials",
+            "desc_tr": "Kisa omurlu, talep uzerine DB kimlik bilgileri al",
+            "cmd": "vault read database/creds/<ROLE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Enable Transit engine & create a key",
+            "desc": "Set up encryption-as-a-service with a named key",
+            "desc_tr": "Adlandirilmis anahtarla hizmet-olarak-sifreleme kur",
+            "cmds": [
+              "vault secrets enable transit",
+              "vault write -f transit/keys/<NAME>"
+            ],
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Encrypt data with Transit",
+            "desc": "Encrypt base64 plaintext without exposing the key",
+            "desc_tr": "Anahtari acmadan base64 duz metni sifrele",
+            "cmd": "vault write transit/encrypt/<NAME> plaintext=$(echo -n '<SECRET>' | base64)",
+            "tags": [
+              "tool"
+            ],
+            "note": "Transit never stores the data; it only returns ciphertext, so persist the output yourself."
+          },
+          {
+            "title": "Decrypt Transit ciphertext",
+            "desc": "Recover plaintext from a vault:v1: ciphertext",
+            "desc_tr": "vault:v1: sifreli metinden duz metni geri al",
+            "cmd": "vault write transit/decrypt/<NAME> ciphertext='<CIPHERTEXT>' | grep plaintext",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Rotate a Transit key and rewrap data",
+            "desc": "Roll the key version and re-encrypt to it",
+            "desc_tr": "Anahtar surumunu dondur ve veriyi yeni surumle yeniden sifrele",
+            "cmds": [
+              "vault write -f transit/keys/<NAME>/rotate",
+              "vault write transit/rewrap/<NAME> ciphertext='<CIPHERTEXT>'"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Create a token with policies and TTL",
+            "desc": "Mint a child token scoped to specific policies",
+            "desc_tr": "Belirli politikalarla sinirli bir alt token uret",
+            "cmd": "vault token create -policy=<POLICY> -ttl=1h",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Lease renew and revoke",
+            "desc": "Manage the lifecycle of a dynamic secret lease",
+            "desc_tr": "Dinamik bir secret kiralamasinin yasam dongusunu yonet",
+            "cmds": [
+              "vault lease renew <LEASE_ID>",
+              "vault lease revoke <LEASE_ID>"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "SOPS & age",
+        "commands": [
+          {
+            "title": "Install age & age-keygen (Linux)",
+            "desc": "Install age encryption tool via package manager",
+            "desc_tr": "age sifreleme aracini paket yoneticisiyle kur",
+            "cmd": "sudo apt-get update && sudo apt-get install -y age",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Install SOPS from GitHub release",
+            "desc": "Download and install the SOPS binary",
+            "desc_tr": "SOPS ikili dosyasini indirip kur",
+            "cmd": "curl -LO https://github.com/getsops/sops/releases/latest/download/sops-v3.10.2.linux.amd64 && sudo install -m 0755 sops-v3.10.2.linux.amd64 /usr/local/bin/sops",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "getsops/sops is the active fork; old mozilla/sops repo is deprecated."
+          },
+          {
+            "title": "Generate an age key pair",
+            "desc": "Create a new age identity (private + public key)",
+            "desc_tr": "Yeni bir age kimligi (ozel + acik anahtar) olustur",
+            "cmd": "age-keygen -o key.txt",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "The public key (age1...) is printed to stderr; keep key.txt secret."
+          },
+          {
+            "title": "Derive public key from existing private key",
+            "desc": "Print the age public key from an identity file",
+            "desc_tr": "Mevcut ozel anahtar dosyasindan age acik anahtarini yazdir",
+            "cmd": "age-keygen -y key.txt",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Encrypt a file to an age recipient",
+            "desc": "Encrypt a file directly with age using a public key",
+            "desc_tr": "Bir dosyayi age acik anahtariyla dogrudan sifrele",
+            "cmd": "age -r age1ql3z7hjy54pw3hyww5ayyfg7zqgvc7w3j2elw8zmrj2kg5sfn9aqmcac8p -o <FILE>.age <FILE>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Decrypt an age file with an identity",
+            "desc": "Decrypt an age-encrypted file using a private key",
+            "desc_tr": "age ile sifrelenmis dosyayi ozel anahtarla coz",
+            "cmd": "age -d -i key.txt -o <FILE> <FILE>.age",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Encrypt with a passphrase (no keys)",
+            "desc": "Symmetric age encryption protected by a passphrase",
+            "desc_tr": "Parola ile korunan simetrik age sifrelemesi",
+            "cmd": "age -p -o <FILE>.age <FILE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Set SOPS_AGE_KEY_FILE for decryption",
+            "desc": "Point SOPS to the age identity file via env var",
+            "desc_tr": "SOPS'u ortam degiskeniyle age kimlik dosyasina yonlendir",
+            "cmd": "export SOPS_AGE_KEY_FILE=$HOME/.config/sops/age/keys.txt",
+            "tags": [
+              "essential"
+            ],
+            "note": "SOPS auto-reads $XDG_CONFIG_HOME/sops/age/keys.txt by default."
+          },
+          {
+            "title": "Encrypt a file in place with age via SOPS",
+            "desc": "Encrypt a YAML/JSON file using an age recipient",
+            "desc_tr": "Bir YAML/JSON dosyasini age alicisiyla SOPS uzerinden sifrele",
+            "cmd": "sops --encrypt --age age1ql3z7hjy54pw3hyww5ayyfg7zqgvc7w3j2elw8zmrj2kg5sfn9aqmcac8p --in-place <FILE>.yaml",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Decrypt a SOPS file to stdout",
+            "desc": "Decrypt and print a SOPS-encrypted file",
+            "desc_tr": "SOPS ile sifrelenmis dosyayi cozup ekrana yazdir",
+            "cmd": "sops --decrypt <FILE>.yaml",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Edit an encrypted file interactively",
+            "desc": "Open a SOPS file decrypted in your editor, re-encrypt on save",
+            "desc_tr": "SOPS dosyasini editorde cozulmus ac, kaydedince yeniden sifrele",
+            "cmd": "sops <FILE>.yaml",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Uses $EDITOR; only changed values are re-encrypted (clean diffs)."
+          },
+          {
+            "title": "Create .sops.yaml creation rules",
+            "desc": "Define per-path encryption rules and recipients",
+            "desc_tr": "Yol bazli sifreleme kurallarini ve alicilari tanimla",
+            "cmds": [
+              "cat > .sops.yaml <<'EOF'",
+              "creation_rules:",
+              "  - path_regex: secrets/.*\\.yaml$",
+              "    age: age1ql3z7hjy54pw3hyww5ayyfg7zqgvc7w3j2elw8zmrj2kg5sfn9aqmcac8p",
+              "EOF"
+            ],
+            "tags": [
+              "essential",
+              "advanced"
+            ],
+            "note": "With .sops.yaml present you can run 'sops -e -i file' without --age."
+          },
+          {
+            "title": "Encrypt using .sops.yaml rules",
+            "desc": "Encrypt relying on creation_rules instead of flags",
+            "desc_tr": "Bayrak yerine creation_rules'a dayanarak sifrele",
+            "cmd": "sops --encrypt --in-place secrets/<FILE>.yaml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Encrypt only specific keys with encrypted_regex",
+            "desc": "Encrypt only values whose keys match a regex",
+            "desc_tr": "Yalnizca anahtari regex ile eslesen degerleri sifrele",
+            "cmd": "sops --encrypt --age <AGE_PUBKEY> --encrypted-regex '^(data|password|token)$' --in-place <FILE>.yaml",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Encrypt all keys except some (unencrypted_regex)",
+            "desc": "Leave matching keys in plaintext, encrypt the rest",
+            "desc_tr": "Eslesen anahtarlari duz birak, gerisini sifrele",
+            "cmd": "sops --encrypt --age <AGE_PUBKEY> --unencrypted-regex '^(apiVersion|kind|metadata)$' --in-place <FILE>.yaml",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Rotate the data key",
+            "desc": "Generate a fresh data key and re-encrypt the file",
+            "desc_tr": "Yeni bir veri anahtari uretip dosyayi yeniden sifrele",
+            "cmd": "sops --rotate --in-place <FILE>.yaml",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Run after revoking a recipient to invalidate the old data key."
+          },
+          {
+            "title": "Add a new age recipient to an existing file",
+            "desc": "Grant another age key access without full re-encrypt",
+            "desc_tr": "Baska bir age anahtarina tam yeniden sifrelemeden erisim ver",
+            "cmd": "sops --rotate --add-age <NEW_AGE_PUBKEY> --in-place <FILE>.yaml",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Remove an age recipient from a file",
+            "desc": "Revoke an age key's access to the secret",
+            "desc_tr": "Bir age anahtarinin gizli veriye erisimini kaldir",
+            "cmd": "sops --rotate --rm-age <AGE_PUBKEY> --in-place <FILE>.yaml",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Always pair --rm-age with rotation so the removed key cannot decrypt anew."
+          },
+          {
+            "title": "Update recipients to match .sops.yaml",
+            "desc": "Sync a file's keys with current creation_rules",
+            "desc_tr": "Bir dosyanin anahtarlarini guncel creation_rules ile esitle",
+            "cmd": "sops updatekeys <FILE>.yaml",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Use after editing .sops.yaml to add/remove team members in bulk."
+          },
+          {
+            "title": "Extract a single value with --extract",
+            "desc": "Decrypt and output one nested key only",
+            "desc_tr": "Cozup yalnizca tek bir ic ice anahtari ciktila",
+            "cmd": "sops --decrypt --extract '[\"data\"][\"password\"]' <FILE>.yaml",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Set a value without opening an editor",
+            "desc": "Update an encrypted key/value programmatically",
+            "desc_tr": "Sifreli bir anahtar/degeri editor acmadan guncelle",
+            "cmd": "sops set <FILE>.yaml '[\"data\"][\"password\"]' '\"s3cr3t\"'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run a command with secrets as env vars",
+            "desc": "Inject decrypted dotenv secrets into a process",
+            "desc_tr": "Cozulen dotenv gizli verilerini bir surece enjekte et",
+            "cmd": "sops exec-env <FILE>.env 'printenv && ./run.sh'",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "exec-env keeps secrets in memory only; nothing is written to disk."
+          },
+          {
+            "title": "Provide secrets as a temp file to a command",
+            "desc": "Decrypt into a temporary file passed to a command",
+            "desc_tr": "Bir komuta verilen gecici dosyaya cozerek aktar",
+            "cmd": "sops exec-file <FILE>.yaml 'myapp --config {}'",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Encrypt with multiple KMS + age backends",
+            "desc": "Protect a file with both AWS KMS and an age key",
+            "desc_tr": "Bir dosyayi hem AWS KMS hem age anahtariyla koru",
+            "cmd": "sops --encrypt --kms arn:aws:kms:<REGION>:<ACCOUNT>:key/<KEY_ID> --age <AGE_PUBKEY> --in-place <FILE>.yaml",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Any one configured key can decrypt; useful for CI + human fallback."
+          },
+          {
+            "title": "Encrypt to SSH recipients with age",
+            "desc": "Use SSH public keys as age recipients",
+            "desc_tr": "SSH acik anahtarlarini age alicisi olarak kullan",
+            "cmd": "age -R ~/.ssh/id_ed25519.pub -o <FILE>.age <FILE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Decrypt with: age -d -i ~/.ssh/id_ed25519 <FILE>.age (ed25519/RSA keys)."
+          },
+          {
+            "title": "Encrypt to a recipients list file (-R)",
+            "desc": "Encrypt to a list of recipients stored in a file",
+            "desc_tr": "Bir dosyada saklanan alicilar listesine sifrele",
+            "cmd": "age -R recipients.txt -o <FILE>.age <FILE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Verify a file is SOPS-encrypted in CI",
+            "desc": "Check that committed secrets contain a SOPS metadata block",
+            "desc_tr": "Commit edilen gizli verilerin SOPS metadata blogu icerdigini dogrula",
+            "cmd": "grep -q 'sops:' <FILE>.yaml && echo encrypted || (echo PLAINTEXT && exit 1)",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Add as a pre-commit hook to block accidental plaintext secret commits."
+          }
+        ]
+      },
+      {
+        "name": "Kubernetes Secrets (sealed-secrets, external-secrets)",
+        "commands": [
+          {
+            "title": "Create Generic Secret from Literals",
+            "desc": "Create a Kubernetes Secret directly from literal key-value pairs",
+            "desc_tr": "Düz anahtar-değer çiftlerinden doğrudan bir Kubernetes Secret oluştur",
+            "cmd": "kubectl create secret generic <SECRET> --from-literal=username=admin --from-literal=password=<PASS> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Generate Secret Manifest Without Applying",
+            "desc": "Render a Secret YAML using dry-run for GitOps review",
+            "desc_tr": "GitOps incelemesi için dry-run ile bir Secret YAML'ı uygulamadan üret",
+            "cmd": "kubectl create secret generic <SECRET> --from-file=<FILE> --dry-run=client -o yaml > secret.yaml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Decode a Secret Value",
+            "desc": "Read and base64-decode a single key from an existing Secret",
+            "desc_tr": "Mevcut bir Secret'tan tek bir anahtarı okuyup base64 çöz",
+            "cmd": "kubectl get secret <SECRET> -n <NAMESPACE> -o jsonpath='{.data.password}' | base64 -d",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Decode All Keys of a Secret",
+            "desc": "Dump every key/value of a Secret in decoded form using go-template",
+            "desc_tr": "go-template kullanarak bir Secret'ın tüm anahtar/değerlerini çözülmüş halde dök",
+            "cmd": "kubectl get secret <SECRET> -n <NAMESPACE> -o go-template='{{range $k,$v := .data}}{{$k}}={{$v | base64decode}}{{\"\\n\"}}{{end}}'",
+            "tags": [
+              "essential",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Create Docker Registry Pull Secret",
+            "desc": "Create a dockerconfigjson Secret for pulling images from a private registry",
+            "desc_tr": "Özel bir registry'den imaj çekmek için dockerconfigjson Secret oluştur",
+            "cmd": "kubectl create secret docker-registry <SECRET> --docker-server=<REGISTRY> --docker-username=<USER> --docker-password=<PASS> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Install kubeseal CLI",
+            "desc": "Download the kubeseal client used to encrypt secrets for the controller",
+            "desc_tr": "Controller için secret'ları şifrelemekte kullanılan kubeseal istemcisini indir",
+            "cmd": "KUBESEAL_VERSION=0.27.1; curl -sL \"https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION}-linux-amd64.tar.gz\" | tar xz kubeseal && sudo install -m 755 kubeseal /usr/local/bin/",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Install Sealed Secrets Controller via Helm",
+            "desc": "Deploy the Sealed Secrets controller into the kube-system namespace",
+            "desc_tr": "Sealed Secrets controller'ı kube-system namespace'ine kur",
+            "cmd": "helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets && helm install sealed-secrets sealed-secrets/sealed-secrets -n kube-system",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Seal a Secret into a SealedSecret",
+            "desc": "Encrypt a plain Secret manifest into an apply-safe SealedSecret",
+            "desc_tr": "Düz bir Secret manifest'ini, deposunda saklanabilir bir SealedSecret'a şifrele",
+            "cmd": "kubeseal --controller-namespace kube-system --format yaml < secret.yaml > sealed-secret.yaml",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Seal Directly from kubectl Output",
+            "desc": "Pipe a dry-run Secret straight into kubeseal in one shot",
+            "desc_tr": "dry-run Secret'ı tek adımda doğrudan kubeseal'e aktar",
+            "cmd": "kubectl create secret generic <SECRET> --from-literal=token=<TOKEN> --dry-run=client -o yaml | kubeseal --format yaml > sealed-secret.yaml",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Fetch the Public Sealing Certificate",
+            "desc": "Export the controller public cert for offline sealing in CI",
+            "desc_tr": "CI'da çevrimdışı sealing için controller'ın public sertifikasını dışa aktar",
+            "cmd": "kubeseal --controller-namespace kube-system --fetch-cert > pub-cert.pem",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Seal Offline with a Fetched Certificate",
+            "desc": "Encrypt a Secret without cluster access using a saved public cert",
+            "desc_tr": "Kaydedilmiş public sertifika ile küme erişimi olmadan bir Secret'ı şifrele",
+            "cmd": "kubeseal --cert pub-cert.pem --format yaml < secret.yaml > sealed-secret.yaml",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Seal with Cluster-Wide Scope",
+            "desc": "Allow a SealedSecret to be unsealed under any name/namespace",
+            "desc_tr": "Bir SealedSecret'ın herhangi bir ad/namespace altında çözülebilmesine izin ver",
+            "cmd": "kubeseal --scope cluster-wide --format yaml < secret.yaml > sealed-secret.yaml",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "cluster-wide kapsamı güvenliği zayıflatır; mümkünse varsayılan strict (ad+namespace bağlı) kapsamı kullan."
+          },
+          {
+            "title": "Apply a SealedSecret",
+            "desc": "Commit-safe encrypted manifest is applied and decrypted in-cluster",
+            "desc_tr": "Depoda saklanabilir şifreli manifest uygulanır ve küme içinde çözülür",
+            "cmd": "kubectl apply -f sealed-secret.yaml -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Backup Sealed Secrets Private Keys",
+            "desc": "Export the controller signing keys for disaster recovery",
+            "desc_tr": "Felaket kurtarma için controller imzalama anahtarlarını dışa aktar",
+            "cmd": "kubectl get secret -n kube-system -l sealedsecrets.bitnami.com/sealed-secrets-key -o yaml > sealed-secrets-keys.yaml",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Bu dosya tüm SealedSecret'ları çözebilir; çevrimdışı ve şifreli bir kasada sakla."
+          },
+          {
+            "title": "Restore Sealed Secrets Keys",
+            "desc": "Re-import backed up keys and restart the controller to load them",
+            "desc_tr": "Yedeklenmiş anahtarları geri yükle ve yüklemeleri için controller'ı yeniden başlat",
+            "cmd": "kubectl apply -f sealed-secrets-keys.yaml && kubectl delete pod -n kube-system -l name=sealed-secrets",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Re-encrypt SealedSecrets to Latest Key",
+            "desc": "Rotate ciphertext onto the newest sealing key without re-supplying plaintext",
+            "desc_tr": "Düz metni yeniden vermeden şifreli metni en yeni sealing anahtarına döndür",
+            "cmd": "kubeseal --re-encrypt --controller-namespace kube-system < sealed-secret.yaml > sealed-secret-new.yaml",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Install External Secrets Operator via Helm",
+            "desc": "Deploy ESO with its CRDs into a dedicated namespace",
+            "desc_tr": "ESO'yu CRD'leri ile birlikte özel bir namespace'e kur",
+            "cmd": "helm repo add external-secrets https://charts.external-secrets.io && helm install external-secrets external-secrets/external-secrets -n external-secrets --create-namespace --set installCRDs=true",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Create a SecretStore Manifest",
+            "desc": "Define a namespaced SecretStore pointing at an external provider",
+            "desc_tr": "Harici bir sağlayıcıya işaret eden namespace kapsamlı bir SecretStore tanımla",
+            "cmds": [
+              "cat <<'EOF' > store.yaml",
+              "apiVersion: external-secrets.io/v1",
+              "kind: SecretStore",
+              "metadata:",
+              "  name: <STORE>",
+              "  namespace: <NAMESPACE>",
+              "spec:",
+              "  provider:",
+              "    vault:",
+              "      server: https://<DOMAIN>",
+              "      path: secret",
+              "      version: v2",
+              "      auth:",
+              "        tokenSecretRef:",
+              "          name: vault-token",
+              "          key: token",
+              "EOF",
+              "kubectl apply -f store.yaml"
+            ],
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Create an ExternalSecret",
+            "desc": "Sync a remote secret key into a native Kubernetes Secret",
+            "desc_tr": "Uzak bir secret anahtarını yerel bir Kubernetes Secret'a senkronize et",
+            "cmds": [
+              "cat <<'EOF' > es.yaml",
+              "apiVersion: external-secrets.io/v1",
+              "kind: ExternalSecret",
+              "metadata:",
+              "  name: <SECRET>",
+              "  namespace: <NAMESPACE>",
+              "spec:",
+              "  refreshInterval: 1h",
+              "  secretStoreRef:",
+              "    name: <STORE>",
+              "    kind: SecretStore",
+              "  target:",
+              "    name: <SECRET>",
+              "  data:",
+              "    - secretKey: password",
+              "      remoteRef:",
+              "        key: <PATH>",
+              "        property: password",
+              "EOF",
+              "kubectl apply -f es.yaml"
+            ],
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect ExternalSecret Sync Status",
+            "desc": "Check whether the operator successfully reconciled the secret",
+            "desc_tr": "Operatörün secret'ı başarıyla uzlaştırıp uzlaştırmadığını kontrol et",
+            "cmd": "kubectl get externalsecret <SECRET> -n <NAMESPACE> -o jsonpath='{.status.conditions[*].reason}'",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Force an ExternalSecret Refresh",
+            "desc": "Trigger an immediate re-sync by bumping the force-sync annotation",
+            "desc_tr": "force-sync anotasyonunu değiştirerek anında yeniden senkronizasyonu tetikle",
+            "cmd": "kubectl annotate externalsecret <SECRET> -n <NAMESPACE> force-sync=$(date +%s) --overwrite",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Use a ClusterSecretStore Across Namespaces",
+            "desc": "List cluster-scoped stores shared by all ExternalSecrets",
+            "desc_tr": "Tüm ExternalSecret'lar tarafından paylaşılan küme kapsamlı store'ları listele",
+            "cmd": "kubectl get clustersecretstore",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Push a Secret to a Provider (PushSecret)",
+            "desc": "Reverse-sync an in-cluster Secret out to an external store",
+            "desc_tr": "Küme içindeki bir Secret'ı ters yönde harici bir store'a senkronize et",
+            "cmds": [
+              "cat <<'EOF' > push.yaml",
+              "apiVersion: external-secrets.io/v1alpha1",
+              "kind: PushSecret",
+              "metadata:",
+              "  name: <SECRET>",
+              "  namespace: <NAMESPACE>",
+              "spec:",
+              "  refreshInterval: 1h",
+              "  secretStoreRefs:",
+              "    - name: <STORE>",
+              "      kind: SecretStore",
+              "  selector:",
+              "    secret:",
+              "      name: <SECRET>",
+              "  data:",
+              "    - match:",
+              "        secretKey: password",
+              "        remoteRef:",
+              "          remoteKey: <PATH>",
+              "EOF",
+              "kubectl apply -f push.yaml"
+            ],
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Enable etcd Encryption at Rest",
+            "desc": "Point the API server at an EncryptionConfiguration to encrypt Secrets in etcd",
+            "desc_tr": "Secret'ları etcd'de şifrelemek için API sunucusunu bir EncryptionConfiguration'a yönlendir",
+            "cmd": "kube-apiserver --encryption-provider-config=/etc/kubernetes/enc/enc.yaml",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Varsayılan 'identity' provider şifreleme yapmaz; aesgcm veya kms provider'ını listede ilk sıraya koy."
+          },
+          {
+            "title": "Re-encrypt Existing Secrets After Enabling Encryption",
+            "desc": "Rewrite all Secrets so they are stored encrypted with the new provider",
+            "desc_tr": "Tüm Secret'ları yeniden yazarak yeni provider ile şifreli saklanmalarını sağla",
+            "cmd": "kubectl get secrets --all-namespaces -o json | kubectl replace -f -",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Verify a Secret Is Encrypted in etcd",
+            "desc": "Read the raw etcd value to confirm it is no longer plaintext",
+            "desc_tr": "Ham etcd değerini okuyarak artık düz metin olmadığını doğrula",
+            "cmd": "ETCDCTL_API=3 etcdctl get /registry/secrets/<NAMESPACE>/<SECRET> --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key | hexdump -C | head",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Find Pods Mounting a Given Secret",
+            "desc": "Audit which workloads reference a Secret as volume or env",
+            "desc_tr": "Hangi iş yüklerinin bir Secret'ı volume veya env olarak kullandığını denetle",
+            "cmd": "kubectl get pods -n <NAMESPACE> -o json | jq -r '.items[] | select(.spec.volumes[]?.secret.secretName==\"<SECRET>\") | .metadata.name'",
+            "tags": [
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Cloud Secret Managers (AWS/GCP/Azure)",
+        "commands": [
+          {
+            "title": "AWS List All Secrets",
+            "desc": "List all secrets in AWS Secrets Manager",
+            "desc_tr": "AWS Secrets Manager'daki tüm secret'ları listele",
+            "cmd": "aws secretsmanager list-secrets --query 'SecretList[].Name' --output table",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "AWS Get Secret Value",
+            "desc": "Retrieve and decode a secret's plaintext value",
+            "desc_tr": "Bir secret'in düz metin değerini al ve çöz",
+            "cmd": "aws secretsmanager get-secret-value --secret-id <SECRET_NAME> --query SecretString --output text",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "AWS Create Secret",
+            "desc": "Create a new secret with a string value",
+            "desc_tr": "String değere sahip yeni bir secret oluştur",
+            "cmd": "aws secretsmanager create-secret --name <SECRET_NAME> --secret-string '{\"username\":\"<USER>\",\"password\":\"<PASS>\"}'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "AWS Update Secret Value",
+            "desc": "Store a new version of an existing secret",
+            "desc_tr": "Mevcut bir secret'in yeni sürümünü sakla",
+            "cmd": "aws secretsmanager put-secret-value --secret-id <SECRET_NAME> --secret-string file://<FILE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "AWS Rotate Secret Now",
+            "desc": "Trigger immediate rotation via the configured Lambda",
+            "desc_tr": "Yapılandırılmış Lambda ile anında rotasyonu tetikle",
+            "cmd": "aws secretsmanager rotate-secret --secret-id <SECRET_NAME> --rotation-lambda-arn <LAMBDA_ARN>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Rotation requires a Lambda function with correct permissions and a tested rotation strategy; test in staging first."
+          },
+          {
+            "title": "AWS Delete Secret with Recovery Window",
+            "desc": "Schedule deletion with a 7-day recovery window",
+            "desc_tr": "7 günlük kurtarma penceresiyle silmeyi zamanla",
+            "cmd": "aws secretsmanager delete-secret --secret-id <SECRET_NAME> --recovery-window-in-days 7",
+            "tags": [
+              "essential"
+            ],
+            "note": "Use --force-delete-without-recovery only when you are certain; it is irreversible."
+          },
+          {
+            "title": "AWS SSM Get SecureString Parameter",
+            "desc": "Read and decrypt an SSM Parameter Store SecureString",
+            "desc_tr": "SSM Parameter Store SecureString'i oku ve şifresini çöz",
+            "cmd": "aws ssm get-parameter --name <PARAM_NAME> --with-decryption --query Parameter.Value --output text",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "AWS SSM Put SecureString Parameter",
+            "desc": "Store an encrypted parameter using a KMS key",
+            "desc_tr": "KMS anahtarı kullanarak şifreli bir parametre sakla",
+            "cmd": "aws ssm put-parameter --name <PARAM_NAME> --value <VALUE> --type SecureString --key-id <KMS_KEY_ID> --overwrite",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "AWS SSM Get Parameters by Path",
+            "desc": "Recursively fetch all decrypted params under a path",
+            "desc_tr": "Bir yol altındaki tüm çözülmüş parametreleri özyinelemeli al",
+            "cmd": "aws ssm get-parameters-by-path --path <PATH> --recursive --with-decryption",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "AWS Secret Resource Policy",
+            "desc": "Inspect the resource-based policy attached to a secret",
+            "desc_tr": "Bir secret'e ekli kaynak tabanlı politikayı incele",
+            "cmd": "aws secretsmanager get-resource-policy --secret-id <SECRET_NAME>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "GCP List Secrets",
+            "desc": "List all secrets in a Google Cloud project",
+            "desc_tr": "Bir Google Cloud projesindeki tüm secret'ları listele",
+            "cmd": "gcloud secrets list --project=<PROJECT_ID>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "GCP Access Latest Secret Version",
+            "desc": "Retrieve the latest version's plaintext payload",
+            "desc_tr": "En son sürümün düz metin verisini al",
+            "cmd": "gcloud secrets versions access latest --secret=<SECRET_NAME> --project=<PROJECT_ID>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "GCP Create Secret from File",
+            "desc": "Create a secret and load its first version from a file",
+            "desc_tr": "Bir secret oluştur ve ilk sürümünü dosyadan yükle",
+            "cmd": "gcloud secrets create <SECRET_NAME> --data-file=<FILE> --replication-policy=automatic --project=<PROJECT_ID>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "GCP Add New Secret Version",
+            "desc": "Add a new version to an existing secret via stdin",
+            "desc_tr": "stdin ile mevcut bir secret'e yeni sürüm ekle",
+            "cmd": "printf '<VALUE>' | gcloud secrets versions add <SECRET_NAME> --data-file=- --project=<PROJECT_ID>",
+            "tags": [
+              "tool"
+            ],
+            "note": "Use printf rather than echo to avoid a trailing newline being stored in the secret payload."
+          },
+          {
+            "title": "GCP Grant Secret Accessor Role",
+            "desc": "Bind a service account to the secretAccessor role",
+            "desc_tr": "Bir servis hesabını secretAccessor rolüne bağla",
+            "cmd": "gcloud secrets add-iam-policy-binding <SECRET_NAME> --member=serviceAccount:<SA_EMAIL> --role=roles/secretmanager.secretAccessor",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "GCP Disable Secret Version",
+            "desc": "Disable a specific secret version without destroying it",
+            "desc_tr": "Belirli bir secret sürümünü yok etmeden devre dışı bırak",
+            "cmd": "gcloud secrets versions disable <VERSION> --secret=<SECRET_NAME> --project=<PROJECT_ID>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "GCP Destroy Secret Version",
+            "desc": "Permanently destroy a single secret version's data",
+            "desc_tr": "Tek bir secret sürümünün verisini kalıcı olarak yok et",
+            "cmd": "gcloud secrets versions destroy <VERSION> --secret=<SECRET_NAME> --project=<PROJECT_ID>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "GCP Set Secret Rotation Schedule",
+            "desc": "Configure automatic rotation period and next time",
+            "desc_tr": "Otomatik rotasyon periyodunu ve sonraki zamanı yapılandır",
+            "cmd": "gcloud secrets update <SECRET_NAME> --rotation-period=2592000s --next-rotation-time=<RFC3339_TIME> --project=<PROJECT_ID>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Azure List Key Vault Secrets",
+            "desc": "List secret names stored in an Azure Key Vault",
+            "desc_tr": "Bir Azure Key Vault'taki secret adlarını listele",
+            "cmd": "az keyvault secret list --vault-name <VAULT_NAME> --query '[].name' -o tsv",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Azure Show Key Vault Secret",
+            "desc": "Retrieve the plaintext value of a Key Vault secret",
+            "desc_tr": "Bir Key Vault secret'inin düz metin değerini al",
+            "cmd": "az keyvault secret show --vault-name <VAULT_NAME> --name <SECRET_NAME> --query value -o tsv",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Azure Set Key Vault Secret",
+            "desc": "Create or update a secret in an Azure Key Vault",
+            "desc_tr": "Bir Azure Key Vault'ta secret oluştur veya güncelle",
+            "cmd": "az keyvault secret set --vault-name <VAULT_NAME> --name <SECRET_NAME> --value <VALUE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Azure Set Secret from File",
+            "desc": "Load a secret value from a file to avoid shell history",
+            "desc_tr": "Kabuk geçmişinden kaçınmak için secret değerini dosyadan yükle",
+            "cmd": "az keyvault secret set --vault-name <VAULT_NAME> --name <SECRET_NAME> --file <FILE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Azure List Secret Versions",
+            "desc": "Show all versions of a Key Vault secret",
+            "desc_tr": "Bir Key Vault secret'inin tüm sürümlerini göster",
+            "cmd": "az keyvault secret list-versions --vault-name <VAULT_NAME> --name <SECRET_NAME> -o table",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Azure Set Secret Expiry",
+            "desc": "Apply an expiration date to a secret version",
+            "desc_tr": "Bir secret sürümüne son kullanma tarihi uygula",
+            "cmd": "az keyvault secret set-attributes --vault-name <VAULT_NAME> --name <SECRET_NAME> --expires <ISO8601_DATE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Azure Soft-Delete and Purge Secret",
+            "desc": "Delete then permanently purge a secret",
+            "desc_tr": "Bir secret'i sil ve ardından kalıcı olarak temizle",
+            "cmds": [
+              "az keyvault secret delete --vault-name <VAULT_NAME> --name <SECRET_NAME>",
+              "az keyvault secret purge --vault-name <VAULT_NAME> --name <SECRET_NAME>"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "Purge is irreversible and only works if the vault has soft-delete enabled and purge protection disabled."
+          },
+          {
+            "title": "Azure Grant Secret Access (RBAC)",
+            "desc": "Assign Key Vault Secrets User role to a principal",
+            "desc_tr": "Bir principal'a Key Vault Secrets User rolü ata",
+            "cmd": "az role assignment create --role 'Key Vault Secrets User' --assignee <PRINCIPAL_ID> --scope <VAULT_RESOURCE_ID>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "AWS Get Secret via IMDSv2 Role Creds",
+            "desc": "Use instance role credentials to pull a secret on EC2",
+            "desc_tr": "EC2'de bir secret çekmek için instance rol kimlik bilgilerini kullan",
+            "cmd": "TOKEN=$(curl -s -X PUT http://169.254.169.254/latest/api/token -H 'X-aws-ec2-metadata-token-ttl-seconds: 60') && aws secretsmanager get-secret-value --secret-id <SECRET_NAME>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "IMDSv2 requires the session token header; the AWS CLI auto-discovers role creds from the metadata endpoint."
+          },
+          {
+            "title": "GCP Access Secret via REST API",
+            "desc": "Fetch a secret with a bearer token and decode base64",
+            "desc_tr": "Bir secret'i bearer token ile çekip base64 çöz",
+            "cmd": "curl -s -H \"Authorization: Bearer $(gcloud auth print-access-token)\" https://secretmanager.googleapis.com/v1/projects/<PROJECT_ID>/secrets/<SECRET_NAME>/versions/latest:access | jq -r .payload.data | base64 -d",
+            "tags": [
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Secret Detection & Remediation",
+        "commands": [
+          {
+            "title": "Gitleaks Scan Git History",
+            "desc": "Scan full git commit history for hardcoded secrets",
+            "desc_tr": "Tüm git commit geçmişini sabit kodlanmış sırlar için tara",
+            "cmd": "gitleaks git <PATH> --verbose",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Gitleaks Scan Uncommitted Changes",
+            "desc": "Detect secrets in the working directory without scanning history",
+            "desc_tr": "Geçmişi taramadan çalışma dizinindeki sırları tespit et",
+            "cmd": "gitleaks dir <PATH> --verbose",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Gitleaks Pre-Commit Protection",
+            "desc": "Block commits containing staged secrets via pre-commit hook",
+            "desc_tr": "Pre-commit kancası ile staged sırlar içeren commitleri engelle",
+            "cmd": "gitleaks git --pre-commit --staged --redact --no-banner",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Wire this into .git/hooks/pre-commit or use the gitleaks pre-commit framework hook"
+          },
+          {
+            "title": "Gitleaks JSON Report for CI",
+            "desc": "Output findings as JSON and fail the pipeline on any leak",
+            "desc_tr": "Bulguları JSON olarak çıkar ve herhangi bir sızıntıda pipeline'ı başarısız yap",
+            "cmd": "gitleaks git <PATH> --report-format json --report-path gitleaks.json --exit-code 1",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Gitleaks Baseline to Suppress Known Findings",
+            "desc": "Generate a baseline so only new secrets are reported afterwards",
+            "desc_tr": "Bir baseline oluştur ki sonrasında yalnızca yeni sırlar raporlansın",
+            "cmds": [
+              "gitleaks git <PATH> --report-path baseline.json",
+              "gitleaks git <PATH> --baseline-path baseline.json --report-path findings.json"
+            ],
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "TruffleHog Scan Git Repo with Verification",
+            "desc": "Scan a git repo and live-verify which credentials are still active",
+            "desc_tr": "Bir git deposunu tara ve hangi kimlik bilgilerinin hâlâ aktif olduğunu canlı doğrula",
+            "cmd": "trufflehog git file://<PATH> --only-verified",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "--only-verified queries provider APIs to confirm a secret is live, cutting false positives"
+          },
+          {
+            "title": "TruffleHog Scan Remote GitHub Org",
+            "desc": "Enumerate and scan every repository in a GitHub organization",
+            "desc_tr": "Bir GitHub organizasyonundaki her depoyu listele ve tara",
+            "cmd": "trufflehog github --org=<DOMAIN> --only-verified --token=<FILE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "TruffleHog Scan Filesystem Path",
+            "desc": "Recursively scan a directory or mounted volume for secrets",
+            "desc_tr": "Bir dizini veya bağlı birimi sırlar için özyinelemeli tara",
+            "cmd": "trufflehog filesystem <PATH> --only-verified --json",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "TruffleHog Scan Docker Image",
+            "desc": "Pull and scan a container image layer-by-layer for embedded secrets",
+            "desc_tr": "Bir konteyner imajını gömülü sırlar için katman katman çek ve tara",
+            "cmd": "trufflehog docker --image=<IMAGE> --only-verified",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "TruffleHog Pre-Commit Hook",
+            "desc": "Scan only staged changes and block the commit if a secret is found",
+            "desc_tr": "Yalnızca staged değişiklikleri tara ve sır bulunursa commiti engelle",
+            "cmd": "trufflehog git file://. --since-commit HEAD --results=verified,unknown --fail",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "detect-secrets Create Baseline",
+            "desc": "Build an audited baseline of existing secrets across the repo",
+            "desc_tr": "Depodaki mevcut sırların denetlenmiş bir baseline'ını oluştur",
+            "cmd": "detect-secrets scan > .secrets.baseline",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "detect-secrets Audit Baseline Interactively",
+            "desc": "Review each candidate and mark it as a true or false positive",
+            "desc_tr": "Her adayı incele ve gerçek ya da yanlış pozitif olarak işaretle",
+            "cmd": "detect-secrets audit .secrets.baseline",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "git-secrets Install Repo Hooks",
+            "desc": "Install commit-msg and pre-commit hooks that block AWS-style secrets",
+            "desc_tr": "AWS tarzı sırları engelleyen commit-msg ve pre-commit kancalarını kur",
+            "cmds": [
+              "git secrets --install",
+              "git secrets --register-aws"
+            ],
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "git-secrets Scan Entire History",
+            "desc": "Scan all commits and prior revisions for registered secret patterns",
+            "desc_tr": "Tüm commitleri ve önceki revizyonları kayıtlı sır kalıpları için tara",
+            "cmd": "git secrets --scan-history",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "ggshield Secret Scan with GitGuardian",
+            "desc": "Scan the repo path against GitGuardian's detection engine",
+            "desc_tr": "Depo yolunu GitGuardian'ın tespit motoruna karşı tara",
+            "cmd": "ggshield secret scan path -r <PATH>",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Requires GITGUARDIAN_API_KEY in the environment"
+          },
+          {
+            "title": "ggshield Scan CI Commit Range",
+            "desc": "Scan only the commits introduced in the current CI pipeline run",
+            "desc_tr": "Yalnızca mevcut CI pipeline çalışmasında eklenen commitleri tara",
+            "cmd": "ggshield secret scan ci",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Semgrep Secrets Ruleset Scan",
+            "desc": "Run Semgrep's secrets rules across the codebase",
+            "desc_tr": "Semgrep'in sır kurallarını tüm kod tabanında çalıştır",
+            "cmd": "semgrep --config p/secrets <PATH>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Nosey Parker High-Throughput Scan",
+            "desc": "Scan large repos or filesystems fast and report ranked findings",
+            "desc_tr": "Büyük depoları veya dosya sistemlerini hızlıca tara ve sıralı bulguları raporla",
+            "cmds": [
+              "noseyparker scan --datastore np.ds <PATH>",
+              "noseyparker report --datastore np.ds"
+            ],
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Kingfisher Scan with Live Validation",
+            "desc": "Scan a path and validate found secrets against cloud providers",
+            "desc_tr": "Bir yolu tara ve bulunan sırları bulut sağlayıcılarına karşı doğrula",
+            "cmd": "kingfisher scan <PATH> --confidence high",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Trivy Filesystem Secret Scan",
+            "desc": "Use Trivy's built-in secret scanner on a directory",
+            "desc_tr": "Bir dizinde Trivy'nin yerleşik sır tarayıcısını kullan",
+            "cmd": "trivy fs --scanners secret <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Trivy Image Secret Scan",
+            "desc": "Detect secrets baked into a container image with Trivy",
+            "desc_tr": "Trivy ile bir konteyner imajına gömülmüş sırları tespit et",
+            "cmd": "trivy image --scanners secret <IMAGE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Find Hardcoded Secrets with ripgrep",
+            "desc": "Quick grep for common credential keywords across a codebase",
+            "desc_tr": "Bir kod tabanında yaygın kimlik bilgisi anahtar kelimelerini hızlıca grep'le",
+            "cmd": "rg -i --no-heading -n 'api[_-]?key|secret|password|token|aws_access_key_id' <PATH>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Remediate: Purge Secret from History with git-filter-repo",
+            "desc": "Rewrite history to remove a leaked file from every commit",
+            "desc_tr": "Sızdırılan bir dosyayı her committen kaldırmak için geçmişi yeniden yaz",
+            "cmd": "git filter-repo --path <FILE> --invert-paths --force",
+            "tags": [
+              "essential",
+              "advanced"
+            ],
+            "note": "Rotate the secret FIRST; rewriting history does not un-leak an already-exposed credential"
+          },
+          {
+            "title": "Remediate: Replace Secret Text in All Commits",
+            "desc": "Redact a specific secret string across the entire history",
+            "desc_tr": "Belirli bir sır metnini tüm geçmiş boyunca redakte et",
+            "cmds": [
+              "echo '<SECRET>==>REDACTED' > replacements.txt",
+              "git filter-repo --replace-text replacements.txt --force"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Remediate: Strip Secrets with BFG Repo-Cleaner",
+            "desc": "Remove files matching a pattern from history faster than filter-branch",
+            "desc_tr": "Geçmişten bir kalıba uyan dosyaları filter-branch'ten daha hızlı kaldır",
+            "cmd": "bfg --delete-files <FILE> <PATH>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Remediate: Force-Push Cleaned History",
+            "desc": "Expire reflogs, garbage-collect, then overwrite the remote",
+            "desc_tr": "Reflog'ları sona erdir, çöp toplama yap, ardından uzak depoyu üzerine yaz",
+            "cmds": [
+              "git reflog expire --expire=now --all",
+              "git gc --prune=now --aggressive",
+              "git push origin --force --all"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "Coordinate with the team; collaborators must re-clone or hard-reset to the rewritten history"
+          },
+          {
+            "title": "Remediate: Rotate Leaked AWS Key",
+            "desc": "Create a new access key then deactivate the compromised one",
+            "desc_tr": "Yeni bir erişim anahtarı oluştur, ardından ele geçirilmiş olanı devre dışı bırak",
+            "cmds": [
+              "aws iam create-access-key --user-name <USER>",
+              "aws iam update-access-key --access-key-id <KEY_ID> --status Inactive --user-name <USER>",
+              "aws iam delete-access-key --access-key-id <KEY_ID> --user-name <USER>"
+            ],
+            "tags": [
+              "essential",
+              "advanced"
+            ],
+            "note": "Deactivate before deleting so you can confirm nothing breaks, then delete the old key"
+          }
+        ]
+      }
+    ]
   }
 ];
