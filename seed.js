@@ -43216,5 +43216,1407 @@ module.exports = [
         ]
       }
     ]
+  },
+  {
+    "id": "cloud-native-runtime",
+    "name": "Cloud-Native Runtime Security",
+    "name_tr": "Cloud-Native Çalışma Zamanı Güvenliği",
+    "icon": "🦅",
+    "description": "Runtime threat detection and enforcement for containers and hosts using eBPF-based and policy tooling.",
+    "description_tr": "Konteyner ve hostlar için eBPF tabanlı ve politika araçlarıyla çalışma zamanı tehdit tespiti ve önleme.",
+    "subcategories": [
+      {
+        "name": "Falco (rules, alerts, deployment)",
+        "commands": [
+          {
+            "title": "Install Falco via Helm Repo",
+            "desc": "Add and update the official Falco Helm chart repository",
+            "desc_tr": "Resmi Falco Helm chart deposunu ekle ve güncelle",
+            "cmds": [
+              "helm repo add falcosecurity https://falcosecurity.github.io/charts",
+              "helm repo update"
+            ],
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Deploy Falco with modern eBPF",
+            "desc": "Install Falco using the modern eBPF (CO-RE) driver, no kernel headers needed",
+            "desc_tr": "Falco'yu modern eBPF (CO-RE) sürücüsüyle kur; kernel header gerekmez",
+            "cmd": "helm install falco falcosecurity/falco --namespace falco --create-namespace --set driver.kind=modern_ebpf",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "modern_ebpf, kernel 5.8+ için en taşınabilir seçenektir ve modül derlemesi gerektirmez."
+          },
+          {
+            "title": "Deploy Falco with Falcosidekick",
+            "desc": "Install Falco bundled with Falcosidekick alert forwarder and its UI",
+            "desc_tr": "Falco'yu Falcosidekick alarm yönlendirici ve web arayüzüyle birlikte kur",
+            "cmd": "helm install falco falcosecurity/falco --namespace falco --create-namespace --set falcosidekick.enabled=true --set falcosidekick.webui.enabled=true",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Deploy Falco with custom rules ConfigMap",
+            "desc": "Mount extra/custom rules files into the Falco DaemonSet",
+            "desc_tr": "DaemonSet'e ek/özel kural dosyalarını mount ederek kur",
+            "cmd": "helm install falco falcosecurity/falco --namespace falco -f custom-rules.yaml --set-file 'customRules.custom-rules\\.yaml'=<FILE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Upgrade Falco release",
+            "desc": "Apply changed values or bump the chart version on a running install",
+            "desc_tr": "Çalışan kurulumda değişen değerleri uygula veya chart sürümünü yükselt",
+            "cmd": "helm upgrade falco falcosecurity/falco --namespace falco --reuse-values --set driver.kind=modern_ebpf",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Check Falco DaemonSet pods",
+            "desc": "List Falco pods and verify they are running on each node",
+            "desc_tr": "Falco pod'larını listele ve her node'da çalıştığını doğrula",
+            "cmd": "kubectl get pods -n <NAMESPACE> -l app.kubernetes.io/name=falco -o wide",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Tail Falco alert logs",
+            "desc": "Stream live Falco detections from the running pods",
+            "desc_tr": "Çalışan pod'lardan canlı Falco tespitlerini izle",
+            "cmd": "kubectl logs -n <NAMESPACE> -l app.kubernetes.io/name=falco -c falco -f",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run Falco in a container",
+            "desc": "Run Falco standalone via Docker with host privileges for syscall capture",
+            "desc_tr": "Falco'yu syscall yakalama için host ayrıcalıklarıyla Docker üzerinden tek başına çalıştır",
+            "cmd": "docker run --rm -i -t --privileged -v /var/run/docker.sock:/host/var/run/docker.sock -v /proc:/host/proc:ro falcosecurity/falco:latest",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Validate a Falco rules file",
+            "desc": "Dry-run load to check rule syntax without starting capture",
+            "desc_tr": "Yakalamayı başlatmadan kural dosyasının söz dizimini doğrula",
+            "cmd": "falco -r <FILE> --validate <FILE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List loaded rules",
+            "desc": "Print all rules Falco loads from its configured rules files",
+            "desc_tr": "Falco'nun yapılandırılmış dosyalardan yüklediği tüm kuralları yazdır",
+            "cmd": "falco --list-rules",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List available fields",
+            "desc": "Show all supported filter fields for writing rule conditions",
+            "desc_tr": "Kural koşulları yazmak için desteklenen tüm filtre alanlarını göster",
+            "cmd": "falco --list",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run Falco with a specific config",
+            "desc": "Start Falco pointing at an explicit falco.yaml configuration file",
+            "desc_tr": "Falco'yu belirli bir falco.yaml yapılandırma dosyasıyla başlat",
+            "cmd": "falco -c /etc/falco/falco.yaml -r /etc/falco/falco_rules.yaml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Increase rule output verbosity",
+            "desc": "Print extra rule-loading detail and raise log level on startup",
+            "desc_tr": "Başlangıçta ek kural yükleme ayrıntısı yazdır ve log seviyesini yükselt",
+            "cmd": "falco -V <FILE> -o log_level=debug",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Disable noisy rules by tag",
+            "desc": "Run capture but skip every rule carrying a given tag",
+            "desc_tr": "Yakalamayı çalıştır ama belirli bir etikete sahip her kuralı atla",
+            "cmd": "falco -T <TAG>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Enable only rules with a tag",
+            "desc": "Restrict evaluation to rules carrying the specified tag(s)",
+            "desc_tr": "Değerlendirmeyi yalnızca belirtilen etikete sahip kurallarla sınırla",
+            "cmd": "falco -t <TAG>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Output alerts as JSON",
+            "desc": "Emit machine-parseable JSON events for downstream pipelines",
+            "desc_tr": "Sonraki işlem hattı için makine tarafından ayrıştırılabilir JSON olaylar üret",
+            "cmd": "falco -o json_output=true -o json_include_output_property=true",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Send alerts to an external program",
+            "desc": "Pipe each alert to an external program via program_output",
+            "desc_tr": "program_output ile her alarmı harici bir programa aktar",
+            "cmd": "falco -o program_output.enabled=true -o 'program_output.program=jq . | curl -d @- <DOMAIN>'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Enable the gRPC API",
+            "desc": "Expose Falco's gRPC and outputs API over a unix socket for clients",
+            "desc_tr": "İstemciler için Falco'nun gRPC ve outputs API'sini bir unix soketi üzerinden aç",
+            "cmd": "falco -o grpc.enabled=true -o grpc.bind_address=unix:///run/falco/falco.sock -o grpc_output.enabled=true",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Install Falco plugin via falcoctl",
+            "desc": "Pull and install a plugin (e.g. k8saudit, cloudtrail) from an OCI registry",
+            "desc_tr": "OCI deposundan bir eklenti (ör. k8saudit, cloudtrail) çek ve kur",
+            "cmd": "falcoctl artifact install <IMAGE> --config /etc/falcoctl/falcoctl.yaml",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Install rules from a repo with falcoctl",
+            "desc": "Fetch a rulesfile artifact so Falco loads community/maintained rules",
+            "desc_tr": "Falco'nun topluluk/bakımlı kuralları yüklemesi için kural dosyası artefaktını çek",
+            "cmd": "falcoctl artifact install falco-rules:latest",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "List installed falcoctl artifacts",
+            "desc": "Show which plugins and rulesfiles falcoctl currently manages",
+            "desc_tr": "falcoctl'nin şu anda yönettiği eklentileri ve kural dosyalarını göster",
+            "cmd": "falcoctl artifact list",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Search the Falco artifact index",
+            "desc": "Update the index then discover available plugins/rules",
+            "desc_tr": "İndeksi güncelle ve mevcut eklentileri/kuralları keşfet",
+            "cmds": [
+              "falcoctl index update falcosecurity",
+              "falcoctl artifact search <FILE>"
+            ],
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Enable automatic rule updates",
+            "desc": "Deploy Falco with the falcoctl sidecar that follows rules releases",
+            "desc_tr": "Kural sürümlerini takip eden falcoctl yardımcı kabıyla Falco'yu dağıt",
+            "cmd": "helm upgrade --install falco falcosecurity/falco -n <NAMESPACE> --set falcoctl.artifact.follow.enabled=true --set 'falcoctl.config.artifact.install.refs={falco-rules:3}'",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Append a rule override",
+            "desc": "Load an extra rules.d file to tune condition/priority without forking",
+            "desc_tr": "Çatallamadan koşul/önceliği ayarlamak için ek bir rules.d dosyası yükle",
+            "cmd": "falco -r /etc/falco/rules.d/<FILE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Falco 0.36+ 'override' anahtarıyla mevcut bir kuralın alanlarını append/replace edebilirsin; tüm kuralı yeniden yazmaya gerek yok."
+          },
+          {
+            "title": "Trigger a test detection",
+            "desc": "Run the classic sensitive-file-read test to confirm rules fire",
+            "desc_tr": "Kuralların tetiklendiğini doğrulamak için klasik hassas-dosya-okuma testini çalıştır",
+            "cmd": "kubectl run alpine-test --image=alpine --restart=Never -- sh -c 'cat /etc/shadow'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Replay a capture file offline",
+            "desc": "Evaluate a recorded syscall capture (scap) against rules without live capture",
+            "desc_tr": "Kaydedilmiş bir syscall yakalamasını (scap) canlı yakalama olmadan kurallara karşı değerlendir",
+            "cmd": "falco -e <FILE> -r /etc/falco/falco_rules.yaml",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Check Falco version and drivers",
+            "desc": "Print Falco version plus supported/loaded driver information",
+            "desc_tr": "Falco sürümünü ve desteklenen/yüklü sürücü bilgilerini yazdır",
+            "cmd": "falco --version",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Set a minimum alert priority",
+            "desc": "Drop events below a severity threshold to reduce noise",
+            "desc_tr": "Gürültüyü azaltmak için bir önem eşiğinin altındaki olayları düşür",
+            "cmd": "falco -o priority=warning",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Forward alerts to Slack via Falcosidekick",
+            "desc": "Configure Falcosidekick output to push Falco alerts to a Slack webhook",
+            "desc_tr": "Falco alarmlarını bir Slack webhook'una göndermek için Falcosidekick çıktısını yapılandır",
+            "cmd": "helm upgrade --install falco falcosecurity/falco -n <NAMESPACE> --set falcosidekick.enabled=true --set falcosidekick.config.slack.webhookurl=<DOMAIN> --set falcosidekick.config.slack.minimumpriority=warning",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Tetragon & Cilium eBPF",
+        "commands": [
+          {
+            "title": "Install Tetragon CLI (tetra)",
+            "desc": "Download and install the tetra command-line client",
+            "desc_tr": "tetra komut satiri istemcisini indir ve kur",
+            "cmds": [
+              "GOOS=$(go env GOOS); GOARCH=$(go env GOARCH); curl -L --remote-name-all https://github.com/cilium/tetragon/releases/latest/download/tetra-${GOOS}-${GOARCH}.tar.gz{,.sha256sum}",
+              "sha256sum --check tetra-${GOOS}-${GOARCH}.tar.gz.sha256sum",
+              "sudo tar -C /usr/local/bin -xzvf tetra-${GOOS}-${GOARCH}.tar.gz"
+            ],
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Install Tetragon via Helm (configurable)",
+            "desc": "Deploy Tetragon with process credential and namespace fields enabled",
+            "desc_tr": "Tetragon'u surec kimlik bilgisi ve namespace alanlari etkin sekilde kur",
+            "cmd": "helm install tetragon cilium/tetragon -n kube-system --set tetragon.enableProcessCred=true --set tetragon.enableProcessNs=true",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Verify Tetragon DaemonSet Rollout",
+            "desc": "Wait until the Tetragon DaemonSet is fully rolled out",
+            "desc_tr": "Tetragon DaemonSet tamamen yayilana kadar bekle",
+            "cmd": "kubectl rollout status -n kube-system ds/tetragon -w",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Stream Process Exec/Exit Events (tetra CLI)",
+            "desc": "Watch compact process lifecycle events from inside the agent",
+            "desc_tr": "Ajan icinden kompakt surec yasam dongusu olaylarini izle",
+            "cmd": "kubectl exec -it -n kube-system ds/tetragon -c tetragon -- tetra getevents -o compact --processes",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Watch Events with Local tetra + Port-Forward",
+            "desc": "Port-forward the gRPC API and stream events with the local tetra client",
+            "desc_tr": "gRPC API'yi port-forward edip yerel tetra istemcisiyle olaylari akit",
+            "cmds": [
+              "kubectl port-forward -n kube-system ds/tetragon 54321:54321 &",
+              "tetra getevents -o compact --server-address localhost:54321"
+            ],
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Filter Events by Process Binary",
+            "desc": "Show only events whose process binary matches a pattern",
+            "desc_tr": "Yalnizca surec ikilisi bir desene uyan olaylari goster",
+            "cmd": "kubectl exec -it -n kube-system ds/tetragon -c tetragon -- tetra getevents -o compact --pods <POD> | grep <FILE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Monitor Privileged Process Execution",
+            "desc": "TracingPolicy posting a notification on every execve syscall",
+            "desc_tr": "Her execve syscall'inda bildirim gonderen TracingPolicy",
+            "cmd": "kubectl apply -f - <<'EOF'\napiVersion: cilium.io/v1alpha1\nkind: TracingPolicy\nmetadata:\n  name: monitor-execve\nspec:\n  kprobes:\n  - call: \"sys_execve\"\n    syscall: true\n    selectors:\n    - matchActions:\n      - action: Post\nEOF",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Block Sensitive File Writes (Enforcement)",
+            "desc": "Enforcing TracingPolicy that sends SIGKILL on writes under /etc",
+            "desc_tr": "/etc altina yazimda SIGKILL gonderen zorlayici (enforcing) TracingPolicy",
+            "cmd": "kubectl apply -f - <<'EOF'\napiVersion: cilium.io/v1alpha1\nkind: TracingPolicy\nmetadata:\n  name: block-etc-write\nspec:\n  kprobes:\n  - call: \"security_file_permission\"\n    syscall: false\n    args:\n    - index: 0\n      type: \"file\"\n    - index: 1\n      type: \"int\"\n    selectors:\n    - matchArgs:\n      - index: 0\n        operator: \"Prefix\"\n        values: [\"/etc/\"]\n      - index: 1\n        operator: \"Equal\"\n        values: [\"2\"]\n      matchActions:\n      - action: Sigkill\nEOF",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Sigkill is in-kernel enforcement; test with action Post (audit) first to avoid killing legitimate workloads."
+          },
+          {
+            "title": "Namespace-Scoped TracingPolicy",
+            "desc": "Apply a TracingPolicyNamespaced so it only affects one namespace",
+            "desc_tr": "Yalnizca bir namespace'i etkilemesi icin TracingPolicyNamespaced uygula",
+            "cmd": "kubectl apply -n <NAMESPACE> -f <FILE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Monitor Network Connect Syscalls (TCP)",
+            "desc": "TracingPolicy hooking tcp_connect to observe outbound connections",
+            "desc_tr": "Cikis baglantilarini gozlemlemek icin tcp_connect'i kancalayan TracingPolicy",
+            "cmd": "kubectl apply -f - <<'EOF'\napiVersion: cilium.io/v1alpha1\nkind: TracingPolicy\nmetadata:\n  name: monitor-tcp-connect\nspec:\n  kprobes:\n  - call: \"tcp_connect\"\n    syscall: false\n    args:\n    - index: 0\n      type: \"sock\"\nEOF",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Delete a TracingPolicy",
+            "desc": "Remove an applied TracingPolicy by name",
+            "desc_tr": "Uygulanmis bir TracingPolicy'yi ada gore kaldir",
+            "cmd": "kubectl delete tracingpolicy <FILE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Tail Tetragon Agent Logs",
+            "desc": "Follow the Tetragon agent container logs for the local node",
+            "desc_tr": "Yerel dugum icin Tetragon ajan konteyner loglarini takip et",
+            "cmd": "kubectl logs -n kube-system -l app.kubernetes.io/name=tetragon -c tetragon -f",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Export Events to a File",
+            "desc": "Persist the JSON export stream to a local file for offline analysis",
+            "desc_tr": "Cevrimdisi analiz icin JSON disa aktarma akisini yerel bir dosyaya kaydet",
+            "cmd": "kubectl logs -n kube-system ds/tetragon -c export-stdout -f > <FILE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Install Cilium CLI",
+            "desc": "Download and install the cilium command-line tool",
+            "desc_tr": "cilium komut satiri aracini indir ve kur",
+            "cmds": [
+              "CLI_ARCH=$([ \"$(uname -m)\" = aarch64 ] && echo arm64 || echo amd64)",
+              "curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/latest/download/cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}",
+              "sudo tar xzvfC cilium-linux-${CLI_ARCH}.tar.gz /usr/local/bin"
+            ],
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Install Cilium with eBPF Host Routing",
+            "desc": "Install Cilium replacing kube-proxy with full eBPF datapath",
+            "desc_tr": "Cilium'u kube-proxy yerine tam eBPF veri yolu ile kur",
+            "cmd": "cilium install --set kubeProxyReplacement=true --set bpf.masquerade=true",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Enable Hubble Observability",
+            "desc": "Turn on Hubble with the relay and UI for L3-L7 flow visibility",
+            "desc_tr": "L3-L7 akis gorunurlugu icin Hubble'i relay ve UI ile etkinlestir",
+            "cmd": "cilium hubble enable --ui",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Stream Hubble Flows (Live)",
+            "desc": "Observe live network flows decoded by Cilium eBPF",
+            "desc_tr": "Cilium eBPF tarafindan cozumlenen canli ag akislarini gozlemle",
+            "cmd": "hubble observe -f --namespace <NAMESPACE>",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Hubble: Show Dropped Traffic Only",
+            "desc": "Filter Hubble output to only policy-denied or dropped flows",
+            "desc_tr": "Hubble ciktisini yalnizca policy ile reddedilen veya dusurulen akislara filtrele",
+            "cmd": "hubble observe --verdict DROPPED --namespace <NAMESPACE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Hubble: Filter DNS Traffic",
+            "desc": "Show only L7 DNS flows to debug FQDN policies",
+            "desc_tr": "FQDN policy'lerini ayiklamak icin yalnizca L7 DNS akislarini goster",
+            "cmd": "hubble observe --protocol dns --pod <POD>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Inspect a Cilium Endpoint's BPF Policy",
+            "desc": "Dump the in-kernel policy map entries for a specific endpoint",
+            "desc_tr": "Belirli bir endpoint icin cekirdek ici policy map girdilerini dok",
+            "cmd": "kubectl exec -n kube-system ds/cilium -c cilium-agent -- cilium-dbg bpf policy get <ENDPOINT_ID>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Loaded eBPF Programs (bpftool)",
+            "desc": "Enumerate all eBPF programs currently loaded in the kernel",
+            "desc_tr": "Cekirdekte yuklu tum eBPF programlarini listele",
+            "cmd": "sudo bpftool prog show",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Cilium eBPF Maps",
+            "desc": "Show pinned eBPF maps managed by Cilium on a node",
+            "desc_tr": "Bir dugumde Cilium tarafindan yonetilen sabitlenmis eBPF map'leri goster",
+            "cmd": "sudo bpftool map show | grep cilium",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Check Cilium eBPF Datapath Status",
+            "desc": "Show kube-proxy replacement and BPF feature status",
+            "desc_tr": "kube-proxy degisimi ve BPF ozellik durumunu goster",
+            "cmd": "kubectl exec -n kube-system ds/cilium -c cilium-agent -- cilium-dbg status --verbose",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "List Cilium BPF Connection Tracking Entries",
+            "desc": "Dump the eBPF conntrack table to debug connection state",
+            "desc_tr": "Baglanti durumunu ayiklamak icin eBPF conntrack tablosunu dok",
+            "cmd": "kubectl exec -n kube-system ds/cilium -c cilium-agent -- cilium-dbg bpf ct list global",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Trace bpf_trace_printk Debug Output",
+            "desc": "Read the kernel trace pipe to see eBPF debug print output",
+            "desc_tr": "eBPF hata ayiklama ciktisini gormek icin cekirdek trace pipe'ini oku",
+            "cmd": "sudo cat /sys/kernel/debug/tracing/trace_pipe",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Generate sysdump for Cilium/Tetragon Support",
+            "desc": "Collect a full diagnostic bundle from the cluster for troubleshooting",
+            "desc_tr": "Sorun giderme icin kumeden tam tanilama paketi topla",
+            "cmd": "cilium sysdump --output-filename <FILE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Tracee",
+        "commands": [
+          {
+            "title": "Install Tracee Binary (Released Tarball)",
+            "desc": "Download and install the prebuilt Tracee binary for Linux",
+            "desc_tr": "Linux icin onceden derlenmis Tracee ikili dosyasini indir ve kur",
+            "cmds": [
+              "curl -L -o tracee.tar.gz https://github.com/aquasecurity/tracee/releases/latest/download/tracee-x86_64.tar.gz",
+              "tar -xzf tracee.tar.gz",
+              "sudo ./dist/tracee --help"
+            ],
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Quick Start Tracee with Docker (All Events)",
+            "desc": "Run Tracee in a privileged container streaming detections to stdout",
+            "desc_tr": "Tespitleri stdout'a akitan ayricalikli bir konteynerde Tracee'yi calistir",
+            "cmd": "docker run --name tracee -it --rm --pid=host --cgroupns=host --privileged -v /etc/os-release:/etc/os-release-host:ro -v /sys/kernel/security:/sys/kernel/security:ro -v /var/run:/var/run:ro aquasec/tracee:latest",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Run Tracee Directly on Host",
+            "desc": "Start Tracee as root using its embedded eBPF object",
+            "desc_tr": "Tracee'yi gomulu eBPF nesnesiyle root olarak baslat",
+            "cmd": "sudo tracee",
+            "tags": [
+              "tool",
+              "essential"
+            ],
+            "note": "Requires a kernel with BTF (CONFIG_DEBUG_INFO_BTF=y) for CO-RE; otherwise supply a matching BTF file."
+          },
+          {
+            "title": "List All Events, Signatures and Sets",
+            "desc": "Enumerate every event, signature and event-set the build supports",
+            "desc_tr": "Surumun destekledigi tum olaylari, imzalari ve olay setlerini listele",
+            "cmd": "sudo tracee list",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Filter by Specific Syscall Events",
+            "desc": "Trace only the named syscalls to reduce noise",
+            "desc_tr": "Gurultuyu azaltmak icin yalnizca belirtilen sistem cagrilarini izle",
+            "cmd": "sudo tracee --events execve,execveat,openat,connect",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Trace a Whole Event Set",
+            "desc": "Enable a curated group of events such as DNS and HTTP network events",
+            "desc_tr": "DNS ve HTTP ag olaylari gibi secilmis bir olay grubunu etkinlestir",
+            "cmd": "sudo tracee --events net_packet_dns,net_packet_http",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Filter Events by Process Name",
+            "desc": "Capture events generated only by a given executable name",
+            "desc_tr": "Yalnizca verilen yurutulebilir adin urettigi olaylari yakala",
+            "cmd": "sudo tracee --events execve --scope comm=<FILE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Filter by PID and Follow Children",
+            "desc": "Trace a process tree starting from a target PID",
+            "desc_tr": "Hedef bir PID'den baslayan surec agacini izle",
+            "cmd": "sudo tracee --scope pid=<PID> --scope follow --events openat,execve",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Trace Only New Processes Started After Tracee",
+            "desc": "Ignore pre-existing processes and follow only newly spawned ones",
+            "desc_tr": "Var olan surecleri yok say ve yalnizca yeni olusan surecleri izle",
+            "cmd": "sudo tracee --scope pid=new --events execve,execveat",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Scope Events to Containers Only",
+            "desc": "Restrict tracing to processes running inside containers",
+            "desc_tr": "Izlemeyi yalnizca konteyner icinde calisan sureclere sinirla",
+            "cmd": "sudo tracee --scope container --events execve,security_file_open",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Filter a Single Container by ID",
+            "desc": "Trace events from one specific container by its ID",
+            "desc_tr": "Belirli bir konteynerden gelen olaylari ID'sine gore izle",
+            "cmd": "sudo tracee --scope container=<CONTAINER> --events execve,connect",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Filter Events by Argument Value",
+            "desc": "Match events whose argument matches a pattern (e.g. opened path)",
+            "desc_tr": "Argumani bir desene uyan olaylari esle (orn. acilan yol)",
+            "cmd": "sudo tracee --events openat --filter 'openat.args.pathname=/etc/shadow'",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Filter by Return Value (Failed Calls)",
+            "desc": "Catch only failed syscalls such as denied file opens",
+            "desc_tr": "Yalnizca reddedilen dosya acmalari gibi basarisiz sistem cagrilarini yakala",
+            "cmd": "sudo tracee --events openat --filter 'openat.retval<0'",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Filter by UID (Root Activity Only)",
+            "desc": "Trace events generated only by the root user",
+            "desc_tr": "Yalnizca root kullanicisinin urettigi olaylari izle",
+            "cmd": "sudo tracee --scope uid=0 --events execve,setuid",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Run Behavioral Detection Signatures",
+            "desc": "Enable high-level behavioral signatures for evasion and injection",
+            "desc_tr": "Kacinma ve enjeksiyona yonelik ust duzey davranissal imzalari etkinlestir",
+            "cmd": "sudo tracee --events anti_debugging,code_injection,fileless_execution,dropped_executable",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Detect Container Escape and Capability Abuse",
+            "desc": "Turn on signatures targeting escapes and BPF/capability abuse",
+            "desc_tr": "Kacis ve BPF/yetenek kotuye kullanimini hedefleyen imzalari ac",
+            "cmd": "sudo tracee --events container_create,proc_mem_access,security_bpf,syscall_table_check",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Output Events as JSON",
+            "desc": "Emit structured JSON for ingestion by SIEM or log pipelines",
+            "desc_tr": "SIEM veya log boru hatlari icin yapilandirilmis JSON uret",
+            "cmd": "sudo tracee --events execve --output json",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Write Output to a File",
+            "desc": "Persist events to a file instead of stdout",
+            "desc_tr": "Olaylari stdout yerine bir dosyaya kalici olarak yaz",
+            "cmd": "sudo tracee --events execve --output json:<PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Forward Events to a Webhook",
+            "desc": "Stream detections to an HTTP endpoint as JSON",
+            "desc_tr": "Tespitleri JSON olarak bir HTTP uc noktasina akit",
+            "cmd": "sudo tracee --events dropped_executable --output webhook:'http://<TARGET_IP>:8080?timeout=5s'",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Apply a Custom Go-Template Output",
+            "desc": "Render each event with a user-supplied gotemplate",
+            "desc_tr": "Her olayi kullanici tarafindan saglanan bir gotemplate ile bicimlendir",
+            "cmd": "sudo tracee --events execve --output gotemplate=<FILE>.tmpl",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Capture Written Files for Forensics",
+            "desc": "Save artifacts of written files to disk for later analysis",
+            "desc_tr": "Sonradan analiz icin yazilan dosyalarin artifaktlarini diske kaydet",
+            "cmd": "sudo tracee --events magic_write --capture write --capture dir:<PATH>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Capture Executed and Dropped Binaries",
+            "desc": "Dump executed and dropped binaries for malware triage",
+            "desc_tr": "Kotu amacli yazilim incelemesi icin yurutulen ve birakilan ikili dosyalari kaydet",
+            "cmd": "sudo tracee --capture exec --capture dropped --capture dir:<PATH>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Capture Network Traffic to PCAP",
+            "desc": "Record per-container network packets into pcap files",
+            "desc_tr": "Konteyner basina ag paketlerini pcap dosyalarina kaydet",
+            "cmd": "sudo tracee --events net_packet_ipv4 --capture net --capture dir:<PATH>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Load a Tracee Policy File",
+            "desc": "Apply declarative YAML policies for scoped event selection",
+            "desc_tr": "Kapsamli olay secimi icin bildirimsel YAML politikalari uygula",
+            "cmd": "sudo tracee --policy <PATH>/policy.yaml",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Policies bundle scope+events+actions; pass a directory to --policy to load every YAML file in it at once."
+          },
+          {
+            "title": "Deploy Tracee on Kubernetes via Helm",
+            "desc": "Install the Tracee DaemonSet across all nodes with Helm",
+            "desc_tr": "Tracee DaemonSet'ini Helm ile tum node'lara kur",
+            "cmds": [
+              "helm repo add aqua https://aquasecurity.github.io/helm-charts/",
+              "helm repo update",
+              "helm install tracee aqua/tracee --namespace <NAMESPACE> --create-namespace"
+            ],
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Stream Tracee Detections from the DaemonSet",
+            "desc": "Tail and filter detection events from the Kubernetes pods",
+            "desc_tr": "Kubernetes pod'larindan tespit olaylarini akit ve filtrele",
+            "cmd": "kubectl logs -n <NAMESPACE> -l app.kubernetes.io/name=tracee -f",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Expose Tracee Prometheus Metrics",
+            "desc": "Enable the metrics endpoint to monitor Tracee health and event rates",
+            "desc_tr": "Tracee saglik ve olay oranlarini izlemek icin metrik uc noktasini etkinlestir",
+            "cmd": "sudo tracee --metrics --pprof --listen-addr :3366",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Smoke-Test Detections with a Suspicious Action",
+            "desc": "Trigger a classic detection to validate the full pipeline",
+            "desc_tr": "Tum boru hattini dogrulamak icin klasik bir tespiti tetikle",
+            "cmd": "kubectl run tracee-test --rm -ti --image=alpine -- sh -c 'cat /etc/shadow; nc -h'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Reading /etc/shadow inside a container and spawning a shell are classic detections; use this to confirm Tracee fires end-to-end."
+          }
+        ]
+      },
+      {
+        "name": "seccomp & AppArmor profiles",
+        "commands": [
+          {
+            "title": "Run Container with Custom Seccomp Profile",
+            "desc": "Restrict allowed syscalls using a custom seccomp BPF profile",
+            "desc_tr": "Ozel bir seccomp BPF profili kullanarak izin verilen sistem cagrilarini kisitlar",
+            "cmd": "docker run --security-opt seccomp=<FILE>.json <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Fetch the Docker Default Seccomp Profile",
+            "desc": "Download the upstream Moby default seccomp profile as a baseline",
+            "desc_tr": "Temel olarak kullanmak uzere upstream Moby varsayilan seccomp profilini indirir",
+            "cmd": "curl -fsSL https://raw.githubusercontent.com/moby/moby/master/profiles/seccomp/default.json -o default-seccomp.json",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Verify Seccomp Filter Is Active",
+            "desc": "Confirm seccomp mode inside the container (2 = filtering enabled)",
+            "desc_tr": "Konteyner icinde seccomp modunu dogrular (2 = filtreleme etkin)",
+            "cmd": "docker run --rm <IMAGE> grep -i seccomp /proc/self/status",
+            "tags": [
+              "essential"
+            ],
+            "note": "Seccomp: 2 means a filter is loaded; 0 means unconfined."
+          },
+          {
+            "title": "Inspect a Running Container's Seccomp Setting",
+            "desc": "Check whether a live container runs with seccomp disabled (CIS 5.21)",
+            "desc_tr": "Calisan bir konteynerin seccomp devre disi olup olmadigini kontrol eder (CIS 5.21)",
+            "cmd": "docker inspect --format '{{ .HostConfig.SecurityOpt }}' <CONTAINER>",
+            "tags": [
+              "essential"
+            ],
+            "note": "An empty list means the default profile is applied; 'seccomp=unconfined' is a finding."
+          },
+          {
+            "title": "Disable Seccomp for Diagnostics Only",
+            "desc": "Turn off seccomp filtering to find which syscall is being blocked",
+            "desc_tr": "Hangi syscall'in engellendigini bulmak icin seccomp filtrelemesini kapatir",
+            "cmd": "docker run --security-opt seccomp=unconfined <IMAGE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Never run unconfined in production; only use it to identify a needed syscall, then whitelist it."
+          },
+          {
+            "title": "Trace Syscalls Blocked by Seccomp (EPERM)",
+            "desc": "Use strace to reveal syscalls a profile rejects with EPERM",
+            "desc_tr": "Bir profilin EPERM ile reddettigi syscall'lari strace ile ortaya cikarir",
+            "cmd": "docker run --rm --cap-add SYS_PTRACE <IMAGE> strace -f -e trace=all <CMD> 2>&1 | grep EPERM",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Syscalls returning EPERM are candidates to add to the allow-list of your profile."
+          },
+          {
+            "title": "Auto-Generate a Seccomp Profile with oci-seccomp-bpf-hook",
+            "desc": "Record the exact syscalls a container uses to build a least-privilege profile",
+            "desc_tr": "En az ayricalikli bir profil olusturmak icin bir konteynerin kullandigi syscall'lari kaydeder",
+            "cmd": "podman run --annotation io.containers.trace-syscall=of:/tmp/<FILE>.json <IMAGE> <CMD>",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Requires the oci-seccomp-bpf-hook package; produces a minimal profile from real runtime behaviour."
+          },
+          {
+            "title": "Block a Single Syscall via Inline JSON",
+            "desc": "Deny one syscall (e.g. mount) without writing a full profile file",
+            "desc_tr": "Tam bir profil dosyasi yazmadan tek bir syscall'i (orn. mount) reddeder",
+            "cmd": "docker run --security-opt seccomp=<(echo '{\"defaultAction\":\"SCMP_ACT_ALLOW\",\"syscalls\":[{\"names\":[\"mount\"],\"action\":\"SCMP_ACT_ERRNO\"}]}') <IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Apply a Named AppArmor Profile",
+            "desc": "Confine the container with an already-loaded AppArmor profile",
+            "desc_tr": "Konteyneri onceden yuklenmis bir AppArmor profili ile sinirlandirir",
+            "cmd": "docker run --security-opt apparmor=<PROFILE> <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Load / Reload an AppArmor Profile",
+            "desc": "Parse a profile into the kernel and place it in enforce mode",
+            "desc_tr": "Bir profili kernel'e yukler ve enforce moduna alir",
+            "cmd": "sudo apparmor_parser -r -W <FILE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "List Loaded AppArmor Profiles",
+            "desc": "Show profiles currently loaded and which mode they are in",
+            "desc_tr": "Su anda yuklu profilleri ve hangi modda olduklarini gosterir",
+            "cmd": "sudo aa-status",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Run with Docker's Built-in AppArmor Profile",
+            "desc": "Explicitly apply the docker-default AppArmor profile",
+            "desc_tr": "docker-default AppArmor profilini acikca uygular",
+            "cmd": "docker run --security-opt apparmor=docker-default <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Disable AppArmor for One Container",
+            "desc": "Run unconfined to debug a denial (diagnostic use only)",
+            "desc_tr": "Bir reddi ayiklamak icin unconfined calistirir (yalnizca teshis amacli)",
+            "cmd": "docker run --security-opt apparmor=unconfined <IMAGE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Check /var/log/syslog or journalctl for 'apparmor=\"DENIED\"' entries while debugging."
+          },
+          {
+            "title": "Set an AppArmor Profile to Complain Mode",
+            "desc": "Log violations without enforcing, to refine a profile safely",
+            "desc_tr": "Bir profili guvenle iyilestirmek icin ihlalleri uygulamadan loglar",
+            "cmd": "sudo aa-complain <FILE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Use aa-enforce on the same file once the complain-mode logs are clean."
+          },
+          {
+            "title": "Generate an AppArmor Profile from Behaviour",
+            "desc": "Build and iteratively refine a profile by observing the running app",
+            "desc_tr": "Calisan uygulamayi gozlemleyerek bir profil olusturur ve adim adim iyilestirir",
+            "cmds": [
+              "sudo aa-genprof <PATH>",
+              "sudo aa-logprof"
+            ],
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Run the application's real workload between the two commands so aa-logprof can learn from the logs."
+          },
+          {
+            "title": "View AppArmor Denials in the Audit Log",
+            "desc": "Tail kernel messages for AppArmor DENIED events to tune a profile",
+            "desc_tr": "Bir profili ayarlamak icin AppArmor DENIED olaylari icin kernel mesajlarini izler",
+            "cmd": "sudo journalctl -k -f | grep -i 'apparmor=\"DENIED\"'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Check AppArmor Profile on a Running Container",
+            "desc": "Read the effective AppArmor profile applied to a container (CIS 5.1)",
+            "desc_tr": "Bir konteynere uygulanan etkin AppArmor profilini okur (CIS 5.1)",
+            "cmd": "docker inspect --format 'AppArmor={{ .AppArmorProfile }}' <CONTAINER>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Pod-Wide Seccomp via securityContext",
+            "desc": "Apply the runtime default seccomp profile to every container in a pod",
+            "desc_tr": "Bir pod'daki her konteynere runtime varsayilan seccomp profilini uygular",
+            "cmd": "kubectl patch deployment <POD> -n <NAMESPACE> --type merge -p '{\"spec\":{\"template\":{\"spec\":{\"securityContext\":{\"seccompProfile\":{\"type\":\"RuntimeDefault\"}}}}}}'",
+            "tags": [
+              "essential"
+            ],
+            "note": "RuntimeDefault uses the container runtime's default profile and is the recommended baseline since Kubernetes 1.25."
+          },
+          {
+            "title": "Use a Localhost Seccomp Profile in Kubernetes",
+            "desc": "Reference a custom JSON profile stored on each node's kubelet seccomp dir",
+            "desc_tr": "Her node'un kubelet seccomp dizininde saklanan ozel bir JSON profilini referans gosterir",
+            "cmd": "kubectl run <POD> --image=<IMAGE> --overrides='{\"spec\":{\"securityContext\":{\"seccompProfile\":{\"type\":\"Localhost\",\"localhostProfile\":\"profiles/<FILE>.json\"}}}}'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "localhostProfile is resolved relative to <kubelet-root>/seccomp on the node (default /var/lib/kubelet/seccomp)."
+          },
+          {
+            "title": "Apply an AppArmor Profile to a Pod (1.30+)",
+            "desc": "Set the AppArmor profile via the stable securityContext field",
+            "desc_tr": "AppArmor profilini kararli securityContext alani uzerinden ayarlar",
+            "cmd": "kubectl patch deployment <POD> -n <NAMESPACE> --type merge -p '{\"spec\":{\"template\":{\"spec\":{\"securityContext\":{\"appArmorProfile\":{\"type\":\"Localhost\",\"localhostProfile\":\"<PROFILE>\"}}}}}}'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "The old container.apparmor.security.beta.kubernetes.io annotation is deprecated; use the appArmorProfile field on 1.30+."
+          },
+          {
+            "title": "Audit Seccomp Settings Across All Pods",
+            "desc": "List every pod and whether it sets a seccomp profile type",
+            "desc_tr": "Her pod'u ve bir seccomp profil tipi ayarlayip ayarlamadigini listeler",
+            "cmd": "kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.namespace}{\"/\"}{.metadata.name}{\" => \"}{.spec.securityContext.seccompProfile.type}{\"\\n\"}{end}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Generate Kubernetes Seccomp Profiles with the Security Profiles Operator",
+            "desc": "Record syscalls from a workload into a SeccompProfile CR via SPO",
+            "desc_tr": "SPO ile bir is yukunun syscall'larini bir SeccompProfile CR'ine kaydeder",
+            "cmd": "kubectl label ns <NAMESPACE> spo.x-k8s.io/enable-recording=true",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "The Security Profiles Operator uses a ProfileRecording CR plus eBPF/log recorder to auto-build least-privilege seccomp/AppArmor profiles."
+          },
+          {
+            "title": "Apply a Seccomp Profile with Podman",
+            "desc": "Run a rootless container under a custom seccomp profile",
+            "desc_tr": "Kullanici-namespace izolasyonu ile ozel bir seccomp profili altinda konteyner calistirir",
+            "cmd": "podman run --security-opt seccomp=<FILE>.json <IMAGE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Apply seccomp & AppArmor to a systemd Service",
+            "desc": "Harden a unit with a syscall filter set and an AppArmor profile",
+            "desc_tr": "Bir systemd birimini syscall filtre seti ve bir AppArmor profili ile sertlestirir",
+            "cmds": [
+              "systemctl edit <SERVICE>",
+              "# under [Service]: SystemCallFilter=@system-service",
+              "# under [Service]: AppArmorProfile=<PROFILE>"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "SystemCallFilter=@system-service is a curated allow-list group; add SystemCallArchitectures=native to block multi-arch bypasses."
+          },
+          {
+            "title": "Analyze a systemd Unit's Sandbox Exposure",
+            "desc": "Score how well a service is confined, including seccomp coverage",
+            "desc_tr": "Seccomp kapsami dahil bir servisin ne kadar iyi sinirlandirildigini puanlar",
+            "cmd": "systemd-analyze security <SERVICE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Detect Disabled Seccomp / AppArmor Inside a Container",
+            "desc": "From inside a container, confirm whether syscall and MAC confinement are off",
+            "desc_tr": "Konteyner icinden syscall ve MAC sinirlamasinin kapali olup olmadigini dogrular",
+            "cmds": [
+              "grep Seccomp /proc/self/status",
+              "cat /proc/self/attr/current"
+            ],
+            "tags": [
+              "essential"
+            ],
+            "note": "Seccomp: 0 means no syscall filtering; 'unconfined' in attr/current means no AppArmor confinement (common escape surface)."
+          },
+          {
+            "title": "Profile Container Runtime Confinement with amicontained",
+            "desc": "Report seccomp mode, capabilities and AppArmor in one shot",
+            "desc_tr": "Seccomp modunu, yetenekleri ve AppArmor durumunu tek seferde raporlar",
+            "cmd": "docker run --rm <IMAGE> amicontained",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "amicontained also enumerates which syscalls are blocked, useful for validating a custom profile."
+          }
+        ]
+      },
+      {
+        "name": "Sysdig & osquery",
+        "commands": [
+          {
+            "title": "Capture all syscalls to a file",
+            "desc": "Record system activity into a scap capture file for offline analysis",
+            "desc_tr": "Sistem etkinligini cevrimdisi analiz icin scap yakalama dosyasina kaydet",
+            "cmd": "sysdig -w <FILE>.scap",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Read and filter a capture file",
+            "desc": "Replay a previously recorded capture and apply a filter",
+            "desc_tr": "Onceden kaydedilmis yakalamayi oynat ve filtre uygula",
+            "cmd": "sysdig -r <FILE>.scap proc.name=<PROCESS>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "List all available chisels",
+            "desc": "Show built-in sysdig chisels (mini scripts) for common analyses",
+            "desc_tr": "Yaygin analizler icin yerlesik sysdig chisel'lerini (mini betikler) listele",
+            "cmd": "sysdig -cl",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Top processes by CPU with spy_users chisel",
+            "desc": "Run a chisel such as topprocs_cpu to rank processes by CPU usage",
+            "desc_tr": "topprocs_cpu gibi bir chisel calistirip islemleri CPU kullanimina gore siralayin",
+            "cmd": "sysdig -c topprocs_cpu",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Monitor files opened by a process",
+            "desc": "Trace open events for a specific process name in real time",
+            "desc_tr": "Belirli bir islem adi icin dosya acma olaylarini gercek zamanli izle",
+            "cmd": "sysdig -p\"%proc.name %fd.name\" \"evt.type=open and proc.name=<PROCESS>\"",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Watch outbound network connections",
+            "desc": "Display all new outbound TCP connections as they happen",
+            "desc_tr": "Tum yeni giden TCP baglantilarini olustukca goster",
+            "cmd": "sysdig -p\"%proc.name %fd.cip:%fd.cport->%fd.sip:%fd.sport\" \"evt.type=connect and evt.dir=<\"",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Spy on commands executed by users",
+            "desc": "Use the spy_users chisel to see every interactive command run",
+            "desc_tr": "Calistirilan her interaktif komutu gormek icin spy_users chisel'ini kullan",
+            "cmd": "sysdig -c spy_users",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Capture activity inside a specific container",
+            "desc": "Filter syscalls to a single container by name",
+            "desc_tr": "Sistem cagrilarini ada gore tek bir konteynere filtrele",
+            "cmd": "sysdig -pc container.name=<CONTAINER>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Live container view with csysdig",
+            "desc": "Open the interactive ncurses UI focused on containers",
+            "desc_tr": "Konteynerlere odakli interaktif ncurses arayuzunu ac",
+            "cmd": "csysdig -pc",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "List container processes via chisel",
+            "desc": "Use lscontainers to enumerate running containers and their CPU",
+            "desc_tr": "Calisan konteynerleri ve CPU'larini saymak icin lscontainers kullan",
+            "cmd": "sysdig -c lscontainers",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Trace errors returned by syscalls",
+            "desc": "Show failed syscalls (negative return values) for troubleshooting",
+            "desc_tr": "Sorun giderme icin basarisiz sistem cagrilarini (negatif donus degerleri) goster",
+            "cmd": "sysdig \"evt.failed=true and proc.name=<PROCESS>\"",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Sysdig CLI Scanner image vulnerability scan",
+            "desc": "Scan a container image for vulnerabilities with the Sysdig CLI scanner",
+            "desc_tr": "Sysdig CLI tarayici ile bir konteyner imajini guvenlik aciklari icin tara",
+            "cmd": "sysdig-cli-scanner --apiurl <API_URL> <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Set SECURE_API_TOKEN env var; the scanner pulls policy from Sysdig Secure."
+          },
+          {
+            "title": "Tail process executions with execve",
+            "desc": "Print every newly executed program with its full command line",
+            "desc_tr": "Yeni calistirilan her programi tam komut satiriyla yazdir",
+            "cmd": "sysdig -p\"%proc.pname -> %proc.exeline\" \"evt.type=execve and evt.dir=<\"",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Capture with chained ring buffer rotation",
+            "desc": "Continuously write rotating capture files limited by size",
+            "desc_tr": "Boyutla sinirli surekli donen yakalama dosyalari yaz",
+            "cmd": "sysdig -w <FILE>.scap -C 50 -W 10",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "-C sets per-file MB size, -W keeps that many rotated files."
+          },
+          {
+            "title": "Query osquery interactively",
+            "desc": "Launch the standalone osquery shell to run SQL against the OS",
+            "desc_tr": "Isletim sistemine SQL calistirmak icin bagimsiz osquery kabugunu baslat",
+            "cmd": "osqueryi",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "List all osquery tables",
+            "desc": "Enumerate every virtual table exposed by osquery",
+            "desc_tr": "osquery tarafindan sunulan tum sanal tablolari listele",
+            "cmd": "osqueryi \".tables\"",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "List currently logged-in users",
+            "desc": "Query the logged_in_users table for active sessions",
+            "desc_tr": "Aktif oturumlar icin logged_in_users tablosunu sorgula",
+            "cmd": "osqueryi \"SELECT user, tty, host, time FROM logged_in_users;\"",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Find processes listening on ports",
+            "desc": "Join process_open_sockets and processes to map listeners to binaries",
+            "desc_tr": "Dinleyicileri ikili dosyalara eslemek icin process_open_sockets ve processes tablolarini birlestir",
+            "cmd": "osqueryi \"SELECT p.name, l.port, l.address FROM listening_ports l JOIN processes p ON l.pid = p.pid;\"",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Detect processes running from deleted binaries",
+            "desc": "Surface potentially malicious processes whose on-disk binary was removed",
+            "desc_tr": "Disk uzerindeki ikili dosyasi silinmis potansiyel kotu amacli islemleri ortaya cikar",
+            "cmd": "osqueryi \"SELECT pid, name, path FROM processes WHERE on_disk = 0;\"",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "List loaded kernel modules",
+            "desc": "Inspect kernel modules currently loaded on a Linux host",
+            "desc_tr": "Linux ana bilgisayarinda su anda yuklu cekirdek modullerini incele",
+            "cmd": "osqueryi \"SELECT name, size, used_by, status FROM kernel_modules;\"",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Audit scheduled cron jobs",
+            "desc": "Read crontab entries across the system via osquery",
+            "desc_tr": "osquery ile sistemdeki crontab girdilerini oku",
+            "cmd": "osqueryi \"SELECT command, path, minute, hour FROM crontab;\"",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Check file integrity with hashes",
+            "desc": "Compute SHA256 and other hashes for a sensitive file",
+            "desc_tr": "Hassas bir dosya icin SHA256 ve diger ozetleri hesapla",
+            "cmd": "osqueryi \"SELECT path, sha256 FROM hash WHERE path = '<FILE>';\"",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Run osquery daemon with a config",
+            "desc": "Start osqueryd to run scheduled query packs and log results",
+            "desc_tr": "Zamanlanmis sorgu paketlerini calistirmak ve sonuclari loglamak icin osqueryd baslat",
+            "cmd": "osqueryd --config_path=<PATH>/osquery.conf --logger_path=<PATH>/log",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Use FIM via file_events table plus a configured file_paths section for change detection."
+          },
+          {
+            "title": "Run a single query in JSON mode",
+            "desc": "Execute one query non-interactively and emit JSON for tooling",
+            "desc_tr": "Tek bir sorguyu etkilesimsiz calistir ve araclar icin JSON uret",
+            "cmd": "osqueryi --json \"SELECT * FROM os_version;\"",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Find users with empty or no password",
+            "desc": "Query shadow table to spot accounts lacking a password hash",
+            "desc_tr": "Parola ozeti olmayan hesaplari tespit etmek icin shadow tablosunu sorgula",
+            "cmd": "osqueryi \"SELECT username, password_status FROM shadow WHERE password_status != 'active';\"",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Enumerate Docker containers via osquery",
+            "desc": "List running Docker containers using the docker_containers table",
+            "desc_tr": "docker_containers tablosunu kullanarak calisan Docker konteynerlerini listele",
+            "cmd": "osqueryi \"SELECT id, name, image, state FROM docker_containers;\"",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Requires osquery to have access to the Docker socket."
+          },
+          {
+            "title": "Spy on file opens per directory with echo_fds",
+            "desc": "Use the echo_fds chisel to dump data read/written on file descriptors",
+            "desc_tr": "Dosya tanimlayicilarinda okunan/yazilan veriyi dokmek icin echo_fds chisel'ini kullan",
+            "cmd": "sysdig -c echo_fds proc.name=<PROCESS>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Captures payloads in clear text; avoid on sensitive production traffic without authorization."
+          }
+        ]
+      }
+    ]
   }
 ];

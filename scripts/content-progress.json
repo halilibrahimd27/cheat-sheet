@@ -177,7 +177,7 @@
       "id": "cloud-native-runtime",
       "name": "Cloud-Native Runtime Security",
       "icon": "🦅",
-      "status": "pending",
+      "status": "done",
       "description": "Runtime threat detection and enforcement for containers and hosts using eBPF-based and policy tooling.",
       "subcategories": [
         "Falco (rules, alerts, deployment)",
@@ -185,7 +185,8 @@
         "Tracee",
         "seccomp & AppArmor profiles",
         "Sysdig & osquery"
-      ]
+      ],
+      "commands_added": 137
     },
     {
       "id": "cspm",
