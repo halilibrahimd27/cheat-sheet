@@ -32722,5 +32722,1900 @@ module.exports = [
         ]
       }
     ]
+  },
+  {
+    "id": "terraform",
+    "name": "Terraform / IaC Core",
+    "name_tr": "Terraform / IaC Temelleri",
+    "icon": "🏗️",
+    "description": "Terraform workflow: init, plan, apply, state management, workspaces, modules, providers, and debugging.",
+    "description_tr": "Terraform iş akışı: init, plan, apply, state yönetimi, workspaceler, modüller, providerlar ve hata ayıklama.",
+    "subcategories": [
+      {
+        "name": "Core Workflow (init, plan, apply, destroy, fmt, validate)",
+        "commands": [
+          {
+            "title": "Initialize Working Directory",
+            "desc": "Download providers/modules and set up backend",
+            "desc_tr": "Provider/modülleri indir ve backend'i kur",
+            "cmd": "terraform init",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Init with Backend Reconfigure",
+            "desc": "Reinitialize ignoring existing backend config",
+            "desc_tr": "Mevcut backend yapılandırmasını yok sayarak yeniden başlat",
+            "cmd": "terraform init -reconfigure",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Init and Migrate State",
+            "desc": "Initialize and migrate state to a new backend",
+            "desc_tr": "Başlat ve state'i yeni bir backend'e taşı",
+            "cmd": "terraform init -migrate-state",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Upgrade Providers/Modules",
+            "desc": "Upgrade providers and modules to latest allowed versions",
+            "desc_tr": "Provider ve modülleri izin verilen en son sürümlere yükselt",
+            "cmd": "terraform init -upgrade",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Init with Partial Backend Config",
+            "desc": "Pass backend settings from a file at init time",
+            "desc_tr": "Init sırasında backend ayarlarını dosyadan ver",
+            "cmd": "terraform init -backend-config=<FILE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Format Configuration",
+            "desc": "Rewrite config files to canonical HCL style",
+            "desc_tr": "Yapılandırma dosyalarını standart HCL stiline göre yeniden yaz",
+            "cmd": "terraform fmt",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Recursive Format Check (CI)",
+            "desc": "Check formatting recursively without writing, non-zero exit on diff",
+            "desc_tr": "Yazmadan özyinelemeli format kontrolü, fark varsa sıfırdan farklı çıkış",
+            "cmd": "terraform fmt -recursive -check -diff",
+            "tags": [
+              "essential"
+            ],
+            "note": "Ideal for CI pipelines; fails the build if files are unformatted"
+          },
+          {
+            "title": "Validate Configuration",
+            "desc": "Check config for syntax and internal consistency",
+            "desc_tr": "Yapılandırmanın sözdizimi ve iç tutarlılığını kontrol et",
+            "cmd": "terraform validate",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Validate as JSON",
+            "desc": "Machine-readable validation output for tooling",
+            "desc_tr": "Araçlar için makine-okunur doğrulama çıktısı",
+            "cmd": "terraform validate -json",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Generate Execution Plan",
+            "desc": "Preview changes Terraform will make",
+            "desc_tr": "Terraform'un yapacağı değişiklikleri önizle",
+            "cmd": "terraform plan",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Save Plan to File",
+            "desc": "Write the plan to a file for a later apply",
+            "desc_tr": "Planı sonradan apply için dosyaya yaz",
+            "cmd": "terraform plan -out=<FILE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Applying a saved plan guarantees exactly the reviewed changes run"
+          },
+          {
+            "title": "Plan with Variable File",
+            "desc": "Run plan using a specific tfvars file",
+            "desc_tr": "Belirli bir tfvars dosyası ile plan çalıştır",
+            "cmd": "terraform plan -var-file=<FILE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Plan to Destroy",
+            "desc": "Preview a full teardown without applying",
+            "desc_tr": "Uygulamadan tam yıkımı önizle",
+            "cmd": "terraform plan -destroy",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Plan a Single Resource",
+            "desc": "Limit planning to a targeted resource address",
+            "desc_tr": "Planlamayı hedeflenen bir kaynak adresiyle sınırla",
+            "cmd": "terraform plan -target=<RESOURCE_ADDR>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Use -target sparingly; it can create inconsistent state if overused"
+          },
+          {
+            "title": "Apply Changes",
+            "desc": "Create/update infrastructure to match config",
+            "desc_tr": "Altyapıyı yapılandırmaya uyacak şekilde oluştur/güncelle",
+            "cmd": "terraform apply",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Apply a Saved Plan",
+            "desc": "Apply exactly the changes from a saved plan file",
+            "desc_tr": "Kaydedilmiş plan dosyasındaki değişiklikleri aynen uygula",
+            "cmd": "terraform apply <FILE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Non-Interactive Apply",
+            "desc": "Auto-approve apply for automation/CI",
+            "desc_tr": "Otomasyon/CI için onayı otomatik geç",
+            "cmd": "terraform apply -auto-approve",
+            "tags": [
+              "essential"
+            ],
+            "note": "Dangerous outside CI; skips the interactive confirmation prompt"
+          },
+          {
+            "title": "Apply with Inline Variable",
+            "desc": "Override a single variable on the command line",
+            "desc_tr": "Komut satırında tek bir değişkeni geçersiz kıl",
+            "cmd": "terraform apply -var='<KEY>=<VALUE>'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Parallel Resource Operations",
+            "desc": "Tune concurrency for plan/apply operations",
+            "desc_tr": "Plan/apply işlemleri için eşzamanlılığı ayarla",
+            "cmd": "terraform apply -parallelism=<N>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Replace a Resource",
+            "desc": "Force recreation of a specific resource",
+            "desc_tr": "Belirli bir kaynağın yeniden oluşturulmasını zorla",
+            "cmd": "terraform apply -replace=<RESOURCE_ADDR>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Modern replacement for the deprecated 'terraform taint' command"
+          },
+          {
+            "title": "Destroy Infrastructure",
+            "desc": "Tear down all managed resources",
+            "desc_tr": "Yönetilen tüm kaynakları yık",
+            "cmd": "terraform destroy",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Auto-Approve Destroy",
+            "desc": "Destroy without interactive confirmation",
+            "desc_tr": "Etkileşimli onay olmadan yık",
+            "cmd": "terraform destroy -auto-approve",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Irreversible; ensure you are targeting the correct workspace/state"
+          },
+          {
+            "title": "Destroy a Single Target",
+            "desc": "Destroy only a specific resource address",
+            "desc_tr": "Yalnızca belirli bir kaynak adresini yık",
+            "cmd": "terraform destroy -target=<RESOURCE_ADDR>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Refresh State (plan refresh-only)",
+            "desc": "Reconcile state with real infrastructure, no changes",
+            "desc_tr": "State'i gerçek altyapıyla uzlaştır, değişiklik yapma",
+            "cmd": "terraform apply -refresh-only",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Replaces deprecated 'terraform refresh'; updates state without altering resources"
+          },
+          {
+            "title": "Show Plan as JSON",
+            "desc": "Convert a saved plan to machine-readable JSON",
+            "desc_tr": "Kaydedilmiş planı makine-okunur JSON'a çevir",
+            "cmd": "terraform show -json <FILE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Plan with Detailed Exit Code",
+            "desc": "Exit code 2 signals pending changes for CI gating",
+            "desc_tr": "CI kapısı için çıkış kodu 2 bekleyen değişiklikleri belirtir",
+            "cmd": "terraform plan -detailed-exitcode",
+            "tags": [
+              "advanced"
+            ],
+            "note": "0=no changes, 1=error, 2=changes present — perfect for drift detection"
+          },
+          {
+            "title": "Format from Stdin",
+            "desc": "Pipe HCL through fmt for editor integrations",
+            "desc_tr": "Editör entegrasyonları için HCL'i fmt üzerinden geçir",
+            "cmd": "terraform fmt -",
+            "tags": [
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "State Management (state list/mv/rm, import, remote backends)",
+        "commands": [
+          {
+            "title": "List Resources in State",
+            "desc": "List all resource addresses tracked in the state",
+            "desc_tr": "State icinde izlenen tum kaynak adreslerini listele",
+            "cmd": "terraform state list",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Filter State by Address Pattern",
+            "desc": "List only resources matching a module or pattern",
+            "desc_tr": "Bir modul veya desene uyan kaynaklari listele",
+            "cmd": "terraform state list 'module.<MODULE>.aws_instance.*'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Show a Single Resource State",
+            "desc": "Print all attributes of one resource in state",
+            "desc_tr": "State icindeki tek bir kaynagin tum niteliklerini yazdir",
+            "cmd": "terraform state show 'aws_instance.<NAME>'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Rename / Move Resource in State",
+            "desc": "Move a resource to a new address without recreating it",
+            "desc_tr": "Bir kaynagi yeniden olusturmadan yeni bir adrese tasi",
+            "cmd": "terraform state mv 'aws_instance.<OLD>' 'aws_instance.<NEW>'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Prefer 'moved' blocks in config over state mv for reviewable, repeatable refactors."
+          },
+          {
+            "title": "Move Resource Into a Module",
+            "desc": "Relocate a top-level resource under a module address",
+            "desc_tr": "Ust seviye bir kaynagi bir modul adresinin altina tasi",
+            "cmd": "terraform state mv 'aws_instance.<NAME>' 'module.<MODULE>.aws_instance.<NAME>'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Move Resource Between State Files",
+            "desc": "Move a resource from one state file to another",
+            "desc_tr": "Bir kaynagi bir state dosyasindan digerine tasi",
+            "cmd": "terraform state mv -state=<SRC_STATE> -state-out=<DST_STATE> 'aws_instance.<NAME>' 'aws_instance.<NAME>'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Remove Resource from State",
+            "desc": "Stop tracking a resource without destroying it",
+            "desc_tr": "Bir kaynagi yok etmeden state takibinden cikar",
+            "cmd": "terraform state rm 'aws_instance.<NAME>'",
+            "tags": [
+              "essential"
+            ],
+            "note": "rm only forgets the resource; the real infrastructure keeps running."
+          },
+          {
+            "title": "Remove a Whole Module from State",
+            "desc": "Forget every resource under a module address",
+            "desc_tr": "Bir modul adresinin altindaki tum kaynaklari state'ten unut",
+            "cmd": "terraform state rm 'module.<MODULE>'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Import Existing Resource into State",
+            "desc": "Bring an existing real resource under Terraform management",
+            "desc_tr": "Mevcut gercek bir kaynagi Terraform yonetimine al",
+            "cmd": "terraform import 'aws_instance.<NAME>' <INSTANCE_ID>",
+            "tags": [
+              "essential"
+            ],
+            "note": "You must first write a matching resource block in config before importing."
+          },
+          {
+            "title": "Import a Resource Inside a Module",
+            "desc": "Import a real resource to an address nested in a module",
+            "desc_tr": "Gercek bir kaynagi bir modul icindeki adrese aktar",
+            "cmd": "terraform import 'module.<MODULE>.aws_s3_bucket.<NAME>' <BUCKET_NAME>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Import an Indexed (count/for_each) Resource",
+            "desc": "Import into a specific index or key of a resource",
+            "desc_tr": "Bir kaynagin belirli indeks veya anahtarina aktar",
+            "cmd": "terraform import 'aws_instance.<NAME>[\"<KEY>\"]' <INSTANCE_ID>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Quote the whole address in shells like bash/zsh to protect the brackets."
+          },
+          {
+            "title": "Generate Config While Planning Import",
+            "desc": "Use import blocks to auto-generate HCL during plan",
+            "desc_tr": "import bloklari ile plan sirasinda HCL'i otomatik uret",
+            "cmd": "terraform plan -generate-config-out=<FILE>.tf",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Requires Terraform 1.5+ with an import {} block referencing the target."
+          },
+          {
+            "title": "Pull Remote State to Stdout",
+            "desc": "Download and print the current remote state as JSON",
+            "desc_tr": "Mevcut uzak state'i JSON olarak indirip yazdir",
+            "cmd": "terraform state pull",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Pipe to a file for backup: terraform state pull > <FILE>.tfstate"
+          },
+          {
+            "title": "Push Local State to Remote Backend",
+            "desc": "Upload a local state file to overwrite remote state",
+            "desc_tr": "Yerel bir state dosyasini uzak state'in uzerine yaz",
+            "cmd": "terraform state push <FILE>.tfstate",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Dangerous: overwrites remote state. Back up with state pull first."
+          },
+          {
+            "title": "Initialize / Configure Remote Backend",
+            "desc": "Initialize the working dir and set up the backend",
+            "desc_tr": "Calisma dizinini baslat ve backend'i yapilandir",
+            "cmd": "terraform init",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Pass Backend Config at Init Time",
+            "desc": "Supply backend settings via partial configuration",
+            "desc_tr": "Backend ayarlarini kismi yapilandirma ile init'e gec",
+            "cmd": "terraform init -backend-config=<FILE>.hcl",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Migrate State to a New Backend",
+            "desc": "Reinitialize and copy state when backend changes",
+            "desc_tr": "Backend degistiginde yeniden baslat ve state'i kopyala",
+            "cmd": "terraform init -migrate-state",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Run after editing the backend block; Terraform prompts to copy existing state."
+          },
+          {
+            "title": "Reconfigure Backend Without Migration",
+            "desc": "Reset backend config and ignore existing state copy",
+            "desc_tr": "Backend yapilandirmasini sifirla, mevcut state'i kopyalama",
+            "cmd": "terraform init -reconfigure",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Force-Unlock a Stuck State Lock",
+            "desc": "Manually release a hung state lock by its ID",
+            "desc_tr": "Kilitli kalmis bir state kilidini ID ile elle serbest birak",
+            "cmd": "terraform force-unlock <LOCK_ID>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Only unlock when you are certain no other apply is running, or you risk corruption."
+          },
+          {
+            "title": "Refresh State Against Real Infra",
+            "desc": "Reconcile state with actual resources via plan",
+            "desc_tr": "State'i gercek kaynaklarla plan uzerinden esitle",
+            "cmd": "terraform plan -refresh-only",
+            "tags": [
+              "essential"
+            ],
+            "note": "Replaces the deprecated 'terraform refresh' command (1.x)."
+          },
+          {
+            "title": "Apply a Refresh-Only Update",
+            "desc": "Persist drift detected by a refresh into state",
+            "desc_tr": "Refresh ile tespit edilen sapmayi state'e yaz",
+            "cmd": "terraform apply -refresh-only -auto-approve",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Use an Alternate State File",
+            "desc": "Run commands against a non-default local state path",
+            "desc_tr": "Varsayilan olmayan yerel state yoluna karsi komut calistir",
+            "cmd": "terraform state list -state=<FILE>.tfstate",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Mark Resource for Recreation (Taint)",
+            "desc": "Flag a resource to be destroyed and recreated next apply",
+            "desc_tr": "Bir kaynagi sonraki apply'da yok edilip yeniden olusturulmak uzere isaretle",
+            "cmd": "terraform taint 'aws_instance.<NAME>'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Modern alternative: terraform apply -replace='aws_instance.<NAME>'"
+          },
+          {
+            "title": "Replace Resource on Next Apply",
+            "desc": "Force replacement of one resource without tainting",
+            "desc_tr": "Taint kullanmadan tek bir kaynagin yeniden olusturulmasini zorla",
+            "cmd": "terraform apply -replace='aws_instance.<NAME>'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Read State via Terraform Output",
+            "desc": "Read output values stored in the current state",
+            "desc_tr": "Mevcut state'te saklanan output degerlerini oku",
+            "cmd": "terraform output -json",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Reference Remote State Data Source",
+            "desc": "Inspect a remote backend's resources from another config",
+            "desc_tr": "Uzak bir backend'in kaynaklarini baska bir config'den incele",
+            "cmd": "terraform state list -state=<REMOTE_STATE>.tfstate",
+            "tags": [
+              "advanced"
+            ],
+            "note": "In code, use the terraform_remote_state data source to share outputs across stacks."
+          },
+          {
+            "title": "Inspect State as JSON with jq",
+            "desc": "Dump state and filter resource attributes with jq",
+            "desc_tr": "State'i JSON olarak dok ve jq ile nitelikleri filtrele",
+            "cmd": "terraform show -json | jq '.values.root_module.resources[].address'",
+            "tags": [
+              "tool"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Workspaces & Environments",
+        "commands": [
+          {
+            "title": "List Workspaces",
+            "desc": "List all workspaces; current one is marked with an asterisk",
+            "desc_tr": "Tüm workspace'leri listele; geçerli olan yıldız (*) ile işaretlenir",
+            "cmd": "terraform workspace list",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Show Current Workspace",
+            "desc": "Print the name of the currently selected workspace",
+            "desc_tr": "Şu anda seçili olan workspace'in adını yazdır",
+            "cmd": "terraform workspace show",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Create New Workspace",
+            "desc": "Create a new workspace and switch to it",
+            "desc_tr": "Yeni bir workspace oluştur ve ona geçiş yap",
+            "cmd": "terraform workspace new <WORKSPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Select Workspace",
+            "desc": "Switch to an existing workspace",
+            "desc_tr": "Var olan bir workspace'e geçiş yap",
+            "cmd": "terraform workspace select <WORKSPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Select or Create Workspace",
+            "desc": "Select a workspace, creating it if it does not exist",
+            "desc_tr": "Bir workspace seç, yoksa otomatik oluştur",
+            "cmd": "terraform workspace select -or-create <WORKSPACE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "The -or-create flag was added in Terraform 1.4; older versions error if the workspace is missing."
+          },
+          {
+            "title": "Delete Workspace",
+            "desc": "Delete an empty workspace (must not be the current one)",
+            "desc_tr": "Boş bir workspace'i sil (geçerli workspace olmamalı)",
+            "cmd": "terraform workspace delete <WORKSPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Force Delete Non-Empty Workspace",
+            "desc": "Delete a workspace even though its state still tracks resources",
+            "desc_tr": "State hala kaynak izlese bile workspace'i zorla sil",
+            "cmd": "terraform workspace delete -force <WORKSPACE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Dangerous: this orphans real infrastructure since the tracking state is discarded. Destroy resources first."
+          },
+          {
+            "title": "Select Workspace via Environment Variable",
+            "desc": "Pin the active workspace using TF_WORKSPACE without running select",
+            "desc_tr": "select çalıştırmadan TF_WORKSPACE ile aktif workspace'i sabitle",
+            "cmd": "export TF_WORKSPACE=<WORKSPACE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Useful in CI; if set, it must match the workspace name or Terraform errors out."
+          },
+          {
+            "title": "Reference Workspace in Configuration",
+            "desc": "Use terraform.workspace interpolation to vary resource names",
+            "desc_tr": "Kaynak adlarını değiştirmek için terraform.workspace ifadesini kullan",
+            "cmd": "name = \"app-${terraform.workspace}\"",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Conditional Sizing per Workspace",
+            "desc": "Map workspace name to environment-specific values via locals",
+            "desc_tr": "locals ile workspace adını ortama özgü değerlere eşle",
+            "cmd": "instance_type = terraform.workspace == \"prod\" ? \"m5.large\" : \"t3.micro\"",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Apply with Per-Environment Var File",
+            "desc": "Drive a workspace with a matching tfvars file",
+            "desc_tr": "Workspace'i ona uyan bir tfvars dosyası ile çalıştır",
+            "cmd": "terraform apply -var-file=<WORKSPACE>.tfvars",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Auto-Load Workspace tfvars",
+            "desc": "Run plan picking the var file by current workspace name",
+            "desc_tr": "Geçerli workspace adına göre var dosyasını seçerek plan çalıştır",
+            "cmd": "terraform plan -var-file=\"environments/$(terraform workspace show).tfvars\"",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Init with Backend Workspace Key Prefix",
+            "desc": "Configure S3 backend so each workspace gets its own state path",
+            "desc_tr": "Her workspace'in kendi state yoluna sahip olması için S3 backend'i yapılandır",
+            "cmd": "terraform init -backend-config=\"workspace_key_prefix=env\"",
+            "tags": [
+              "advanced"
+            ],
+            "note": "With the S3 backend, non-default workspaces store state under <prefix>/<workspace>/<key>."
+          },
+          {
+            "title": "Init Against Per-Environment Backend Config",
+            "desc": "Use a separate backend config file per environment during init",
+            "desc_tr": "init sırasında her ortam için ayrı bir backend yapılandırma dosyası kullan",
+            "cmd": "terraform init -backend-config=<WORKSPACE>.backend.hcl -reconfigure",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Plan a Specific Workspace Non-Interactively",
+            "desc": "Select and plan a workspace in one CI-friendly chain",
+            "desc_tr": "CI dostu tek bir zincirde bir workspace seç ve plan al",
+            "cmd": "terraform workspace select <WORKSPACE> && terraform plan -input=false",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Destroy a Single Environment",
+            "desc": "Tear down all resources tracked by the selected workspace",
+            "desc_tr": "Seçili workspace tarafından izlenen tüm kaynakları yok et",
+            "cmd": "terraform workspace select <WORKSPACE> && terraform destroy -auto-approve",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Confirm the active workspace first; destroying the wrong environment is irreversible."
+          },
+          {
+            "title": "List State Resources in Workspace",
+            "desc": "Show resources tracked by the current workspace state",
+            "desc_tr": "Geçerli workspace state'inde izlenen kaynakları göster",
+            "cmd": "terraform state list",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Show Workspace State Outputs",
+            "desc": "Read output values from the current workspace state",
+            "desc_tr": "Geçerli workspace state'inden output değerlerini oku",
+            "cmd": "terraform output -json",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Cross-Workspace State via terraform_remote_state",
+            "desc": "Read another workspace's outputs using a remote state data source",
+            "desc_tr": "Uzak state veri kaynağı ile başka bir workspace'in output'larını oku",
+            "cmds": [
+              "data \"terraform_remote_state\" \"net\" {",
+              "  backend = \"s3\"",
+              "  config = { bucket = \"<BUCKET>\", key = \"env/<WORKSPACE>/terraform.tfstate\", region = \"<REGION>\" }",
+              "}"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Loop Plan Across All Workspaces",
+            "desc": "Iterate every workspace and run a plan for each",
+            "desc_tr": "Her workspace üzerinde dön ve her biri için plan çalıştır",
+            "cmd": "for ws in $(terraform workspace list | tr -d '* '); do terraform workspace select $ws && terraform plan; done",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Guard Apply Against Wrong Workspace",
+            "desc": "Abort apply if the active workspace is not the intended one",
+            "desc_tr": "Aktif workspace beklenen değilse apply'ı durdur",
+            "cmd": "[ \"$(terraform workspace show)\" = \"<WORKSPACE>\" ] && terraform apply || echo \"Wrong workspace!\"",
+            "tags": [
+              "advanced"
+            ],
+            "note": "A simple safety gate to prevent applying prod changes from a dev shell."
+          },
+          {
+            "title": "Terraform Cloud Workspace via CLI Block",
+            "desc": "Bind the working directory to a remote TFC workspace",
+            "desc_tr": "Çalışma dizinini uzak bir TFC workspace'ine bağla",
+            "cmds": [
+              "terraform {",
+              "  cloud {",
+              "    organization = \"<ORG>\"",
+              "    workspaces { name = \"<WORKSPACE>\" }",
+              "  }",
+              "}"
+            ],
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Tag-Based TFC Workspace Selection",
+            "desc": "Map multiple Terraform Cloud workspaces by tags instead of one name",
+            "desc_tr": "Tek bir ad yerine etiketlere göre birden çok TFC workspace'i eşle",
+            "cmd": "workspaces { tags = [\"<TAG>\", \"app-network\"] }",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List TFC Workspaces via API",
+            "desc": "Query Terraform Cloud organization workspaces over the REST API",
+            "desc_tr": "REST API üzerinden Terraform Cloud organizasyon workspace'lerini sorgula",
+            "cmd": "curl -s --header \"Authorization: Bearer <TOKEN>\" https://app.terraform.io/api/v2/organizations/<ORG>/workspaces",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Set Per-Workspace Variable via TFC API",
+            "desc": "Create an environment variable scoped to one Terraform Cloud workspace",
+            "desc_tr": "Tek bir Terraform Cloud workspace'ine özel bir ortam değişkeni oluştur",
+            "cmd": "curl --header \"Authorization: Bearer <TOKEN>\" --header \"Content-Type: application/vnd.api+json\" --request POST --data @var.json https://app.terraform.io/api/v2/workspaces/<WORKSPACE_ID>/vars",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Terragrunt Per-Environment Run",
+            "desc": "Apply an environment by changing directory in a Terragrunt layout",
+            "desc_tr": "Terragrunt düzeninde dizin değiştirerek bir ortamı uygula",
+            "cmd": "terragrunt apply --terragrunt-working-dir <PATH>/envs/<WORKSPACE>",
+            "tags": [
+              "tool"
+            ],
+            "note": "Terragrunt often replaces workspaces with directory-per-environment isolation for stronger state separation."
+          },
+          {
+            "title": "Migrate Default State into a Workspace",
+            "desc": "Pull current state then push it into a freshly created workspace",
+            "desc_tr": "Mevcut state'i çek, ardından yeni oluşturulan bir workspace'e gönder",
+            "cmds": [
+              "terraform state pull > default.tfstate",
+              "terraform workspace new <WORKSPACE>",
+              "terraform state push default.tfstate"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "Back up state before pushing; a bad push can corrupt the workspace state."
+          }
+        ]
+      },
+      {
+        "name": "Modules & Registry",
+        "commands": [
+          {
+            "title": "Init with Module Download",
+            "desc": "Initialize working dir and download all referenced modules",
+            "desc_tr": "Çalışma dizinini başlatır ve referans verilen tüm modülleri indirir.",
+            "cmd": "terraform init",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Upgrade Modules & Providers",
+            "desc": "Re-download modules and upgrade to newest allowed versions",
+            "desc_tr": "Modülleri yeniden indirir ve izin verilen en yeni sürümlere yükseltir.",
+            "cmd": "terraform init -upgrade",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Get/Update Modules Only",
+            "desc": "Download or update modules without full init",
+            "desc_tr": "Tam init yapmadan yalnızca modülleri indirir veya günceller.",
+            "cmd": "terraform get -update",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List Installed Modules",
+            "desc": "Inspect the local modules manifest after init",
+            "desc_tr": "init sonrası yerel modül manifestosunu inceler.",
+            "cmd": "cat .terraform/modules/modules.json | jq '.Modules[] | {Key, Source, Version, Dir}'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Local Path Module Block",
+            "desc": "Reference a module stored in a local directory",
+            "desc_tr": "Yerel bir dizinde saklanan modülü referans verir.",
+            "cmd": "module \"vpc\" { source = \"./modules/vpc\" }",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Public Registry Module",
+            "desc": "Use a module from the Terraform Registry with version pin",
+            "desc_tr": "Terraform Registry'den sürüm sabitlemeli bir modül kullanır.",
+            "cmd": "module \"vpc\" { source = \"terraform-aws-modules/vpc/aws\"\n  version = \"~> 5.0\" }",
+            "tags": [
+              "essential"
+            ],
+            "note": "Registry source format: <NAMESPACE>/<NAME>/<PROVIDER>. Always pin 'version' to avoid surprise upgrades."
+          },
+          {
+            "title": "Private Registry Module",
+            "desc": "Reference a module hosted in a private registry (TFC/TFE)",
+            "desc_tr": "Özel bir registry'de (TFC/TFE) barındırılan modülü referans verir.",
+            "cmd": "module \"app\" { source = \"app.terraform.io/<ORG>/<NAME>/<PROVIDER>\"\n  version = \"1.2.0\" }",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Git Module over HTTPS",
+            "desc": "Source a module from a Git repository via HTTPS",
+            "desc_tr": "HTTPS üzerinden bir Git deposundan modül kaynaklar.",
+            "cmd": "module \"net\" { source = \"git::https://github.com/<ORG>/<REPO>.git\" }",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Git Module over SSH",
+            "desc": "Source a private module repo using SSH auth",
+            "desc_tr": "SSH kimlik doğrulaması ile özel bir modül deposunu kaynaklar.",
+            "cmd": "module \"net\" { source = \"git::ssh://git@github.com/<ORG>/<REPO>.git\" }",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Git Module Pinned to Ref",
+            "desc": "Pin a Git-sourced module to a tag, branch, or commit",
+            "desc_tr": "Git kaynaklı modülü bir etikete, dala veya commit'e sabitler.",
+            "cmd": "module \"net\" { source = \"git::https://github.com/<ORG>/<REPO>.git?ref=v1.4.0\" }",
+            "tags": [
+              "essential"
+            ],
+            "note": "?ref accepts tags (v1.4.0), branches (main), or full commit SHAs. Tags are safest for reproducibility."
+          },
+          {
+            "title": "Module from Subdirectory",
+            "desc": "Use a module nested in a subfolder of a Git repo",
+            "desc_tr": "Bir Git deposunun alt klasöründe yer alan modülü kullanır.",
+            "cmd": "module \"net\" { source = \"git::https://github.com/<ORG>/<REPO>.git//modules/vpc?ref=v2.0.0\" }",
+            "tags": [
+              "advanced"
+            ],
+            "note": "The double-slash '//' separates the repo URL from the subdirectory path within it."
+          },
+          {
+            "title": "Generic Git Subdir + Ref",
+            "desc": "Combine subdirectory selector and ref for any Git host",
+            "desc_tr": "Herhangi bir Git sunucusu için alt dizin seçicisi ve ref'i birleştirir.",
+            "cmd": "module \"db\" { source = \"git::https://<HOST>/<ORG>/<REPO>.git//<PATH>?ref=<TAG>\" }",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Module from S3 Bucket",
+            "desc": "Source a packaged module archive from an S3 bucket",
+            "desc_tr": "Bir S3 kovasından paketlenmiş modül arşivini kaynaklar.",
+            "cmd": "module \"app\" { source = \"s3::https://s3-<REGION>.amazonaws.com/<BUCKET>/module.zip\" }",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Module from HTTP Archive",
+            "desc": "Fetch a module from a remote zip/tar over HTTP",
+            "desc_tr": "Uzak bir zip/tar arşivini HTTP üzerinden modül olarak getirir.",
+            "cmd": "module \"app\" { source = \"https://<HOST>/<PATH>/module.zip//subdir\" }",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Pass Variables into Module",
+            "desc": "Provide input arguments to a module instance",
+            "desc_tr": "Bir modül örneğine girdi argümanları sağlar.",
+            "cmd": "module \"vpc\" { source = \"./modules/vpc\"\n  cidr = \"10.0.0.0/16\"\n  azs = [\"<AZ_A>\", \"<AZ_B>\"] }",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Consume Module Output",
+            "desc": "Reference an output value exported by a module",
+            "desc_tr": "Bir modülün dışa aktardığı çıktı değerini referans verir.",
+            "cmd": "resource \"aws_instance\" \"web\" { subnet_id = module.vpc.public_subnet_ids[0] }",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Module count Meta-Argument",
+            "desc": "Create multiple module instances with count",
+            "desc_tr": "count ile birden fazla modül örneği oluşturur.",
+            "cmd": "module \"app\" { source = \"./modules/app\"\n  count = 3\n  name = \"app-${count.index}\" }",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Module for_each Meta-Argument",
+            "desc": "Instantiate a module per item in a map or set",
+            "desc_tr": "Bir map veya set'teki her öğe için modül örnekler.",
+            "cmd": "module \"team\" { source = \"./modules/team\"\n  for_each = var.teams\n  name = each.key }",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Pass Provider into Module",
+            "desc": "Explicitly forward an aliased provider to a module",
+            "desc_tr": "Takma adlı bir provider'ı bir modüle açıkça iletir.",
+            "cmd": "module \"replica\" { source = \"./modules/db\"\n  providers = { aws = aws.us_west } }",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Depends_on for Module",
+            "desc": "Force a module to wait on other resources",
+            "desc_tr": "Bir modülü başka kaynakları beklemeye zorlar.",
+            "cmd": "module \"app\" { source = \"./modules/app\"\n  depends_on = [module.network] }",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Init Backend-False (Modules Only)",
+            "desc": "Install modules/providers without configuring backend",
+            "desc_tr": "Backend'i yapılandırmadan modül/provider kurar.",
+            "cmd": "terraform init -backend=false",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Useful in CI for 'terraform validate' when backend credentials are not available."
+          },
+          {
+            "title": "Validate Module Configuration",
+            "desc": "Check module syntax and internal consistency",
+            "desc_tr": "Modül sözdizimini ve iç tutarlılığı denetler.",
+            "cmd": "terraform validate",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Show Module Tree in Plan",
+            "desc": "Render plan as graph to visualize module dependencies",
+            "desc_tr": "Modül bağımlılıklarını görselleştirmek için planı graf olarak çizer.",
+            "cmd": "terraform graph | dot -Tsvg > graph.svg",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Target a Module in Plan/Apply",
+            "desc": "Limit operations to a single module address",
+            "desc_tr": "İşlemleri tek bir modül adresiyle sınırlar.",
+            "cmd": "terraform apply -target='module.vpc'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Module Resources in State",
+            "desc": "Show all state addresses belonging to a module",
+            "desc_tr": "Bir modüle ait tüm state adreslerini gösterir.",
+            "cmd": "terraform state list 'module.vpc'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Move Resource Into Module",
+            "desc": "Refactor state by moving a resource under a module",
+            "desc_tr": "Bir kaynağı bir modülün altına taşıyarak state'i yeniden düzenler.",
+            "cmd": "terraform state mv 'aws_vpc.main' 'module.vpc.aws_vpc.main'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Prefer a 'moved' block in config over CLI state mv so the refactor is versioned and repeatable."
+          },
+          {
+            "title": "Generate Module Docs",
+            "desc": "Auto-generate module README inputs/outputs tables",
+            "desc_tr": "Modül README girdi/çıktı tablolarını otomatik üretir.",
+            "cmd": "terraform-docs markdown table . > README.md",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Publish Module Version (Git Tag)",
+            "desc": "Tag a release so the registry can publish the version",
+            "desc_tr": "Registry'nin sürümü yayımlayabilmesi için bir release etiketler.",
+            "cmds": [
+              "git tag v1.0.0",
+              "git push origin v1.0.0"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "Public/private registry repos must be named terraform-<PROVIDER>-<NAME> and use semantic version tags (vX.Y.Z)."
+          },
+          {
+            "title": "Credentials for Private Registry",
+            "desc": "Authenticate the CLI to a private module registry",
+            "desc_tr": "CLI'yi özel bir modül registry'sine kimlik doğrular.",
+            "cmd": "terraform login app.terraform.io",
+            "tags": [
+              "tool"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Variables, Outputs & Functions",
+        "commands": [
+          {
+            "title": "Set Variable via CLI Flag",
+            "desc": "Pass an input variable on the command line",
+            "desc_tr": "Komut satırından bir girdi değişkeni geçir",
+            "cmd": "terraform apply -var=\"region=<REGION>\" -var=\"instance_count=3\"",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Load Variables from File",
+            "desc": "Supply variables from a .tfvars file",
+            "desc_tr": "Değişkenleri bir .tfvars dosyasından yükle",
+            "cmd": "terraform apply -var-file=\"<FILE>.tfvars\"",
+            "tags": [
+              "essential"
+            ],
+            "note": "Files named terraform.tfvars or *.auto.tfvars are loaded automatically."
+          },
+          {
+            "title": "Set Variable via Environment",
+            "desc": "Define an input variable through TF_VAR_ env var",
+            "desc_tr": "Girdi değişkenini TF_VAR_ ortam değişkeniyle tanımla",
+            "cmd": "export TF_VAR_region=<REGION> && terraform plan",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Pass Complex/List Variable on CLI",
+            "desc": "Provide a list or map variable inline as HCL/JSON",
+            "desc_tr": "Liste veya map değişkenini satır içi HCL/JSON olarak ver",
+            "cmd": "terraform apply -var='subnets=[\"10.0.1.0/24\",\"10.0.2.0/24\"]'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Declare a Typed Variable",
+            "desc": "Define a variable block with type and default",
+            "desc_tr": "Tip ve varsayılan içeren bir variable bloğu tanımla",
+            "cmds": [
+              "cat > variables.tf <<'EOF'",
+              "variable \"instance_count\" {",
+              "  type    = number",
+              "  default = 1",
+              "}",
+              "EOF"
+            ],
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Variable with Validation Rule",
+            "desc": "Enforce constraints on an input variable",
+            "desc_tr": "Bir girdi değişkenine kısıtlamalar dayat",
+            "cmds": [
+              "cat > validated.tf <<'EOF'",
+              "variable \"env\" {",
+              "  type = string",
+              "  validation {",
+              "    condition     = contains([\"dev\",\"stage\",\"prod\"], var.env)",
+              "    error_message = \"env must be dev, stage or prod.\"",
+              "  }",
+              "}",
+              "EOF"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Sensitive Variable",
+            "desc": "Mark a variable as sensitive to hide it in output",
+            "desc_tr": "Bir değişkeni çıktıda gizlemek için sensitive işaretle",
+            "cmds": [
+              "cat > secret.tf <<'EOF'",
+              "variable \"db_password\" {",
+              "  type      = string",
+              "  sensitive = true",
+              "}",
+              "EOF"
+            ],
+            "tags": [
+              "essential"
+            ],
+            "note": "Sensitive values are redacted in plan/apply output but still stored in state."
+          },
+          {
+            "title": "Declare an Output",
+            "desc": "Expose a resource attribute as a module output",
+            "desc_tr": "Bir kaynak özniteliğini modül çıktısı olarak yayınla",
+            "cmds": [
+              "cat > outputs.tf <<'EOF'",
+              "output \"instance_ip\" {",
+              "  value = aws_instance.web.public_ip",
+              "}",
+              "EOF"
+            ],
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Read All Outputs",
+            "desc": "Print every root module output value",
+            "desc_tr": "Tüm kök modül çıktı değerlerini yazdır",
+            "cmd": "terraform output",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Read a Single Output",
+            "desc": "Print one named output value",
+            "desc_tr": "Tek bir adlandırılmış çıktı değerini yazdır",
+            "cmd": "terraform output <NAME>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Output as Raw String",
+            "desc": "Get an output without quotes for scripting",
+            "desc_tr": "Komut dosyaları için tırnaksız bir çıktı al",
+            "cmd": "terraform output -raw <NAME>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Output as JSON",
+            "desc": "Emit all outputs in machine-readable JSON",
+            "desc_tr": "Tüm çıktıları makine okunabilir JSON olarak ver",
+            "cmd": "terraform output -json | jq '.<NAME>.value'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Sensitive Output",
+            "desc": "Hide an output value from normal CLI display",
+            "desc_tr": "Bir çıktı değerini normal CLI gösteriminden gizle",
+            "cmds": [
+              "cat > sensitive_out.tf <<'EOF'",
+              "output \"token\" {",
+              "  value     = random_password.token.result",
+              "  sensitive = true",
+              "}",
+              "EOF"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "Use terraform output -raw token to reveal a sensitive output explicitly."
+          },
+          {
+            "title": "Evaluate Expressions in Console",
+            "desc": "Interactively test functions and references",
+            "desc_tr": "Fonksiyonları ve referansları etkileşimli test et",
+            "cmd": "echo 'upper(\"hello\")' | terraform console",
+            "tags": [
+              "tool"
+            ],
+            "note": "terraform console is the fastest way to experiment with built-in functions."
+          },
+          {
+            "title": "String Interpolation & format()",
+            "desc": "Build a formatted string with the format function",
+            "desc_tr": "format fonksiyonuyla biçimlendirilmiş bir dize oluştur",
+            "cmd": "echo 'format(\"%s-%03d\", \"node\", 7)' | terraform console",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Collection Functions",
+            "desc": "Use merge, concat and lookup on collections",
+            "desc_tr": "Koleksiyonlarda merge, concat ve lookup kullan",
+            "cmd": "echo 'merge({a=1}, {b=2})' | terraform console",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "for Expression Transform",
+            "desc": "Transform a list/map with a for expression",
+            "desc_tr": "Bir liste/map'i for ifadesiyle dönüştür",
+            "cmd": "echo '[for s in [\"a\",\"b\"] : upper(s)]' | terraform console",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Conditional (Ternary) Expression",
+            "desc": "Choose a value based on a boolean condition",
+            "desc_tr": "Bir boolean koşula göre değer seç",
+            "cmd": "echo 'var.env == \"prod\" ? \"m5.large\" : \"t3.micro\"' | terraform console",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "try() for Safe Fallback",
+            "desc": "Return first successful expression, avoiding errors",
+            "desc_tr": "Hatalardan kaçınarak ilk başarılı ifadeyi döndür",
+            "cmd": "echo 'try(var.maybe_unset, \"default\")' | terraform console",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "coalesce() First Non-Null",
+            "desc": "Return the first non-null/non-empty argument",
+            "desc_tr": "İlk null olmayan/boş olmayan argümanı döndür",
+            "cmd": "echo 'coalesce(\"\", null, \"fallback\")' | terraform console",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "templatefile() Render",
+            "desc": "Render an external template with variables",
+            "desc_tr": "Harici bir şablonu değişkenlerle işle",
+            "cmd": "echo 'templatefile(\"<FILE>.tftpl\", { name = \"web\" })' | terraform console",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Prefer templatefile() over the deprecated template_file data source."
+          },
+          {
+            "title": "jsonencode() / jsondecode()",
+            "desc": "Convert between HCL values and JSON strings",
+            "desc_tr": "HCL değerleri ile JSON dizeleri arasında dönüştür",
+            "cmd": "echo 'jsonencode({ name = \"web\", port = 8080 })' | terraform console",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "cidrsubnet() Network Math",
+            "desc": "Calculate a subnet CIDR from a base prefix",
+            "desc_tr": "Bir temel önekten alt ağ CIDR'ı hesapla",
+            "cmd": "echo 'cidrsubnet(\"10.0.0.0/16\", 8, 2)' | terraform console",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Define and Reference Locals",
+            "desc": "Create computed local values to reduce repetition",
+            "desc_tr": "Tekrarı azaltmak için hesaplanmış local değerler oluştur",
+            "cmds": [
+              "cat > locals.tf <<'EOF'",
+              "locals {",
+              "  name_prefix = \"${var.project}-${var.env}\"",
+              "  common_tags = { Project = var.project, Env = var.env }",
+              "}",
+              "EOF"
+            ],
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Validate Configuration Syntax",
+            "desc": "Check variables, types and references resolve",
+            "desc_tr": "Değişken, tip ve referansların çözüldüğünü doğrula",
+            "cmd": "terraform validate",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect Variables Used in a Plan",
+            "desc": "See effective variable values used in a plan",
+            "desc_tr": "Bir planda kullanılan etkin değişken değerlerini gör",
+            "cmd": "terraform plan -var-file=\"<FILE>.tfvars\" -out=tfplan && terraform show -json tfplan | jq '.variables'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "nonsensitive() to Unmask in Output",
+            "desc": "Strip the sensitive flag for a derived value",
+            "desc_tr": "Türetilmiş bir değer için sensitive bayrağını kaldır",
+            "cmd": "echo 'nonsensitive(var.db_password)' | terraform console",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Use cautiously; this can leak secrets into plan output and state diffs."
+          }
+        ]
+      },
+      {
+        "name": "Providers & Plugins",
+        "commands": [
+          {
+            "title": "Init & Download Providers",
+            "desc": "Initialize working dir and download required providers",
+            "desc_tr": "Çalışma dizinini başlat ve gerekli sağlayıcıları indir",
+            "cmd": "terraform init",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Upgrade Providers to Latest Allowed",
+            "desc": "Upgrade providers/modules within version constraints",
+            "desc_tr": "Sürüm kısıtları dahilinde sağlayıcı/modülleri en güncele yükselt",
+            "cmd": "terraform init -upgrade",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Reconfigure Without Provider Re-download",
+            "desc": "Reinit backend without re-fetching plugins",
+            "desc_tr": "Eklentileri tekrar indirmeden backend'i yeniden başlat",
+            "cmd": "terraform init -reconfigure -get=false",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Providers in Config",
+            "desc": "Show providers required by config and their versions",
+            "desc_tr": "Yapılandırmanın gerektirdiği sağlayıcıları ve sürümlerini göster",
+            "cmd": "terraform providers",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Show Provider Version Schema",
+            "desc": "Print full provider/resource schema as JSON",
+            "desc_tr": "Sağlayıcı/kaynak şemasının tamamını JSON olarak yazdır",
+            "cmd": "terraform providers schema -json | jq .",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Show Selected Provider Versions",
+            "desc": "Display installed provider versions from version output",
+            "desc_tr": "Kurulu sağlayıcı sürümlerini version çıktısından göster",
+            "cmd": "terraform version",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Lock Providers for All Platforms",
+            "desc": "Add provider hashes for multiple OS/arch to lock file",
+            "desc_tr": "Kilit dosyasına birden çok OS/mimari için sağlayıcı hash'leri ekle",
+            "cmd": "terraform providers lock -platform=linux_amd64 -platform=darwin_arm64 -platform=windows_amd64",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Regenerate Dependency Lock File",
+            "desc": "Recreate .terraform.lock.hcl after deleting it",
+            "desc_tr": "Silindikten sonra .terraform.lock.hcl dosyasını yeniden oluştur",
+            "cmds": [
+              "rm .terraform.lock.hcl",
+              "terraform init"
+            ],
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Mirror Providers to Local Directory",
+            "desc": "Download providers for offline/air-gapped install",
+            "desc_tr": "Çevrimdışı/izole kurulum için sağlayıcıları yerel dizine indir",
+            "cmd": "terraform providers mirror -platform=linux_amd64 ./tf-mirror",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Use Filesystem Provider Mirror",
+            "desc": "Configure CLI to install providers from a local mirror",
+            "desc_tr": "CLI'yi sağlayıcıları yerel aynadan kuracak şekilde yapılandır",
+            "cmd": "terraform init -plugin-dir=./tf-mirror",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Pin Provider Version Constraint",
+            "desc": "Require an exact provider version in required_providers",
+            "desc_tr": "required_providers içinde kesin sağlayıcı sürümünü zorunlu kıl",
+            "cmd": "terraform { required_providers { aws = { source = \"hashicorp/aws\", version = \"= 5.60.0\" } } }",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Allow Patch Updates Only",
+            "desc": "Pessimistic constraint allowing only patch upgrades",
+            "desc_tr": "Yalnızca yama yükseltmelerine izin veren kötümser sürüm kısıtı",
+            "cmd": "version = \"~> 5.60.0\"",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Replace a Provider Source",
+            "desc": "Migrate state references from one provider source to another",
+            "desc_tr": "State referanslarını bir sağlayıcı kaynağından diğerine taşı",
+            "cmd": "terraform state replace-provider hashicorp/aws registry.example.com/acme/aws",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Inspect Cached Plugins",
+            "desc": "List downloaded provider binaries in working dir",
+            "desc_tr": "Çalışma dizinindeki indirilmiş sağlayıcı ikililerini listele",
+            "cmd": "find .terraform/providers -type f -name 'terraform-provider-*'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Enable Global Plugin Cache",
+            "desc": "Cache providers across projects to save bandwidth",
+            "desc_tr": "Bant genişliği için sağlayıcıları projeler arası önbelleğe al",
+            "cmds": [
+              "mkdir -p $HOME/.terraform.d/plugin-cache",
+              "export TF_PLUGIN_CACHE_DIR=\"$HOME/.terraform.d/plugin-cache\""
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "Set TF_PLUGIN_CACHE_DIR in your shell profile to persist it."
+          },
+          {
+            "title": "Override Provider with Dev Build",
+            "desc": "Point Terraform to a locally built provider via dev_overrides",
+            "desc_tr": "dev_overrides ile yerel derlenmiş sağlayıcıyı kullandır",
+            "cmd": "provider_installation { dev_overrides { \"hashicorp/aws\" = \"<PATH>\" } direct {} }",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Place this block in ~/.terraformrc; with dev_overrides, terraform init is skipped for that provider."
+          },
+          {
+            "title": "Configure Multiple Provider Instances",
+            "desc": "Define provider aliases for multi-region/account setups",
+            "desc_tr": "Çok bölge/hesap için sağlayıcı takma adları tanımla",
+            "cmd": "provider \"aws\" { alias = \"west\", region = \"us-west-2\" }",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Reference an Aliased Provider",
+            "desc": "Attach a resource to a non-default provider instance",
+            "desc_tr": "Kaynağı varsayılan olmayan sağlayıcı örneğine bağla",
+            "cmd": "resource \"aws_instance\" \"x\" { provider = aws.west }",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Install Custom Plugin Manually",
+            "desc": "Place a third-party provider in the local plugin path",
+            "desc_tr": "Üçüncü taraf sağlayıcıyı yerel eklenti yoluna yerleştir",
+            "cmd": "mkdir -p ~/.terraform.d/plugins/<REGISTRY>/acme/foo/1.0.0/linux_amd64/ && cp terraform-provider-foo $_",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Verify Provider Binary Checksum",
+            "desc": "Validate a downloaded provider zip against its SHA256SUMS",
+            "desc_tr": "İndirilen sağlayıcı zip'ini SHA256SUMS ile doğrula",
+            "cmd": "sha256sum -c terraform-provider-<FILE>_SHA256SUMS 2>&1 | grep OK",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Set Registry via Network Mirror",
+            "desc": "Use an HTTPS network mirror for provider installation",
+            "desc_tr": "Sağlayıcı kurulumu için HTTPS ağ aynası kullan",
+            "cmd": "provider_installation { network_mirror { url = \"https://<DOMAIN>/providers/\" } }",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Add this block to ~/.terraformrc."
+          },
+          {
+            "title": "Enforce Read-only Lock File in CI",
+            "desc": "Fail init if the dependency lock would change",
+            "desc_tr": "Bağımlılık kilidi değişecekse init'i başarısız kıl",
+            "cmd": "terraform init -lockfile=readonly",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Catches uncommitted lock-file drift in pipelines."
+          },
+          {
+            "title": "List Provider Tree to File",
+            "desc": "Audit which modules pull which providers",
+            "desc_tr": "Hangi modülün hangi sağlayıcıyı çektiğini denetle",
+            "cmd": "terraform providers | tee providers-tree.txt",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Update Single Provider Only",
+            "desc": "Upgrade just one provider via targeted lock",
+            "desc_tr": "Hedefli kilitle yalnızca tek sağlayıcıyı yükselt",
+            "cmd": "terraform init -upgrade && terraform providers lock hashicorp/aws",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Clean and Reinit Plugins",
+            "desc": "Wipe local plugin cache then reinstall fresh",
+            "desc_tr": "Yerel eklenti önbelleğini sil ve yeniden kur",
+            "cmds": [
+              "rm -rf .terraform/providers",
+              "terraform init"
+            ],
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Authenticate to Private Registry",
+            "desc": "Store a token for a private provider registry",
+            "desc_tr": "Özel sağlayıcı kayıt defteri için token sakla",
+            "cmd": "terraform login <DOMAIN>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Debugging & Troubleshooting (TF_LOG, graph, taint, refresh)",
+        "commands": [
+          {
+            "title": "Enable verbose debug logging",
+            "desc": "Set log verbosity for the entire Terraform run.",
+            "desc_tr": "Tum Terraform calismasi icin log ayrintilandirma seviyesini ayarlayin.",
+            "cmd": "export TF_LOG=DEBUG && terraform apply",
+            "tags": [
+              "essential"
+            ],
+            "note": "Valid levels: TRACE, DEBUG, INFO, WARN, ERROR. TRACE is the most verbose."
+          },
+          {
+            "title": "Write debug logs to a file",
+            "desc": "Persist debug output to a file instead of stderr.",
+            "desc_tr": "Hata ayiklama ciktisini stderr yerine bir dosyaya kaydedin.",
+            "cmd": "TF_LOG=TRACE TF_LOG_PATH=<PATH>/terraform.log terraform plan",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Log only the provider (core vs provider split)",
+            "desc": "Separate core and provider log streams for targeted debugging.",
+            "desc_tr": "Hedefli hata ayiklama icin core ve provider log akislarini ayirin.",
+            "cmd": "TF_LOG_CORE=WARN TF_LOG_PROVIDER=TRACE terraform apply",
+            "tags": [
+              "advanced"
+            ],
+            "note": "TF_LOG_CORE and TF_LOG_PROVIDER override TF_LOG for their respective streams."
+          },
+          {
+            "title": "Generate the dependency graph",
+            "desc": "Output the resource dependency graph in DOT format.",
+            "desc_tr": "Kaynak bagimlilik grafigini DOT formatinda cikartin.",
+            "cmd": "terraform graph > graph.dot",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Render the graph to an image",
+            "desc": "Pipe the DOT graph into Graphviz to produce a visual diagram.",
+            "desc_tr": "DOT grafigini Graphviz'e aktararak gorsel bir diyagram olusturun.",
+            "cmd": "terraform graph | dot -Tsvg > graph.svg",
+            "tags": [
+              "tool"
+            ],
+            "note": "Requires Graphviz installed (provides the 'dot' binary)."
+          },
+          {
+            "title": "Graph for a specific operation type",
+            "desc": "Build the graph for plan, apply, or destroy phases.",
+            "desc_tr": "Plan, apply veya destroy asamalari icin grafigi olusturun.",
+            "cmd": "terraform graph -type=plan",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Valid types: plan, plan-refresh-only, plan-destroy, apply, validate."
+          },
+          {
+            "title": "Refresh state without changing infra",
+            "desc": "Reconcile state with real-world resources via a refresh-only plan.",
+            "desc_tr": "Refresh-only plan ile state'i gercek kaynaklarla yeniden uyumlu hale getirin.",
+            "cmd": "terraform apply -refresh-only",
+            "tags": [
+              "essential"
+            ],
+            "note": "Replaces the deprecated 'terraform refresh' command in modern Terraform."
+          },
+          {
+            "title": "Plan while skipping refresh",
+            "desc": "Speed up planning by skipping the state refresh step.",
+            "desc_tr": "State refresh adimini atlayarak planlamayi hizlandirin.",
+            "cmd": "terraform plan -refresh=false",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Useful for fast iteration, but plan may not reflect drift from real infra."
+          },
+          {
+            "title": "Force replacement of a resource",
+            "desc": "Replace a resource on next apply (modern alternative to taint).",
+            "desc_tr": "Bir sonraki apply'da kaynagi yeniden olusturun (taint'in modern alternatifi).",
+            "cmd": "terraform apply -replace=\"aws_instance.<NAME>\"",
+            "tags": [
+              "essential"
+            ],
+            "note": "-replace replaces the deprecated 'terraform taint' workflow."
+          },
+          {
+            "title": "Taint a resource (legacy)",
+            "desc": "Mark a resource for recreation on the next apply.",
+            "desc_tr": "Bir kaynagi sonraki apply'da yeniden olusturulmak uzere isaretleyin.",
+            "cmd": "terraform taint aws_instance.<NAME>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Deprecated since 0.15.2; prefer 'terraform apply -replace'."
+          },
+          {
+            "title": "Untaint a resource",
+            "desc": "Remove the tainted mark so a resource is not recreated.",
+            "desc_tr": "Kaynagin yeniden olusturulmamasi icin taint isaretini kaldirin.",
+            "cmd": "terraform untaint aws_instance.<NAME>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Target a single resource",
+            "desc": "Limit plan/apply operations to a specific resource address.",
+            "desc_tr": "Plan/apply islemlerini belirli bir kaynak adresiyle sinirlayin.",
+            "cmd": "terraform apply -target=\"module.<MODULE>.aws_instance.<NAME>\"",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Use sparingly; targeting can hide dependency issues and cause partial state."
+          },
+          {
+            "title": "List resources in state",
+            "desc": "Enumerate all resource addresses tracked in state.",
+            "desc_tr": "State'te izlenen tum kaynak adreslerini listeleyin.",
+            "cmd": "terraform state list",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect a resource's state",
+            "desc": "Show the full attributes of one resource as stored in state.",
+            "desc_tr": "Bir kaynagin state'te saklanan tum niteliklerini gosterin.",
+            "cmd": "terraform state show \"aws_instance.<NAME>\"",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Validate configuration syntax",
+            "desc": "Check the config for internal consistency and valid syntax.",
+            "desc_tr": "Yapilandirmayi ic tutarlilik ve gecerli sozdizimi acisindan kontrol edin.",
+            "cmd": "terraform validate",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Interactive console for expressions",
+            "desc": "Evaluate expressions, functions, and state values interactively.",
+            "desc_tr": "Ifadeleri, fonksiyonlari ve state degerlerini etkilesimli olarak degerlendirin.",
+            "cmd": "echo 'aws_instance.<NAME>.id' | terraform console",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Output plan as machine-readable JSON",
+            "desc": "Save a binary plan then convert it to JSON for inspection.",
+            "desc_tr": "Ikili plani kaydedip incelemek icin JSON'a donusturun.",
+            "cmd": "terraform plan -out=tfplan && terraform show -json tfplan > plan.json",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Pipe into jq to filter resource_changes and detect unexpected diffs."
+          },
+          {
+            "title": "Detect drift with a detailed exit code",
+            "desc": "Use exit codes to script drift detection in CI.",
+            "desc_tr": "CI'da drift tespitini betiklemek icin cikis kodlarini kullanin.",
+            "cmd": "terraform plan -detailed-exitcode",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Exit 0 = no changes, 1 = error, 2 = changes present (drift)."
+          },
+          {
+            "title": "Force unlock a stuck state",
+            "desc": "Release a hung state lock left by an interrupted run.",
+            "desc_tr": "Kesintiye ugrayan bir calisma tarafindan birakilan takili state kilidini serbest birakin.",
+            "cmd": "terraform force-unlock <LOCK_ID>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Only unlock after confirming no other run is active; can corrupt state otherwise."
+          },
+          {
+            "title": "Import existing infra into state",
+            "desc": "Bring an unmanaged resource under Terraform management.",
+            "desc_tr": "Yonetilmeyen bir kaynagi Terraform yonetimine alin.",
+            "cmd": "terraform import \"aws_instance.<NAME>\" <RESOURCE_ID>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Remove a resource from state",
+            "desc": "Stop tracking a resource without destroying real infra.",
+            "desc_tr": "Gercek altyapiyi yok etmeden bir kaynagi izlemeyi birakin.",
+            "cmd": "terraform state rm \"aws_instance.<NAME>\"",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Move/rename a resource in state",
+            "desc": "Update state addresses after a refactor to avoid recreation.",
+            "desc_tr": "Yeniden olusturmayi onlemek icin refaktor sonrasi state adreslerini guncelleyin.",
+            "cmd": "terraform state mv \"aws_instance.<OLD>\" \"aws_instance.<NEW>\"",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Reinitialize and upgrade providers",
+            "desc": "Re-run init upgrading providers when versions or backends drift.",
+            "desc_tr": "Surumler veya backend'ler degistiginde provider'lari yukselterek init'i tekrar calistirin.",
+            "cmd": "terraform init -upgrade -reconfigure",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Print Terraform and provider versions",
+            "desc": "Report core and provider versions for bug reports.",
+            "desc_tr": "Hata raporlari icin core ve provider surumlerini gosterin.",
+            "cmd": "terraform version",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Pull remote state for inspection",
+            "desc": "Dump the current remote state to stdout for debugging.",
+            "desc_tr": "Hata ayiklama icin mevcut uzak state'i stdout'a dokun.",
+            "cmd": "terraform state pull > state.json",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Inspect with jq; never hand-edit and push back unless you understand the schema."
+          },
+          {
+            "title": "Disable color and stream JSON logs",
+            "desc": "Produce clean, parseable output for CI log analysis.",
+            "desc_tr": "CI log analizi icin temiz, ayristirilabilir cikti uretin.",
+            "cmd": "terraform apply -no-color -json | tee apply.jsonl",
+            "tags": [
+              "advanced"
+            ],
+            "note": "-json emits structured machine-readable messages line by line."
+          },
+          {
+            "title": "Trace provider crashes via crash log",
+            "desc": "Run with TRACE and inspect the auto-generated crash log on panic.",
+            "desc_tr": "TRACE ile calistirip panik durumunda otomatik olusan crash log'u inceleyin.",
+            "cmds": [
+              "TF_LOG=TRACE terraform apply",
+              "cat crash.log"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "Terraform writes crash.log automatically when core or a provider panics."
+          }
+        ]
+      }
+    ]
   }
 ];

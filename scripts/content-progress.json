@@ -79,7 +79,7 @@
       "id": "terraform",
       "name": "Terraform / IaC Core",
       "icon": "🏗️",
-      "status": "pending",
+      "status": "done",
       "description": "Terraform workflow: init, plan, apply, state management, workspaces, modules, providers, and debugging.",
       "subcategories": [
         "Core Workflow (init, plan, apply, destroy, fmt, validate)",
@@ -89,7 +89,8 @@
         "Variables, Outputs & Functions",
         "Providers & Plugins",
         "Debugging & Troubleshooting (TF_LOG, graph, taint, refresh)"
-      ]
+      ],
+      "commands_added": 190
     },
     {
       "id": "iac-security",
