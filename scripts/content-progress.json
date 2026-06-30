@@ -192,7 +192,7 @@
       "id": "cspm",
       "name": "Cloud Security Posture (Multi-Cloud)",
       "icon": "☁️",
-      "status": "pending",
+      "status": "done",
       "description": "Auditing cloud posture across AWS, Azure, and GCP with CSPM and IAM tooling.",
       "subcategories": [
         "Prowler (AWS/Azure/GCP)",
@@ -202,7 +202,8 @@
         "Azure (az cli security, AzureHound)",
         "GCP (gcloud security, ScoutSuite)",
         "CloudSploit / CloudMapper"
-      ]
+      ],
+      "commands_added": 197
     },
     {
       "id": "helm",

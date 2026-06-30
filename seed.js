@@ -44618,5 +44618,1992 @@ module.exports = [
         ]
       }
     ]
+  },
+  {
+    "id": "cspm",
+    "name": "Cloud Security Posture (Multi-Cloud)",
+    "name_tr": "Bulut Güvenlik Duruşu (Çoklu Bulut)",
+    "icon": "🌩️",
+    "description": "Auditing cloud posture across AWS, Azure, and GCP with CSPM and IAM tooling.",
+    "description_tr": "AWS, Azure ve GCP genelinde bulut güvenlik duruşunu CSPM ve IAM araçlarıyla denetleme.",
+    "subcategories": [
+      {
+        "name": "Prowler (AWS/Azure/GCP)",
+        "commands": [
+          {
+            "title": "Install Prowler via pip",
+            "desc": "Install the Prowler CLI from PyPI into a virtualenv",
+            "desc_tr": "Prowler CLI'sını PyPI üzerinden bir sanal ortama kur",
+            "cmd": "python3 -m pip install prowler",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Use pipx or a venv to avoid dependency conflicts; the unified 'prowler' binary covers AWS, Azure, GCP and Kubernetes."
+          },
+          {
+            "title": "Check Prowler Version",
+            "desc": "Print the installed Prowler version",
+            "desc_tr": "Kurulu Prowler sürümünü yazdır",
+            "cmd": "prowler --version",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run Full AWS Scan",
+            "desc": "Scan AWS using default credentials/profile",
+            "desc_tr": "Varsayılan kimlik bilgileri/profil ile AWS taraması yap",
+            "cmd": "prowler aws",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Scan a Specific AWS Profile",
+            "desc": "Use a named AWS CLI profile for the scan",
+            "desc_tr": "Tarama için adlandırılmış bir AWS CLI profili kullan",
+            "cmd": "prowler aws -p <PROFILE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Limit AWS Scan to Regions",
+            "desc": "Restrict the assessment to specific AWS regions",
+            "desc_tr": "Değerlendirmeyi belirli AWS bölgeleriyle sınırla",
+            "cmd": "prowler aws -f <REGION1> <REGION2>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Assume Role for AWS Scan",
+            "desc": "Scan a target account by assuming an IAM role",
+            "desc_tr": "Bir IAM rolü üstlenerek hedef hesabı tara",
+            "cmd": "prowler aws -R arn:aws:iam::<ACCOUNT_ID>:role/<ROLE_NAME>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Scan AWS Organization",
+            "desc": "Collect account metadata across an AWS Organization",
+            "desc_tr": "AWS Organization genelinde hesap meta verisini topla",
+            "cmd": "prowler aws -O arn:aws:iam::<MGMT_ACCOUNT_ID>:role/<ROLE_NAME>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run a Single AWS Check",
+            "desc": "Execute one specific check by its check ID",
+            "desc_tr": "Check ID'sine göre tek bir kontrolü çalıştır",
+            "cmd": "prowler aws -c <CHECK_ID>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Run Checks by Service",
+            "desc": "Scan only the specified AWS service(s)",
+            "desc_tr": "Yalnızca belirtilen AWS servis(ler)ini tara",
+            "cmd": "prowler aws -s s3 iam ec2",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Exclude Specific Checks",
+            "desc": "Skip one or more checks during the scan",
+            "desc_tr": "Tarama sırasında bir veya daha fazla kontrolü atla",
+            "cmd": "prowler aws -e <CHECK_ID1> <CHECK_ID2>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Run a Compliance Framework",
+            "desc": "Assess against a specific compliance framework (e.g. CIS)",
+            "desc_tr": "Belirli bir uyumluluk çerçevesine göre değerlendir (örn. CIS)",
+            "cmd": "prowler aws --compliance cis_3.0_aws",
+            "tags": [
+              "essential",
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Available Compliance Frameworks",
+            "desc": "Show all supported compliance frameworks for a provider",
+            "desc_tr": "Bir sağlayıcı için desteklenen tüm uyumluluk çerçevelerini listele",
+            "cmd": "prowler aws --list-compliance",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "List All Available Checks",
+            "desc": "Enumerate every check ID available for the provider",
+            "desc_tr": "Sağlayıcı için mevcut tüm check ID'lerini listele",
+            "cmd": "prowler aws --list-checks",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "List Services and Categories",
+            "desc": "Show scannable services and check categories",
+            "desc_tr": "Taranabilir servisleri ve kontrol kategorilerini göster",
+            "cmd": "prowler aws --list-categories",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Filter by Severity",
+            "desc": "Only report findings at the given severity levels",
+            "desc_tr": "Yalnızca belirtilen önem derecelerindeki bulguları raporla",
+            "cmd": "prowler aws --severity critical high",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Choose Output Formats",
+            "desc": "Generate reports in selected formats (CSV, JSON-OCSF, HTML)",
+            "desc_tr": "Seçilen formatlarda rapor üret (CSV, JSON-OCSF, HTML)",
+            "cmd": "prowler aws -M csv json-ocsf html",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Set Output Directory and Filename",
+            "desc": "Control where reports are written and their base name",
+            "desc_tr": "Raporların yazılacağı yeri ve temel adını belirle",
+            "cmd": "prowler aws -o <PATH> -F <FILENAME>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Show Only Failed Findings",
+            "desc": "Suppress passing checks and display only failures",
+            "desc_tr": "Başarılı kontrolleri gizle, yalnızca başarısızlıkları göster",
+            "cmd": "prowler aws --status FAIL",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run with a Custom Mutelist",
+            "desc": "Apply an allowlist/mutelist to suppress known-accepted findings",
+            "desc_tr": "Bilinen ve kabul edilen bulguları susturmak için mutelist uygula",
+            "cmd": "prowler aws -w <FILE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Scan Azure with Service Principal",
+            "desc": "Authenticate to Azure using a service principal",
+            "desc_tr": "Bir hizmet sorumlusu (service principal) ile Azure'a kimlik doğrula",
+            "cmd": "prowler azure --sp-env-auth",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Export AZURE_CLIENT_ID, AZURE_TENANT_ID and AZURE_CLIENT_SECRET before running sp-env-auth."
+          },
+          {
+            "title": "Scan Azure via Azure CLI Auth",
+            "desc": "Use existing 'az login' credentials for the scan",
+            "desc_tr": "Mevcut 'az login' kimlik bilgilerini tarama için kullan",
+            "cmd": "prowler azure --az-cli-auth",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Scan Specific Azure Subscriptions",
+            "desc": "Limit the Azure assessment to given subscription IDs",
+            "desc_tr": "Azure değerlendirmesini verilen abonelik kimlikleriyle sınırla",
+            "cmd": "prowler azure --az-cli-auth --subscription-id <SUBSCRIPTION_ID>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Scan GCP with Application Default Credentials",
+            "desc": "Run a GCP scan using gcloud ADC",
+            "desc_tr": "gcloud ADC kullanarak bir GCP taraması çalıştır",
+            "cmd": "prowler gcp",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Run 'gcloud auth application-default login' first to set up ADC."
+          },
+          {
+            "title": "Scan Specific GCP Projects",
+            "desc": "Restrict the GCP assessment to given project IDs",
+            "desc_tr": "GCP değerlendirmesini verilen proje kimlikleriyle sınırla",
+            "cmd": "prowler gcp --project-id <PROJECT_ID>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Scan GCP with a Service Account Key",
+            "desc": "Authenticate to GCP using a service account JSON key file",
+            "desc_tr": "Bir hizmet hesabı JSON anahtar dosyasıyla GCP'ye kimlik doğrula",
+            "cmd": "prowler gcp --credentials-file <FILE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Scan Kubernetes Cluster",
+            "desc": "Assess a Kubernetes cluster from the current kubeconfig context",
+            "desc_tr": "Mevcut kubeconfig bağlamından bir Kubernetes kümesini değerlendir",
+            "cmd": "prowler kubernetes --kubeconfig-file <FILE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Send Findings to AWS Security Hub",
+            "desc": "Integrate failed findings directly into AWS Security Hub",
+            "desc_tr": "Başarısız bulguları doğrudan AWS Security Hub'a entegre et",
+            "cmd": "prowler aws --security-hub --status FAIL",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Security Hub must be enabled in each target region and the Prowler integration accepted."
+          },
+          {
+            "title": "Scan by Resource Tags",
+            "desc": "Only evaluate resources matching specific tags",
+            "desc_tr": "Yalnızca belirli etiketlerle eşleşen kaynakları değerlendir",
+            "cmd": "prowler aws --resource-tags <KEY>=<VALUE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run the Prowler Dashboard",
+            "desc": "Launch the local web dashboard to visualize past outputs",
+            "desc_tr": "Geçmiş çıktıları görselleştirmek için yerel web panosunu başlat",
+            "cmd": "prowler dashboard",
+            "tags": [
+              "tool"
+            ],
+            "note": "Reads OCSF/CSV outputs from the local output directory and serves a UI on http://127.0.0.1:11666 by default."
+          }
+        ]
+      },
+      {
+        "name": "ScoutSuite",
+        "commands": [
+          {
+            "title": "Install ScoutSuite (pip)",
+            "desc": "Install ScoutSuite inside an isolated virtualenv",
+            "desc_tr": "ScoutSuite'i izole bir sanal ortam icinde kur",
+            "cmd": "python3 -m venv scoutsuite && source scoutsuite/bin/activate && pip install scoutsuite",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Show Version & Help",
+            "desc": "Display global help and AWS provider options",
+            "desc_tr": "Genel yardimi ve AWS saglayici seceneklerini goster",
+            "cmd": "scout --help && scout aws --help",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "AWS Audit (default profile)",
+            "desc": "Run a full AWS posture audit using default credentials",
+            "desc_tr": "Varsayilan kimlik bilgileriyle tam AWS duruş denetimi calistir",
+            "cmd": "scout aws",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "AWS Audit with Named Profile",
+            "desc": "Audit a specific AWS CLI named profile",
+            "desc_tr": "Belirli bir AWS CLI adli profilini denetle",
+            "cmd": "scout aws --profile <PROFILE_NAME>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "AWS Audit with Access Keys",
+            "desc": "Authenticate using explicit AWS access keys",
+            "desc_tr": "Acik AWS erisim anahtarlari ile kimlik dogrula",
+            "cmd": "scout aws --access-keys --access-key-id <ACCESS_KEY_ID> --secret-access-key <SECRET_KEY>",
+            "tags": [
+              "tool"
+            ],
+            "note": "Avoid keys in shell history; prefer a profile or STS role."
+          },
+          {
+            "title": "AWS Audit Assuming a Role (STS)",
+            "desc": "Use temporary STS session credentials for the audit",
+            "desc_tr": "Denetim icin gecici STS oturum kimlik bilgilerini kullan",
+            "cmd": "scout aws --profile <PROFILE_NAME> --session-token <SESSION_TOKEN>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Restrict AWS Audit to Regions",
+            "desc": "Limit scanning to specified AWS regions to speed up runs",
+            "desc_tr": "Taramayi belirtilen AWS bolgeleriyle sinirlayarak calistir",
+            "cmd": "scout aws --profile <PROFILE_NAME> --regions <REGION1>,<REGION2>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Azure Audit (CLI auth)",
+            "desc": "Audit Azure using an existing az login session",
+            "desc_tr": "Mevcut az login oturumuyla Azure'u denetle",
+            "cmd": "scout azure --cli",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Azure Audit with Service Principal",
+            "desc": "Authenticate to Azure via service principal credentials",
+            "desc_tr": "Hizmet sorumlusu kimlik bilgileriyle Azure'a kimlik dogrula",
+            "cmd": "scout azure --service-principal --tenant <TENANT_ID> --client-id <CLIENT_ID> --client-secret <CLIENT_SECRET>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Azure Audit Single Subscription",
+            "desc": "Scope the Azure audit to one subscription",
+            "desc_tr": "Azure denetimini tek bir abonelikle sinirla",
+            "cmd": "scout azure --cli --subscriptions <SUBSCRIPTION_ID>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Azure Audit All Subscriptions",
+            "desc": "Audit every subscription accessible to the identity",
+            "desc_tr": "Kimligin erisebildigi tum abonelikleri denetle",
+            "cmd": "scout azure --cli --all-subscriptions",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "GCP Audit (user account)",
+            "desc": "Audit GCP using gcloud user credentials",
+            "desc_tr": "gcloud kullanici kimlik bilgileriyle GCP'yi denetle",
+            "cmd": "scout gcp --user-account",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "GCP Audit with Service Account Key",
+            "desc": "Authenticate to GCP with a service account JSON key",
+            "desc_tr": "GCP'ye hizmet hesabi JSON anahtariyla kimlik dogrula",
+            "cmd": "scout gcp --service-account <PATH>/key.json",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "GCP Audit a Single Project",
+            "desc": "Scope the GCP audit to one project",
+            "desc_tr": "GCP denetimini tek bir projeyle sinirla",
+            "cmd": "scout gcp --user-account --project-id <PROJECT_ID>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "GCP Audit Whole Organization",
+            "desc": "Audit all projects under a GCP organization",
+            "desc_tr": "Bir GCP organizasyonu altindaki tum projeleri denetle",
+            "cmd": "scout gcp --service-account <PATH>/key.json --organization-id <ORG_ID>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Oracle Cloud (OCI) Audit",
+            "desc": "Run a posture audit against Oracle Cloud Infrastructure",
+            "desc_tr": "Oracle Cloud Infrastructure'a karsi duruş denetimi calistir",
+            "cmd": "scout oci --profile <OCI_PROFILE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Aliyun (Alibaba Cloud) Audit",
+            "desc": "Audit Alibaba Cloud using access key credentials",
+            "desc_tr": "Erisim anahtari kimlik bilgileriyle Alibaba Cloud'u denetle",
+            "cmd": "scout aliyun --access-key-id <ACCESS_KEY_ID> --access-key-secret <SECRET_KEY>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Custom Report Name & Output Dir",
+            "desc": "Set a custom report name and output directory",
+            "desc_tr": "Ozel bir rapor adi ve cikti dizini ayarla",
+            "cmd": "scout aws --profile <PROFILE_NAME> --report-name <NAME> --report-dir <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Disable Auto-Open of HTML Report",
+            "desc": "Prevent ScoutSuite from launching the browser after the scan",
+            "desc_tr": "Taramadan sonra ScoutSuite'in tarayiciyi acmasini engelle",
+            "cmd": "scout aws --profile <PROFILE_NAME> --no-browser",
+            "tags": [
+              "tool"
+            ],
+            "note": "Useful in CI/CD pipelines and headless servers."
+          },
+          {
+            "title": "Run with a Custom Ruleset",
+            "desc": "Apply a custom JSON ruleset for tailored findings",
+            "desc_tr": "Ozel bulgular icin ozel bir JSON kural setini uygula",
+            "cmd": "scout aws --profile <PROFILE_NAME> --ruleset <PATH>/custom-ruleset.json",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Exclude Specific Services",
+            "desc": "Limit the audit to a chosen subset of services",
+            "desc_tr": "Denetimi secilen bir hizmet alt kumesiyle sinirla",
+            "cmd": "scout aws --profile <PROFILE_NAME> --services iam,s3,ec2",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Pair with --skip <service> to invert and exclude services."
+          },
+          {
+            "title": "Force Re-run Over Existing Results",
+            "desc": "Overwrite previous report files for the same name",
+            "desc_tr": "Ayni isim icin onceki rapor dosyalarinin uzerine yaz",
+            "cmd": "scout aws --profile <PROFILE_NAME> --force",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Generate Timestamped Reports",
+            "desc": "Append a timestamp to report files to keep history",
+            "desc_tr": "Gecmisi tutmak icin rapor dosyalarina zaman damgasi ekle",
+            "cmd": "scout aws --profile <PROFILE_NAME> --timestamp",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Raw Data Output for Pipelines",
+            "desc": "Emit machine-readable JSON results for automation",
+            "desc_tr": "Otomasyon icin makine tarafindan okunabilir JSON sonuclari uret",
+            "cmd": "scout aws --profile <PROFILE_NAME> --no-browser --result-format json",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run ScoutSuite via Docker",
+            "desc": "Execute ScoutSuite in a container mounting creds and report dirs",
+            "desc_tr": "Kimlik bilgileri ve rapor dizinlerini baglayarak ScoutSuite'i konteynerde calistir",
+            "cmd": "docker run -v ~/.aws:/root/.aws -v $(pwd)/report:/opt/scoutsuite-report rossja/ncc-scoutsuite scout aws --profile <PROFILE_NAME>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Parse Findings with jq",
+            "desc": "Extract specific service findings from the raw results file",
+            "desc_tr": "Ham sonuc dosyasindan belirli hizmet bulgularini cikar",
+            "cmd": "jq '.services.iam.findings' <PATH>/scoutsuite-results/scoutsuite_results_aws-<PROFILE_NAME>.js",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Strip the leading JS variable assignment before piping into jq if present."
+          },
+          {
+            "title": "List Available Rulesets",
+            "desc": "Locate built-in provider rulesets to base custom rules on",
+            "desc_tr": "Ozel kurallara temel olusturmak icin yerlesik saglayici kural setlerini bul",
+            "cmd": "ls $(python3 -c 'import ScoutSuite, os; print(os.path.join(os.path.dirname(ScoutSuite.__file__),\"providers\"))')",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Update ScoutSuite to Latest",
+            "desc": "Upgrade ScoutSuite to the newest released version",
+            "desc_tr": "ScoutSuite'i en son yayinlanan surume yukselt",
+            "cmd": "pip install --upgrade scoutsuite",
+            "tags": [
+              "essential"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Steampipe & Powerpipe",
+        "commands": [
+          {
+            "title": "Install Steampipe",
+            "desc": "Install Steampipe CLI on Linux/macOS",
+            "desc_tr": "Steampipe CLI'yi Linux/macOS uzerine kur",
+            "cmd": "sudo /bin/sh -c \"$(curl -fsSL https://steampipe.io/install/steampipe.sh)\"",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Install Cloud Plugins",
+            "desc": "Install AWS, Azure and GCP plugins from the hub",
+            "desc_tr": "Hub'dan AWS, Azure ve GCP eklentilerini kur",
+            "cmd": "steampipe plugin install aws azure gcp",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "List Installed Plugins",
+            "desc": "Show installed plugins and their versions",
+            "desc_tr": "Kurulu eklentileri ve surumlerini goster",
+            "cmd": "steampipe plugin list",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Update All Plugins",
+            "desc": "Update every installed plugin to the latest version",
+            "desc_tr": "Tum kurulu eklentileri en son surume guncelle",
+            "cmd": "steampipe plugin update --all",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Launch Interactive Query Shell",
+            "desc": "Open the interactive SQL prompt against cloud APIs",
+            "desc_tr": "Bulut API'lerine karsi etkilesimli SQL istemcisini ac",
+            "cmd": "steampipe query",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "List All Available Tables",
+            "desc": "Inspect every table exposed by installed plugins",
+            "desc_tr": "Kurulu eklentilerin sundugu tum tablolari incele",
+            "cmd": "steampipe query \".inspect\"",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect a Table Schema",
+            "desc": "Show columns and types for a specific table",
+            "desc_tr": "Belirli bir tablonun sutunlarini ve tiplerini goster",
+            "cmd": "steampipe query \".inspect aws_s3_bucket\"",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Run Inline SQL Query",
+            "desc": "Execute a single SQL statement non-interactively",
+            "desc_tr": "Tek bir SQL ifadesini etkilesimsiz calistir",
+            "cmd": "steampipe query \"select name, region from aws_s3_bucket\"",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Find Public S3 Buckets",
+            "desc": "List S3 buckets that block public access is disabled",
+            "desc_tr": "Genel erisim engelleme kapali S3 kovalarini listele",
+            "cmd": "steampipe query \"select name, region from aws_s3_bucket where not bucket_policy_is_public is false and block_public_acls is false\"",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "List Open Security Group Rules",
+            "desc": "Find security groups allowing ingress from 0.0.0.0/0",
+            "desc_tr": "0.0.0.0/0'dan gelen erisime izin veren guvenlik gruplarini bul",
+            "cmd": "steampipe query \"select group_id, region from aws_vpc_security_group_rule where cidr_ipv4 = '0.0.0.0/0' and type = 'ingress'\"",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Find IAM Users Without MFA",
+            "desc": "List console users that have no MFA device enabled",
+            "desc_tr": "MFA cihazi etkin olmayan konsol kullanicilarini listele",
+            "cmd": "steampipe query \"select name from aws_iam_user where mfa_enabled = false\"",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Query Output as JSON",
+            "desc": "Return results in JSON for piping into other tools",
+            "desc_tr": "Sonuclari diger araclara aktarmak icin JSON olarak don",
+            "cmd": "steampipe query --output json \"select name, region from aws_s3_bucket\"",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Query Output as CSV",
+            "desc": "Export query results as CSV for reporting",
+            "desc_tr": "Raporlama icin sorgu sonuclarini CSV olarak disa aktar",
+            "cmd": "steampipe query --output csv \"select name, region from aws_ec2_instance\" > instances.csv",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Run a SQL File",
+            "desc": "Execute saved SQL statements from a file",
+            "desc_tr": "Bir dosyadan kayitli SQL ifadelerini calistir",
+            "cmd": "steampipe query <FILE>.sql",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Use Named Connection per Cloud Account",
+            "desc": "Target a specific aggregator/connection by name",
+            "desc_tr": "Belirli bir agregator/baglantiyi isimle hedefle",
+            "cmd": "steampipe query \"select name from aws_all.aws_account\"",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Start Steampipe as a Postgres Service",
+            "desc": "Run the embedded Postgres endpoint for external clients",
+            "desc_tr": "Harici istemciler icin gomulu Postgres uc noktasini calistir",
+            "cmd": "steampipe service start --show-password",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Stop the Steampipe Service",
+            "desc": "Shut down the running Postgres/dashboard service",
+            "desc_tr": "Calisan Postgres/dashboard servisini kapat",
+            "cmd": "steampipe service stop",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Install Powerpipe",
+            "desc": "Install the Powerpipe CLI for dashboards and benchmarks",
+            "desc_tr": "Dashboard ve benchmark'lar icin Powerpipe CLI'yi kur",
+            "cmd": "sudo /bin/sh -c \"$(curl -fsSL https://powerpipe.io/install/powerpipe.sh)\"",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Powerpipe, eski 'steampipe check/dashboard' islevlerini devraldi; Steampipe artik sadece sorgu motoru olarak calisir."
+          },
+          {
+            "title": "Install a Compliance Mod",
+            "desc": "Pull the AWS Compliance mod from the hub into a workspace",
+            "desc_tr": "Hub'dan AWS Compliance mod'unu calisma alanina cek",
+            "cmd": "powerpipe mod install github.com/turbot/steampipe-mod-aws-compliance",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "List Benchmarks and Controls in a Mod",
+            "desc": "Enumerate runnable benchmarks and controls",
+            "desc_tr": "Calistirilabilir benchmark ve kontrolleri listele",
+            "cmd": "powerpipe benchmark list",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Run a CIS Benchmark",
+            "desc": "Execute the AWS CIS v1.5 benchmark against your account",
+            "desc_tr": "Hesabiniza karsi AWS CIS v1.5 benchmark'ini calistir",
+            "cmd": "powerpipe benchmark run aws_compliance.benchmark.cis_v150",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Run a Single Control",
+            "desc": "Run one specific compliance control by name",
+            "desc_tr": "Belirli tek bir uyumluluk kontrolunu isimle calistir",
+            "cmd": "powerpipe control run aws_compliance.control.cis_v150_1_5",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Export Benchmark Results to JSON",
+            "desc": "Save full benchmark output for pipelines/SIEM",
+            "desc_tr": "Pipeline/SIEM icin tam benchmark ciktisini kaydet",
+            "cmd": "powerpipe benchmark run aws_compliance.benchmark.cis_v150 --export json",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Generate a NIST CSF HTML Report",
+            "desc": "Produce a shareable HTML compliance report",
+            "desc_tr": "Paylasilabilir HTML uyumluluk raporu uret",
+            "cmd": "powerpipe benchmark run aws_compliance.benchmark.nist_csf --export report.html",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Filter Controls by Tag",
+            "desc": "Run only controls matching a tag (e.g. a service)",
+            "desc_tr": "Yalnizca bir etikete uyan kontrolleri calistir (orn. bir servis)",
+            "cmd": "powerpipe benchmark run aws_compliance.benchmark.cis_v150 --tag service=S3",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Show Only Failing (Alarm) Results",
+            "desc": "Limit output to controls in alarm/error state",
+            "desc_tr": "Ciktiyi alarm/hata durumundaki kontrollerle sinirla",
+            "cmd": "powerpipe benchmark run aws_compliance.benchmark.cis_v150 --where \"status in ('alarm','error')\"",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Launch the Powerpipe Dashboard Server",
+            "desc": "Serve interactive dashboards in the browser",
+            "desc_tr": "Tarayicida etkilesimli dashboard'lari sun",
+            "cmd": "powerpipe server",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Varsayilan olarak http://localhost:9033 adresinde dinler; once 'steampipe service start' ile sorgu motoru calismalidir."
+          },
+          {
+            "title": "Run a Single Dashboard Headless",
+            "desc": "Render a named dashboard and export its snapshot",
+            "desc_tr": "Adi verilen bir dashboard'i isleyip anlik goruntusunu disa aktar",
+            "cmd": "powerpipe dashboard run aws_compliance.dashboard.s3_bucket_age_report --export snapshot.pps",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Multi-Cloud CIS in CI/CD",
+            "desc": "Run Azure CIS and fail the pipeline on any alarm",
+            "desc_tr": "Azure CIS calistir ve herhangi bir alarmda pipeline'i basarisiz yap",
+            "cmd": "powerpipe benchmark run azure_compliance.benchmark.cis_v200 --output none --export results.json && jq -e '[.controls[].results[]?|select(.status==\"alarm\")]|length==0' results.json",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Cloud Custodian",
+        "commands": [
+          {
+            "title": "Install Cloud Custodian (c7n)",
+            "desc": "Install the core Custodian CLI via pip into a virtualenv",
+            "desc_tr": "Cloud Custodian (c7n) CLI'sini pip ile virtualenv icine kur",
+            "cmd": "python3 -m venv custodian && source custodian/bin/activate && pip install c7n",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Install Azure & GCP Providers",
+            "desc": "Add the Azure and GCP provider packages alongside core c7n",
+            "desc_tr": "Cekirdek c7n yaninda Azure ve GCP saglayici paketlerini ekle",
+            "cmd": "pip install c7n_azure c7n_gcp c7n_kube",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Check Custodian Version",
+            "desc": "Print installed Custodian version and provider versions",
+            "desc_tr": "Kurulu Custodian ve saglayici surumlerini yazdir",
+            "cmd": "custodian version --debug",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Validate a Policy File",
+            "desc": "Syntactically validate a policy YAML before running",
+            "desc_tr": "Calistirmadan once politika YAML'ini sozdizimsel olarak dogrula",
+            "cmd": "custodian validate <FILE>.yml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Dry-Run a Policy (AWS)",
+            "desc": "Run a policy in report-only mode without taking actions",
+            "desc_tr": "Politikayi eylem almadan yalnizca raporlama modunda calistir",
+            "cmd": "custodian run --dryrun -s <PATH>/output <FILE>.yml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Execute a Policy (AWS)",
+            "desc": "Run a policy and apply its actions, writing results to output dir",
+            "desc_tr": "Politikayi calistir, eylemlerini uygula ve sonuclari cikti dizinine yaz",
+            "cmd": "custodian run -s <PATH>/output <FILE>.yml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run Against a Specific AWS Region",
+            "desc": "Override the target region for a policy run",
+            "desc_tr": "Politika calismasi icin hedef AWS bolgesini gecersiz kil",
+            "cmd": "custodian run --region <REGION> -s <PATH>/output <FILE>.yml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run Across All AWS Regions",
+            "desc": "Execute the policy in every enabled region",
+            "desc_tr": "Politikayi etkin tum bolgelerde calistir",
+            "cmd": "custodian run --region all -s <PATH>/output <FILE>.yml",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Assume an AWS Role for Execution",
+            "desc": "Run a policy under an assumed cross-account IAM role",
+            "desc_tr": "Politikayi ustlenilen capraz-hesap IAM rolu altinda calistir",
+            "cmd": "custodian run --assume arn:aws:iam::<ACCOUNT_ID>:role/<ROLE> -s <PATH>/output <FILE>.yml",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Available AWS Resources",
+            "desc": "Show all resource types Custodian can target on AWS",
+            "desc_tr": "Custodian'in AWS uzerinde hedefleyebilecegi tum kaynak turlerini listele",
+            "cmd": "custodian schema aws",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Inspect Filters/Actions for a Resource",
+            "desc": "Show available filters and actions for a resource type",
+            "desc_tr": "Bir kaynak turu icin mevcut filtre ve eylemleri goster",
+            "cmd": "custodian schema aws.ec2",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Inspect a Specific Filter Schema",
+            "desc": "Drill into the schema of one filter on a resource",
+            "desc_tr": "Bir kaynaktaki tek bir filtrenin semasina detayli bak",
+            "cmd": "custodian schema aws.s3.filters.global-grants",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Generate Cloud Metrics Report",
+            "desc": "Produce a CSV/JSON report of resources matched by the last run",
+            "desc_tr": "Son calismada eslesen kaynaklarin CSV/JSON raporunu uret",
+            "cmd": "custodian report -s <PATH>/output --format csv <FILE>.yml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Report Selected Fields",
+            "desc": "Customize report columns using JMESPath field expressions",
+            "desc_tr": "JMESPath alan ifadeleriyle rapor sutunlarini ozellestir",
+            "cmd": "custodian report -s <PATH>/output --field InstanceId=InstanceId --field Name=Tags[?Key=='Name'].Value <FILE>.yml",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Tail Policy Execution Logs",
+            "desc": "Stream the structured logs Custodian wrote during a run",
+            "desc_tr": "Custodian'in calisma sirasinda yazdigi yapilandirilmis loglari izle",
+            "cmd": "custodian logs -s <PATH>/output <FILE>.yml",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Run with Verbose/Debug Output",
+            "desc": "Enable verbose logging to troubleshoot policy behavior",
+            "desc_tr": "Politika davranisini ayiklamak icin ayrintili loglamayi etkinlestir",
+            "cmd": "custodian run -v -s <PATH>/output <FILE>.yml",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Find Public S3 Buckets (Policy)",
+            "desc": "Sample policy detecting buckets with global ACL grants",
+            "desc_tr": "Kuresel ACL izni olan kovalari tespit eden ornek politika",
+            "cmds": [
+              "cat > <FILE>.yml <<'EOF'",
+              "policies:",
+              "  - name: s3-public-buckets",
+              "    resource: aws.s3",
+              "    filters:",
+              "      - type: global-grants",
+              "EOF",
+              "custodian run --dryrun -s <PATH>/output <FILE>.yml"
+            ],
+            "tags": [
+              "essential",
+              "advanced"
+            ],
+            "note": "global-grants flags AllUsers/AuthenticatedUsers ACL grants; pair with a 'set-statements' or 'delete-global-grants' action to remediate."
+          },
+          {
+            "title": "Stop Untagged EC2 Instances (Policy)",
+            "desc": "Policy that stops running instances missing a required tag",
+            "desc_tr": "Gerekli etiketi olmayan calisan instance'lari durduran politika",
+            "cmds": [
+              "cat > <FILE>.yml <<'EOF'",
+              "policies:",
+              "  - name: ec2-stop-untagged",
+              "    resource: aws.ec2",
+              "    filters:",
+              "      - \"State.Name\": running",
+              "      - \"tag:Owner\": absent",
+              "    actions:",
+              "      - stop",
+              "EOF",
+              "custodian run -s <PATH>/output <FILE>.yml"
+            ],
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Mark-for-Op Garbage Collection",
+            "desc": "Tag non-compliant resources now and act after a delay",
+            "desc_tr": "Uyumsuz kaynaklari simdi etiketle, gecikmeden sonra islem yap",
+            "cmds": [
+              "cat > <FILE>.yml <<'EOF'",
+              "policies:",
+              "  - name: ec2-mark-stale",
+              "    resource: aws.ec2",
+              "    filters:",
+              "      - \"tag:Owner\": absent",
+              "    actions:",
+              "      - type: mark-for-op",
+              "        tag: custodian_cleanup",
+              "        op: stop",
+              "        days: 4",
+              "EOF",
+              "custodian run -s <PATH>/output <FILE>.yml"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "A companion policy filters on 'marked-for-op' to execute the deferred op once the grace window elapses."
+          },
+          {
+            "title": "Deploy a CloudTrail-Event Lambda Policy",
+            "desc": "Provision a policy as an event-driven Lambda via the mode block",
+            "desc_tr": "Politikayi mode blogu ile olay-tetikli Lambda olarak dagit",
+            "cmds": [
+              "cat > <FILE>.yml <<'EOF'",
+              "policies:",
+              "  - name: ec2-tag-compliance-realtime",
+              "    resource: aws.ec2",
+              "    mode:",
+              "      type: cloudtrail",
+              "      role: arn:aws:iam::<ACCOUNT_ID>:role/<ROLE>",
+              "      events:",
+              "        - RunInstances",
+              "    filters:",
+              "      - \"tag:Owner\": absent",
+              "    actions:",
+              "      - stop",
+              "EOF",
+              "custodian run -s <PATH>/output <FILE>.yml"
+            ],
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Running this provisions the Lambda + CloudWatch Event rule; subsequent runs update them in place."
+          },
+          {
+            "title": "Deploy a Periodic (Scheduled) Policy",
+            "desc": "Run a policy on a cron/rate schedule using periodic mode",
+            "desc_tr": "Politikayi periodic mod ile cron/rate zamanlamasinda calistir",
+            "cmds": [
+              "cat > <FILE>.yml <<'EOF'",
+              "policies:",
+              "  - name: ebs-unused-daily",
+              "    resource: aws.ebs",
+              "    mode:",
+              "      type: periodic",
+              "      schedule: \"rate(1 day)\"",
+              "      role: arn:aws:iam::<ACCOUNT_ID>:role/<ROLE>",
+              "    filters:",
+              "      - Attachments: []",
+              "EOF",
+              "custodian run -s <PATH>/output <FILE>.yml"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run an Azure Policy",
+            "desc": "Execute a Custodian policy targeting Azure resources",
+            "desc_tr": "Azure kaynaklarini hedefleyen bir Custodian politikasi calistir",
+            "cmd": "custodian run -s <PATH>/output <FILE>.yml",
+            "tags": [
+              "tool"
+            ],
+            "note": "Auth via env vars AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_SUBSCRIPTION_ID before running."
+          },
+          {
+            "title": "Inspect Azure Resource Schema",
+            "desc": "List filters/actions available for an Azure resource type",
+            "desc_tr": "Bir Azure kaynak turu icin mevcut filtre/eylemleri listele",
+            "cmd": "custodian schema azure.vm",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Inspect GCP Resource Schema",
+            "desc": "List filters/actions available for a GCP resource type",
+            "desc_tr": "Bir GCP kaynak turu icin mevcut filtre/eylemleri listele",
+            "cmd": "custodian schema gcp.instance",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Run c7n-org Across Many Accounts",
+            "desc": "Use the c7n-org tool to run a policy over an accounts config",
+            "desc_tr": "c7n-org araciyla bir politikayi coklu hesap yapilandirmasinda calistir",
+            "cmd": "c7n-org run -c <FILE>-accounts.yml -s <PATH>/output -u <FILE>.yml --region all",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Install with 'pip install c7n-org'; the accounts file maps each account/role for parallel multi-account execution."
+          },
+          {
+            "title": "Generate c7n-org Accounts File from AWS Org",
+            "desc": "Auto-build the accounts config from your AWS Organization",
+            "desc_tr": "AWS Organization'dan hesap yapilandirma dosyasini otomatik olustur",
+            "cmd": "c7n-org orgaccounts -f <FILE>-accounts.yml",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Report Across Org Accounts",
+            "desc": "Aggregate c7n-org run results into a single report",
+            "desc_tr": "c7n-org calisma sonuclarini tek bir raporda topla",
+            "cmd": "c7n-org report -c <FILE>-accounts.yml -s <PATH>/output -u <FILE>.yml --format csv --region all",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Azure (az cli security, AzureHound)",
+        "commands": [
+          {
+            "title": "Azure CLI Login",
+            "desc": "Authenticate to Azure with interactive login",
+            "desc_tr": "Azure'a etkileşimli oturum açma ile kimlik doğrula",
+            "cmd": "az login",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Login with Service Principal",
+            "desc": "Authenticate using a service principal and secret",
+            "desc_tr": "Servis principal ve secret kullanarak kimlik doğrula",
+            "cmd": "az login --service-principal -u <APP_ID> -p <SECRET> --tenant <TENANT_ID>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "List Accessible Subscriptions",
+            "desc": "Enumerate all subscriptions the identity can access",
+            "desc_tr": "Kimliğin erişebildiği tüm abonelikleri listele",
+            "cmd": "az account list --output table",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Show Current Signed-in Identity",
+            "desc": "Display the currently authenticated user or principal",
+            "desc_tr": "Şu anda kimliği doğrulanmış kullanıcıyı veya principal'i göster",
+            "cmd": "az ad signed-in-user show",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Enumerate All Azure AD Users",
+            "desc": "List Entra ID (Azure AD) users for recon",
+            "desc_tr": "Keşif için Entra ID (Azure AD) kullanıcılarını listele",
+            "cmd": "az ad user list --query \"[].{name:displayName,upn:userPrincipalName}\" -o table",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "List Azure AD Groups",
+            "desc": "Enumerate directory groups to map membership",
+            "desc_tr": "Üyelikleri haritalamak için dizin gruplarını listele",
+            "cmd": "az ad group list --query \"[].{name:displayName,id:id}\" -o table",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "List Service Principals",
+            "desc": "Enumerate service principals (app identities) in tenant",
+            "desc_tr": "Kiracıdaki servis principal'leri (uygulama kimlikleri) listele",
+            "cmd": "az ad sp list --all --query \"[].{name:displayName,appId:appId}\" -o table",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "List App Registrations",
+            "desc": "Enumerate registered applications and their app IDs",
+            "desc_tr": "Kayıtlı uygulamaları ve app ID'lerini listele",
+            "cmd": "az ad app list --all --query \"[].{name:displayName,appId:appId}\" -o table",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Enumerate Role Assignments",
+            "desc": "List all RBAC role assignments in a subscription",
+            "desc_tr": "Bir abonelikteki tüm RBAC rol atamalarını listele",
+            "cmd": "az role assignment list --all --query \"[].{principal:principalName,role:roleDefinitionName,scope:scope}\" -o table",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Find Role Assignments for a Principal",
+            "desc": "Show roles assigned to a specific identity",
+            "desc_tr": "Belirli bir kimliğe atanmış rolleri göster",
+            "cmd": "az role assignment list --assignee <PRINCIPAL_ID> --all -o table",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Custom Role Definitions",
+            "desc": "Enumerate custom RBAC roles for privilege analysis",
+            "desc_tr": "Yetki analizi için özel RBAC rollerini listele",
+            "cmd": "az role definition list --custom-role-only true --query \"[].{name:roleName,actions:permissions[0].actions}\" -o json",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Key Vaults",
+            "desc": "Enumerate Key Vaults that may hold secrets",
+            "desc_tr": "Secret barındırabilecek Key Vault'ları listele",
+            "cmd": "az keyvault list --query \"[].{name:name,uri:properties.vaultUri}\" -o table",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Dump Key Vault Secrets",
+            "desc": "List secret names then retrieve a secret value",
+            "desc_tr": "Secret isimlerini listele ardından bir secret değerini al",
+            "cmds": [
+              "az keyvault secret list --vault-name <VAULT_NAME> -o table",
+              "az keyvault secret show --vault-name <VAULT_NAME> --name <SECRET_NAME> --query value -o tsv"
+            ],
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Requires Key Vault 'Get/List' secret permissions; access is logged in vault diagnostics."
+          },
+          {
+            "title": "List Storage Accounts",
+            "desc": "Enumerate storage accounts for blob exposure review",
+            "desc_tr": "Blob maruziyet incelemesi için depolama hesaplarını listele",
+            "cmd": "az storage account list --query \"[].{name:name,public:allowBlobPublicAccess,https:enableHttpsTrafficOnly}\" -o table",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "List Storage Account Keys",
+            "desc": "Retrieve access keys for a storage account",
+            "desc_tr": "Bir depolama hesabının erişim anahtarlarını al",
+            "cmd": "az storage account keys list --account-name <STORAGE_ACCOUNT> --query \"[].value\" -o tsv",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Enumerate VMs and Public IPs",
+            "desc": "List virtual machines and their network exposure",
+            "desc_tr": "Sanal makineleri ve ağ maruziyetlerini listele",
+            "cmd": "az vm list-ip-addresses --query \"[].{vm:virtualMachine.name,public:virtualMachine.network.publicIpAddresses[0].ipAddress}\" -o table",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Run Command on VM",
+            "desc": "Execute a shell command on a VM via run-command",
+            "desc_tr": "run-command ile bir VM üzerinde shell komutu çalıştır",
+            "cmd": "az vm run-command invoke -g <RESOURCE_GROUP> -n <VM_NAME> --command-id RunShellScript --scripts \"id\"",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Requires Microsoft.Compute/virtualMachines/runCommand/action; a classic privesc/lateral-movement path."
+          },
+          {
+            "title": "List NSG Rules (Open Ports)",
+            "desc": "Audit network security group rules for risky inbound access",
+            "desc_tr": "Riskli gelen erişim için ağ güvenlik grubu kurallarını denetle",
+            "cmd": "az network nsg list --query \"[].{name:name,rules:securityRules[?access=='Allow'].{port:destinationPortRange,src:sourceAddressPrefix}}\" -o json",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Microsoft Defender Pricing Tiers",
+            "desc": "Check Defender for Cloud plan coverage per resource type",
+            "desc_tr": "Kaynak türü başına Defender for Cloud plan kapsamını kontrol et",
+            "cmd": "az security pricing list --query \"value[].{name:name,tier:pricingTier}\" -o table",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "List Security Assessments",
+            "desc": "Pull Defender for Cloud posture assessment findings",
+            "desc_tr": "Defender for Cloud duruş değerlendirme bulgularını çek",
+            "cmd": "az security assessment list --query \"[].{name:displayName,status:status.code}\" -o table",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Secure Score",
+            "desc": "Retrieve overall Defender for Cloud secure score",
+            "desc_tr": "Genel Defender for Cloud güvenlik puanını al",
+            "cmd": "az security secure-scores list --query \"[].{name:displayName,score:score.percentage}\" -o table",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Check Resource Locks",
+            "desc": "List management locks that prevent resource changes",
+            "desc_tr": "Kaynak değişikliklerini önleyen yönetim kilitlerini listele",
+            "cmd": "az lock list --query \"[].{name:name,level:level,scope:id}\" -o table",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Query Resources with Resource Graph",
+            "desc": "Use KQL via Resource Graph for fast multi-sub inventory",
+            "desc_tr": "Hızlı çoklu abonelik envanteri için Resource Graph ile KQL kullan",
+            "cmd": "az graph query -q \"Resources | where type =~ 'microsoft.compute/virtualmachines' | project name, location, resourceGroup\" -o table",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Requires the resource-graph extension: az extension add --name resource-graph."
+          },
+          {
+            "title": "Get Access Token for ARM",
+            "desc": "Extract a raw bearer token for the management API",
+            "desc_tr": "Yönetim API'si için ham bearer token çıkar",
+            "cmd": "az account get-access-token --resource https://management.azure.com --query accessToken -o tsv",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Token can be replayed against REST APIs; treat the output as a credential."
+          },
+          {
+            "title": "AzureHound Collect (Username/Password)",
+            "desc": "Collect Entra ID and Azure RM data for BloodHound",
+            "desc_tr": "BloodHound için Entra ID ve Azure RM verisi topla",
+            "cmd": "azurehound -u <USER>@<DOMAIN> -p '<PASSWORD>' list --tenant <TENANT_ID> -o output.json",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Modern AzureHound emits JSON that imports directly into BloodHound CE."
+          },
+          {
+            "title": "AzureHound Collect (Refresh Token)",
+            "desc": "Collect using a stolen JWT/refresh token instead of creds",
+            "desc_tr": "Kimlik bilgileri yerine çalınmış JWT/refresh token ile topla",
+            "cmd": "azurehound -r <REFRESH_TOKEN> list --tenant <TENANT_ID> -o output.json",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "AzureHound Service Principal Collection",
+            "desc": "Run AzureHound with a service principal secret",
+            "desc_tr": "AzureHound'u servis principal secret'ı ile çalıştır",
+            "cmd": "azurehound -a <APP_ID> -s '<CLIENT_SECRET>' list --tenant <TENANT_ID> -o output.json",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "AzureHound Targeted Enumeration",
+            "desc": "Collect only specific Entra objects to scope a run",
+            "desc_tr": "Bir çalışmayı kapsamlamak için yalnızca belirli Entra nesnelerini topla",
+            "cmd": "azurehound -r <REFRESH_TOKEN> list groups --tenant <TENANT_ID> -o groups.json",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Sub-commands like 'list users', 'list az-rbac', 'list groups' reduce noise and Graph throttling."
+          }
+        ]
+      },
+      {
+        "name": "GCP (gcloud security, ScoutSuite)",
+        "commands": [
+          {
+            "title": "Authenticate to GCP",
+            "desc": "Login with user credentials for gcloud CLI",
+            "desc_tr": "gcloud CLI icin kullanici kimlik bilgileriyle oturum ac",
+            "cmd": "gcloud auth login",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List Accessible Projects",
+            "desc": "Enumerate all projects the identity can see",
+            "desc_tr": "Kimligin erisebildigi tum projeleri listele",
+            "cmd": "gcloud projects list --format=\"table(projectId,name,projectNumber)\"",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Get Project IAM Policy",
+            "desc": "Dump full IAM bindings for a project to spot over-privileged members",
+            "desc_tr": "Asiri yetkili uyeleri tespit etmek icin projenin tam IAM bindinglerini dok",
+            "cmd": "gcloud projects get-iam-policy <PROJECT_ID> --format=json",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Find Members with Primitive Roles",
+            "desc": "Flatten IAM policy to find owner/editor grants",
+            "desc_tr": "owner/editor atamalarini bulmak icin IAM politikasini duzlestir",
+            "cmd": "gcloud projects get-iam-policy <PROJECT_ID> --flatten=\"bindings[].members\" --filter=\"bindings.role:roles/owner OR bindings.role:roles/editor\" --format=\"table(bindings.role,bindings.members)\"",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Service Accounts",
+            "desc": "Enumerate service accounts in a project",
+            "desc_tr": "Bir projedeki servis hesaplarini listele",
+            "cmd": "gcloud iam service-accounts list --project=<PROJECT_ID>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List Service Account Keys",
+            "desc": "Find user-managed keys (long-lived credentials to rotate/remove)",
+            "desc_tr": "Kullanici tarafindan yonetilen anahtarlari bul (rotasyon/kaldirma gerektiren uzun omurlu kimlikler)",
+            "cmd": "gcloud iam service-accounts keys list --iam-account=<SA_EMAIL> --managed-by=user",
+            "tags": [
+              "advanced"
+            ],
+            "note": "User-managed SA keys are a top finding; prefer Workload Identity Federation instead."
+          },
+          {
+            "title": "Test IAM Permissions for Current Identity",
+            "desc": "Check which permissions the caller actually holds on a project",
+            "desc_tr": "Cagri yapan kimligin projede gercekte hangi izinlere sahip oldugunu kontrol et",
+            "cmd": "gcloud projects test-iam-permissions <PROJECT_ID> --permissions=resourcemanager.projects.setIamPolicy,iam.serviceAccounts.actAs",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Custom IAM Roles",
+            "desc": "Audit custom roles defined at project level",
+            "desc_tr": "Proje seviyesinde tanimli ozel rolleri denetle",
+            "cmd": "gcloud iam roles list --project=<PROJECT_ID> --format=\"table(name,title,stage)\"",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "List Firewall Rules",
+            "desc": "Review VPC firewall rules for overly permissive ingress",
+            "desc_tr": "Asiri izin veren ingress icin VPC firewall kurallarini incele",
+            "cmd": "gcloud compute firewall-rules list --format=\"table(name,network,direction,sourceRanges.list():label=SRC,allowed[].map().firewall_rule().list():label=ALLOW)\"",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Find Firewall Rules Open to 0.0.0.0/0",
+            "desc": "Detect internet-exposed ingress rules",
+            "desc_tr": "Internete acik ingress kurallarini tespit et",
+            "cmd": "gcloud compute firewall-rules list --filter=\"sourceRanges:0.0.0.0/0 AND direction=INGRESS\" --format=\"table(name,network,allowed[].map().firewall_rule().list())\"",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Pay special attention to ports 22 (SSH) and 3389 (RDP) open to the internet."
+          },
+          {
+            "title": "List and Inspect Cloud Storage Bucket IAM",
+            "desc": "Enumerate buckets, then inspect their IAM for allUsers/allAuthenticatedUsers",
+            "desc_tr": "Bucketlari listele, ardindan allUsers/allAuthenticatedUsers icin IAM'lerini incele",
+            "cmds": [
+              "gsutil ls -p <PROJECT_ID>",
+              "gsutil iam get gs://<BUCKET_NAME>"
+            ],
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Check Bucket Public Access Prevention",
+            "desc": "Verify uniform bucket-level access and public access prevention",
+            "desc_tr": "Tekduze bucket seviyesi erisimi ve genel erisim engellemeyi dogrula",
+            "cmd": "gcloud storage buckets describe gs://<BUCKET_NAME> --format=\"default(name,iamConfiguration.publicAccessPrevention,iamConfiguration.uniformBucketLevelAccess)\"",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Compute Instances with External IPs",
+            "desc": "Find VMs exposed via public IP addresses",
+            "desc_tr": "Genel IP adresleriyle disa acik sanal makineleri bul",
+            "cmd": "gcloud compute instances list --format=\"table(name,zone,status,networkInterfaces[].accessConfigs[].natIP.notnull().list():label=EXTERNAL_IP)\"",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Check Instance Metadata for Serial/OS-Login",
+            "desc": "Audit OS Login and serial-port settings on a VM",
+            "desc_tr": "Bir sanal makinede OS Login ve seri-port ayarlarini denetle",
+            "cmd": "gcloud compute instances describe <INSTANCE> --zone=<ZONE> --format=\"flattened(metadata.items)\"",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Look for enable-oslogin=true and serial-port-enable=false (should be disabled)."
+          },
+          {
+            "title": "List Cloud SQL Instances and Public IPs",
+            "desc": "Detect Cloud SQL databases with public IP exposure",
+            "desc_tr": "Genel IP'ye acik Cloud SQL veritabanlarini tespit et",
+            "cmd": "gcloud sql instances list --format=\"table(name,databaseVersion,settings.ipConfiguration.ipv4Enabled,settings.ipConfiguration.requireSsl)\"",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Enabled APIs/Services",
+            "desc": "Inventory enabled APIs to reduce attack surface",
+            "desc_tr": "Saldiri yuzeyini azaltmak icin etkin API'leri envanterle",
+            "cmd": "gcloud services list --enabled --project=<PROJECT_ID> --format=\"table(config.name,config.title)\"",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Audit Logging Sink Configuration",
+            "desc": "Verify log sinks are exporting audit logs",
+            "desc_tr": "Log sinklerinin denetim loglarini disa aktardigini dogrula",
+            "cmd": "gcloud logging sinks list --project=<PROJECT_ID> --format=\"table(name,destination,filter)\"",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List GKE Clusters and Security Config",
+            "desc": "Review GKE clusters for legacy auth and private node settings",
+            "desc_tr": "GKE kumelerini eski kimlik dogrulama ve ozel dugum ayarlari icin incele",
+            "cmd": "gcloud container clusters list --format=\"table(name,location,currentMasterVersion,privateClusterConfig.enablePrivateNodes,legacyAbac.enabled)\"",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Cloud KMS Keys and Rotation",
+            "desc": "Audit KMS keys and rotation schedules in a keyring",
+            "desc_tr": "Bir keyring icindeki KMS anahtarlarini ve rotasyon zamanlamalarini denetle",
+            "cmds": [
+              "gcloud kms keyrings list --location=<LOCATION> --project=<PROJECT_ID>",
+              "gcloud kms keys list --keyring=<KEYRING> --location=<LOCATION> --format=\"table(name,rotationPeriod,nextRotationTime)\""
+            ],
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Enumerate Org Policies",
+            "desc": "List organization policy constraints in effect",
+            "desc_tr": "Yururlukteki organizasyon politika kisitlamalarini listele",
+            "cmd": "gcloud resource-manager org-policies list --project=<PROJECT_ID>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Search Public IAM Policies via Asset Inventory",
+            "desc": "Find IAM policies granting access to allUsers with Cloud Asset Inventory",
+            "desc_tr": "Cloud Asset Inventory ile allUsers'a erisim veren IAM politikalarini bul",
+            "cmd": "gcloud asset search-all-iam-policies --scope=projects/<PROJECT_ID> --query=\"policy:allUsers\"",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Requires the Cloud Asset API (cloudasset.googleapis.com) to be enabled."
+          },
+          {
+            "title": "Impersonate a Service Account",
+            "desc": "Run a command as a service account to test actAs privilege escalation",
+            "desc_tr": "actAs ayricalik yukseltmeyi test etmek icin bir komutu servis hesabi olarak calistir",
+            "cmd": "gcloud projects list --impersonate-service-account=<SA_EMAIL>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "ScoutSuite GCP Audit",
+            "desc": "Run a full multi-service security posture audit against a GCP project",
+            "desc_tr": "Bir GCP projesine karsi tam cok-servisli guvenlik durusu denetimi calistir",
+            "cmd": "scout gcp --project-id <PROJECT_ID>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "ScoutSuite GCP with Service Account Key",
+            "desc": "Audit non-interactively using a service account JSON key file",
+            "desc_tr": "Servis hesabi JSON anahtar dosyasi ile etkilesimsiz denetim yap",
+            "cmd": "scout gcp --service-account <FILE> --project-id <PROJECT_ID>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "ScoutSuite GCP Organization-Wide Scan",
+            "desc": "Audit every project under an organization in one run",
+            "desc_tr": "Bir organizasyon altindaki her projeyi tek calistirmada denetle",
+            "cmd": "scout gcp --organization-id <ORG_ID> --all-projects",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "ScoutSuite GCP via User Account",
+            "desc": "Run the audit using local gcloud application-default credentials",
+            "desc_tr": "Yerel gcloud uygulama-varsayilan kimlik bilgileriyle denetimi calistir",
+            "cmds": [
+              "gcloud auth application-default login",
+              "scout gcp --user-account --project-id <PROJECT_ID>"
+            ],
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Prowler GCP Audit",
+            "desc": "Run CIS benchmark checks against GCP with Prowler",
+            "desc_tr": "Prowler ile GCP'ye karsi CIS benchmark kontrolleri calistir",
+            "cmd": "prowler gcp --project-ids <PROJECT_ID>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Find Default Service Account Usage on VMs",
+            "desc": "Detect VMs running as the default compute SA with broad scopes",
+            "desc_tr": "Genis kapsamlarla varsayilan compute servis hesabi olarak calisan sanal makineleri tespit et",
+            "cmd": "gcloud compute instances list --format=\"table(name,zone,serviceAccounts[].email.list(),serviceAccounts[].scopes.list())\"",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Default SA + cloud-platform scope is a common privilege-escalation path."
+          }
+        ]
+      },
+      {
+        "name": "CloudSploit / CloudMapper",
+        "commands": [
+          {
+            "title": "CloudSploit Install (npm)",
+            "desc": "Clone and install CloudSploit scanner from source",
+            "desc_tr": "CloudSploit tarayıcısını kaynaktan klonla ve kur",
+            "cmd": "git clone https://github.com/aquasecurity/cloudsploit.git && cd cloudsploit && npm install",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "CloudSploit Run AWS Scan",
+            "desc": "Run a full AWS posture scan using CLI credentials",
+            "desc_tr": "CLI kimlik bilgileriyle tam AWS güvenlik duruşu taraması çalıştır",
+            "cmd": "./index.js --cloud aws",
+            "tags": [
+              "essential"
+            ],
+            "note": "Uses your default AWS credential chain (env vars, ~/.aws/credentials, or IAM role)."
+          },
+          {
+            "title": "CloudSploit Scan with Config File",
+            "desc": "Run scan using a config.js file with cloud credentials",
+            "desc_tr": "Bulut kimlik bilgileri içeren config.js dosyasıyla tarama çalıştır",
+            "cmd": "./index.js --config ./config.js",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "CloudSploit JSON Output",
+            "desc": "Export scan results as JSON for automation/CI pipelines",
+            "desc_tr": "Tarama sonuçlarını otomasyon/CI hattı için JSON olarak dışa aktar",
+            "cmd": "./index.js --cloud aws --json=<FILE>.json",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "CloudSploit CSV Output",
+            "desc": "Write findings to a CSV file for reporting",
+            "desc_tr": "Bulguları raporlama için CSV dosyasına yaz",
+            "cmd": "./index.js --cloud aws --csv=<FILE>.csv",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "CloudSploit JUnit Output",
+            "desc": "Produce JUnit XML for CI test reporting integration",
+            "desc_tr": "CI test raporlama entegrasyonu için JUnit XML üret",
+            "cmd": "./index.js --cloud aws --junit=<FILE>.xml",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "CloudSploit Console Table Output",
+            "desc": "Print results as a formatted table in the terminal",
+            "desc_tr": "Sonuçları terminalde biçimlendirilmiş tablo olarak yazdır",
+            "cmd": "./index.js --cloud aws --console=table",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "CloudSploit Filter by Compliance",
+            "desc": "Run only plugins mapped to a compliance framework (e.g. PCI, HIPAA)",
+            "desc_tr": "Yalnızca bir uyumluluk çerçevesine (örn. PCI, HIPAA) bağlı eklentileri çalıştır",
+            "cmd": "./index.js --cloud aws --compliance=pci",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "CloudSploit Filter by Plugin",
+            "desc": "Run a single specific plugin/check by name",
+            "desc_tr": "İsme göre tek bir belirli eklenti/kontrol çalıştır",
+            "cmd": "./index.js --cloud aws --plugin=bucketEncryption",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "CloudSploit Suppress a Result",
+            "desc": "Suppress a specific finding by plugin and resource pattern",
+            "desc_tr": "Eklenti ve kaynak deseniyle belirli bir bulguyu bastır",
+            "cmd": "./index.js --cloud aws --suppress=bucketAllUsersPolicy:*:<BUCKET_NAME>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Suppress patterns use plugin:region:resource; '*' wildcards each segment."
+          },
+          {
+            "title": "CloudSploit Azure Scan",
+            "desc": "Scan an Azure subscription for misconfigurations",
+            "desc_tr": "Yanlış yapılandırmalar için bir Azure aboneliğini tara",
+            "cmd": "./index.js --cloud azure --config ./config.js",
+            "tags": [
+              "tool"
+            ],
+            "note": "Requires an Azure AD app registration with Reader + Security Reader roles."
+          },
+          {
+            "title": "CloudSploit GCP Scan",
+            "desc": "Scan a Google Cloud project using a service account",
+            "desc_tr": "Servis hesabı kullanarak bir Google Cloud projesini tara",
+            "cmd": "./index.js --cloud google --config ./config.js",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "CloudSploit Oracle OCI Scan",
+            "desc": "Run posture checks against an Oracle Cloud (OCI) tenancy",
+            "desc_tr": "Oracle Cloud (OCI) kiracılığına karşı güvenlik duruşu kontrolleri çalıştır",
+            "cmd": "./index.js --cloud oracle --config ./config.js",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "CloudSploit Collection-Only Mode",
+            "desc": "Collect API metadata without running plugins (debug data gathering)",
+            "desc_tr": "Eklentileri çalıştırmadan API meta verisini topla (hata ayıklama veri toplama)",
+            "cmd": "./index.js --cloud aws --collection=<FILE>.json",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "CloudSploit Ignore Passing Results",
+            "desc": "Show only failures/warnings, hide OK results to reduce noise",
+            "desc_tr": "Yalnızca hataları/uyarıları göster, gürültüyü azaltmak için OK sonuçlarını gizle",
+            "cmd": "./index.js --cloud aws --ignore-ok",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "CloudSploit Docker Run",
+            "desc": "Run CloudSploit in a container passing AWS credentials via env",
+            "desc_tr": "AWS kimlik bilgilerini env üzerinden geçirerek CloudSploit'i konteynerde çalıştır",
+            "cmd": "docker run -e AWS_ACCESS_KEY_ID=<KEY> -e AWS_SECRET_ACCESS_KEY=<SECRET> cloudsploit/scans --cloud aws",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "CloudMapper Install (venv)",
+            "desc": "Clone CloudMapper and set up its Python virtual environment",
+            "desc_tr": "CloudMapper'ı klonla ve Python sanal ortamını kur",
+            "cmds": [
+              "git clone https://github.com/duo-labs/cloudmapper.git && cd cloudmapper",
+              "python3 -m venv venv && source venv/bin/activate",
+              "pip install -r requirements.txt"
+            ],
+            "tags": [
+              "tool",
+              "essential"
+            ],
+            "note": "CloudMapper needs the 'pyjq' build deps (autoconf, jq, libtool) installed on the host."
+          },
+          {
+            "title": "CloudMapper Configure Account",
+            "desc": "Add an AWS account to config.json interactively",
+            "desc_tr": "config.json dosyasına etkileşimli olarak bir AWS hesabı ekle",
+            "cmd": "python3 cloudmapper.py configure add-account --config-file config.json --name <ACCOUNT_NAME> --id <ACCOUNT_ID>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "CloudMapper Collect Data",
+            "desc": "Collect AWS account metadata via API calls into local JSON",
+            "desc_tr": "API çağrılarıyla AWS hesap meta verisini yerel JSON'a topla",
+            "cmd": "python3 cloudmapper.py collect --account <ACCOUNT_NAME>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Read-only; uses the SecurityAudit + ViewOnlyAccess managed policies."
+          },
+          {
+            "title": "CloudMapper Prepare Network Map",
+            "desc": "Build the browser network diagram from collected data",
+            "desc_tr": "Toplanan veriden tarayıcı ağ diyagramını oluştur",
+            "cmd": "python3 cloudmapper.py prepare --account <ACCOUNT_NAME>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "CloudMapper Web Server",
+            "desc": "Serve the generated interactive network map locally",
+            "desc_tr": "Üretilen etkileşimli ağ haritasını yerel olarak sun",
+            "cmd": "python3 cloudmapper.py webserver --public",
+            "tags": [
+              "tool"
+            ],
+            "note": "Open http://127.0.0.1:8000 to view the diagram."
+          },
+          {
+            "title": "CloudMapper Public Resources Report",
+            "desc": "List all internet-exposed resources in the account",
+            "desc_tr": "Hesaptaki internete açık tüm kaynakları listele",
+            "cmd": "python3 cloudmapper.py public --account <ACCOUNT_NAME>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Great first triage step to find publicly reachable EC2/ELB/RDS endpoints."
+          },
+          {
+            "title": "CloudMapper Findings Audit",
+            "desc": "Run the built-in security audit ruleset against collected data",
+            "desc_tr": "Toplanan veriye karşı yerleşik güvenlik denetimi kural setini çalıştır",
+            "cmd": "python3 cloudmapper.py audit --account <ACCOUNT_NAME>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "CloudMapper Audit JSON Output",
+            "desc": "Export audit findings as JSON for further processing",
+            "desc_tr": "Denetim bulgularını ileri işleme için JSON olarak dışa aktar",
+            "cmd": "python3 cloudmapper.py audit --account <ACCOUNT_NAME> --json > <FILE>.json",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "CloudMapper Report (HTML)",
+            "desc": "Generate an HTML statistics and findings report",
+            "desc_tr": "HTML istatistik ve bulgu raporu oluştur",
+            "cmd": "python3 cloudmapper.py report --account <ACCOUNT_NAME>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "CloudMapper IAM Report",
+            "desc": "Generate a report of IAM users, roles, and their privileges",
+            "desc_tr": "IAM kullanıcıları, rolleri ve ayrıcalıklarının raporunu oluştur",
+            "cmd": "python3 cloudmapper.py iam_report --account <ACCOUNT_NAME>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "CloudMapper Find Admins",
+            "desc": "Identify IAM principals with effective admin privileges",
+            "desc_tr": "Etkin yönetici ayrıcalıklarına sahip IAM kimliklerini belirle",
+            "cmd": "python3 cloudmapper.py find_admins --account <ACCOUNT_NAME>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "CloudMapper Find Unused Resources",
+            "desc": "Detect unused IAM roles, security groups, and volumes",
+            "desc_tr": "Kullanılmayan IAM rollerini, güvenlik gruplarını ve birimleri tespit et",
+            "cmd": "python3 cloudmapper.py find_unused --account <ACCOUNT_NAME>",
+            "tags": [
+              "tool"
+            ]
+          }
+        ]
+      }
+    ]
   }
 ];
