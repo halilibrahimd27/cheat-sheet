@@ -40336,5 +40336,1412 @@ module.exports = [
         ]
       }
     ]
+  },
+  {
+    "id": "supply-chain",
+    "name": "Software Supply Chain Security",
+    "name_tr": "Yazılım Tedarik Zinciri Güvenliği",
+    "icon": "⛓️",
+    "description": "Supply chain integrity: SBOM generation, artifact signing, provenance/attestation, and dependency vulnerability scanning.",
+    "description_tr": "Tedarik zinciri bütünlüğü: SBOM üretimi, artifact imzalama, köken/attestation ve bağımlılık zafiyet taraması.",
+    "subcategories": [
+      {
+        "name": "SBOM Generation (syft, cdxgen, trivy sbom)",
+        "commands": [
+          {
+            "title": "Syft Scan Container Image",
+            "desc": "Generate an SBOM from a container image (table output)",
+            "desc_tr": "Bir konteyner imajından SBOM (yazılım malzeme listesi) üretir (tablo çıktısı)",
+            "cmd": "syft <IMAGE>:<TAG>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Syft SBOM as CycloneDX JSON",
+            "desc": "Output the SBOM in CycloneDX JSON format",
+            "desc_tr": "SBOM'u CycloneDX JSON formatında çıktılar",
+            "cmd": "syft <IMAGE>:<TAG> -o cyclonedx-json=<FILE>.cdx.json",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Syft SBOM as SPDX JSON",
+            "desc": "Output the SBOM in SPDX 2.3 JSON format",
+            "desc_tr": "SBOM'u SPDX 2.3 JSON formatında çıktılar",
+            "cmd": "syft <IMAGE>:<TAG> -o spdx-json=<FILE>.spdx.json",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Syft Scan Local Directory",
+            "desc": "Build an SBOM from a local source/project directory",
+            "desc_tr": "Yerel kaynak/proje dizininden SBOM oluşturur",
+            "cmd": "syft dir:<PATH> -o cyclonedx-json=<FILE>.cdx.json",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Syft Scan Filesystem Path",
+            "desc": "Scan a filesystem path explicitly with the file scheme",
+            "desc_tr": "file şeması ile bir dosya sistemi yolunu açıkça tarar",
+            "cmd": "syft file:<FILE> -o table",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Syft Scan from Registry (skip Docker)",
+            "desc": "Pull and catalog directly from a registry without a daemon",
+            "desc_tr": "Docker daemon olmadan doğrudan registry'den çekip kataloglar",
+            "cmd": "syft registry:<REGISTRY>/<IMAGE>:<TAG> -o spdx-json",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Syft Multiple Output Formats at Once",
+            "desc": "Emit several SBOM formats in a single run",
+            "desc_tr": "Tek çalıştırmada birden fazla SBOM formatı üretir",
+            "cmd": "syft <IMAGE>:<TAG> -o cyclonedx-json=<FILE>.cdx.json -o spdx-json=<FILE>.spdx.json",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Syft Scan All Layers",
+            "desc": "Catalog packages across all image layers (including squashed-away files)",
+            "desc_tr": "Tüm imaj katmanlarındaki paketleri kataloglar (silinmiş dosyalar dahil)",
+            "cmd": "syft --scope all-layers <IMAGE>:<TAG> -o cyclonedx-json",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Syft Scan Local Tarball",
+            "desc": "Generate an SBOM from a docker save tarball without a registry",
+            "desc_tr": "Registry olmadan docker save tarball'ından SBOM üretir",
+            "cmd": "syft docker-archive:<FILE>.tar -o table",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Syft Attest (signed SBOM)",
+            "desc": "Generate and sign an in-toto SBOM attestation with cosign keyless",
+            "desc_tr": "Cosign anahtarsız (keyless) ile imzalı in-toto SBOM attestation üretir",
+            "cmd": "COSIGN_EXPERIMENTAL=1 syft attest --output cyclonedx-json <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Syft Filter by Package Type",
+            "desc": "Restrict cataloging to selected ecosystems (e.g. npm, python)",
+            "desc_tr": "Kataloglamayı seçili ekosistemlerle sınırlar (örn. npm, python)",
+            "cmd": "syft <IMAGE>:<TAG> --select-catalogers \"+package\" -o json",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Use 'syft cataloger list' to see available catalogers and tags."
+          },
+          {
+            "title": "Trivy SBOM from Image (CycloneDX)",
+            "desc": "Generate a CycloneDX SBOM from a container image",
+            "desc_tr": "Konteyner imajından CycloneDX formatında SBOM üretir",
+            "cmd": "trivy image --format cyclonedx --output <FILE>.cdx.json <IMAGE>:<TAG>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Trivy SBOM from Image (SPDX JSON)",
+            "desc": "Generate an SPDX JSON SBOM from a container image",
+            "desc_tr": "Konteyner imajından SPDX JSON formatında SBOM üretir",
+            "cmd": "trivy image --format spdx-json --output <FILE>.spdx.json <IMAGE>:<TAG>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Trivy SBOM from Filesystem",
+            "desc": "Generate a CycloneDX SBOM from a local project directory",
+            "desc_tr": "Yerel proje dizininden CycloneDX SBOM üretir",
+            "cmd": "trivy fs --format cyclonedx --output <FILE>.cdx.json <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Trivy SBOM from Git Repository",
+            "desc": "Generate an SBOM directly from a remote repository",
+            "desc_tr": "Uzak bir depodan doğrudan SBOM üretir",
+            "cmd": "trivy repo --format cyclonedx --output <FILE>.cdx.json https://github.com/<DOMAIN>/<FILE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Trivy Scan an Existing SBOM",
+            "desc": "Scan a previously generated SBOM file for vulnerabilities",
+            "desc_tr": "Önceden üretilmiş bir SBOM dosyasını zafiyetler için tarar",
+            "cmd": "trivy sbom <FILE>.cdx.json --severity HIGH,CRITICAL",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Reusing an SBOM avoids re-scanning the image and speeds up CI pipelines."
+          },
+          {
+            "title": "Trivy SBOM with rootfs Filesystem",
+            "desc": "Build an SBOM from an unpacked container root filesystem",
+            "desc_tr": "Açılmış bir konteyner kök dosya sisteminden SBOM oluşturur",
+            "cmd": "trivy rootfs --format cyclonedx --output <FILE>.cdx.json <PATH>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "cdxgen Generate CycloneDX SBOM",
+            "desc": "Generate a CycloneDX SBOM for a project directory",
+            "desc_tr": "Bir proje dizini için CycloneDX SBOM üretir",
+            "cmd": "cdxgen -o <FILE>.cdx.json <PATH>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "cdxgen for a Specific Language/Type",
+            "desc": "Force the project type to improve accuracy (e.g. java, npm, python)",
+            "desc_tr": "Doğruluğu artırmak için proje türünü zorlar (örn. java, npm, python)",
+            "cmd": "cdxgen -t <FILE> -o <FILE>.cdx.json <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "cdxgen Scan a Container Image",
+            "desc": "Generate an SBOM from a container image with cdxgen",
+            "desc_tr": "cdxgen ile bir konteyner imajından SBOM üretir",
+            "cmd": "cdxgen -t docker -o <FILE>.cdx.json <IMAGE>:<TAG>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "cdxgen Deep Recursive Scan",
+            "desc": "Recurse into nested modules and produce a complete dependency graph",
+            "desc_tr": "İç içe modüllere inerek tam bağımlılık grafiği üretir",
+            "cmd": "cdxgen -r --deep -o <FILE>.cdx.json <PATH>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "cdxgen via Docker (no local install)",
+            "desc": "Run cdxgen in a container mounting the project read-only",
+            "desc_tr": "Projeyi salt-okunur bağlayarak cdxgen'i konteyner içinde çalıştırır",
+            "cmd": "docker run --rm -v <PATH>:/app:ro ghcr.io/cyclonedx/cdxgen -o /app/<FILE>.cdx.json /app",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "cdxgen as CycloneDX Server",
+            "desc": "Run cdxgen as an HTTP service for on-demand SBOM generation",
+            "desc_tr": "İsteğe bağlı SBOM üretimi için cdxgen'i HTTP servisi olarak çalıştırır",
+            "cmd": "cdxgen --server --server-host 0.0.0.0 --server-port 9090",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Convert SBOM Between Formats (Syft)",
+            "desc": "Convert an existing SBOM from one format to another",
+            "desc_tr": "Mevcut bir SBOM'u bir formattan diğerine dönüştürür",
+            "cmd": "syft convert <FILE>.spdx.json -o cyclonedx-json=<FILE>.cdx.json",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Validate a CycloneDX SBOM",
+            "desc": "Validate an SBOM against the CycloneDX schema",
+            "desc_tr": "Bir SBOM'u CycloneDX şemasına göre doğrular",
+            "cmd": "cyclonedx-cli validate --input-file <FILE>.cdx.json",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Diff Two SBOMs for Drift",
+            "desc": "Compare two CycloneDX SBOMs to detect added/removed components",
+            "desc_tr": "Eklenen/kaldırılan bileşenleri tespit etmek için iki CycloneDX SBOM'u karşılaştırır",
+            "cmd": "cyclonedx-cli diff <FILE>.old.cdx.json <FILE>.new.cdx.json --component-versions",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Sign SBOM with Cosign (blob)",
+            "desc": "Keyless-sign an SBOM file and produce a detached signature",
+            "desc_tr": "Bir SBOM dosyasını anahtarsız imzalar ve ayrık imza üretir",
+            "cmd": "cosign sign-blob --yes --output-signature <FILE>.cdx.json.sig <FILE>.cdx.json",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Attach SBOM as OCI Attestation",
+            "desc": "Attach a CycloneDX SBOM attestation to an image in the registry",
+            "desc_tr": "CycloneDX SBOM attestation'ını registry'deki bir imaja ekler",
+            "cmd": "cosign attest --yes --predicate <FILE>.cdx.json --type cyclonedx <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Signing & Verification (cosign, sigstore, notation)",
+        "commands": [
+          {
+            "title": "Generate cosign key pair",
+            "desc": "Create a local password-protected key pair for signing.",
+            "desc_tr": "İmzalama için yerel, parola korumalı bir anahtar çifti oluşturur.",
+            "cmd": "cosign generate-key-pair",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Produces cosign.key (private) and cosign.pub (public). Never commit cosign.key to git."
+          },
+          {
+            "title": "Keyless sign an image (Fulcio + Rekor)",
+            "desc": "Sign an image using OIDC identity; no long-lived keys.",
+            "desc_tr": "OIDC kimliği ile imzalar; uzun ömürlü anahtar gerekmez (anahtarsız imzalama).",
+            "cmd": "COSIGN_EXPERIMENTAL=1 cosign sign --yes <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Keyless is the default in cosign v2; opens a browser for OIDC unless run in CI with an ambient token."
+          },
+          {
+            "title": "Keyless verify with identity constraints",
+            "desc": "Verify a keyless signature, pinning issuer and identity.",
+            "desc_tr": "Anahtarsız imzayı, OIDC sağlayıcısını ve kimliği sabitleyerek doğrular.",
+            "cmd": "cosign verify --certificate-identity-regexp='.*@<DOMAIN>' --certificate-oidc-issuer='https://accounts.google.com' <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "In cosign v2 --certificate-identity(-regexp) and --certificate-oidc-issuer(-regexp) are REQUIRED for keyless verify."
+          },
+          {
+            "title": "Sign an image with a local private key",
+            "desc": "Sign an image using a generated cosign private key.",
+            "desc_tr": "Üretilmiş cosign özel anahtarı ile bir imajı imzalar.",
+            "cmd": "cosign sign --key cosign.key <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Verify an image with a local public key",
+            "desc": "Verify a key-based signature against a public key.",
+            "desc_tr": "Anahtar tabanlı imzayı bir genel anahtara karşı doğrular.",
+            "cmd": "cosign verify --key cosign.pub <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Sign by digest instead of tag",
+            "desc": "Sign the immutable digest to avoid tag-mutation attacks.",
+            "desc_tr": "Etiket değiştirme saldırılarını önlemek için değişmez digest'i imzalar.",
+            "cmd": "cosign sign --key cosign.key <REGISTRY>/<IMAGE>@sha256:<DIGEST>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Always sign by digest in pipelines; tags can be re-pushed to point at different content."
+          },
+          {
+            "title": "Sign with KMS key (cloud-managed)",
+            "desc": "Sign using a key held in a cloud KMS (AWS/GCP/Azure/Vault).",
+            "desc_tr": "Bulut KMS'inde (AWS/GCP/Azure/Vault) tutulan bir anahtarla imzalar.",
+            "cmd": "cosign sign --key awskms:///<KEY_ARN> <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "KMS prefixes: awskms://, gcpkms://, azurekms://, hashivault://. Private key never leaves the KMS."
+          },
+          {
+            "title": "Attach and verify an SBOM attestation",
+            "desc": "Create an in-toto attestation wrapping an SBOM and verify it.",
+            "desc_tr": "Bir SBOM'u saran in-toto attestation oluşturur ve doğrular.",
+            "cmds": [
+              "cosign attest --key cosign.key --type cyclonedx --predicate sbom.json <REGISTRY>/<IMAGE>:<TAG>",
+              "cosign verify-attestation --key cosign.pub --type cyclonedx <REGISTRY>/<IMAGE>:<TAG>"
+            ],
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "--type accepts cyclonedx, spdx, slsaprovenance, vuln, or a custom predicate type URI."
+          },
+          {
+            "title": "Verify attestation with an OPA/Rego policy",
+            "desc": "Gate an attestation through a CUE or Rego policy file.",
+            "desc_tr": "Bir attestation'ı CUE veya Rego politika dosyasıyla denetler.",
+            "cmd": "cosign verify-attestation --key cosign.pub --type slsaprovenance --policy <POLICY>.rego <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Use --policy with .rego (OPA) or .cue files to enforce predicate field requirements."
+          },
+          {
+            "title": "Sign a blob / arbitrary file",
+            "desc": "Sign any file (not just OCI images) and emit a signature.",
+            "desc_tr": "Herhangi bir dosyayı (yalnız OCI imajları değil) imzalar ve imza üretir.",
+            "cmd": "cosign sign-blob --key cosign.key --output-signature <FILE>.sig <FILE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Keyless sign a blob with bundle output",
+            "desc": "Keyless-sign a file and store cert+signature+log entry in a bundle.",
+            "desc_tr": "Bir dosyayı anahtarsız imzalar; sertifika, imza ve log kaydını tek bundle'da saklar.",
+            "cmd": "cosign sign-blob --yes --bundle <FILE>.bundle <FILE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "The bundle is self-contained and enables offline verification of keyless blob signatures."
+          },
+          {
+            "title": "Verify a blob signature (keyless via bundle)",
+            "desc": "Verify a file signature using a Sigstore bundle.",
+            "desc_tr": "Bir dosya imzasını Sigstore bundle kullanarak doğrular.",
+            "cmd": "cosign verify-blob --bundle <FILE>.bundle --certificate-identity-regexp='.*' --certificate-oidc-issuer-regexp='.*' <FILE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Tighten the identity/issuer regexps in production instead of using '.*'."
+          },
+          {
+            "title": "List signatures attached to an image",
+            "desc": "Show signatures, attestations and SBOMs hanging off an image.",
+            "desc_tr": "Bir imaja iliştirilmiş imza, attestation ve SBOM'ları listeler.",
+            "cmd": "cosign tree <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Download the raw signature payload",
+            "desc": "Fetch the signed payload(s) for offline inspection.",
+            "desc_tr": "İmzalanmış yükü (payload) çevrimdışı inceleme için indirir.",
+            "cmd": "cosign download signature <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Copy an image with its signatures",
+            "desc": "Mirror an image plus all signatures/attestations to another registry.",
+            "desc_tr": "Bir imajı, tüm imza ve attestation'larıyla başka bir registry'ye taşır.",
+            "cmd": "cosign copy <REGISTRY>/<IMAGE>:<TAG> <REGISTRY2>/<IMAGE>:<TAG>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Plain docker/crane copy drops the signature artifacts; cosign copy keeps them."
+          },
+          {
+            "title": "Recursively sign a multi-arch index",
+            "desc": "Sign the index and each platform-specific child image.",
+            "desc_tr": "Index'i ve her platforma özgü alt imajı özyinelemeli imzalar.",
+            "cmd": "cosign sign --key cosign.key --recursive <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "--recursive also signs each platform image referenced by a manifest list."
+          },
+          {
+            "title": "Query a Rekor transparency log entry",
+            "desc": "Look up a public Rekor log entry by UUID.",
+            "desc_tr": "Bir Rekor şeffaflık log kaydını UUID ile sorgular.",
+            "cmd": "rekor-cli get --uuid <UUID> --format json",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "rekor-cli ships separately from cosign; use it to audit the public good Rekor log."
+          },
+          {
+            "title": "Search Rekor by signing public key",
+            "desc": "Find all transparency-log entries for a given public key.",
+            "desc_tr": "Belirli bir genel anahtara ait tüm şeffaflık log kayıtlarını bulur.",
+            "cmd": "rekor-cli search --public-key cosign.pub --pki-format=x509",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Self-managed Rekor / Fulcio endpoints",
+            "desc": "Point cosign at a private Sigstore deployment.",
+            "desc_tr": "cosign'ı özel (private) bir Sigstore dağıtımına yönlendirir.",
+            "cmd": "cosign sign --fulcio-url=https://fulcio.<DOMAIN> --rekor-url=https://rekor.<DOMAIN> --yes <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "For air-gapped setups also configure a custom TUF root via cosign initialize."
+          },
+          {
+            "title": "Notation: generate a signing key and self-signed cert",
+            "desc": "Create a notation test key + x509 certificate.",
+            "desc_tr": "Notation için bir imzalama anahtarı ve self-signed x509 sertifikası oluşturur.",
+            "cmd": "notation cert generate-test --default \"<DOMAIN>\"",
+            "tags": [
+              "tool"
+            ],
+            "note": "generate-test is for development; in production use certs from a real CA/KMS plugin."
+          },
+          {
+            "title": "Notation: sign an image (Notary Project)",
+            "desc": "Sign an image and push a CNCF Notary Project signature.",
+            "desc_tr": "Bir imajı imzalar ve CNCF Notary Project imzasını registry'ye push eder.",
+            "cmd": "notation sign <REGISTRY>/<IMAGE>@sha256:<DIGEST>",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Notation requires digest references; resolve the tag to a digest first."
+          },
+          {
+            "title": "Notation: add cert to trust store and verify",
+            "desc": "Import a trusted cert into a trust store, then verify.",
+            "desc_tr": "Güvenilir sertifikayı trust store'a içe aktarır ve doğrular.",
+            "cmds": [
+              "notation cert add --type ca --store <STORE_NAME> <CERT>.crt",
+              "notation verify <REGISTRY>/<IMAGE>@sha256:<DIGEST>"
+            ],
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Verification needs a trustpolicy.json mapping the registry scope to the trust store and identities."
+          },
+          {
+            "title": "Notation: list signatures on an artifact",
+            "desc": "Enumerate signatures associated with an image digest.",
+            "desc_tr": "Bir imaj digest'ine bağlı imzaları listeler.",
+            "cmd": "notation list <REGISTRY>/<IMAGE>@sha256:<DIGEST>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Notation: inspect signature details",
+            "desc": "Show signature envelope, cert chain and signed attributes.",
+            "desc_tr": "İmza zarfını, sertifika zincirini ve imzalı öznitelikleri gösterir.",
+            "cmd": "notation inspect <REGISTRY>/<IMAGE>@sha256:<DIGEST>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Notation: sign with timestamping (RFC 3161)",
+            "desc": "Add a trusted timestamp so signatures outlive cert expiry.",
+            "desc_tr": "Sertifika süresi dolsa bile imzanın geçerli kalması için RFC 3161 zaman damgası ekler.",
+            "cmd": "notation sign --timestamp-url https://<TSA_DOMAIN> --timestamp-root-cert <TSA_ROOT>.crt <REGISTRY>/<IMAGE>@sha256:<DIGEST>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Enforce signatures in-cluster with policy-controller",
+            "desc": "Opt a namespace into Sigstore policy-controller enforcement.",
+            "desc_tr": "Bir namespace'i Sigstore policy-controller denetimine dahil eder.",
+            "cmd": "kubectl label namespace <NAMESPACE> policy.sigstore.dev/include=true",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Pair with a ClusterImagePolicy CRD defining authorities (keyless identities or keys) per image glob."
+          },
+          {
+            "title": "Verify with Kyverno admission policy",
+            "desc": "Use Kyverno verifyImages to require a cosign signature at admit time.",
+            "desc_tr": "Kyverno verifyImages ile kabul anında cosign imzası zorunlu kılar.",
+            "cmd": "kubectl apply -f verify-image-policy.yaml -n <NAMESPACE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "The ClusterPolicy's verifyImages rule holds the public key or keyless issuer/subject Kyverno enforces."
+          }
+        ]
+      },
+      {
+        "name": "Provenance & Attestation (SLSA, in-toto, witness)",
+        "commands": [
+          {
+            "title": "Generate SLSA Provenance with Cosign",
+            "desc": "Create and attach SLSA provenance attestation to a container image",
+            "desc_tr": "Bir konteyner imajina SLSA provenance attestation olustur ve ekle",
+            "cmd": "cosign attest --predicate provenance.json --type slsaprovenance --key cosign.key <REGISTRY>/<IMAGE>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Keyless Provenance Attestation (Fulcio/Sigstore)",
+            "desc": "Sign a provenance attestation keylessly using Sigstore OIDC identity",
+            "desc_tr": "Sigstore OIDC kimligi ile anahtarsiz provenance attestation imzala",
+            "cmd": "COSIGN_EXPERIMENTAL=1 cosign attest --yes --predicate provenance.json --type slsaprovenance <REGISTRY>/<IMAGE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Keyless mode requires an OIDC token (CI environment or interactive browser flow); the certificate is logged to Rekor transparency log."
+          },
+          {
+            "title": "Verify SLSA Provenance Attestation",
+            "desc": "Verify a SLSA provenance attestation attached to an image",
+            "desc_tr": "Bir imaja eklenmis SLSA provenance attestation'i dogrula",
+            "cmd": "cosign verify-attestation --type slsaprovenance --certificate-identity-regexp '.*' --certificate-oidc-issuer-regexp '.*' <REGISTRY>/<IMAGE>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Verify Image Provenance with slsa-verifier",
+            "desc": "Verify SLSA provenance for a container image from a source repo",
+            "desc_tr": "Bir konteyner imaji icin kaynak deposundan SLSA provenance dogrula",
+            "cmd": "slsa-verifier verify-image <REGISTRY>/<IMAGE>@sha256:<DIGEST> --source-uri github.com/<ORG>/<REPO>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Verify Artifact Provenance with slsa-verifier",
+            "desc": "Verify a downloaded binary against its provenance file",
+            "desc_tr": "Indirilen bir binary'i provenance dosyasina karsi dogrula",
+            "cmd": "slsa-verifier verify-artifact <FILE> --provenance-path <FILE>.intoto.jsonl --source-uri github.com/<ORG>/<REPO>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Verify Provenance at Specific Builder Tag",
+            "desc": "Pin verification to a specific source tag and builder ID",
+            "desc_tr": "Dogrulamayi belirli bir kaynak etiketine ve builder ID'sine sabitle",
+            "cmd": "slsa-verifier verify-artifact <FILE> --provenance-path <FILE>.intoto.jsonl --source-uri github.com/<ORG>/<REPO> --source-tag <TAG> --builder-id https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@refs/tags/v2.0.0",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Inspect Attestation Predicate Payload",
+            "desc": "Download and decode the attestation payload to read the predicate",
+            "desc_tr": "Predicate'i okumak icin attestation payload'ini indir ve coz",
+            "cmd": "cosign download attestation <REGISTRY>/<IMAGE> | jq -r '.payload' | base64 -d | jq '.predicate'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Generate SBOM Attestation",
+            "desc": "Attach a CycloneDX SBOM as an in-toto attestation to an image",
+            "desc_tr": "Bir imaja CycloneDX SBOM'u in-toto attestation olarak ekle",
+            "cmd": "cosign attest --predicate sbom.cdx.json --type cyclonedx --key cosign.key <REGISTRY>/<IMAGE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Run in-toto Step and Record Materials/Products",
+            "desc": "Execute a build step and record input materials and output products",
+            "desc_tr": "Bir build adimini calistir, girdi malzemelerini ve ciktilarini kaydet",
+            "cmd": "in-toto-run --step-name build --key functionary.key --materials . --products dist/ -- make build",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Verify in-toto Supply Chain Layout",
+            "desc": "Verify the final product against the signed in-toto layout and link metadata",
+            "desc_tr": "Nihai urunu imzali in-toto layout ve link metadata'sina karsi dogrula",
+            "cmd": "in-toto-verify --layout root.layout --layout-keys owner.pub --link-dir .",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Sign in-toto Link Metadata",
+            "desc": "Add an additional signature to existing in-toto link metadata",
+            "desc_tr": "Mevcut in-toto link metadata'sina ek imza ekle",
+            "cmd": "in-toto-sign --key functionary.key --file build.<KEYID>.link",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Record in-toto Step Start State",
+            "desc": "Record materials before a multi-step build phase begins",
+            "desc_tr": "Cok adimli build oncesi girdi malzemelerini kaydet",
+            "cmd": "in-toto-record start --step-name compile --key functionary.key --materials src/",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Record in-toto Step Stop State",
+            "desc": "Record products after a build phase completes",
+            "desc_tr": "Build asamasi tamamlandiktan sonra ciktilari kaydet",
+            "cmd": "in-toto-record stop --step-name compile --key functionary.key --products bin/",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Wrap a Command with Witness Attestation",
+            "desc": "Run a build command while witness collects attestations into in-toto format",
+            "desc_tr": "Witness attestation toplarken bir build komutunu calistir",
+            "cmd": "witness run --step build -k cosign.key -o build.attestation.json -- make build",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Witness Keyless Run with Sigstore",
+            "desc": "Collect attestation during a build using keyless Fulcio signing",
+            "desc_tr": "Anahtarsiz Fulcio imzalama ile build sirasinda attestation topla",
+            "cmd": "witness run --step build --signer-fulcio-url https://fulcio.sigstore.dev --signer-fulcio-oidc-issuer https://oauth2.sigstore.dev/auth -o build.attestation.json -- make build",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Requires a Sigstore OIDC token; witness fetches a short-lived Fulcio certificate and can record to Rekor."
+          },
+          {
+            "title": "Verify Witness Policy",
+            "desc": "Verify a subject's attestations against a signed witness policy",
+            "desc_tr": "Bir subject'in attestation'larini imzali witness politikasina karsi dogrula",
+            "cmd": "witness verify -p policy-signed.json -k policy-pub.pem -f <FILE> -a build.attestation.json",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Sign a Witness Policy",
+            "desc": "Sign a witness policy document before distributing it for verification",
+            "desc_tr": "Dogrulama icin dagitmadan once bir witness politikasini imzala",
+            "cmd": "witness sign -k cosign.key -f policy.json -o policy-signed.json",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Generate Provenance in GitHub Actions (SLSA generator)",
+            "desc": "Invoke the SLSA GitHub generator reusable workflow for build provenance",
+            "desc_tr": "Build provenance icin SLSA GitHub generator yeniden kullanilabilir workflow'unu cagir",
+            "cmd": "uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.0.0",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "This is a workflow reference, not a shell command; it produces SLSA Build Level 3 provenance signed via keyless Sigstore."
+          },
+          {
+            "title": "Generate Native GitHub Build Provenance Attestation",
+            "desc": "Create a signed build provenance attestation for an artifact in CI",
+            "desc_tr": "CI'da bir artefakt icin imzali build provenance attestation dogrula",
+            "cmd": "gh attestation verify <FILE> --owner <ORG>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Verify Image Attestation with GitHub CLI",
+            "desc": "Verify a container image provenance signed by a GitHub Actions workflow",
+            "desc_tr": "GitHub Actions workflow'u tarafindan imzalanan konteyner imaji provenance'ini dogrula",
+            "cmd": "gh attestation verify oci://<REGISTRY>/<IMAGE> --owner <ORG> --signer-workflow <ORG>/<REPO>/.github/workflows/release.yml",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Inspect Rekor Transparency Log Entry",
+            "desc": "Retrieve a Rekor log entry by artifact hash to audit attestation history",
+            "desc_tr": "Attestation gecmisini denetlemek icin artefakt hash'ine gore Rekor log girdisini al",
+            "cmd": "rekor-cli search --sha sha256:<DIGEST> && rekor-cli get --uuid <UUID>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Validate DSSE Envelope Structure",
+            "desc": "Decode a DSSE-wrapped attestation envelope and inspect its payload type",
+            "desc_tr": "DSSE ile sarilmis attestation zarfini coz ve payload turunu incele",
+            "cmd": "jq -r '{payloadType, payload: (.payload|@base64d|fromjson._type)}' attestation.dsse.json",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Verify Attestation by Workflow Identity",
+            "desc": "Verify keyless attestation pinned to a specific CI workflow identity and issuer",
+            "desc_tr": "Belirli bir CI workflow kimligine ve issuer'a sabitlenmis anahtarsiz attestation'i dogrula",
+            "cmd": "cosign verify-attestation --type slsaprovenance --certificate-identity 'https://github.com/<ORG>/<REPO>/.github/workflows/release.yml@refs/tags/<TAG>' --certificate-oidc-issuer 'https://token.actions.githubusercontent.com' <REGISTRY>/<IMAGE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Pinning certificate-identity and oidc-issuer prevents accepting attestations from arbitrary signers; never use '.*' regexp in production."
+          },
+          {
+            "title": "Enforce Provenance with Kyverno Admission Policy",
+            "desc": "Apply a Kyverno policy that requires verified SLSA attestations on images",
+            "desc_tr": "Imajlarda dogrulanmis SLSA attestation'lari zorunlu kilan Kyverno politikasini uygula",
+            "cmd": "kubectl apply -f verify-attestation-policy.yaml -n <NAMESPACE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Generate Vulnerability Scan Attestation",
+            "desc": "Attach a vulnerability scan result as a signed attestation",
+            "desc_tr": "Bir guvenlik aciklari tarama sonucunu imzali attestation olarak ekle",
+            "cmd": "cosign attest --predicate scan-results.json --type vuln --key cosign.key <REGISTRY>/<IMAGE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Convert SLSA Provenance Schema to Latest Version",
+            "desc": "Verify which SLSA provenance version a predicate uses",
+            "desc_tr": "Bir predicate'in hangi SLSA provenance surumunu kullandigini dogrula",
+            "cmd": "cosign download attestation <REGISTRY>/<IMAGE> | jq -r '.payload|@base64d|fromjson.predicateType'",
+            "tags": [
+              "tool"
+            ],
+            "note": "predicateType https://slsa.dev/provenance/v1 indicates SLSA v1.0; v0.2 uses slsa.dev/provenance/v0.2."
+          }
+        ]
+      },
+      {
+        "name": "Dependency Scanning (grype, osv-scanner, dependency-check)",
+        "commands": [
+          {
+            "title": "Grype: scan a container image",
+            "desc": "Scan a container image for known vulnerabilities in OS and language packages.",
+            "desc_tr": "Bir konteyner imajını OS ve dil paketlerindeki bilinen zafiyetler için tarar.",
+            "cmd": "grype <IMAGE>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Grype: scan a local directory or project",
+            "desc": "Scan a filesystem path for dependency manifests and report vulnerabilities.",
+            "desc_tr": "Bir dosya sistemi yolunu bagimlilik manifestleri icin tarayip zafiyetleri raporlar.",
+            "cmd": "grype dir:<PATH>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Grype: fail build above a severity threshold",
+            "desc": "Exit non-zero if any vulnerability at or above the given severity is found (CI gate).",
+            "desc_tr": "Belirtilen siddet seviyesi veya uzerinde zafiyet bulunursa sifirdan farkli cikis kodu dondurur (CI kapisi).",
+            "cmd": "grype <IMAGE> --fail-on high",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Severity sirasi: negligible < low < medium < high < critical. CI'da build'i kirmak icin idealdir."
+          },
+          {
+            "title": "Grype: output SARIF for GitHub code scanning",
+            "desc": "Produce SARIF output to upload into GitHub Advanced Security / code scanning.",
+            "desc_tr": "GitHub Advanced Security / code scanning'e yuklenmek uzere SARIF ciktisi uretir.",
+            "cmd": "grype <IMAGE> -o sarif > grype-results.sarif",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Grype: scan an existing SBOM",
+            "desc": "Match vulnerabilities against a pre-generated Syft/SPDX/CycloneDX SBOM instead of rescanning.",
+            "desc_tr": "Yeniden taramak yerine onceden uretilmis Syft/SPDX/CycloneDX SBOM uzerinden zafiyet eslestirir.",
+            "cmd": "grype sbom:<FILE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Tarama ile uretimi ayirir: 'syft <IMAGE> -o syft-json=sbom.json' sonrasi 'grype sbom:sbom.json' calistirin."
+          },
+          {
+            "title": "Grype: only show vulnerabilities with a fix",
+            "desc": "Filter the report to only show issues that have an available fixed version.",
+            "desc_tr": "Raporu yalnizca duzeltilmis surumu mevcut olan sorunlari gosterecek sekilde filtreler.",
+            "cmd": "grype <IMAGE> --only-fixed",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Grype: update the vulnerability database",
+            "desc": "Refresh Grype's local vulnerability database before scanning.",
+            "desc_tr": "Tarama oncesi Grype'in yerel zafiyet veritabanini gunceller.",
+            "cmd": "grype db update",
+            "tags": [
+              "tool"
+            ],
+            "note": "Hava bosluklu (air-gapped) ortamlarda GRYPE_DB_AUTO_UPDATE=false ile otomatik guncellemeyi kapatin."
+          },
+          {
+            "title": "Grype: ignore findings via config / VEX",
+            "desc": "Suppress accepted/false-positive vulnerabilities listed in a YAML ignore config.",
+            "desc_tr": "Bir YAML ignore yapilandirmasinda listelenen kabul edilmis/yanlis-pozitif zafiyetleri bastirir.",
+            "cmd": "grype <IMAGE> --config <FILE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "OSV-Scanner: scan a project directory recursively",
+            "desc": "Recursively scan lockfiles in a directory against the OSV.dev database.",
+            "desc_tr": "Bir dizindeki lockfile'lari OSV.dev veritabanina karsi ozyinelemeli olarak tarar.",
+            "cmd": "osv-scanner scan source -r <PATH>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "OSV-Scanner: scan a specific lockfile",
+            "desc": "Scan a single lockfile such as package-lock.json, go.mod, or requirements.txt.",
+            "desc_tr": "package-lock.json, go.mod veya requirements.txt gibi tek bir lockfile'i tarar.",
+            "cmd": "osv-scanner scan source -L <FILE>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "OSV-Scanner: scan a container image",
+            "desc": "Scan a container image's installed packages against OSV vulnerability data.",
+            "desc_tr": "Bir konteyner imajinin yuklu paketlerini OSV zafiyet verisine karsi tarar.",
+            "cmd": "osv-scanner scan image <IMAGE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "OSV-Scanner: scan an SBOM file",
+            "desc": "Scan an existing CycloneDX or SPDX SBOM for known vulnerabilities.",
+            "desc_tr": "Mevcut bir CycloneDX veya SPDX SBOM'unu bilinen zafiyetler icin tarar.",
+            "cmd": "osv-scanner scan source --sbom=<FILE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "OSV-Scanner: output JSON for automation",
+            "desc": "Emit machine-readable JSON results for downstream parsing or dashboards.",
+            "desc_tr": "Sonradan islemek veya panolar icin makine-okunabilir JSON sonuclar uretir.",
+            "cmd": "osv-scanner scan source -r <PATH> --format json --output results.json",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "OSV-Scanner: output SARIF",
+            "desc": "Generate SARIF output for GitHub code scanning integration.",
+            "desc_tr": "GitHub code scanning entegrasyonu icin SARIF ciktisi uretir.",
+            "cmd": "osv-scanner scan source -r <PATH> --format sarif --output osv.sarif",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "OSV-Scanner: license compliance check",
+            "desc": "Scan dependencies and flag licenses outside an allowed list (e.g. MIT, Apache-2.0).",
+            "desc_tr": "Bagimliliklari tarayip izin verilen liste disindaki lisanslari (orn. MIT, Apache-2.0) isaretler.",
+            "cmd": "osv-scanner scan source -r <PATH> --licenses=\"MIT,Apache-2.0\"",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "OSV-Scanner: suppress findings with a config",
+            "desc": "Ignore specific vulnerability IDs via an osv-scanner.toml ignore configuration.",
+            "desc_tr": "Bir osv-scanner.toml ignore yapilandirmasi ile belirli zafiyet ID'lerini gozardi eder.",
+            "cmd": "osv-scanner scan source -r <PATH> --config=<FILE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "osv-scanner.toml icinde [[IgnoredVulns]] bloklari ile ignoreUntil tarihi belirleyip gecici istisna verebilirsiniz."
+          },
+          {
+            "title": "OSV-Scanner: filter by call analysis (reachability)",
+            "desc": "Enable call-graph analysis to reduce noise for Go/Rust by flagging only reachable vulns.",
+            "desc_tr": "Go/Rust icin yalnizca erisilebilir zafiyetleri isaretleyerek gurultuyu azaltmak uzere cagri-grafi analizini etkinlestirir.",
+            "cmd": "osv-scanner scan source -r <PATH> --call-analysis=all",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "OWASP Dependency-Check: scan a project",
+            "desc": "Run Dependency-Check against a project directory and emit an HTML report.",
+            "desc_tr": "Dependency-Check'i bir proje dizinine karsi calistirip HTML rapor uretir.",
+            "cmd": "dependency-check.sh --project \"<DOMAIN>\" --scan <PATH> --out ./reports",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Dependency-Check: provide NVD API key",
+            "desc": "Supply an NVD API key to avoid heavy rate-limiting during the data feed update.",
+            "desc_tr": "Veri akisi guncellemesi sirasinda agir hiz sinirlamasini onlemek icin NVD API anahtari saglar.",
+            "cmd": "dependency-check.sh --project \"<DOMAIN>\" --scan <PATH> --nvdApiKey <FILE> --out ./reports",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "NVD API anahtari olmadan ilk veritabani guncellemesi cok yavas/basarisiz olabilir; anahtari https://nvd.nist.gov/developers/request-an-api-key adresinden alin."
+          },
+          {
+            "title": "Dependency-Check: fail build on CVSS score",
+            "desc": "Return a non-zero exit code if any finding meets or exceeds the given CVSS score.",
+            "desc_tr": "Herhangi bir bulgu belirtilen CVSS skoruna ulasir veya gecerse sifirdan farkli cikis kodu dondurur.",
+            "cmd": "dependency-check.sh --project \"<DOMAIN>\" --scan <PATH> --failOnCVSS 7 --out ./reports",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Dependency-Check: multiple report formats",
+            "desc": "Generate several output formats at once (e.g. HTML, JSON, SARIF).",
+            "desc_tr": "Ayni anda birden fazla cikti formati uretir (orn. HTML, JSON, SARIF).",
+            "cmd": "dependency-check.sh --project \"<DOMAIN>\" --scan <PATH> --format HTML --format JSON --format SARIF --out ./reports",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Dependency-Check: suppress false positives",
+            "desc": "Apply a suppression XML file to silence accepted false-positive CVEs.",
+            "desc_tr": "Kabul edilmis yanlis-pozitif CVE'leri susturmak icin bir suppression XML dosyasi uygular.",
+            "cmd": "dependency-check.sh --project \"<DOMAIN>\" --scan <PATH> --suppression <FILE> --out ./reports",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Dependency-Check: enable experimental analyzers",
+            "desc": "Turn on experimental analyzers to cover additional ecosystems during the scan.",
+            "desc_tr": "Tarama sirasinda ek ekosistemleri kapsamak icin deneysel analizcileri acar.",
+            "cmd": "dependency-check.sh --project \"<DOMAIN>\" --scan <PATH> --enableExperimental --out ./reports",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Dependency-Check: offline update of CVE data",
+            "desc": "Update only the local NVD/CVE database without performing a scan (cache for air-gapped runs).",
+            "desc_tr": "Tarama yapmadan yalnizca yerel NVD/CVE veritabanini gunceller (hava bosluklu calismalar icin onbellek).",
+            "cmd": "dependency-check.sh --updateonly --nvdApiKey <FILE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Grype: scan via Docker without local install",
+            "desc": "Run Grype from its official container image to scan a target image (no host install).",
+            "desc_tr": "Host'a kurulum yapmadan hedef bir imaji taramak icin Grype'i resmi konteyner imajindan calistirir.",
+            "cmd": "docker run --rm anchore/grype:latest <IMAGE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "OSV-Scanner: scan via Docker",
+            "desc": "Run OSV-Scanner from its container, mounting the project as a read-only volume.",
+            "desc_tr": "OSV-Scanner'i konteynerinden, projeyi salt-okunur birim olarak baglayarak calistirir.",
+            "cmd": "docker run --rm -v <PATH>:/src:ro ghcr.io/google/osv-scanner:latest scan source -r /src",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "CI gate: pipe SBOM from Syft into Grype",
+            "desc": "Generate an SBOM with Syft then scan it with Grype in a single CI pipeline step.",
+            "desc_tr": "Tek bir CI adiminda Syft ile SBOM uretip ardindan Grype ile tarar.",
+            "cmds": [
+              "syft <IMAGE> -o cyclonedx-json=sbom.json",
+              "grype sbom:sbom.json --fail-on high -o table"
+            ],
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "SBOM'u artifact olarak saklamak hem denetim (audit) izi saglar hem de zafiyet eslestirmeyi tarama maliyetinden ayirir."
+          }
+        ]
+      },
+      {
+        "name": "Package & Registry Security (npm/pip/go audit)",
+        "commands": [
+          {
+            "title": "npm audit (full report)",
+            "desc": "Scan installed dependencies for known vulnerabilities",
+            "desc_tr": "Kurulu bağımlılıkları bilinen güvenlik açıkları için tara",
+            "cmd": "npm audit",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "npm audit JSON output",
+            "desc": "Machine-readable audit report for CI pipelines",
+            "desc_tr": "CI hatları için makine tarafından okunabilir denetim raporu",
+            "cmd": "npm audit --json > npm-audit.json",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "npm audit fail on severity",
+            "desc": "Break CI when vulnerabilities at/above a level exist",
+            "desc_tr": "Belirli seviye ve üstü açık varsa CI'yı kır (gate olarak kullan)",
+            "cmd": "npm audit --audit-level=high",
+            "tags": [
+              "essential"
+            ],
+            "note": "Exit code is non-zero if matching findings exist; ideal for pipeline gates."
+          },
+          {
+            "title": "npm audit fix (safe)",
+            "desc": "Auto-remediate vulns within semver-compatible ranges",
+            "desc_tr": "Semver uyumlu aralıkta açıkları otomatik düzelt",
+            "cmd": "npm audit fix",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "npm audit fix force",
+            "desc": "Apply breaking major upgrades to remediate",
+            "desc_tr": "Açıkları kapatmak için kırıcı major yükseltmeleri uygula",
+            "cmd": "npm audit fix --force",
+            "tags": [
+              "advanced"
+            ],
+            "note": "May introduce breaking changes; re-run tests afterward."
+          },
+          {
+            "title": "npm audit production only",
+            "desc": "Audit only runtime (non-dev) dependencies",
+            "desc_tr": "Yalnızca çalışma zamanı (dev olmayan) bağımlılıklarını denetle",
+            "cmd": "npm audit --omit=dev",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "npm package signature verification",
+            "desc": "Verify registry signatures/provenance of dependencies",
+            "desc_tr": "Bağımlılıkların registry imzalarını/provenance bilgisini doğrula",
+            "cmd": "npm audit signatures",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Validates npm registry ECDSA signatures and Sigstore provenance attestations."
+          },
+          {
+            "title": "Detect outdated packages",
+            "desc": "List dependencies behind their latest versions",
+            "desc_tr": "En güncel sürümün gerisinde kalan bağımlılıkları listele",
+            "cmd": "npm outdated",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "yarn audit",
+            "desc": "Run vulnerability audit in Yarn projects",
+            "desc_tr": "Yarn projelerinde güvenlik açığı denetimi çalıştır",
+            "cmd": "yarn npm audit --severity high",
+            "tags": [
+              "tool"
+            ],
+            "note": "Use 'yarn audit' on Yarn Classic v1; 'yarn npm audit' on Berry (v2+)."
+          },
+          {
+            "title": "pnpm audit",
+            "desc": "Audit dependencies in pnpm workspaces",
+            "desc_tr": "pnpm çalışma alanlarında bağımlılıkları denetle",
+            "cmd": "pnpm audit --audit-level high --prod",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "pip-audit scan",
+            "desc": "Audit a Python environment against the PyPI advisory DB",
+            "desc_tr": "Python ortamını PyPI güvenlik veritabanına karşı denetle",
+            "cmd": "pip-audit",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "pip-audit on requirements file",
+            "desc": "Audit pinned dependencies without installing them",
+            "desc_tr": "Sabitlenmiş bağımlılıkları kurmadan denetle",
+            "cmd": "pip-audit -r requirements.txt",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "pip-audit auto-fix",
+            "desc": "Upgrade vulnerable packages to fixed versions",
+            "desc_tr": "Açık içeren paketleri düzeltilmiş sürümlere yükselt",
+            "cmd": "pip-audit -r requirements.txt --fix",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "pip-audit strict CI gate",
+            "desc": "Fail build on any dependency with no fix unresolved",
+            "desc_tr": "Çözülmeyen herhangi bir açıkta derlemeyi başarısız yap",
+            "cmd": "pip-audit -r requirements.txt --strict --format json -o pip-audit.json",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Safety check (PyPI)",
+            "desc": "Scan Python deps with the Safety vulnerability scanner",
+            "desc_tr": "Python bağımlılıklarını Safety tarayıcısı ile denetle",
+            "cmd": "safety scan --file requirements.txt",
+            "tags": [
+              "tool"
+            ],
+            "note": "Legacy 'safety check' is deprecated; newer CLI uses 'safety scan'."
+          },
+          {
+            "title": "govulncheck",
+            "desc": "Static analysis of reachable Go vulnerabilities",
+            "desc_tr": "Erişilebilir Go güvenlik açıklarını statik analizle tespit et",
+            "cmd": "govulncheck ./...",
+            "tags": [
+              "tool",
+              "essential"
+            ],
+            "note": "Reports only vulns in code paths your binary actually calls, reducing noise."
+          },
+          {
+            "title": "govulncheck JSON for CI",
+            "desc": "Emit structured govulncheck results for pipelines",
+            "desc_tr": "Pipeline'lar için yapılandırılmış govulncheck çıktısı üret",
+            "cmd": "govulncheck -format json ./... > govulncheck.json",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "govulncheck on a binary",
+            "desc": "Scan an already-built Go binary for vulnerabilities",
+            "desc_tr": "Önceden derlenmiş bir Go ikilisini açıklar için tara",
+            "cmd": "govulncheck -mode binary <FILE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Go module verification",
+            "desc": "Verify downloaded modules match go.sum hashes",
+            "desc_tr": "İndirilen modüllerin go.sum hash'leriyle eşleştiğini doğrula",
+            "cmd": "go mod verify",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "OSV-Scanner on a project",
+            "desc": "Multi-ecosystem lockfile scan via the OSV database",
+            "desc_tr": "OSV veritabanı ile çok-ekosistemli lockfile taraması yap",
+            "cmd": "osv-scanner scan source -r <PATH>",
+            "tags": [
+              "tool",
+              "essential"
+            ],
+            "note": "Covers npm, PyPI, Go, Maven and more from a single binary."
+          },
+          {
+            "title": "OSV-Scanner SARIF for CI",
+            "desc": "Produce SARIF output for code scanning dashboards",
+            "desc_tr": "Kod tarama panelleri için SARIF çıktısı üret",
+            "cmd": "osv-scanner scan source -r <PATH> --format sarif --output osv.sarif",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Trivy filesystem dependency scan",
+            "desc": "Scan project manifests/lockfiles for vulnerable packages",
+            "desc_tr": "Proje manifest/lockfile'larını açık paketler için tara",
+            "cmd": "trivy fs --scanners vuln <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Generate SBOM with Syft",
+            "desc": "Produce a CycloneDX SBOM of all packages",
+            "desc_tr": "Tüm paketlerin CycloneDX SBOM'unu üret",
+            "cmd": "syft <PATH> -o cyclonedx-json=sbom.cdx.json",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Scan SBOM with Grype",
+            "desc": "Match an SBOM against vulnerability databases",
+            "desc_tr": "Bir SBOM'u güvenlik açığı veritabanlarıyla eşleştir",
+            "cmd": "grype sbom:sbom.cdx.json --fail-on high",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Detect npm dependency confusion",
+            "desc": "Find internal package names that could be hijacked publicly",
+            "desc_tr": "Halka açık olarak ele geçirilebilecek dahili paket adlarını bul",
+            "cmd": "confused -l npm package.json",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Flags scoped/internal deps not present on the public registry (dependency-confusion risk)."
+          },
+          {
+            "title": "Pin & lock npm install (CI)",
+            "desc": "Install exactly from lockfile without mutating it",
+            "desc_tr": "Lockfile'ı değiştirmeden tam olarak ondan kurulum yap",
+            "cmd": "npm ci",
+            "tags": [
+              "essential"
+            ],
+            "note": "Fails if package.json and package-lock.json are out of sync; reproducible builds."
+          },
+          {
+            "title": "Audit a single package version",
+            "desc": "Query registry metadata before adding a dependency",
+            "desc_tr": "Bir bağımlılığı eklemeden önce registry meta verisini sorgula",
+            "cmd": "npm view <FILE>@latest dist.integrity dist.tarball",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Replace <FILE> with the package name to inspect integrity hash and tarball source."
+          },
+          {
+            "title": "Lockfile integrity (Python hashes)",
+            "desc": "Install with hash verification to block tampered packages",
+            "desc_tr": "Kurcalanmış paketleri engellemek için hash doğrulamasıyla kur",
+            "cmd": "pip install --require-hashes -r requirements.txt",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Requires every dependency to carry a --hash entry; mitigates supply-chain swaps."
+          }
+        ]
+      }
+    ]
   }
 ];

@@ -147,7 +147,7 @@
       "id": "supply-chain",
       "name": "Software Supply Chain Security",
       "icon": "⛓️",
-      "status": "pending",
+      "status": "done",
       "description": "Supply chain integrity: SBOM generation, artifact signing, provenance/attestation, and dependency vulnerability scanning.",
       "subcategories": [
         "SBOM Generation (syft, cdxgen, trivy sbom)",
@@ -155,7 +155,8 @@
         "Provenance & Attestation (SLSA, in-toto, witness)",
         "Dependency Scanning (grype, osv-scanner, dependency-check)",
         "Package & Registry Security (npm/pip/go audit)"
-      ]
+      ],
+      "commands_added": 136
     },
     {
       "id": "secrets-mgmt",
