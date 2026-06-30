@@ -11,8 +11,8 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 [![Docker](https://img.shields.io/badge/docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)](#docker-recommended)
 <!-- STATS:BADGES -->
-[![Commands](https://img.shields.io/badge/commands-4700-success?style=flat-square)](#categories)
-[![Categories](https://img.shields.io/badge/categories-48-orange?style=flat-square)](#categories)
+[![Commands](https://img.shields.io/badge/commands-4808-success?style=flat-square)](#categories)
+[![Categories](https://img.shields.io/badge/categories-49-orange?style=flat-square)](#categories)
 <!-- /STATS:BADGES -->
 
 > **⭐ If this saved you time, please leave a star.** It's the simplest way to support this work.
@@ -22,7 +22,7 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 ---
 
 <!-- STATS:START -->
-**4700 commands** across **48 categories** and **298 subcategories** — every command bilingual (English + Türkçe).
+**4808 commands** across **49 categories** and **302 subcategories** — every command bilingual (English + Türkçe).
 <!-- STATS:END -->
 
 > Runs **100% locally**. No account, no telemetry, no cloud — your data never leaves your machine.
@@ -103,6 +103,7 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 | 46 | 🦅 Cloud-Native Runtime Security | 137 | Runtime threat detection and enforcement for containers and hosts using eBPF-based and… |
 | 47 | 🌩️ Cloud Security Posture (Multi-Cloud) | 197 | Auditing cloud posture across AWS, Azure, and GCP with CSPM and IAM tooling. |
 | 48 | ⎈ Helm & Package Management | 110 | Helm chart operations and security: install, upgrade, templating, repositories, and cha… |
+| 49 | 🔗 Service Mesh & Network Security | 108 | Service mesh operations and zero-trust networking: Istio, Linkerd, Cilium, and mTLS. |
 <!-- CATEGORIES:END -->
 
 ## Quick Start

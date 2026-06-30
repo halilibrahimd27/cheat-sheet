@@ -47669,5 +47669,1337 @@ module.exports = [
         ]
       }
     ]
+  },
+  {
+    "id": "service-mesh",
+    "name": "Service Mesh & Network Security",
+    "name_tr": "Service Mesh & Ağ Güvenliği",
+    "icon": "🔗",
+    "description": "Service mesh operations and zero-trust networking: Istio, Linkerd, Cilium, and mTLS.",
+    "description_tr": "Service mesh operasyonları ve sıfır-güven (zero-trust) ağ: Istio, Linkerd, Cilium ve mTLS.",
+    "subcategories": [
+      {
+        "name": "Istio (istioctl, traffic, mTLS, authz policies)",
+        "commands": [
+          {
+            "title": "Install Istio with Demo Profile",
+            "desc": "Install Istio control plane using the demo profile",
+            "desc_tr": "Istio kontrol düzlemini demo profili ile kur",
+            "cmd": "istioctl install --set profile=demo -y",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Use the 'default' profile for production; 'demo' enables extra tracing/logging not suited for prod."
+          },
+          {
+            "title": "Verify Istio Installation",
+            "desc": "Run preflight checks and verify the install is healthy",
+            "desc_tr": "On kontrolleri calistir ve kurulumun saglikli oldugunu dogrula",
+            "cmd": "istioctl verify-install",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Pre-Install Compatibility Check",
+            "desc": "Check cluster readiness before installing Istio",
+            "desc_tr": "Istio kurmadan once kume hazirligini denetle",
+            "cmd": "istioctl x precheck",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Enable Sidecar Injection on Namespace",
+            "desc": "Label a namespace so pods get the Envoy sidecar auto-injected",
+            "desc_tr": "Bir namespace'i etiketle ki pod'lara Envoy sidecar otomatik enjekte edilsin",
+            "cmd": "kubectl label namespace <NAMESPACE> istio-injection=enabled --overwrite",
+            "tags": [
+              "essential"
+            ],
+            "note": "Restart existing pods (kubectl rollout restart) so the sidecar gets injected into already-running workloads."
+          },
+          {
+            "title": "Manually Inject Sidecar into Manifest",
+            "desc": "Inject the Envoy sidecar into a YAML manifest at apply time",
+            "desc_tr": "Envoy sidecar'i uygulama aninda bir YAML manifestine enjekte et",
+            "cmd": "istioctl kube-inject -f <FILE> | kubectl apply -f -",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "List Proxies and Sync Status",
+            "desc": "Show all Envoy proxies and their config sync state with istiod",
+            "desc_tr": "Tum Envoy proxy'lerini ve istiod ile config senkron durumlarini goster",
+            "cmd": "istioctl proxy-status",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "SYNCED means the proxy has the latest config; STALE/NOT SENT indicates a propagation problem."
+          },
+          {
+            "title": "Dump Proxy Configuration",
+            "desc": "Dump the full Envoy config (clusters, listeners, routes) for a pod",
+            "desc_tr": "Bir pod icin tam Envoy yapilandirmasini (clusters, listeners, routes) dok",
+            "cmd": "istioctl proxy-config all <POD>.<NAMESPACE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Inspect Proxy Listeners",
+            "desc": "Show the Envoy listener configuration for a specific pod",
+            "desc_tr": "Belirli bir pod icin Envoy listener yapilandirmasini goster",
+            "cmd": "istioctl proxy-config listeners <POD>.<NAMESPACE> -o json",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Inspect Proxy Clusters",
+            "desc": "List upstream clusters known to a pod's Envoy proxy",
+            "desc_tr": "Bir pod'un Envoy proxy'sinin bildigi upstream cluster'lari listele",
+            "cmd": "istioctl proxy-config clusters <POD>.<NAMESPACE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Check mTLS / Authentication Status",
+            "desc": "Describe a pod to see effective mTLS and policy settings",
+            "desc_tr": "Etkin mTLS ve politika ayarlarini gormek icin bir pod'u tanimla",
+            "cmd": "istioctl x describe pod <POD>.<NAMESPACE>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Enforce Strict mTLS Mesh-Wide",
+            "desc": "Apply a PeerAuthentication requiring mTLS across the whole mesh",
+            "desc_tr": "Tum mesh genelinde mTLS zorunlu kilan bir PeerAuthentication uygula",
+            "cmds": [
+              "cat <<'EOF' | kubectl apply -f -",
+              "apiVersion: security.istio.io/v1",
+              "kind: PeerAuthentication",
+              "metadata:",
+              "  name: default",
+              "  namespace: istio-system",
+              "spec:",
+              "  mtls:",
+              "    mode: STRICT",
+              "EOF"
+            ],
+            "tags": [
+              "essential",
+              "advanced"
+            ],
+            "note": "Applying STRICT to istio-system (root namespace) enforces it mesh-wide; test with PERMISSIVE first to avoid outages."
+          },
+          {
+            "title": "Set Namespace mTLS to Permissive",
+            "desc": "Allow both plaintext and mTLS traffic for a namespace during migration",
+            "desc_tr": "Gecis sirasinda bir namespace icin hem duz metin hem mTLS trafigine izin ver",
+            "cmds": [
+              "cat <<'EOF' | kubectl apply -f -",
+              "apiVersion: security.istio.io/v1",
+              "kind: PeerAuthentication",
+              "metadata:",
+              "  name: default",
+              "  namespace: <NAMESPACE>",
+              "spec:",
+              "  mtls:",
+              "    mode: PERMISSIVE",
+              "EOF"
+            ],
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Verify mTLS with TLS Check",
+            "desc": "Show negotiated TLS settings between a pod and its upstreams",
+            "desc_tr": "Bir pod ile upstream'leri arasinda anlasilan TLS ayarlarini goster",
+            "cmd": "istioctl authn tls-check <POD>.<NAMESPACE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Deprecated in newer versions; prefer 'istioctl proxy-config secret' and 'x describe pod' to inspect mTLS."
+          },
+          {
+            "title": "Default-Deny AuthorizationPolicy",
+            "desc": "Deny all traffic in a namespace as a zero-trust baseline",
+            "desc_tr": "Sifir guven temeli olarak bir namespace'teki tum trafigi reddet",
+            "cmds": [
+              "cat <<'EOF' | kubectl apply -f -",
+              "apiVersion: security.istio.io/v1",
+              "kind: AuthorizationPolicy",
+              "metadata:",
+              "  name: deny-all",
+              "  namespace: <NAMESPACE>",
+              "spec:",
+              "  {}",
+              "EOF"
+            ],
+            "tags": [
+              "essential",
+              "advanced"
+            ],
+            "note": "An empty spec ({}) with no rules denies all requests to workloads in the namespace."
+          },
+          {
+            "title": "Allow Traffic from a Service Account",
+            "desc": "Authorize requests only from a specific source service account",
+            "desc_tr": "Yalnizca belirli bir kaynak servis hesabindan gelen istekleri yetkilendir",
+            "cmds": [
+              "cat <<'EOF' | kubectl apply -f -",
+              "apiVersion: security.istio.io/v1",
+              "kind: AuthorizationPolicy",
+              "metadata:",
+              "  name: allow-frontend",
+              "  namespace: <NAMESPACE>",
+              "spec:",
+              "  action: ALLOW",
+              "  rules:",
+              "  - from:",
+              "    - source:",
+              "        principals: [\"cluster.local/ns/<NAMESPACE>/sa/<SERVICE_ACCOUNT>\"]",
+              "EOF"
+            ],
+            "tags": [
+              "essential",
+              "advanced"
+            ],
+            "note": "Source principals require mTLS (STRICT/PERMISSIVE) so the identity can be verified from the peer certificate."
+          },
+          {
+            "title": "Restrict by HTTP Method and Path",
+            "desc": "Allow only specific HTTP methods and paths to a workload",
+            "desc_tr": "Bir is yukune yalnizca belirli HTTP metodlarina ve yollarina izin ver",
+            "cmds": [
+              "cat <<'EOF' | kubectl apply -f -",
+              "apiVersion: security.istio.io/v1",
+              "kind: AuthorizationPolicy",
+              "metadata:",
+              "  name: allow-get",
+              "  namespace: <NAMESPACE>",
+              "spec:",
+              "  selector:",
+              "    matchLabels:",
+              "      app: <APP>",
+              "  action: ALLOW",
+              "  rules:",
+              "  - to:",
+              "    - operation:",
+              "        methods: [\"GET\"]",
+              "        paths: [\"/api/*\"]",
+              "EOF"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Require Valid JWT (RequestAuthentication)",
+            "desc": "Validate JWTs from an issuer using a JWKS endpoint",
+            "desc_tr": "Bir JWKS uc noktasi kullanarak bir ihrac edenden gelen JWT'leri dogrula",
+            "cmds": [
+              "cat <<'EOF' | kubectl apply -f -",
+              "apiVersion: security.istio.io/v1",
+              "kind: RequestAuthentication",
+              "metadata:",
+              "  name: jwt-auth",
+              "  namespace: <NAMESPACE>",
+              "spec:",
+              "  selector:",
+              "    matchLabels:",
+              "      app: <APP>",
+              "  jwtRules:",
+              "  - issuer: \"https://<DOMAIN>\"",
+              "    jwksUri: \"https://<DOMAIN>/.well-known/jwks.json\"",
+              "EOF"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "RequestAuthentication only validates tokens if present; pair it with an AuthorizationPolicy requiring requestPrincipals to actually enforce auth."
+          },
+          {
+            "title": "Configure Gateway for Ingress",
+            "desc": "Expose HTTP traffic on the ingress gateway for a host",
+            "desc_tr": "Bir host icin ingress gateway uzerinde HTTP trafigini disa ac",
+            "cmds": [
+              "cat <<'EOF' | kubectl apply -f -",
+              "apiVersion: networking.istio.io/v1",
+              "kind: Gateway",
+              "metadata:",
+              "  name: <APP>-gateway",
+              "  namespace: <NAMESPACE>",
+              "spec:",
+              "  selector:",
+              "    istio: ingressgateway",
+              "  servers:",
+              "  - port:",
+              "      number: 80",
+              "      name: http",
+              "      protocol: HTTP",
+              "    hosts:",
+              "    - \"<DOMAIN>\"",
+              "EOF"
+            ],
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Weighted Traffic Split (Canary)",
+            "desc": "Route traffic between two subsets by weight via VirtualService",
+            "desc_tr": "VirtualService ile iki alt kume arasinda agirlikla trafik yonlendir",
+            "cmds": [
+              "cat <<'EOF' | kubectl apply -f -",
+              "apiVersion: networking.istio.io/v1",
+              "kind: VirtualService",
+              "metadata:",
+              "  name: <APP>",
+              "  namespace: <NAMESPACE>",
+              "spec:",
+              "  hosts: [\"<APP>\"]",
+              "  http:",
+              "  - route:",
+              "    - destination:",
+              "        host: <APP>",
+              "        subset: v1",
+              "      weight: 90",
+              "    - destination:",
+              "        host: <APP>",
+              "        subset: v2",
+              "      weight: 10",
+              "EOF"
+            ],
+            "tags": [
+              "essential",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Define Subsets in DestinationRule",
+            "desc": "Declare named subsets by version label for traffic routing",
+            "desc_tr": "Trafik yonlendirme icin surum etiketine gore adli alt kumeler tanimla",
+            "cmds": [
+              "cat <<'EOF' | kubectl apply -f -",
+              "apiVersion: networking.istio.io/v1",
+              "kind: DestinationRule",
+              "metadata:",
+              "  name: <APP>",
+              "  namespace: <NAMESPACE>",
+              "spec:",
+              "  host: <APP>",
+              "  subsets:",
+              "  - name: v1",
+              "    labels: { version: v1 }",
+              "  - name: v2",
+              "    labels: { version: v2 }",
+              "EOF"
+            ],
+            "tags": [
+              "essential"
+            ],
+            "note": "VirtualService subsets must reference subset names defined in a matching DestinationRule, or routing fails with no healthy upstream."
+          },
+          {
+            "title": "Inject HTTP Fault for Resilience Testing",
+            "desc": "Add a delay or abort fault to a route for chaos testing",
+            "desc_tr": "Kaos testi icin bir route'a gecikme veya iptal hatasi ekle",
+            "cmds": [
+              "cat <<'EOF' | kubectl apply -f -",
+              "apiVersion: networking.istio.io/v1",
+              "kind: VirtualService",
+              "metadata:",
+              "  name: <APP>-fault",
+              "  namespace: <NAMESPACE>",
+              "spec:",
+              "  hosts: [\"<APP>\"]",
+              "  http:",
+              "  - fault:",
+              "      delay:",
+              "        percentage: { value: 50 }",
+              "        fixedDelay: 5s",
+              "    route:",
+              "    - destination: { host: <APP> }",
+              "EOF"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Validate Configuration for Conflicts",
+            "desc": "Analyze the mesh config for issues, conflicts, and warnings",
+            "desc_tr": "Mesh yapilandirmasini sorunlar, cakismalar ve uyarilar icin analiz et",
+            "cmd": "istioctl analyze -n <NAMESPACE>",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Add --all-namespaces to scan the whole mesh; catches misconfigured Gateways, missing subsets, and conflicting policies."
+          },
+          {
+            "title": "Tap Live Envoy Access Logs",
+            "desc": "Stream a pod's Envoy proxy access logs to debug routing",
+            "desc_tr": "Yonlendirme hatalarini ayiklamak icin bir pod'un Envoy proxy erisim loglarini izle",
+            "cmd": "kubectl logs <POD> -c istio-proxy -n <NAMESPACE> -f",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Open the Kiali Dashboard",
+            "desc": "Launch the Kiali observability dashboard for the mesh",
+            "desc_tr": "Mesh icin Kiali gozlemlenebilirlik panosunu baslat",
+            "cmd": "istioctl dashboard kiali",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Open Envoy Admin Dashboard for a Pod",
+            "desc": "Proxy into a pod's Envoy admin interface for deep inspection",
+            "desc_tr": "Derin inceleme icin bir pod'un Envoy yonetim arayuzune baglan",
+            "cmd": "istioctl dashboard envoy <POD>.<NAMESPACE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Show Istio Version (Control + Data Plane)",
+            "desc": "Display client, control plane, and data plane Istio versions",
+            "desc_tr": "Istemci, kontrol duzlemi ve veri duzlemi Istio surumlerini goster",
+            "cmd": "istioctl version",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Mismatched data plane versions after an upgrade mean some sidecars still need a rollout restart."
+          },
+          {
+            "title": "Upgrade Istio Control Plane",
+            "desc": "Upgrade Istio in place after running a precheck",
+            "desc_tr": "Bir on kontrol calistirdiktan sonra Istio'yu yerinde yukselt",
+            "cmd": "istioctl upgrade -y",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Run 'istioctl x precheck' first; for production prefer canary upgrades with revision tags over in-place upgrade."
+          },
+          {
+            "title": "Uninstall Istio Completely",
+            "desc": "Purge all Istio resources from the cluster",
+            "desc_tr": "Tum Istio kaynaklarini kumeden tamamen kaldir",
+            "cmd": "istioctl uninstall --purge -y",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "--purge also removes the istio-system namespace CRDs; remove the namespace label and restart pods afterward to drop sidecars."
+          }
+        ]
+      },
+      {
+        "name": "Linkerd",
+        "commands": [
+          {
+            "title": "Install Linkerd CLI",
+            "desc": "Download and install the linkerd command-line tool",
+            "desc_tr": "Linkerd komut satiri aracini indir ve kur",
+            "cmd": "curl -sL https://run.linkerd.io/install | sh && export PATH=$PATH:$HOME/.linkerd2/bin",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Pre-Install Cluster Checks",
+            "desc": "Validate the cluster meets Linkerd installation requirements",
+            "desc_tr": "Kumenin Linkerd kurulum gereksinimlerini karsiladigini dogrula",
+            "cmd": "linkerd check --pre",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Install CRDs and Control Plane",
+            "desc": "Install Linkerd CRDs then the control plane",
+            "desc_tr": "Once Linkerd CRD'lerini, ardindan kontrol duzlemini kur",
+            "cmds": [
+              "linkerd install --crds | kubectl apply -f -",
+              "linkerd install | kubectl apply -f -"
+            ],
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Verify Installation Health",
+            "desc": "Run the full post-install health and configuration check",
+            "desc_tr": "Kurulum sonrasi tam saglik ve yapilandirma kontrolunu calistir",
+            "cmd": "linkerd check",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Install Viz Extension",
+            "desc": "Deploy the metrics, dashboard and tap observability extension",
+            "desc_tr": "Metrik, panel ve tap gozlemlenebilirlik eklentisini kur",
+            "cmd": "linkerd viz install | kubectl apply -f -",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Open the Linkerd Dashboard",
+            "desc": "Port-forward and open the web dashboard from the viz extension",
+            "desc_tr": "Viz eklentisinden web panelini port-forward ile ac",
+            "cmd": "linkerd viz dashboard &",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Inject Proxy into a Deployment",
+            "desc": "Add the linkerd-proxy sidecar to an existing workload manifest",
+            "desc_tr": "Mevcut bir is yuku manifestine linkerd-proxy yan arabasini ekle",
+            "cmd": "kubectl get deploy <DEPLOYMENT> -n <NAMESPACE> -o yaml | linkerd inject - | kubectl apply -f -",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Enable Auto-Injection on a Namespace",
+            "desc": "Annotate a namespace so all new pods get the proxy automatically",
+            "desc_tr": "Tum yeni pod'larin proxy'yi otomatik almasi icin namespace'i etiketle",
+            "cmd": "kubectl annotate namespace <NAMESPACE> linkerd.io/inject=enabled",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Check Proxy Data-Plane Health",
+            "desc": "Verify the proxies in a namespace are healthy and up to date",
+            "desc_tr": "Bir namespace'teki proxy'lerin saglikli ve guncel oldugunu dogrula",
+            "cmd": "linkerd check --proxy -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Live Traffic Metrics for a Workload",
+            "desc": "Show real-time success rate, RPS and latency for deployments",
+            "desc_tr": "Deployment'lar icin gercek zamanli basari orani, RPS ve gecikme goster",
+            "cmd": "linkerd viz stat deploy -n <NAMESPACE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Top Routes by Path",
+            "desc": "Aggregate live traffic by HTTP route to find hot paths",
+            "desc_tr": "Yogun yollari bulmak icin canli trafigi HTTP rotasina gore topla",
+            "cmd": "linkerd viz routes deploy/<DEPLOYMENT> -n <NAMESPACE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Tap Live Requests",
+            "desc": "Stream individual live requests flowing through a workload's proxy",
+            "desc_tr": "Bir is yukunun proxy'sinden gecen canli istekleri tek tek izle",
+            "cmd": "linkerd viz tap deploy/<DEPLOYMENT> -n <NAMESPACE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Visualize Service Dependencies",
+            "desc": "Show a live traffic edges graph between meshed workloads",
+            "desc_tr": "Mesh'lenmis is yukleri arasindaki canli trafik kenarlari grafigini goster",
+            "cmd": "linkerd viz edges deploy -n <NAMESPACE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Verify mTLS Identity of a Pod",
+            "desc": "Confirm a pod has a valid TLS identity certificate issued by Linkerd",
+            "desc_tr": "Bir pod'un Linkerd tarafindan verilmis gecerli TLS kimlik sertifikasina sahip oldugunu dogrula",
+            "cmd": "linkerd identity -n <NAMESPACE> <POD>",
+            "tags": [
+              "essential",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Confirm Traffic Is Encrypted (mTLS)",
+            "desc": "Use tap output to verify connections are mutually TLS-secured",
+            "desc_tr": "Baglantilarin karsilikli TLS ile guvenli oldugunu tap ciktisiyla dogrula",
+            "cmd": "linkerd viz tap deploy/<DEPLOYMENT> -n <NAMESPACE> -o wide | grep tls=true",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Authorization Policy: Define a Server",
+            "desc": "Lock down a port so only authorized clients can connect",
+            "desc_tr": "Yalnizca yetkilendirilmis istemcilerin baglanabilmesi icin portu kilitle",
+            "cmd": "kubectl apply -f - <<'EOF'\napiVersion: policy.linkerd.io/v1beta3\nkind: Server\nmetadata:\n  name: <SERVER_NAME>\n  namespace: <NAMESPACE>\nspec:\n  podSelector:\n    matchLabels:\n      app: <APP_LABEL>\n  port: <PORT>\n  proxyProtocol: HTTP/2\nEOF",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Authorize a Client by Identity",
+            "desc": "Grant a specific authentication ref access to a Server",
+            "desc_tr": "Belirli bir kimlik dogrulama referansina Server'a erisim ver",
+            "cmd": "kubectl apply -f - <<'EOF'\napiVersion: policy.linkerd.io/v1alpha1\nkind: AuthorizationPolicy\nmetadata:\n  name: <POLICY_NAME>\n  namespace: <NAMESPACE>\nspec:\n  targetRef:\n    group: policy.linkerd.io\n    kind: Server\n    name: <SERVER_NAME>\n  requiredAuthenticationRefs:\n  - group: policy.linkerd.io\n    kind: MeshTLSAuthentication\n    name: <AUTHN_NAME>\nEOF",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Define MeshTLS Authentication",
+            "desc": "Identify allowed clients by their Kubernetes service account identity",
+            "desc_tr": "Izin verilen istemcileri Kubernetes servis hesabi kimligiyle tanimla",
+            "cmd": "kubectl apply -f - <<'EOF'\napiVersion: policy.linkerd.io/v1alpha1\nkind: MeshTLSAuthentication\nmetadata:\n  name: <AUTHN_NAME>\n  namespace: <NAMESPACE>\nspec:\n  identities:\n  - \"<SERVICE_ACCOUNT>.<NAMESPACE>.serviceaccount.identity.linkerd.cluster.local\"\nEOF",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Set Default Inbound Policy",
+            "desc": "Require all inbound traffic to come from meshed, mTLS clients",
+            "desc_tr": "Tum gelen trafigin mesh'lenmis mTLS istemcilerinden gelmesini zorunlu kil",
+            "cmd": "kubectl annotate namespace <NAMESPACE> config.linkerd.io/default-inbound-policy=cluster-authenticated",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Use 'all-authenticated' to require mTLS even from outside the cluster; test in audit before enforcing."
+          },
+          {
+            "title": "Traffic Split for Canary (HTTPRoute)",
+            "desc": "Weighted split of traffic between two backends using Gateway API",
+            "desc_tr": "Gateway API kullanarak iki arka uc arasinda agirlikli trafik bolme",
+            "cmd": "kubectl apply -f - <<'EOF'\napiVersion: policy.linkerd.io/v1beta3\nkind: HTTPRoute\nmetadata:\n  name: <ROUTE_NAME>\n  namespace: <NAMESPACE>\nspec:\n  parentRefs:\n  - name: <SERVICE>\n    kind: Service\n    group: core\n    port: <PORT>\n  rules:\n  - backendRefs:\n    - name: <SERVICE>-stable\n      port: <PORT>\n      weight: 90\n    - name: <SERVICE>-canary\n      port: <PORT>\n      weight: 10\nEOF",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Configure Retries via HTTPRoute Annotation",
+            "desc": "Enable automatic retries on a route's parent service",
+            "desc_tr": "Bir rotanin ust servisinde otomatik yeniden denemeleri etkinlestir",
+            "cmd": "kubectl annotate httproute <ROUTE_NAME> -n <NAMESPACE> retry.linkerd.io/http=5xx retry.linkerd.io/limit=3",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Multicluster: Link Two Clusters",
+            "desc": "Install the multicluster extension and link a remote cluster",
+            "desc_tr": "Multicluster eklentisini kur ve uzak bir kumeyi bagla",
+            "cmds": [
+              "linkerd multicluster install | kubectl apply -f -",
+              "linkerd --context=<TARGET_CTX> multicluster link --cluster-name <CLUSTER_NAME> | kubectl --context=<SOURCE_CTX> apply -f -"
+            ],
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Export a Service for Multicluster Access",
+            "desc": "Mirror a service to linked clusters by labeling it for export",
+            "desc_tr": "Bir servisi disa aktarma icin etiketleyerek bagli kumelere yansit",
+            "cmd": "kubectl label service <SERVICE> -n <NAMESPACE> mirror.linkerd.io/exported=true",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Inspect Live Proxy Diagnostics",
+            "desc": "Dump a meshed pod's proxy metrics endpoint for low-level debugging",
+            "desc_tr": "Dusuk seviye hata ayiklama icin mesh'lenmis pod'un proxy metrik ucunu dok",
+            "cmd": "linkerd diagnostics proxy-metrics -n <NAMESPACE> <POD>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Check Control-Plane Endpoint Diagnostics",
+            "desc": "Query the destination controller for resolved service endpoints",
+            "desc_tr": "Cozulen servis endpoint'leri icin destination denetleyicisini sorgula",
+            "cmd": "linkerd diagnostics endpoints <SERVICE>.<NAMESPACE>.svc.cluster.local:<PORT>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Upgrade the Control Plane",
+            "desc": "Upgrade CRDs and control plane to the installed CLI version",
+            "desc_tr": "CRD'leri ve kontrol duzlemini kurulu CLI surumune yukselt",
+            "cmds": [
+              "linkerd upgrade --crds | kubectl apply -f -",
+              "linkerd upgrade | kubectl apply -f -",
+              "linkerd check"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "Restart meshed workloads after upgrading so they pick up the new proxy version."
+          },
+          {
+            "title": "Uninstall Linkerd Cleanly",
+            "desc": "Remove extensions and the control plane in the correct order",
+            "desc_tr": "Eklentileri ve kontrol duzlemini dogru sirayla kaldir",
+            "cmds": [
+              "linkerd viz uninstall | kubectl delete -f -",
+              "linkerd uninstall | kubectl delete -f -"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Cilium & Hubble",
+        "commands": [
+          {
+            "title": "Install Cilium CLI (latest stable)",
+            "desc": "Download and install the Cilium CLI binary for cluster management",
+            "desc_tr": "Kume yonetimi icin Cilium CLI ikili dosyasini indir ve kur",
+            "cmds": [
+              "CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt)",
+              "curl -L --fail -o cilium.tar.gz https://github.com/cilium/cilium-cli/releases/download/${CILIUM_CLI_VERSION}/cilium-linux-amd64.tar.gz",
+              "sudo tar xzvfC cilium.tar.gz /usr/local/bin && rm cilium.tar.gz"
+            ],
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Install Cilium with Hubble & Encryption",
+            "desc": "Deploy Cilium enabling Hubble relay and WireGuard transparent encryption",
+            "desc_tr": "Hubble relay ve WireGuard seffaf sifreleme acik sekilde Cilium kur",
+            "cmd": "cilium install --version <VERSION> --set hubble.relay.enabled=true --set hubble.ui.enabled=true --set encryption.enabled=true --set encryption.type=wireguard",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Check Cilium Health & Status",
+            "desc": "Show overall Cilium agent, operator and Hubble deployment status",
+            "desc_tr": "Genel Cilium agent, operator ve Hubble dagitim durumunu goster",
+            "cmd": "cilium status --wait",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Run Connectivity Test Suite",
+            "desc": "Execute end-to-end connectivity, policy and encryption test pods",
+            "desc_tr": "Uctan uca baglanti, policy ve sifreleme test pod'larini calistir",
+            "cmd": "cilium connectivity test --test '!pod-to-pod-encryption'",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Test gecici pod'lar olusturur; CI/kalici ortamlarda --test bayragiyla agir testleri haric tutabilirsiniz."
+          },
+          {
+            "title": "Enable Hubble Observability",
+            "desc": "Enable Hubble flow visibility and the relay component on an existing install",
+            "desc_tr": "Mevcut kurulumda Hubble akis gorunurlugunu ve relay bilesenini etkinlestir",
+            "cmd": "cilium hubble enable --ui",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Install Hubble CLI",
+            "desc": "Download the Hubble client used to query flows from the relay",
+            "desc_tr": "Relay'den akislari sorgulamak icin kullanilan Hubble istemcisini indir",
+            "cmds": [
+              "HUBBLE_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/hubble/master/stable.txt)",
+              "curl -L --fail -o hubble.tar.gz https://github.com/cilium/hubble/releases/download/${HUBBLE_VERSION}/hubble-linux-amd64.tar.gz",
+              "sudo tar xzvfC hubble.tar.gz /usr/local/bin && rm hubble.tar.gz"
+            ],
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Port-Forward Hubble Relay",
+            "desc": "Open a local port to the Hubble Relay so the CLI/UI can connect",
+            "desc_tr": "CLI/UI baglanabilsin diye Hubble Relay'e yerel bir port ac",
+            "cmd": "cilium hubble port-forward &",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Observe Live Flows",
+            "desc": "Stream all network flows observed across the cluster in real time",
+            "desc_tr": "Kume genelinde gozlemlenen tum ag akislarini gercek zamanli canli izle",
+            "cmd": "hubble observe -f",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Observe Dropped Flows for a Pod",
+            "desc": "Follow only DROPPED verdict flows for a specific pod to debug policies",
+            "desc_tr": "Policy hata ayiklamak icin belirli bir pod'un yalnizca DROPPED akislarini takip et",
+            "cmd": "hubble observe --namespace <NAMESPACE> --pod <POD> --verdict DROPPED -f",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Observe HTTP/L7 Flows",
+            "desc": "Filter Hubble flows to Layer-7 HTTP protocol traffic only",
+            "desc_tr": "Hubble akislarini yalnizca Katman-7 HTTP protokol trafigine filtrele",
+            "cmd": "hubble observe --protocol http --namespace <NAMESPACE> -o compact",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Observe DNS Resolution Flows",
+            "desc": "Inspect DNS query/response flows to debug FQDN egress policies",
+            "desc_tr": "FQDN cikis policy'lerini ayiklamak icin DNS sorgu/yanit akislarini incele",
+            "cmd": "hubble observe --protocol dns --namespace <NAMESPACE> -o jsonpb",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Filter Flows by Label",
+            "desc": "Show flows between endpoints matching given Cilium labels",
+            "desc_tr": "Belirli Cilium etiketleriyle eslesen endpoint'ler arasindaki akislari goster",
+            "cmd": "hubble observe --from-label app=<POD> --to-label app=backend --last 100",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Count Dropped Flows",
+            "desc": "Tally recent DROPPED verdicts to quantify policy or datapath drops",
+            "desc_tr": "Policy veya veri yolu dusurmelerini olcmek icin son DROPPED verdict'leri say",
+            "cmd": "hubble observe --last 5000 -o dict | grep -c DROPPED",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "List Cilium Endpoints",
+            "desc": "List Cilium-managed endpoints with their identities and policy enforcement state",
+            "desc_tr": "Cilium yonetimindeki endpoint'leri kimlikleri ve policy uygulama durumuyla listele",
+            "cmd": "kubectl -n kube-system exec ds/cilium -- cilium endpoint list",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Inspect Endpoint Policy",
+            "desc": "Dump the resolved policy state for one endpoint by ID",
+            "desc_tr": "Kimligine gore bir endpoint'in cozumlenmis policy durumunu dok",
+            "cmd": "kubectl -n kube-system exec ds/cilium -- cilium endpoint get <ENDPOINT_ID> -o jsonpath='{[0].status.policy}'",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Security Identities",
+            "desc": "Show the cluster's security identities mapped to label sets",
+            "desc_tr": "Kumenin etiket kumelerine eslenen guvenlik kimliklerini goster",
+            "cmd": "kubectl -n kube-system exec ds/cilium -- cilium identity list",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Monitor Dropped Packets (eBPF)",
+            "desc": "Stream raw drop events directly from the Cilium datapath via cilium monitor",
+            "desc_tr": "cilium monitor ile Cilium veri yolundan ham dusurme olaylarini dogrudan izle",
+            "cmd": "kubectl -n kube-system exec ds/cilium -- cilium monitor -t drop -v",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Apply L7 HTTP CiliumNetworkPolicy",
+            "desc": "Restrict ingress to specific HTTP methods and paths at Layer 7",
+            "desc_tr": "Katman 7'de girisi belirli HTTP metot ve yollariyla sinirla",
+            "cmd": "kubectl apply -f - <<'EOF'\napiVersion: cilium.io/v2\nkind: CiliumNetworkPolicy\nmetadata:\n  name: l7-http-rule\n  namespace: <NAMESPACE>\nspec:\n  endpointSelector:\n    matchLabels:\n      app: <POD>\n  ingress:\n  - toPorts:\n    - ports:\n      - port: \"80\"\n        protocol: TCP\n      rules:\n        http:\n        - method: \"GET\"\n          path: \"/api/.*\"\nEOF",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Apply DNS-Aware FQDN Egress Policy",
+            "desc": "Allow egress only to a specific FQDN using Cilium DNS proxy rules",
+            "desc_tr": "Cilium DNS proxy kurallariyla yalnizca belirli bir FQDN'e cikisa izin ver",
+            "cmd": "kubectl apply -f - <<'EOF'\napiVersion: cilium.io/v2\nkind: CiliumNetworkPolicy\nmetadata:\n  name: fqdn-egress\n  namespace: <NAMESPACE>\nspec:\n  endpointSelector:\n    matchLabels:\n      app: <POD>\n  egress:\n  - toEndpoints:\n    - matchLabels:\n        k8s:io.kubernetes.pod.namespace: kube-system\n        k8s-app: kube-dns\n    toPorts:\n    - ports:\n      - port: \"53\"\n        protocol: ANY\n      rules:\n        dns:\n        - matchPattern: \"*\"\n  - toFQDNs:\n    - matchName: \"<DOMAIN>\"\nEOF",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "FQDN kurallari yalnizca DNS proxy izinli olunca cozulur; egress'te kube-dns 53/UDP-TCP erisimi ve dns rules zorunludur."
+          },
+          {
+            "title": "Default-Deny Cluster-Wide Policy",
+            "desc": "Apply a cluster-wide policy that denies all ingress unless explicitly allowed",
+            "desc_tr": "Acikca izin verilmedikce tum girisi reddeden kume genelinde policy uygula",
+            "cmd": "kubectl apply -f - <<'EOF'\napiVersion: cilium.io/v2\nkind: CiliumClusterwideNetworkPolicy\nmetadata:\n  name: default-deny-ingress\nspec:\n  endpointSelector: {}\n  ingress:\n  - {}\nEOF",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Bos ingress kurali zimni default-deny tetikler; once kube-dns/health icin izin kurallari eklemeden uygulamak baglantilari kesebilir."
+          },
+          {
+            "title": "List CiliumNetworkPolicies",
+            "desc": "List namespaced L3/L4/L7 CiliumNetworkPolicy resources",
+            "desc_tr": "Namespace kapsamli L3/L4/L7 CiliumNetworkPolicy kaynaklarini listele",
+            "cmd": "kubectl get cnp -n <NAMESPACE> -o wide",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Trace Policy Decision Between Identities",
+            "desc": "Verify whether traffic between two security identities is allowed or denied",
+            "desc_tr": "Iki guvenlik kimligi arasindaki trafigin izinli mi reddedilmis mi oldugunu dogrula",
+            "cmd": "kubectl -n kube-system exec ds/cilium -- cilium policy trace --src-identity <SRC_ID> --dst-identity <DST_ID> --dport 80/TCP",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Verify WireGuard Encryption Status",
+            "desc": "Confirm transparent node-to-node encryption is active and count encrypted peers",
+            "desc_tr": "Seffaf dugumler arasi sifrelemenin aktif oldugunu dogrula ve sifreli es sayisini gor",
+            "cmd": "kubectl -n kube-system exec ds/cilium -- cilium encrypt status",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Inspect BPF Connection Tracking",
+            "desc": "Dump the eBPF conntrack table to debug stuck or unexpected connections",
+            "desc_tr": "Takilmis veya beklenmeyen baglantilari ayiklamak icin eBPF conntrack tablosunu dok",
+            "cmd": "kubectl -n kube-system exec ds/cilium -- cilium bpf ct list global | head -n 50",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "List BPF Load-Balancer Services",
+            "desc": "Show eBPF-based service backends and their load-balancing state",
+            "desc_tr": "eBPF tabanli servis backend'lerini ve yuk dengeleme durumlarini goster",
+            "cmd": "kubectl -n kube-system exec ds/cilium -- cilium bpf lb list",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Collect Sysdump for Support",
+            "desc": "Bundle logs, configs and flow data for troubleshooting or bug reports",
+            "desc_tr": "Sorun giderme veya hata raporlari icin loglari, konfigleri ve akis verisini paketle",
+            "cmd": "cilium sysdump --output-filename <FILE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Enable Cilium Debug Logging",
+            "desc": "Toggle verbose debug logging on all Cilium agents at runtime",
+            "desc_tr": "Tum Cilium agent'larinda calisma zamaninda ayrintili debug loglamayi ac",
+            "cmd": "kubectl -n kube-system exec ds/cilium -- cilium config Debug=true",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Debug loglamasi yuksek hacimde cikti uretir; sorun giderme bitince Debug=false ile geri alin."
+          }
+        ]
+      },
+      {
+        "name": "mTLS & Zero-Trust Networking",
+        "commands": [
+          {
+            "title": "Verify mTLS Status in Mesh (Istio)",
+            "desc": "Check mTLS authentication status for workloads in a namespace",
+            "desc_tr": "Bir namespace'teki workload'lar için mTLS kimlik dogrulama durumunu kontrol et",
+            "cmd": "istioctl authn tls-check <POD>.<NAMESPACE>",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Enforce Strict mTLS Namespace-Wide (Istio)",
+            "desc": "Apply a PeerAuthentication policy requiring STRICT mTLS",
+            "desc_tr": "STRICT mTLS gerektiren bir PeerAuthentication politikasi uygula",
+            "cmds": [
+              "kubectl apply -n <NAMESPACE> -f - <<'EOF'",
+              "apiVersion: security.istio.io/v1",
+              "kind: PeerAuthentication",
+              "metadata:",
+              "  name: default",
+              "spec:",
+              "  mtls:",
+              "    mode: STRICT",
+              "EOF"
+            ],
+            "tags": [
+              "tool",
+              "essential"
+            ],
+            "note": "STRICT rejects plaintext; use PERMISSIVE during migration to avoid breaking non-mesh clients"
+          },
+          {
+            "title": "Inspect Proxy mTLS Secrets (Istio)",
+            "desc": "Dump Envoy sidecar secret config to verify mTLS certs",
+            "desc_tr": "Envoy sidecar gizli (secret) yapilandirmasini dökerek mTLS sertifikalarini dogrula",
+            "cmd": "istioctl proxy-config secret <POD>.<NAMESPACE> -o json",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Default-Deny Authorization Policy (Istio)",
+            "desc": "Create an empty AuthorizationPolicy to deny all traffic by default",
+            "desc_tr": "Varsayilan olarak tüm trafigi reddeden bos bir AuthorizationPolicy olustur (zero-trust)",
+            "cmds": [
+              "kubectl apply -n <NAMESPACE> -f - <<'EOF'",
+              "apiVersion: security.istio.io/v1",
+              "kind: AuthorizationPolicy",
+              "metadata:",
+              "  name: deny-all",
+              "spec:",
+              "  {}",
+              "EOF"
+            ],
+            "tags": [
+              "tool",
+              "essential"
+            ],
+            "note": "An empty spec denies everything; add explicit allow rules per service identity (zero-trust default-deny)"
+          },
+          {
+            "title": "Allow Traffic by SPIFFE Identity (Istio)",
+            "desc": "Authorize requests only from a specific workload service account",
+            "desc_tr": "Istekleri yalnizca belirli bir workload servis hesabindan (SPIFFE kimligi) yetkilendir",
+            "cmds": [
+              "kubectl apply -n <NAMESPACE> -f - <<'EOF'",
+              "apiVersion: security.istio.io/v1",
+              "kind: AuthorizationPolicy",
+              "metadata:",
+              "  name: allow-frontend",
+              "spec:",
+              "  rules:",
+              "  - from:",
+              "    - source:",
+              "        principals: [\"cluster.local/ns/<NAMESPACE>/sa/<SERVICE_ACCOUNT>\"]",
+              "EOF"
+            ],
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Verify SPIFFE Identity in Cert (Istio)",
+            "desc": "Extract the SPIFFE URI SAN from a workload's issued certificate",
+            "desc_tr": "Workload'a verilen sertifikadan SPIFFE URI SAN kimligini çikar",
+            "cmd": "istioctl proxy-config secret <POD>.<NAMESPACE> -o json | jq -r '.dynamicActiveSecrets[0].secret.tlsCertificate.certificateChain.inlineBytes' | base64 -d | openssl x509 -noout -text | grep URI",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Linkerd mTLS Edge Check",
+            "desc": "List live connections and confirm they are mTLS-secured",
+            "desc_tr": "Canli baglantilari listeleyip mTLS ile güvence altina alindiklarini dogrula",
+            "cmd": "linkerd viz edges deployment -n <NAMESPACE>",
+            "tags": [
+              "tool",
+              "essential"
+            ],
+            "note": "SECURED column shows the upstream/downstream identity; empty means traffic is not mTLS"
+          },
+          {
+            "title": "Linkerd Live mTLS Tap",
+            "desc": "Tap real-time requests to a deployment showing TLS identity",
+            "desc_tr": "Bir deployment'a gelen istekleri TLS kimligi ile gerçek zamanli izle",
+            "cmd": "linkerd viz tap deployment/<DEPLOYMENT> -n <NAMESPACE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Check Linkerd Identity Issuer Cert",
+            "desc": "Verify the trust anchor and issuer certificate via proxy check",
+            "desc_tr": "Güven çapasi (trust anchor) ve veren (issuer) sertifikayi dogrula",
+            "cmd": "linkerd check --proxy",
+            "tags": [
+              "tool",
+              "essential"
+            ],
+            "note": "Catches trust-anchor/issuer cert expiry before mTLS breaks cluster-wide"
+          },
+          {
+            "title": "Issue SPIFFE SVID via spire-agent",
+            "desc": "Fetch an X.509 SVID from the SPIRE agent workload API",
+            "desc_tr": "SPIRE agent workload API'sinden bir X.509 SVID (kimlik sertifikasi) al",
+            "cmd": "spire-agent api fetch x509 -socketPath /run/spire/sockets/agent.sock -write <PATH>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Register SPIFFE Workload Entry",
+            "desc": "Create a SPIRE registration entry binding a selector to a SPIFFE ID",
+            "desc_tr": "Bir seçiciyi (selector) SPIFFE ID'ye baglayan SPIRE kayit girisi olustur",
+            "cmd": "spire-server entry create -spiffeID spiffe://<DOMAIN>/workload/<NAME> -parentID spiffe://<DOMAIN>/agent -selector k8s:ns:<NAMESPACE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "List SPIRE Registration Entries",
+            "desc": "Show all registered workload identities on the SPIRE server",
+            "desc_tr": "SPIRE sunucusundaki tüm kayitli workload kimliklerini göster",
+            "cmd": "spire-server entry show -socketPath /run/spire/sockets/api.sock",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Generate mTLS Client CSR with openssl",
+            "desc": "Create a CSR and key for a client certificate to use in mTLS",
+            "desc_tr": "mTLS'te kullanmak üzere bir istemci sertifikasi için CSR ve anahtar olustur",
+            "cmd": "openssl req -new -newkey rsa:2048 -nodes -keyout <FILE>.key -out <FILE>.csr -subj \"/CN=<DOMAIN>\"",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Test mTLS Endpoint with Client Cert",
+            "desc": "Connect to an mTLS service presenting a client certificate via curl",
+            "desc_tr": "Istemci sertifikasi sunarak bir mTLS servisine curl ile baglan",
+            "cmd": "curl --cert <FILE>.crt --key <FILE>.key --cacert <FILE>-ca.crt https://<DOMAIN>/",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Probe mTLS Handshake with openssl s_client",
+            "desc": "Inspect server cert chain and mutual-auth requirement",
+            "desc_tr": "Sunucu sertifika zincirini ve karsilikli kimlik dogrulama gereksinimini incele",
+            "cmd": "openssl s_client -connect <TARGET_IP>:443 -cert <FILE>.crt -key <FILE>.key -CAfile <FILE>-ca.crt -servername <DOMAIN>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Look for 'Acceptable client certificate CA names' in output to confirm the server requests mTLS"
+          },
+          {
+            "title": "Verify Cert Against CA Chain",
+            "desc": "Validate that a leaf certificate chains to the trusted CA",
+            "desc_tr": "Bir uç sertifikanin güvenilen CA'ya zincirlendigini dogrula",
+            "cmd": "openssl verify -CAfile <FILE>-ca.crt <FILE>.crt",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Check Certificate Expiry (SVID/Leaf)",
+            "desc": "Print notBefore/notAfter dates to monitor short-lived mTLS certs",
+            "desc_tr": "Kisa ömürlü mTLS sertifikalarini izlemek için geçerlilik tarihlerini yazdir",
+            "cmd": "openssl x509 -in <FILE>.crt -noout -dates -subject",
+            "tags": [
+              "essential"
+            ],
+            "note": "Zero-trust meshes rotate certs hourly; alert well before notAfter"
+          },
+          {
+            "title": "cert-manager Certificate Resource",
+            "desc": "Request a short-lived mTLS leaf cert from an issuer via cert-manager",
+            "desc_tr": "cert-manager ile bir issuer'dan kisa ömürlü mTLS uç sertifikasi talep et",
+            "cmds": [
+              "kubectl apply -n <NAMESPACE> -f - <<'EOF'",
+              "apiVersion: cert-manager.io/v1",
+              "kind: Certificate",
+              "metadata:",
+              "  name: <NAME>",
+              "spec:",
+              "  secretName: <NAME>-tls",
+              "  duration: 24h",
+              "  dnsNames: [\"<DOMAIN>\"]",
+              "  issuerRef:",
+              "    name: <ISSUER>",
+              "    kind: ClusterIssuer",
+              "EOF"
+            ],
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Cilium Identity-Based Network Policy",
+            "desc": "Apply an L3/L4 CiliumNetworkPolicy allowing only labeled identities",
+            "desc_tr": "Yalnizca etiketli kimliklere izin veren L3/L4 CiliumNetworkPolicy uygula",
+            "cmds": [
+              "kubectl apply -n <NAMESPACE> -f - <<'EOF'",
+              "apiVersion: cilium.io/v2",
+              "kind: CiliumNetworkPolicy",
+              "metadata:",
+              "  name: allow-frontend",
+              "spec:",
+              "  endpointSelector:",
+              "    matchLabels: {app: backend}",
+              "  ingress:",
+              "  - fromEndpoints:",
+              "    - matchLabels: {app: frontend}",
+              "EOF"
+            ],
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Inspect Cilium Endpoint Identities",
+            "desc": "List security identities Cilium assigns to workloads",
+            "desc_tr": "Cilium'un workload'lara atadigi güvenlik kimliklerini listele",
+            "cmd": "cilium endpoint list",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Monitor Cilium Policy Drops",
+            "desc": "Stream real-time deny decisions for zero-trust debugging",
+            "desc_tr": "Zero-trust hata ayiklamasi için gerçek zamanli ret kararlarini akit",
+            "cmd": "cilium monitor --type drop",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Filter with --type drop to surface denied flows when tightening policies"
+          },
+          {
+            "title": "Kubernetes Default-Deny NetworkPolicy",
+            "desc": "Block all ingress in a namespace as a zero-trust baseline",
+            "desc_tr": "Zero-trust temeli olarak bir namespace'teki tüm gelen trafigi engelle",
+            "cmds": [
+              "kubectl apply -n <NAMESPACE> -f - <<'EOF'",
+              "apiVersion: networking.k8s.io/v1",
+              "kind: NetworkPolicy",
+              "metadata:",
+              "  name: default-deny-ingress",
+              "spec:",
+              "  podSelector: {}",
+              "  policyTypes: [Ingress]",
+              "EOF"
+            ],
+            "tags": [
+              "essential"
+            ],
+            "note": "Requires a CNI that enforces NetworkPolicy (Cilium, Calico); flannel ignores it"
+          },
+          {
+            "title": "Consul Connect Intentions (Deny)",
+            "desc": "Define service-to-service mTLS authorization intentions",
+            "desc_tr": "Servisler arasi mTLS yetkilendirme niyetlerini (intentions) tanimla",
+            "cmd": "consul intention create -deny <SOURCE_SERVICE> <DEST_SERVICE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Consul Connect Intentions",
+            "desc": "Show all configured allow/deny mesh intentions",
+            "desc_tr": "Yapilandirilmis tüm izin/ret mesh niyetlerini göster",
+            "cmd": "consul intention list",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Inspect Envoy mTLS Clusters",
+            "desc": "Dump Envoy cluster config to confirm upstream TLS context",
+            "desc_tr": "Envoy cluster yapilandirmasini dökerek upstream TLS baglamini dogrula",
+            "cmd": "istioctl proxy-config cluster <POD>.<NAMESPACE> -o json | jq '.[] | select(.transportSocket.name==\"envoy.transport_sockets.tls\") | .name'",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Capture and Confirm Encrypted Mesh Traffic",
+            "desc": "Sniff pod traffic to verify payloads are TLS-encrypted, not plaintext",
+            "desc_tr": "Pod trafigini dinleyerek yüklerin düz metin degil TLS ile sifrelendigini dogrula",
+            "cmd": "kubectl exec -n <NAMESPACE> <POD> -c istio-proxy -- tcpdump -A -i eth0 'tcp port <PORT>'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Encrypted mTLS shows TLS handshake bytes, not readable HTTP; readable plaintext means mTLS is not enforced"
+          }
+        ]
+      }
+    ]
   }
 ];

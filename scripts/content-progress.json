@@ -223,14 +223,15 @@
       "id": "service-mesh",
       "name": "Service Mesh & Network Security",
       "icon": "🕸️",
-      "status": "pending",
+      "status": "done",
       "description": "Service mesh operations and zero-trust networking: Istio, Linkerd, Cilium, and mTLS.",
       "subcategories": [
         "Istio (istioctl, traffic, mTLS, authz policies)",
         "Linkerd",
         "Cilium & Hubble",
         "mTLS & Zero-Trust Networking"
-      ]
+      ],
+      "commands_added": 108
     },
     {
       "id": "observability-sec",
