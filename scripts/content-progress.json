@@ -237,7 +237,7 @@
       "id": "observability-sec",
       "name": "Observability & Detection Engineering",
       "icon": "📊",
-      "status": "pending",
+      "status": "done",
       "description": "Security observability and detection: log pipelines, SIEM queries, and detection-as-code relevant to DevSecOps.",
       "subcategories": [
         "Prometheus & Alerting",
@@ -245,7 +245,8 @@
         "OpenTelemetry",
         "Detection-as-Code (Sigma, sigma-cli)",
         "Audit Logging (k8s, cloud)"
-      ]
+      ],
+      "commands_added": 136
     }
   ]
 }

@@ -49001,5 +49001,1389 @@ module.exports = [
         ]
       }
     ]
+  },
+  {
+    "id": "observability-sec",
+    "name": "Observability & Detection Engineering",
+    "name_tr": "Gözlemlenebilirlik & Tespit Mühendisliği",
+    "icon": "📊",
+    "description": "Security observability and detection: log pipelines, SIEM queries, and detection-as-code relevant to DevSecOps.",
+    "description_tr": "Güvenlik gözlemlenebilirliği ve tespiti: log işlem hatları, SIEM sorguları ve DevSecOps için detection-as-code.",
+    "subcategories": [
+      {
+        "name": "Prometheus & Alerting",
+        "commands": [
+          {
+            "title": "Start Prometheus with config",
+            "desc": "Run Prometheus pointing to a config file",
+            "desc_tr": "Prometheus'u bir yapılandırma dosyasıyla çalıştır",
+            "cmd": "prometheus --config.file=/etc/prometheus/prometheus.yml --web.listen-address=:9090",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Validate Prometheus config",
+            "desc": "Check config and rule files for syntax errors",
+            "desc_tr": "Yapılandırma ve kural dosyalarını sözdizimi hataları için doğrula",
+            "cmd": "promtool check config /etc/prometheus/prometheus.yml",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Validate alerting/recording rules",
+            "desc": "Lint rule files before loading them",
+            "desc_tr": "Kural dosyalarını yüklemeden önce denetle (lint)",
+            "cmd": "promtool check rules /etc/prometheus/rules/*.yml",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Hot-reload Prometheus config",
+            "desc": "Reload config without restart (needs --web.enable-lifecycle)",
+            "desc_tr": "Yeniden başlatmadan yapılandırmayı yeniden yükle (--web.enable-lifecycle gerekir)",
+            "cmd": "curl -X POST http://localhost:9090/-/reload",
+            "tags": [
+              "essential"
+            ],
+            "note": "Prometheus must be started with --web.enable-lifecycle for this endpoint to work."
+          },
+          {
+            "title": "Instant query via API",
+            "desc": "Run a PromQL instant query from the command line",
+            "desc_tr": "Komut satırından anlık (instant) PromQL sorgusu çalıştır",
+            "cmd": "curl -G http://localhost:9090/api/v1/query --data-urlencode 'query=up'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Range query via API",
+            "desc": "Query a metric over a time range with a step",
+            "desc_tr": "Bir metriği zaman aralığı ve adım (step) ile sorgula",
+            "cmd": "curl -G http://localhost:9090/api/v1/query_range --data-urlencode 'query=rate(http_requests_total[5m])' -d start=$(date -d '-1 hour' +%s) -d end=$(date +%s) -d step=60",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Unit-test alerting rules",
+            "desc": "Run promtool test cases against rule definitions",
+            "desc_tr": "promtool ile kural tanımlarına karşı test senaryoları çalıştır",
+            "cmd": "promtool test rules /etc/prometheus/tests/*_test.yml",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "List active targets",
+            "desc": "Show scrape targets and their health state",
+            "desc_tr": "Scrape hedeflerini ve sağlık durumlarını listele",
+            "cmd": "curl -s http://localhost:9090/api/v1/targets | jq '.data.activeTargets[] | {job: .labels.job, health, lastError}'",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "List firing alerts",
+            "desc": "Query Prometheus for currently firing/pending alerts",
+            "desc_tr": "Prometheus'tan halihazırda tetiklenen/bekleyen uyarıları sorgula",
+            "cmd": "curl -s http://localhost:9090/api/v1/alerts | jq '.data.alerts[] | {alertname: .labels.alertname, state}'",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Inspect loaded rules",
+            "desc": "Dump all loaded recording and alerting rules",
+            "desc_tr": "Yüklenmiş tüm kayıt ve uyarı kurallarını dök",
+            "cmd": "curl -s http://localhost:9090/api/v1/rules | jq '.data.groups[].rules[] | {name, type, health}'",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Check build & runtime info",
+            "desc": "Show version, retention and runtime flags",
+            "desc_tr": "Sürüm, saklama (retention) ve çalışma zamanı bayraklarını göster",
+            "cmd": "curl -s http://localhost:9090/api/v1/status/runtimeinfo | jq",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Query TSDB head stats",
+            "desc": "Inspect cardinality and top series counts",
+            "desc_tr": "Kardinaliteyi ve en yüksek seri sayılarını incele",
+            "cmd": "curl -s http://localhost:9090/api/v1/status/tsdb | jq '.data.seriesCountByMetricName'",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Use this to hunt high-cardinality metrics that bloat the TSDB."
+          },
+          {
+            "title": "List all metric names",
+            "desc": "Enumerate every metric name currently in the TSDB",
+            "desc_tr": "TSDB'deki tüm metrik adlarını listele",
+            "cmd": "curl -s http://localhost:9090/api/v1/label/__name__/values | jq -r '.data[]'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Query label values",
+            "desc": "Get all values for a specific label",
+            "desc_tr": "Belirli bir etiketin (label) tüm değerlerini al",
+            "cmd": "curl -s 'http://localhost:9090/api/v1/label/job/values' | jq -r '.data[]'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Snapshot the TSDB",
+            "desc": "Create a consistent on-disk snapshot for backup",
+            "desc_tr": "Yedekleme için tutarlı bir disk anlık görüntüsü (snapshot) oluştur",
+            "cmd": "curl -X POST http://localhost:9090/api/v1/admin/tsdb/snapshot",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Requires --web.enable-admin-api. Snapshot lands under <storage>/snapshots/."
+          },
+          {
+            "title": "Delete series from TSDB",
+            "desc": "Tombstone matching series via the admin API",
+            "desc_tr": "Eşleşen serileri admin API ile sil (tombstone)",
+            "cmd": "curl -X POST -g 'http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]=<METRIC>{job=\"<JOB>\"}'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Run clean_tombstones afterward to actually reclaim disk space. Needs --web.enable-admin-api."
+          },
+          {
+            "title": "Analyze TSDB blocks offline",
+            "desc": "Inspect on-disk blocks and label cardinality",
+            "desc_tr": "Disk üzerindeki blokları ve etiket kardinalitesini çevrimdışı incele",
+            "cmd": "promtool tsdb analyze /var/lib/prometheus/",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Validate Alertmanager config",
+            "desc": "Check amtool config for syntax and routing errors",
+            "desc_tr": "Alertmanager yapılandırmasını sözdizimi ve yönlendirme hataları için doğrula",
+            "cmd": "amtool check-config /etc/alertmanager/alertmanager.yml",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Test alert routing tree",
+            "desc": "Show which receiver a labelset routes to",
+            "desc_tr": "Belirli etiketlerin hangi alıcıya (receiver) yönlendirildiğini göster",
+            "cmd": "amtool config routes test --config.file=/etc/alertmanager/alertmanager.yml severity=critical service=<SERVICE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "List active alerts in Alertmanager",
+            "desc": "Query Alertmanager for currently active alerts",
+            "desc_tr": "Alertmanager'dan halihazırda aktif olan uyarıları sorgula",
+            "cmd": "amtool alert query --alertmanager.url=http://localhost:9093",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Silence an alert",
+            "desc": "Create a time-bounded silence by matchers",
+            "desc_tr": "Eşleştiricilere göre zaman sınırlı bir susturma (silence) oluştur",
+            "cmd": "amtool silence add alertname=<ALERTNAME> instance=<INSTANCE> --duration=2h --comment='maintenance' --alertmanager.url=http://localhost:9093",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Query and expire silences",
+            "desc": "List active silences, then expire one by ID",
+            "desc_tr": "Aktif susturmaları listele, sonra ID ile bir tanesini sonlandır",
+            "cmd": "amtool silence query --alertmanager.url=http://localhost:9093 && amtool silence expire <SILENCE_ID> --alertmanager.url=http://localhost:9093",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Reload Alertmanager config",
+            "desc": "Hot-reload Alertmanager without restart",
+            "desc_tr": "Yeniden başlatmadan Alertmanager yapılandırmasını yeniden yükle",
+            "cmd": "curl -X POST http://localhost:9093/-/reload",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Send a test alert to Alertmanager",
+            "desc": "POST a synthetic alert to verify routing/receivers",
+            "desc_tr": "Yönlendirme/alıcıları doğrulamak için sentetik bir uyarı gönder",
+            "cmd": "curl -X POST http://localhost:9093/api/v2/alerts -H 'Content-Type: application/json' -d '[{\"labels\":{\"alertname\":\"TestAlert\",\"severity\":\"warning\"}}]'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Check Prometheus readiness/health",
+            "desc": "Probe liveness and readiness endpoints",
+            "desc_tr": "Canlılık (liveness) ve hazırlık (readiness) uç noktalarını yokla",
+            "cmd": "curl -sf http://localhost:9090/-/ready && curl -sf http://localhost:9090/-/healthy",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Scrape an exporter directly",
+            "desc": "Fetch raw metrics from a target exporter endpoint",
+            "desc_tr": "Bir exporter uç noktasından ham metrikleri doğrudan çek",
+            "cmd": "curl -s http://<TARGET_IP>:9100/metrics | grep -E '^node_(cpu|memory|filesystem)'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Find stale/down targets via PromQL",
+            "desc": "Identify scrape targets reporting down",
+            "desc_tr": "Down durumda olan scrape hedeflerini PromQL ile tespit et",
+            "cmd": "curl -sG http://localhost:9090/api/v1/query --data-urlencode 'query=up == 0' | jq '.data.result[].metric'",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Backfill rules from historical data",
+            "desc": "Generate recording-rule data for past time windows",
+            "desc_tr": "Geçmiş zaman pencereleri için kayıt kuralı (recording rule) verisi üret",
+            "cmd": "promtool tsdb create-blocks-from rules --start=$(date -d '-1 day' +%s) --url=http://localhost:9090 /etc/prometheus/rules/<FILE>.yml",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Loki / Elastic / OpenSearch queries",
+        "commands": [
+          {
+            "title": "LogCLI Basic LogQL Query",
+            "desc": "Query Loki for a label-filtered stream over the last hour",
+            "desc_tr": "Loki'yi son bir saatte etiketle filtrelenmiş bir akış için sorgula",
+            "cmd": "logcli query '{namespace=\"<NAMESPACE>\",app=\"<APP>\"}' --since=1h",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Set LOKI_ADDR (e.g. export LOKI_ADDR=http://<TARGET_IP>:3100) before running logcli."
+          },
+          {
+            "title": "LogQL Line Filter for Errors",
+            "desc": "Stream logs containing the substring 'error' case-insensitively",
+            "desc_tr": "'error' alt dizisini büyük/küçük harf duyarsız içeren logları akıt",
+            "cmd": "logcli query '{namespace=\"<NAMESPACE>\"} |~ `(?i)error`' --since=30m",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "LogQL JSON Parse and Filter",
+            "desc": "Parse JSON logs then filter by an extracted field",
+            "desc_tr": "JSON loglarını ayrıştır sonra çıkarılan bir alana göre filtrele",
+            "cmd": "logcli query '{app=\"<APP>\"} | json | status_code >= 500' --since=1h",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "LogQL logfmt Parser",
+            "desc": "Parse logfmt-style logs and filter on a key",
+            "desc_tr": "logfmt biçimli logları ayrıştır ve bir anahtara göre filtrele",
+            "cmd": "logcli query '{job=\"<JOB>\"} | logfmt | level=\"error\"' --since=1h",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "LogQL Count Rate Metric Query",
+            "desc": "Compute per-second log rate grouped by level over 5m windows",
+            "desc_tr": "5 dakikalık pencerelerde seviyeye göre saniye başına log oranını hesapla",
+            "cmd": "logcli query 'sum by (level) (rate({namespace=\"<NAMESPACE>\"} | logfmt [5m]))' --since=1h",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "LogQL Regex Field Extraction",
+            "desc": "Extract a field with a named regex capture group and filter",
+            "desc_tr": "Adlandırılmış regex yakalama grubuyla bir alan çıkar ve filtrele",
+            "cmd": "logcli query '{app=\"<APP>\"} | regexp `(?P<latency>[0-9]+)ms` | latency > 200' --since=1h",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "LogQL Tail Live Logs",
+            "desc": "Follow a Loki stream in real time like tail -f",
+            "desc_tr": "Bir Loki akışını gerçek zamanlı olarak tail -f gibi takip et",
+            "cmd": "logcli query '{namespace=\"<NAMESPACE>\",pod=\"<POD>\"}' --tail",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "LogQL List Available Labels",
+            "desc": "Show all label names known to Loki for discovery",
+            "desc_tr": "Keşif için Loki tarafından bilinen tüm etiket adlarını göster",
+            "cmd": "logcli labels",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Loki Query via HTTP API (curl)",
+            "desc": "Run a range query against the Loki HTTP API and pretty-print",
+            "desc_tr": "Loki HTTP API'sine bir aralık sorgusu çalıştır ve düzenli yazdır",
+            "cmd": "curl -sG 'http://<TARGET_IP>:3100/loki/api/v1/query_range' --data-urlencode 'query={app=\"<APP>\"}' --data-urlencode 'limit=100' | jq",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "LogQL unwrap for Numeric Aggregation",
+            "desc": "Unwrap a numeric field and compute quantile over time",
+            "desc_tr": "Sayısal bir alanı aç ve zamana göre nicelik (quantile) hesapla",
+            "cmd": "logcli query 'quantile_over_time(0.95, {app=\"<APP>\"} | json | unwrap duration_ms [5m])' --since=1h",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Elasticsearch Cluster Health",
+            "desc": "Check overall cluster health status (green/yellow/red)",
+            "desc_tr": "Genel küme sağlık durumunu kontrol et (yeşil/sarı/kırmızı)",
+            "cmd": "curl -s 'http://<TARGET_IP>:9200/_cluster/health?pretty'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Elasticsearch List Indices",
+            "desc": "List all indices with health, doc count, and size",
+            "desc_tr": "Tüm indeksleri sağlık, belge sayısı ve boyut ile listele",
+            "cmd": "curl -s 'http://<TARGET_IP>:9200/_cat/indices?v&s=store.size:desc'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Elasticsearch Lucene Query String Search",
+            "desc": "Search an index using a Lucene query string via the q param",
+            "desc_tr": "q parametresiyle Lucene sorgu dizesi kullanarak bir indekste ara",
+            "cmd": "curl -s 'http://<TARGET_IP>:9200/<INDEX>/_search?q=status:500+AND+method:POST&size=20&pretty'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Elasticsearch DSL match Query",
+            "desc": "Full-text match query against a field using the Query DSL",
+            "desc_tr": "Query DSL kullanarak bir alana karşı tam metin match sorgusu",
+            "cmd": "curl -s -X POST 'http://<TARGET_IP>:9200/<INDEX>/_search?pretty' -H 'Content-Type: application/json' -d '{\"query\":{\"match\":{\"message\":\"connection refused\"}}}'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Elasticsearch bool Query with Filter",
+            "desc": "Combine must/filter clauses for term and range matching",
+            "desc_tr": "Terim ve aralık eşleştirmesi için must/filter cümlelerini birleştir",
+            "cmd": "curl -s -X POST 'http://<TARGET_IP>:9200/<INDEX>/_search?pretty' -H 'Content-Type: application/json' -d '{\"query\":{\"bool\":{\"filter\":[{\"term\":{\"level.keyword\":\"error\"}},{\"range\":{\"@timestamp\":{\"gte\":\"now-1h\"}}}]}}}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Elasticsearch Date Histogram Aggregation",
+            "desc": "Bucket documents into time intervals for trend analysis",
+            "desc_tr": "Trend analizi için belgeleri zaman aralıklarına grupla",
+            "cmd": "curl -s -X POST 'http://<TARGET_IP>:9200/<INDEX>/_search?pretty' -H 'Content-Type: application/json' -d '{\"size\":0,\"aggs\":{\"per_min\":{\"date_histogram\":{\"field\":\"@timestamp\",\"fixed_interval\":\"1m\"}}}}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Elasticsearch terms Aggregation (Top Values)",
+            "desc": "Find the top N values of a keyword field",
+            "desc_tr": "Bir keyword alanının en sık görülen N değerini bul",
+            "cmd": "curl -s -X POST 'http://<TARGET_IP>:9200/<INDEX>/_search?pretty' -H 'Content-Type: application/json' -d '{\"size\":0,\"aggs\":{\"top_ips\":{\"terms\":{\"field\":\"src_ip.keyword\",\"size\":10}}}}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Elasticsearch Count Matching Documents",
+            "desc": "Return only the count of documents matching a query",
+            "desc_tr": "Yalnızca bir sorguyla eşleşen belge sayısını döndür",
+            "cmd": "curl -s -X POST 'http://<TARGET_IP>:9200/<INDEX>/_count?pretty' -H 'Content-Type: application/json' -d '{\"query\":{\"match\":{\"event.action\":\"failed_login\"}}}'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Elasticsearch ESQL Pipe Query",
+            "desc": "Run a piped ES|QL query for filtering, stats, and sorting",
+            "desc_tr": "Filtreleme, istatistik ve sıralama için işlemli bir ES|QL sorgusu çalıştır",
+            "cmd": "curl -s -X POST 'http://<TARGET_IP>:9200/_query?pretty' -H 'Content-Type: application/json' -d '{\"query\":\"FROM <INDEX> | WHERE status >= 500 | STATS count = COUNT(*) BY url.path | SORT count DESC | LIMIT 10\"}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Elasticsearch Async (Long-Running) Search",
+            "desc": "Submit an async search then poll the returned id",
+            "desc_tr": "Asenkron bir arama gönder sonra dönen id'yi yokla",
+            "cmds": [
+              "curl -s -X POST 'http://<TARGET_IP>:9200/<INDEX>/_async_search?pretty' -H 'Content-Type: application/json' -d '{\"query\":{\"match_all\":{}}}'",
+              "curl -s 'http://<TARGET_IP>:9200/_async_search/<SEARCH_ID>?pretty'"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "OpenSearch Cluster Health",
+            "desc": "Check OpenSearch cluster health over HTTPS with auth",
+            "desc_tr": "Kimlik doğrulamayla HTTPS üzerinden OpenSearch küme sağlığını kontrol et",
+            "cmd": "curl -sk -u <USER>:<PASSWORD> 'https://<TARGET_IP>:9200/_cluster/health?pretty'",
+            "tags": [
+              "essential"
+            ],
+            "note": "OpenSearch defaults to TLS with the security plugin enabled, so use -k and -u unlike a plain Elasticsearch dev cluster."
+          },
+          {
+            "title": "OpenSearch DSL Search with Auth",
+            "desc": "Run a Query DSL search against OpenSearch with basic auth",
+            "desc_tr": "Temel kimlik doğrulamayla OpenSearch'e karşı Query DSL araması çalıştır",
+            "cmd": "curl -sk -u <USER>:<PASSWORD> -X POST 'https://<TARGET_IP>:9200/<INDEX>/_search?pretty' -H 'Content-Type: application/json' -d '{\"query\":{\"match\":{\"message\":\"unauthorized\"}}}'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "OpenSearch PPL Query",
+            "desc": "Use Piped Processing Language for SQL-like log analysis",
+            "desc_tr": "SQL benzeri log analizi için Piped Processing Language kullan",
+            "cmd": "curl -sk -u <USER>:<PASSWORD> -X POST 'https://<TARGET_IP>:9200/_plugins/_ppl' -H 'Content-Type: application/json' -d '{\"query\":\"source=<INDEX> | where status=403 | stats count() by src_ip\"}'",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "OpenSearch SQL Query Plugin",
+            "desc": "Query indices with SQL syntax via the SQL plugin endpoint",
+            "desc_tr": "SQL eklenti uç noktası aracılığıyla indeksleri SQL söz dizimiyle sorgula",
+            "cmd": "curl -sk -u <USER>:<PASSWORD> -X POST 'https://<TARGET_IP>:9200/_plugins/_sql' -H 'Content-Type: application/json' -d '{\"query\":\"SELECT host, COUNT(*) AS hits FROM <INDEX> WHERE level='\\''error'\\'' GROUP BY host\"}'",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Elasticsearch Search After Pagination",
+            "desc": "Deep-paginate results with sort and search_after for SIEM exports",
+            "desc_tr": "SIEM dışa aktarımları için sort ve search_after ile derin sayfalama yap",
+            "cmd": "curl -s -X POST 'http://<TARGET_IP>:9200/<INDEX>/_search?pretty' -H 'Content-Type: application/json' -d '{\"size\":1000,\"sort\":[{\"@timestamp\":\"asc\"}],\"search_after\":[\"<LAST_TIMESTAMP>\"],\"query\":{\"match_all\":{}}}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Elasticsearch Field Capabilities Discovery",
+            "desc": "Inspect which fields exist and their types across an index",
+            "desc_tr": "Bir indekste hangi alanların var olduğunu ve türlerini incele",
+            "cmd": "curl -s 'http://<TARGET_IP>:9200/<INDEX>/_field_caps?fields=*&pretty'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "LogQL Pattern Parser",
+            "desc": "Extract structured fields from access logs with the pattern parser",
+            "desc_tr": "pattern ayrıştırıcısıyla erişim loglarından yapılandırılmış alanlar çıkar",
+            "cmd": "logcli query '{job=\"<JOB>\"} | pattern `<ip> - - <_> \"<method> <path> <_>\" <status> <_>` | status=\"404\"' --since=1h",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Elasticsearch Delete By Query",
+            "desc": "Bulk-delete documents matching a query (e.g. noisy index cleanup)",
+            "desc_tr": "Bir sorguyla eşleşen belgeleri toplu sil (örn. gürültülü indeks temizliği)",
+            "cmd": "curl -s -X POST 'http://<TARGET_IP>:9200/<INDEX>/_delete_by_query?pretty' -H 'Content-Type: application/json' -d '{\"query\":{\"range\":{\"@timestamp\":{\"lt\":\"now-30d\"}}}}'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Destructive: deleted documents cannot be recovered. Run the same query with _count first to confirm the scope."
+          }
+        ]
+      },
+      {
+        "name": "OpenTelemetry",
+        "commands": [
+          {
+            "title": "Install OpenTelemetry Collector (Contrib) via Docker",
+            "desc": "Run the contrib Collector with a mounted config",
+            "desc_tr": "Contrib Collector'u monte edilmiş yapılandırma ile Docker üzerinde çalıştır",
+            "cmd": "docker run -p 4317:4317 -p 4318:4318 -v <PATH>/config.yaml:/etc/otelcol-contrib/config.yaml otel/opentelemetry-collector-contrib:latest",
+            "tags": [
+              "tool",
+              "essential"
+            ],
+            "note": "4317 = OTLP/gRPC, 4318 = OTLP/HTTP. The contrib image ships extra receivers/exporters not in the core image."
+          },
+          {
+            "title": "Validate Collector Config",
+            "desc": "Dry-run validate a Collector configuration file",
+            "desc_tr": "Collector yapılandırma dosyasını çalıştırmadan doğrula",
+            "cmd": "otelcol-contrib validate --config <PATH>/config.yaml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run Collector with Feature Gates",
+            "desc": "Start the Collector enabling/disabling feature gates",
+            "desc_tr": "Collector'u feature gate'leri açıp kapatarak başlat",
+            "cmd": "otelcol-contrib --config <PATH>/config.yaml --feature-gates=+component.UseLocalHostAsDefaultHost",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Override Config from Environment",
+            "desc": "Inject env vars into config with ${env:} expansion",
+            "desc_tr": "${env:} genişletmesi ile yapılandırmaya ortam değişkeni enjekte et",
+            "cmd": "OTEL_ENDPOINT=<TARGET_IP>:4317 otelcol-contrib --config <PATH>/config.yaml",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Reference it in YAML as ${env:OTEL_ENDPOINT}; the bare ${OTEL_ENDPOINT} syntax is deprecated."
+          },
+          {
+            "title": "Send a Test Trace via OTLP/HTTP",
+            "desc": "Push a sample span to the Collector with curl",
+            "desc_tr": "curl ile Collector'a örnek bir span gönder",
+            "cmd": "curl -X POST http://<TARGET_IP>:4318/v1/traces -H 'Content-Type: application/json' -d @<PATH>/span.json",
+            "tags": [
+              "tool"
+            ],
+            "note": "Body must follow the OTLP/JSON ResourceSpans schema; a 200 with {} (partialSuccess empty) means accepted."
+          },
+          {
+            "title": "Generate Synthetic Telemetry Load",
+            "desc": "Use telemetrygen to emit traces/metrics/logs",
+            "desc_tr": "telemetrygen ile sentetik trace/metrik/log üret",
+            "cmd": "telemetrygen traces --otlp-endpoint <TARGET_IP>:4317 --otlp-insecure --traces 100",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Install with: go install github.com/open-telemetry/opentelemetry-collector-contrib/cmd/telemetrygen@latest"
+          },
+          {
+            "title": "Auto-Instrument a Python App",
+            "desc": "Wrap a Python process with zero-code instrumentation",
+            "desc_tr": "Python uygulamasını sıfır kod enstrümantasyon ile sar",
+            "cmds": [
+              "pip install opentelemetry-distro opentelemetry-exporter-otlp",
+              "opentelemetry-bootstrap -a install",
+              "opentelemetry-instrument --traces_exporter otlp --service_name <DOMAIN> python <FILE>.py"
+            ],
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Auto-Instrument a Java App",
+            "desc": "Attach the OTel Java agent to a JVM service",
+            "desc_tr": "OTel Java agent'ını bir JVM servisine ekle",
+            "cmd": "java -javaagent:<PATH>/opentelemetry-javaagent.jar -Dotel.service.name=<DOMAIN> -Dotel.exporter.otlp.endpoint=http://<TARGET_IP>:4318 -jar <FILE>.jar",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Auto-Instrument a Node.js App",
+            "desc": "Preload the OTel SDK auto-instrumentation register",
+            "desc_tr": "OTel SDK otomatik enstrümantasyonunu Node.js'e önyükle",
+            "cmd": "node --require @opentelemetry/auto-instrumentations-node/register <FILE>.js",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Configure via env: OTEL_SERVICE_NAME, OTEL_EXPORTER_OTLP_ENDPOINT, OTEL_TRACES_EXPORTER."
+          },
+          {
+            "title": "Set OTLP Exporter via Standard Env Vars",
+            "desc": "Configure any SDK using OTEL_ environment variables",
+            "desc_tr": "Herhangi bir SDK'yı OTEL_ ortam değişkenleriyle yapılandır",
+            "cmd": "export OTEL_EXPORTER_OTLP_ENDPOINT=http://<TARGET_IP>:4318 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf OTEL_RESOURCE_ATTRIBUTES=service.name=<DOMAIN>,deployment.environment=prod",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Enable Debug Exporter via CLI Override",
+            "desc": "Print received telemetry to Collector stdout for testing",
+            "desc_tr": "Alınan telemetriyi test için Collector stdout'una yazdır",
+            "cmd": "otelcol-contrib --config <PATH>/config.yaml --set service.pipelines.traces.exporters=[debug] --set exporters.debug.verbosity=detailed",
+            "tags": [
+              "advanced"
+            ],
+            "note": "The 'logging' exporter was renamed to 'debug' in newer Collector releases."
+          },
+          {
+            "title": "Filter Health-Check Spans (OTTL)",
+            "desc": "Drop noisy health-check spans with the filter processor",
+            "desc_tr": "filter processor ile gürültülü health-check span'lerini düşür",
+            "cmd": "otelcol-contrib validate --config <PATH>/filter.yaml  # filter/health -> traces.span: ['attributes[\"http.target\"] == \"/health\"']",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Uses OTTL (OpenTelemetry Transformation Language) conditions inside the filter processor."
+          },
+          {
+            "title": "Redact PII with the Transform Processor",
+            "desc": "Mask sensitive attributes using OTTL statements",
+            "desc_tr": "OTTL ifadeleriyle hassas öznitelikleri maskele",
+            "cmd": "otelcol-contrib validate --config <PATH>/redact.yaml  # transform -> replace_pattern(attributes[\"http.url\"], \"token=[^&]+\", \"token=REDACTED\")",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Critical for detection-engineering pipelines to avoid leaking secrets into trace backends."
+          },
+          {
+            "title": "Validate Tail-Based Sampling Policy",
+            "desc": "Validate a tail_sampling processor policy set",
+            "desc_tr": "tail_sampling processor politika kümesini doğrula",
+            "cmd": "otelcol-contrib validate --config <PATH>/tailsampling.yaml",
+            "tags": [
+              "advanced"
+            ],
+            "note": "tail_sampling needs all spans of a trace on one instance; use a loadbalancing exporter keyed by traceID upstream."
+          },
+          {
+            "title": "Scrape Prometheus Metrics into OTel",
+            "desc": "Configure the prometheus receiver to pull a target",
+            "desc_tr": "prometheus receiver'ı bir hedefi çekmek için yapılandır",
+            "cmd": "otelcol-contrib validate --config <PATH>/promrecv.yaml  # receivers.prometheus -> scrape_configs.static_configs.targets: ['<TARGET_IP>:9090']",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Check Collector Pipelines (zPages)",
+            "desc": "Inspect live pipeline state via the zpages extension",
+            "desc_tr": "zpages eklentisiyle canlı pipeline durumunu incele",
+            "cmd": "curl http://<TARGET_IP>:55679/debug/tracez",
+            "tags": [
+              "tool"
+            ],
+            "note": "Enable the zpages extension with endpoint 0.0.0.0:55679 in service.extensions first."
+          },
+          {
+            "title": "Expose Collector Internal Metrics",
+            "desc": "Scrape the Collector's own self-observability metrics",
+            "desc_tr": "Collector'un kendi öz-gözlemlenebilirlik metriklerini topla",
+            "cmd": "curl http://<TARGET_IP>:8888/metrics",
+            "tags": [
+              "essential"
+            ],
+            "note": "Watch otelcol_processor_dropped_spans and otelcol_exporter_send_failed_spans to detect pipeline backpressure."
+          },
+          {
+            "title": "Liveness Health Check Endpoint",
+            "desc": "Probe the health_check extension for readiness",
+            "desc_tr": "health_check eklentisini hazır olma durumu için sorgula",
+            "cmd": "curl -f http://<TARGET_IP>:13133/ || echo 'collector unhealthy'",
+            "tags": [
+              "essential"
+            ],
+            "note": "Requires the health_check extension; ideal for Kubernetes liveness/readiness probes."
+          },
+          {
+            "title": "Deploy OTel Collector on Kubernetes (Helm)",
+            "desc": "Install the Collector chart as a deployment/daemonset",
+            "desc_tr": "Collector Helm chart'ını deployment/daemonset olarak kur",
+            "cmds": [
+              "helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts",
+              "helm install otel-collector open-telemetry/opentelemetry-collector -n <NAMESPACE> --set mode=daemonset"
+            ],
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Install the OpenTelemetry Operator",
+            "desc": "Deploy the Operator for CRD-driven auto-instrumentation",
+            "desc_tr": "CRD tabanlı otomatik enstrümantasyon için Operator'ü dağıt",
+            "cmd": "kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "The Operator requires cert-manager to be installed in the cluster first."
+          },
+          {
+            "title": "Auto-Instrument Pods via Annotation",
+            "desc": "Trigger Operator instrumentation injection on a deployment",
+            "desc_tr": "Annotation ile Operator enstrümantasyon enjeksiyonunu tetikle",
+            "cmd": "kubectl patch deployment <POD> -n <NAMESPACE> -p '{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"instrumentation.opentelemetry.io/inject-python\":\"true\"}}}}}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Tail Collector Logs in Kubernetes",
+            "desc": "Stream Collector pod logs to debug pipeline errors",
+            "desc_tr": "Pipeline hatalarını ayıklamak için Collector pod loglarını izle",
+            "cmd": "kubectl logs -f -l app.kubernetes.io/name=opentelemetry-collector -n <NAMESPACE>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Collect Container Logs (filelog receiver)",
+            "desc": "Read pod logs from the node filesystem into OTel",
+            "desc_tr": "filelog receiver ile pod loglarını node dosya sisteminden OTel'e oku",
+            "cmd": "otelcol-contrib validate --config <PATH>/filelog.yaml  # receivers.filelog.include: ['/var/log/pods/*/*/*.log']",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Add the container parser operator to extract Kubernetes metadata from CRI/containerd log lines."
+          },
+          {
+            "title": "Batch & Memory-Limit the Pipeline",
+            "desc": "Protect the Collector from OOM with key processors",
+            "desc_tr": "Anahtar processor'larla Collector'u OOM'dan koru",
+            "cmd": "otelcol-contrib validate --config <PATH>/config.yaml  # processors: [memory_limiter, batch] (memory_limiter MUST be first)",
+            "tags": [
+              "essential",
+              "advanced"
+            ],
+            "note": "Order matters: memory_limiter must precede batch in every pipeline's processors list."
+          },
+          {
+            "title": "Generate RED Metrics from Spans",
+            "desc": "Use spanmetrics/servicegraph connectors for dashboards",
+            "desc_tr": "spanmetrics/servicegraph connector'larıyla span'lerden RED metrikleri üret",
+            "cmd": "otelcol-contrib validate --config <PATH>/spanmetrics.yaml  # connectors: [spanmetrics, servicegraph]",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Connectors join two pipelines (traces->metrics); spanmetrics emits Rate/Error/Duration for alerting."
+          },
+          {
+            "title": "Test OTLP gRPC Endpoint with grpcurl",
+            "desc": "Probe the OTLP/gRPC trace service reflectively",
+            "desc_tr": "grpcurl ile OTLP/gRPC trace servisini yokla",
+            "cmd": "grpcurl -plaintext <TARGET_IP>:4317 list opentelemetry.proto.collector.trace.v1.TraceService",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Requires the Collector to have gRPC reflection enabled, or supply the proto descriptor manually."
+          }
+        ]
+      },
+      {
+        "name": "Detection-as-Code (Sigma, sigma-cli)",
+        "commands": [
+          {
+            "title": "Install sigma-cli",
+            "desc": "Install the official Sigma CLI via pip",
+            "desc_tr": "Resmi Sigma CLI aracını pip ile kur",
+            "cmd": "pip install sigma-cli",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Show sigma-cli Version",
+            "desc": "Print installed sigma-cli and pySigma version",
+            "desc_tr": "Kurulu sigma-cli ve pySigma sürümünü göster",
+            "cmd": "sigma version",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List Available Backends",
+            "desc": "Show installed conversion backends",
+            "desc_tr": "Kurulu dönüştürme backend'lerini listele",
+            "cmd": "sigma list targets",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "List Installed Pipelines",
+            "desc": "Show available processing pipelines for field mapping",
+            "desc_tr": "Alan eşleştirmesi için mevcut işleme pipeline'larını listele",
+            "cmd": "sigma list pipelines",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Install a Backend Plugin",
+            "desc": "Add a SIEM backend plugin (e.g. splunk, elasticsearch)",
+            "desc_tr": "Bir SIEM backend eklentisi kur (örn. splunk, elasticsearch)",
+            "cmds": [
+              "sigma plugin list",
+              "sigma plugin install splunk"
+            ],
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Run 'sigma plugin list' first to see exact plugin identifiers before installing."
+          },
+          {
+            "title": "Convert Rule to Splunk SPL",
+            "desc": "Convert a single Sigma rule to Splunk search query",
+            "desc_tr": "Tek bir Sigma kuralını Splunk arama sorgusuna dönüştür",
+            "cmd": "sigma convert -t splunk <FILE>.yml",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Convert Rule to Elasticsearch Query (DSL)",
+            "desc": "Convert a Sigma rule to Elasticsearch Lucene/DSL",
+            "desc_tr": "Bir Sigma kuralını Elasticsearch Lucene/DSL sorgusuna dönüştür",
+            "cmd": "sigma convert -t elasticsearch -f dsl_lucene <FILE>.yml",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Convert with a Processing Pipeline",
+            "desc": "Apply a field-mapping pipeline during conversion",
+            "desc_tr": "Dönüştürme sırasında alan eşleştirme pipeline'ı uygula",
+            "cmd": "sigma convert -t splunk -p splunk_windows <FILE>.yml",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Chain Multiple Pipelines",
+            "desc": "Apply several pipelines in order (Sysmon + windows)",
+            "desc_tr": "Birden fazla pipeline'ı sırayla uygula (Sysmon + windows)",
+            "cmd": "sigma convert -t splunk -p sysmon -p splunk_windows <FILE>.yml",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Pipeline order matters; lower-priority pipelines run first and feed later ones."
+          },
+          {
+            "title": "Convert an Entire Rule Directory",
+            "desc": "Recursively convert all rules in a folder",
+            "desc_tr": "Bir klasördeki tüm kuralları özyinelemeli dönüştür",
+            "cmd": "sigma convert -t splunk -p splunk_windows <PATH>/",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Output Splunk savedsearches.conf",
+            "desc": "Generate deployable savedsearches.conf format",
+            "desc_tr": "Dağıtılabilir savedsearches.conf formatı üret",
+            "cmd": "sigma convert -t splunk -f savedsearches -p splunk_windows -o out.conf <PATH>/",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Convert to Microsoft Sentinel / KQL",
+            "desc": "Generate KQL for Microsoft Sentinel / Defender",
+            "desc_tr": "Microsoft Sentinel / Defender için KQL üret",
+            "cmds": [
+              "sigma plugin install kusto",
+              "sigma convert -t kusto -p sentinelasim <FILE>.yml"
+            ],
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Convert to QRadar AQL",
+            "desc": "Generate IBM QRadar AQL query from a rule",
+            "desc_tr": "Bir kuraldan IBM QRadar AQL sorgusu üret",
+            "cmds": [
+              "sigma plugin install qradar-aql",
+              "sigma convert -t qradar-aql -p qradar_aql_payload <FILE>.yml"
+            ],
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Output Correlation as Data Model",
+            "desc": "Emit pipeline-aware data_model output format",
+            "desc_tr": "Pipeline destekli data_model çıktı formatı üret",
+            "cmd": "sigma convert -t splunk -f data_model -p splunk_windows <FILE>.yml",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Write Output to a File",
+            "desc": "Redirect converted queries to an output file",
+            "desc_tr": "Dönüştürülen sorguları bir çıktı dosyasına yönlendir",
+            "cmd": "sigma convert -t splunk -p splunk_windows -o <FILE>.spl <PATH>/",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Increase Verbosity for Debugging",
+            "desc": "Show detailed processing/debug output on conversion",
+            "desc_tr": "Dönüştürmede ayrıntılı işlem/hata ayıklama çıktısı göster",
+            "cmd": "sigma convert -t splunk -p splunk_windows -v <FILE>.yml",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Skip Unsupported Rules in Batch Convert",
+            "desc": "Continue conversion despite unsupported rules",
+            "desc_tr": "Desteklenmeyen kurallara rağmen dönüştürmeye devam et",
+            "cmd": "sigma convert -t splunk -p splunk_windows -s <PATH>/",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Filter Rules with Sigma Filters",
+            "desc": "Apply a global Sigma filter file during conversion",
+            "desc_tr": "Dönüştürme sırasında genel bir Sigma filtre dosyası uygula",
+            "cmd": "sigma convert -t splunk -p splunk_windows <FILE>.yml <FILTER>.yml",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Filter files use logsource.category 'filter' to suppress known false positives globally."
+          },
+          {
+            "title": "Validate Sigma Rule Syntax",
+            "desc": "Check rules against built-in validators",
+            "desc_tr": "Kuralları yerleşik doğrulayıcılara karşı denetle",
+            "cmd": "sigma check <PATH>/",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Validate with a Validation Config",
+            "desc": "Run sigma check with a custom validator config",
+            "desc_tr": "Özel bir doğrulayıcı yapılandırmasıyla sigma check çalıştır",
+            "cmd": "sigma check -c <CONFIG>.yml <PATH>/",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "List Available Validators",
+            "desc": "Show all rule validators sigma check can run",
+            "desc_tr": "sigma check'in çalıştırabileceği tüm kural doğrulayıcılarını listele",
+            "cmd": "sigma list validators",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Analyze Field Name Usage Across Rules",
+            "desc": "Report field names used by a rule set per backend",
+            "desc_tr": "Bir kural setinin backend bazında kullandığı alan adlarını raporla",
+            "cmd": "sigma analyze fieldname <PATH>/ -p splunk_windows",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Clone the Official Sigma Rule Repository",
+            "desc": "Get the community SigmaHQ detection ruleset",
+            "desc_tr": "Topluluk SigmaHQ tespit kural setini indir",
+            "cmd": "git clone https://github.com/SigmaHQ/sigma.git",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Generate Rule UUID for New Detection",
+            "desc": "Create a unique id field value for a new rule",
+            "desc_tr": "Yeni bir kural için benzersiz id alanı değeri üret",
+            "cmd": "python3 -c 'import uuid; print(uuid.uuid4())'",
+            "tags": [
+              "essential"
+            ],
+            "note": "Every Sigma rule must carry a stable, unique UUID in its 'id' field; never reuse one across rules."
+          },
+          {
+            "title": "Lint Rule YAML in CI",
+            "desc": "Validate YAML formatting before conversion in pipelines",
+            "desc_tr": "Pipeline'larda dönüştürmeden önce YAML biçimini doğrula",
+            "cmd": "yamllint -d relaxed <PATH>/",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run sigma-cli in CI via pipx",
+            "desc": "Isolated, reproducible install for CI/CD pipelines",
+            "desc_tr": "CI/CD pipeline'ları için izole, tekrarlanabilir kurulum",
+            "cmds": [
+              "pipx install sigma-cli",
+              "sigma plugin install splunk",
+              "sigma convert -t splunk -p splunk_windows -o rules.spl rules/"
+            ],
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Convert Without Default Pipeline",
+            "desc": "Produce backend output skipping implicit pipelines",
+            "desc_tr": "Örtük pipeline'ları atlayarak backend çıktısı üret",
+            "cmd": "sigma convert -t splunk -f default --without-pipeline <FILE>.yml",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Audit Logging (k8s, cloud)",
+        "commands": [
+          {
+            "title": "Enable kube-apiserver Audit Logging",
+            "desc": "Start the API server with an audit policy and log backend",
+            "desc_tr": "API sunucusunu bir denetim politikasi ve log arka ucu ile baslat",
+            "cmd": "kube-apiserver --audit-policy-file=/etc/kubernetes/audit-policy.yaml --audit-log-path=/var/log/kubernetes/audit.log --audit-log-maxage=30 --audit-log-maxbackup=10 --audit-log-maxsize=100",
+            "tags": [
+              "essential",
+              "advanced"
+            ],
+            "note": "On kubeadm clusters edit /etc/kubernetes/manifests/kube-apiserver.yaml and mount the policy file + log dir as hostPath volumes; the static pod restarts automatically."
+          },
+          {
+            "title": "Minimal Kubernetes Audit Policy",
+            "desc": "Create a policy logging metadata for all requests",
+            "desc_tr": "Tum istekler icin metadata loglayan bir politika olustur",
+            "cmd": "printf 'apiVersion: audit.k8s.io/v1\\nkind: Policy\\nrules:\\n  - level: Metadata\\n' > /etc/kubernetes/audit-policy.yaml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Audit Policy: Secrets at RequestResponse",
+            "desc": "Capture full request/response for sensitive Secret access",
+            "desc_tr": "Hassas Secret erisimi icin tam istek/yanit yakala",
+            "cmd": "printf 'apiVersion: audit.k8s.io/v1\\nkind: Policy\\nrules:\\n  - level: RequestResponse\\n    resources:\\n      - group: \"\"\\n        resources: [\"secrets\",\"configmaps\"]\\n  - level: Metadata\\n' > /etc/kubernetes/audit-policy.yaml",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Avoid RequestResponse on secrets in production unless the audit sink is encrypted and access-controlled, since secret values get written to the log."
+          },
+          {
+            "title": "Tail Live Kubernetes Audit Log",
+            "desc": "Follow the API server audit log on the control-plane node",
+            "desc_tr": "Control-plane node uzerinde API sunucusu denetim logunu izle",
+            "cmd": "tail -f /var/log/kubernetes/audit.log | jq -c '{user:.user.username,verb:.verb,res:.objectRef.resource,ns:.objectRef.namespace}'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Filter Audit Events by User",
+            "desc": "Find all actions performed by a specific user identity",
+            "desc_tr": "Belirli bir kullanici kimligi tarafindan yapilan tum eylemleri bul",
+            "cmd": "jq -c 'select(.user.username==\"<USER>\")' /var/log/kubernetes/audit.log",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Hunt Failed Authorization in Audit Log",
+            "desc": "Surface forbidden (403) requests indicating RBAC denials or probing",
+            "desc_tr": "RBAC reddini veya sondalamayi gosteren yasak (403) istekleri ortaya cikar",
+            "cmd": "jq -c 'select(.annotations.\"authorization.k8s.io/decision\"==\"forbid\") | {user:.user.username,verb:.verb,uri:.requestURI}' /var/log/kubernetes/audit.log",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Detect exec/attach into Pods",
+            "desc": "Find interactive shells opened into running pods via the audit log",
+            "desc_tr": "Denetim logu uzerinden calisan podlara acilan etkilesimli kabuklari bul",
+            "cmd": "jq -c 'select(.objectRef.subresource==\"exec\" or .objectRef.subresource==\"attach\") | {user:.user.username,pod:.objectRef.name,ns:.objectRef.namespace,stage:.stage}' /var/log/kubernetes/audit.log",
+            "tags": [
+              "advanced",
+              "essential"
+            ]
+          },
+          {
+            "title": "Send Audit Events to a Webhook Backend",
+            "desc": "Forward audit events to an external SIEM/collector endpoint",
+            "desc_tr": "Denetim olaylarini harici bir SIEM/toplayici uc noktasina ilet",
+            "cmd": "kube-apiserver --audit-policy-file=/etc/kubernetes/audit-policy.yaml --audit-webhook-config-file=/etc/kubernetes/audit-webhook.yaml --audit-webhook-batch-max-size=400",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Read EKS Control-Plane Audit Logs",
+            "desc": "Tail EKS audit logs shipped to CloudWatch Logs",
+            "desc_tr": "CloudWatch Logs'a gonderilen EKS denetim loglarini izle",
+            "cmd": "aws logs tail /aws/eks/<CLUSTER>/cluster --log-stream-name-prefix kube-apiserver-audit --follow --format short",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Enable EKS Audit Logging",
+            "desc": "Turn on the audit and authenticator log types for an EKS cluster",
+            "desc_tr": "Bir EKS kumesinde denetim ve authenticator log turlerini ac",
+            "cmd": "aws eks update-cluster-config --name <CLUSTER> --logging '{\"clusterLogging\":[{\"types\":[\"audit\",\"authenticator\"],\"enabled\":true}]}'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Query GKE Audit Logs",
+            "desc": "Read GKE Admin Activity audit logs via Cloud Logging",
+            "desc_tr": "Cloud Logging araciligiyla GKE Admin Activity denetim loglarini oku",
+            "cmd": "gcloud logging read 'resource.type=\"k8s_cluster\" AND logName=~\"cloudaudit.googleapis.com%2Factivity\"' --project <PROJECT> --limit 50 --format json",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Create a CloudTrail Multi-Region Trail",
+            "desc": "Provision an org-wide trail logging management events to S3",
+            "desc_tr": "Yonetim olaylarini S3'e loglayan kurum capinda bir trail olustur",
+            "cmd": "aws cloudtrail create-trail --name <TRAIL> --s3-bucket-name <BUCKET> --is-multi-region-trail --enable-log-file-validation",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Start CloudTrail Logging",
+            "desc": "Begin delivering events for a previously created trail",
+            "desc_tr": "Daha once olusturulan bir trail icin olay teslimini baslat",
+            "cmd": "aws cloudtrail start-logging --name <TRAIL>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Query CloudTrail Events by User",
+            "desc": "Look up recent API activity for an IAM username",
+            "desc_tr": "Bir IAM kullanici adi icin son API etkinligini sorgula",
+            "cmd": "aws cloudtrail lookup-events --lookup-attributes AttributeKey=Username,AttributeValue=<USER> --max-results 25",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Find Console Logins Without MFA",
+            "desc": "Hunt CloudTrail ConsoleLogin events lacking MFA for risk review",
+            "desc_tr": "Risk incelemesi icin MFA icermeyen ConsoleLogin olaylarini ara",
+            "cmd": "aws cloudtrail lookup-events --lookup-attributes AttributeKey=EventName,AttributeValue=ConsoleLogin --query 'Events[].CloudTrailEvent' --output text | jq -c 'select(.additionalEventData.MFAUsed==\"No\") | {user:.userIdentity.arn,ip:.sourceIPAddress,time:.eventTime}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Validate CloudTrail Log File Integrity",
+            "desc": "Verify digest files to detect tampered or deleted log files",
+            "desc_tr": "Kurcalanmis veya silinmis log dosyalarini tespit etmek icin digest dosyalarini dogrula",
+            "cmd": "aws cloudtrail validate-logs --trail-arn <TRAIL_ARN> --start-time 2026-06-01T00:00:00Z",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Query CloudTrail with Athena",
+            "desc": "Run SQL over CloudTrail logs stored in S3 via Athena",
+            "desc_tr": "Athena ile S3'te depolanan CloudTrail loglari uzerinde SQL calistir",
+            "cmd": "aws athena start-query-execution --query-string \"SELECT eventtime, eventname, useridentity.arn, sourceipaddress FROM cloudtrail_logs WHERE eventname='DeleteTrail' LIMIT 100;\" --result-configuration OutputLocation=s3://<BUCKET>/athena/",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Detect CloudTrail Tampering Events",
+            "desc": "Alert on attempts to stop or delete logging trails",
+            "desc_tr": "Logging trail'lerini durdurma veya silme girisimleri konusunda uyar",
+            "cmd": "aws cloudtrail lookup-events --lookup-attributes AttributeKey=EventName,AttributeValue=StopLogging --query 'Events[].{time:EventTime,user:Username,name:EventName}' --output table",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List GCP Audit Log Sinks",
+            "desc": "Enumerate logging sinks that export audit logs to BigQuery/PubSub",
+            "desc_tr": "Denetim loglarini BigQuery/PubSub'a aktaran logging sink'lerini listele",
+            "cmd": "gcloud logging sinks list --project <PROJECT> --format='table(name,destination,filter)'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Read GCP Admin Activity Audit Logs",
+            "desc": "Stream high-value IAM policy write operations across the project",
+            "desc_tr": "Proje genelinde yuksek degerli IAM politika yazma islemlerini akit",
+            "cmd": "gcloud logging read 'logName=~\"cloudaudit.googleapis.com%2Factivity\" AND protoPayload.methodName=~\"SetIamPolicy\"' --project <PROJECT> --freshness 1d --format json",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Inspect GCP Project Audit Config",
+            "desc": "Show which services have Data Access audit logs enabled",
+            "desc_tr": "Hangi servislerin Data Access denetim loglarinin etkin oldugunu goster",
+            "cmd": "gcloud projects get-iam-policy <PROJECT> --format='yaml(auditConfigs)'",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Data Access audit logs (except BigQuery) are disabled by default and can be high-volume/billable; scope auditConfigs to the services that matter before enabling."
+          },
+          {
+            "title": "Export GCP Logs to BigQuery Sink",
+            "desc": "Create a sink routing audit logs to a BigQuery dataset",
+            "desc_tr": "Denetim loglarini bir BigQuery veri kumesine yonlendiren sink olustur",
+            "cmd": "gcloud logging sinks create <SINK> bigquery.googleapis.com/projects/<PROJECT>/datasets/<DATASET> --log-filter='logName=~\"cloudaudit.googleapis.com\"' --project <PROJECT>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Azure Activity Log Events",
+            "desc": "Read recent control-plane activity for a subscription",
+            "desc_tr": "Bir abonelik icin son kontrol-duzlemi etkinligini oku",
+            "cmd": "az monitor activity-log list --offset 1d --query \"[].{time:eventTimestamp,caller:caller,op:operationName.value,status:status.value}\" -o table",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Filter Azure Activity Log by Caller",
+            "desc": "Trace all operations initiated by a specific principal",
+            "desc_tr": "Belirli bir principal tarafindan baslatilan tum islemleri izle",
+            "cmd": "az monitor activity-log list --caller <USER_OR_SPN> --offset 7d --query \"[].{time:eventTimestamp,op:operationName.value,rg:resourceGroupName}\" -o table",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Create Azure Diagnostic Setting for AKS Audit",
+            "desc": "Ship AKS kube-audit logs to a Log Analytics workspace",
+            "desc_tr": "AKS kube-audit loglarini bir Log Analytics workspace'e gonder",
+            "cmd": "az monitor diagnostic-settings create --name aks-audit --resource <AKS_RESOURCE_ID> --workspace <WORKSPACE_ID> --logs '[{\"category\":\"kube-audit\",\"enabled\":true}]'",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Query AKS Audit Logs with KQL",
+            "desc": "Run a Log Analytics KQL query over collected kube-audit data",
+            "desc_tr": "Toplanan kube-audit verileri uzerinde Log Analytics KQL sorgusu calistir",
+            "cmd": "az monitor log-analytics query --workspace <WORKSPACE_ID> --analytics-query 'AzureDiagnostics | where Category==\"kube-audit\" | take 50'",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Audit2RBAC: Derive RBAC from Audit Logs",
+            "desc": "Generate least-privilege RBAC roles from observed audit activity",
+            "desc_tr": "Gozlemlenen denetim etkinliginden en az ayricalikli RBAC rolleri uret",
+            "cmd": "audit2rbac --filename /var/log/kubernetes/audit.log --user <USER>",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "audit2rbac replays a captured audit log and emits exact Role/RoleBinding YAML matching every API call the subject made, ideal for tightening over-permissive ServiceAccounts."
+          }
+        ]
+      }
+    ]
   }
 ];
