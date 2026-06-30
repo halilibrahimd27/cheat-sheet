@@ -282,9 +282,8 @@
   async function loadNotes() { categoryNotes = await api("GET", "/api/notes"); }
   function getNotes(catId) { return categoryNotes[catId] || []; }
   function getNotesCount(catId) { return (categoryNotes[catId] || []).length; }
-  function getTotalNotesCount() { let c = 0; Object.values(categoryNotes).forEach(arr => { if (Array.isArray(arr)) c += arr.length; }); return c; }
   async function addNote(catId) {
-    const note = await api("POST", "/api/notes/" + catId, { text: "" });
+    await api("POST", "/api/notes/" + catId, { text: "" });
     await loadNotes(); render();
   }
   let noteTimers = {};
@@ -647,9 +646,13 @@
     const text = await file.text();
     try {
       const data = JSON.parse(text);
-      await api("POST", "/api/import", data);
+      const res = await api("POST", "/api/import", data);
+      if (res && res.error) { alert("Import failed: " + res.error); e.target.value = ""; return; }
       await loadData();
-      alert("Imported " + data.length + " categories!");
+      const n = res && typeof res.categories === "number"
+        ? res.categories
+        : (Array.isArray(data) ? data.length : (data.categories ? data.categories.length : 0));
+      alert("Imported " + n + " categories!");
     } catch { alert("Invalid JSON file"); }
     e.target.value = "";
   });
@@ -727,7 +730,7 @@
   function mkNavItem(icon, text, count, active, onClick) {
     const item = document.createElement("div");
     item.className = "nav-item" + (active ? " active" : "");
-    item.innerHTML = '<span class="nav-item-icon">' + icon + '</span><span class="nav-item-text">' + text + '</span><span class="nav-item-count">' + count + '</span>';
+    item.innerHTML = '<span class="nav-item-icon">' + escapeHtml(icon) + '</span><span class="nav-item-text">' + escapeHtml(text) + '</span><span class="nav-item-count">' + count + '</span>';
     item.addEventListener("click", onClick);
     sidebarNav.appendChild(item);
     return item;
@@ -737,7 +740,7 @@
   function renderCard(cmd, catId, subIdx, cmdIdx) {
     const card = document.createElement("div"); card.className = "cmd-card";
     const fav = isFav(catId, subIdx, cmdIdx);
-    const tagsH = (cmd.tags || []).map(t => '<span class="cmd-tag ' + t + '">' + t + '</span>').join("");
+    const tagsH = (cmd.tags || []).map(t => '<span class="cmd-tag ' + String(t).replace(/[^a-z0-9_-]/gi, "") + '">' + escapeHtml(t) + '</span>').join("");
     const hdr = document.createElement("div"); hdr.className = "cmd-card-header";
     hdr.innerHTML = '<div class="cmd-title">' + hl(cmd.title) + '</div>' +
       '<div class="cmd-header-actions">' + tagsH +
@@ -798,7 +801,7 @@
     hdr.addEventListener("dragover", handleDragOver);
     hdr.addEventListener("drop", e => handleDrop(e, catIdx));
     hdr.addEventListener("dragend", handleDragEnd);
-    hdr.innerHTML = '<span class="category-icon">' + cat.icon + '</span><span class="category-title">' + cat.name + '</span><span class="category-count">' + cnt + ' ' + t("commands") + '</span>' +
+    hdr.innerHTML = '<span class="category-icon">' + escapeHtml(cat.icon) + '</span><span class="category-title">' + escapeHtml(cat.name) + '</span><span class="category-count">' + cnt + ' ' + t("commands") + '</span>' +
       '<div class="category-actions"><button class="cat-action-btn" data-act="term" title="' + t("termCopy") + '">📋</button><button class="cat-action-btn" data-act="sub">' + t("addSub") + '</button><button class="cat-action-btn" data-act="edit">✎</button><button class="cat-action-btn delete-btn" data-act="del">✕</button></div><span class="category-toggle">▼</span>';
     hdr.querySelector('[data-act="term"]').addEventListener("click", e => { e.stopPropagation(); copyTerminalFormat(cat.id); });
     hdr.querySelector('[data-act="sub"]').addEventListener("click", e => { e.stopPropagation(); addSubcategory(cat.id); });
@@ -856,7 +859,7 @@
         const subDiv = document.createElement("div"); subDiv.className = "subcategory";
         const subH = document.createElement("div"); subH.className = "subcategory-title";
         const subName = (lang === "tr" && sub.name_tr) ? sub.name_tr : sub.name;
-        subH.innerHTML = '<span>' + subName + '</span><div class="sub-actions"><button class="sub-action-btn" data-act="cmd">' + t("addCmd") + '</button><button class="sub-action-btn" data-act="edit">✎</button><button class="sub-action-btn delete-btn" data-act="del">✕</button></div>';
+        subH.innerHTML = '<span>' + escapeHtml(subName) + '</span><div class="sub-actions"><button class="sub-action-btn" data-act="cmd">' + t("addCmd") + '</button><button class="sub-action-btn" data-act="edit">✎</button><button class="sub-action-btn delete-btn" data-act="del">✕</button></div>';
         subH.querySelector('[data-act="cmd"]').addEventListener("click", () => addCommand(cat.id, subIdx));
         subH.querySelector('[data-act="edit"]').addEventListener("click", () => editSubcategory(cat.id, subIdx, sub));
         subH.querySelector('[data-act="del"]').addEventListener("click", () => deleteSubcategory(cat.id, subIdx));
@@ -931,7 +934,7 @@
     let html = "<!DOCTYPE html><html><head><meta charset='utf-8'><title>" + escapeHtml(wu.title) + "</title>";
     html += "<style>body{font-family:Arial,sans-serif;max-width:800px;margin:40px auto;padding:0 20px;line-height:1.6}h1{border-bottom:2px solid #333;padding-bottom:8px}pre{background:#f4f4f4;padding:12px;border-radius:4px;overflow-x:auto;font-size:13px}code{background:#f4f4f4;padding:2px 4px;border-radius:3px;font-size:13px}.meta{color:#666;font-size:13px;margin-bottom:20px}img{max-width:100%}</style></head><body>";
     html += "<h1>" + escapeHtml(wu.title) + "</h1>";
-    html += '<div class="meta">Tags: ' + (wu.tags || []).join(", ") + " | " + new Date(wu.updatedAt).toLocaleString() + "</div><hr>";
+    html += '<div class="meta">Tags: ' + (wu.tags || []).map(escapeHtml).join(", ") + " | " + escapeHtml(new Date(wu.updatedAt).toLocaleString()) + "</div><hr>";
     // Simple markdown rendering for print
     let content = escapeHtml(wu.content || "");
     content = content.replace(/^(#{1,3})\s+(.*)$/gm, (m, h, t) => "<h" + (h.length + 1) + ">" + t + "</h" + (h.length + 1) + ">");
@@ -1050,7 +1053,11 @@
   btt.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
   window.addEventListener("scroll", () => btt.classList.toggle("visible", window.scrollY > 400));
 
-  function escapeHtml(s) { const d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+  function escapeHtml(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
   function escapeRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
 
   // ── Init ──

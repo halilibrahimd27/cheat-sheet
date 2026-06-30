@@ -1,29 +1,127 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DATA_FILE = path.join(__dirname, "data", "commands.json");
+// Secure default: bind to localhost only. Set HOST=0.0.0.0 to expose on the
+// network (the Docker image does this intentionally — the port mapping is the
+// boundary there). If you expose to a network, set AUTH_USER / AUTH_PASS too.
+const HOST = process.env.HOST || "127.0.0.1";
+// All persistent JSON lives here. Override with DATA_DIR (used by tests, and
+// handy if you want your data outside the project tree).
+const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, "data");
+const DATA_FILE = path.join(DATA_DIR, "commands.json");
 
-app.use(express.json({ limit: "50mb" }));
-app.use(express.static(path.join(__dirname, "public")));
+// ── Security headers (lightweight, no extra deps) ──
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("Referrer-Policy", "no-referrer");
+  next();
+});
+
+// ── Optional HTTP Basic Auth ──
+// Enabled only when AUTH_PASS is set. The browser caches credentials and
+// auto-attaches them to every same-origin request (static, /api, /uploads),
+// so the SPA keeps working without any frontend changes.
+const AUTH_PASS = process.env.AUTH_PASS || "";
+const AUTH_USER = process.env.AUTH_USER || "admin";
+function safeEqual(a, b) {
+  const ha = crypto.createHash("sha256").update(String(a)).digest();
+  const hb = crypto.createHash("sha256").update(String(b)).digest();
+  return crypto.timingSafeEqual(ha, hb);
+}
+if (AUTH_PASS) {
+  app.use((req, res, next) => {
+    const hdr = req.headers.authorization || "";
+    const [scheme, encoded] = hdr.split(" ");
+    if (scheme === "Basic" && encoded) {
+      // Split on the FIRST colon only (RFC 7617) — passwords may contain ":".
+      const decoded = Buffer.from(encoded, "base64").toString();
+      const i = decoded.indexOf(":");
+      const user = i === -1 ? decoded : decoded.slice(0, i);
+      const pass = i === -1 ? "" : decoded.slice(i + 1);
+      if (safeEqual(user, AUTH_USER) && safeEqual(pass, AUTH_PASS)) return next();
+    }
+    res.setHeader("WWW-Authenticate", 'Basic realm="cheat-sheet"');
+    return res.status(401).json({ error: "authentication required" });
+  });
+}
+
+app.use(express.json({ limit: process.env.JSON_LIMIT || "12mb" }));
+
+// ── Atomic JSON helpers (crash-safe, with .bak recovery) ──
+function atomicWrite(file, str) {
+  const dir = path.dirname(file);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  const tmp = file + ".tmp";
+  fs.writeFileSync(tmp, str, "utf8");
+  if (fs.existsSync(file)) {
+    try { fs.copyFileSync(file, file + ".bak"); } catch { /* best effort */ }
+  }
+  fs.renameSync(tmp, file);
+}
+function readJSON(file, fallback) {
+  try {
+    return JSON.parse(fs.readFileSync(file, "utf8"));
+  } catch {
+    const bak = file + ".bak";
+    if (fs.existsSync(bak)) {
+      try { return JSON.parse(fs.readFileSync(bak, "utf8")); } catch { /* fall through */ }
+    }
+    return fallback;
+  }
+}
 
 // ── Image Upload for Write-ups ──
-const UPLOADS_DIR = path.join(__dirname, "data", "uploads");
+const UPLOADS_DIR = path.join(DATA_DIR, "uploads");
 if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 
-app.use("/uploads", express.static(UPLOADS_DIR));
+// Serve uploads with nosniff so the browser never executes a mistyped file.
+app.use("/uploads", express.static(UPLOADS_DIR, {
+  setHeaders: (res) => {
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.setHeader("Content-Security-Policy", "default-src 'none'; img-src 'self'");
+  },
+}));
+
+app.use(express.static(path.join(__dirname, "public")));
+
+const MAX_UPLOAD_BYTES = 5 * 1024 * 1024; // 5 MB
+
+// Detect a real raster image type from its magic bytes. Returns the extension
+// or null. SVG is intentionally NOT supported — it can carry executable script.
+function sniffImageExt(buf) {
+  if (buf.length < 12) return null;
+  if (buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47) return "png";
+  if (buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return "jpg";
+  if (buf[0] === 0x47 && buf[1] === 0x49 && buf[2] === 0x46 && buf[3] === 0x38) return "gif";
+  if (buf[0] === 0x42 && buf[1] === 0x4d) return "bmp";
+  if (
+    buf[0] === 0x52 && buf[1] === 0x49 && buf[2] === 0x46 && buf[3] === 0x46 &&
+    buf[8] === 0x57 && buf[9] === 0x45 && buf[10] === 0x42 && buf[11] === 0x50
+  ) return "webp";
+  return null;
+}
 
 app.post("/api/upload", (req, res) => {
-  const { data, filename } = req.body; // data = base64 string
-  if (!data) return res.status(400).json({ error: "no data" });
-  const ext = (filename || "image.png").split(".").pop().toLowerCase();
-  const allowed = ["png", "jpg", "jpeg", "gif", "webp", "svg", "bmp"];
-  if (!allowed.includes(ext)) return res.status(400).json({ error: "invalid file type" });
-  const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const { data } = req.body; // data = base64 string (optionally a data: URI)
+  if (typeof data !== "string" || !data) return res.status(400).json({ error: "no data" });
+  let buf;
+  try {
+    buf = Buffer.from(data.replace(/^data:image\/[\w+]+;base64,/, ""), "base64");
+  } catch {
+    return res.status(400).json({ error: "invalid data" });
+  }
+  if (buf.length === 0) return res.status(400).json({ error: "empty file" });
+  if (buf.length > MAX_UPLOAD_BYTES) return res.status(413).json({ error: "file too large (max 5MB)" });
+  // Validate by content, not by the user-supplied filename.
+  const ext = sniffImageExt(buf);
+  if (!ext) return res.status(400).json({ error: "unsupported or unsafe image type" });
+  const id = Date.now().toString(36) + crypto.randomBytes(3).toString("hex");
   const fname = id + "." + ext;
-  const buf = Buffer.from(data.replace(/^data:image\/\w+;base64,/, ""), "base64");
   fs.writeFileSync(path.join(UPLOADS_DIR, fname), buf);
   res.json({ url: "/uploads/" + fname });
 });
@@ -33,20 +131,35 @@ function ensureDataFile() {
   const dir = path.dirname(DATA_FILE);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
   if (!fs.existsSync(DATA_FILE)) {
-    // Seed from default commands
     const seed = require("./seed.js");
-    fs.writeFileSync(DATA_FILE, JSON.stringify(seed, null, 2), "utf8");
+    atomicWrite(DATA_FILE, JSON.stringify(seed, null, 2));
   }
 }
 
 function readData() {
   ensureDataFile();
-  return JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
+  return readJSON(DATA_FILE, []);
 }
 
 function writeData(data) {
   ensureDataFile();
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), "utf8");
+  atomicWrite(DATA_FILE, JSON.stringify(data, null, 2));
+}
+
+// ── Import validation ──
+function isValidCategory(c) {
+  return c && typeof c === "object" &&
+    typeof c.id === "string" &&
+    typeof c.name === "string" &&
+    Array.isArray(c.subcategories);
+}
+function isValidCategoryArray(arr) {
+  return Array.isArray(arr) && arr.every(isValidCategory);
+}
+function isValidWriteupArray(arr) {
+  return Array.isArray(arr) && arr.every((w) =>
+    w && typeof w === "object" &&
+    (w.tags === undefined || (Array.isArray(w.tags) && w.tags.every((t) => typeof t === "string"))));
 }
 
 // ── GET all categories ──
@@ -180,12 +293,9 @@ app.delete("/api/categories/:id/subcategories/:subIdx/commands/:cmdIdx", (req, r
 });
 
 // ── Notes (multiple per category) ──
-const NOTES_FILE = path.join(__dirname, "data", "notes.json");
-function readNotes() {
-  if (!fs.existsSync(NOTES_FILE)) fs.writeFileSync(NOTES_FILE, "{}", "utf8");
-  return JSON.parse(fs.readFileSync(NOTES_FILE, "utf8"));
-}
-function writeNotes(d) { fs.writeFileSync(NOTES_FILE, JSON.stringify(d, null, 2), "utf8"); }
+const NOTES_FILE = path.join(DATA_DIR, "notes.json");
+function readNotes() { return readJSON(NOTES_FILE, {}); }
+function writeNotes(d) { atomicWrite(NOTES_FILE, JSON.stringify(d, null, 2)); }
 
 app.get("/api/notes", (req, res) => res.json(readNotes()));
 
@@ -228,12 +338,9 @@ app.delete("/api/notes/:catId/:noteId", (req, res) => {
 });
 
 // ── Write-ups ──
-const WRITEUPS_FILE = path.join(__dirname, "data", "writeups.json");
-function readWriteups() {
-  if (!fs.existsSync(WRITEUPS_FILE)) fs.writeFileSync(WRITEUPS_FILE, "[]", "utf8");
-  return JSON.parse(fs.readFileSync(WRITEUPS_FILE, "utf8"));
-}
-function writeWriteups(d) { fs.writeFileSync(WRITEUPS_FILE, JSON.stringify(d, null, 2), "utf8"); }
+const WRITEUPS_FILE = path.join(DATA_DIR, "writeups.json");
+function readWriteups() { return readJSON(WRITEUPS_FILE, []); }
+function writeWriteups(d) { atomicWrite(WRITEUPS_FILE, JSON.stringify(d, null, 2)); }
 
 app.get("/api/writeups", (req, res) => res.json(readWriteups()));
 app.post("/api/writeups", (req, res) => {
@@ -265,12 +372,9 @@ app.delete("/api/writeups/:id", (req, res) => {
 });
 
 // ── Machines (target tracking for OSCP) ──
-const MACHINES_FILE = path.join(__dirname, "data", "machines.json");
-function readMachines() {
-  if (!fs.existsSync(MACHINES_FILE)) fs.writeFileSync(MACHINES_FILE, "[]", "utf8");
-  return JSON.parse(fs.readFileSync(MACHINES_FILE, "utf8"));
-}
-function writeMachines(d) { fs.writeFileSync(MACHINES_FILE, JSON.stringify(d, null, 2), "utf8"); }
+const MACHINES_FILE = path.join(DATA_DIR, "machines.json");
+function readMachines() { return readJSON(MACHINES_FILE, []); }
+function writeMachines(d) { atomicWrite(MACHINES_FILE, JSON.stringify(d, null, 2)); }
 
 app.get("/api/machines", (req, res) => res.json(readMachines()));
 app.post("/api/machines", (req, res) => {
@@ -325,23 +429,39 @@ app.get("/api/export", (req, res) => {
 });
 
 app.post("/api/import", (req, res) => {
-  // Support both old format (array) and new format (object with categories/notes/writeups)
-  if (Array.isArray(req.body)) {
-    writeData(req.body);
-    return res.json({ ok: true, categories: req.body.length });
+  const body = req.body;
+  // Old format: a bare array of categories.
+  if (Array.isArray(body)) {
+    if (!isValidCategoryArray(body)) return res.status(400).json({ error: "invalid categories format" });
+    writeData(body);
+    return res.json({ ok: true, categories: body.length });
   }
-  if (req.body.categories) writeData(req.body.categories);
-  if (req.body.notes) writeNotes(req.body.notes);
-  if (req.body.writeups) writeWriteups(req.body.writeups);
-  if (req.body.machines) writeMachines(req.body.machines);
-  res.json({ ok: true });
+  // New format: an object with any of categories/notes/writeups/machines.
+  if (!body || typeof body !== "object") return res.status(400).json({ error: "invalid import body" });
+  if (body.categories !== undefined && !isValidCategoryArray(body.categories))
+    return res.status(400).json({ error: "invalid categories format" });
+  if (body.notes !== undefined && (typeof body.notes !== "object" || Array.isArray(body.notes)))
+    return res.status(400).json({ error: "invalid notes format" });
+  if (body.writeups !== undefined && !isValidWriteupArray(body.writeups))
+    return res.status(400).json({ error: "invalid writeups format" });
+  if (body.machines !== undefined && !Array.isArray(body.machines))
+    return res.status(400).json({ error: "invalid machines format" });
+  if (body.categories === undefined && body.notes === undefined &&
+      body.writeups === undefined && body.machines === undefined)
+    return res.status(400).json({ error: "nothing to import" });
+
+  if (body.categories) writeData(body.categories);
+  if (body.notes) writeNotes(body.notes);
+  if (body.writeups) writeWriteups(body.writeups);
+  if (body.machines) writeMachines(body.machines);
+  res.json({ ok: true, categories: body.categories ? body.categories.length : 0 });
 });
 
 // ── Reset to defaults ──
 app.post("/api/reset", (req, res) => {
-  const seed = require("./seed.js");
   // Clear require cache so seed is always fresh
   delete require.cache[require.resolve("./seed.js")];
+  const seed = require("./seed.js");
   writeData(seed);
   res.json({ ok: true });
 });
@@ -351,6 +471,13 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`cheat-sheet running on http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, HOST, () => {
+    console.log(`cheat-sheet running on http://${HOST === "0.0.0.0" ? "localhost" : HOST}:${PORT}`);
+    if (HOST === "0.0.0.0" && !AUTH_PASS) {
+      console.warn("⚠  Bound to 0.0.0.0 without AUTH_PASS — anyone on your network can read and modify your data.");
+    }
+  });
+}
+
+module.exports = app;
