@@ -11,8 +11,8 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 [![Docker](https://img.shields.io/badge/docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)](#docker-recommended)
 <!-- STATS:BADGES -->
-[![Commands](https://img.shields.io/badge/commands-3789-success?style=flat-square)](#categories)
-[![Categories](https://img.shields.io/badge/categories-42-orange?style=flat-square)](#categories)
+[![Commands](https://img.shields.io/badge/commands-3981-success?style=flat-square)](#categories)
+[![Categories](https://img.shields.io/badge/categories-43-orange?style=flat-square)](#categories)
 <!-- /STATS:BADGES -->
 
 > **⭐ If this saved you time, please leave a star.** It's the simplest way to support this work.
@@ -22,7 +22,7 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 ---
 
 <!-- STATS:START -->
-**3789 commands** across **42 categories** and **265 subcategories** — every command bilingual (English + Türkçe).
+**3981 commands** across **43 categories** and **272 subcategories** — every command bilingual (English + Türkçe).
 <!-- STATS:END -->
 
 > Runs **100% locally**. No account, no telemetry, no cloud — your data never leaves your machine.
@@ -97,6 +97,7 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 | 40 | 🏗️ Terraform / IaC Core | 190 | Terraform workflow: init, plan, apply, state management, workspaces, modules, providers… |
 | 41 | 🔎 IaC Security Scanning | 190 | Static analysis and policy enforcement for infrastructure-as-code: Terraform, CloudForm… |
 | 42 | ⚙️ Ansible Automation | 189 | Ansible for configuration management and automation: ad-hoc commands, playbooks, invent… |
+| 43 | 🔁 CI/CD Pipeline Security | 192 | Securing CI/CD pipelines: GitHub Actions / GitLab CI hardening, secrets scanning, SAST/… |
 <!-- CATEGORIES:END -->
 
 ## Quick Start

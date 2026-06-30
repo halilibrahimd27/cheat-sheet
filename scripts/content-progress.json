@@ -130,7 +130,7 @@
       "id": "cicd-security",
       "name": "CI/CD Pipeline Security",
       "icon": "🔁",
-      "status": "pending",
+      "status": "done",
       "description": "Securing CI/CD pipelines: GitHub Actions / GitLab CI hardening, secrets scanning, SAST/DAST integration, OIDC, and runner security.",
       "subcategories": [
         "GitHub Actions Hardening (permissions, pinning, OIDC, harden-runner)",
@@ -140,7 +140,8 @@
         "DAST & Dependency Scanning in Pipeline",
         "Artifact & Build Integrity",
         "Pipeline Attacks (poisoned pipeline, PPE, injection)"
-      ]
+      ],
+      "commands_added": 192
     },
     {
       "id": "supply-chain",

