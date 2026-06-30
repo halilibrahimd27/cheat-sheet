@@ -19,7 +19,13 @@ Before submitting: read CONTRIBUTING.md
 - [ ] All commands use **placeholders** (`<TARGET_IP>`, `<DOMAIN>`, etc.)
 - [ ] **No real IPs**, hostnames, credentials, or org names
 - [ ] Commands are for **authorized security testing / education**
-- [ ] Tested on at least one platform
+- [ ] If I changed `seed.js`, every new command has both `desc` (English) and `desc_tr` (Türkçe)
+
+## Quality checklist
+
+- [ ] `npm test` passes
+- [ ] `npm run lint` is clean
+- [ ] I ran `node scripts/update-readme.js` (if I changed `seed.js`)
 
 ## Related issue
 

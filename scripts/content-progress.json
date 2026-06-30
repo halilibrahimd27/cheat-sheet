@@ -1,0 +1,237 @@
+{
+  "_comment": "Tracking file for the DevSecOps content-expansion loop. Each batch becomes one new top-level category authored by an agent workflow, merged into seed.js. The loop picks the first 'pending' batch, authors it, marks it 'done', commits, and re-triggers itself ~2 min later until all batches are done.",
+  "target_total_commands": 5500,
+  "baseline_commands": 2339,
+  "batches": [
+    {
+      "id": "docker-engine",
+      "name": "Docker — Engine & CLI",
+      "icon": "🐳",
+      "status": "pending",
+      "description": "Day-to-day Docker operations: image build/manage, container lifecycle, volumes, networks, Compose, buildx, registry, and troubleshooting.",
+      "subcategories": [
+        "Images (build, tag, pull, push, prune, history, inspect)",
+        "Containers (run, exec, logs, stats, cp, commit, restart policies)",
+        "Volumes & Bind Mounts",
+        "Networks (bridge, host, overlay, inspect, connect)",
+        "Docker Compose (up, down, scale, logs, profiles, override)",
+        "Buildx & Multi-arch builds",
+        "Registry & Image distribution (login, save/load, skopeo, crane)",
+        "System & Troubleshooting (df, prune, events, inspect, debug)"
+      ]
+    },
+    {
+      "id": "docker-security",
+      "name": "Docker Security",
+      "icon": "🛡️",
+      "status": "pending",
+      "description": "Securing Docker: image scanning, Dockerfile hardening, runtime security, secrets, rootless mode, CIS benchmark, and container escape testing.",
+      "subcategories": [
+        "Image Scanning (Trivy, Grype, Docker Scout, Dockle)",
+        "Dockerfile Hardening & Best Practices",
+        "Runtime Hardening (capabilities, seccomp, AppArmor, read-only, no-new-privileges)",
+        "Secrets in Docker (build secrets, BuildKit, anti-patterns)",
+        "Rootless & User Namespaces",
+        "CIS Docker Benchmark (docker-bench-security)",
+        "Container Escape & Privileged Abuse (testing)",
+        "Registry Security (Harbor, signing, Notary)"
+      ]
+    },
+    {
+      "id": "k8s-ops",
+      "name": "Kubernetes — kubectl Operations",
+      "icon": "☸️",
+      "status": "pending",
+      "description": "Operating Kubernetes with kubectl: workloads, services, config, debugging, contexts, and resource management.",
+      "subcategories": [
+        "Cluster & Context (config, contexts, cluster-info, api-resources)",
+        "Pods & Workloads (get, describe, logs, exec, port-forward)",
+        "Deployments, ReplicaSets, StatefulSets, DaemonSets",
+        "Services, Ingress & Endpoints",
+        "ConfigMaps & Secrets",
+        "Namespaces, Labels & Selectors",
+        "Debugging & Troubleshooting (events, top, debug, ephemeral containers)",
+        "Resource Management (apply, patch, rollout, scale, drain, cordon)"
+      ]
+    },
+    {
+      "id": "k8s-security",
+      "name": "Kubernetes Security",
+      "icon": "🔐",
+      "status": "pending",
+      "description": "Securing and attacking Kubernetes: RBAC, Pod Security, network policies, admission control, benchmarks, runtime security, and attack paths.",
+      "subcategories": [
+        "RBAC (roles, bindings, can-i, audit)",
+        "Pod Security Standards & Admission",
+        "Network Policies & Cilium",
+        "Policy as Code (OPA Gatekeeper, Kyverno)",
+        "Secrets Security (sealed-secrets, external-secrets, encryption at rest)",
+        "Benchmarks & Audit (kube-bench, kube-hunter, kubeaudit, Polaris)",
+        "Runtime Security (Falco, Tetragon, Tracee)",
+        "Attacking Kubernetes (kube-hunter, kubeletctl, token abuse, privesc)"
+      ]
+    },
+    {
+      "id": "terraform",
+      "name": "Terraform / IaC Core",
+      "icon": "🏗️",
+      "status": "pending",
+      "description": "Terraform workflow: init, plan, apply, state management, workspaces, modules, providers, and debugging.",
+      "subcategories": [
+        "Core Workflow (init, plan, apply, destroy, fmt, validate)",
+        "State Management (state list/mv/rm, import, remote backends)",
+        "Workspaces & Environments",
+        "Modules & Registry",
+        "Variables, Outputs & Functions",
+        "Providers & Plugins",
+        "Debugging & Troubleshooting (TF_LOG, graph, taint, refresh)"
+      ]
+    },
+    {
+      "id": "iac-security",
+      "name": "IaC Security Scanning",
+      "icon": "🔎",
+      "status": "pending",
+      "description": "Static analysis and policy enforcement for infrastructure-as-code: Terraform, CloudFormation, Kubernetes manifests, and more.",
+      "subcategories": [
+        "tfsec",
+        "Checkov",
+        "Terrascan",
+        "KICS",
+        "Trivy config / misconfiguration",
+        "OPA / Conftest policy testing",
+        "Terraform Compliance & Sentinel"
+      ]
+    },
+    {
+      "id": "ansible",
+      "name": "Ansible Automation",
+      "icon": "📜",
+      "status": "pending",
+      "description": "Ansible for configuration management and automation: ad-hoc commands, playbooks, inventory, vault, roles, and security.",
+      "subcategories": [
+        "Ad-hoc Commands & Modules",
+        "Playbooks (run, check, tags, limits)",
+        "Inventory (static, dynamic, groups)",
+        "Ansible Vault (encrypt secrets)",
+        "Roles & Galaxy",
+        "Facts, Variables & Templates",
+        "Hardening & Security (lockdown roles, ansible-lint)"
+      ]
+    },
+    {
+      "id": "cicd-security",
+      "name": "CI/CD Pipeline Security",
+      "icon": "🔁",
+      "status": "pending",
+      "description": "Securing CI/CD pipelines: GitHub Actions / GitLab CI hardening, secrets scanning, SAST/DAST integration, OIDC, and runner security.",
+      "subcategories": [
+        "GitHub Actions Hardening (permissions, pinning, OIDC, harden-runner)",
+        "GitLab CI / Jenkins Security",
+        "Secrets Scanning (gitleaks, trufflehog, detect-secrets)",
+        "SAST in Pipeline (Semgrep, CodeQL, Bandit)",
+        "DAST & Dependency Scanning in Pipeline",
+        "Artifact & Build Integrity",
+        "Pipeline Attacks (poisoned pipeline, PPE, injection)"
+      ]
+    },
+    {
+      "id": "supply-chain",
+      "name": "Software Supply Chain Security",
+      "icon": "⛓️",
+      "status": "pending",
+      "description": "Supply chain integrity: SBOM generation, artifact signing, provenance/attestation, and dependency vulnerability scanning.",
+      "subcategories": [
+        "SBOM Generation (syft, cdxgen, trivy sbom)",
+        "Signing & Verification (cosign, sigstore, notation)",
+        "Provenance & Attestation (SLSA, in-toto, witness)",
+        "Dependency Scanning (grype, osv-scanner, dependency-check)",
+        "Package & Registry Security (npm/pip/go audit)"
+      ]
+    },
+    {
+      "id": "secrets-mgmt",
+      "name": "Secrets Management",
+      "icon": "🗝️",
+      "status": "pending",
+      "description": "Managing and protecting secrets: HashiCorp Vault, SOPS, sealed-secrets, cloud secret managers, and secret detection.",
+      "subcategories": [
+        "HashiCorp Vault (kv, auth, policies, dynamic secrets, transit)",
+        "SOPS & age",
+        "Kubernetes Secrets (sealed-secrets, external-secrets)",
+        "Cloud Secret Managers (AWS/GCP/Azure)",
+        "Secret Detection & Remediation"
+      ]
+    },
+    {
+      "id": "cloud-native-runtime",
+      "name": "Cloud-Native Runtime Security",
+      "icon": "🦅",
+      "status": "pending",
+      "description": "Runtime threat detection and enforcement for containers and hosts using eBPF-based and policy tooling.",
+      "subcategories": [
+        "Falco (rules, alerts, deployment)",
+        "Tetragon & Cilium eBPF",
+        "Tracee",
+        "seccomp & AppArmor profiles",
+        "Sysdig & osquery"
+      ]
+    },
+    {
+      "id": "cspm",
+      "name": "Cloud Security Posture (Multi-Cloud)",
+      "icon": "☁️",
+      "status": "pending",
+      "description": "Auditing cloud posture across AWS, Azure, and GCP with CSPM and IAM tooling.",
+      "subcategories": [
+        "Prowler (AWS/Azure/GCP)",
+        "ScoutSuite",
+        "Steampipe & Powerpipe",
+        "Cloud Custodian",
+        "Azure (az cli security, AzureHound)",
+        "GCP (gcloud security, ScoutSuite)",
+        "CloudSploit / CloudMapper"
+      ]
+    },
+    {
+      "id": "helm",
+      "name": "Helm & Package Management",
+      "icon": "⎈",
+      "status": "pending",
+      "description": "Helm chart operations and security: install, upgrade, templating, repositories, and chart scanning.",
+      "subcategories": [
+        "Chart Lifecycle (install, upgrade, rollback, uninstall)",
+        "Templating & Values",
+        "Repositories & OCI registries",
+        "Chart Security (helm lint, checkov, kubeconform)"
+      ]
+    },
+    {
+      "id": "service-mesh",
+      "name": "Service Mesh & Network Security",
+      "icon": "🕸️",
+      "status": "pending",
+      "description": "Service mesh operations and zero-trust networking: Istio, Linkerd, Cilium, and mTLS.",
+      "subcategories": [
+        "Istio (istioctl, traffic, mTLS, authz policies)",
+        "Linkerd",
+        "Cilium & Hubble",
+        "mTLS & Zero-Trust Networking"
+      ]
+    },
+    {
+      "id": "observability-sec",
+      "name": "Observability & Detection Engineering",
+      "icon": "📊",
+      "status": "pending",
+      "description": "Security observability and detection: log pipelines, SIEM queries, and detection-as-code relevant to DevSecOps.",
+      "subcategories": [
+        "Prometheus & Alerting",
+        "Loki / Elastic / OpenSearch queries",
+        "OpenTelemetry",
+        "Detection-as-Code (Sigma, sigma-cli)",
+        "Audit Logging (k8s, cloud)"
+      ]
+    }
+  ]
+}

@@ -1,13 +1,23 @@
 {
   "name": "cheat-sheet",
-  "version": "1.0.0",
-  "description": "Offensive Security Command Reference — Penetration Testing Cheat Sheet",
+  "version": "1.1.0",
+  "description": "Offensive Security & DevSecOps Command Reference — Penetration Testing & Cloud-Native Cheat Sheet",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "test": "node --test",
+    "lint": "eslint .",
+    "update-readme": "node scripts/update-readme.js"
   },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
   "dependencies": {
     "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.13.0"
   }
 }

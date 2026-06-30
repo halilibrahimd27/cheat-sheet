@@ -2,13 +2,18 @@ services:
   cheat-sheet:
     build: .
     container_name: cheat-sheet
+    # Publish to localhost only. Change to "8899:3000" to expose on your LAN —
+    # and set AUTH_USER / AUTH_PASS below if you do.
     ports:
-      - "8899:3000"
+      - "127.0.0.1:8899:3000"
     volumes:
       - cheat-sheet-data:/app/data
     restart: unless-stopped
     environment:
       - PORT=3000
+      - HOST=0.0.0.0
+      # - AUTH_USER=admin
+      # - AUTH_PASS=change-me
 
 volumes:
   cheat-sheet-data:

@@ -1,17 +1,19 @@
 <div align="center">
 
-# 🛡️ Offensive Security Cheat Sheet
+# 🛡️ Offensive Security & DevSecOps Cheat Sheet
 
-### *Interactive command reference for penetration testing & certification prep*
+### *Interactive command reference for penetration testing, certification prep & DevSecOps*
 
-OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS
+OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker · Kubernetes · Terraform · CI/CD
 
 [![GitHub Stars](https://img.shields.io/github/stars/halilibrahimd27/cheat-sheet?style=flat-square&color=yellow&logo=github)](https://github.com/halilibrahimd27/cheat-sheet/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/halilibrahimd27/cheat-sheet?style=flat-square&color=blue&logo=github)](https://github.com/halilibrahimd27/cheat-sheet/network/members)
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 [![Docker](https://img.shields.io/badge/docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)](#docker-recommended)
-[![Commands](https://img.shields.io/badge/commands-2000%2B-success?style=flat-square)](#categories)
-[![Categories](https://img.shields.io/badge/categories-33-orange?style=flat-square)](#categories)
+<!-- STATS:BADGES -->
+[![Commands](https://img.shields.io/badge/commands-2339-success?style=flat-square)](#categories)
+[![Categories](https://img.shields.io/badge/categories-35-orange?style=flat-square)](#categories)
+<!-- /STATS:BADGES -->
 
 > **⭐ If this saved you time, please leave a star.** It's the simplest way to support this work.
 
@@ -19,9 +21,15 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS
 
 ---
 
+<!-- STATS:START -->
+**2339 commands** across **35 categories** and **212 subcategories** — every command bilingual (English + Türkçe).
+<!-- STATS:END -->
+
+> Runs **100% locally**. No account, no telemetry, no cloud — your data never leaves your machine.
+
 ## Features
 
-- **2000+ commands** across 33 categories covering the full penetration testing lifecycle
+- **Offensive Security + DevSecOps** — full penetration-testing lifecycle *and* container / Kubernetes / IaC / CI-CD security
 - **Full CRUD** — Add, edit, and delete your own categories, subcategories, and commands
 - **Instant search** with `Ctrl+K` keyboard shortcut
 - **One-click copy** on every command block
@@ -29,51 +37,60 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS
 - **Safe placeholders** — All IPs and sensitive values use `<TARGET_IP>`, `<ATTACKER_IP>`, `<DOMAIN>`, etc.
 - **Mobile responsive** sidebar navigation
 - **Variable Fill Bar** — Fill `<PLACEHOLDER>` values in the UI and auto-copy completed command
+- **Quick IP Changer** — Set `LHOST`/`RHOST`/`LPORT`/`DOMAIN`/`USER` once, applied to every command
 - **Favorites** — Bookmark frequently used commands (stored in browser)
 - **Tag filtering** — Filter by `essential`, `tool`, `advanced`
-- **Write-ups** — Built-in Markdown editor for machine write-ups with image upload
+- **Write-ups** — Built-in Markdown editor for machine write-ups with image upload + MD/PDF export
+- **Machines** — Per-target tracker with an OSCP-style 11-step checklist
 - **Notes** — Per-category sticky notes
 - **Export / Import** your custom command database as JSON
-- **TR/EN** bilingual interface support
+- **TR/EN** bilingual interface and content
+- **PWA** — Installable, works offline
 - **Docker ready** — Single command deployment
+- **Secure by default** — Binds to `127.0.0.1`, optional HTTP Basic Auth, hardened uploads
 
 ## Categories
 
-| # | Category | Description |
-|---|----------|-------------|
-| 1 | Target Profiling & Network Mapping | DNS, OSINT, Nmap, SMB, SNMP, LDAP, HTTP |
-| 2 | Weakness Identification & Scanning | Nmap NSE, Nikto, WPScan, Nuclei, SSL |
-| 3 | Web Attack Techniques | LFI/RFI, Command Injection, SSRF, XXE, SSTI, Upload |
-| 4 | Database Exploitation via Injection | UNION, Blind, Error-based, SQLMap, MSSQL, PostgreSQL |
-| 5 | Browser-Side Exploitation | XSS (Reflected/Stored/DOM), CSRF, Filter Bypass |
-| 6 | Payload Engineering & Delivery | msfvenom, shellcode, macros, HTA, staged/stageless |
-| 7 | Shells, Listeners & Stabilization | Bash, Python, PowerShell, Netcat, Socat, TTY upgrade |
-| 8 | Windows Privilege Escalation | WinPEAS, services, tokens, AlwaysInstallElevated |
-| 9 | Linux Privilege Escalation | LinPEAS, SUID, sudo, cron, capabilities, Docker escape |
-| 10 | Credential Attacks & Hash Cracking | Hydra, Hashcat, John, Mimikatz, spraying, wordlists |
-| 11 | Defense Evasion & AV Bypass | AMSI, encoding, AppLocker, CLM, obfuscation |
-| 12 | Network Pivoting & Traffic Routing | SSH, Chisel, Ligolo-ng, proxychains, netsh |
-| 13 | Metasploit Operations | Modules, Meterpreter, pivoting, auxiliary |
-| 14 | Active Directory Reconnaissance | BloodHound, PowerView, SPNs, ACLs, trusts |
-| 15 | Active Directory Exploitation | Kerberoast, AS-REP, Golden/Silver Ticket, DCSync |
-| 16 | Lateral Movement Techniques | PSExec, WMIExec, Evil-WinRM, RDP, DCOM |
-| 17 | AWS Cloud Security Testing | IAM, S3, EC2, IMDS, Pacu, Prowler |
-| 18 | File Transfer Arsenal | Python HTTP, PowerShell, certutil, SMB, SCP |
-| 19 | Protocol Tunneling & Firewall Evasion | HTTP, DNS, ICMP tunneling, DPI bypass |
-| 20 | Social Engineering & Phishing | GoPhish, SET, Evilginx2, SPF/DKIM/DMARC |
-| 21 | Exploit Research & Development | SearchSploit, cross-compile, buffer overflow |
-| 22 | Engagement Methodology & Playbook | Recon workflow, pivoting, post-exploitation, proofs |
-| 23 | Container & Infrastructure Testing | Docker escape, Kubernetes, CI/CD attacks |
-| 24 | **NetExec / CrackMapExec** | SMB enum/exec, hash dump, spray, WinRM, MSSQL modules |
-| 25 | **BloodHound & SharpHound** | Collection methods, setup, 17 Cypher attack-path queries |
-| 26 | **ADCS — Certificate Services Attacks** | ESC1–ESC8 with Certipy/Certify, golden cert, PassTheCert |
-| 27 | **Network Service Exploitation** | FTP, SSH, SMTP, SMB, MSSQL, MySQL, RDP, Redis, LDAP, WinRM |
-| 28 | **PowerShell for Pentesters** | PowerView, PowerUp, AMSI bypass, native AD module |
-| 29 | **Impacket Toolsuite** | PsExec, WMIExec, Kerberoast, SecretsDump, NTLMRelay, Responder |
-| 30 | **Mimikatz Commands** | logonpasswords, DCSync, golden/silver ticket, overpass-the-hash |
-| 31 | **Windows Post-Exploitation** | Situational awareness, credential hunting, persistence, tokens |
-| 32 | **Linux Post-Exploitation** | Situational awareness, credential hunting, persistence |
-| 33 | **Wireless Security Testing** | WPA/WPA2 handshake, PMKID, WPS/Pixie Dust, Evil Twin |
+<!-- CATEGORIES:START -->
+<!-- This table is generated from seed.js by scripts/update-readme.js — do not edit by hand. -->
+| # | Category | Commands | Description |
+|---|----------|----------|-------------|
+| 1 | 🔍 Target Profiling & Network Mapping | 171 | Enumerate targets through passive intelligence gathering, active scanning, and service… |
+| 2 | ⚡ Weakness Identification & Scanning | 47 | Identify known vulnerabilities and misconfigurations across network services and web ap… |
+| 3 | 🌐 Web Attack Techniques | 136 | Exploit web application vulnerabilities including directory traversal, injection, file… |
+| 4 | 🗃️ Database Exploitation via Injection | 101 | Detect and exploit SQL injection vulnerabilities to extract data, escalate privileges,… |
+| 5 | 📜 Browser-Side Exploitation | 47 | Exploit cross-site scripting, cross-site request forgery, and DOM-based vulnerabilities… |
+| 6 | 🖥️ Payload Engineering & Delivery | 47 | Generate reverse shells, bind shells, web shells, and custom payloads for various platf… |
+| 7 | 🐚 Shells, Listeners & Stabilization | 61 | Establish reverse shells, bind shells, and web shells across platforms, then upgrade to… |
+| 8 | ⬆️ Windows Privilege Escalation | 105 | Escalate privileges on Windows hosts through service misconfigurations, token abuse, cr… |
+| 9 | 🐧 Linux Privilege Escalation | 121 | Escalate privileges on Linux systems through SUID binaries, sudo misconfigurations, cap… |
+| 10 | 🔑 Credential Attacks & Hash Cracking | 146 | Perform online brute force, offline hash cracking, credential dumping, and password spr… |
+| 11 | 🛡️ Defense Evasion & AV Bypass | 49 | Bypass antivirus, AMSI, AppLocker, Constrained Language Mode, and other security contro… |
+| 12 | 🔀 Network Pivoting & Traffic Routing | 69 | Route traffic through compromised hosts to reach internal networks using SSH tunnels, S… |
+| 13 | 🔧 Metasploit Operations | 110 | Metasploit Framework for exploitation, post-exploitation, and pivoting |
+| 14 | 🏢 Active Directory Reconnaissance | 71 | Enumerate Active Directory domains, users, groups, trusts, and attack paths |
+| 15 | 🎯 Active Directory Exploitation | 78 | Attack Active Directory with Kerberos, NTLM relay, delegation, and persistence techniques |
+| 16 | ↔️ Lateral Movement Techniques | 48 | Move laterally across the network using remote execution and Windows protocols |
+| 17 | ☁️ AWS Cloud Security Testing | 65 | Enumerate and exploit AWS cloud services, IAM, S3, EC2, and more |
+| 18 | 📁 File Transfer Arsenal | 53 | Techniques for transferring files to and from targets across different protocols |
+| 19 | 🔐 Protocol Tunneling & Firewall Evasion | 29 | Bypass firewalls and deep packet inspection using protocol tunneling techniques |
+| 20 | 🎣 Social Engineering & Phishing | 34 | Phishing infrastructure, credential harvesting, and social engineering tools |
+| 21 | 💣 Exploit Research & Development | 44 | Find, adapt, compile, and develop exploits for penetration testing |
+| 22 | 🧩 Engagement Methodology & Playbook | 73 | Structured pentest workflow, service checklists, and engagement methodology |
+| 23 | 🐳 Container & Infrastructure Testing | 78 | Test Docker, Kubernetes, and CI/CD pipeline security |
+| 24 | 🕸️ NetExec / CrackMapExec | 80 | NetExec (nxc) and CrackMapExec for Active Directory enumeration, lateral movement, and… |
+| 25 | 🐕 BloodHound & SharpHound | 39 | BloodHound AD attack path analysis, SharpHound collection, and useful Cypher queries fo… |
+| 26 | 📜 ADCS — Certificate Services Attacks | 22 | Active Directory Certificate Services exploitation — ESC1 through ESC8 using Certipy, C… |
+| 27 | 🔌 Network Service Exploitation | 127 | Service-specific exploitation techniques for common ports found during OSCP-style engag… |
+| 28 | ⚡ PowerShell for Pentesters | 51 | PowerShell commands for Active Directory enumeration, exploitation, and post-exploitati… |
+| 29 | 🐍 Impacket Toolsuite | 34 | Comprehensive Impacket tools for Windows/AD protocol attacks, credential dumping, and l… |
+| 30 | 🐱 Mimikatz Commands | 25 | Mimikatz credential extraction, Kerberos ticket manipulation, and Windows credential at… |
+| 31 | 🪟 Windows Post-Exploitation | 55 | Windows post-exploitation — situational awareness, persistence, data gathering, and pri… |
+| 32 | 🐧 Linux Post-Exploitation | 35 | Linux post-exploitation — situational awareness, credential hunting, persistence, and l… |
+| 33 | 📡 Wireless Security Testing | 19 | WiFi security testing — WPA/WPA2 cracking, WPS attacks, evil twin, and wireless reconna… |
+| 34 | 🔶 Burp Suite | 41 | Burp Suite web application security testing — proxy setup, scanning, intruder attacks,… |
+| 35 | 💉 MSFVenom Payload Reference | 28 | Comprehensive msfvenom payload generation for various platforms, formats, and encoders. |
+<!-- CATEGORIES:END -->
 
 ## Quick Start
 
@@ -87,7 +104,7 @@ docker compose up -d
 
 Open **http://localhost:8899** in your browser.
 
-> Data is persisted in a Docker volume — your custom commands survive container restarts and updates.
+> The container publishes only to `127.0.0.1:8899` by default and persists data in a Docker volume — your custom commands survive restarts and updates.
 
 ### Without Docker
 
@@ -99,6 +116,8 @@ npm start
 ```
 
 Open **http://localhost:3000** in your browser.
+
+> By default the server binds to `127.0.0.1` (localhost only). See [Configuration](#configuration) to expose it on your network safely.
 
 ### Update to Latest Commands
 
@@ -112,6 +131,33 @@ curl -X POST http://localhost:8899/api/reset
 
 > **Warning:** Reset overwrites your data. Export a backup first via the ⬇ Export button.
 
+## Configuration
+
+All configuration is via environment variables (a `.env` is **not** auto-loaded — pass them inline or via your process manager / Docker):
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PORT` | `3000` | Port to listen on |
+| `HOST` | `127.0.0.1` | Bind address. Set to `0.0.0.0` to expose on your network (the Docker image does this; the port mapping is the boundary there). |
+| `AUTH_USER` | `admin` | Basic Auth username (only used when `AUTH_PASS` is set) |
+| `AUTH_PASS` | *(unset)* | When set, **all** requests require HTTP Basic Auth. The browser prompts once and the SPA keeps working. |
+| `JSON_LIMIT` | `12mb` | Max request body size (covers image uploads + full DB import) |
+
+See [`.env.example`](.env.example) for a copy-paste template.
+
+## Security
+
+This is a **local-first, single-user** tool. Defaults are chosen so it is safe out of the box:
+
+- **Binds to `127.0.0.1`** — not reachable from your network unless you explicitly set `HOST=0.0.0.0`.
+- **Optional HTTP Basic Auth** — set `AUTH_PASS` (and optionally `AUTH_USER`) before exposing it anywhere beyond localhost. If you bind to `0.0.0.0` without a password, the server logs a warning.
+- **Hardened uploads** — image uploads are validated by **magic bytes** (not the filename), capped at 5 MB, served with `X-Content-Type-Options: nosniff` and a restrictive CSP. SVG is rejected (it can carry script).
+- **Output escaping** — all user-supplied text (category/command names, tags, write-ups) is HTML-escaped before rendering.
+- **Atomic writes** — JSON files are written via a temp-file + rename with a `.bak` fallback, so a crash mid-write can't corrupt your database.
+- **Validated import** — `/api/import` rejects malformed payloads before touching your data.
+
+> Even with auth, treat `/api/reset` and `/api/import` with care — they overwrite data. Keep backups (⬇ Export).
+
 ## Usage
 
 ### Browsing Commands
@@ -119,6 +165,9 @@ curl -X POST http://localhost:8899/api/reset
 - Use `Ctrl+K` to open search, type any keyword
 - Click **Copy** on any command block to copy to clipboard
 - Toggle dark/light theme with the `◐` button
+
+### Keyboard Shortcuts
+`Ctrl+K` search · `Ctrl+I` Quick IP Changer · `?` shortcuts · `j`/`k` navigate · `Enter` copy focused · `g h/f/w/m` go Home/Favorites/Write-ups/Machines
 
 ### Adding Your Own Commands
 1. Click **+ New Category** in the sidebar to create a category
@@ -133,11 +182,11 @@ All commands use safe placeholders instead of real IPs:
 | Placeholder | Meaning |
 |------------|---------|
 | `<TARGET_IP>` | Target machine IP |
-| `<ATTACKER_IP>` | Your attack machine IP |
+| `<ATTACKER_IP>` / `<LHOST>` | Your attack machine IP |
 | `<DOMAIN>` | Target domain name |
-| `<PORT>` | Port number |
-| `<USERNAME>` | Username |
-| `<PASSWORD>` | Password |
+| `<PORT>` / `<LPORT>` | Port number |
+| `<USERNAME>` / `<USER>` | Username |
+| `<PASSWORD>` / `<PASS>` | Password |
 | `<NETWORK>/<CIDR>` | Network range (e.g., 192.168.1.0/24) |
 | `<TARGET_URL>` | Full target URL |
 | `<DC_IP>` | Domain Controller IP |
@@ -151,18 +200,24 @@ All commands use safe placeholders instead of real IPs:
 | `PUT` | `/api/categories/:id` | Update a category |
 | `DELETE` | `/api/categories/:id` | Delete a category |
 | `POST` | `/api/categories/:id/subcategories` | Add subcategory |
-| `POST` | `.../subcategories/:idx/commands` | Add command |
+| `PUT` | `/api/categories/:id/subcategories/:subIdx` | Update subcategory |
+| `DELETE` | `/api/categories/:id/subcategories/:subIdx` | Delete subcategory |
+| `POST` | `.../subcategories/:subIdx/commands` | Add command |
 | `PUT` | `.../commands/:cmdIdx` | Update command |
 | `DELETE` | `.../commands/:cmdIdx` | Delete command |
+| `GET`/`POST`/`PUT`/`DELETE` | `/api/notes/:catId/:noteId?` | Per-category notes |
+| `GET`/`POST`/`PUT`/`DELETE` | `/api/writeups/:id?` | Write-ups |
+| `GET`/`POST`/`PUT`/`DELETE` | `/api/machines/:id?` | Machine tracker |
+| `POST` | `/api/upload` | Upload a write-up image (base64, magic-byte validated) |
 | `GET` | `/api/export` | Download full backup (JSON) |
-| `POST` | `/api/import` | Import from JSON |
+| `POST` | `/api/import` | Import from JSON (validated) |
 | `POST` | `/api/reset` | Reset to default commands |
 
 ## Tech Stack
 
 - **Frontend**: Vanilla HTML/CSS/JS (no framework, no build step)
-- **Backend**: Node.js + Express
-- **Storage**: JSON file (persisted via Docker volume)
+- **Backend**: Node.js + Express (single dependency)
+- **Storage**: JSON files (atomic writes, persisted via Docker volume)
 - **Fonts**: Inter + JetBrains Mono (Google Fonts)
 
 ## Project Structure
@@ -172,14 +227,19 @@ cheat-sheet/
 ├── docker-compose.yml      # Docker orchestration
 ├── Dockerfile              # Container build
 ├── package.json            # Node.js dependencies
-├── server.js               # Express REST API
-├── seed.js                 # Default 2000+ commands (seed data)
+├── server.js               # Express REST API (exports app; testable)
+├── seed.js                 # Default commands (seed data)
+├── .env.example            # Configuration template
+├── scripts/
+│   └── update-readme.js    # Regenerate stats + category table from seed.js
+├── test/                   # API smoke tests (node:test)
 ├── public/
 │   ├── index.html          # Main HTML
 │   ├── style.css           # Dark/Light theme styles
-│   └── app.js              # Frontend logic + CRUD
-└── data/
-    └── commands.json        # Persistent data (auto-generated)
+│   ├── app.js              # Frontend logic + CRUD
+│   ├── manifest.json       # PWA manifest
+│   └── service-worker.js   # Offline cache
+└── data/                   # Persistent data (auto-generated, git-ignored)
 ```
 
 ## Disclaimer
@@ -188,12 +248,13 @@ This tool is intended for **educational purposes only**. All commands and techni
 
 ## Contributing
 
-Contributions are welcome! If you want to add commands, fix errors, or improve the UI:
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md). In short:
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feat/add-commands`)
-3. Add your commands to `seed.js` following the existing structure
-4. Submit a pull request
+3. Add your commands to `seed.js` following the existing structure (include `desc_tr` for the Turkish description)
+4. Run `npm test` and `node scripts/update-readme.js`
+5. Submit a pull request
 
 ## License
 
