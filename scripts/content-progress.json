@@ -113,7 +113,7 @@
       "id": "ansible",
       "name": "Ansible Automation",
       "icon": "📜",
-      "status": "pending",
+      "status": "done",
       "description": "Ansible for configuration management and automation: ad-hoc commands, playbooks, inventory, vault, roles, and security.",
       "subcategories": [
         "Ad-hoc Commands & Modules",
@@ -123,7 +123,8 @@
         "Roles & Galaxy",
         "Facts, Variables & Templates",
         "Hardening & Security (lockdown roles, ansible-lint)"
-      ]
+      ],
+      "commands_added": 189
     },
     {
       "id": "cicd-security",

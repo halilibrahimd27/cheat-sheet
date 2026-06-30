@@ -36525,5 +36525,1824 @@ module.exports = [
         ]
       }
     ]
+  },
+  {
+    "id": "ansible",
+    "name": "Ansible Automation",
+    "name_tr": "Ansible Otomasyon",
+    "icon": "⚙️",
+    "description": "Ansible for configuration management and automation: ad-hoc commands, playbooks, inventory, vault, roles, and security.",
+    "description_tr": "Yapılandırma yönetimi ve otomasyon için Ansible: ad-hoc komutlar, playbooklar, envanter, vault, roller ve güvenlik.",
+    "subcategories": [
+      {
+        "name": "Ad-hoc Commands & Modules",
+        "commands": [
+          {
+            "title": "Ping All Hosts",
+            "desc": "Test connectivity to all hosts in inventory",
+            "desc_tr": "Envanterdeki tüm sunuculara bağlantıyı test et",
+            "cmd": "ansible all -m ping",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Ping Specific Group",
+            "desc": "Verify SSH reachability for a host group",
+            "desc_tr": "Bir sunucu grubunun SSH erişilebilirliğini doğrula",
+            "cmd": "ansible <GROUP> -i inventory.ini -m ping",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run Shell Command",
+            "desc": "Execute an arbitrary shell command on targets",
+            "desc_tr": "Hedeflerde rastgele bir shell komutu çalıştır",
+            "cmd": "ansible all -m shell -a 'uptime'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run Command Module",
+            "desc": "Run a command safely without shell processing",
+            "desc_tr": "Shell işlemeden komutu güvenli şekilde çalıştır (command modülü)",
+            "cmd": "ansible all -m command -a 'df -h /'",
+            "tags": [
+              "essential"
+            ],
+            "note": "command modülü pipe, yönlendirme ve değişken genişletmeyi desteklemez; bunlara ihtiyaç varsa shell modülünü kullanın."
+          },
+          {
+            "title": "Gather System Facts",
+            "desc": "Collect all Ansible facts from a host",
+            "desc_tr": "Bir sunucudan tüm Ansible fact'lerini topla",
+            "cmd": "ansible <TARGET_IP> -m setup",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Filter Specific Facts",
+            "desc": "Gather only facts matching a pattern",
+            "desc_tr": "Yalnızca bir desene uyan fact'leri topla",
+            "cmd": "ansible all -m setup -a 'filter=ansible_distribution*'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Privilege Escalation (become)",
+            "desc": "Run a command with sudo and prompt for password",
+            "desc_tr": "Komutu sudo ile çalıştır ve parola sor (become)",
+            "cmd": "ansible all -b -K -m shell -a 'systemctl status sshd'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Install Package (apt)",
+            "desc": "Install a package on Debian/Ubuntu hosts",
+            "desc_tr": "Debian/Ubuntu sunucularda paket kur (apt)",
+            "cmd": "ansible all -b -m apt -a 'name=<FILE> state=present update_cache=yes'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Install Package (dnf/yum)",
+            "desc": "Install a package on RHEL/Fedora hosts",
+            "desc_tr": "RHEL/Fedora sunucularda paket kur (dnf)",
+            "cmd": "ansible all -b -m dnf -a 'name=<FILE> state=latest'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Manage Service State",
+            "desc": "Start and enable a service at boot",
+            "desc_tr": "Bir servisi başlat ve önyüklemede etkinleştir",
+            "cmd": "ansible all -b -m service -a 'name=nginx state=started enabled=yes'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Restart Service (systemd)",
+            "desc": "Restart a service using the systemd module",
+            "desc_tr": "systemd modülü ile bir servisi yeniden başlat",
+            "cmd": "ansible all -b -m systemd -a 'name=<FILE> state=restarted daemon_reload=yes'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Copy File to Hosts",
+            "desc": "Push a local file to remote targets",
+            "desc_tr": "Yerel bir dosyayı uzak hedeflere gönder",
+            "cmd": "ansible all -b -m copy -a 'src=<FILE> dest=<PATH> owner=root mode=0644'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Fetch File from Hosts",
+            "desc": "Pull a remote file back to the control node",
+            "desc_tr": "Uzak bir dosyayı kontrol düğümüne geri çek",
+            "cmd": "ansible all -m fetch -a 'src=<PATH> dest=./backups/ flat=no'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Deploy File from Template",
+            "desc": "Render a Jinja2 template to remote hosts",
+            "desc_tr": "Bir Jinja2 şablonunu uzak sunuculara işle",
+            "cmd": "ansible all -b -m template -a 'src=<FILE>.j2 dest=<PATH>'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Create Directory",
+            "desc": "Ensure a directory exists with set permissions",
+            "desc_tr": "Belirli izinlerle bir dizinin var olduğundan emin ol",
+            "cmd": "ansible all -b -m file -a 'path=<PATH> state=directory mode=0755'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Manage User Account",
+            "desc": "Create a user with a specific shell",
+            "desc_tr": "Belirli bir shell ile kullanıcı oluştur",
+            "cmd": "ansible all -b -m user -a 'name=deploy shell=/bin/bash groups=sudo append=yes'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Add Authorized SSH Key",
+            "desc": "Install an SSH public key for a user",
+            "desc_tr": "Bir kullanıcı için SSH genel anahtarı kur",
+            "cmd": "ansible all -b -m authorized_key -a 'user=deploy key=\"{{ lookup(\"file\", \"<FILE>.pub\") }}\"'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Manage Cron Job",
+            "desc": "Create or update a scheduled cron entry",
+            "desc_tr": "Zamanlanmış bir cron girdisi oluştur veya güncelle",
+            "cmd": "ansible all -b -m cron -a 'name=\"backup\" hour=2 minute=0 job=<PATH>'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Manage Line in File",
+            "desc": "Ensure a specific line exists in a config file",
+            "desc_tr": "Bir yapılandırma dosyasında belirli bir satırın var olmasını sağla",
+            "cmd": "ansible all -b -m lineinfile -a 'path=<PATH> line=\"PermitRootLogin no\" regexp=\"^PermitRootLogin\"'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Reboot Hosts",
+            "desc": "Reboot targets and wait for them to return",
+            "desc_tr": "Hedefleri yeniden başlat ve geri gelmelerini bekle",
+            "cmd": "ansible all -b -m reboot -a 'reboot_timeout=300'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Limit to Specific Hosts",
+            "desc": "Run against a subset using the limit flag",
+            "desc_tr": "limit bayrağı ile bir alt küme üzerinde çalıştır",
+            "cmd": "ansible all -m ping --limit '<TARGET_IP>'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run as Different User",
+            "desc": "Connect with an explicit remote user",
+            "desc_tr": "Belirli bir uzak kullanıcı ile bağlan",
+            "cmd": "ansible all -u <FILE> --private-key=<PATH> -m ping",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Pass Extra Variables",
+            "desc": "Provide module args via extra-vars",
+            "desc_tr": "extra-vars ile modüle değişken geçir",
+            "cmd": "ansible all -b -m apt -e 'pkg=htop' -a 'name={{ pkg }} state=present'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Parallel Forks Control",
+            "desc": "Increase parallelism with the forks flag",
+            "desc_tr": "forks bayrağı ile paralelliği artır",
+            "cmd": "ansible all -f 20 -m shell -a 'apt list --upgradable'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Hosts in Pattern",
+            "desc": "Preview which hosts a pattern matches",
+            "desc_tr": "Bir desenin hangi sunuculara uyduğunu önizle",
+            "cmd": "ansible <GROUP> --list-hosts",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Check Mode (Dry Run)",
+            "desc": "Predict changes without applying them",
+            "desc_tr": "Uygulamadan değişiklikleri tahmin et (dry run)",
+            "cmd": "ansible all -b -m apt -a 'name=nginx state=latest' --check",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Tüm modüller check modunu desteklemez; command/shell gibi modüller --check ile atlanabilir."
+          },
+          {
+            "title": "Verbose Connection Debug",
+            "desc": "Increase verbosity to debug SSH and module issues",
+            "desc_tr": "SSH ve modül sorunlarını ayıklamak için ayrıntı düzeyini artır",
+            "cmd": "ansible all -m ping -vvvv",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run Against Custom Inventory",
+            "desc": "Target an inline ad-hoc inventory host",
+            "desc_tr": "Satır içi geçici envanter sunucusunu hedefle",
+            "cmd": "ansible all -i '<TARGET_IP>,' -m ping",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Tek bir host'u satır içi envanter olarak vermek için IP sonundaki virgül zorunludur."
+          },
+          {
+            "title": "Use a Different Module Path",
+            "desc": "Run a custom module from a local directory",
+            "desc_tr": "Yerel bir dizinden özel modül çalıştır",
+            "cmd": "ansible all -M <PATH> -m <FILE> -a 'arg=value'",
+            "tags": [
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Playbooks (run, check, tags, limits)",
+        "commands": [
+          {
+            "title": "Run a Playbook",
+            "desc": "Execute a playbook against the inventory",
+            "desc_tr": "Bir playbook'u envantere karşı çalıştır",
+            "cmd": "ansible-playbook -i <FILE> playbook.yml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Dry-Run (Check Mode)",
+            "desc": "Predict changes without applying them",
+            "desc_tr": "Değişiklikleri uygulamadan önce tahmin et (kuru çalıştırma)",
+            "cmd": "ansible-playbook playbook.yml --check",
+            "tags": [
+              "essential"
+            ],
+            "note": "Modules that do not support check mode are skipped and reported."
+          },
+          {
+            "title": "Check Mode with Diff",
+            "desc": "Show file/content changes that would be made",
+            "desc_tr": "Yapılacak dosya/içerik değişikliklerini göster",
+            "cmd": "ansible-playbook playbook.yml --check --diff",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Show Diff of Changes",
+            "desc": "Display line-by-line diffs for changed files",
+            "desc_tr": "Değişen dosyalar için satır satır farkları göster",
+            "cmd": "ansible-playbook playbook.yml --diff",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Limit to Specific Hosts",
+            "desc": "Run only against a subset of inventory hosts",
+            "desc_tr": "Yalnızca envanterdeki belirli host alt kümesine çalıştır",
+            "cmd": "ansible-playbook playbook.yml --limit <TARGET_IP>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Limit to a Host Group",
+            "desc": "Restrict execution to a named inventory group",
+            "desc_tr": "Çalıştırmayı adlandırılmış envanter grubuyla sınırla",
+            "cmd": "ansible-playbook playbook.yml --limit 'webservers'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Limit with Pattern Exclusion",
+            "desc": "Run on a group but exclude specific hosts",
+            "desc_tr": "Bir grupta çalış ama belirli hostları hariç tut",
+            "cmd": "ansible-playbook playbook.yml --limit 'webservers:!<TARGET_IP>'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Quote the pattern so the shell does not interpret ':' or '!'."
+          },
+          {
+            "title": "Run Only Tagged Tasks",
+            "desc": "Execute only tasks matching given tags",
+            "desc_tr": "Yalnızca verilen etiketlerle eşleşen görevleri çalıştır",
+            "cmd": "ansible-playbook playbook.yml --tags 'deploy,config'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Skip Tagged Tasks",
+            "desc": "Run everything except tasks with these tags",
+            "desc_tr": "Bu etiketlere sahip görevler dışında her şeyi çalıştır",
+            "cmd": "ansible-playbook playbook.yml --skip-tags 'slow,debug'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List All Tags",
+            "desc": "Show every tag defined in the playbook",
+            "desc_tr": "Playbook'ta tanımlı tüm etiketleri listele",
+            "cmd": "ansible-playbook playbook.yml --list-tags",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List All Tasks",
+            "desc": "Preview the tasks that would run, in order",
+            "desc_tr": "Çalışacak görevleri sırayla önizle",
+            "cmd": "ansible-playbook playbook.yml --list-tasks",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List Targeted Hosts",
+            "desc": "Show which hosts the play will affect",
+            "desc_tr": "Play'in etkileyeceği hostları göster",
+            "cmd": "ansible-playbook playbook.yml --list-hosts",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run the 'always' and Specific Tags",
+            "desc": "Combine a custom tag with built-in special tags",
+            "desc_tr": "Özel bir etiketi yerleşik özel etiketlerle birleştir",
+            "cmd": "ansible-playbook playbook.yml --tags 'tagged,always'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Special tags: 'always' runs unless skipped; 'never' runs only when explicitly requested; 'tagged'/'untagged'/'all'."
+          },
+          {
+            "title": "Pass Extra Variables",
+            "desc": "Override or set variables at the CLI",
+            "desc_tr": "Değişkenleri komut satırında geçersiz kıl veya ayarla",
+            "cmd": "ansible-playbook playbook.yml -e 'env=prod version=1.2.3'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Load Extra Vars from File",
+            "desc": "Inject variables from a JSON/YAML file",
+            "desc_tr": "Bir JSON/YAML dosyasından değişken enjekte et",
+            "cmd": "ansible-playbook playbook.yml -e @<FILE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Start at a Specific Task",
+            "desc": "Begin execution from a named task",
+            "desc_tr": "Yürütmeyi adlandırılmış bir görevden başlat",
+            "cmd": "ansible-playbook playbook.yml --start-at-task 'Install packages'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Step Through Tasks Interactively",
+            "desc": "Confirm each task before it runs",
+            "desc_tr": "Her görevi çalışmadan önce onayla",
+            "cmd": "ansible-playbook playbook.yml --step",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Increase Verbosity",
+            "desc": "Add debug output (more v's = more detail)",
+            "desc_tr": "Hata ayıklama çıktısı ekle (daha fazla v = daha fazla ayrıntı)",
+            "cmd": "ansible-playbook playbook.yml -vvv",
+            "tags": [
+              "essential"
+            ],
+            "note": "-vvvv adds connection/SSH debugging on top of -vvv."
+          },
+          {
+            "title": "Syntax Check Only",
+            "desc": "Validate playbook YAML/structure without running",
+            "desc_tr": "Çalıştırmadan playbook YAML/yapısını doğrula",
+            "cmd": "ansible-playbook playbook.yml --syntax-check",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Set Parallelism (Forks)",
+            "desc": "Control how many hosts run in parallel",
+            "desc_tr": "Kaç hostun paralel çalışacağını kontrol et",
+            "cmd": "ansible-playbook playbook.yml --forks 25",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Override Privilege Escalation",
+            "desc": "Force become (sudo) and prompt for the password",
+            "desc_tr": "Yetki yükseltmeyi (sudo) zorla ve parola iste",
+            "cmd": "ansible-playbook playbook.yml --become --ask-become-pass",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run with Vault Password File",
+            "desc": "Decrypt vaulted vars using a password file",
+            "desc_tr": "Vault'lanmış değişkenleri parola dosyasıyla çöz",
+            "cmd": "ansible-playbook playbook.yml --vault-password-file <FILE>",
+            "tags": [
+              "tool"
+            ],
+            "note": "Use --ask-vault-pass to be prompted interactively instead."
+          },
+          {
+            "title": "Override Inventory and User",
+            "desc": "Specify inventory file and remote SSH user",
+            "desc_tr": "Envanter dosyasını ve uzak SSH kullanıcısını belirt",
+            "cmd": "ansible-playbook -i <FILE> -u <USER> playbook.yml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Limit with @retry File",
+            "desc": "Re-run only the hosts that failed last time",
+            "desc_tr": "Yalnızca son kez başarısız olan hostları yeniden çalıştır",
+            "cmd": "ansible-playbook playbook.yml --limit @<PATH>/playbook.retry",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Combine Check, Tags, and Limit",
+            "desc": "Targeted dry-run of tagged tasks on a host subset",
+            "desc_tr": "Host alt kümesinde etiketli görevlerin hedefli kuru çalıştırması",
+            "cmd": "ansible-playbook playbook.yml --check --diff --tags 'config' --limit 'webservers'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Pass SSH/Connection Args",
+            "desc": "Override connection type and timeout",
+            "desc_tr": "Bağlantı türünü ve zaman aşımını geçersiz kıl",
+            "cmd": "ansible-playbook playbook.yml -c ssh --timeout 30",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Use a Specific Private Key",
+            "desc": "Authenticate to hosts with a given SSH key",
+            "desc_tr": "Hostlara belirli bir SSH anahtarıyla kimlik doğrula",
+            "cmd": "ansible-playbook playbook.yml --private-key <FILE>",
+            "tags": [
+              "essential"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Inventory (static, dynamic, groups)",
+        "commands": [
+          {
+            "title": "List All Hosts in Inventory",
+            "desc": "Show every host the inventory resolves to",
+            "desc_tr": "Envanterin cozumledigi tum hostlari listele",
+            "cmd": "ansible-inventory -i <FILE> --list",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Graph Inventory as a Tree",
+            "desc": "Render groups and hosts as a hierarchical tree",
+            "desc_tr": "Gruplari ve hostlari hiyerarsik agac olarak goster",
+            "cmd": "ansible-inventory -i <FILE> --graph",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Graph With Host Variables",
+            "desc": "Show the inventory tree including resolved host vars",
+            "desc_tr": "Cozumlenmis host degiskenleriyle birlikte envanter agacini goster",
+            "cmd": "ansible-inventory -i <FILE> --graph --vars",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Show Variables for a Single Host",
+            "desc": "Dump all merged variables for one host",
+            "desc_tr": "Tek bir host icin birlestirilmis tum degiskenleri dok",
+            "cmd": "ansible-inventory -i <FILE> --host <TARGET_IP>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "List Hosts Matching a Pattern",
+            "desc": "Preview which hosts a pattern selects without running tasks",
+            "desc_tr": "Bir desenin hangi hostlari sectigini gorev calistirmadan onizle",
+            "cmd": "ansible <PATTERN> -i <FILE> --list-hosts",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Ping All Hosts in Inventory",
+            "desc": "Verify connectivity to every host with the ping module",
+            "desc_tr": "ping moduluyle her hosta baglantiyi dogrula",
+            "cmd": "ansible all -i <FILE> -m ping",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Target a Specific Group",
+            "desc": "Run an ad-hoc command against one group only",
+            "desc_tr": "Ad-hoc komutu yalnizca bir gruba karsi calistir",
+            "cmd": "ansible <GROUP> -i <FILE> -m ping",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Output Inventory as YAML",
+            "desc": "Export the resolved inventory in YAML format",
+            "desc_tr": "Cozumlenmis envanteri YAML formatinda disa aktar",
+            "cmd": "ansible-inventory -i <FILE> --list --yaml",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Create a Static INI Inventory",
+            "desc": "Define groups and hosts in classic INI format",
+            "desc_tr": "Gruplari ve hostlari klasik INI formatinda tanimla",
+            "cmds": [
+              "printf '[web]\\nweb1.<DOMAIN>\\nweb2.<DOMAIN>\\n\\n[db]\\ndb1.<DOMAIN>\\n' > <FILE>",
+              "ansible-inventory -i <FILE> --graph"
+            ],
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Static Inventory With Connection Vars",
+            "desc": "Set per-host SSH user and port inline in INI",
+            "desc_tr": "INI icinde host basina SSH kullanici ve portunu satir ici ayarla",
+            "cmd": "echo '<TARGET_IP> ansible_user=admin ansible_port=2222' >> <FILE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Define a Host Range",
+            "desc": "Expand numeric/alpha ranges into many hosts in INI",
+            "desc_tr": "INI icinde sayisal/alfabetik araliklari coklu hosta genislet",
+            "cmd": "echo 'web[01:10].<DOMAIN>' >> <FILE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Create a Group of Groups",
+            "desc": "Build a parent group from existing child groups using :children",
+            "desc_tr": ":children ile mevcut alt gruplardan ust grup olustur",
+            "cmd": "printf '[prod:children]\\nweb\\ndb\\n' >> <FILE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Set Group Variables in INI",
+            "desc": "Apply variables to all members of a group via :vars",
+            "desc_tr": ":vars ile bir grubun tum uyelerine degisken uygula",
+            "cmd": "printf '[web:vars]\\nansible_user=deploy\\nhttp_port=8080\\n' >> <FILE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Validate Inventory File Syntax",
+            "desc": "Catch parse errors by listing the inventory back",
+            "desc_tr": "Envanteri geri listeleyerek ayristirma hatalarini yakala",
+            "cmd": "ansible-inventory -i <FILE> --list > /dev/null && echo OK",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Use host_vars Directory",
+            "desc": "Store per-host variables in host_vars/<host>.yml",
+            "desc_tr": "Host basina degiskenleri host_vars/<host>.yml icinde sakla",
+            "cmds": [
+              "mkdir -p <PATH>/host_vars",
+              "printf 'ansible_user: deploy\\napp_env: prod\\n' > <PATH>/host_vars/web1.<DOMAIN>.yml"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": "Files must be named exactly after the inventory hostname for auto-loading."
+          },
+          {
+            "title": "Use group_vars Directory",
+            "desc": "Store per-group variables in group_vars/<group>.yml",
+            "desc_tr": "Grup basina degiskenleri group_vars/<group>.yml icinde sakla",
+            "cmds": [
+              "mkdir -p <PATH>/group_vars",
+              "printf 'http_port: 443\\nnginx_workers: 4\\n' > <PATH>/group_vars/web.yml"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "group_vars/all for Global Defaults",
+            "desc": "Variables in group_vars/all apply to every host",
+            "desc_tr": "group_vars/all icindeki degiskenler her hosta uygulanir",
+            "cmd": "printf 'ntp_server: pool.ntp.org\\n' > <PATH>/group_vars/all.yml",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Combine Multiple Inventory Sources",
+            "desc": "Merge a static file and a dynamic plugin by pointing at a directory",
+            "desc_tr": "Bir dizini hedefleyerek statik dosya ve dinamik eklentiyi birlestir",
+            "cmd": "ansible-inventory -i <PATH>/inventory/ --graph",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Enable an Inventory Plugin",
+            "desc": "Activate a dynamic plugin in ansible.cfg",
+            "desc_tr": "ansible.cfg icinde dinamik eklentiyi etkinlestir",
+            "cmd": "printf '[inventory]\\nenable_plugins = amazon.aws.aws_ec2, constructed, yaml, ini\\n' >> ansible.cfg",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "AWS EC2 Dynamic Inventory",
+            "desc": "Discover EC2 hosts via the aws_ec2 plugin config file",
+            "desc_tr": "aws_ec2 eklenti yapilandirma dosyasiyla EC2 hostlarini kesfet",
+            "cmd": "ansible-inventory -i <PATH>/aws_ec2.yml --graph",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "The config filename must end with aws_ec2.yml or aws_ec2.yaml to be auto-detected."
+          },
+          {
+            "title": "Group EC2 Hosts by Tag",
+            "desc": "Auto-create groups from instance tags with keyed_groups",
+            "desc_tr": "keyed_groups ile instance etiketlerinden otomatik grup olustur",
+            "cmd": "printf 'plugin: amazon.aws.aws_ec2\\nkeyed_groups:\\n  - key: tags.Role\\n    prefix: role\\n' > <PATH>/aws_ec2.yml",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Constructed Plugin for Computed Groups",
+            "desc": "Build groups/vars from Jinja expressions over existing hosts",
+            "desc_tr": "Mevcut hostlar uzerinden Jinja ifadeleriyle grup/degisken olustur",
+            "cmd": "printf 'plugin: constructed\\ngroups:\\n  is_centos: ansible_facts.distribution == \"CentOS\"\\n' > <PATH>/constructed.yml",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Validate a Dynamic Inventory Script",
+            "desc": "Run a legacy executable inventory script directly",
+            "desc_tr": "Eski calistirilabilir envanter betigini dogrudan calistir",
+            "cmd": "<PATH>/inventory.py --list | python3 -m json.tool",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Limit a Play to a Subset",
+            "desc": "Restrict execution to specific hosts with --limit",
+            "desc_tr": "--limit ile calismayi belirli hostlarla sinirla",
+            "cmd": "ansible-playbook -i <FILE> site.yml --limit '<GROUP>:!web1.<DOMAIN>'",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Inspect Group Membership of a Host",
+            "desc": "List every group a host belongs to via the debug var",
+            "desc_tr": "debug degiskeni ile bir hostun ait oldugu tum gruplari listele",
+            "cmd": "ansible <TARGET_IP> -i <FILE> -m debug -a 'var=group_names'",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Pattern Intersection of Two Groups",
+            "desc": "Select hosts that are in both groups using the & operator",
+            "desc_tr": "& operatoruyle iki grupta da bulunan hostlari sec",
+            "cmd": "ansible 'web:&prod' -i <FILE> --list-hosts",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "ungrouped and all Special Groups",
+            "desc": "Target hosts not in any user group via the implicit ungrouped group",
+            "desc_tr": "Ortuk ungrouped grubu ile herhangi bir kullanici grubunda olmayan hostlari hedefle",
+            "cmd": "ansible ungrouped -i <FILE> --list-hosts",
+            "tags": [
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Ansible Vault (encrypt secrets)",
+        "commands": [
+          {
+            "title": "Create New Encrypted Vault File",
+            "desc": "Create and edit a new encrypted file interactively",
+            "desc_tr": "Yeni bir şifreli dosya oluştur ve etkileşimli düzenle",
+            "cmd": "ansible-vault create <FILE>.yml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Edit Existing Encrypted File",
+            "desc": "Decrypt in memory, edit, then re-encrypt on save",
+            "desc_tr": "Şifreli dosyayı bellekte çözüp düzenle ve kaydederken yeniden şifrele",
+            "cmd": "ansible-vault edit <FILE>.yml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "View Encrypted File Contents",
+            "desc": "Print decrypted content to stdout without editing",
+            "desc_tr": "Şifreli dosyanın içeriğini düzenlemeden çözülmüş şekilde ekrana yazdır",
+            "cmd": "ansible-vault view <FILE>.yml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Encrypt an Existing Plaintext File",
+            "desc": "Encrypt a file already on disk in place",
+            "desc_tr": "Diskte bulunan düz metin bir dosyayı yerinde şifrele",
+            "cmd": "ansible-vault encrypt <FILE>.yml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Decrypt a File Permanently",
+            "desc": "Convert an encrypted file back to plaintext on disk",
+            "desc_tr": "Şifreli bir dosyayı diskte kalıcı olarak düz metne çevir",
+            "cmd": "ansible-vault decrypt <FILE>.yml",
+            "tags": [
+              "essential"
+            ],
+            "note": "Decrypted secrets will be left in plaintext on disk; never commit the result to version control."
+          },
+          {
+            "title": "Change Vault Password (Rekey)",
+            "desc": "Re-encrypt a file with a new vault password",
+            "desc_tr": "Bir dosyayı yeni bir vault parolasıyla yeniden şifrele",
+            "cmd": "ansible-vault rekey <FILE>.yml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Encrypt Using a Password File",
+            "desc": "Encrypt non-interactively with a password stored in a file",
+            "desc_tr": "Bir dosyada saklanan parolayı kullanarak etkileşimsiz şifrele",
+            "cmd": "ansible-vault encrypt --vault-password-file <PATH>/.vault_pass <FILE>.yml",
+            "tags": [
+              "essential"
+            ],
+            "note": "chmod 600 the password file and add it to .gitignore to keep it out of the repo."
+          },
+          {
+            "title": "Encrypt a Single Variable Value",
+            "desc": "Produce an inline !vault encrypted string for one var",
+            "desc_tr": "Tek bir değişken için satır içi !vault şifreli dize üret",
+            "cmd": "ansible-vault encrypt_string '<SECRET>' --name 'db_password'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Encrypt String Reading From Stdin",
+            "desc": "Pipe a value to avoid leaking it in shell history",
+            "desc_tr": "Değeri kabuk geçmişine sızdırmamak için stdin üzerinden borula",
+            "cmd": "echo -n '<SECRET>' | ansible-vault encrypt_string --stdin-name 'api_key'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Using echo -n and stdin-name avoids the secret appearing as a plain command argument."
+          },
+          {
+            "title": "Run Playbook and Prompt for Vault Password",
+            "desc": "Interactively ask for the vault password at runtime",
+            "desc_tr": "Çalışma anında vault parolasını etkileşimli olarak sor",
+            "cmd": "ansible-playbook site.yml --ask-vault-pass",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run Playbook With a Password File",
+            "desc": "Supply the vault password from a file during a run",
+            "desc_tr": "Çalışma sırasında vault parolasını bir dosyadan sağla",
+            "cmd": "ansible-playbook site.yml --vault-password-file <PATH>/.vault_pass",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Set Default Vault Password File via Env Var",
+            "desc": "Point Ansible at a password file with an environment variable",
+            "desc_tr": "Bir ortam değişkeniyle Ansible'a varsayılan parola dosyasını göster",
+            "cmd": "export ANSIBLE_VAULT_PASSWORD_FILE=<PATH>/.vault_pass",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Use a Named Vault ID",
+            "desc": "Encrypt with a labeled vault identity for multi-env setups",
+            "desc_tr": "Çok ortamlı kurulumlar için etiketli bir vault kimliğiyle şifrele",
+            "cmd": "ansible-vault encrypt --vault-id prod@prompt <FILE>.yml",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run With Multiple Vault IDs",
+            "desc": "Provide several vault identities for files encrypted differently",
+            "desc_tr": "Farklı şekilde şifrelenmiş dosyalar için birden çok vault kimliği sağla",
+            "cmd": "ansible-playbook site.yml --vault-id dev@prompt --vault-id prod@<PATH>/.prod_pass",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Encrypt String With a Specific Vault ID",
+            "desc": "Tag an inline encrypted string with a vault identity label",
+            "desc_tr": "Satır içi şifreli dizeyi belirli bir vault kimlik etiketiyle işaretle",
+            "cmd": "ansible-vault encrypt_string --vault-id prod@<PATH>/.prod_pass '<SECRET>' --name 'token'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Rekey to a Different Vault ID",
+            "desc": "Migrate a file from one vault identity to another",
+            "desc_tr": "Bir dosyayı bir vault kimliğinden başka birine taşı",
+            "cmd": "ansible-vault rekey --vault-id old@prompt --new-vault-id new@prompt <FILE>.yml",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Use a Vault Password Script (Client)",
+            "desc": "Fetch the password dynamically from an executable script",
+            "desc_tr": "Parolayı çalıştırılabilir bir betikten dinamik olarak getir",
+            "cmd": "ansible-playbook site.yml --vault-id prod@<PATH>/vault-client.py",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "An executable password file ending in .py or marked +x is run as a script; its stdout is used as the password (great for fetching from a secrets manager)."
+          },
+          {
+            "title": "Check Which Files Are Encrypted",
+            "desc": "Detect Ansible Vault headers across a directory",
+            "desc_tr": "Bir dizindeki Ansible Vault başlıklarını tespit et",
+            "cmd": "grep -rl '\\$ANSIBLE_VAULT' <PATH>/",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Encrypt Group Vars Secrets File",
+            "desc": "Encrypt a dedicated secrets file under group_vars",
+            "desc_tr": "group_vars altındaki ayrılmış bir gizli bilgi dosyasını şifrele",
+            "cmd": "ansible-vault encrypt group_vars/all/vault.yml",
+            "tags": [
+              "essential"
+            ],
+            "note": "Convention: keep plaintext vars in vars.yml and reference vault_ prefixed values from an encrypted vault.yml."
+          },
+          {
+            "title": "View an Encrypted File With Password File",
+            "desc": "Inspect ciphered content non-interactively",
+            "desc_tr": "Şifreli içeriği etkileşimsiz olarak incele",
+            "cmd": "ansible-vault view --vault-password-file <PATH>/.vault_pass <FILE>.yml",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Decrypt to Stdout Without Touching Disk",
+            "desc": "Output decrypted content while keeping the file encrypted",
+            "desc_tr": "Dosyayı şifreli tutarken çözülmüş içeriği çıktıya ver",
+            "cmd": "ansible-vault decrypt --output - <FILE>.yml",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Debug a Vaulted Variable at Runtime",
+            "desc": "Print a decrypted variable using an ad-hoc debug task",
+            "desc_tr": "Anlık bir debug göreviyle çözülmüş bir değişkeni yazdır",
+            "cmd": "ansible localhost -m debug -a 'var=db_password' -e @<FILE>.yml --ask-vault-pass",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Crack a Vault File With John (Offline)",
+            "desc": "Extract the hash and brute-force a weak vault password",
+            "desc_tr": "Hash'i çıkarıp zayıf bir vault parolasını kaba kuvvetle kır",
+            "cmds": [
+              "ansible2john <FILE>.yml > vault.hash",
+              "john --wordlist=<PATH>/rockyou.txt vault.hash"
+            ],
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "ansible2john ships with John the Ripper jumbo; use only for authorized security testing of your own vaults."
+          },
+          {
+            "title": "Audit Vault Format and AES Cipher",
+            "desc": "Read the header to confirm the AES256 vault format version",
+            "desc_tr": "AES256 vault format sürümünü doğrulamak için başlığı oku",
+            "cmd": "head -1 <FILE>.yml",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Header looks like $ANSIBLE_VAULT;1.1;AES256 (or 1.2 when a vault-id label is embedded)."
+          }
+        ]
+      },
+      {
+        "name": "Roles & Galaxy",
+        "commands": [
+          {
+            "title": "Init New Role Skeleton",
+            "desc": "Create a standard role directory structure",
+            "desc_tr": "Standart bir rol dizin yapısı oluştur",
+            "cmd": "ansible-galaxy role init <ROLE_NAME>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Init Role at Custom Path",
+            "desc": "Create a role skeleton in a specific roles path",
+            "desc_tr": "Belirli bir roller yolunda rol iskeleti oluştur",
+            "cmd": "ansible-galaxy role init <ROLE_NAME> --init-path <PATH>/roles",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Init Role from Custom Skeleton",
+            "desc": "Scaffold a role using your own template skeleton",
+            "desc_tr": "Kendi şablon iskeletinizi kullanarak rol oluştur",
+            "cmd": "ansible-galaxy role init <ROLE_NAME> --role-skeleton <PATH>/skeleton",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Install Role from Galaxy",
+            "desc": "Download and install a role from Ansible Galaxy",
+            "desc_tr": "Ansible Galaxy'den bir rolü indir ve kur",
+            "cmd": "ansible-galaxy role install <NAMESPACE>.<ROLE_NAME>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Install Specific Role Version",
+            "desc": "Install a pinned role version or git tag",
+            "desc_tr": "Sabitlenmiş bir rol sürümünü veya git etiketini kur",
+            "cmd": "ansible-galaxy role install <NAMESPACE>.<ROLE_NAME>,<VERSION>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Install Roles from Requirements File",
+            "desc": "Install all roles listed in a requirements file",
+            "desc_tr": "Bir requirements dosyasında listelenen tüm rolleri kur",
+            "cmd": "ansible-galaxy role install -r requirements.yml",
+            "tags": [
+              "essential"
+            ],
+            "note": "requirements.yml supports src, name, version, scm and Galaxy roles together."
+          },
+          {
+            "title": "Install Roles to Custom Path",
+            "desc": "Install roles into a specific target directory",
+            "desc_tr": "Rolleri belirli bir hedef dizine kur",
+            "cmd": "ansible-galaxy role install -r requirements.yml -p <PATH>/roles",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Force Reinstall Role",
+            "desc": "Overwrite an already-installed role",
+            "desc_tr": "Zaten kurulu olan bir rolü üzerine yazarak yeniden kur",
+            "cmd": "ansible-galaxy role install --force <NAMESPACE>.<ROLE_NAME>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Install Role from Git Repository",
+            "desc": "Install a role directly from a git URL",
+            "desc_tr": "Bir rolü doğrudan git URL'sinden kur",
+            "cmd": "ansible-galaxy role install git+https://<DOMAIN>/<NAMESPACE>/<ROLE_NAME>.git",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Install Role from Git at Branch",
+            "desc": "Install a role from a specific git branch or tag",
+            "desc_tr": "Bir rolü belirli bir git dalından veya etiketinden kur",
+            "cmd": "ansible-galaxy role install git+https://<DOMAIN>/<NAMESPACE>/<ROLE_NAME>.git,<BRANCH>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List Installed Roles",
+            "desc": "Show all installed roles and their versions",
+            "desc_tr": "Kurulu tüm rolleri ve sürümlerini göster",
+            "cmd": "ansible-galaxy role list",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List a Specific Role",
+            "desc": "Show details for a single installed role",
+            "desc_tr": "Tek bir kurulu rolün ayrıntılarını göster",
+            "cmd": "ansible-galaxy role list <NAMESPACE>.<ROLE_NAME>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Show Role Info from Galaxy",
+            "desc": "Display metadata for a role on Galaxy",
+            "desc_tr": "Galaxy'deki bir rolün meta verilerini görüntüle",
+            "cmd": "ansible-galaxy role info <NAMESPACE>.<ROLE_NAME>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Search Roles on Galaxy",
+            "desc": "Search the Galaxy server for roles by keyword",
+            "desc_tr": "Galaxy sunucusunda anahtar kelimeyle rol ara",
+            "cmd": "ansible-galaxy role search <KEYWORD> --platforms <PLATFORM>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Remove Installed Role",
+            "desc": "Delete a role from the local roles path",
+            "desc_tr": "Yerel roller yolundan bir rolü sil",
+            "cmd": "ansible-galaxy role remove <NAMESPACE>.<ROLE_NAME>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Install Collection from Galaxy",
+            "desc": "Download and install an Ansible collection",
+            "desc_tr": "Bir Ansible koleksiyonunu indir ve kur",
+            "cmd": "ansible-galaxy collection install <NAMESPACE>.<COLLECTION>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Install Collection Version",
+            "desc": "Install a specific collection version constraint",
+            "desc_tr": "Belirli bir koleksiyon sürüm kısıtı kur",
+            "cmd": "ansible-galaxy collection install <NAMESPACE>.<COLLECTION>:>=1.2.0,<2.0.0",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Install Collections from Requirements",
+            "desc": "Install collections listed in a requirements file",
+            "desc_tr": "Bir requirements dosyasında listelenen koleksiyonları kur",
+            "cmd": "ansible-galaxy collection install -r requirements.yml",
+            "tags": [
+              "essential"
+            ],
+            "note": "In requirements.yml, roles and collections live under separate top-level keys."
+          },
+          {
+            "title": "Install Collection to Project Path",
+            "desc": "Install a collection into a local collections directory",
+            "desc_tr": "Bir koleksiyonu yerel collections dizinine kur",
+            "cmd": "ansible-galaxy collection install <NAMESPACE>.<COLLECTION> -p ./collections",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Install Collection from Tarball",
+            "desc": "Install a collection from a built artifact tarball",
+            "desc_tr": "Bir koleksiyonu derlenmiş artifact tarball'ından kur",
+            "cmd": "ansible-galaxy collection install <PATH>/<NAMESPACE>-<COLLECTION>-<VERSION>.tar.gz",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Init New Collection Skeleton",
+            "desc": "Scaffold a new collection directory structure",
+            "desc_tr": "Yeni bir koleksiyon dizin yapısı oluştur",
+            "cmd": "ansible-galaxy collection init <NAMESPACE>.<COLLECTION>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Build Collection Artifact",
+            "desc": "Build a distributable tarball from a collection",
+            "desc_tr": "Bir koleksiyondan dağıtılabilir tarball derle",
+            "cmd": "ansible-galaxy collection build <PATH> --output-path <PATH>/dist",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Publish Collection to Galaxy",
+            "desc": "Upload a built collection tarball to Galaxy",
+            "desc_tr": "Derlenmiş bir koleksiyon tarball'ını Galaxy'ye yükle",
+            "cmd": "ansible-galaxy collection publish <PATH>/<NAMESPACE>-<COLLECTION>-<VERSION>.tar.gz --token <TOKEN>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Prefer ANSIBLE_GALAXY_TOKEN env var or galaxy.yml over passing --token on the CLI."
+          },
+          {
+            "title": "List Installed Collections",
+            "desc": "Show all installed collections and versions",
+            "desc_tr": "Kurulu tüm koleksiyonları ve sürümlerini göster",
+            "cmd": "ansible-galaxy collection list",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Verify Installed Collection",
+            "desc": "Check installed collection integrity against Galaxy",
+            "desc_tr": "Kurulu koleksiyon bütünlüğünü Galaxy'ye karşı doğrula",
+            "cmd": "ansible-galaxy collection verify <NAMESPACE>.<COLLECTION>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Download Collection without Installing",
+            "desc": "Pre-fetch a collection and its dependencies offline",
+            "desc_tr": "Bir koleksiyonu ve bağımlılıklarını kurmadan çevrimdışı indir",
+            "cmd": "ansible-galaxy collection download <NAMESPACE>.<COLLECTION> -p <PATH>/offline",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Use Custom Galaxy Server",
+            "desc": "Install from a private Automation Hub or Galaxy server",
+            "desc_tr": "Özel bir Automation Hub veya Galaxy sunucusundan kur",
+            "cmd": "ansible-galaxy collection install <NAMESPACE>.<COLLECTION> -s https://<DOMAIN>/api/galaxy/",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Configure private servers and tokens in ansible.cfg under [galaxy] and [galaxy_server.*]."
+          },
+          {
+            "title": "Force Install with Dependencies",
+            "desc": "Reinstall a collection and all its dependencies",
+            "desc_tr": "Bir koleksiyonu ve tüm bağımlılıklarını yeniden kur",
+            "cmd": "ansible-galaxy collection install <NAMESPACE>.<COLLECTION> --force-with-deps",
+            "tags": [
+              "tool"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Facts, Variables & Templates",
+        "commands": [
+          {
+            "title": "Gather All Host Facts",
+            "desc": "Collect system facts from target hosts",
+            "desc_tr": "Hedef sunuculardan sistem facts (bilgilerini) topla",
+            "cmd": "ansible <TARGET_IP> -m setup",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Filter Specific Facts",
+            "desc": "Show only matching facts via wildcard filter",
+            "desc_tr": "Joker filtre ile yalnızca eşleşen facts göster",
+            "cmd": "ansible all -m setup -a 'filter=ansible_*_mb'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Gather Only Network Facts Subset",
+            "desc": "Limit fact collection to network subset for speed",
+            "desc_tr": "Hız için fact toplamayı network alt kümesiyle sınırla",
+            "cmd": "ansible all -m setup -a 'gather_subset=network'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Exclude Costly Fact Subsets",
+            "desc": "Skip hardware and facter to speed up gathering",
+            "desc_tr": "Toplamayı hızlandırmak için hardware ve facter'i atla",
+            "cmd": "ansible all -m setup -a 'gather_subset=!hardware,!facter'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Save Facts to Disk (Fact Cache)",
+            "desc": "Write gathered facts as JSON per host",
+            "desc_tr": "Toplanan facts'i her sunucu için JSON olarak diske yaz",
+            "cmd": "ansible all -m setup --tree /tmp/facts",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Define Extra Vars on CLI",
+            "desc": "Pass variables at runtime with highest precedence",
+            "desc_tr": "Çalışma anında en yüksek öncelikli değişken geçir",
+            "cmd": "ansible-playbook site.yml -e 'env=prod app_version=1.2.3'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Load Extra Vars from File",
+            "desc": "Inject variables from an external JSON/YAML file",
+            "desc_tr": "Harici JSON/YAML dosyasından değişken enjekte et",
+            "cmd": "ansible-playbook site.yml -e @<FILE>.yml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Render a Jinja2 Template",
+            "desc": "Process a template and deploy it to a host path",
+            "desc_tr": "Bir template'i işle ve sunucu yoluna dağıt",
+            "cmd": "ansible all -m template -a 'src=app.conf.j2 dest=<PATH>/app.conf'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Validate Template Before Deploy",
+            "desc": "Run a validation command on rendered file before replacing",
+            "desc_tr": "Değiştirmeden önce işlenmiş dosyada doğrulama komutu çalıştır",
+            "cmd": "ansible web -m template -a 'src=nginx.conf.j2 dest=/etc/nginx/nginx.conf validate=\"nginx -t -c %s\"'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Register Command Output as Variable",
+            "desc": "Capture task result into a variable for later use",
+            "desc_tr": "Görev sonucunu sonradan kullanmak için değişkene yakala",
+            "cmd": "ansible all -m shell -a 'uptime' -v",
+            "tags": [
+              "essential"
+            ],
+            "note": "In playbooks use 'register: result' then reference result.stdout in later tasks."
+          },
+          {
+            "title": "Print a Variable with Debug",
+            "desc": "Display a variable or fact value during a run",
+            "desc_tr": "Çalışma sırasında bir değişken veya fact değerini göster",
+            "cmd": "ansible all -m debug -a 'var=ansible_default_ipv4.address'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Evaluate a Jinja2 Expression",
+            "desc": "Print a templated message using debug msg",
+            "desc_tr": "debug msg ile şablonlanmış bir mesaj yazdır",
+            "cmd": "ansible all -m debug -a 'msg=\"Host {{ inventory_hostname }} runs {{ ansible_distribution }}\"'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Set a Host Fact at Runtime",
+            "desc": "Create a custom fact via set_fact module",
+            "desc_tr": "set_fact modülü ile özel bir fact oluştur",
+            "cmd": "ansible all -m set_fact -a 'app_port=8080 deploy_user=svc'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Deploy a Custom Local Fact",
+            "desc": "Install a .fact file read into ansible_local",
+            "desc_tr": "ansible_local içine okunan bir .fact dosyası kur",
+            "cmds": [
+              "ansible all -m file -a 'path=/etc/ansible/facts.d state=directory'",
+              "ansible all -m copy -a 'src=custom.fact dest=/etc/ansible/facts.d/custom.fact mode=0755'",
+              "ansible all -m setup -a 'filter=ansible_local'"
+            ],
+            "tags": [
+              "advanced"
+            ],
+            "note": ".fact files must be INI, JSON, or executable scripts emitting JSON; appear under ansible_local.<name>."
+          },
+          {
+            "title": "Test Inventory Variable Resolution",
+            "desc": "Show all variables resolved for a host",
+            "desc_tr": "Bir sunucu için çözülen tüm değişkenleri göster",
+            "cmd": "ansible-inventory --host <TARGET_IP> -i inventory.ini",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "List Inventory Groups and Vars",
+            "desc": "Dump the full inventory as YAML with group vars",
+            "desc_tr": "Tüm envanteri grup değişkenleriyle YAML olarak dök",
+            "cmd": "ansible-inventory -i inventory.ini --list --yaml",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Use Vaulted Variable File",
+            "desc": "Decrypt an encrypted vars file during the play",
+            "desc_tr": "Oynatma sırasında şifreli bir vars dosyasını çöz",
+            "cmd": "ansible-playbook site.yml -e @secrets.yml --ask-vault-pass",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Encrypt a Single Variable",
+            "desc": "Generate an inline encrypted vault string for a var",
+            "desc_tr": "Bir değişken için satır içi şifreli vault dizesi üret",
+            "cmd": "ansible-vault encrypt_string 's3cr3t' --name 'db_password'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Pass Extra Vars to Skip Prompts",
+            "desc": "Provide vars that would otherwise be prompted interactively",
+            "desc_tr": "Aksi halde etkileşimli sorulacak değişkenleri geçir",
+            "cmd": "ansible-playbook deploy.yml -e 'confirm=yes target_env=<NAMESPACE>'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Use default Filter for Safe Vars",
+            "desc": "Provide a fallback when a variable is undefined",
+            "desc_tr": "Bir değişken tanımsızken yedek değer sağla",
+            "cmd": "ansible all -m debug -a 'msg=\"{{ http_port | default(80) }}\"'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Serialize Facts with to_nice_json Filter",
+            "desc": "Pretty-print a variable as JSON within a template",
+            "desc_tr": "Bir değişkeni template içinde düzgün JSON olarak yazdır",
+            "cmd": "ansible all -m debug -a 'msg=\"{{ ansible_facts | to_nice_json }}\"'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Manipulate Lists with map and join",
+            "desc": "Transform and join a list variable in a template",
+            "desc_tr": "Template'te bir liste değişkenini dönüştür ve birleştir",
+            "cmd": "ansible all -m debug -a \"msg={{ groups['web'] | map('extract', hostvars, 'ansible_host') | join(',') }}\"",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Reference Another Host's Variable",
+            "desc": "Access a fact from a different host via hostvars",
+            "desc_tr": "hostvars ile başka bir sunucunun fact'ine eriş",
+            "cmd": "ansible all -m debug -a \"msg={{ hostvars['db01']['ansible_default_ipv4']['address'] }}\"",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Template a File Locally via Lookup",
+            "desc": "Render template content using the template lookup",
+            "desc_tr": "template lookup ile şablon içeriğini işle",
+            "cmd": "ansible localhost -m debug -a \"msg={{ lookup('template', 'banner.j2') }}\"",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Read Env Var into a Variable",
+            "desc": "Pull an environment value with the env lookup",
+            "desc_tr": "env lookup ile bir ortam değerini çek",
+            "cmd": "ansible localhost -m debug -a \"msg={{ lookup('env', 'HOME') }}\"",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Combine Dictionaries with combine Filter",
+            "desc": "Merge two dict variables recursively into one",
+            "desc_tr": "İki sözlük değişkenini özyinelemeli olarak birleştir",
+            "cmd": "ansible localhost -m debug -a \"msg={{ defaults | combine(overrides, recursive=True) }}\" -e '{\"defaults\":{\"a\":1},\"overrides\":{\"b\":2}}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Generate Password Hash in Template",
+            "desc": "Produce a SHA-512 crypt hash via password_hash",
+            "desc_tr": "password_hash ile SHA-512 crypt hash üret",
+            "cmd": "ansible localhost -m debug -a \"msg={{ 'mypass' | password_hash('sha512') }}\"",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Requires the passlib library on the controller for full algorithm support."
+          }
+        ]
+      },
+      {
+        "name": "Hardening & Security (lockdown roles, ansible-lint)",
+        "commands": [
+          {
+            "title": "Install ansible-lint",
+            "desc": "Install ansible-lint via pip into your environment.",
+            "desc_tr": "ansible-lint aracını pip ile ortamınıza kurar.",
+            "cmd": "pip install ansible-lint",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Lint a playbook",
+            "desc": "Run ansible-lint against a single playbook file.",
+            "desc_tr": "Tek bir playbook dosyasını ansible-lint ile denetler.",
+            "cmd": "ansible-lint <FILE>.yml",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Lint the whole project",
+            "desc": "Auto-detect and lint all playbooks and roles in the project.",
+            "desc_tr": "Projedeki tüm playbook ve rolleri otomatik bulup denetler.",
+            "cmd": "ansible-lint",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Lint with production profile",
+            "desc": "Enforce the strictest built-in ruleset profile.",
+            "desc_tr": "En katı yerleşik kural profili olan 'production' ile denetler.",
+            "cmd": "ansible-lint --profile production",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "List available profiles",
+            "desc": "Show all linting profiles from min to production.",
+            "desc_tr": "min'den production'a kadar tüm denetim profillerini listeler.",
+            "cmd": "ansible-lint --list-profiles",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "List all enabled rules",
+            "desc": "Print every rule ansible-lint can apply with tags.",
+            "desc_tr": "ansible-lint'in uygulayabileceği tüm kuralları etiketleriyle gösterir.",
+            "cmd": "ansible-lint -L",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Auto-fix lint violations",
+            "desc": "Automatically rewrite files to fix supported rule violations.",
+            "desc_tr": "Desteklenen kural ihlallerini dosyaları yeniden yazarak otomatik düzeltir.",
+            "cmd": "ansible-lint --fix",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Always run inside git so you can review and revert the rewritten YAML."
+          },
+          {
+            "title": "Fix only specific rule types",
+            "desc": "Limit auto-fix to chosen transform tags such as yaml and fqcn.",
+            "desc_tr": "Otomatik düzeltmeyi yalnızca seçili etiketlerle (yaml, fqcn) sınırlar.",
+            "cmd": "ansible-lint --fix=yaml,fqcn",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Lint output as SARIF for CI",
+            "desc": "Emit SARIF JSON for code scanning dashboards.",
+            "desc_tr": "Kod tarama panoları için SARIF JSON formatında çıktı üretir.",
+            "cmd": "ansible-lint -f sarif > ansible-lint.sarif",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Strict mode treats warnings as errors",
+            "desc": "Fail the run on any warning, ideal for gating pipelines.",
+            "desc_tr": "Her uyarıda başarısız olur; CI kapısı için idealdir.",
+            "cmd": "ansible-lint --strict",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Generate ansible-lint config",
+            "desc": "Scaffold a baseline .ansible-lint config file.",
+            "desc_tr": "Temel bir .ansible-lint yapılandırma dosyası oluşturur.",
+            "cmd": "ansible-lint --generate-ignore",
+            "tags": [
+              "tool"
+            ],
+            "note": "Creates .ansible-lint-ignore to grandfather existing violations without failing CI."
+          },
+          {
+            "title": "Run ansible-lint as a container",
+            "desc": "Lint without local install using the official image.",
+            "desc_tr": "Yerel kurulum olmadan resmi imajla denetim yapar.",
+            "cmd": "docker run --rm -v $(pwd):/data:Z ghcr.io/ansible/community-ansible-dev-tools:latest ansible-lint",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Install the DevSec SSH hardening role",
+            "desc": "Pull the community SSH lockdown role from Galaxy.",
+            "desc_tr": "Topluluğun SSH sıkılaştırma rolünü Galaxy'den indirir.",
+            "cmd": "ansible-galaxy install devsec.hardening",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Install hardening collection from requirements",
+            "desc": "Install pinned hardening collections declared in requirements.",
+            "desc_tr": "requirements dosyasındaki sabitlenmiş sıkılaştırma koleksiyonlarını kurar.",
+            "cmd": "ansible-galaxy collection install -r requirements.yml",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Apply OS hardening role to a host",
+            "desc": "Run a playbook that includes the devsec os_hardening role.",
+            "desc_tr": "devsec os_hardening rolünü içeren playbook'u bir sunucuda çalıştırır.",
+            "cmd": "ansible-playbook -i <TARGET_IP>, harden.yml -b -u <USER> -K",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Dry-run hardening with diff",
+            "desc": "Preview every change the lockdown role would make without applying.",
+            "desc_tr": "Sıkılaştırma rolünün yapacağı değişiklikleri uygulamadan önizler.",
+            "cmd": "ansible-playbook harden.yml --check --diff -i inventory.ini",
+            "tags": [
+              "essential"
+            ],
+            "note": "Some hardening tasks need facts from prior changes; check mode may report false positives on chained tasks."
+          },
+          {
+            "title": "Apply only firewall/SSH tagged tasks",
+            "desc": "Limit a hardening run to specific tagged sections.",
+            "desc_tr": "Sıkılaştırma çalışmasını yalnızca belirli etiketli bölümlerle sınırlar.",
+            "cmd": "ansible-playbook harden.yml -i inventory.ini --tags ssh,firewall",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Encrypt secrets with Ansible Vault",
+            "desc": "Encrypt a vars file holding credentials at rest.",
+            "desc_tr": "Kimlik bilgilerini içeren değişken dosyasını şifreler.",
+            "cmd": "ansible-vault encrypt group_vars/<GROUP>/secrets.yml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Encrypt a single inline secret",
+            "desc": "Produce an encrypted string to embed in plaintext YAML.",
+            "desc_tr": "Düz YAML içine gömülecek tek bir şifreli string üretir.",
+            "cmd": "ansible-vault encrypt_string '<SECRET>' --name '<VAR_NAME>'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run playbook with vault password file",
+            "desc": "Supply the vault key non-interactively for automation.",
+            "desc_tr": "Otomasyon için vault anahtarını etkileşimsiz olarak sağlar.",
+            "cmd": "ansible-playbook harden.yml --vault-password-file <FILE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Rekey a vault file",
+            "desc": "Rotate the encryption password on an existing vault file.",
+            "desc_tr": "Mevcut bir vault dosyasının şifreleme parolasını döndürür.",
+            "cmd": "ansible-vault rekey group_vars/<GROUP>/secrets.yml",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Scan content with ansible-lint security tags",
+            "desc": "Run only rules tagged for security and risky behaviors.",
+            "desc_tr": "Yalnızca güvenlik ve riskli davranış etiketli kuralları çalıştırır.",
+            "cmd": "ansible-lint --tags risky-shell-pipe,no-log-password,risky-file-permissions",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Validate playbook syntax before applying",
+            "desc": "Catch parse errors without touching any host.",
+            "desc_tr": "Hiçbir sunucuya dokunmadan ayrıştırma hatalarını yakalar.",
+            "cmd": "ansible-playbook harden.yml --syntax-check",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run a CIS-style compliance audit role",
+            "desc": "Execute an audit-only run from the ansible-lockdown CIS role.",
+            "desc_tr": "ansible-lockdown CIS rolünden yalnızca denetim modunda çalıştırır.",
+            "cmd": "ansible-playbook site.yml -i inventory.ini -e 'run_audit=true' --tags audit",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "ansible-lockdown CIS roles integrate with the goss-based audit binary; set run_audit and the audit vars per role README."
+          },
+          {
+            "title": "Pre-commit hook for ansible-lint",
+            "desc": "Register ansible-lint as a pre-commit hook to gate every commit.",
+            "desc_tr": "Her commit'i denetlemek için ansible-lint'i pre-commit kancası olarak ekler.",
+            "cmd": "pre-commit run ansible-lint --all-files",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Enforce least-privilege become per task",
+            "desc": "Grep playbooks for blanket privilege escalation to tighten scope.",
+            "desc_tr": "Yetki yükseltmeyi daraltmak için playbook'larda toplu become kullanımını arar.",
+            "cmd": "grep -rn 'become: true' roles/ playbooks/",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Verify SSH lockdown on target",
+            "desc": "Confirm sshd config after hardening rejects weak settings.",
+            "desc_tr": "Sıkılaştırma sonrası sshd yapılandırmasının zayıf ayarları reddettiğini doğrular.",
+            "cmd": "ansible <TARGET_IP> -i inventory.ini -b -m command -a 'sshd -T'",
+            "tags": [
+              "advanced"
+            ]
+          }
+        ]
+      }
+    ]
   }
 ];
