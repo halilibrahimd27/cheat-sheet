@@ -24112,5 +24112,2128 @@ module.exports = [
     ],
     "name_tr": "MSFVenom Payload Referansı",
     "description_tr": "Comprehensive msfvenom payload generation for various platforms, formats, and encoders."
+  },
+  {
+    "id": "docker-engine",
+    "name": "Docker — Engine & CLI",
+    "name_tr": "Docker — Motor & CLI",
+    "icon": "🐳",
+    "description": "Day-to-day Docker operations: image build/manage, container lifecycle, volumes, networks, Compose, buildx, registry, and troubleshooting.",
+    "description_tr": "Günlük Docker operasyonları: imaj derleme/yönetme, konteyner yaşam döngüsü, volumelar, ağlar, Compose, buildx, registry ve sorun giderme.",
+    "subcategories": [
+      {
+        "name": "Images (build, tag, pull, push, prune, history, inspect)",
+        "commands": [
+          {
+            "title": "Build Image from Dockerfile",
+            "desc": "Build an image from the Dockerfile in the current context",
+            "desc_tr": "Mevcut dizindeki Dockerfile'dan bir imaj derler",
+            "cmd": "docker build -t <IMAGE>:<TAG> .",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Build with Custom Dockerfile Path",
+            "desc": "Build using a Dockerfile at a specific path",
+            "desc_tr": "Belirli bir yoldaki Dockerfile'ı kullanarak derler",
+            "cmd": "docker build -t <IMAGE>:<TAG> -f <PATH>/Dockerfile .",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Build with Build Arguments",
+            "desc": "Pass build-time variables into the build",
+            "desc_tr": "Derleme anında değişkenleri build'e geçirir",
+            "cmd": "docker build --build-arg VERSION=1.0 -t <IMAGE>:<TAG> .",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Build Without Cache",
+            "desc": "Force a fresh build ignoring layer cache",
+            "desc_tr": "Katman önbelleğini yok sayarak temiz bir derleme yapmaya zorlar",
+            "cmd": "docker build --no-cache -t <IMAGE>:<TAG> .",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Build Specific Target Stage",
+            "desc": "Build only a named stage in a multi-stage Dockerfile",
+            "desc_tr": "Çok aşamalı Dockerfile'da yalnızca adlandırılmış bir aşamayı derler",
+            "cmd": "docker build --target <STAGE> -t <IMAGE>:<TAG> .",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Build Multi-Platform Image",
+            "desc": "Build and push a multi-arch image with Buildx",
+            "desc_tr": "Buildx ile çok mimarili bir imaj derleyip gönderir",
+            "cmd": "docker buildx build --platform linux/amd64,linux/arm64 -t <REGISTRY>/<IMAGE>:<TAG> --push .",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Requires Buildx and a builder instance: docker buildx create --use"
+          },
+          {
+            "title": "List Local Images",
+            "desc": "List all locally stored images",
+            "desc_tr": "Yerel olarak depolanan tüm imajları listeler",
+            "cmd": "docker images",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List Image IDs Only",
+            "desc": "Output only image IDs, useful for scripting",
+            "desc_tr": "Yalnızca imaj kimliklerini çıktılar, betikler için kullanışlıdır",
+            "cmd": "docker images -q",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List Dangling Images",
+            "desc": "Show untagged dangling images",
+            "desc_tr": "Etiketsiz (dangling) imajları gösterir",
+            "cmd": "docker images -f dangling=true",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Tag an Image",
+            "desc": "Create a new tag referencing an existing image",
+            "desc_tr": "Mevcut bir imaja işaret eden yeni bir etiket oluşturur",
+            "cmd": "docker tag <IMAGE>:<TAG> <REGISTRY>/<NAMESPACE>/<IMAGE>:<TAG>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Pull an Image",
+            "desc": "Download an image from a registry",
+            "desc_tr": "Bir kayıt sunucusundan imaj indirir",
+            "cmd": "docker pull <REGISTRY>/<NAMESPACE>/<IMAGE>:<TAG>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Pull All Tags of a Repo",
+            "desc": "Download every tag of a repository",
+            "desc_tr": "Bir deponun tüm etiketlerini indirir",
+            "cmd": "docker pull -a <REGISTRY>/<NAMESPACE>/<IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Pull Specific Platform",
+            "desc": "Pull an image for a specific architecture",
+            "desc_tr": "Belirli bir mimari için imaj indirir",
+            "cmd": "docker pull --platform linux/arm64 <IMAGE>:<TAG>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Login to Registry",
+            "desc": "Authenticate to a registry before pushing",
+            "desc_tr": "Göndermeden önce kayıt sunucusunda kimlik doğrular",
+            "cmd": "docker login <REGISTRY>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Use 'docker login' with no arg for Docker Hub."
+          },
+          {
+            "title": "Push an Image",
+            "desc": "Upload a tagged image to a registry",
+            "desc_tr": "Etiketlenmiş bir imajı kayıt sunucusuna yükler",
+            "cmd": "docker push <REGISTRY>/<NAMESPACE>/<IMAGE>:<TAG>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect Image Metadata",
+            "desc": "Show full low-level JSON metadata of an image",
+            "desc_tr": "Bir imajın tüm düşük seviye JSON meta verisini gösterir",
+            "cmd": "docker inspect <IMAGE>:<TAG>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect Image Env Variables",
+            "desc": "Extract environment variables using a Go template",
+            "desc_tr": "Go şablonu kullanarak ortam değişkenlerini çıkarır",
+            "cmd": "docker inspect --format '{{range .Config.Env}}{{println .}}{{end}}' <IMAGE>:<TAG>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Get Image Digest",
+            "desc": "Print the repo digest for content-addressable pulls",
+            "desc_tr": "İçerik adresli çekmeler için depo digest değerini yazdırır",
+            "cmd": "docker inspect --format '{{index .RepoDigests 0}}' <IMAGE>:<TAG>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Show Image Layer History",
+            "desc": "Display the build history and layer sizes",
+            "desc_tr": "Derleme geçmişini ve katman boyutlarını gösterir",
+            "cmd": "docker history <IMAGE>:<TAG>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Full History Without Truncation",
+            "desc": "Show complete layer commands without truncating",
+            "desc_tr": "Katman komutlarını kırpmadan eksiksiz gösterir",
+            "cmd": "docker history --no-trunc <IMAGE>:<TAG>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Remove an Image",
+            "desc": "Delete a local image by name or ID",
+            "desc_tr": "Bir yerel imajı ad veya kimlikle siler",
+            "cmd": "docker rmi <IMAGE>:<TAG>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Force Remove Image",
+            "desc": "Forcefully remove an image even if referenced",
+            "desc_tr": "Referans verilse bile imajı zorla kaldırır",
+            "cmd": "docker rmi -f <IMAGE>:<TAG>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Prune Dangling Images",
+            "desc": "Remove all dangling (untagged) images",
+            "desc_tr": "Tüm etiketsiz (dangling) imajları kaldırır",
+            "cmd": "docker image prune -f",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Prune All Unused Images",
+            "desc": "Remove all images not used by any container",
+            "desc_tr": "Hiçbir container tarafından kullanılmayan tüm imajları kaldırır",
+            "cmd": "docker image prune -a -f",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Aggressive: deletes every image not currently in use."
+          },
+          {
+            "title": "Save Image to Tar Archive",
+            "desc": "Export an image to a portable tar file",
+            "desc_tr": "Bir imajı taşınabilir tar dosyasına aktarır",
+            "cmd": "docker save -o <FILE>.tar <IMAGE>:<TAG>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Load Image from Tar Archive",
+            "desc": "Import an image from a tar archive",
+            "desc_tr": "Bir imajı tar arşivinden içe aktarır",
+            "cmd": "docker load -i <FILE>.tar",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Search Docker Hub",
+            "desc": "Search Docker Hub for images by keyword",
+            "desc_tr": "Docker Hub'da anahtar kelimeyle imaj arar",
+            "cmd": "docker search <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Scan Image for Vulnerabilities",
+            "desc": "Scan an image for CVEs using Docker Scout",
+            "desc_tr": "Docker Scout ile imajı CVE'ler açısından tarar",
+            "cmd": "docker scout cves <IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Requires Docker Scout (bundled in recent Docker Desktop/CLI)."
+          }
+        ]
+      },
+      {
+        "name": "Containers (run, exec, logs, stats, cp, commit, restart policies)",
+        "commands": [
+          {
+            "title": "Run Detached Container",
+            "desc": "Start a container in the background (detached)",
+            "desc_tr": "Bir konteyneri arka planda (detached) başlat",
+            "cmd": "docker run -d --name <CONTAINER> <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run Interactive Shell",
+            "desc": "Run an interactive TTY session and auto-remove on exit",
+            "desc_tr": "Etkileşimli TTY oturumu çalıştır ve çıkışta otomatik sil",
+            "cmd": "docker run -it --rm <IMAGE> /bin/sh",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run with Port Mapping",
+            "desc": "Publish container port to host (host:container)",
+            "desc_tr": "Konteyner portunu host'a yayınla (host:konteyner)",
+            "cmd": "docker run -d -p 8080:80 --name <CONTAINER> <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run with Env Var and Volume",
+            "desc": "Pass an environment variable and bind-mount a host path",
+            "desc_tr": "Ortam değişkeni geçir ve host dizinini bağla (bind-mount)",
+            "cmd": "docker run -d -e KEY=value -v <PATH>:/data --name <CONTAINER> <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run with Resource Limits",
+            "desc": "Cap container memory and CPU usage",
+            "desc_tr": "Konteyner bellek ve CPU kullanımını sınırla",
+            "cmd": "docker run -d --memory=512m --cpus=1.5 --name <CONTAINER> <IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run as Non-Root User",
+            "desc": "Run the container process as a specific UID:GID",
+            "desc_tr": "Konteyner sürecini belirli bir UID:GID ile çalıştır",
+            "cmd": "docker run -d --user 1000:1000 --name <CONTAINER> <IMAGE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Hardening: avoid running as root inside containers."
+          },
+          {
+            "title": "Run with Read-Only Root FS",
+            "desc": "Make the root filesystem immutable, add writable tmpfs",
+            "desc_tr": "Kök dosya sistemini değişmez yap, yazılabilir tmpfs ekle",
+            "cmd": "docker run -d --read-only --tmpfs /tmp --name <CONTAINER> <IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Exec Into Running Container",
+            "desc": "Open an interactive shell inside a running container",
+            "desc_tr": "Çalışan konteyner içinde etkileşimli kabuk aç",
+            "cmd": "docker exec -it <CONTAINER> /bin/bash",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Exec Single Command",
+            "desc": "Run a one-off command inside a running container",
+            "desc_tr": "Çalışan konteyner içinde tek seferlik komut çalıştır",
+            "cmd": "docker exec <CONTAINER> ls -la /app",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Exec as Root User",
+            "desc": "Enter a container as root for debugging",
+            "desc_tr": "Hata ayıklama için konteynere root olarak gir",
+            "cmd": "docker exec -u 0 -it <CONTAINER> /bin/sh",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "View Container Logs",
+            "desc": "Show the stdout/stderr logs of a container",
+            "desc_tr": "Konteynerin stdout/stderr günlüklerini göster",
+            "cmd": "docker logs <CONTAINER>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Follow Logs Live",
+            "desc": "Stream live logs starting from the last 100 lines",
+            "desc_tr": "Son 100 satırdan başlayarak canlı günlükleri akıt",
+            "cmd": "docker logs -f --tail 100 <CONTAINER>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Logs Since Timestamp",
+            "desc": "Show timestamped logs from the last 30 minutes",
+            "desc_tr": "Son 30 dakikanın zaman damgalı günlüklerini göster",
+            "cmd": "docker logs --since 30m -t <CONTAINER>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Live Resource Stats",
+            "desc": "Live stream of CPU, memory, net and I/O for all containers",
+            "desc_tr": "Tüm konteynerler için canlı CPU, bellek, ağ ve I/O akışı",
+            "cmd": "docker stats",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Stats No-Stream Snapshot",
+            "desc": "One-shot formatted resource snapshot of a container",
+            "desc_tr": "Bir konteynerin tek seferlik biçimlendirilmiş kaynak anlık görüntüsü",
+            "cmd": "docker stats --no-stream --format 'table {{.Name}}\\t{{.CPUPerc}}\\t{{.MemUsage}}' <CONTAINER>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Show Running Processes",
+            "desc": "List processes running inside a container",
+            "desc_tr": "Konteyner içinde çalışan süreçleri listele",
+            "cmd": "docker top <CONTAINER>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Copy File From Container",
+            "desc": "Copy a file or directory out of a container to the host",
+            "desc_tr": "Konteynerden host'a dosya veya dizin kopyala",
+            "cmd": "docker cp <CONTAINER>:/app/<FILE> <PATH>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Copy File Into Container",
+            "desc": "Copy a file from the host into a running container",
+            "desc_tr": "Host'tan çalışan konteyner içine dosya kopyala",
+            "cmd": "docker cp <PATH>/<FILE> <CONTAINER>:/app/",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Commit Container to Image",
+            "desc": "Create a new image from a container's current state",
+            "desc_tr": "Konteynerin mevcut durumundan yeni bir imaj oluştur",
+            "cmd": "docker commit -m 'snapshot' <CONTAINER> <IMAGE>:snapshot",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Prefer a Dockerfile for reproducible builds; commit is for ad-hoc snapshots."
+          },
+          {
+            "title": "Run with No Restart Policy",
+            "desc": "Never automatically restart the container (default)",
+            "desc_tr": "Konteyneri asla otomatik yeniden başlatma (varsayılan)",
+            "cmd": "docker run -d --restart=no --name <CONTAINER> <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Restart On Failure with Limit",
+            "desc": "Restart only on non-zero exit, up to 5 attempts",
+            "desc_tr": "Yalnızca sıfırdan farklı çıkışta, en fazla 5 deneme yeniden başlat",
+            "cmd": "docker run -d --restart=on-failure:5 --name <CONTAINER> <IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Always Restart Policy",
+            "desc": "Always restart the container, even after daemon reboot",
+            "desc_tr": "Konteyneri her zaman, daemon yeniden başlasa bile yeniden başlat",
+            "cmd": "docker run -d --restart=always --name <CONTAINER> <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Restart Unless Stopped",
+            "desc": "Restart automatically unless explicitly stopped by user",
+            "desc_tr": "Kullanıcı açıkça durdurmadıkça otomatik yeniden başlat",
+            "cmd": "docker run -d --restart=unless-stopped --name <CONTAINER> <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Update Restart Policy Live",
+            "desc": "Change the restart policy of an existing container",
+            "desc_tr": "Mevcut bir konteynerin yeniden başlatma politikasını değiştir",
+            "cmd": "docker update --restart=unless-stopped <CONTAINER>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Restart a Container",
+            "desc": "Stop and start a container with a 10s grace timeout",
+            "desc_tr": "Konteyneri 10 saniyelik bekleme süresiyle durdur ve başlat",
+            "cmd": "docker restart -t 10 <CONTAINER>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect Exit Code and State",
+            "desc": "Show status, last exit code and restart count",
+            "desc_tr": "Durum, son çıkış kodu ve yeniden başlatma sayısını göster",
+            "cmd": "docker inspect -f '{{.State.Status}} {{.State.ExitCode}} {{.RestartCount}}' <CONTAINER>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Auto-Remove on Exit",
+            "desc": "Automatically delete the container when it stops",
+            "desc_tr": "Konteyner durduğunda otomatik olarak sil",
+            "cmd": "docker run --rm -d --name <CONTAINER> <IMAGE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "--rm cannot be combined with a restart policy."
+          },
+          {
+            "title": "Run with Healthcheck",
+            "desc": "Define a runtime health check probe for the container",
+            "desc_tr": "Konteyner için çalışma zamanı sağlık denetimi tanımla",
+            "cmd": "docker run -d --health-cmd='curl -f http://localhost/ || exit 1' --health-interval=30s --name <CONTAINER> <IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Volumes & Bind Mounts",
+        "commands": [
+          {
+            "title": "List All Volumes",
+            "desc": "List all Docker named volumes",
+            "desc_tr": "Tüm Docker isimli volume'lerini listele",
+            "cmd": "docker volume ls",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Create a Named Volume",
+            "desc": "Create a new named volume",
+            "desc_tr": "Yeni bir isimli volume oluştur",
+            "cmd": "docker volume create <VOLUME>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect a Volume",
+            "desc": "Show volume details including mountpoint on host",
+            "desc_tr": "Host üzerindeki mountpoint dahil volume detaylarını göster",
+            "cmd": "docker volume inspect <VOLUME>",
+            "tags": [
+              "essential"
+            ],
+            "note": "The 'Mountpoint' field shows where the volume data lives on the host (usually under /var/lib/docker/volumes/)."
+          },
+          {
+            "title": "Remove a Volume",
+            "desc": "Delete a named volume (must not be in use)",
+            "desc_tr": "İsimli bir volume'ü sil (kullanımda olmamalı)",
+            "cmd": "docker volume rm <VOLUME>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Prune Unused Volumes",
+            "desc": "Remove all volumes not used by at least one container",
+            "desc_tr": "En az bir container tarafından kullanılmayan tüm volume'leri kaldır",
+            "cmd": "docker volume prune -f",
+            "tags": [
+              "essential"
+            ],
+            "note": "Add '--all' to also remove named volumes, not just anonymous ones. This is destructive and irreversible."
+          },
+          {
+            "title": "Run with Named Volume (-v)",
+            "desc": "Mount a named volume into a container",
+            "desc_tr": "Bir container'a isimli volume bağla",
+            "cmd": "docker run -d -v <VOLUME>:/data <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run with Named Volume (--mount)",
+            "desc": "Mount a volume using the explicit --mount syntax",
+            "desc_tr": "Açık --mount sözdizimiyle bir volume bağla",
+            "cmd": "docker run -d --mount type=volume,source=<VOLUME>,target=/data <IMAGE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "--mount is more verbose but clearer and the recommended syntax; it errors if the source is missing rather than silently creating it."
+          },
+          {
+            "title": "Bind Mount a Host Directory (-v)",
+            "desc": "Bind mount a host path into a container",
+            "desc_tr": "Bir host yolunu container'a bind mount et",
+            "cmd": "docker run -d -v <PATH>:/app <IMAGE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "With -v, a non-existent host path is auto-created as a directory; with --mount it errors instead."
+          },
+          {
+            "title": "Bind Mount a Host Directory (--mount)",
+            "desc": "Bind mount a host path using --mount syntax",
+            "desc_tr": "--mount sözdizimiyle bir host yolunu bind mount et",
+            "cmd": "docker run -d --mount type=bind,source=<PATH>,target=/app <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Read-Only Bind Mount",
+            "desc": "Mount a host directory read-only inside the container",
+            "desc_tr": "Bir host dizinini container içinde salt-okunur bağla",
+            "cmd": "docker run -d -v <PATH>:/app:ro <IMAGE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "':ro' prevents the container from modifying mounted files; use ':rw' (default) for read-write."
+          },
+          {
+            "title": "Read-Only Volume via --mount",
+            "desc": "Mount a volume read-only using --mount",
+            "desc_tr": "--mount ile bir volume'ü salt-okunur bağla",
+            "cmd": "docker run -d --mount type=volume,source=<VOLUME>,target=/data,readonly <IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Anonymous Volume",
+            "desc": "Create an anonymous volume at a container path",
+            "desc_tr": "Bir container yolunda anonim volume oluştur",
+            "cmd": "docker run -d -v /data <IMAGE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Anonymous volumes get a random hash name and are easy to orphan; prefer named volumes for persistence."
+          },
+          {
+            "title": "tmpfs Mount (In-Memory)",
+            "desc": "Mount an in-memory tmpfs filesystem (not persisted)",
+            "desc_tr": "Bellek içi tmpfs dosya sistemi bağla (kalıcı değil)",
+            "cmd": "docker run -d --tmpfs /run:rw,size=64m,mode=1777 <IMAGE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "tmpfs lives only in RAM and disappears when the container stops; ideal for secrets and scratch data."
+          },
+          {
+            "title": "SELinux-Relabeled Bind Mount",
+            "desc": "Bind mount with private SELinux relabeling (:Z)",
+            "desc_tr": "Özel SELinux yeniden etiketleme ile bind mount (:Z)",
+            "cmd": "docker run -d -v <PATH>:/app:Z <IMAGE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "On SELinux hosts use ':z' for shared content between containers, ':Z' for private/unshared content."
+          },
+          {
+            "title": "Create Volume with Custom Driver Options",
+            "desc": "Create a volume bound to a specific host path via local driver",
+            "desc_tr": "Local driver ile belirli bir host yoluna bağlı volume oluştur",
+            "cmd": "docker volume create --driver local --opt type=none --opt device=<PATH> --opt o=bind <VOLUME>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "This pins a named volume to a fixed host directory, combining named-volume semantics with a known location."
+          },
+          {
+            "title": "Create NFS-Backed Volume",
+            "desc": "Create a volume backed by an NFS share",
+            "desc_tr": "NFS paylaşımıyla desteklenen bir volume oluştur",
+            "cmd": "docker volume create --driver local --opt type=nfs --opt o=addr=<TARGET_IP>,rw --opt device=:<PATH> <VOLUME>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Share Volumes from Another Container",
+            "desc": "Reuse all volumes from an existing container",
+            "desc_tr": "Mevcut bir container'ın tüm volume'lerini yeniden kullan",
+            "cmd": "docker run -d --volumes-from <CONTAINER> <IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Inspect a Container's Mounts",
+            "desc": "Show only the Mounts section of a container",
+            "desc_tr": "Bir container'ın yalnızca Mounts bölümünü göster",
+            "cmd": "docker inspect -f '{{ json .Mounts }}' <CONTAINER>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Filter Dangling Volumes",
+            "desc": "List volumes not referenced by any container",
+            "desc_tr": "Hiçbir container tarafından referans verilmeyen volume'leri listele",
+            "cmd": "docker volume ls -f dangling=true",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Backup a Volume to a Tarball",
+            "desc": "Archive a named volume's contents to a host tar file",
+            "desc_tr": "İsimli bir volume içeriğini host tar dosyasına arşivle",
+            "cmd": "docker run --rm -v <VOLUME>:/data:ro -v <PATH>:/backup alpine tar czf /backup/backup.tar.gz -C /data .",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Mounts the volume read-only and a host dir for the archive; a throwaway alpine container does the tar."
+          },
+          {
+            "title": "Restore a Volume from a Tarball",
+            "desc": "Extract a tar backup back into a named volume",
+            "desc_tr": "Bir tar yedeğini isimli volume'e geri çıkar",
+            "cmd": "docker run --rm -v <VOLUME>:/data -v <PATH>:/backup alpine sh -c 'tar xzf /backup/backup.tar.gz -C /data'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Copy Volume Data to Another Volume",
+            "desc": "Migrate data from one volume to another",
+            "desc_tr": "Verileri bir volume'den diğerine taşı",
+            "cmd": "docker run --rm -v <VOLUME>:/from -v <VOLUME2>:/to alpine sh -c 'cp -a /from/. /to/'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Mount a Single File",
+            "desc": "Bind mount one file into a container",
+            "desc_tr": "Tek bir dosyayı container'a bind mount et",
+            "cmd": "docker run -d -v <FILE>:/etc/app/config.yml:ro <IMAGE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "The host file must already exist; otherwise -v creates a directory in its place."
+          },
+          {
+            "title": "Bind-Propagation rshared Mount",
+            "desc": "Bind mount with recursive shared propagation",
+            "desc_tr": "Özyinelemeli paylaşımlı yayılım ile bind mount",
+            "cmd": "docker run -d --mount type=bind,source=<PATH>,target=/app,bind-propagation=rshared <IMAGE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Propagation modes (rshared, rslave, rprivate) control whether later host submounts become visible inside the container."
+          },
+          {
+            "title": "Volume with Volume-Nocopy",
+            "desc": "Mount a volume without copying existing image data into it",
+            "desc_tr": "Mevcut image verisini kopyalamadan bir volume bağla",
+            "cmd": "docker run -d --mount type=volume,source=<VOLUME>,target=/app,volume-nocopy <IMAGE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "By default, an empty named volume mounted over a populated image path inherits that path's content; volume-nocopy disables this."
+          },
+          {
+            "title": "List Volumes by Label Filter",
+            "desc": "List volumes matching a specific label",
+            "desc_tr": "Belirli bir etikete uyan volume'leri listele",
+            "cmd": "docker volume ls -f label=<KEY>=<VALUE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Force-Remove Dangling Volumes",
+            "desc": "Remove all dangling volumes in one command",
+            "desc_tr": "Tüm sahipsiz volume'leri tek komutta kaldır",
+            "cmd": "docker volume rm -f $(docker volume ls -q -f dangling=true)",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Wraps a dangling-volume query; if no volumes match, the inner command yields an empty list."
+          }
+        ]
+      },
+      {
+        "name": "Networks (bridge, host, overlay, inspect, connect)",
+        "commands": [
+          {
+            "title": "List All Networks",
+            "desc": "List all Docker networks on the host",
+            "desc_tr": "Host üzerindeki tüm Docker ağlarını listele",
+            "cmd": "docker network ls",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List Networks with Filter",
+            "desc": "List only bridge driver networks",
+            "desc_tr": "Yalnızca bridge sürücülü ağları listele",
+            "cmd": "docker network ls --filter driver=bridge",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List Networks Custom Format",
+            "desc": "Show network ID, name, and driver in a table",
+            "desc_tr": "Ağ kimliği, adı ve sürücüsünü tablo halinde göster",
+            "cmd": "docker network ls --format 'table {{.ID}}\\t{{.Name}}\\t{{.Driver}}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Inspect a Network",
+            "desc": "Show full details of a network in JSON",
+            "desc_tr": "Bir ağın tüm detaylarını JSON olarak göster",
+            "cmd": "docker network inspect <NETWORK>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect Connected Containers",
+            "desc": "Extract container names attached to a network",
+            "desc_tr": "Bir ağa bağlı konteyner adlarını çıkar",
+            "cmd": "docker network inspect <NETWORK> --format '{{range .Containers}}{{.Name}} {{end}}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Inspect Network Subnet & Gateway",
+            "desc": "Print the subnet and gateway of a network",
+            "desc_tr": "Bir ağın alt ağını ve ağ geçidini yazdır",
+            "cmd": "docker network inspect <NETWORK> --format '{{range .IPAM.Config}}{{.Subnet}} {{.Gateway}}{{end}}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Create a Bridge Network",
+            "desc": "Create a user-defined bridge network",
+            "desc_tr": "Kullanıcı tanımlı bir bridge ağı oluştur",
+            "cmd": "docker network create --driver bridge <NETWORK>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Create Bridge with Custom Subnet",
+            "desc": "Create a bridge network with a defined subnet and gateway",
+            "desc_tr": "Belirli alt ağ ve ağ geçidi ile bridge ağı oluştur",
+            "cmd": "docker network create --driver bridge --subnet 172.28.0.0/16 --gateway 172.28.0.1 <NETWORK>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Create Bridge with IP Range",
+            "desc": "Restrict container IP allocation to a sub-range",
+            "desc_tr": "Konteyner IP atamasını bir alt aralıkla sınırla",
+            "cmd": "docker network create --subnet 172.30.0.0/16 --ip-range 172.30.5.0/24 <NETWORK>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Create Internal Network",
+            "desc": "Create an isolated network with no external access",
+            "desc_tr": "Dış erişimi olmayan izole bir ağ oluştur",
+            "cmd": "docker network create --internal <NETWORK>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Containers on an --internal network cannot reach the outside world, only each other."
+          },
+          {
+            "title": "Run Container on a Network",
+            "desc": "Start a container attached to a specific network",
+            "desc_tr": "Belirli bir ağa bağlı olarak konteyner başlat",
+            "cmd": "docker run -d --name <CONTAINER> --network <NETWORK> <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run Container with Network Alias",
+            "desc": "Attach a container with a DNS alias on the network",
+            "desc_tr": "Konteyneri ağ üzerinde bir DNS takma adıyla bağla",
+            "cmd": "docker run -d --network <NETWORK> --network-alias <ALIAS> <IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run Container on Host Network",
+            "desc": "Share the host's network stack directly",
+            "desc_tr": "Host'un ağ yığınını doğrudan paylaş",
+            "cmd": "docker run -d --network host <IMAGE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Host networking bypasses port mapping; -p flags are ignored and ports bind directly to the host."
+          },
+          {
+            "title": "Run Container with No Network",
+            "desc": "Fully isolate a container from any network",
+            "desc_tr": "Konteyneri her türlü ağdan tamamen izole et",
+            "cmd": "docker run -d --network none <IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Connect Running Container to Network",
+            "desc": "Attach an already running container to a network",
+            "desc_tr": "Çalışan bir konteyneri bir ağa bağla",
+            "cmd": "docker network connect <NETWORK> <CONTAINER>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Connect with Static IP",
+            "desc": "Connect a container assigning a fixed IP address",
+            "desc_tr": "Konteyneri sabit bir IP adresi atayarak bağla",
+            "cmd": "docker network connect --ip 172.28.0.10 <NETWORK> <CONTAINER>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Connect with Alias",
+            "desc": "Add a network alias when connecting a container",
+            "desc_tr": "Konteyneri bağlarken bir ağ takma adı ekle",
+            "cmd": "docker network connect --alias <ALIAS> <NETWORK> <CONTAINER>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Disconnect Container from Network",
+            "desc": "Detach a container from a network",
+            "desc_tr": "Bir konteyneri ağdan ayır",
+            "cmd": "docker network disconnect <NETWORK> <CONTAINER>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Force Disconnect Container",
+            "desc": "Forcibly detach a container even if it's running",
+            "desc_tr": "Çalışıyor olsa bile konteyneri zorla ağdan ayır",
+            "cmd": "docker network disconnect --force <NETWORK> <CONTAINER>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Remove a Network",
+            "desc": "Delete an unused user-defined network",
+            "desc_tr": "Kullanılmayan kullanıcı tanımlı bir ağı sil",
+            "cmd": "docker network rm <NETWORK>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Prune Unused Networks",
+            "desc": "Remove all networks not used by any container",
+            "desc_tr": "Hiçbir konteyner tarafından kullanılmayan tüm ağları kaldır",
+            "cmd": "docker network prune -f",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect Container IP Address",
+            "desc": "Get the IP a container holds on a given network",
+            "desc_tr": "Konteynerin belirli bir ağdaki IP adresini al",
+            "cmd": "docker inspect -f '{{.NetworkSettings.Networks.<NETWORK>.IPAddress}}' <CONTAINER>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Create Overlay Network (Swarm)",
+            "desc": "Create a multi-host overlay network in Swarm mode",
+            "desc_tr": "Swarm modunda çok hostlu overlay ağı oluştur",
+            "cmd": "docker network create --driver overlay <NETWORK>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Requires an active Swarm; run 'docker swarm init' first."
+          },
+          {
+            "title": "Create Attachable Overlay Network",
+            "desc": "Overlay network that standalone containers can join",
+            "desc_tr": "Bağımsız konteynerlerin katılabileceği overlay ağı",
+            "cmd": "docker network create --driver overlay --attachable <NETWORK>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Create Encrypted Overlay Network",
+            "desc": "Enable IPSec encryption on overlay data traffic",
+            "desc_tr": "Overlay veri trafiğinde IPSec şifrelemesini etkinleştir",
+            "cmd": "docker network create --driver overlay --opt encrypted <NETWORK>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Create Macvlan Network",
+            "desc": "Give containers a MAC and IP on the physical LAN",
+            "desc_tr": "Konteynerlere fiziksel LAN üzerinde MAC ve IP ver",
+            "cmd": "docker network create -d macvlan --subnet 192.168.1.0/24 --gateway 192.168.1.1 -o parent=eth0 <NETWORK>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run Container Publishing a Port",
+            "desc": "Map a host port to a container port on a network",
+            "desc_tr": "Bir host portunu konteyner portuna eşle",
+            "cmd": "docker run -d --network <NETWORK> -p <HOST_PORT>:<CONTAINER_PORT> <IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Test DNS Resolution Between Containers",
+            "desc": "Verify service discovery by name on a user network",
+            "desc_tr": "Kullanıcı ağında isimle servis keşfini doğrula",
+            "cmd": "docker exec <CONTAINER> getent hosts <TARGET_CONTAINER>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Built-in DNS resolution by container name only works on user-defined networks, not the default bridge."
+          }
+        ]
+      },
+      {
+        "name": "Docker Compose (up, down, scale, logs, profiles, override)",
+        "commands": [
+          {
+            "title": "Start Stack (Detached)",
+            "desc": "Build, (re)create, and start all services in the background",
+            "desc_tr": "Tum servisleri arka planda olusturup baslatir (detached mod)",
+            "cmd": "docker compose up -d",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Start With Forced Rebuild",
+            "desc": "Rebuild images before starting, ignoring the build cache",
+            "desc_tr": "Baslatmadan once imajlari yeniden derler (cache kullanmadan)",
+            "cmd": "docker compose up -d --build",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Start Specific Service",
+            "desc": "Start only the named service and its dependencies",
+            "desc_tr": "Sadece belirtilen servisi ve bagimliliklarini baslatir",
+            "cmd": "docker compose up -d <CONTAINER>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Stop & Remove Stack",
+            "desc": "Stop and remove containers, networks created by up",
+            "desc_tr": "up ile olusturulan container ve aglari durdurup siler",
+            "cmd": "docker compose down",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Down With Volumes & Images",
+            "desc": "Remove containers, networks, named volumes, and local images",
+            "desc_tr": "Container, ag, adlandirilmis volume ve yerel imajlari da siler",
+            "cmd": "docker compose down -v --rmi local",
+            "tags": [
+              "advanced"
+            ],
+            "note": "-v adlandirilmis volume'leri kalici olarak siler; veri kaybina dikkat edin."
+          },
+          {
+            "title": "Scale a Service",
+            "desc": "Run N replicas of a single service",
+            "desc_tr": "Tek bir servisi N adet replika ile calistirir",
+            "cmd": "docker compose up -d --scale <CONTAINER>=3",
+            "tags": [
+              "essential"
+            ],
+            "note": "Servisin Compose dosyasinda sabit container_name veya host port mapping'i olmamali, aksi halde cakisir."
+          },
+          {
+            "title": "Follow Logs (All Services)",
+            "desc": "Stream live logs from every service with timestamps",
+            "desc_tr": "Tum servislerin canli loglarini zaman damgasiyla akitir",
+            "cmd": "docker compose logs -f --timestamps",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Tail Logs of One Service",
+            "desc": "Follow the last 100 log lines of a single service",
+            "desc_tr": "Tek servisin son 100 log satirini takip eder",
+            "cmd": "docker compose logs -f --tail 100 <CONTAINER>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List Compose Services",
+            "desc": "Show status of containers managed by this project",
+            "desc_tr": "Bu projeye ait container'larin durumunu listeler",
+            "cmd": "docker compose ps",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List All (Incl. Stopped)",
+            "desc": "Show all service containers including stopped ones",
+            "desc_tr": "Durmus olanlar dahil tum servis container'larini gosterir",
+            "cmd": "docker compose ps -a",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Enable a Profile",
+            "desc": "Start services tagged with a specific profile",
+            "desc_tr": "Belirli bir profile etiketli servisleri baslatir",
+            "cmd": "docker compose --profile debug up -d",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Profile atanmamis servisler her zaman baslar; --profile sadece etiketli olanlari aktive eder."
+          },
+          {
+            "title": "Profile via Environment",
+            "desc": "Activate one or more profiles using an env variable",
+            "desc_tr": "Bir ortam degiskeniyle bir veya daha fazla profili aktive eder",
+            "cmd": "COMPOSE_PROFILES=debug,monitoring docker compose up -d",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Merge Override File",
+            "desc": "Combine base and override files explicitly",
+            "desc_tr": "Temel ve override dosyalarini acikca birlestirir",
+            "cmd": "docker compose -f docker-compose.yml -f docker-compose.override.yml up -d",
+            "tags": [
+              "advanced"
+            ],
+            "note": "docker-compose.override.yml mevcutsa otomatik yuklenir; -f kullanildiginda otomatik birlestirme devre disi kalir."
+          },
+          {
+            "title": "Render Merged Config",
+            "desc": "Print the fully resolved configuration after merging",
+            "desc_tr": "Birlestirme sonrasi tam cozulmus yapilandirmayi yazdirir",
+            "cmd": "docker compose config",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Validate Config Quietly",
+            "desc": "Validate compose files and exit non-zero on error",
+            "desc_tr": "Compose dosyalarini dogrular, hata olursa sifirdan farkli kod doner",
+            "cmd": "docker compose config -q",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Restart Services",
+            "desc": "Restart all or a specific running service",
+            "desc_tr": "Tum servisleri veya belirli bir servisi yeniden baslatir",
+            "cmd": "docker compose restart <CONTAINER>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Stop Without Removing",
+            "desc": "Stop containers but keep them for a later start",
+            "desc_tr": "Container'lari durdurur ama silmez; sonra start edilebilir",
+            "cmd": "docker compose stop",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Exec Into a Service",
+            "desc": "Open an interactive shell inside a running service",
+            "desc_tr": "Calisan bir servis icinde etkilesimli shell acar",
+            "cmd": "docker compose exec <CONTAINER> sh",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run One-Off Command",
+            "desc": "Run a throwaway container for a service without ports",
+            "desc_tr": "Servis icin port acmadan tek kullanimlik container calistirir",
+            "cmd": "docker compose run --rm <CONTAINER> <COMMAND>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Pull Service Images",
+            "desc": "Download the latest images for all services",
+            "desc_tr": "Tum servisler icin en guncel imajlari indirir",
+            "cmd": "docker compose pull",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Build Images Only",
+            "desc": "Build or rebuild service images without starting them",
+            "desc_tr": "Servisleri baslatmadan imajlari derler veya yeniden derler",
+            "cmd": "docker compose build --no-cache <CONTAINER>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Recreate Without Deps",
+            "desc": "Force-recreate a service without touching its dependencies",
+            "desc_tr": "Bagimliliklarina dokunmadan bir servisi zorla yeniden olusturur",
+            "cmd": "docker compose up -d --no-deps --force-recreate <CONTAINER>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Live Resource Stats",
+            "desc": "Stream CPU, memory, and I/O usage of compose containers",
+            "desc_tr": "Compose container'larinin CPU, bellek ve I/O kullanimini canli gosterir",
+            "cmd": "docker compose stats",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Use a Named Project",
+            "desc": "Run commands against an explicitly named project",
+            "desc_tr": "Komutlari acikca adlandirilmis bir proje uzerinde calistirir",
+            "cmd": "docker compose -p <NAMESPACE> up -d",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Proje adi container/ag/volume on ekini belirler; varsayilan calisma dizini adidir."
+          },
+          {
+            "title": "Wait Until Healthy",
+            "desc": "Start and block until services are healthy or stopped",
+            "desc_tr": "Servisler saglikli olana veya durana kadar bekleyerek baslatir",
+            "cmd": "docker compose up -d --wait",
+            "tags": [
+              "advanced"
+            ],
+            "note": "--wait icin servislerde healthcheck tanimli olmasi gerekir; aksi halde sadece running durumunu bekler."
+          },
+          {
+            "title": "Remove Stopped Containers",
+            "desc": "Delete stopped service containers from the project",
+            "desc_tr": "Projedeki durmus servis container'larini siler",
+            "cmd": "docker compose rm -f",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "View Compose Events",
+            "desc": "Stream real-time events from project containers",
+            "desc_tr": "Proje container'larindan gercek zamanli olaylari akitir",
+            "cmd": "docker compose events",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Combine Env File & Override",
+            "desc": "Load a custom env file alongside multiple compose files",
+            "desc_tr": "Birden fazla compose dosyasiyla birlikte ozel env dosyasi yukler",
+            "cmd": "docker compose --env-file <FILE> -f docker-compose.yml -f docker-compose.prod.yml up -d",
+            "tags": [
+              "advanced"
+            ],
+            "note": "--env-file degiskenleri Compose dosyasindaki interpolasyon icin kullanilir; container'a gecmek icin env_file veya environment gerekir."
+          }
+        ]
+      },
+      {
+        "name": "Buildx & Multi-arch builds",
+        "commands": [
+          {
+            "title": "Check Buildx version",
+            "desc": "Show the installed Buildx plugin version.",
+            "desc_tr": "Kurulu Buildx eklentisinin sürümünü gösterir.",
+            "cmd": "docker buildx version",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List builder instances",
+            "desc": "List all builders and their available platforms.",
+            "desc_tr": "Tüm builder örneklerini ve destekledikleri platformları listeler.",
+            "cmd": "docker buildx ls",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Create a docker-container builder",
+            "desc": "Create a BuildKit builder that supports multi-arch and caching.",
+            "desc_tr": "Çoklu mimari ve önbelleğe izin veren bir BuildKit builder oluşturur.",
+            "cmd": "docker buildx create --name multiarch --driver docker-container --use",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Bootstrap the builder",
+            "desc": "Start the builder container and verify supported platforms.",
+            "desc_tr": "Builder konteynerini başlatır ve desteklenen platformları doğrular.",
+            "cmd": "docker buildx inspect multiarch --bootstrap",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Register QEMU emulators",
+            "desc": "Install binfmt handlers so x86 hosts can build arm64/arm/riscv images.",
+            "desc_tr": "x86 makinelerin arm64/arm/riscv imajları derleyebilmesi için binfmt işleyicilerini kurar.",
+            "cmd": "docker run --privileged --rm tonistiigi/binfmt --install all",
+            "tags": [
+              "essential",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Build multi-arch image and push",
+            "desc": "Build for several platforms and push the multi-arch manifest to a registry.",
+            "desc_tr": "Birden çok platform için derler ve çoklu mimari manifestini registry'e gönderir.",
+            "cmd": "docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t <REGISTRY>/<IMAGE>:latest --push .",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Build a single-arch image and load it locally",
+            "desc": "Build for one platform and load it into the local Docker image store.",
+            "desc_tr": "Tek bir platform için derler ve yerel Docker imaj deposuna yükler.",
+            "cmd": "docker buildx build --platform linux/amd64 -t <IMAGE>:dev --load .",
+            "tags": [
+              "essential"
+            ],
+            "note": "--load only supports a single platform; the docker-container driver cannot load multi-arch manifests into the local store."
+          },
+          {
+            "title": "Build for the host platform only",
+            "desc": "Quick build targeting the builder's native architecture.",
+            "desc_tr": "Builder'ın yerel mimarisini hedefleyen hızlı bir derleme yapar.",
+            "cmd": "docker buildx build -t <IMAGE>:local --load .",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Export build output to a tarball",
+            "desc": "Write the build result as an OCI archive instead of pushing.",
+            "desc_tr": "Derleme sonucunu push etmek yerine OCI arşivi olarak dosyaya yazar.",
+            "cmd": "docker buildx build --platform linux/amd64,linux/arm64 -o type=oci,dest=<FILE>.tar -t <IMAGE>:oci .",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Export filesystem as local files",
+            "desc": "Export the resulting root filesystem to a local directory.",
+            "desc_tr": "Oluşan kök dosya sistemini yerel bir dizine çıkarır.",
+            "cmd": "docker buildx build -o type=local,dest=<PATH> .",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Use registry cache (export & import)",
+            "desc": "Store and reuse build cache in a registry to speed up CI builds.",
+            "desc_tr": "CI derlemelerini hızlandırmak için derleme önbelleğini registry'de saklayıp yeniden kullanır.",
+            "cmd": "docker buildx build --cache-to type=registry,ref=<REGISTRY>/<IMAGE>:cache,mode=max --cache-from type=registry,ref=<REGISTRY>/<IMAGE>:cache -t <REGISTRY>/<IMAGE>:latest --push .",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Use inline cache",
+            "desc": "Embed cache metadata into the pushed image for simple cache reuse.",
+            "desc_tr": "Basit önbellek yeniden kullanımı için önbellek metaverisini push edilen imaja gömer.",
+            "cmd": "docker buildx build --cache-to type=inline --cache-from type=registry,ref=<REGISTRY>/<IMAGE>:latest -t <REGISTRY>/<IMAGE>:latest --push .",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "GitHub Actions cache backend",
+            "desc": "Use the GHA cache backend for fast caching inside GitHub Actions.",
+            "desc_tr": "GitHub Actions içinde hızlı önbellekleme için GHA önbellek arka ucunu kullanır.",
+            "cmd": "docker buildx build --cache-to type=gha,mode=max --cache-from type=gha -t <IMAGE>:ci --push .",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Pass build-time arguments",
+            "desc": "Inject build args, useful for templating base images per platform.",
+            "desc_tr": "Derleme argümanları geçirir; platform bazlı temel imaj şablonlamada faydalıdır.",
+            "cmd": "docker buildx build --build-arg VERSION=<VERSION> --platform linux/amd64,linux/arm64 -t <IMAGE>:latest --push .",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Mount a build secret",
+            "desc": "Expose a secret file to the build without baking it into a layer.",
+            "desc_tr": "Bir gizli dosyayı katmana gömmeden derlemeye sunar.",
+            "cmd": "docker buildx build --secret id=npmrc,src=<FILE> -t <IMAGE>:latest .",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Forward SSH agent into the build",
+            "desc": "Allow RUN steps to authenticate to private git repos via SSH.",
+            "desc_tr": "RUN adımlarının özel git depolarına SSH ile kimlik doğrulamasına izin verir.",
+            "cmd": "docker buildx build --ssh default -t <IMAGE>:latest .",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Generate SBOM and provenance attestations",
+            "desc": "Attach SBOM and SLSA provenance metadata to the pushed image.",
+            "desc_tr": "Push edilen imaja SBOM ve SLSA köken (provenance) metaverisi ekler.",
+            "cmd": "docker buildx build --sbom=true --provenance=mode=max --platform linux/amd64,linux/arm64 -t <REGISTRY>/<IMAGE>:latest --push .",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Run Dockerfile checks (lint)",
+            "desc": "Evaluate the Dockerfile for best-practice warnings without building.",
+            "desc_tr": "İmaj derlemeden Dockerfile'ı en iyi uygulama uyarıları için denetler.",
+            "cmd": "docker buildx build --check .",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Write build result metadata to a file",
+            "desc": "Capture the resulting image digest and tags as JSON for downstream steps.",
+            "desc_tr": "Oluşan imaj digest ve etiketlerini sonraki adımlar için JSON olarak kaydeder.",
+            "cmd": "docker buildx build --metadata-file <FILE>.json -t <REGISTRY>/<IMAGE>:latest --push .",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Build from a Bake file",
+            "desc": "Build one or more targets declaratively from a docker-bake.hcl file.",
+            "desc_tr": "Bir docker-bake.hcl dosyasından bir veya daha fazla hedefi bildirimsel olarak derler.",
+            "cmd": "docker buildx bake --push <TARGET>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Print the resolved Bake definition",
+            "desc": "Render the fully evaluated Bake config as JSON without building.",
+            "desc_tr": "Derleme yapmadan tam çözümlenmiş Bake yapılandırmasını JSON olarak yazdırır.",
+            "cmd": "docker buildx bake --print",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Inspect a remote multi-arch manifest",
+            "desc": "Show platforms and digests of an image in a registry.",
+            "desc_tr": "Registry'deki bir imajın platformlarını ve digest'lerini gösterir.",
+            "cmd": "docker buildx imagetools inspect <REGISTRY>/<IMAGE>:latest",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect raw manifest list as JSON",
+            "desc": "Dump the raw OCI manifest list for scripting and verification.",
+            "desc_tr": "Betikleme ve doğrulama için ham OCI manifest listesini döker.",
+            "cmd": "docker buildx imagetools inspect <REGISTRY>/<IMAGE>:latest --raw",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Create a manifest from existing images",
+            "desc": "Combine per-arch images into one multi-arch tag without rebuilding.",
+            "desc_tr": "Yeniden derlemeden, mimari bazlı imajları tek bir çoklu mimari etiketinde birleştirir.",
+            "cmd": "docker buildx imagetools create -t <REGISTRY>/<IMAGE>:latest <REGISTRY>/<IMAGE>:amd64 <REGISTRY>/<IMAGE>:arm64",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Show builder disk usage",
+            "desc": "Display how much disk the build cache is consuming.",
+            "desc_tr": "Derleme önbelleğinin ne kadar disk kullandığını gösterir.",
+            "cmd": "docker buildx du",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Prune build cache",
+            "desc": "Reclaim space by removing old build cache (with an age filter).",
+            "desc_tr": "Eski derleme önbelleğini kaldırarak (yaş filtresiyle) disk alanı geri kazanır.",
+            "cmd": "docker buildx prune --filter until=24h -f",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Remove a builder instance",
+            "desc": "Stop and delete a builder you no longer need.",
+            "desc_tr": "Artık ihtiyaç duymadığınız bir builder'ı durdurup siler.",
+            "cmd": "docker buildx rm multiarch",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Build with plain progress logs",
+            "desc": "Show full, non-collapsed build output for debugging.",
+            "desc_tr": "Hata ayıklama için tam, daraltılmamış derleme çıktısını gösterir.",
+            "cmd": "docker buildx build --progress=plain --no-cache -t <IMAGE>:debug .",
+            "tags": [
+              "tool"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Registry & Image distribution (login, save/load, skopeo, crane)",
+        "commands": [
+          {
+            "title": "Docker Login to Registry",
+            "desc": "Authenticate to a Docker registry",
+            "desc_tr": "Docker registry'ye kimlik doğrulaması yap",
+            "cmd": "docker login <REGISTRY> -u <USER>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Şifreyi prompt'tan girmek, history'de görünmesini önler."
+          },
+          {
+            "title": "Docker Login via stdin",
+            "desc": "Login passing the password from stdin (avoids shell history)",
+            "desc_tr": "Şifreyi stdin'den vererek giriş yap (shell history'ye yazılmaz)",
+            "cmd": "echo \"$REGISTRY_TOKEN\" | docker login <REGISTRY> -u <USER> --password-stdin",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Docker Logout",
+            "desc": "Remove stored credentials for a registry",
+            "desc_tr": "Bir registry için saklanan kimlik bilgilerini kaldır",
+            "cmd": "docker logout <REGISTRY>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Tag Image for Registry",
+            "desc": "Re-tag a local image with a registry/repo reference",
+            "desc_tr": "Yerel imajı registry/repo referansıyla yeniden etiketle",
+            "cmd": "docker tag <IMAGE>:<TAG> <REGISTRY>/<NAMESPACE>/<IMAGE>:<TAG>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Push Image to Registry",
+            "desc": "Upload a tagged image to the registry",
+            "desc_tr": "Etiketlenmiş imajı registry'ye yükle",
+            "cmd": "docker push <REGISTRY>/<NAMESPACE>/<IMAGE>:<TAG>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Pull Image from Registry",
+            "desc": "Download an image from a registry",
+            "desc_tr": "Registry'den bir imaj indir",
+            "cmd": "docker pull <REGISTRY>/<NAMESPACE>/<IMAGE>:<TAG>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Pull All Tags",
+            "desc": "Pull every tag of a repository",
+            "desc_tr": "Bir reponun tüm etiketlerini çek",
+            "cmd": "docker pull -a <REGISTRY>/<NAMESPACE>/<IMAGE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Pull by Digest",
+            "desc": "Pull an immutable image pinned by content digest",
+            "desc_tr": "İçerik digest'ine sabitlenmiş değişmez bir imajı çek",
+            "cmd": "docker pull <REGISTRY>/<NAMESPACE>/<IMAGE>@sha256:<DIGEST>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Tag yerine digest kullanmak, supply-chain bütünlüğü için en güvenli yoldur."
+          },
+          {
+            "title": "Save Image to Tar",
+            "desc": "Export one or more images to a tar archive",
+            "desc_tr": "Bir veya daha fazla imajı tar arşivine aktar",
+            "cmd": "docker save -o <FILE>.tar <IMAGE>:<TAG>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Save Image Compressed",
+            "desc": "Save an image and gzip it on the fly",
+            "desc_tr": "İmajı kaydet ve anında gzip ile sıkıştır",
+            "cmd": "docker save <IMAGE>:<TAG> | gzip > <FILE>.tar.gz",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Load Image from Tar",
+            "desc": "Import images from a tar archive (preserves layers/tags)",
+            "desc_tr": "Tar arşivinden imajları içe aktar (katmanları/etiketleri korur)",
+            "cmd": "docker load -i <FILE>.tar",
+            "tags": [
+              "essential"
+            ],
+            "note": "save/load katman ve metadata'yı korur; export/import korumaz (düz dosya sistemi)."
+          },
+          {
+            "title": "Export Container Filesystem",
+            "desc": "Flatten a container's filesystem to a tar (no layers/history)",
+            "desc_tr": "Konteyner dosya sistemini tar'a düzleştir (katman/geçmiş yok)",
+            "cmd": "docker export <CONTAINER> -o <FILE>.tar",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Import Filesystem as Image",
+            "desc": "Create an image from a filesystem tarball",
+            "desc_tr": "Dosya sistemi tarball'undan bir imaj oluştur",
+            "cmd": "docker import <FILE>.tar <REGISTRY>/<NAMESPACE>/<IMAGE>:<TAG>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Skopeo Copy Between Registries",
+            "desc": "Copy an image directly between two registries without docker daemon",
+            "desc_tr": "Docker daemon olmadan bir imajı iki registry arasında doğrudan kopyala",
+            "cmd": "skopeo copy docker://<REGISTRY>/<NAMESPACE>/<IMAGE>:<TAG> docker://<REGISTRY2>/<NAMESPACE>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool"
+            ],
+            "note": "Daemonless; CI ve air-gapped transferlerde idealdir."
+          },
+          {
+            "title": "Skopeo Copy All Architectures",
+            "desc": "Copy a full multi-arch manifest list, not just current platform",
+            "desc_tr": "Yalnızca mevcut platformu değil, tüm multi-arch manifest listesini kopyala",
+            "cmd": "skopeo copy --all docker://<REGISTRY>/<NAMESPACE>/<IMAGE>:<TAG> docker://<REGISTRY2>/<NAMESPACE>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Skopeo Inspect Remote Image",
+            "desc": "Show manifest/config of a remote image without pulling",
+            "desc_tr": "Çekmeden uzak bir imajın manifest/config bilgisini göster",
+            "cmd": "skopeo inspect docker://<REGISTRY>/<NAMESPACE>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Skopeo List Tags",
+            "desc": "List all tags of a remote repository",
+            "desc_tr": "Uzak bir reponun tüm etiketlerini listele",
+            "cmd": "skopeo list-tags docker://<REGISTRY>/<NAMESPACE>/<IMAGE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Skopeo Copy to OCI Archive",
+            "desc": "Export a remote image into an OCI-layout archive for offline transfer",
+            "desc_tr": "Uzak bir imajı çevrimdışı transfer için OCI-layout arşivine aktar",
+            "cmd": "skopeo copy docker://<REGISTRY>/<NAMESPACE>/<IMAGE>:<TAG> oci-archive:<FILE>.tar:<IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Skopeo Login",
+            "desc": "Authenticate skopeo to a registry (shares docker auth file)",
+            "desc_tr": "Skopeo'yu bir registry'ye doğrula (docker auth dosyasını paylaşır)",
+            "cmd": "skopeo login <REGISTRY> -u <USER> --password-stdin",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Skopeo Delete Remote Image",
+            "desc": "Delete an image/tag directly from the registry",
+            "desc_tr": "Bir imajı/etiketi doğrudan registry'den sil",
+            "cmd": "skopeo delete docker://<REGISTRY>/<NAMESPACE>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Registry'de silme (delete) etkin olmalıdır, aksi halde 405 döner."
+          },
+          {
+            "title": "Crane Copy Image",
+            "desc": "Copy an image between registries with crane",
+            "desc_tr": "Crane ile bir imajı registry'ler arasında kopyala",
+            "cmd": "crane copy <REGISTRY>/<NAMESPACE>/<IMAGE>:<TAG> <REGISTRY2>/<NAMESPACE>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Crane List Tags",
+            "desc": "List repository tags via crane",
+            "desc_tr": "Crane ile repo etiketlerini listele",
+            "cmd": "crane ls <REGISTRY>/<NAMESPACE>/<IMAGE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Crane Get Image Digest",
+            "desc": "Resolve the content digest of a tag",
+            "desc_tr": "Bir etiketin içerik digest'ini çöz",
+            "cmd": "crane digest <REGISTRY>/<NAMESPACE>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Crane Inspect Manifest",
+            "desc": "Print the raw manifest of a remote image",
+            "desc_tr": "Uzak bir imajın ham manifest'ini yazdır",
+            "cmd": "crane manifest <REGISTRY>/<NAMESPACE>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Crane Config",
+            "desc": "Dump the image config JSON (env, entrypoint, layers history)",
+            "desc_tr": "İmaj config JSON'ını dök (env, entrypoint, katman geçmişi)",
+            "cmd": "crane config <REGISTRY>/<NAMESPACE>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Crane Push Tarball",
+            "desc": "Push a local docker-save tarball straight to a registry",
+            "desc_tr": "Yerel bir docker-save tarball'unu doğrudan registry'ye gönder",
+            "cmd": "crane push <FILE>.tar <REGISTRY>/<NAMESPACE>/<IMAGE>:<TAG>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Crane Pull to Tarball",
+            "desc": "Download a remote image into a local tarball without a daemon",
+            "desc_tr": "Daemon olmadan uzak bir imajı yerel tarball'a indir",
+            "cmd": "crane pull <REGISTRY>/<NAMESPACE>/<IMAGE>:<TAG> <FILE>.tar",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Crane Auth Login",
+            "desc": "Authenticate crane to a registry, writing to docker config",
+            "desc_tr": "Crane'i bir registry'ye doğrula, docker config'e yaz",
+            "cmd": "crane auth login <REGISTRY> -u <USER> --password-stdin",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Query Registry Catalog (API v2)",
+            "desc": "List repositories exposed by a registry's HTTP API",
+            "desc_tr": "Bir registry'nin HTTP API'sinin sunduğu repoları listele",
+            "cmd": "curl -s -u <USER>:<PASSWORD> https://<REGISTRY>/v2/_catalog | jq .",
+            "tags": [
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "System & Troubleshooting (df, prune, events, inspect, debug)",
+        "commands": [
+          {
+            "title": "Show Docker disk usage",
+            "desc": "Summarize disk space used by images, containers, volumes and build cache.",
+            "desc_tr": "Imajlar, konteynerler, volume'ler ve build cache tarafindan kullanilan disk alanini ozetler.",
+            "cmd": "docker system df",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Detailed disk usage breakdown",
+            "desc": "Show per-object reclaimable space with verbose output.",
+            "desc_tr": "Her nesne icin geri kazanilabilir alani ayrintili (verbose) gosterir.",
+            "cmd": "docker system df -v",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Disk usage as JSON",
+            "desc": "Output disk usage in JSON for scripting and monitoring.",
+            "desc_tr": "Disk kullanimini script ve izleme icin JSON formatinda verir.",
+            "cmd": "docker system df --format json",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Prune all unused data",
+            "desc": "Remove stopped containers, dangling images, unused networks and build cache.",
+            "desc_tr": "Durmus konteynerleri, sahipsiz imajlari, kullanilmayan aglari ve build cache'i temizler.",
+            "cmd": "docker system prune",
+            "tags": [
+              "essential"
+            ],
+            "note": "Sadece dangling imajlari siler; tum kullanilmayanlar icin -a ekleyin."
+          },
+          {
+            "title": "Aggressive prune with volumes",
+            "desc": "Force-remove all unused images and anonymous volumes without prompt.",
+            "desc_tr": "Onay sormadan tum kullanilmayan imajlari ve anonim volume'leri zorla siler.",
+            "cmd": "docker system prune -a --volumes -f",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Yikici islem: kullanilmayan imaj ve verileri kalici siler. Uretimde dikkatli kullanin."
+          },
+          {
+            "title": "Prune data older than a duration",
+            "desc": "Remove unused objects created before a relative time window.",
+            "desc_tr": "Belirli bir sureden once olusturulmus kullanilmayan nesneleri siler.",
+            "cmd": "docker system prune -a --filter \"until=168h\" -f",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Prune only the build cache",
+            "desc": "Reclaim space from the BuildKit build cache.",
+            "desc_tr": "BuildKit build cache'inden alan geri kazanir.",
+            "cmd": "docker builder prune -a -f",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Prune dangling images only",
+            "desc": "Delete untagged dangling images to free space.",
+            "desc_tr": "Etiketsiz (dangling) imajlari silerek alan bosaltir.",
+            "cmd": "docker image prune -f",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Prune stopped containers",
+            "desc": "Remove all stopped containers in one command.",
+            "desc_tr": "Durmus tum konteynerleri tek komutta siler.",
+            "cmd": "docker container prune -f",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Prune unused volumes",
+            "desc": "Remove anonymous and named volumes not used by any container.",
+            "desc_tr": "Hicbir konteyner tarafindan kullanilmayan anonim ve adli volume'leri siler.",
+            "cmd": "docker volume prune -a -f",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Kalici veri kaybi riski; volume'lerin gercekten bos oldugundan emin olun."
+          },
+          {
+            "title": "Stream real-time daemon events",
+            "desc": "Watch live engine events (create, start, stop, die, etc.).",
+            "desc_tr": "Canli engine olaylarini (create, start, stop, die vb.) izler.",
+            "cmd": "docker events",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Filter events by container and type",
+            "desc": "Show only events for a specific container and event type.",
+            "desc_tr": "Yalnizca belirli bir konteyner ve olay tipi icin olaylari gosterir.",
+            "cmd": "docker events --filter container=<CONTAINER> --filter event=die",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Historical events in a time range",
+            "desc": "Query past events between two timestamps in JSON.",
+            "desc_tr": "Iki zaman damgasi arasindaki gecmis olaylari JSON olarak sorgular.",
+            "cmd": "docker events --since '1h' --until '0s' --format json",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Inspect a container's full config",
+            "desc": "Return low-level JSON metadata for a container.",
+            "desc_tr": "Bir konteyner icin dusuk seviyeli JSON metadata dondurur.",
+            "cmd": "docker inspect <CONTAINER>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Extract a container's IP address",
+            "desc": "Use a Go template to pull just the network IP.",
+            "desc_tr": "Sadece ag IP adresini almak icin Go template kullanir.",
+            "cmd": "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <CONTAINER>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Inspect with on-disk size",
+            "desc": "Show container metadata including writable and total file sizes.",
+            "desc_tr": "Yazilabilir ve toplam dosya boyutlari dahil konteyner metadata'sini gosterir.",
+            "cmd": "docker inspect -s --type container <CONTAINER>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Check container health status",
+            "desc": "Read the current healthcheck status from inspect output.",
+            "desc_tr": "Inspect ciktisindan guncel healthcheck durumunu okur.",
+            "cmd": "docker inspect -f '{{.State.Health.Status}}' <CONTAINER>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Healthcheck tanimli degilse alan bos doner."
+          },
+          {
+            "title": "Inspect why a container exited",
+            "desc": "Show exit code, OOMKilled flag and error message.",
+            "desc_tr": "Cikis kodunu, OOMKilled bayragini ve hata mesajini gosterir.",
+            "cmd": "docker inspect -f '{{.State.ExitCode}} OOM={{.State.OOMKilled}} {{.State.Error}}' <CONTAINER>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Live resource usage stats",
+            "desc": "Stream CPU, memory, network and I/O usage for containers.",
+            "desc_tr": "Konteynerler icin CPU, bellek, ag ve I/O kullanimini canli akitir.",
+            "cmd": "docker stats",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "One-shot stats snapshot",
+            "desc": "Print a single non-streaming stats line for all containers.",
+            "desc_tr": "Tum konteynerler icin tek seferlik (akmayan) stats satiri yazdirir.",
+            "cmd": "docker stats --no-stream --all",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Tail and follow container logs",
+            "desc": "Follow the last N log lines with timestamps.",
+            "desc_tr": "Son N satir logu zaman damgalariyla takip eder.",
+            "cmd": "docker logs -f --tail 100 -t <CONTAINER>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Logs within a time window",
+            "desc": "Show logs between a start and end timestamp.",
+            "desc_tr": "Baslangic ve bitis zaman damgasi arasindaki loglari gosterir.",
+            "cmd": "docker logs --since 30m --until 5m <CONTAINER>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List processes in a container",
+            "desc": "Show running processes inside a container (host PIDs).",
+            "desc_tr": "Bir konteyner icindeki calisan sureclari (host PID'leri) gosterir.",
+            "cmd": "docker top <CONTAINER>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Show filesystem changes",
+            "desc": "List files added, changed or deleted in the container layer.",
+            "desc_tr": "Konteyner katmaninda eklenen, degisen veya silinen dosyalari listeler.",
+            "cmd": "docker diff <CONTAINER>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Debug a container with extra tools",
+            "desc": "Open an enhanced shell with troubleshooting tools into any container.",
+            "desc_tr": "Herhangi bir konteynere sorun giderme araclariyla zenginlestirilmis bir shell acar.",
+            "cmd": "docker debug <CONTAINER>",
+            "tags": [
+              "tool"
+            ],
+            "note": "Docker Desktop ozelligidir; distroless/slim imajlarda bile arac saglar."
+          },
+          {
+            "title": "Exec a shell into a running container",
+            "desc": "Attach an interactive shell to a live container.",
+            "desc_tr": "Calisan bir konteynere etkilesimli bir shell baglar.",
+            "cmd": "docker exec -it <CONTAINER> sh",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Daemon-wide info and warnings",
+            "desc": "Show engine version, driver, runtime and configuration warnings.",
+            "desc_tr": "Engine surumu, surucu, runtime ve yapilandirma uyarilarini gosterir.",
+            "cmd": "docker info",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect a service's task failures",
+            "desc": "Show why Swarm service tasks failed with no truncation.",
+            "desc_tr": "Swarm servis gorevlerinin neden basarisiz oldugunu kisaltmadan gosterir.",
+            "cmd": "docker service ps --no-trunc <SERVICE>",
+            "tags": [
+              "advanced"
+            ]
+          }
+        ]
+      }
+    ]
   }
 ];

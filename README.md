@@ -11,8 +11,8 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 [![Docker](https://img.shields.io/badge/docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)](#docker-recommended)
 <!-- STATS:BADGES -->
-[![Commands](https://img.shields.io/badge/commands-2339-success?style=flat-square)](#categories)
-[![Categories](https://img.shields.io/badge/categories-35-orange?style=flat-square)](#categories)
+[![Commands](https://img.shields.io/badge/commands-2563-success?style=flat-square)](#categories)
+[![Categories](https://img.shields.io/badge/categories-36-orange?style=flat-square)](#categories)
 <!-- /STATS:BADGES -->
 
 > **⭐ If this saved you time, please leave a star.** It's the simplest way to support this work.
@@ -22,7 +22,7 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 ---
 
 <!-- STATS:START -->
-**2339 commands** across **35 categories** and **212 subcategories** — every command bilingual (English + Türkçe).
+**2563 commands** across **36 categories** and **220 subcategories** — every command bilingual (English + Türkçe).
 <!-- STATS:END -->
 
 > Runs **100% locally**. No account, no telemetry, no cloud — your data never leaves your machine.
@@ -90,6 +90,7 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 | 33 | 📡 Wireless Security Testing | 19 | WiFi security testing — WPA/WPA2 cracking, WPS attacks, evil twin, and wireless reconna… |
 | 34 | 🔶 Burp Suite | 41 | Burp Suite web application security testing — proxy setup, scanning, intruder attacks,… |
 | 35 | 💉 MSFVenom Payload Reference | 28 | Comprehensive msfvenom payload generation for various platforms, formats, and encoders. |
+| 36 | 🐳 Docker — Engine & CLI | 224 | Day-to-day Docker operations: image build/manage, container lifecycle, volumes, network… |
 <!-- CATEGORIES:END -->
 
 ## Quick Start

@@ -7,7 +7,7 @@
       "id": "docker-engine",
       "name": "Docker — Engine & CLI",
       "icon": "🐳",
-      "status": "pending",
+      "status": "done",
       "description": "Day-to-day Docker operations: image build/manage, container lifecycle, volumes, networks, Compose, buildx, registry, and troubleshooting.",
       "subcategories": [
         "Images (build, tag, pull, push, prune, history, inspect)",
@@ -18,7 +18,8 @@
         "Buildx & Multi-arch builds",
         "Registry & Image distribution (login, save/load, skopeo, crane)",
         "System & Troubleshooting (df, prune, events, inspect, debug)"
-      ]
+      ],
+      "commands_added": 224
     },
     {
       "id": "docker-security",
