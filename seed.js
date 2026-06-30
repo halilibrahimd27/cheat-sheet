@@ -28460,5 +28460,2109 @@ module.exports = [
         ]
       }
     ]
+  },
+  {
+    "id": "k8s-ops",
+    "name": "Kubernetes — kubectl Operations",
+    "name_tr": "Kubernetes — kubectl Operasyonları",
+    "icon": "☸️",
+    "description": "Operating Kubernetes with kubectl: workloads, services, config, debugging, contexts, and resource management.",
+    "description_tr": "kubectl ile Kubernetes yönetimi: iş yükleri, servisler, yapılandırma, hata ayıklama, contextler ve kaynak yönetimi.",
+    "subcategories": [
+      {
+        "name": "Cluster & Context (config, contexts, cluster-info, api-resources)",
+        "commands": [
+          {
+            "title": "View merged kubeconfig",
+            "desc": "Show merged kubeconfig from all sources",
+            "desc_tr": "Tüm kaynaklardan birleştirilmiş kubeconfig'i göster",
+            "cmd": "kubectl config view",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "View kubeconfig with secrets",
+            "desc": "Display raw kubeconfig including certificate data and tokens",
+            "desc_tr": "Sertifika verisi ve token'lar dahil ham kubeconfig'i göster",
+            "cmd": "kubectl config view --raw",
+            "tags": [
+              "advanced"
+            ],
+            "note": "--raw bayrağı redacted (gizlenmiş) credential'ları açık şekilde gösterir; çıktıyı dikkatli paylaş."
+          },
+          {
+            "title": "List all contexts",
+            "desc": "List every context defined in kubeconfig",
+            "desc_tr": "kubeconfig'de tanımlı tüm context'leri listele",
+            "cmd": "kubectl config get-contexts",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Show current context",
+            "desc": "Print the name of the active context",
+            "desc_tr": "Aktif context'in adını yazdır",
+            "cmd": "kubectl config current-context",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Switch context",
+            "desc": "Set the active context for kubectl",
+            "desc_tr": "kubectl için aktif context'i değiştir",
+            "cmd": "kubectl config use-context <CONTEXT>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Set default namespace for context",
+            "desc": "Pin a namespace to the current context",
+            "desc_tr": "Mevcut context'e varsayılan bir namespace sabitle",
+            "cmd": "kubectl config set-context --current --namespace=<NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List clusters",
+            "desc": "List cluster entries defined in kubeconfig",
+            "desc_tr": "kubeconfig'de tanımlı cluster girişlerini listele",
+            "cmd": "kubectl config get-clusters",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List users",
+            "desc": "List user/credential entries in kubeconfig",
+            "desc_tr": "kubeconfig'deki kullanıcı/kimlik girişlerini listele",
+            "cmd": "kubectl config get-users",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Rename context",
+            "desc": "Rename an existing context",
+            "desc_tr": "Mevcut bir context'i yeniden adlandır",
+            "cmd": "kubectl config rename-context <OLD_CONTEXT> <NEW_CONTEXT>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Delete context",
+            "desc": "Remove a context entry from kubeconfig",
+            "desc_tr": "kubeconfig'den bir context girişini kaldır",
+            "cmd": "kubectl config delete-context <CONTEXT>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Delete cluster entry",
+            "desc": "Remove a cluster entry from kubeconfig",
+            "desc_tr": "kubeconfig'den bir cluster girişini kaldır",
+            "cmd": "kubectl config delete-cluster <CLUSTER>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Create context",
+            "desc": "Define a new context binding cluster, user and namespace",
+            "desc_tr": "Cluster, user ve namespace'i bağlayan yeni bir context tanımla",
+            "cmd": "kubectl config set-context <CONTEXT> --cluster=<CLUSTER> --user=<USER> --namespace=<NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Set cluster server and CA",
+            "desc": "Define cluster API server endpoint and CA cert",
+            "desc_tr": "Cluster API sunucu adresini ve CA sertifikasını tanımla",
+            "cmd": "kubectl config set-cluster <CLUSTER> --server=https://<TARGET_IP>:6443 --certificate-authority=<FILE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Set credentials with token",
+            "desc": "Add a user that authenticates with a bearer token",
+            "desc_tr": "Bearer token ile kimlik doğrulayan bir kullanıcı ekle",
+            "cmd": "kubectl config set-credentials <USER> --token=<TOKEN>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Token shell geçmişine düşer; CI'da --token yerine dosya/secret tabanlı yöntem tercih et."
+          },
+          {
+            "title": "Use a specific kubeconfig file",
+            "desc": "Override the kubeconfig file for a single command",
+            "desc_tr": "Tek bir komut için kubeconfig dosyasını geçersiz kıl",
+            "cmd": "kubectl --kubeconfig=<FILE> config get-contexts",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Get cluster info",
+            "desc": "Show control plane and core service endpoints",
+            "desc_tr": "Control plane ve temel servis adreslerini göster",
+            "cmd": "kubectl cluster-info",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Dump full cluster state",
+            "desc": "Dump extensive cluster state for debugging",
+            "desc_tr": "Hata ayıklama için kapsamlı cluster durumunu dök",
+            "cmd": "kubectl cluster-info dump --output-directory=<PATH> --all-namespaces",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Çıktı çok büyük olabilir; klasöre yazmak terminali boğmamak için iyidir."
+          },
+          {
+            "title": "List API resources",
+            "desc": "List all resource types known to the cluster",
+            "desc_tr": "Cluster'ın bildiği tüm kaynak türlerini listele",
+            "cmd": "kubectl api-resources",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List namespaced resources",
+            "desc": "Show only namespace-scoped API resources",
+            "desc_tr": "Yalnızca namespace kapsamlı API kaynaklarını göster",
+            "cmd": "kubectl api-resources --namespaced=true",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "List cluster-scoped resources",
+            "desc": "Show only cluster-scoped API resources",
+            "desc_tr": "Yalnızca cluster kapsamlı API kaynaklarını göster",
+            "cmd": "kubectl api-resources --namespaced=false",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Find resources by API group",
+            "desc": "Filter API resources belonging to a specific group",
+            "desc_tr": "Belirli bir gruba ait API kaynaklarını filtrele",
+            "cmd": "kubectl api-resources --api-group=apps",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Show resources supporting a verb",
+            "desc": "List resource types that support a given verb",
+            "desc_tr": "Belirli bir verb'i destekleyen kaynak türlerini listele",
+            "cmd": "kubectl api-resources --verbs=list,watch -o name",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List API versions",
+            "desc": "List all enabled API group/versions on the server",
+            "desc_tr": "Sunucuda etkin tüm API grup/sürümlerini listele",
+            "cmd": "kubectl api-versions",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Explain a resource schema",
+            "desc": "Show field documentation for a resource type",
+            "desc_tr": "Bir kaynak türü için alan dokümantasyonunu göster",
+            "cmd": "kubectl explain pod.spec.containers --recursive",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Show client and server versions",
+            "desc": "Print kubectl client and cluster server versions",
+            "desc_tr": "kubectl istemci ve cluster sunucu sürümlerini yazdır",
+            "cmd": "kubectl version -o yaml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List cluster nodes",
+            "desc": "Show nodes with roles, status and Kubernetes version",
+            "desc_tr": "Düğümleri rol, durum ve Kubernetes sürümüyle göster",
+            "cmd": "kubectl get nodes -o wide",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Check API access for a verb",
+            "desc": "Test whether current user can perform an action",
+            "desc_tr": "Mevcut kullanıcının bir eylemi yapıp yapamayacağını test et",
+            "cmd": "kubectl auth can-i create pods --namespace=<NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Get raw healthz endpoint",
+            "desc": "Query the API server health endpoint directly",
+            "desc_tr": "API sunucusu sağlık (healthz) uç noktasını doğrudan sorgula",
+            "cmd": "kubectl get --raw='/readyz?verbose'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Flatten kubeconfig to a file",
+            "desc": "Export a self-contained kubeconfig with embedded certs",
+            "desc_tr": "Sertifikaları gömülü, bağımsız bir kubeconfig dışa aktar",
+            "cmd": "kubectl config view --raw --flatten > <FILE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Çıktı tüm credential'ları içerir; dosya izinlerini chmod 600 ile kısıtla."
+          }
+        ]
+      },
+      {
+        "name": "Pods & Workloads (get, describe, logs, exec, port-forward)",
+        "commands": [
+          {
+            "title": "List pods in a namespace",
+            "desc": "List all pods in a specific namespace.",
+            "desc_tr": "Belirli bir namespace'teki tüm pod'ları listeler.",
+            "cmd": "kubectl get pods -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List pods with node and IP (wide)",
+            "desc": "Show pods with node, IP and readiness details.",
+            "desc_tr": "Pod'ları node, IP ve hazır olma detaylarıyla gösterir.",
+            "cmd": "kubectl get pods -n <NAMESPACE> -o wide",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Watch pods in real time",
+            "desc": "Continuously watch pod status changes as they happen.",
+            "desc_tr": "Pod durum değişikliklerini gerçek zamanlı olarak sürekli izler.",
+            "cmd": "kubectl get pods -n <NAMESPACE> --watch",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List pods across all namespaces",
+            "desc": "List every pod in the cluster regardless of namespace.",
+            "desc_tr": "Namespace fark etmeksizin kümedeki her pod'u listeler.",
+            "cmd": "kubectl get pods -A",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Filter pods by label selector",
+            "desc": "Get only pods matching a specific label.",
+            "desc_tr": "Yalnızca belirli bir etiketle eşleşen pod'ları getirir.",
+            "cmd": "kubectl get pods -n <NAMESPACE> -l app=<LABEL>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Filter pods by field (status phase)",
+            "desc": "Show only pods in a given phase, e.g. Running.",
+            "desc_tr": "Yalnızca belirli bir fazdaki (ör. Running) pod'ları gösterir.",
+            "cmd": "kubectl get pods -n <NAMESPACE> --field-selector status.phase=Running",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Describe a pod (events & conditions)",
+            "desc": "Show detailed pod state, events and scheduling info.",
+            "desc_tr": "Pod'un ayrıntılı durumunu, olaylarını ve zamanlama bilgisini gösterir.",
+            "cmd": "kubectl describe pod <POD> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Events section at the bottom is the first place to look when a pod is stuck Pending or CrashLoopBackOff."
+          },
+          {
+            "title": "Get pod YAML manifest",
+            "desc": "Dump the full pod definition as YAML.",
+            "desc_tr": "Pod'un tam tanımını YAML olarak döker.",
+            "cmd": "kubectl get pod <POD> -n <NAMESPACE> -o yaml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Extract a field with jsonpath",
+            "desc": "Read a specific value such as the pod's node name.",
+            "desc_tr": "Pod'un node adı gibi belirli bir değeri okur.",
+            "cmd": "kubectl get pod <POD> -n <NAMESPACE> -o jsonpath='{.spec.nodeName}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Stream pod logs (follow)",
+            "desc": "Tail and follow logs from a pod in real time.",
+            "desc_tr": "Bir pod'un loglarını gerçek zamanlı olarak takip eder.",
+            "cmd": "kubectl logs -f <POD> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Logs of a specific container in a pod",
+            "desc": "Read logs from one container of a multi-container pod.",
+            "desc_tr": "Çok konteynerli bir pod'un belirli bir konteynerinin loglarını okur.",
+            "cmd": "kubectl logs <POD> -c <CONTAINER> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Logs of the previous crashed container",
+            "desc": "Show logs from the last terminated instance of a container.",
+            "desc_tr": "Bir konteynerin son sonlanan örneğinin loglarını gösterir.",
+            "cmd": "kubectl logs <POD> -n <NAMESPACE> --previous",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Essential for diagnosing CrashLoopBackOff since the current container may not have logs yet."
+          },
+          {
+            "title": "Tail recent logs with timestamps",
+            "desc": "Show the last N lines of logs including timestamps.",
+            "desc_tr": "Logların son N satırını zaman damgalarıyla birlikte gösterir.",
+            "cmd": "kubectl logs <POD> -n <NAMESPACE> --tail=100 --timestamps",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Aggregate logs by label selector",
+            "desc": "Stream combined logs from all pods matching a label.",
+            "desc_tr": "Bir etiketle eşleşen tüm pod'ların birleşik loglarını akıtır.",
+            "cmd": "kubectl logs -f -l app=<LABEL> -n <NAMESPACE> --all-containers --prefix",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Exec an interactive shell in a pod",
+            "desc": "Open an interactive shell session inside a running pod.",
+            "desc_tr": "Çalışan bir pod içinde etkileşimli bir kabuk oturumu açar.",
+            "cmd": "kubectl exec -it <POD> -n <NAMESPACE> -- /bin/sh",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Exec into a specific container",
+            "desc": "Run a shell in a chosen container of a multi-container pod.",
+            "desc_tr": "Çok konteynerli bir pod'un seçilen konteynerinde kabuk çalıştırır.",
+            "cmd": "kubectl exec -it <POD> -c <CONTAINER> -n <NAMESPACE> -- /bin/bash",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run a one-off command in a pod",
+            "desc": "Execute a single non-interactive command inside a pod.",
+            "desc_tr": "Bir pod içinde tek seferlik etkileşimsiz bir komut çalıştırır.",
+            "cmd": "kubectl exec <POD> -n <NAMESPACE> -- env",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Port-forward a pod to localhost",
+            "desc": "Forward a local port to a port on the pod.",
+            "desc_tr": "Yerel bir portu pod üzerindeki bir porta yönlendirir.",
+            "cmd": "kubectl port-forward pod/<POD> 8080:80 -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Port-forward a service",
+            "desc": "Forward a local port to a service's target port.",
+            "desc_tr": "Yerel bir portu bir servisin hedef portuna yönlendirir.",
+            "cmd": "kubectl port-forward svc/<POD> 8443:443 -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Port-forward bound to all interfaces",
+            "desc": "Expose the forwarded port on all network interfaces.",
+            "desc_tr": "Yönlendirilen portu tüm ağ arayüzlerinde açar.",
+            "cmd": "kubectl port-forward --address 0.0.0.0 pod/<POD> 8080:80 -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Binding to 0.0.0.0 exposes the port to your whole LAN; use only on trusted networks."
+          },
+          {
+            "title": "Copy a file from a pod to local",
+            "desc": "Copy a file out of a running pod to the local machine.",
+            "desc_tr": "Çalışan bir pod'dan yerel makineye bir dosya kopyalar.",
+            "cmd": "kubectl cp <NAMESPACE>/<POD>:<PATH> <FILE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Copy a local file into a pod",
+            "desc": "Push a local file into a pod's filesystem.",
+            "desc_tr": "Yerel bir dosyayı bir pod'un dosya sistemine gönderir.",
+            "cmd": "kubectl cp <FILE> <NAMESPACE>/<POD>:<PATH>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run a temporary debug pod",
+            "desc": "Spin up an ephemeral pod for quick in-cluster testing.",
+            "desc_tr": "Hızlı küme içi test için geçici bir pod başlatır.",
+            "cmd": "kubectl run debug --rm -it --image=<IMAGE> -n <NAMESPACE> -- /bin/sh",
+            "tags": [
+              "advanced"
+            ],
+            "note": "--rm auto-deletes the pod on exit; great for a throwaway curl/nslookup box."
+          },
+          {
+            "title": "Attach an ephemeral debug container",
+            "desc": "Attach a debug container to a running pod (kubectl debug).",
+            "desc_tr": "Çalışan bir pod'a hata ayıklama konteyneri ekler (kubectl debug).",
+            "cmd": "kubectl debug -it <POD> --image=<IMAGE> --target=<CONTAINER> -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Ephemeral containers (GA since k8s 1.25) let you debug distroless images that have no shell."
+          },
+          {
+            "title": "Show live pod resource usage",
+            "desc": "Display CPU/memory usage per pod via metrics-server.",
+            "desc_tr": "metrics-server ile pod başına CPU/bellek kullanımını gösterir.",
+            "cmd": "kubectl top pod -n <NAMESPACE> --containers",
+            "tags": [
+              "tool"
+            ],
+            "note": "Requires the metrics-server add-on to be installed in the cluster."
+          },
+          {
+            "title": "Get container statuses with custom columns",
+            "desc": "List pods showing restart counts and image per pod.",
+            "desc_tr": "Pod'ları yeniden başlatma sayısı ve imaj ile listeler.",
+            "cmd": "kubectl get pods -n <NAMESPACE> -o custom-columns='NAME:.metadata.name,RESTARTS:.status.containerStatuses[0].restartCount,IMAGE:.spec.containers[0].image'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Sort pods by restart count",
+            "desc": "List pods ordered by their container restart counts.",
+            "desc_tr": "Pod'ları konteyner yeniden başlatma sayısına göre sıralar.",
+            "cmd": "kubectl get pods -n <NAMESPACE> --sort-by='.status.containerStatuses[0].restartCount'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Wait until a pod is Ready",
+            "desc": "Block until the pod meets the Ready condition or times out.",
+            "desc_tr": "Pod Ready koşulunu sağlayana kadar veya zaman aşımına dek bekler.",
+            "cmd": "kubectl wait --for=condition=Ready pod/<POD> -n <NAMESPACE> --timeout=120s",
+            "tags": [
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Deployments, ReplicaSets, StatefulSets, DaemonSets",
+        "commands": [
+          {
+            "title": "Create deployment imperatively",
+            "desc": "Create a deployment from an image",
+            "desc_tr": "Bir imajdan deployment oluşturur",
+            "cmd": "kubectl create deployment <NAME> --image=<IMAGE> --replicas=3 -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List deployments, RS, STS, DS together",
+            "desc": "List all workload controllers in a namespace",
+            "desc_tr": "Bir namespace içindeki tüm iş yükü denetleyicilerini listeler",
+            "cmd": "kubectl get deploy,rs,statefulset,daemonset -n <NAMESPACE> -o wide",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Scale a deployment",
+            "desc": "Set the desired replica count",
+            "desc_tr": "İstenen replika sayısını ayarlar",
+            "cmd": "kubectl scale deployment/<NAME> --replicas=5 -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Conditional scale with precondition",
+            "desc": "Scale only if current replicas match expected value",
+            "desc_tr": "Yalnızca mevcut replika sayısı beklenenle eşleşirse ölçeklendirir",
+            "cmd": "kubectl scale deployment/<NAME> --current-replicas=2 --replicas=4 -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Race koşullarını önlemek için CI/CD pipeline'larında --current-replicas kullanın."
+          },
+          {
+            "title": "Update container image (rolling)",
+            "desc": "Trigger a rolling update by changing the image",
+            "desc_tr": "İmajı değiştirerek rolling güncelleme tetikler",
+            "cmd": "kubectl set image deployment/<NAME> <CONTAINER>=<REGISTRY>/<IMAGE>:<TAG> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Watch rollout status",
+            "desc": "Block until the rollout completes or fails",
+            "desc_tr": "Rollout tamamlanana veya başarısız olana kadar bekler",
+            "cmd": "kubectl rollout status deployment/<NAME> -n <NAMESPACE> --timeout=120s",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Restart a deployment",
+            "desc": "Trigger a rolling restart of all pods",
+            "desc_tr": "Tüm pod'ların rolling şekilde yeniden başlatılmasını tetikler",
+            "cmd": "kubectl rollout restart deployment/<NAME> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Secret/ConfigMap değişikliklerini pod'lara yansıtmak için kullanışlıdır."
+          },
+          {
+            "title": "View rollout history",
+            "desc": "List revisions of a deployment",
+            "desc_tr": "Bir deployment'ın revizyonlarını listeler",
+            "cmd": "kubectl rollout history deployment/<NAME> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect a specific revision",
+            "desc": "Show the pod template for one revision",
+            "desc_tr": "Belirli bir revizyonun pod şablonunu gösterir",
+            "cmd": "kubectl rollout history deployment/<NAME> --revision=2 -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Rollback to previous revision",
+            "desc": "Undo the last rollout",
+            "desc_tr": "Son rollout'u geri alır",
+            "cmd": "kubectl rollout undo deployment/<NAME> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Rollback to a specific revision",
+            "desc": "Undo to a chosen historical revision",
+            "desc_tr": "Seçilen geçmiş revizyona geri döner",
+            "cmd": "kubectl rollout undo deployment/<NAME> --to-revision=3 -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Pause, batch changes, then resume",
+            "desc": "Batch multiple changes into one rollout",
+            "desc_tr": "Birden fazla değişikliği tek rollout'ta toplar",
+            "cmds": [
+              "kubectl rollout pause deployment/<NAME> -n <NAMESPACE>",
+              "kubectl set image deployment/<NAME> <CONTAINER>=<REGISTRY>/<IMAGE>:<TAG> -n <NAMESPACE>",
+              "kubectl set resources deployment/<NAME> -c <CONTAINER> --limits=cpu=500m,memory=512Mi -n <NAMESPACE>",
+              "kubectl rollout resume deployment/<NAME> -n <NAMESPACE>"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Set resource requests/limits",
+            "desc": "Update CPU/memory on a controller's pod template",
+            "desc_tr": "Denetleyicinin pod şablonunda CPU/bellek günceller",
+            "cmd": "kubectl set resources deployment/<NAME> -c <CONTAINER> --requests=cpu=100m,memory=128Mi --limits=cpu=500m,memory=512Mi -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Set/update environment variables",
+            "desc": "Add or change env vars on the pod template",
+            "desc_tr": "Pod şablonundaki ortam değişkenlerini ekler/değiştirir",
+            "cmd": "kubectl set env deployment/<NAME> LOG_LEVEL=debug -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Edit a deployment live",
+            "desc": "Open the deployment manifest in your editor",
+            "desc_tr": "Deployment manifestini editörde açar",
+            "cmd": "kubectl edit deployment/<NAME> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Patch replicas via strategic merge",
+            "desc": "Change replicas without editing full manifest",
+            "desc_tr": "Tüm manifesti düzenlemeden replika sayısını değiştirir",
+            "cmd": "kubectl patch deployment/<NAME> -n <NAMESPACE> -p '{\"spec\":{\"replicas\":4}}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Expose a deployment as a Service",
+            "desc": "Create a Service targeting the deployment's pods",
+            "desc_tr": "Deployment pod'larını hedefleyen bir Service oluşturur",
+            "cmd": "kubectl expose deployment/<NAME> --port=80 --target-port=8080 --type=ClusterIP -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Autoscale a deployment (HPA)",
+            "desc": "Create a HorizontalPodAutoscaler by CPU target",
+            "desc_tr": "CPU hedefine göre HorizontalPodAutoscaler oluşturur",
+            "cmd": "kubectl autoscale deployment/<NAME> --min=2 --max=10 --cpu-percent=70 -n <NAMESPACE>",
+            "tags": [
+              "tool"
+            ],
+            "note": "HPA'nın çalışması için metrics-server kümede kurulu olmalıdır."
+          },
+          {
+            "title": "Get pods owned by a ReplicaSet",
+            "desc": "List the current ReplicaSet and its pods",
+            "desc_tr": "Mevcut ReplicaSet'i ve pod'larını listeler",
+            "cmd": "kubectl get rs -n <NAMESPACE> -l app=<NAME> -o wide && kubectl get pods -n <NAMESPACE> -l app=<NAME>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Describe to debug rollout issues",
+            "desc": "Show events and conditions of a deployment",
+            "desc_tr": "Bir deployment'ın olaylarını ve koşullarını gösterir",
+            "cmd": "kubectl describe deployment/<NAME> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Create a StatefulSet from manifest",
+            "desc": "Apply a StatefulSet definition",
+            "desc_tr": "Bir StatefulSet tanımını uygular",
+            "cmd": "kubectl apply -f <FILE> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "StatefulSet imperatif olarak 'create' edilemez; manifest dosyası gereklidir."
+          },
+          {
+            "title": "Scale a StatefulSet",
+            "desc": "Change the replica count of a StatefulSet",
+            "desc_tr": "Bir StatefulSet'in replika sayısını değiştirir",
+            "cmd": "kubectl scale statefulset/<NAME> --replicas=5 -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Ölçek küçültme PVC'leri silmez; el ile temizlemeniz gerekir."
+          },
+          {
+            "title": "StatefulSet partitioned rolling update",
+            "desc": "Roll out only pods with ordinal >= partition",
+            "desc_tr": "Yalnızca sıra numarası partition'dan büyük/eşit pod'ları günceller",
+            "cmd": "kubectl patch statefulset/<NAME> -n <NAMESPACE> -p '{\"spec\":{\"updateStrategy\":{\"rollingUpdate\":{\"partition\":2}}}}'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Canary güncellemeler için partition değerini kademeli olarak 0'a düşürün."
+          },
+          {
+            "title": "Status of a StatefulSet rollout",
+            "desc": "Watch ordered rollout of a StatefulSet",
+            "desc_tr": "Bir StatefulSet'in sıralı rollout'unu izler",
+            "cmd": "kubectl rollout status statefulset/<NAME> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Restart a DaemonSet",
+            "desc": "Roll all DaemonSet pods on every node",
+            "desc_tr": "Her node üzerindeki tüm DaemonSet pod'larını yeniden başlatır",
+            "cmd": "kubectl rollout restart daemonset/<NAME> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "DaemonSet rollout status",
+            "desc": "Check per-node update progress",
+            "desc_tr": "Node bazında güncelleme ilerlemesini kontrol eder",
+            "cmd": "kubectl rollout status daemonset/<NAME> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Delete controller keeping its pods",
+            "desc": "Orphan pods while removing the controller",
+            "desc_tr": "Denetleyiciyi kaldırırken pod'ları öksüz bırakır",
+            "cmd": "kubectl delete deployment/<NAME> -n <NAMESPACE> --cascade=orphan",
+            "tags": [
+              "advanced"
+            ],
+            "note": "--cascade=orphan ReplicaSet ve pod'ları silmeden denetleyiciyi kaldırır."
+          },
+          {
+            "title": "Export running deployment as clean YAML",
+            "desc": "Dump manifest without runtime/status fields",
+            "desc_tr": "Çalışan deployment'ı runtime/status alanları olmadan YAML olarak dışa aktarır",
+            "cmd": "kubectl get deployment/<NAME> -n <NAMESPACE> -o yaml | kubectl neat",
+            "tags": [
+              "tool"
+            ],
+            "note": "'kubectl neat' krew eklentisi gerektirir; alternatif olarak --show-managed-fields=false kullanın."
+          }
+        ]
+      },
+      {
+        "name": "Services, Ingress & Endpoints",
+        "commands": [
+          {
+            "title": "List All Services",
+            "desc": "List Services in a namespace with cluster/external IPs and ports",
+            "desc_tr": "Bir namespace'teki Service'leri cluster/harici IP ve portlarıyla listele",
+            "cmd": "kubectl get svc -n <NAMESPACE> -o wide",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List Services Across All Namespaces",
+            "desc": "Show every Service cluster-wide",
+            "desc_tr": "Kümedeki tüm namespace'lerde bulunan tüm Service'leri göster",
+            "cmd": "kubectl get svc --all-namespaces -o wide",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Describe a Service",
+            "desc": "Show selector, endpoints, ports and events for a Service",
+            "desc_tr": "Bir Service'in selector, endpoint, port ve olaylarını ayrıntılı göster",
+            "cmd": "kubectl describe svc <SERVICE> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Empty 'Endpoints' usually means the selector matches no ready Pods."
+          },
+          {
+            "title": "Expose a Deployment as a Service",
+            "desc": "Create a Service from an existing Deployment",
+            "desc_tr": "Mevcut bir Deployment'tan hızlıca bir Service oluştur",
+            "cmd": "kubectl expose deployment <DEPLOYMENT> --port=80 --target-port=8080 -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Create a ClusterIP Service Imperatively",
+            "desc": "Create an internal-only ClusterIP Service",
+            "desc_tr": "Yalnızca küme içi erişilebilen bir ClusterIP Service oluştur",
+            "cmd": "kubectl create service clusterip <SERVICE> --tcp=80:8080 -n <NAMESPACE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Create a NodePort Service",
+            "desc": "Expose a Service on a port of every node",
+            "desc_tr": "Service'i her node üzerindeki bir NodePort üzerinden dışa aç",
+            "cmd": "kubectl create service nodeport <SERVICE> --tcp=80:8080 --node-port=30080 -n <NAMESPACE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Create a LoadBalancer Service",
+            "desc": "Provision an external load balancer for the Service",
+            "desc_tr": "Service için bulut sağlayıcıdan harici bir load balancer iste",
+            "cmd": "kubectl create service loadbalancer <SERVICE> --tcp=80:8080 -n <NAMESPACE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Create a Headless Service",
+            "desc": "Headless Service (no ClusterIP) for direct Pod DNS",
+            "desc_tr": "Pod'lara doğrudan DNS erişimi için ClusterIP'siz (headless) Service oluştur",
+            "cmd": "kubectl create service clusterip <SERVICE> --clusterip=\"None\" --tcp=80:8080 -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Headless Services are commonly used by StatefulSets for stable per-Pod DNS."
+          },
+          {
+            "title": "Create an ExternalName Service",
+            "desc": "Map a Service name to an external DNS name via CNAME",
+            "desc_tr": "Bir Service adını CNAME ile harici bir DNS adına eşle",
+            "cmd": "kubectl create service externalname <SERVICE> --external-name=<DOMAIN> -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Change Service Type to LoadBalancer",
+            "desc": "Patch an existing Service to type LoadBalancer",
+            "desc_tr": "Mevcut bir Service'in tipini LoadBalancer olarak değiştir",
+            "cmd": "kubectl patch svc <SERVICE> -n <NAMESPACE> -p '{\"spec\":{\"type\":\"LoadBalancer\"}}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Get Service ClusterIP Only",
+            "desc": "Extract just the ClusterIP via JSONPath",
+            "desc_tr": "JSONPath ile sadece ClusterIP değerini al",
+            "cmd": "kubectl get svc <SERVICE> -n <NAMESPACE> -o jsonpath='{.spec.clusterIP}'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Get LoadBalancer External IP/Hostname",
+            "desc": "Read the assigned external ingress address of a LoadBalancer Service",
+            "desc_tr": "LoadBalancer Service'e atanan harici IP/hostname adresini oku",
+            "cmd": "kubectl get svc <SERVICE> -n <NAMESPACE> -o jsonpath='{.status.loadBalancer.ingress[0].ip}{.status.loadBalancer.ingress[0].hostname}'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "List Endpoints for Services",
+            "desc": "Show backing Pod IP:port pairs for Services",
+            "desc_tr": "Service'lerin arkasındaki Pod IP:port çiftlerini listele",
+            "cmd": "kubectl get endpoints -n <NAMESPACE> -o wide",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Describe Endpoints for a Service",
+            "desc": "Inspect the Endpoints object that shares the Service name",
+            "desc_tr": "Service ile aynı adı taşıyan Endpoints nesnesini incele",
+            "cmd": "kubectl describe endpoints <SERVICE> -n <NAMESPACE>",
+            "tags": [
+              "tool"
+            ],
+            "note": "The Endpoints object name always matches its Service name."
+          },
+          {
+            "title": "List EndpointSlices",
+            "desc": "Show modern EndpointSlice resources (scalable endpoints)",
+            "desc_tr": "Modern, ölçeklenebilir EndpointSlice kaynaklarını listele",
+            "cmd": "kubectl get endpointslices -n <NAMESPACE> -o wide",
+            "tags": [
+              "advanced"
+            ],
+            "note": "EndpointSlices replace the legacy Endpoints API for large Services (1000+ backends)."
+          },
+          {
+            "title": "Find EndpointSlices for One Service",
+            "desc": "Filter EndpointSlices owned by a specific Service",
+            "desc_tr": "Belirli bir Service'e ait EndpointSlice'ları label ile filtrele",
+            "cmd": "kubectl get endpointslices -n <NAMESPACE> -l kubernetes.io/service-name=<SERVICE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Port-Forward to a Service",
+            "desc": "Forward a local port to a Service for testing",
+            "desc_tr": "Test için yerel bir portu bir Service'e yönlendir",
+            "cmd": "kubectl port-forward svc/<SERVICE> 8080:80 -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Test Service DNS From Inside the Cluster",
+            "desc": "Run an ephemeral Pod to curl the Service DNS name",
+            "desc_tr": "Geçici bir Pod çalıştırıp Service DNS adına curl atarak erişimi test et",
+            "cmd": "kubectl run tmp-curl --image=curlimages/curl:latest --rm -it --restart=Never -n <NAMESPACE> -- curl -s http://<SERVICE>.<NAMESPACE>.svc.cluster.local",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Resolve Service DNS With nslookup",
+            "desc": "Verify cluster DNS resolution of a Service FQDN",
+            "desc_tr": "Bir Service FQDN'inin küme DNS'i üzerinden çözümlenmesini doğrula",
+            "cmd": "kubectl run tmp-dns --image=busybox:1.36 --rm -it --restart=Never -n <NAMESPACE> -- nslookup <SERVICE>.<NAMESPACE>.svc.cluster.local",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "List All Ingresses",
+            "desc": "Show Ingress resources with hosts, addresses and ports",
+            "desc_tr": "Ingress kaynaklarını host, adres ve portlarıyla listele",
+            "cmd": "kubectl get ingress -n <NAMESPACE> -o wide",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Describe an Ingress",
+            "desc": "Show routing rules, backends, TLS and events for an Ingress",
+            "desc_tr": "Bir Ingress'in yönlendirme kuralları, backend, TLS ve olaylarını göster",
+            "cmd": "kubectl describe ingress <INGRESS> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Create an Ingress Imperatively",
+            "desc": "Create a host/path-based Ingress pointing at a Service",
+            "desc_tr": "Bir Service'e işaret eden host/path tabanlı Ingress oluştur",
+            "cmd": "kubectl create ingress <INGRESS> --rule=\"<DOMAIN>/*=<SERVICE>:80\" --class=nginx -n <NAMESPACE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Create a TLS Ingress Rule",
+            "desc": "Create an HTTPS Ingress backed by a TLS Secret",
+            "desc_tr": "Bir TLS Secret ile desteklenen HTTPS Ingress kuralı oluştur",
+            "cmd": "kubectl create ingress <INGRESS> --rule=\"<DOMAIN>/*=<SERVICE>:443,tls=<TLS_SECRET>\" --class=nginx -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List IngressClasses",
+            "desc": "Show available Ingress controllers / classes in the cluster",
+            "desc_tr": "Kümede tanımlı Ingress controller / class'larını listele",
+            "cmd": "kubectl get ingressclass",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Add an Ingress Controller Annotation",
+            "desc": "Annotate an Ingress to tune controller behavior (e.g. rewrite)",
+            "desc_tr": "Controller davranışını ayarlamak için Ingress'e annotation ekle (örn. rewrite)",
+            "cmd": "kubectl annotate ingress <INGRESS> -n <NAMESPACE> nginx.ingress.kubernetes.io/rewrite-target=/",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Get Ingress Assigned Address",
+            "desc": "Read the external load balancer address bound to the Ingress",
+            "desc_tr": "Ingress'e bağlanan harici load balancer adresini oku",
+            "cmd": "kubectl get ingress <INGRESS> -n <NAMESPACE> -o jsonpath='{.status.loadBalancer.ingress[0].ip}{.status.loadBalancer.ingress[0].hostname}'",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Edit a Service Live",
+            "desc": "Open a Service in your editor to change ports/selector inline",
+            "desc_tr": "Port/selector değiştirmek için bir Service'i editörde canlı düzenle",
+            "cmd": "kubectl edit svc <SERVICE> -n <NAMESPACE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Watch Service Endpoints Update Live",
+            "desc": "Stream endpoint changes as Pods become ready/unready",
+            "desc_tr": "Pod'lar hazır olup olmadıkça endpoint değişimlerini canlı izle",
+            "cmd": "kubectl get endpoints <SERVICE> -n <NAMESPACE> -w",
+            "tags": [
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ConfigMaps & Secrets",
+        "commands": [
+          {
+            "title": "Create ConfigMap from literals",
+            "desc": "Create a ConfigMap from key-value literals",
+            "desc_tr": "Anahtar-deger ciftlerinden ConfigMap olusturur",
+            "cmd": "kubectl create configmap <NAME> --from-literal=key1=value1 --from-literal=key2=value2 -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Create ConfigMap from file",
+            "desc": "Create a ConfigMap from a file (key = filename)",
+            "desc_tr": "Bir dosyadan ConfigMap olusturur (anahtar = dosya adi)",
+            "cmd": "kubectl create configmap <NAME> --from-file=<FILE> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Create ConfigMap from file with custom key",
+            "desc": "Create a ConfigMap from a file using a custom key name",
+            "desc_tr": "Ozel anahtar adiyla bir dosyadan ConfigMap olusturur",
+            "cmd": "kubectl create configmap <NAME> --from-file=mykey=<FILE> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Create ConfigMap from directory",
+            "desc": "Create a ConfigMap from all files in a directory",
+            "desc_tr": "Bir dizindeki tum dosyalardan ConfigMap olusturur",
+            "cmd": "kubectl create configmap <NAME> --from-file=<PATH>/ -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Create ConfigMap from env file",
+            "desc": "Create a ConfigMap from a .env file (each line a key)",
+            "desc_tr": ".env dosyasindan ConfigMap olusturur (her satir bir anahtar)",
+            "cmd": "kubectl create configmap <NAME> --from-env-file=<FILE> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Generate ConfigMap YAML (dry-run)",
+            "desc": "Output ConfigMap manifest without creating it",
+            "desc_tr": "ConfigMap manifestini olusturmadan ciktilar (dry-run)",
+            "cmd": "kubectl create configmap <NAME> --from-literal=key=value --dry-run=client -o yaml > configmap.yaml",
+            "tags": [
+              "essential"
+            ],
+            "note": "--dry-run=client + -o yaml is the standard GitOps pattern for generating manifests."
+          },
+          {
+            "title": "View ConfigMap contents",
+            "desc": "Display a ConfigMap as YAML",
+            "desc_tr": "Bir ConfigMap'i YAML olarak gosterir",
+            "cmd": "kubectl get configmap <NAME> -n <NAMESPACE> -o yaml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Extract single ConfigMap key",
+            "desc": "Print one key's value using jsonpath",
+            "desc_tr": "jsonpath ile tek bir anahtarin degerini yazdirir",
+            "cmd": "kubectl get configmap <NAME> -n <NAMESPACE> -o jsonpath='{.data.<KEY>}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Edit ConfigMap in place",
+            "desc": "Open a ConfigMap in your editor to modify it",
+            "desc_tr": "Bir ConfigMap'i duzenlemek icin editorde acar",
+            "cmd": "kubectl edit configmap <NAME> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Patch a ConfigMap key",
+            "desc": "Update a single key via strategic merge patch",
+            "desc_tr": "Strategic merge patch ile tek bir anahtari gunceller",
+            "cmd": "kubectl patch configmap <NAME> -n <NAMESPACE> --patch '{\"data\":{\"<KEY>\":\"<VALUE>\"}}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Replace ConfigMap idempotently",
+            "desc": "Recreate a ConfigMap and apply changes in one pipe",
+            "desc_tr": "ConfigMap'i tek komutta yeniden olusturup uygular",
+            "cmd": "kubectl create configmap <NAME> --from-file=<FILE> --dry-run=client -o yaml | kubectl apply -f -",
+            "tags": [
+              "advanced"
+            ],
+            "note": "This idempotent pattern updates an existing ConfigMap that 'create' alone would reject as already-exists."
+          },
+          {
+            "title": "Create generic (Opaque) Secret",
+            "desc": "Create an Opaque secret from literals",
+            "desc_tr": "Literal degerlerden Opaque secret olusturur",
+            "cmd": "kubectl create secret generic <NAME> --from-literal=username=admin --from-literal=password=<VALUE> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Create Secret from file",
+            "desc": "Create a secret from a file's contents",
+            "desc_tr": "Bir dosyanin iceriginden secret olusturur",
+            "cmd": "kubectl create secret generic <NAME> --from-file=<FILE> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Create TLS Secret",
+            "desc": "Create a TLS secret from cert and key files",
+            "desc_tr": "Sertifika ve anahtar dosyalarindan TLS secret olusturur",
+            "cmd": "kubectl create secret tls <NAME> --cert=<PATH>/tls.crt --key=<PATH>/tls.key -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Create Docker registry Secret",
+            "desc": "Create a secret for pulling from a private registry",
+            "desc_tr": "Ozel registry'den cekmek icin secret olusturur",
+            "cmd": "kubectl create secret docker-registry <NAME> --docker-server=<REGISTRY> --docker-username=<USER> --docker-password=<VALUE> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Decode a Secret value",
+            "desc": "Extract and base64-decode a single secret key",
+            "desc_tr": "Tek bir secret anahtarini cikarip base64 cozer",
+            "cmd": "kubectl get secret <NAME> -n <NAMESPACE> -o jsonpath='{.data.<KEY>}' | base64 --decode",
+            "tags": [
+              "essential"
+            ],
+            "note": "Secret data is base64-encoded, not encrypted; decoding requires only read RBAC."
+          },
+          {
+            "title": "Decode all Secret keys",
+            "desc": "Decode every key in a secret using go-template",
+            "desc_tr": "go-template ile secret'taki tum anahtarlari cozer",
+            "cmd": "kubectl get secret <NAME> -n <NAMESPACE> -o go-template='{{range $k,$v := .data}}{{$k}}: {{$v | base64decode}}{{\"\\n\"}}{{end}}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Generate Secret YAML (dry-run)",
+            "desc": "Produce a secret manifest without applying it",
+            "desc_tr": "Secret manifestini uygulamadan uretir (dry-run)",
+            "cmd": "kubectl create secret generic <NAME> --from-literal=key=value --dry-run=client -o yaml > secret.yaml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List Secrets with types",
+            "desc": "Show all secrets and their types in a namespace",
+            "desc_tr": "Bir namespace'teki tum secret'lari ve turlerini gosterir",
+            "cmd": "kubectl get secrets -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect Secret metadata only",
+            "desc": "Describe a secret without exposing decoded values",
+            "desc_tr": "Cozulmus degerleri gostermeden secret'i tanimlar",
+            "cmd": "kubectl describe secret <NAME> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "describe shows key names and byte sizes only, never the decoded values."
+          },
+          {
+            "title": "Patch a Secret value",
+            "desc": "Update a secret key with a base64-encoded value",
+            "desc_tr": "Bir secret anahtarini base64 kodlu degerle gunceller",
+            "cmd": "kubectl patch secret <NAME> -n <NAMESPACE> -p '{\"data\":{\"<KEY>\":\"'$(echo -n '<VALUE>' | base64)'\"}}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Mount ConfigMap as env vars",
+            "desc": "Set a deployment's env from a ConfigMap",
+            "desc_tr": "Bir deployment'in ortam degiskenlerini ConfigMap'ten ayarlar",
+            "cmd": "kubectl set env deployment/<NAME> --from=configmap/<NAME> -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Set env from Secret",
+            "desc": "Inject a deployment's env from a Secret",
+            "desc_tr": "Bir deployment'in ortam degiskenlerini Secret'tan enjekte eder",
+            "cmd": "kubectl set env deployment/<NAME> --from=secret/<NAME> -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Roll pods after ConfigMap change",
+            "desc": "Trigger a rollout so pods pick up new config",
+            "desc_tr": "Pod'larin yeni yapilandirmayi almasi icin rollout tetikler",
+            "cmd": "kubectl rollout restart deployment/<NAME> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Pods do not auto-reload env-injected ConfigMaps/Secrets; a restart is required to apply changes."
+          },
+          {
+            "title": "Label a ConfigMap/Secret",
+            "desc": "Add a label for selection and organization",
+            "desc_tr": "Secim ve organizasyon icin etiket ekler",
+            "cmd": "kubectl label configmap <NAME> app=<APP> -n <NAMESPACE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Delete a ConfigMap or Secret",
+            "desc": "Remove a ConfigMap or Secret by name",
+            "desc_tr": "Bir ConfigMap veya Secret'i ada gore siler",
+            "cmd": "kubectl delete configmap <NAME> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Export a Secret for backup",
+            "desc": "Dump a secret to YAML stripping cluster metadata",
+            "desc_tr": "Bir secret'i kume meta verisini ayiklayarak YAML'a aktarir",
+            "cmd": "kubectl get secret <NAME> -n <NAMESPACE> -o yaml --show-managed-fields=false > secret-backup.yaml",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Strip resourceVersion, uid, and creationTimestamp before re-applying to another cluster."
+          }
+        ]
+      },
+      {
+        "name": "Namespaces, Labels & Selectors",
+        "commands": [
+          {
+            "title": "List All Namespaces",
+            "desc": "List every namespace in the cluster",
+            "desc_tr": "Kumeleki tum namespace'leri listeler",
+            "cmd": "kubectl get namespaces",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Create a Namespace",
+            "desc": "Create a new namespace imperatively",
+            "desc_tr": "Imperatif olarak yeni bir namespace olusturur",
+            "cmd": "kubectl create namespace <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Delete a Namespace",
+            "desc": "Delete a namespace and all its resources",
+            "desc_tr": "Bir namespace'i ve icindeki tum kaynaklari siler",
+            "cmd": "kubectl delete namespace <NAMESPACE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Deleting a namespace cascades to ALL objects inside it (pods, services, secrets). Irreversible."
+          },
+          {
+            "title": "Set Default Namespace for Context",
+            "desc": "Pin the current context to a namespace",
+            "desc_tr": "Gecerli context'i bir namespace'e sabitler",
+            "cmd": "kubectl config set-context --current --namespace=<NAMESPACE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Avoids typing -n on every command for the rest of your session."
+          },
+          {
+            "title": "Run Command in a Specific Namespace",
+            "desc": "Target a single namespace with -n",
+            "desc_tr": "-n ile tek bir namespace'i hedefler",
+            "cmd": "kubectl get pods -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Query Across All Namespaces",
+            "desc": "List resources cluster-wide",
+            "desc_tr": "Kaynaklari kume genelinde listeler",
+            "cmd": "kubectl get pods --all-namespaces",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Describe a Namespace",
+            "desc": "Show quotas, limits and status of a namespace",
+            "desc_tr": "Bir namespace'in kotalarini, limitlerini ve durumunu gosterir",
+            "cmd": "kubectl describe namespace <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Create Namespace Declaratively (Dry-Run)",
+            "desc": "Generate namespace YAML without applying",
+            "desc_tr": "Uygulamadan namespace YAML'i uretir",
+            "cmd": "kubectl create namespace <NAMESPACE> --dry-run=client -o yaml",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Label a Namespace",
+            "desc": "Add a label to a namespace (e.g. for PSA)",
+            "desc_tr": "Bir namespace'e etiket ekler (orn. PSA icin)",
+            "cmd": "kubectl label namespace <NAMESPACE> environment=production",
+            "tags": [
+              "essential"
+            ],
+            "note": "Pod Security Admission uses labels like pod-security.kubernetes.io/enforce=restricted on namespaces."
+          },
+          {
+            "title": "Add a Label to a Resource",
+            "desc": "Attach a key=value label to an object",
+            "desc_tr": "Bir nesneye key=value etiketi ekler",
+            "cmd": "kubectl label pod <POD> app=frontend -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Overwrite an Existing Label",
+            "desc": "Change a label that already exists",
+            "desc_tr": "Var olan bir etiketi degistirir",
+            "cmd": "kubectl label pod <POD> app=backend --overwrite -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Without --overwrite, relabeling an existing key fails with an error."
+          },
+          {
+            "title": "Remove a Label from a Resource",
+            "desc": "Delete a label using the key- syntax",
+            "desc_tr": "key- soz dizimiyle bir etiketi kaldirir",
+            "cmd": "kubectl label pod <POD> app- -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Label Multiple Resources at Once",
+            "desc": "Bulk-label all pods in a namespace",
+            "desc_tr": "Bir namespace'teki tum pod'lari toplu etiketler",
+            "cmd": "kubectl label pods --all tier=web -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Show Labels in Output",
+            "desc": "Display resource labels as a column",
+            "desc_tr": "Kaynak etiketlerini bir sutun olarak gosterir",
+            "cmd": "kubectl get pods --show-labels -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Filter by Equality-Based Selector",
+            "desc": "Select objects matching a label value",
+            "desc_tr": "Bir etiket degerine uyan nesneleri secer",
+            "cmd": "kubectl get pods -l app=frontend -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Filter by Multiple Labels (AND)",
+            "desc": "Comma-separated selectors are ANDed together",
+            "desc_tr": "Virgulle ayrilan secimler AND ile birlestirilir",
+            "cmd": "kubectl get pods -l 'app=frontend,tier=web' -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Set-Based Selector (in)",
+            "desc": "Match a label against a set of values",
+            "desc_tr": "Bir etiketi bir deger kumesine gore eslestirir",
+            "cmd": "kubectl get pods -l 'environment in (staging,production)' -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Set-Based Selector (notin)",
+            "desc": "Exclude objects whose label is in a set",
+            "desc_tr": "Etiketi bir kumede olan nesneleri haric tutar",
+            "cmd": "kubectl get pods -l 'environment notin (dev,test)' -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Selector by Key Existence",
+            "desc": "Match objects that have a label key set",
+            "desc_tr": "Belirli bir etiket anahtarina sahip nesneleri eslestirir",
+            "cmd": "kubectl get pods -l 'app' -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Use -l '!app' to select objects that do NOT have the 'app' key."
+          },
+          {
+            "title": "Negate a Label Value",
+            "desc": "Select objects where a label is not equal to a value",
+            "desc_tr": "Etiketi bir degere esit olmayan nesneleri secer",
+            "cmd": "kubectl get pods -l 'tier!=web' -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Delete Resources by Selector",
+            "desc": "Bulk-delete every object matching a label",
+            "desc_tr": "Bir etikete uyan tum nesneleri toplu siler",
+            "cmd": "kubectl delete pods -l app=frontend -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Double-check the selector first with 'get' — a wrong label can wipe more than intended."
+          },
+          {
+            "title": "Annotate a Resource",
+            "desc": "Add non-identifying metadata via an annotation",
+            "desc_tr": "Bir annotation ile tanimlayici olmayan meta veri ekler",
+            "cmd": "kubectl annotate pod <POD> description='owned by team-a' -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Annotations are not queryable with -l; use labels for selection, annotations for metadata."
+          },
+          {
+            "title": "List Namespaces by Label Selector",
+            "desc": "Find namespaces matching a label",
+            "desc_tr": "Bir etikete uyan namespace'leri bulur",
+            "cmd": "kubectl get namespaces -l environment=production",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Group Output by Label",
+            "desc": "Split a get listing into label-based groups",
+            "desc_tr": "Bir get ciktisini etiket bazli gruplara ayirir",
+            "cmd": "kubectl get pods -L app,tier -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Capital -L adds label values as columns, unlike lowercase -l which filters."
+          },
+          {
+            "title": "Find Pods Scheduled on a Node by Field Selector",
+            "desc": "Use field selectors (not labels) for built-in fields",
+            "desc_tr": "Yerlesik alanlar icin field selector (etiket degil) kullanir",
+            "cmd": "kubectl get pods --field-selector spec.nodeName=<NODE>,status.phase=Running --all-namespaces",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Field selectors target object fields like status.phase; only a limited set of fields is supported."
+          },
+          {
+            "title": "Copy Labels to a New Resource Generation",
+            "desc": "Generate a deployment with a matching selector label",
+            "desc_tr": "Eslesen bir selector etiketiyle deployment uretir",
+            "cmd": "kubectl create deployment <POD> --image=<IMAGE> -n <NAMESPACE> --dry-run=client -o yaml",
+            "tags": [
+              "advanced"
+            ],
+            "note": "A Deployment's spec.selector.matchLabels is immutable after creation — plan label keys up front."
+          }
+        ]
+      },
+      {
+        "name": "Debugging & Troubleshooting (events, top, debug, ephemeral containers)",
+        "commands": [
+          {
+            "title": "List Cluster Events (sorted)",
+            "desc": "Show all events sorted by last timestamp",
+            "desc_tr": "Tum olaylari son zaman damgasina gore sirali listele",
+            "cmd": "kubectl get events --sort-by=.lastTimestamp -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Watch Events in Real Time",
+            "desc": "Stream events live as they occur",
+            "desc_tr": "Olaylari gerceklestikce canli olarak izle",
+            "cmd": "kubectl get events -n <NAMESPACE> --watch",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Events for a Specific Pod",
+            "desc": "Filter events tied to one object via field selector",
+            "desc_tr": "Alan secici ile tek bir nesneye bagli olaylari filtrele",
+            "cmd": "kubectl get events -n <NAMESPACE> --field-selector involvedObject.name=<POD>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Only Warning Events",
+            "desc": "Show just Warning-type events to spot problems fast",
+            "desc_tr": "Sorunlari hizlica gormek icin yalnizca Warning tipli olaylari goster",
+            "cmd": "kubectl get events -n <NAMESPACE> --field-selector type=Warning",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Describe Pod (events + state)",
+            "desc": "Full pod detail including conditions and recent events",
+            "desc_tr": "Kosullar ve son olaylar dahil pod'un tam ayrintisi",
+            "cmd": "kubectl describe pod <POD> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Pod Logs (follow + tail)",
+            "desc": "Stream logs and limit to recent lines",
+            "desc_tr": "Loglari akit ve yalnizca son satirlarla sinirla",
+            "cmd": "kubectl logs <POD> -n <NAMESPACE> -f --tail=100",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Previous Container Logs (after crash)",
+            "desc": "Read logs from the last terminated container instance",
+            "desc_tr": "Son sonlanmis konteyner ornegininin loglarini oku (cokme sonrasi)",
+            "cmd": "kubectl logs <POD> -c <CONTAINER> -n <NAMESPACE> --previous",
+            "tags": [
+              "essential"
+            ],
+            "note": "Crash sonrasi kok nedeni bulmak icin --previous (kisaca -p) CrashLoopBackOff'ta hayati onem tasir."
+          },
+          {
+            "title": "Logs from All Pods of a Label",
+            "desc": "Aggregate logs across pods matching a selector",
+            "desc_tr": "Bir secici ile eslesen tum pod'larin loglarini birlestir",
+            "cmd": "kubectl logs -l app=<LABEL> -n <NAMESPACE> --all-containers --prefix --tail=50",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Node Resource Usage (top)",
+            "desc": "Show CPU/memory consumption per node",
+            "desc_tr": "Dugum basina CPU/bellek tuketimini goster",
+            "cmd": "kubectl top nodes",
+            "tags": [
+              "essential"
+            ],
+            "note": "metrics-server kurulu olmali; aksi halde 'Metrics API not available' hatasi alirsin."
+          },
+          {
+            "title": "Pod Resource Usage (top)",
+            "desc": "Per-pod CPU/memory, sorted by CPU",
+            "desc_tr": "Pod basina CPU/bellek, CPU'ya gore sirali",
+            "cmd": "kubectl top pods -n <NAMESPACE> --sort-by=cpu",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Container-Level Resource Usage",
+            "desc": "Break down usage per container within pods",
+            "desc_tr": "Pod icindeki her konteyner icin kullanimi ayristir",
+            "cmd": "kubectl top pods <POD> -n <NAMESPACE> --containers",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Ephemeral Debug Container (attach to running pod)",
+            "desc": "Inject a debug container sharing the target's namespaces",
+            "desc_tr": "Hedefin ad alanlarini paylasan bir debug konteyneri enjekte et",
+            "cmd": "kubectl debug -it <POD> -n <NAMESPACE> --image=<IMAGE> --target=<CONTAINER>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "--target ile hedef konteynerin process namespace'ine girersin; distroless imajlarda hata ayiklama icin idealdir."
+          },
+          {
+            "title": "Debug with busybox Toolbox",
+            "desc": "Attach a lightweight shell with common tools",
+            "desc_tr": "Yaygin araclar iceren hafif bir kabuk ekle",
+            "cmd": "kubectl debug -it <POD> -n <NAMESPACE> --image=busybox:1.36 --target=<CONTAINER>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Copy Pod for Debugging",
+            "desc": "Create a debug copy of a pod without disrupting the original",
+            "desc_tr": "Orijinali bozmadan bir pod'un hata ayiklama kopyasini olustur",
+            "cmd": "kubectl debug <POD> -n <NAMESPACE> -it --image=<IMAGE> --copy-to=<POD>-debug --share-processes",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Crash eden ana konteynerli pod'larda kopya olusturup komutu degistirerek (--container ile) hata ayikla."
+          },
+          {
+            "title": "Debug a Node via Privileged Pod",
+            "desc": "Spawn a pod on a node with host filesystem mounted at /host",
+            "desc_tr": "Dugum dosya sistemi /host'a baglanmis ayricalikli bir pod baslat",
+            "cmd": "kubectl debug node/<NODE> -it --image=<IMAGE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Dugumun kok dosya sistemine /host altinda erisirsin; kubelet/containerd sorunlarini incelemek icin kullanilir."
+          },
+          {
+            "title": "Override Entrypoint in Debug Copy",
+            "desc": "Replace crashing command with a sleep to inspect state",
+            "desc_tr": "Cokme yapan komutu durumu incelemek icin sleep ile degistir",
+            "cmd": "kubectl debug <POD> -n <NAMESPACE> -it --copy-to=<POD>-dbg --container=<CONTAINER> -- sh -c 'sleep infinity'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Exec into a Running Container",
+            "desc": "Open an interactive shell inside a specific container",
+            "desc_tr": "Belirli bir konteyner icinde etkilesimli bir kabuk ac",
+            "cmd": "kubectl exec -it <POD> -c <CONTAINER> -n <NAMESPACE> -- /bin/sh",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run One-Off Diagnostic Command",
+            "desc": "Execute a single command without a shell session",
+            "desc_tr": "Kabuk oturumu acmadan tek bir komut calistir",
+            "cmd": "kubectl exec <POD> -c <CONTAINER> -n <NAMESPACE> -- nslookup <DOMAIN>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Ephemeral Network Debug Pod",
+            "desc": "Spin up a throwaway netshoot pod for connectivity testing",
+            "desc_tr": "Baglanti testi icin tek kullanimlik netshoot pod'u baslat",
+            "cmd": "kubectl run tmp-netshoot --rm -it --image=nicolaka/netshoot -n <NAMESPACE> -- /bin/bash",
+            "tags": [
+              "tool"
+            ],
+            "note": "netshoot; dig, curl, tcpdump, iperf gibi araclari icerir, DNS ve ag sorunlari icin standarttir."
+          },
+          {
+            "title": "Get Pod with Wide Output (node + IP)",
+            "desc": "Show which node a pod runs on plus its pod IP",
+            "desc_tr": "Pod'un hangi dugumde calistigini ve pod IP'sini goster",
+            "cmd": "kubectl get pods -o wide -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect Pod Status as YAML",
+            "desc": "Dump full status block including container states/reasons",
+            "desc_tr": "Konteyner durumlari/nedenleri dahil tam status blogunu dok",
+            "cmd": "kubectl get pod <POD> -n <NAMESPACE> -o jsonpath='{.status.containerStatuses[*].state}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Find Non-Running Pods Cluster-Wide",
+            "desc": "List all pods that are not in Running/Succeeded phase",
+            "desc_tr": "Running/Succeeded fazinda olmayan tum pod'lari listele",
+            "cmd": "kubectl get pods -A --field-selector=status.phase!=Running",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Port-Forward to Debug Locally",
+            "desc": "Forward a pod port to localhost to test the service",
+            "desc_tr": "Servisi test etmek icin pod portunu localhost'a yonlendir",
+            "cmd": "kubectl port-forward <POD> 8080:80 -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Copy Files Out of a Pod",
+            "desc": "Pull a file (heap dump, log) from a container to local",
+            "desc_tr": "Bir dosyayi (heap dump, log) konteynerden yerel diske cek",
+            "cmd": "kubectl cp <NAMESPACE>/<POD>:<PATH> ./<FILE> -c <CONTAINER>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Explain Why Pod Is Pending (scheduling)",
+            "desc": "Surface scheduler events explaining unschedulable pods",
+            "desc_tr": "Zamanlanamayan pod'lari aciklayan scheduler olaylarini ortaya cikar",
+            "cmd": "kubectl get events -n <NAMESPACE> --field-selector reason=FailedScheduling",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Show Resource Requests/Limits per Node",
+            "desc": "Reveal allocated vs allocatable resources on a node",
+            "desc_tr": "Bir dugumde ayrilmis ve atanabilir kaynaklari ortaya cikar",
+            "cmd": "kubectl describe node <NODE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "'Allocated resources' bolumu OOMKilled ve FailedScheduling sorunlarinin teshisinde kritiktir."
+          },
+          {
+            "title": "Tail Logs Since a Time Window",
+            "desc": "Fetch only logs from the last N minutes",
+            "desc_tr": "Yalnizca son N dakikadaki loglari getir",
+            "cmd": "kubectl logs <POD> -n <NAMESPACE> --since=15m --timestamps",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Live API-Server Componentstatus Check",
+            "desc": "Verify control-plane component health quickly",
+            "desc_tr": "Kontrol duzlemi bileseni sagligini hizlica dogrula",
+            "cmd": "kubectl get --raw='/healthz?verbose'",
+            "tags": [
+              "advanced"
+            ],
+            "note": "componentstatuses kullanimdan kaldirildigi icin saglik kontrolu icin /healthz?verbose tercih edilir."
+          }
+        ]
+      },
+      {
+        "name": "Resource Management (apply, patch, rollout, scale, drain, cordon)",
+        "commands": [
+          {
+            "title": "Apply manifest declaratively",
+            "desc": "Create or update resources from a manifest file (declarative management)",
+            "desc_tr": "Bir manifest dosyasindan kaynaklari olusturur veya gunceller (bildirimsel yonetim)",
+            "cmd": "kubectl apply -f <FILE> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Apply all manifests in a directory",
+            "desc": "Recursively apply every manifest found under a directory tree",
+            "desc_tr": "Bir dizin agacindaki tum manifestleri ozyinelemeli olarak uygular",
+            "cmd": "kubectl apply -R -f <PATH> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Apply with server-side apply",
+            "desc": "Use server-side apply so the API server manages field ownership and merges",
+            "desc_tr": "Alan sahipligini ve birlestirmeyi API sunucusunun yonetmesi icin server-side apply kullanir",
+            "cmd": "kubectl apply --server-side --field-manager=<NAME> -f <FILE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Server-side apply tracks field ownership and surfaces conflicts; add --force-conflicts to override another manager's fields."
+          },
+          {
+            "title": "Diff manifest against live cluster",
+            "desc": "Preview what apply would change before committing it to the cluster",
+            "desc_tr": "Apply'i uygulamadan once nelerin degisecegini onizler",
+            "cmd": "kubectl diff -f <FILE> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Dry-run apply on the server",
+            "desc": "Validate and simulate apply through the API server without persisting changes",
+            "desc_tr": "Degisiklikleri kalici yapmadan API sunucusu uzerinden apply'i dogrular ve simule eder",
+            "cmd": "kubectl apply -f <FILE> --dry-run=server",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Strategic merge patch",
+            "desc": "Patch a live resource in place using a strategic merge patch",
+            "desc_tr": "Canli bir kaynagi strategic merge patch ile yerinde gunceller",
+            "cmd": "kubectl patch deployment <NAME> -n <NAMESPACE> -p '{\"spec\":{\"replicas\":3}}'",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "JSON merge patch from file",
+            "desc": "Apply a JSON merge patch read from a file to a resource",
+            "desc_tr": "Bir dosyadan okunan JSON merge patch'i kaynaga uygular",
+            "cmd": "kubectl patch deployment <NAME> --type=merge --patch-file=<FILE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "JSON patch (RFC 6902) operation",
+            "desc": "Apply a precise JSON patch operation, e.g. update a container image",
+            "desc_tr": "Hassas bir JSON patch islemi uygular, ornegin bir container imajini gunceller",
+            "cmd": "kubectl patch deployment <NAME> --type=json -p='[{\"op\":\"replace\",\"path\":\"/spec/template/spec/containers/0/image\",\"value\":\"<IMAGE>\"}]'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Update a deployment image",
+            "desc": "Roll out a new image for a named container without editing the manifest",
+            "desc_tr": "Manifesti duzenlemeden adli bir container icin yeni imaj yayinlar",
+            "cmd": "kubectl set image deployment/<NAME> <CONTAINER>=<IMAGE> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Set resource requests and limits",
+            "desc": "Patch CPU and memory requests/limits for a container via kubectl set",
+            "desc_tr": "Bir container icin CPU ve bellek istek/limitlerini kubectl set ile gunceller",
+            "cmd": "kubectl set resources deployment/<NAME> -c=<CONTAINER> --limits=cpu=500m,memory=512Mi --requests=cpu=250m,memory=256Mi",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Watch a rollout status",
+            "desc": "Block and stream the progress of a deployment rollout until it completes",
+            "desc_tr": "Bir deployment yayini tamamlanana kadar ilerlemeyi izler",
+            "cmd": "kubectl rollout status deployment/<NAME> -n <NAMESPACE> --timeout=120s",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "View rollout history",
+            "desc": "List revision history of a deployment to find rollback targets",
+            "desc_tr": "Geri alma hedeflerini bulmak icin bir deployment'in revizyon gecmisini listeler",
+            "cmd": "kubectl rollout history deployment/<NAME> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Inspect a specific revision",
+            "desc": "Show the pod template details for a single deployment revision",
+            "desc_tr": "Tek bir deployment revizyonunun pod sablonu detaylarini gosterir",
+            "cmd": "kubectl rollout history deployment/<NAME> --revision=<REVISION> -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Roll back to previous revision",
+            "desc": "Undo the latest rollout and revert to the previous working revision",
+            "desc_tr": "Son yayini geri alir ve onceki calisan revizyona doner",
+            "cmd": "kubectl rollout undo deployment/<NAME> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Roll back to a specific revision",
+            "desc": "Revert a deployment to an explicitly chosen revision number",
+            "desc_tr": "Bir deployment'i acikca secilen revizyon numarasina geri dondurur",
+            "cmd": "kubectl rollout undo deployment/<NAME> --to-revision=<REVISION> -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Restart a rollout",
+            "desc": "Trigger a rolling restart of all pods without changing the spec",
+            "desc_tr": "Spec'i degistirmeden tum pod'larin asamali yeniden baslatmasini tetikler",
+            "cmd": "kubectl rollout restart deployment/<NAME> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Useful to reload mounted ConfigMaps/Secrets or re-pull an image with the same tag."
+          },
+          {
+            "title": "Pause a rollout",
+            "desc": "Freeze a deployment so multiple edits batch into one rollout",
+            "desc_tr": "Birden fazla degisikligin tek bir yayinda toplanmasi icin deployment'i dondurur",
+            "cmd": "kubectl rollout pause deployment/<NAME> -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Resume a paused rollout",
+            "desc": "Unfreeze a paused deployment so queued changes roll out",
+            "desc_tr": "Duraklatilmis deployment'i devam ettirir, bekleyen degisiklikleri yayinlar",
+            "cmd": "kubectl rollout resume deployment/<NAME> -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Scale a deployment",
+            "desc": "Set an explicit replica count for a deployment",
+            "desc_tr": "Bir deployment icin acik replika sayisi belirler",
+            "cmd": "kubectl scale deployment/<NAME> --replicas=<COUNT> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Conditional scale on current replicas",
+            "desc": "Scale only if the resource currently has the expected replica count (safe scaling)",
+            "desc_tr": "Kaynak yalnizca beklenen replika sayisina sahipse olceklendirir (guvenli olcekleme)",
+            "cmd": "kubectl scale deployment/<NAME> --current-replicas=<N> --replicas=<COUNT> -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Autoscale a deployment",
+            "desc": "Create a HorizontalPodAutoscaler targeting CPU utilization",
+            "desc_tr": "CPU kullanimini hedefleyen bir HorizontalPodAutoscaler olusturur",
+            "cmd": "kubectl autoscale deployment/<NAME> --min=2 --max=10 --cpu-percent=70 -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Requires metrics-server to be installed for CPU/memory utilization targets."
+          },
+          {
+            "title": "Cordon a node",
+            "desc": "Mark a node unschedulable so no new pods land on it",
+            "desc_tr": "Bir node'u zamanlanamaz olarak isaretler, yeni pod'lar oraya yerlestirilmez",
+            "cmd": "kubectl cordon <NODE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Uncordon a node",
+            "desc": "Mark a node schedulable again after maintenance",
+            "desc_tr": "Bakim sonrasi bir node'u tekrar zamanlanabilir yapar",
+            "cmd": "kubectl uncordon <NODE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Drain a node for maintenance",
+            "desc": "Cordon and evict pods from a node, ignoring DaemonSets and emptyDir data",
+            "desc_tr": "Bir node'u cordon yapar ve pod'lari tahliye eder; DaemonSet ve emptyDir verisini yok sayar",
+            "cmd": "kubectl drain <NODE> --ignore-daemonsets --delete-emptydir-data",
+            "tags": [
+              "essential"
+            ],
+            "note": "Respects PodDisruptionBudgets; add --force to evict pods not managed by a controller. Data in emptyDir volumes is lost."
+          },
+          {
+            "title": "Drain with grace period and timeout",
+            "desc": "Drain a node bounding both the per-pod grace period and the overall operation",
+            "desc_tr": "Bir node'u tahliye eder; pod basina sure ile genel islem suresini sinirlar",
+            "cmd": "kubectl drain <NODE> --ignore-daemonsets --grace-period=60 --timeout=300s",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Edit a live resource",
+            "desc": "Open a resource in your editor and apply changes on save",
+            "desc_tr": "Bir kaynagi editorde acar ve kaydedince degisiklikleri uygular",
+            "cmd": "kubectl edit deployment/<NAME> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Replace a resource forcefully",
+            "desc": "Delete and recreate a resource from a manifest when in-place update is not possible",
+            "desc_tr": "Yerinde guncelleme mumkun olmadiginda kaynagi manifestten silip yeniden olusturur",
+            "cmd": "kubectl replace --force -f <FILE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "--force deletes then recreates, causing downtime and a new resource UID; prefer apply for routine updates."
+          },
+          {
+            "title": "Annotate last-applied configuration",
+            "desc": "Backfill the last-applied annotation so future apply diffs work on imperatively created objects",
+            "desc_tr": "Imperatif olusturulan nesnelerde apply diff'lerinin calismasi icin last-applied notunu geriye doldurur",
+            "cmd": "kubectl apply set-last-applied -f <FILE> --create-annotation=true",
+            "tags": [
+              "advanced"
+            ]
+          }
+        ]
+      }
+    ]
   }
 ];

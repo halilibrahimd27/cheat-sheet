@@ -11,8 +11,8 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 [![Docker](https://img.shields.io/badge/docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)](#docker-recommended)
 <!-- STATS:BADGES -->
-[![Commands](https://img.shields.io/badge/commands-2783-success?style=flat-square)](#categories)
-[![Categories](https://img.shields.io/badge/categories-37-orange?style=flat-square)](#categories)
+[![Commands](https://img.shields.io/badge/commands-3005-success?style=flat-square)](#categories)
+[![Categories](https://img.shields.io/badge/categories-38-orange?style=flat-square)](#categories)
 <!-- /STATS:BADGES -->
 
 > **⭐ If this saved you time, please leave a star.** It's the simplest way to support this work.
@@ -22,7 +22,7 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 ---
 
 <!-- STATS:START -->
-**2783 commands** across **37 categories** and **228 subcategories** — every command bilingual (English + Türkçe).
+**3005 commands** across **38 categories** and **236 subcategories** — every command bilingual (English + Türkçe).
 <!-- STATS:END -->
 
 > Runs **100% locally**. No account, no telemetry, no cloud — your data never leaves your machine.
@@ -92,6 +92,7 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 | 35 | 💉 MSFVenom Payload Reference | 28 | Comprehensive msfvenom payload generation for various platforms, formats, and encoders. |
 | 36 | 🐳 Docker — Engine & CLI | 224 | Day-to-day Docker operations: image build/manage, container lifecycle, volumes, network… |
 | 37 | 🛡️ Docker Security | 220 | Securing Docker: image scanning, Dockerfile hardening, runtime security, secrets, rootl… |
+| 38 | ☸️ Kubernetes — kubectl Operations | 222 | Operating Kubernetes with kubectl: workloads, services, config, debugging, contexts, an… |
 <!-- CATEGORIES:END -->
 
 ## Quick Start

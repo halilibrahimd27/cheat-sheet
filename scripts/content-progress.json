@@ -43,7 +43,7 @@
       "id": "k8s-ops",
       "name": "Kubernetes — kubectl Operations",
       "icon": "☸️",
-      "status": "pending",
+      "status": "done",
       "description": "Operating Kubernetes with kubectl: workloads, services, config, debugging, contexts, and resource management.",
       "subcategories": [
         "Cluster & Context (config, contexts, cluster-info, api-resources)",
@@ -54,7 +54,8 @@
         "Namespaces, Labels & Selectors",
         "Debugging & Troubleshooting (events, top, debug, ephemeral containers)",
         "Resource Management (apply, patch, rollout, scale, drain, cordon)"
-      ]
+      ],
+      "commands_added": 222
     },
     {
       "id": "k8s-security",
