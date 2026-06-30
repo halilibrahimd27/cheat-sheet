@@ -34617,5 +34617,1913 @@ module.exports = [
         ]
       }
     ]
+  },
+  {
+    "id": "iac-security",
+    "name": "IaC Security Scanning",
+    "name_tr": "IaC Güvenlik Taraması",
+    "icon": "🔎",
+    "description": "Static analysis and policy enforcement for infrastructure-as-code: Terraform, CloudFormation, Kubernetes manifests, and more.",
+    "description_tr": "Altyapı-as-code için statik analiz ve politika denetimi: Terraform, CloudFormation, Kubernetes manifestleri ve daha fazlası.",
+    "subcategories": [
+      {
+        "name": "tfsec",
+        "commands": [
+          {
+            "title": "Install tfsec (Go)",
+            "desc": "Install tfsec binary using Go toolchain",
+            "desc_tr": "tfsec ikilisini Go araç zinciri ile kur",
+            "cmd": "go install github.com/aquasecurity/tfsec/cmd/tfsec@latest",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "tfsec is now deprecated in favor of Trivy, but still widely used; consider 'trivy config' for new projects."
+          },
+          {
+            "title": "Install tfsec (Homebrew)",
+            "desc": "Install tfsec on macOS/Linux via Homebrew",
+            "desc_tr": "tfsec'i macOS/Linux'ta Homebrew ile kur",
+            "cmd": "brew install tfsec",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Install tfsec (curl script)",
+            "desc": "Install latest tfsec via the official install script",
+            "desc_tr": "Resmi kurulum betiği ile en güncel tfsec'i kur",
+            "cmd": "curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Scan Current Directory",
+            "desc": "Run a basic scan against Terraform in the working directory",
+            "desc_tr": "Çalışma dizinindeki Terraform için temel tarama çalıştır",
+            "cmd": "tfsec .",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Scan a Specific Path",
+            "desc": "Scan Terraform code located at a given path",
+            "desc_tr": "Belirtilen yoldaki Terraform kodunu tara",
+            "cmd": "tfsec <PATH>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "JSON Output",
+            "desc": "Emit results as JSON for parsing or storage",
+            "desc_tr": "Sonuçları ayrıştırma veya saklama için JSON olarak ver",
+            "cmd": "tfsec --format json <PATH>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Output to File",
+            "desc": "Write scan results to a file instead of stdout",
+            "desc_tr": "Tarama sonuçlarını stdout yerine bir dosyaya yaz",
+            "cmd": "tfsec --format json --out results.json <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "SARIF Output for Code Scanning",
+            "desc": "Produce SARIF for GitHub/GitLab code scanning integration",
+            "desc_tr": "GitHub/GitLab kod taraması entegrasyonu için SARIF üret",
+            "cmd": "tfsec --format sarif --out tfsec.sarif <PATH>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "JUnit Output for CI",
+            "desc": "Generate JUnit XML for CI test reporting",
+            "desc_tr": "CI test raporlaması için JUnit XML üret",
+            "cmd": "tfsec --format junit --out tfsec-junit.xml <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Multiple Output Formats at Once",
+            "desc": "Emit several report formats in a single run",
+            "desc_tr": "Tek çalıştırmada birden fazla rapor formatı üret",
+            "cmd": "tfsec --format json,sarif,junit --out report <PATH>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "With multiple formats, --out is treated as a basename and extensions are appended automatically."
+          },
+          {
+            "title": "Soft Fail (Always Exit 0)",
+            "desc": "Report findings but never fail the build",
+            "desc_tr": "Bulguları raporla ama derlemeyi asla başarısız yapma",
+            "cmd": "tfsec --soft-fail <PATH>",
+            "tags": [
+              "tool"
+            ],
+            "note": "Useful for non-blocking informational scans in early pipeline stages."
+          },
+          {
+            "title": "Set Minimum Severity",
+            "desc": "Only report findings at or above a severity level",
+            "desc_tr": "Yalnızca belirli bir önem seviyesi ve üzerindeki bulguları raporla",
+            "cmd": "tfsec --minimum-severity HIGH <PATH>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Valid levels: CRITICAL, HIGH, MEDIUM, LOW."
+          },
+          {
+            "title": "Exclude Specific Checks",
+            "desc": "Skip one or more check IDs during the scan",
+            "desc_tr": "Tarama sırasında bir veya daha fazla kontrol kimliğini atla",
+            "cmd": "tfsec --exclude aws-s3-enable-bucket-logging,aws-s3-encryption-customer-key <PATH>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run Only Specific Checks",
+            "desc": "Restrict the scan to an explicit set of check IDs",
+            "desc_tr": "Taramayı yalnızca belirli kontrol kimlikleriyle sınırla",
+            "cmd": "tfsec --include-passed --run-statistics <PATH>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Inline Ignore Comment",
+            "desc": "Suppress a finding directly in Terraform source",
+            "desc_tr": "Bir bulguyu doğrudan Terraform kaynağında bastır",
+            "cmd": "# tfsec:ignore:aws-s3-enable-bucket-encryption",
+            "tags": [
+              "essential"
+            ],
+            "note": "Add an expiry to keep ignores from going stale: tfsec:ignore:<CHECK>:exp:2026-12-31."
+          },
+          {
+            "title": "Ignore with Expiry Date",
+            "desc": "Add an expiring inline ignore that auto-reactivates",
+            "desc_tr": "Süresi dolunca otomatik yeniden etkinleşen satır içi yoksayma ekle",
+            "cmd": "# tfsec:ignore:aws-vpc-no-public-ingress-sgr:exp:2026-12-31",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Include Passed Checks",
+            "desc": "Show passing checks alongside failures",
+            "desc_tr": "Başarısızlıkların yanında başarılı kontrolleri de göster",
+            "cmd": "tfsec --include-passed <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Concise Single-Line Output",
+            "desc": "Compact output without long descriptions",
+            "desc_tr": "Uzun açıklamalar olmadan derli toplu çıktı",
+            "cmd": "tfsec --concise-output <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Pass Terraform tfvars File",
+            "desc": "Provide variable values so dynamic config is evaluated",
+            "desc_tr": "Dinamik yapılandırmanın değerlendirilmesi için değişken değerleri sağla",
+            "cmd": "tfsec --tfvars-file <FILE>.tfvars <PATH>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Use a Custom Config File",
+            "desc": "Load exclusions and severity overrides from a config file",
+            "desc_tr": "Hariç tutmaları ve önem geçersiz kılmalarını bir yapılandırma dosyasından yükle",
+            "cmd": "tfsec --config-file .tfsec.yml <PATH>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Run Custom Checks",
+            "desc": "Load and execute custom-written checks from a directory",
+            "desc_tr": "Bir dizinden özel yazılmış kontrolleri yükle ve çalıştır",
+            "cmd": "tfsec --custom-check-dir ./custom_checks <PATH>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Exclude Downloaded Modules",
+            "desc": "Skip checking third-party modules pulled into .terraform",
+            "desc_tr": ".terraform'a indirilen üçüncü taraf modülleri taramayı atla",
+            "cmd": "tfsec --exclude-downloaded-modules <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "No Module Loading",
+            "desc": "Scan only root code without resolving remote modules",
+            "desc_tr": "Uzak modülleri çözmeden yalnızca kök kodu tara",
+            "cmd": "tfsec --no-module-downloads <PATH>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Filter Findings by Resource",
+            "desc": "Limit output to a specific Terraform resource block",
+            "desc_tr": "Çıktıyı belirli bir Terraform kaynak bloğuyla sınırla",
+            "cmd": "tfsec --filter-results aws_s3_bucket.<NAME> <PATH>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Disable Colour Output",
+            "desc": "Strip ANSI colours for log-friendly output",
+            "desc_tr": "Günlük dostu çıktı için ANSI renklerini kaldır",
+            "cmd": "tfsec --no-colour <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Run via Docker",
+            "desc": "Scan a mounted directory using the official container image",
+            "desc_tr": "Resmi konteyner imajını kullanarak bağlı bir dizini tara",
+            "cmd": "docker run --rm -v $(pwd):/src aquasec/tfsec /src",
+            "tags": [
+              "tool"
+            ],
+            "note": "Mount the code read-only with :ro for extra safety in shared runners."
+          },
+          {
+            "title": "tfsec GitHub Action",
+            "desc": "Run tfsec in a GitHub Actions workflow step",
+            "desc_tr": "tfsec'i bir GitHub Actions iş akışı adımında çalıştır",
+            "cmd": "uses: aquasecurity/tfsec-action@v1.0.0",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Show Version",
+            "desc": "Print the installed tfsec version",
+            "desc_tr": "Kurulu tfsec sürümünü yazdır",
+            "cmd": "tfsec --version",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Migrate to Trivy Config",
+            "desc": "Use Trivy's config scanner as the tfsec successor",
+            "desc_tr": "tfsec'in halefi olarak Trivy'nin yapılandırma tarayıcısını kullan",
+            "cmd": "trivy config --misconfig-scanners terraform <PATH>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "tfsec has been merged into Trivy; new misconfiguration checks land in Trivy first."
+          }
+        ]
+      },
+      {
+        "name": "Checkov",
+        "commands": [
+          {
+            "title": "Checkov Scan Directory",
+            "desc": "Recursively scan a directory for IaC misconfigurations",
+            "desc_tr": "Bir dizini IaC yanlis yapilandirmalari icin ozyinelemeli olarak tarar",
+            "cmd": "checkov -d <PATH>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Checkov Scan Single File",
+            "desc": "Scan a single IaC file instead of a whole directory",
+            "desc_tr": "Tum dizin yerine tek bir IaC dosyasini tarar",
+            "cmd": "checkov -f <FILE>.tf",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Checkov Specify Framework",
+            "desc": "Limit the scan to a specific IaC framework only",
+            "desc_tr": "Taramayi yalnizca belirli bir IaC framework'u ile sinirlar",
+            "cmd": "checkov -d <PATH> --framework terraform",
+            "tags": [
+              "tool"
+            ],
+            "note": "Gecerli degerler: terraform, terraform_plan, cloudformation, kubernetes, helm, kustomize, dockerfile, serverless, arm, bicep, github_actions, secrets, sca_package."
+          },
+          {
+            "title": "Checkov Scan Terraform Plan",
+            "desc": "Scan a Terraform plan JSON for runtime-resolved values",
+            "desc_tr": "Calisma zamaninda cozulen degerler icin Terraform plan JSON'unu tarar",
+            "cmds": [
+              "terraform plan -out=tfplan.binary",
+              "terraform show -json tfplan.binary > <FILE>.json",
+              "checkov -f <FILE>.json --framework terraform_plan"
+            ],
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Plan taramasi degisken ve modul ciktilarini cozdugu icin .tf taramasindan daha dogru sonuc verir."
+          },
+          {
+            "title": "Checkov Scan Helm Chart",
+            "desc": "Render and scan a Helm chart for misconfigurations",
+            "desc_tr": "Bir Helm chart'ini render edip yanlis yapilandirmalar icin tarar",
+            "cmd": "checkov -d <PATH> --framework helm",
+            "tags": [
+              "tool"
+            ],
+            "note": "helm binary'sinin PATH icinde olmasi gerekir; Checkov template'i render eder."
+          },
+          {
+            "title": "Checkov Scan Dockerfile",
+            "desc": "Scan a Dockerfile against container build best practices",
+            "desc_tr": "Bir Dockerfile'i konteyner derleme en iyi pratiklerine gore tarar",
+            "cmd": "checkov -f <FILE> --framework dockerfile",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Checkov Scan Kubernetes Manifests",
+            "desc": "Scan raw Kubernetes YAML manifests",
+            "desc_tr": "Ham Kubernetes YAML manifestolarini tarar",
+            "cmd": "checkov -d <PATH> --framework kubernetes",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Checkov Detect Hardcoded Secrets",
+            "desc": "Run only the secrets scanner to find embedded credentials",
+            "desc_tr": "Yalnizca secret tarayicisini calistirarak gomulu kimlik bilgilerini bulur",
+            "cmd": "checkov -d <PATH> --framework secrets --enable-secret-scan-all-files",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Checkov SCA / Dependency Scan",
+            "desc": "Scan packages and images for known CVEs via SCA",
+            "desc_tr": "SCA ile paketleri ve imajlari bilinen CVE'ler icin tarar",
+            "cmd": "checkov -d <PATH> --framework sca_package,sca_image --bc-api-key <API_KEY>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "SCA (yazilim bilesen analizi) Prisma Cloud / bridgecrew API anahtari gerektirir."
+          },
+          {
+            "title": "Checkov Run Specific Check",
+            "desc": "Run only one or more named policy checks",
+            "desc_tr": "Yalnizca bir veya birden fazla adlandirilmis politika kontrolunu calistirir",
+            "cmd": "checkov -d <PATH> --check CKV_AWS_20,CKV_AWS_57",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Checkov Skip Specific Check",
+            "desc": "Run all checks except the listed ones",
+            "desc_tr": "Listelenenler haricindeki tum kontrolleri calistirir",
+            "cmd": "checkov -d <PATH> --skip-check CKV_AWS_20,CKV_AWS_57",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Checkov Filter Checks by Wildcard",
+            "desc": "Select or skip a family of checks using a wildcard pattern",
+            "desc_tr": "Joker karakter deseni ile bir kontrol ailesini secer veya atlar",
+            "cmd": "checkov -d <PATH> --skip-check 'CKV_AWS_*'",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Checkov Filter by Severity",
+            "desc": "Run only checks at or above a severity threshold",
+            "desc_tr": "Yalnizca belirli bir onem esigi ve uzerindeki kontrolleri calistirir",
+            "cmd": "checkov -d <PATH> --check HIGH,CRITICAL",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Severity filtrelemesi (LOW/MEDIUM/HIGH/CRITICAL) Prisma Cloud / bridgecrew baglantisi gerektirir."
+          },
+          {
+            "title": "Checkov Compact Output",
+            "desc": "Print a condensed CLI report without code blocks",
+            "desc_tr": "Kod bloklari olmadan sikistirilmis CLI raporu yazdirir",
+            "cmd": "checkov -d <PATH> --compact",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Checkov Show Only Failed Checks",
+            "desc": "Suppress passed checks and display failures only",
+            "desc_tr": "Gecen kontrolleri gizleyip yalnizca basarisiz olanlari gosterir",
+            "cmd": "checkov -d <PATH> --quiet",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Checkov SARIF Output for CI",
+            "desc": "Emit SARIF for GitHub code scanning / security tabs",
+            "desc_tr": "GitHub kod taramasi / guvenlik sekmeleri icin SARIF ciktisi uretir",
+            "cmd": "checkov -d <PATH> --output sarif --output-file-path <PATH>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Checkov JSON & JUnit Output",
+            "desc": "Produce machine-readable JSON and JUnit reports together",
+            "desc_tr": "Makine tarafindan okunabilir JSON ve JUnit raporlarini birlikte uretir",
+            "cmd": "checkov -d <PATH> --output json --output junitxml",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Checkov Soft Fail Mode",
+            "desc": "Always exit 0 so findings report without breaking the pipeline",
+            "desc_tr": "Her zaman 0 ile cikarak bulgulari pipeline'i kirmadan raporlar",
+            "cmd": "checkov -d <PATH> --soft-fail",
+            "tags": [
+              "tool"
+            ],
+            "note": "--soft-fail-on / --hard-fail-on ile severity veya check bazinda kirma davranisini ayarlayabilirsiniz."
+          },
+          {
+            "title": "Checkov Hard Fail on Severity",
+            "desc": "Fail the build only on HIGH and above findings",
+            "desc_tr": "Yapiyi yalnizca HIGH ve uzeri bulgularda basarisiz kilar",
+            "cmd": "checkov -d <PATH> --soft-fail --hard-fail-on HIGH,CRITICAL",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Checkov Inline Suppression",
+            "desc": "Suppress a finding directly in code with a comment",
+            "desc_tr": "Bir bulguyu kod icinde yorum satiriyla dogrudan bastirir",
+            "cmd": "# checkov:skip=CKV_AWS_20:Bucket is intentionally public for static site",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Bu yorumu ilgili kaynak blogunun icine ekleyin; format: checkov:skip=<CHECK_ID>:<reason>."
+          },
+          {
+            "title": "Checkov Custom Policy Directory",
+            "desc": "Load custom YAML/Python policies from a directory",
+            "desc_tr": "Bir dizinden ozel YAML/Python politikalarini yukler",
+            "cmd": "checkov -d <PATH> --external-checks-dir <PATH>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Checkov Run Only Custom Checks",
+            "desc": "Run external checks while disabling all built-in policies",
+            "desc_tr": "Tum yerlesik politikalari devre disi birakip yalnizca harici kontrolleri calistirir",
+            "cmd": "checkov -d <PATH> --external-checks-dir <PATH> --run-all-external-checks",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Checkov Use Config File",
+            "desc": "Drive the scan from a .checkov.yaml config file",
+            "desc_tr": "Taramayi bir .checkov.yaml yapilandirma dosyasindan yonetir",
+            "cmd": "checkov --config-file .checkov.yaml",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Checkov List All Available Checks",
+            "desc": "Print every built-in policy with ID and description",
+            "desc_tr": "ID ve aciklamasiyla birlikte tum yerlesik politikalari listeler",
+            "cmd": "checkov --list",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Checkov Run via Docker",
+            "desc": "Scan a mounted workdir using the official container image",
+            "desc_tr": "Resmi konteyner imajini kullanarak baglanan calisma dizinini tarar",
+            "cmd": "docker run --rm -t -v $(pwd):/tf bridgecrew/checkov -d /tf",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Checkov as Pre-commit Hook",
+            "desc": "Wire Checkov into pre-commit to scan on every commit",
+            "desc_tr": "Her commit'te taramak icin Checkov'u pre-commit'e baglar",
+            "cmds": [
+              "pip install checkov pre-commit",
+              "checkov --add-check",
+              "pre-commit install"
+            ],
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Alternatif olarak .pre-commit-config.yaml icine bridgecrewio/checkov reposunu ekleyin."
+          },
+          {
+            "title": "Checkov Scan with External Modules",
+            "desc": "Download remote Terraform modules so their resources are scanned too",
+            "desc_tr": "Uzak Terraform modullerini indirip ic kaynaklarinin da taranmasini saglar",
+            "cmd": "checkov -d <PATH> --download-external-modules true",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Modul kaynaklarinin bulgularini kacirmamak icin onemlidir."
+          }
+        ]
+      },
+      {
+        "name": "Terrascan",
+        "commands": [
+          {
+            "title": "Check Terrascan Version",
+            "desc": "Print the installed Terrascan version",
+            "desc_tr": "Kurulu Terrascan surumunu yazdirir",
+            "cmd": "terrascan version",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Initialize Policies",
+            "desc": "Download the default policy repo into ~/.terrascan",
+            "desc_tr": "Varsayilan policy deposunu ~/.terrascan icine indirir",
+            "cmd": "terrascan init",
+            "tags": [
+              "essential"
+            ],
+            "note": "Terrascan auto-runs init on first scan, but running it explicitly pre-fetches policies (useful in CI air-gapped prep)."
+          },
+          {
+            "title": "Scan Current Directory",
+            "desc": "Scan IaC in the working directory (defaults to Terraform/HCL)",
+            "desc_tr": "Calisma dizinindeki IaC dosyalarini tarar (varsayilan Terraform/HCL)",
+            "cmd": "terrascan scan -d <PATH>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Scan a Single File",
+            "desc": "Scan one specific IaC file instead of a directory",
+            "desc_tr": "Dizin yerine tek bir IaC dosyasini tarar",
+            "cmd": "terrascan scan -f <FILE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Select IaC Type",
+            "desc": "Force the IaC provider (terraform, k8s, helm, kustomize, etc.)",
+            "desc_tr": "IaC saglayicisini zorlar (terraform, k8s, helm, kustomize vb.)",
+            "cmd": "terrascan scan -i terraform -d <PATH>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Scan Kubernetes Manifests",
+            "desc": "Scan raw Kubernetes YAML manifests",
+            "desc_tr": "Ham Kubernetes YAML manifestlerini tarar",
+            "cmd": "terrascan scan -i k8s -d <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Scan Helm Charts",
+            "desc": "Render and scan Helm charts for misconfigurations",
+            "desc_tr": "Helm chartlarini render edip yanlis yapilandirmalar icin tarar",
+            "cmd": "terrascan scan -i helm -d <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Scan Kustomize Overlays",
+            "desc": "Scan Kustomize directories",
+            "desc_tr": "Kustomize dizinlerini tarar",
+            "cmd": "terrascan scan -i kustomize -d <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Scan Dockerfiles",
+            "desc": "Scan Dockerfiles for build-time misconfigurations",
+            "desc_tr": "Dockerfile dosyalarini build asamasi yanlis yapilandirmalari icin tarar",
+            "cmd": "terrascan scan -i docker -d <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Filter by Cloud Provider",
+            "desc": "Restrict policies to a specific cloud provider (aws, azure, gcp, github)",
+            "desc_tr": "Politikalari belirli bir bulut saglayicisiyla sinirlar (aws, azure, gcp, github)",
+            "cmd": "terrascan scan -i terraform -t aws -d <PATH>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "JSON Output",
+            "desc": "Emit scan results as JSON for tooling and parsing",
+            "desc_tr": "Tarama sonuclarini araclar ve ayristirma icin JSON olarak verir",
+            "cmd": "terrascan scan -d <PATH> -o json",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "SARIF Output for Code Scanning",
+            "desc": "Produce SARIF output for GitHub Code Scanning / IDEs",
+            "desc_tr": "GitHub Code Scanning / IDE'ler icin SARIF ciktisi uretir",
+            "cmd": "terrascan scan -d <PATH> -o sarif > terrascan.sarif",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Write Output to File",
+            "desc": "Save results to a file instead of stdout",
+            "desc_tr": "Sonuclari stdout yerine bir dosyaya kaydeder",
+            "cmd": "terrascan scan -d <PATH> -o json --output-file <FILE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Show Only High-Severity Findings",
+            "desc": "Report only violations at or above HIGH severity",
+            "desc_tr": "Yalnizca HIGH ve uzeri ihlalleri raporlar",
+            "cmd": "terrascan scan -d <PATH> --severity high",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Fail Build Below a Severity Threshold",
+            "desc": "Set non-zero exit code threshold for CI gating",
+            "desc_tr": "CI kapilamasi icin sifir-disi cikis kodu esigini ayarlar",
+            "cmd": "terrascan scan -d <PATH> --non-recursive --severity medium",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Terrascan exits 3 when violations are found and 4 on runtime errors; CI pipelines should treat exit 3 as a policy failure."
+          },
+          {
+            "title": "Skip Specific Rules",
+            "desc": "Suppress one or more policy rules by reference ID",
+            "desc_tr": "Bir veya daha fazla politika kuralini referans ID ile bastirir",
+            "cmd": "terrascan scan -d <PATH> --skip-rules AC_AWS_0207,AC_AWS_0214",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Scan Only Selected Rules",
+            "desc": "Run a focused scan limited to given rule IDs",
+            "desc_tr": "Yalnizca verilen kural ID'leriyle sinirli odakli bir tarama yapar",
+            "cmd": "terrascan scan -d <PATH> --scan-rules AC_AWS_0207",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Use a Custom Policy Path",
+            "desc": "Point Terrascan at a custom Rego policy directory",
+            "desc_tr": "Terrascan'i ozel bir Rego politika dizinine yonlendirir",
+            "cmd": "terrascan scan -d <PATH> -p <PATH>/policies",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Use a Config File",
+            "desc": "Drive scan settings from a TOML config file",
+            "desc_tr": "Tarama ayarlarini TOML yapilandirma dosyasindan yonetir",
+            "cmd": "terrascan scan -d <PATH> -c <FILE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "The config file (e.g. config.toml) can centralize skip-rules, severity, category and notification settings across teams."
+          },
+          {
+            "title": "Scan Remote Git Repo",
+            "desc": "Clone and scan a remote IaC repository in one step",
+            "desc_tr": "Uzak bir IaC deposunu tek adimda klonlayip tarar",
+            "cmd": "terrascan scan -r git -u git@github.com:<OWNER>/<REPO>.git -i terraform",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Scan Remote S3 Bucket",
+            "desc": "Pull IaC from an S3 bucket and scan it",
+            "desc_tr": "Bir S3 kovasindan IaC cekip tarar",
+            "cmd": "terrascan scan -r s3 -u s3://<REGISTRY>/<PATH>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Verbose Findings with Rule Details",
+            "desc": "Show full rule descriptions and resource context",
+            "desc_tr": "Tam kural aciklamalarini ve kaynak baglamini gosterir",
+            "cmd": "terrascan scan -d <PATH> --verbose",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Show Passed Rules Too",
+            "desc": "Include passed checks alongside violations in output",
+            "desc_tr": "Ciktida ihlallerin yaninda gecen kontrolleri de gosterir",
+            "cmd": "terrascan scan -d <PATH> --show-passed",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "List Available Server-Side Policies",
+            "desc": "Run Terrascan as an API server for centralized scanning",
+            "desc_tr": "Merkezi tarama icin Terrascan'i bir API sunucusu olarak calistirir",
+            "cmd": "terrascan server --port 9010",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "Server mode exposes a /v1/{iac}/{cloud}/.../scan endpoint so CI/CD and webhooks can POST IaC for remote evaluation."
+          },
+          {
+            "title": "Run Terrascan via Docker",
+            "desc": "Scan a mounted directory using the official container image",
+            "desc_tr": "Resmi konteyner imajini kullanarak baglanmis bir dizini tarar",
+            "cmd": "docker run --rm -v <PATH>:/iac -w /iac tenable/terrascan scan -i terraform",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Pre-Commit / CI Gate Scan",
+            "desc": "Non-recursive scan suitable for pre-commit hooks with JSON output",
+            "desc_tr": "JSON ciktisiyla pre-commit kancalari icin uygun ozyinelemesiz tarama",
+            "cmd": "terrascan scan -d . -i terraform -t aws -o json --non-recursive --severity high",
+            "tags": [
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "KICS",
+        "commands": [
+          {
+            "title": "KICS version",
+            "desc": "Show installed KICS version",
+            "desc_tr": "Yüklü KICS sürümünü göster",
+            "cmd": "kics version",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Scan a directory",
+            "desc": "Scan IaC files in a path",
+            "desc_tr": "Bir yoldaki IaC dosyalarını tara",
+            "cmd": "kics scan -p <PATH>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Scan current directory",
+            "desc": "Scan the current working directory",
+            "desc_tr": "Mevcut çalışma dizinini tara",
+            "cmd": "kics scan -p .",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Scan multiple paths",
+            "desc": "Scan several paths at once",
+            "desc_tr": "Aynı anda birden fazla yolu tara",
+            "cmd": "kics scan -p <PATH>,<PATH>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Run KICS via Docker",
+            "desc": "Run KICS scan in a container",
+            "desc_tr": "KICS taramasını bir konteyner içinde çalıştır",
+            "cmd": "docker run -t -v \"$(pwd)\":/path checkmarx/kics:latest scan -p /path",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Limit to a platform type",
+            "desc": "Scan only one IaC platform (e.g. terraform)",
+            "desc_tr": "Yalnızca tek bir IaC platformunu tara (örn. terraform)",
+            "cmd": "kics scan -p <PATH> -t Terraform",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Scan multiple platforms",
+            "desc": "Restrict scan to selected platforms",
+            "desc_tr": "Taramayı seçili platformlarla sınırla",
+            "cmd": "kics scan -p <PATH> -t Terraform,Kubernetes,Dockerfile",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "List supported platforms",
+            "desc": "Show platform types KICS can scan",
+            "desc_tr": "KICS'in tarayabildiği platform türlerini listele",
+            "cmd": "kics list-platforms",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "JSON report output",
+            "desc": "Generate machine-readable JSON results",
+            "desc_tr": "Makine tarafından okunabilen JSON sonuçları üret",
+            "cmd": "kics scan -p <PATH> --report-formats json -o <PATH>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "SARIF report for code scanning",
+            "desc": "Output SARIF for GitHub/CI integration",
+            "desc_tr": "GitHub/CI entegrasyonu için SARIF çıktısı üret",
+            "cmd": "kics scan -p <PATH> --report-formats sarif -o <PATH>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Multiple report formats",
+            "desc": "Produce several report formats at once",
+            "desc_tr": "Aynı anda birden fazla rapor formatı üret",
+            "cmd": "kics scan -p <PATH> --report-formats json,sarif,html -o <PATH>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Custom report filename",
+            "desc": "Set the output report base name",
+            "desc_tr": "Çıktı raporunun temel adını ayarla",
+            "cmd": "kics scan -p <PATH> --report-formats json -o <PATH> --output-name <FILE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Exclude paths",
+            "desc": "Skip specific files or directories",
+            "desc_tr": "Belirli dosya veya dizinleri tarama dışında bırak",
+            "cmd": "kics scan -p <PATH> -e \"<PATH>/**,**/.terraform/**\"",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Exclude specific queries",
+            "desc": "Skip findings by query ID",
+            "desc_tr": "Belirli sorgu ID'lerine göre bulguları atla",
+            "cmd": "kics scan -p <PATH> --exclude-queries <QUERY_ID>,<QUERY_ID>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Exclude by severity",
+            "desc": "Ignore findings of given severities",
+            "desc_tr": "Belirtilen önem derecelerindeki bulguları yok say",
+            "cmd": "kics scan -p <PATH> --exclude-severities info,low",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Exclude categories",
+            "desc": "Skip findings of specific categories",
+            "desc_tr": "Belirli kategorilerdeki bulguları atla",
+            "cmd": "kics scan -p <PATH> --exclude-categories \"Best Practices\"",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Fail only on high/critical",
+            "desc": "Set non-zero exit only for selected severities",
+            "desc_tr": "Yalnızca seçili önem dereceleri için sıfırdan farklı çıkış kodu ver",
+            "cmd": "kics scan -p <PATH> --fail-on high,critical",
+            "tags": [
+              "essential",
+              "advanced"
+            ],
+            "note": "CI'da pipeline'ı yalnızca ciddi bulgularda kırmak için idealdir."
+          },
+          {
+            "title": "Run specific queries only",
+            "desc": "Limit scan to chosen query IDs",
+            "desc_tr": "Taramayı seçilen sorgu ID'leriyle sınırla",
+            "cmd": "kics scan -p <PATH> --include-queries <QUERY_ID>,<QUERY_ID>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Use custom queries path",
+            "desc": "Point KICS to your own/custom queries",
+            "desc_tr": "KICS'i kendi/özel sorgularınıza yönlendir",
+            "cmd": "kics scan -p <PATH> -q <PATH>",
+            "tags": [
+              "advanced",
+              "tool"
+            ]
+          },
+          {
+            "title": "Quiet mode",
+            "desc": "Suppress progress output, show results only",
+            "desc_tr": "İlerleme çıktısını gizle, yalnızca sonuçları göster",
+            "cmd": "kics scan -p <PATH> --no-progress -s",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Minimal UI output",
+            "desc": "Render compact result UI",
+            "desc_tr": "Kompakt sonuç arayüzü göster",
+            "cmd": "kics scan -p <PATH> --minimal-ui --report-formats json -o <PATH>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Scan with secrets detection disabled",
+            "desc": "Disable the secrets-detection queries",
+            "desc_tr": "Gizli anahtar (secret) tespit sorgularını devre dışı bırak",
+            "cmd": "kics scan -p <PATH> --disable-secrets",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Disable full descriptions lookup",
+            "desc": "Skip remote description fetch for offline scans",
+            "desc_tr": "Çevrimdışı taramalar için uzak açıklama getirmeyi atla",
+            "cmd": "kics scan -p <PATH> --disable-full-descriptions",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Pin queries bundle in Docker",
+            "desc": "Use the bundled queries dir inside the image",
+            "desc_tr": "İmaj içindeki yerleşik sorgu dizinini kullan",
+            "cmd": "docker run -t -v \"$(pwd)\":/path checkmarx/kics:latest scan -p /path -q /app/bin/assets/queries",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Scan with config file",
+            "desc": "Load scan settings from a config file",
+            "desc_tr": "Tarama ayarlarını bir yapılandırma dosyasından yükle",
+            "cmd": "kics scan -p <PATH> --config <FILE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Ignore a line with inline comment",
+            "desc": "Suppress a finding directly in the IaC file",
+            "desc_tr": "Bir bulguyu doğrudan IaC dosyası içinde bastır",
+            "cmd": "# kics-scan ignore-line",
+            "tags": [
+              "advanced"
+            ],
+            "note": "IaC dosyasında ilgili satırın üstüne eklenir; tüm bloğu atlamak için 'ignore-block' kullanın."
+          },
+          {
+            "title": "Verbose / debug scan",
+            "desc": "Run with verbose logging for debugging",
+            "desc_tr": "Hata ayıklama için ayrıntılı günlük kaydıyla çalıştır",
+            "cmd": "kics scan -p <PATH> -v --log-level DEBUG",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "CI/CD GitHub Action scan",
+            "desc": "Run KICS as a GitHub Action with SARIF upload",
+            "desc_tr": "KICS'i SARIF yüklemesiyle bir GitHub Action olarak çalıştır",
+            "cmd": "uses: checkmarx/kics-github-action@v2 with: { path: '<PATH>', output_formats: 'json,sarif' }",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Trivy config / misconfiguration",
+        "commands": [
+          {
+            "title": "Scan Directory for Misconfigurations",
+            "desc": "Scan IaC and config files in a directory",
+            "desc_tr": "Bir dizindeki IaC ve yapilandirma dosyalarini yanlis yapilandirmalar icin tarar",
+            "cmd": "trivy config <PATH>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Scan a Single File",
+            "desc": "Run a misconfiguration scan against one file",
+            "desc_tr": "Tek bir dosyaya karsi yanlis yapilandirma taramasi calistirir",
+            "cmd": "trivy config <FILE>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Use the fs Misconfig Scanner",
+            "desc": "trivy config is the modern alias for trivy fs --scanners misconfig",
+            "desc_tr": "trivy config, trivy fs --scanners misconfig icin modern takma addir",
+            "cmd": "trivy fs --scanners misconfig <PATH>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Filter by Severity",
+            "desc": "Show only HIGH and CRITICAL misconfigurations",
+            "desc_tr": "Yalnizca HIGH ve CRITICAL yanlis yapilandirmalari gosterir",
+            "cmd": "trivy config --severity HIGH,CRITICAL <PATH>",
+            "tags": [
+              "essential",
+              "tool"
+            ]
+          },
+          {
+            "title": "Fail CI on Findings",
+            "desc": "Return non-zero exit code when issues are found",
+            "desc_tr": "Sorun bulundugunda sifir disi cikis kodu donerek CI'i basarisiz yapar",
+            "cmd": "trivy config --exit-code 1 --severity CRITICAL <PATH>",
+            "tags": [
+              "essential",
+              "tool"
+            ],
+            "note": "Combine with --severity so the pipeline only breaks on the severities you care about."
+          },
+          {
+            "title": "JSON Report Output",
+            "desc": "Output machine-readable JSON results",
+            "desc_tr": "Makine tarafindan okunabilir JSON sonuclari uretir",
+            "cmd": "trivy config --format json --output result.json <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "SARIF Output for GitHub Code Scanning",
+            "desc": "Produce SARIF to upload into GitHub Security",
+            "desc_tr": "GitHub Security'e yuklemek icin SARIF ciktisi uretir",
+            "cmd": "trivy config --format sarif --output trivy.sarif <PATH>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Custom Template Output",
+            "desc": "Render results with a Go template (e.g. JUnit)",
+            "desc_tr": "Sonuclari bir Go sablonu ile (orn. JUnit) bicimlendirir",
+            "cmd": "trivy config --format template --template \"@contrib/junit.tpl\" -o junit.xml <PATH>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Scan a Terraform Plan File",
+            "desc": "Evaluate a generated Terraform plan JSON",
+            "desc_tr": "Olusturulan Terraform plan JSON dosyasini degerlendirir",
+            "cmds": [
+              "terraform plan --out tfplan.binary",
+              "terraform show -json tfplan.binary > tfplan.json",
+              "trivy config tfplan.json"
+            ],
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Pass Terraform Variables (tfvars)",
+            "desc": "Supply tfvars so HCL evaluation matches real input",
+            "desc_tr": "HCL degerlendirmesinin gercek girdiyle eslesmesi icin tfvars saglar",
+            "cmd": "trivy config --tf-vars dev.tfvars <PATH>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Exclude Files / Directories",
+            "desc": "Skip paths matching a glob during the scan",
+            "desc_tr": "Tarama sirasinda glob ile eslesen yollari atlar",
+            "cmd": "trivy config --skip-dirs \"**/.terraform\" --skip-files \"**/*_test.tf\" <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Suppress Findings with .trivyignore",
+            "desc": "List check IDs to ignore in a .trivyignore file",
+            "desc_tr": "Yok sayilacak kontrol kimliklerini .trivyignore dosyasinda listeler",
+            "cmd": "trivy config --ignorefile .trivyignore <PATH>",
+            "tags": [
+              "tool"
+            ],
+            "note": "Each line is a check ID like AVD-AWS-0086; add 'exp:2025-12-31' for time-bound ignores."
+          },
+          {
+            "title": "Ignore Findings via Rego policy",
+            "desc": "Apply a custom Rego ignore policy file",
+            "desc_tr": "Ozel bir Rego yok sayma politikasi dosyasi uygular",
+            "cmd": "trivy config --ignore-policy ignore.rego <PATH>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Include Successful / Passed Checks",
+            "desc": "Show passed checks alongside failures",
+            "desc_tr": "Basarisizliklarin yaninda gecen kontrolleri de gosterir",
+            "cmd": "trivy config --include-non-failures <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Run Custom Rego Checks",
+            "desc": "Load your own Rego policies and namespaces",
+            "desc_tr": "Kendi Rego politikalarinizi ve ad alanlarinizi yukler",
+            "cmd": "trivy config --config-check ./policies --check-namespaces user <PATH>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Load Checks from an OCI Registry",
+            "desc": "Pull a bundle of policies published as an OCI artifact",
+            "desc_tr": "OCI yapay nesnesi olarak yayinlanan politika paketini ceker",
+            "cmd": "trivy config --checks-bundle-repository <REGISTRY>/trivy-checks:latest <PATH>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Pass Helm Values to the Scanner",
+            "desc": "Render a Helm chart with overrides before scanning",
+            "desc_tr": "Taramadan once Helm chart'ini gecersiz kilmalarla isler",
+            "cmd": "trivy config --helm-set replicas=3 --helm-values values.yaml <PATH>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Scan a Remote Git Repository",
+            "desc": "Clone and scan a repo for misconfigurations",
+            "desc_tr": "Bir depoyu klonlayip yanlis yapilandirmalar icin tarar",
+            "cmd": "trivy config https://github.com/<DOMAIN>/<PATH>.git",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Run a Compliance Report",
+            "desc": "Evaluate against a built-in compliance spec",
+            "desc_tr": "Yerlesik bir uyumluluk sablonuna karsi degerlendirir",
+            "cmd": "trivy config --compliance docker-cis-1.6.0 --report summary <PATH>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Scan Dockerfile for Misconfigurations",
+            "desc": "Detect insecure instructions in a Dockerfile",
+            "desc_tr": "Bir Dockerfile icindeki guvensiz talimatlari saptar",
+            "cmd": "trivy config --file-patterns \"dockerfile:Dockerfile.*\" <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Combine Misconfig and Secret Scanners",
+            "desc": "Scan config files for both misconfigs and secrets",
+            "desc_tr": "Yapilandirma dosyalarini hem yanlis yapilandirma hem de secret icin tarar",
+            "cmd": "trivy fs --scanners misconfig,secret <PATH>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Scan a Kubernetes Cluster Live",
+            "desc": "Audit running cluster resources for misconfigurations",
+            "desc_tr": "Calisan kume kaynaklarini yanlis yapilandirmalar icin denetler",
+            "cmd": "trivy k8s --scanners misconfig --report summary cluster",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Scan a Single Namespace",
+            "desc": "Limit a k8s misconfig scan to one namespace",
+            "desc_tr": "k8s yanlis yapilandirma taramasini tek bir ad alaniyla sinirlar",
+            "cmd": "trivy k8s --scanners misconfig -n <NAMESPACE> --report all all",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Quiet Mode with Cache Reset",
+            "desc": "Suppress progress logs and clear scanner cache first",
+            "desc_tr": "Ilerleme gunluklerini bastirir ve once tarayici onbellegini temizler",
+            "cmds": [
+              "trivy clean --scan-cache",
+              "trivy config --quiet <PATH>"
+            ],
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Use a Reusable Config File",
+            "desc": "Run with a reusable trivy.yaml configuration",
+            "desc_tr": "Yeniden kullanilabilir bir trivy.yaml yapilandirmasiyla calistirir",
+            "cmd": "trivy config --config trivy.yaml <PATH>",
+            "tags": [
+              "tool"
+            ],
+            "note": "Store severity, ignorefile, and check paths in trivy.yaml to keep CI commands short and consistent."
+          },
+          {
+            "title": "Air-Gapped Misconfig Scan",
+            "desc": "Disable update checks for offline environments",
+            "desc_tr": "Cevrimdisi ortamlar icin guncelleme kontrollerini devre disi birakir",
+            "cmd": "trivy config --skip-check-update <PATH>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run Trivy Config in Docker",
+            "desc": "Scan the working directory using the official image",
+            "desc_tr": "Resmi imaji kullanarak calisma dizinini tarar",
+            "cmd": "docker run --rm -v \"$PWD:/work\" aquasec/trivy:latest config /work",
+            "tags": [
+              "tool"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "OPA / Conftest policy testing",
+        "commands": [
+          {
+            "title": "Run Conftest Against a Config File",
+            "desc": "Test a YAML/JSON config against Rego policies in a directory",
+            "desc_tr": "Bir YAML/JSON yapilandirma dosyasini bir dizindeki Rego politikalarina karsi test et",
+            "cmd": "conftest test <FILE> -p <PATH>/policy/",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Test All Files in a Directory",
+            "desc": "Recursively test every config file under a path",
+            "desc_tr": "Bir yol altindaki tum yapilandirma dosyalarini ozyinelemeli test et",
+            "cmd": "conftest test <PATH>/ --policy <PATH>/policy/ --all-namespaces",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Test Terraform Plan JSON",
+            "desc": "Convert a Terraform plan to JSON and evaluate it with Conftest",
+            "desc_tr": "Terraform planini JSON'a cevirip Conftest ile degerlendir",
+            "cmds": [
+              "terraform plan -out=tfplan.binary",
+              "terraform show -json tfplan.binary > tfplan.json",
+              "conftest test tfplan.json -p <PATH>/policy/"
+            ],
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Use input type 'json' (default for .json) so Conftest parses the plan correctly."
+          },
+          {
+            "title": "Specify Input Parser Explicitly",
+            "desc": "Force a parser when the file extension is ambiguous",
+            "desc_tr": "Dosya uzantisi belirsiz oldugunda ayristiriciyi acikca zorla",
+            "cmd": "conftest test <FILE> --parser hcl2 -p <PATH>/policy/",
+            "tags": [
+              "tool"
+            ],
+            "note": "Parsers include yaml, json, hcl, hcl2, dockerfile, ini, toml, cue, edn, jsonnet, vcl, xml."
+          },
+          {
+            "title": "Test a Dockerfile",
+            "desc": "Lint a Dockerfile against Rego policies using the dockerfile parser",
+            "desc_tr": "Bir Dockerfile'i dockerfile ayristiricisi ile Rego politikalarina karsi denetle",
+            "cmd": "conftest test Dockerfile --parser dockerfile -p <PATH>/policy/",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Use a Custom Policy Namespace",
+            "desc": "Evaluate only rules under a specific Rego package namespace",
+            "desc_tr": "Yalnizca belirli bir Rego paket ad alanindaki kurallari degerlendir",
+            "cmd": "conftest test <FILE> -p <PATH>/policy/ --namespace <NAMESPACE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Combine Multiple Configs Into One Input",
+            "desc": "Merge all input files into a single document for cross-file rules",
+            "desc_tr": "Dosyalar arasi kurallar icin tum girdileri tek belgede birlestir",
+            "cmd": "conftest test <PATH>/ --combine -p <PATH>/policy/",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "With --combine, input is an array of {path, contents} objects; write rules accordingly."
+          },
+          {
+            "title": "Output Results as JSON",
+            "desc": "Emit machine-readable results for CI pipelines",
+            "desc_tr": "CI hatlari icin makine okunabilir sonuclar uret",
+            "cmd": "conftest test <FILE> -p <PATH>/policy/ -o json",
+            "tags": [
+              "tool",
+              "essential"
+            ],
+            "note": "Other outputs: table, tap, junit, github, stdout."
+          },
+          {
+            "title": "Produce JUnit Report for CI",
+            "desc": "Generate a JUnit XML report for test result dashboards",
+            "desc_tr": "Test sonuc panolari icin JUnit XML raporu olustur",
+            "cmd": "conftest test <FILE> -p <PATH>/policy/ -o junit > results.xml",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run Conftest Unit Tests for Policies",
+            "desc": "Execute Rego test files (test_*.rego) to validate policy logic",
+            "desc_tr": "Politika mantigini dogrulamak icin Rego test dosyalarini (test_*.rego) calistir",
+            "cmd": "conftest verify -p <PATH>/policy/",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Report Only Without Failing Build",
+            "desc": "Always exit zero so a stage reports findings but does not block",
+            "desc_tr": "Bir asamanin engellemeden bulgu raporlamasi icin daima sifir don",
+            "cmd": "conftest test <FILE> -p <PATH>/policy/ --no-fail",
+            "tags": [
+              "tool"
+            ],
+            "note": "--no-fail always exits 0; useful for reporting-only stages."
+          },
+          {
+            "title": "Pull Policies From an OCI Registry",
+            "desc": "Download bundled policies stored as OCI artifacts",
+            "desc_tr": "OCI yapitlar olarak saklanan paketlenmis politikalari indir",
+            "cmd": "conftest pull oci://<REGISTRY>/<PATH>:latest",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Push Policies to an OCI Registry",
+            "desc": "Bundle and publish a policy directory as an OCI artifact",
+            "desc_tr": "Bir politika dizinini OCI yapiti olarak paketleyip yayinla",
+            "cmd": "conftest push <REGISTRY>/<PATH>:latest <PATH>/policy/",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run Conftest in Docker",
+            "desc": "Use the official container image without local install",
+            "desc_tr": "Yerel kurulum olmadan resmi konteyner imajini kullan",
+            "cmd": "docker run --rm -v $(pwd):/project openpolicyagent/conftest test <FILE> -p policy/",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Run OPA Policy Unit Tests",
+            "desc": "Execute Rego unit tests with the native opa CLI verbosely",
+            "desc_tr": "Rego birim testlerini yerel opa CLI ile ayrintili calistir",
+            "cmd": "opa test <PATH>/ -v",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Show OPA Test Coverage",
+            "desc": "Report Rego line coverage for your policy test suite",
+            "desc_tr": "Politika test paketin icin Rego satir kapsamini raporla",
+            "cmd": "opa test <PATH>/ --coverage --format=json",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Evaluate a Rego Query Against Input",
+            "desc": "Run an ad-hoc query against an input document and data files",
+            "desc_tr": "Bir girdi belgesi ve veri dosyalarina karsi anlik sorgu calistir",
+            "cmd": "opa eval -i <FILE> -d <PATH>/policy.rego 'data.main.deny' --format pretty",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Explain a Failing Rego Evaluation",
+            "desc": "Trace why a rule evaluated the way it did for debugging",
+            "desc_tr": "Hata ayiklama icin bir kuralin neden o sekilde degerlendigini izle",
+            "cmd": "opa eval -i <FILE> -d <PATH>/policy.rego 'data.main.deny' --explain full",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Format and Lint Rego In Place",
+            "desc": "Auto-format Rego source files to canonical style",
+            "desc_tr": "Rego kaynak dosyalarini standart bicime otomatik bicimlendir",
+            "cmd": "opa fmt -w <PATH>/policy.rego",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Check Rego for Compile Errors",
+            "desc": "Validate that policies parse and compile without running them",
+            "desc_tr": "Politikalari calistirmadan ayristirma ve derleme hatalarini dogrula",
+            "cmd": "opa check <PATH>/ --strict",
+            "tags": [
+              "tool",
+              "essential"
+            ],
+            "note": "--strict surfaces unused vars, unsafe rules, and deprecated built-ins early."
+          },
+          {
+            "title": "Lint Rego with Regal",
+            "desc": "Run the Regal linter for style and bug detection in Rego",
+            "desc_tr": "Rego'da stil ve hata tespiti icin Regal denetleyicisini calistir",
+            "cmd": "regal lint <PATH>/policy/",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Regal is the dedicated Rego linter from Styra; complements opa check."
+          },
+          {
+            "title": "Benchmark a Rego Query",
+            "desc": "Measure evaluation performance of a policy query",
+            "desc_tr": "Bir politika sorgusunun degerlendirme performansini olc",
+            "cmd": "opa bench -i <FILE> -d <PATH>/policy.rego 'data.main.deny'",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Build an OPA Policy Bundle",
+            "desc": "Compile policies and data into a distributable bundle",
+            "desc_tr": "Politika ve verileri dagitilabilir bir bundle'a derle",
+            "cmd": "opa build -b <PATH>/ -o bundle.tar.gz",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Start OPA REPL for Interactive Testing",
+            "desc": "Load policies into an interactive shell to probe rules live",
+            "desc_tr": "Kurallari canli incelemek icin politikalari etkilesimli kabuga yukle",
+            "cmd": "opa run <PATH>/policy.rego",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Run OPA as a Decision Server",
+            "desc": "Serve policies over HTTP for the Data API and decision queries",
+            "desc_tr": "Politikalari Veri API'si ve karar sorgulari icin HTTP uzerinden sun",
+            "cmd": "opa run --server --addr localhost:8181 <PATH>/policy/",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Query the OPA Server for a Decision",
+            "desc": "POST an input document to a running OPA server and get the result",
+            "desc_tr": "Calisan bir OPA sunucusuna girdi belgesi gonderip sonucu al",
+            "cmd": "curl -s localhost:8181/v1/data/main/deny -d @<FILE> -H 'Content-Type: application/json'",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Validate Kubernetes Manifests in CI",
+            "desc": "Gate a pipeline by testing rendered manifests with Conftest",
+            "desc_tr": "Olusturulan manifest'leri Conftest ile test ederek hatti kapilandir",
+            "cmd": "helm template <PATH>/chart/ | conftest test - -p <PATH>/policy/",
+            "tags": [
+              "tool",
+              "essential"
+            ],
+            "note": "Piping via '-' reads stdin; great for templated Helm/Kustomize output."
+          }
+        ]
+      },
+      {
+        "name": "Terraform Compliance & Sentinel",
+        "commands": [
+          {
+            "title": "Generate Terraform Plan JSON",
+            "desc": "Produce a machine-readable plan for policy tools to consume",
+            "desc_tr": "Politika araclarinin tuketmesi icin makine okunabilir bir plan uretir",
+            "cmds": [
+              "terraform plan -out=tfplan.binary",
+              "terraform show -json tfplan.binary > tfplan.json"
+            ],
+            "tags": [
+              "essential"
+            ],
+            "note": "Both terraform-compliance and many Sentinel mock generators read this JSON plan."
+          },
+          {
+            "title": "Install terraform-compliance",
+            "desc": "Install the BDD-style compliance scanner via pip",
+            "desc_tr": "BDD tarzi uyumluluk tarayicisini pip ile kurar",
+            "cmd": "pip install terraform-compliance",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Run terraform-compliance on a Plan",
+            "desc": "Validate a Terraform plan against a feature directory",
+            "desc_tr": "Bir Terraform planini feature dizinine gore dogrular",
+            "cmd": "terraform-compliance -p tfplan.json -f <PATH>/compliance/",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "terraform-compliance Against Local Files",
+            "desc": "Point policies at a Terraform working directory instead of a plan",
+            "desc_tr": "Politikalari plan yerine bir Terraform calisma dizinine yoneltir",
+            "cmd": "terraform-compliance -f <PATH>/compliance/ -p .",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "terraform-compliance From Git Policies",
+            "desc": "Load compliance features directly from a remote git repo",
+            "desc_tr": "Uyumluluk feature'larini dogrudan uzak bir git deposundan yukler",
+            "cmd": "terraform-compliance -f git:https://github.com/<DOMAIN>/policies.git -p tfplan.json",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Run a Single Feature Tag",
+            "desc": "Execute only scenarios matching a behave tag",
+            "desc_tr": "Yalnizca bir behave etiketine uyan senaryolari calistirir",
+            "cmd": "terraform-compliance -p tfplan.json -f <PATH>/compliance/ --tags encryption",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Silent / CI Output Mode",
+            "desc": "Reduce noise and emit only failures for pipelines",
+            "desc_tr": "Gurultuyu azaltir ve pipeline'lar icin yalnizca hatalari yayar",
+            "cmd": "terraform-compliance -p tfplan.json -f <PATH>/compliance/ --silent --no-failure",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "--no-failure exits 0 even on violations; use only when you handle results downstream."
+          },
+          {
+            "title": "JUnit XML Report for CI",
+            "desc": "Emit JUnit results so CI can render compliance gates",
+            "desc_tr": "CI'in uyumluluk kapilarini gosterebilmesi icin JUnit sonuclari uretir",
+            "cmd": "terraform-compliance -p tfplan.json -f <PATH>/compliance/ --junit-xml=results.xml",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Example: Enforce Tag on Resources",
+            "desc": "A terraform-compliance feature requiring a mandatory tag",
+            "desc_tr": "Zorunlu bir etiketi sart kosan bir terraform-compliance feature'i",
+            "cmd": "printf 'Feature: Tagging\\n  Scenario: Require Owner tag\\n    Given I have aws_instance defined\\n    Then it must contain tags\\n    And its value must match the \"Owner\" regex' > <PATH>/compliance/tagging.feature",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Example: Deny Public S3 ACL",
+            "desc": "Block S3 buckets configured with a public-read ACL",
+            "desc_tr": "Public-read ACL ile yapilandirilmis S3 bucket'larini engeller",
+            "cmd": "printf 'Feature: S3 Security\\n  Scenario: No public buckets\\n    Given I have aws_s3_bucket defined\\n    Then it must not contain acl\\n    Or its value must not match the \"public-read\" regex' > <PATH>/compliance/s3.feature",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Install Sentinel CLI",
+            "desc": "Download and unpack the HashiCorp Sentinel binary",
+            "desc_tr": "HashiCorp Sentinel ikili dosyasini indirir ve kurar",
+            "cmds": [
+              "curl -fsSLo sentinel.zip https://releases.hashicorp.com/sentinel/0.40.0/sentinel_0.40.0_linux_amd64.zip",
+              "unzip sentinel.zip && sudo mv sentinel /usr/local/bin/"
+            ],
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Apply a Sentinel Policy",
+            "desc": "Evaluate a single .sentinel policy file locally",
+            "desc_tr": "Tek bir .sentinel politika dosyasini yerel olarak degerlendirir",
+            "cmd": "sentinel apply <FILE>.sentinel",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Apply Sentinel With Trace Output",
+            "desc": "Show every rule and boolean expression evaluation",
+            "desc_tr": "Her kural ve boolean ifade degerlendirmesini gosterir",
+            "cmd": "sentinel apply -trace <FILE>.sentinel",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Indispensable for debugging why a rule returns false."
+          },
+          {
+            "title": "Run Sentinel Test Suite",
+            "desc": "Execute pass/fail test cases under the test directory",
+            "desc_tr": "Test dizinindeki gecme/kalma test durumlarini calistirir",
+            "cmd": "sentinel test",
+            "tags": [
+              "tool",
+              "essential"
+            ]
+          },
+          {
+            "title": "Verbose Sentinel Testing",
+            "desc": "Run tests with full trace to debug failing assertions",
+            "desc_tr": "Basarisiz iddialari ayiklamak icin testleri tam izle ile calistirir",
+            "cmd": "sentinel test -verbose <FILE>.sentinel",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Pass a Plan Mock to Sentinel",
+            "desc": "Feed a generated tfplan/tfconfig mock into evaluation",
+            "desc_tr": "Uretilmis bir tfplan/tfconfig mock'unu degerlendirmeye verir",
+            "cmd": "sentinel apply -config=sentinel.json <FILE>.sentinel",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Generate Sentinel Mocks From a Run",
+            "desc": "Export tfplan/tfconfig/tfstate mocks from Terraform Cloud",
+            "desc_tr": "Terraform Cloud calismasindan mock dosyalari disa aktarir",
+            "cmd": "tfc-sentinel-mock generate -run=<RUN_ID> -token=$TFC_TOKEN",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Mocks are also downloadable from the run page UI under 'Download Sentinel mocks'."
+          },
+          {
+            "title": "Example: Restrict Allowed Instance Types",
+            "desc": "A Sentinel policy enforcing an allowlist of EC2 types",
+            "desc_tr": "EC2 tiplerinin izin listesini zorlayan bir Sentinel politikasi",
+            "cmd": "printf 'import \"tfplan/v2\" as tfplan\\nallowed = [\"t3.micro\", \"t3.small\"]\\nmain = rule { all tfplan.resource_changes as _, rc { rc.type is \"aws_instance\" implies rc.change.after.instance_type in allowed } }' > <FILE>.sentinel",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Example: Require Encryption in Sentinel",
+            "desc": "Mandate encrypted EBS volumes via a tfplan/v2 rule",
+            "desc_tr": "tfplan/v2 kurali ile sifreli EBS birimlerini zorunlu kilar",
+            "cmd": "printf 'import \"tfplan/v2\" as tfplan\\nmain = rule { all tfplan.resource_changes as _, rc { rc.type is \"aws_ebs_volume\" implies rc.change.after.encrypted is true } }' > <FILE>.sentinel",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Format Sentinel Code",
+            "desc": "Auto-format policy files to canonical style",
+            "desc_tr": "Politika dosyalarini standart bicime otomatik bicimlendirir",
+            "cmd": "sentinel fmt <FILE>.sentinel",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Define a Sentinel Policy Set",
+            "desc": "Wire policies and enforcement levels in sentinel.hcl",
+            "desc_tr": "sentinel.hcl icinde politikalari ve zorlama seviyelerini tanimlar",
+            "cmd": "printf 'policy \"require-encryption\" {\\n  source = \"./require-encryption.sentinel\"\\n  enforcement_level = \"hard-mandatory\"\\n}' > sentinel.hcl",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Levels: advisory (warn), soft-mandatory (override allowed), hard-mandatory (block)."
+          },
+          {
+            "title": "Push a Policy Set to Terraform Cloud",
+            "desc": "Publish a VCS-less policy set via the TFC API",
+            "desc_tr": "VCS'siz bir politika setini TFC API uzerinden yayinlar",
+            "cmd": "curl -s --header \"Authorization: Bearer $TFC_TOKEN\" --header \"Content-Type: application/vnd.api+json\" --request POST https://app.terraform.io/api/v2/organizations/<DOMAIN>/policy-sets -d @policy-set.json",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "List TFC Policy Checks for a Run",
+            "desc": "Query Sentinel policy-check results attached to a run",
+            "desc_tr": "Bir calismaya bagli Sentinel politika-kontrol sonuclarini sorgular",
+            "cmd": "curl -s --header \"Authorization: Bearer $TFC_TOKEN\" https://app.terraform.io/api/v2/runs/<RUN_ID>/policy-checks",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Override a Soft-Mandatory Failure",
+            "desc": "Authorize a run blocked by a soft-mandatory policy",
+            "desc_tr": "Soft-mandatory bir politika tarafindan engellenen calismayi yetkilendirir",
+            "cmd": "curl -s --header \"Authorization: Bearer $TFC_TOKEN\" --request POST https://app.terraform.io/api/v2/policy-checks/<POLICY_CHECK_ID>/actions/override",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Only soft-mandatory checks can be overridden; hard-mandatory always blocks."
+          },
+          {
+            "title": "Validate Policy Set With OPA Conftest",
+            "desc": "Alternative gate: test the plan JSON against Rego policies",
+            "desc_tr": "Alternatif kapi: plan JSON'ini Rego politikalarina gore test eder",
+            "cmd": "conftest test tfplan.json -p <PATH>/policy/",
+            "tags": [
+              "tool"
+            ],
+            "note": "Conftest/OPA is a common open-source substitute for Sentinel outside TFC/Enterprise."
+          },
+          {
+            "title": "Run Compliance Gate in CI Pipeline",
+            "desc": "Fail the build when a Terraform plan violates policy",
+            "desc_tr": "Terraform plani politikayi ihlal ettiginde derlemeyi basarisiz kilar",
+            "cmd": "terraform-compliance -p tfplan.json -f <PATH>/compliance/ || exit 1",
+            "tags": [
+              "essential"
+            ]
+          }
+        ]
+      }
+    ]
   }
 ];

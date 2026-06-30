@@ -96,7 +96,7 @@
       "id": "iac-security",
       "name": "IaC Security Scanning",
       "icon": "🔎",
-      "status": "pending",
+      "status": "done",
       "description": "Static analysis and policy enforcement for infrastructure-as-code: Terraform, CloudFormation, Kubernetes manifests, and more.",
       "subcategories": [
         "tfsec",
@@ -106,7 +106,8 @@
         "Trivy config / misconfiguration",
         "OPA / Conftest policy testing",
         "Terraform Compliance & Sentinel"
-      ]
+      ],
+      "commands_added": 190
     },
     {
       "id": "ansible",
