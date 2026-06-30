@@ -209,14 +209,15 @@
       "id": "helm",
       "name": "Helm & Package Management",
       "icon": "⎈",
-      "status": "pending",
+      "status": "done",
       "description": "Helm chart operations and security: install, upgrade, templating, repositories, and chart scanning.",
       "subcategories": [
         "Chart Lifecycle (install, upgrade, rollback, uninstall)",
         "Templating & Values",
         "Repositories & OCI registries",
         "Chart Security (helm lint, checkov, kubeconform)"
-      ]
+      ],
+      "commands_added": 110
     },
     {
       "id": "service-mesh",

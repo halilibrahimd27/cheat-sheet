@@ -11,8 +11,8 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 [![Docker](https://img.shields.io/badge/docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)](#docker-recommended)
 <!-- STATS:BADGES -->
-[![Commands](https://img.shields.io/badge/commands-4590-success?style=flat-square)](#categories)
-[![Categories](https://img.shields.io/badge/categories-47-orange?style=flat-square)](#categories)
+[![Commands](https://img.shields.io/badge/commands-4700-success?style=flat-square)](#categories)
+[![Categories](https://img.shields.io/badge/categories-48-orange?style=flat-square)](#categories)
 <!-- /STATS:BADGES -->
 
 > **⭐ If this saved you time, please leave a star.** It's the simplest way to support this work.
@@ -22,7 +22,7 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 ---
 
 <!-- STATS:START -->
-**4590 commands** across **47 categories** and **294 subcategories** — every command bilingual (English + Türkçe).
+**4700 commands** across **48 categories** and **298 subcategories** — every command bilingual (English + Türkçe).
 <!-- STATS:END -->
 
 > Runs **100% locally**. No account, no telemetry, no cloud — your data never leaves your machine.
@@ -102,6 +102,7 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 | 45 | 🗝️ Secrets Management | 139 | Managing and protecting secrets: HashiCorp Vault, SOPS, sealed-secrets, cloud secret ma… |
 | 46 | 🦅 Cloud-Native Runtime Security | 137 | Runtime threat detection and enforcement for containers and hosts using eBPF-based and… |
 | 47 | 🌩️ Cloud Security Posture (Multi-Cloud) | 197 | Auditing cloud posture across AWS, Azure, and GCP with CSPM and IAM tooling. |
+| 48 | ⎈ Helm & Package Management | 110 | Helm chart operations and security: install, upgrade, templating, repositories, and cha… |
 <!-- CATEGORIES:END -->
 
 ## Quick Start

@@ -46605,5 +46605,1069 @@ module.exports = [
         ]
       }
     ]
+  },
+  {
+    "id": "helm",
+    "name": "Helm & Package Management",
+    "name_tr": "Helm & Paket Yönetimi",
+    "icon": "⎈",
+    "description": "Helm chart operations and security: install, upgrade, templating, repositories, and chart scanning.",
+    "description_tr": "Helm chart operasyonları ve güvenliği: kurulum, yükseltme, templating, depolar ve chart tarama.",
+    "subcategories": [
+      {
+        "name": "Chart Lifecycle (install, upgrade, rollback, uninstall)",
+        "commands": [
+          {
+            "title": "Install a Chart from a Repo",
+            "desc": "Install a chart as a named release into a namespace",
+            "desc_tr": "Bir chart'i isimlendirilmis release olarak namespace'e kur",
+            "cmd": "helm install <RELEASE> <REPO>/<CHART> --namespace <NAMESPACE> --create-namespace",
+            "tags": [
+              "essential"
+            ],
+            "note": "'--create-namespace' yoksa namespace onceden var olmali, aksi halde kurulum basarisiz olur."
+          },
+          {
+            "title": "Install with Custom Values File",
+            "desc": "Override default chart values using a values file",
+            "desc_tr": "Bir values dosyasi ile chart varsayilan degerlerini gecersiz kil",
+            "cmd": "helm install <RELEASE> <REPO>/<CHART> -f <FILE> --namespace <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Install with Inline Value Overrides",
+            "desc": "Set individual values directly on the command line",
+            "desc_tr": "Komut satirinda dogrudan tekil degerleri ayarla",
+            "cmd": "helm install <RELEASE> <REPO>/<CHART> --set image.tag=<IMAGE>,replicaCount=3",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Install a Specific Chart Version",
+            "desc": "Pin the chart version installed for reproducibility",
+            "desc_tr": "Tekrarlanabilirlik icin kurulan chart surumunu sabitle",
+            "cmd": "helm install <RELEASE> <REPO>/<CHART> --version 1.2.3 --namespace <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Dry-Run an Install",
+            "desc": "Render and validate the release without applying it",
+            "desc_tr": "Release'i uygulamadan render edip dogrula",
+            "cmd": "helm install <RELEASE> <REPO>/<CHART> --dry-run --debug --namespace <NAMESPACE>",
+            "tags": [
+              "essential",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Install and Wait for Readiness",
+            "desc": "Block until all resources are ready or the timeout hits",
+            "desc_tr": "Tum kaynaklar hazir olana veya zaman asimina kadar bekle",
+            "cmd": "helm install <RELEASE> <REPO>/<CHART> --wait --timeout 5m --namespace <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Install from a Local Chart Directory",
+            "desc": "Install directly from an unpacked chart folder",
+            "desc_tr": "Acilmis bir chart klasorunden dogrudan kur",
+            "cmd": "helm install <RELEASE> <PATH>/ --namespace <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Install from an OCI Registry",
+            "desc": "Pull and install a chart packaged as an OCI artifact",
+            "desc_tr": "OCI artifact olarak paketlenmis bir chart'i cekip kur",
+            "cmd": "helm install <RELEASE> oci://<REGISTRY>/<CHART> --version 1.2.3 --namespace <NAMESPACE>",
+            "tags": [
+              "advanced",
+              "tool"
+            ],
+            "note": "OCI destegi Helm 3.8+ ile varsayilan olarak acik; 'helm registry login <REGISTRY>' gerekebilir."
+          },
+          {
+            "title": "Install or Upgrade Idempotently",
+            "desc": "Install if absent, otherwise upgrade the existing release",
+            "desc_tr": "Yoksa kur, varsa mevcut release'i yukselt",
+            "cmd": "helm upgrade --install <RELEASE> <REPO>/<CHART> -f <FILE> --namespace <NAMESPACE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "CI/CD pipeline'larinda en cok kullanilan kalip; idempotent dagitim saglar."
+          },
+          {
+            "title": "Upgrade an Existing Release",
+            "desc": "Apply changed values or a new chart version to a release",
+            "desc_tr": "Degisen degerleri veya yeni chart surumunu release'e uygula",
+            "cmd": "helm upgrade <RELEASE> <REPO>/<CHART> -f <FILE> --namespace <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Upgrade Reusing Previous Values",
+            "desc": "Keep last-applied values and merge only new overrides",
+            "desc_tr": "Son uygulanan degerleri koru ve sadece yeni gecersiz kilmalari birlestir",
+            "cmd": "helm upgrade <RELEASE> <REPO>/<CHART> --reuse-values --set image.tag=<IMAGE> -n <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "'--reuse-values' ile '--reset-values' birbirinin zittidir; karistirma values'larin kaybolmasina yol acabilir."
+          },
+          {
+            "title": "Atomic Upgrade with Auto-Rollback",
+            "desc": "Roll back automatically if the upgrade fails",
+            "desc_tr": "Yukseltme basarisiz olursa otomatik geri al",
+            "cmd": "helm upgrade --install <RELEASE> <REPO>/<CHART> --atomic --timeout 5m -n <NAMESPACE>",
+            "tags": [
+              "essential",
+              "advanced"
+            ],
+            "note": "'--atomic' otomatik olarak '--wait' davranisini etkinlestirir."
+          },
+          {
+            "title": "Upgrade and Force Resource Replacement",
+            "desc": "Force update through delete/recreate when needed",
+            "desc_tr": "Gerektiginde sil/yeniden olustur ile guncellemeyi zorla",
+            "cmd": "helm upgrade <RELEASE> <REPO>/<CHART> --force --namespace <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "'--force' immutable alanlarda pod kesintisine yol acabilir; dikkatli kullan."
+          },
+          {
+            "title": "Install/Upgrade CRDs Explicitly",
+            "desc": "Skip or control CRD installation behavior on upgrade",
+            "desc_tr": "Yukseltmede CRD kurulum davranisini atla veya kontrol et",
+            "cmd": "helm upgrade <RELEASE> <REPO>/<CHART> --skip-crds --namespace <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Helm yukseltmede CRD'leri otomatik guncellemez; CRD'leri ayrica yonetmen gerekebilir."
+          },
+          {
+            "title": "List Releases in a Namespace",
+            "desc": "Show deployed releases with chart and revision info",
+            "desc_tr": "Dagitilmis release'leri chart ve revizyon bilgisiyle goster",
+            "cmd": "helm list --namespace <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List Releases Across All Namespaces",
+            "desc": "Enumerate every release in the cluster including failed ones",
+            "desc_tr": "Basarisiz olanlar dahil kumedeki her release'i listele",
+            "cmd": "helm list --all-namespaces --all",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Show Release Status",
+            "desc": "Display the current status and notes of a release",
+            "desc_tr": "Bir release'in mevcut durumunu ve notlarini goster",
+            "cmd": "helm status <RELEASE> --namespace <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "View Release Revision History",
+            "desc": "List all revisions of a release for rollback planning",
+            "desc_tr": "Geri alma planlamasi icin bir release'in tum revizyonlarini listele",
+            "cmd": "helm history <RELEASE> --namespace <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Get Values of a Release",
+            "desc": "Dump the user-supplied or full computed values in use",
+            "desc_tr": "Kullanilan kullanici tarafindan verilen veya tam hesaplanan degerleri dok",
+            "cmd": "helm get values <RELEASE> --all --namespace <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Get Rendered Manifest of a Release",
+            "desc": "Output the live Kubernetes manifests Helm applied",
+            "desc_tr": "Helm'in uyguladigi canli Kubernetes manifestlerini cikart",
+            "cmd": "helm get manifest <RELEASE> --namespace <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Roll Back to Previous Revision",
+            "desc": "Revert a release to its immediately prior revision",
+            "desc_tr": "Bir release'i hemen onceki revizyonuna geri al",
+            "cmd": "helm rollback <RELEASE> 0 --namespace <NAMESPACE>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Revizyon 0 son basarili revizyona geri doner; belirli bir numara da verebilirsin."
+          },
+          {
+            "title": "Roll Back to a Specific Revision",
+            "desc": "Revert to a chosen revision number and wait for readiness",
+            "desc_tr": "Secilen revizyon numarasina don ve hazir olana kadar bekle",
+            "cmd": "helm rollback <RELEASE> 3 --wait --timeout 5m --namespace <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Dry-Run a Rollback",
+            "desc": "Preview a rollback without changing cluster state",
+            "desc_tr": "Kume durumunu degistirmeden bir geri almayi onizle",
+            "cmd": "helm rollback <RELEASE> 2 --dry-run --namespace <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Uninstall a Release",
+            "desc": "Remove a release and its associated resources",
+            "desc_tr": "Bir release'i ve iliskili kaynaklarini kaldir",
+            "cmd": "helm uninstall <RELEASE> --namespace <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Uninstall but Keep History",
+            "desc": "Remove resources yet retain release history for rollback",
+            "desc_tr": "Kaynaklari kaldir ama geri alma icin release gecmisini koru",
+            "cmd": "helm uninstall <RELEASE> --keep-history --namespace <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "'--keep-history' ile release 'uninstalled' durumunda kalir ve 'helm rollback' ile geri getirilebilir."
+          },
+          {
+            "title": "Uninstall and Wait for Deletion",
+            "desc": "Block until all release resources are fully removed",
+            "desc_tr": "Tum release kaynaklari tamamen kaldirilana kadar bekle",
+            "cmd": "helm uninstall <RELEASE> --wait --timeout 5m --namespace <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Test a Deployed Release",
+            "desc": "Run the chart's defined test hooks against the release",
+            "desc_tr": "Chart'in tanimli test hook'larini release uzerinde calistir",
+            "cmd": "helm test <RELEASE> --namespace <NAMESPACE>",
+            "tags": [
+              "advanced"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Templating & Values",
+        "commands": [
+          {
+            "title": "Render Chart Templates Locally",
+            "desc": "Render chart templates to stdout without installing",
+            "desc_tr": "Chart şablonlarını kurmadan stdout'a render et",
+            "cmd": "helm template <RELEASE> <CHART>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Render With Release Namespace",
+            "desc": "Render templates with a specific namespace context",
+            "desc_tr": "Şablonları belirli bir namespace bağlamıyla render et",
+            "cmd": "helm template <RELEASE> <CHART> --namespace <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Render Only One Template File",
+            "desc": "Render a single template using -s/--show-only",
+            "desc_tr": "Tek bir şablon dosyasını -s/--show-only ile render et",
+            "cmd": "helm template <RELEASE> <CHART> -s templates/deployment.yaml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Override Values With --set",
+            "desc": "Override individual values from the command line",
+            "desc_tr": "Komut satırından tek tek değerleri --set ile geçersiz kıl",
+            "cmd": "helm template <RELEASE> <CHART> --set image.tag=<IMAGE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Override Multiple Values",
+            "desc": "Set several values in one --set with comma separation",
+            "desc_tr": "Tek --set içinde virgülle birden çok değer ayarla",
+            "cmd": "helm template <RELEASE> <CHART> --set replicaCount=3,service.type=NodePort",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Force String Value With --set-string",
+            "desc": "Force a value to be treated as a string (e.g. numeric tags)",
+            "desc_tr": "Bir değeri string olarak ele almaya zorla (örn. sayısal tag'ler)",
+            "cmd": "helm template <RELEASE> <CHART> --set-string image.tag=01234",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Use --set-string for tags like '1.0' or values with leading zeros to avoid YAML type coercion."
+          },
+          {
+            "title": "Inject File Content As Value",
+            "desc": "Read a value from a file with --set-file",
+            "desc_tr": "Bir değeri dosyadan --set-file ile oku",
+            "cmd": "helm template <RELEASE> <CHART> --set-file tlsCert=<FILE>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Set JSON Value",
+            "desc": "Pass complex JSON structures with --set-json",
+            "desc_tr": "Karmaşık JSON yapılarını --set-json ile geçir",
+            "cmd": "helm template <RELEASE> <CHART> --set-json 'nodeSelector={\"disk\":\"ssd\"}'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Set Literal Value With --set-literal",
+            "desc": "Treat the value literally without parsing commas or types",
+            "desc_tr": "Değeri virgül/tip ayrıştırması yapmadan birebir literal ele al",
+            "cmd": "helm template <RELEASE> <CHART> --set-literal password='a,b=c'",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Supply A Custom Values File",
+            "desc": "Provide overrides from a YAML values file",
+            "desc_tr": "Geçersiz kılmaları bir YAML values dosyasından sağla",
+            "cmd": "helm template <RELEASE> <CHART> -f values-prod.yaml",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Layer Multiple Values Files",
+            "desc": "Merge several values files, last one wins",
+            "desc_tr": "Birden çok values dosyasını birleştir; son dosya kazanır",
+            "cmd": "helm template <RELEASE> <CHART> -f base.yaml -f override.yaml",
+            "tags": [
+              "essential"
+            ],
+            "note": "Files are merged left to right; later -f files override earlier ones, and --set overrides all -f files."
+          },
+          {
+            "title": "Validate Render Against Cluster Schemas",
+            "desc": "Render and validate manifests against the live cluster",
+            "desc_tr": "Manifestleri canlı küme şemalarına karşı render edip doğrula",
+            "cmd": "helm template <RELEASE> <CHART> --validate",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Enable Cluster Lookups During Render",
+            "desc": "Allow the lookup function to query the cluster while rendering",
+            "desc_tr": "Render sırasında lookup fonksiyonunun kümeyi sorgulamasına izin ver",
+            "cmd": "helm template <RELEASE> <CHART> --dry-run=server",
+            "tags": [
+              "advanced"
+            ],
+            "note": "By default 'helm template' runs in client mode and the lookup function returns empty; --dry-run=server enables real lookups."
+          },
+          {
+            "title": "Include CRDs In Rendered Output",
+            "desc": "Render the chart's crds/ directory along with templates",
+            "desc_tr": "Chart'ın crds/ dizinini şablonlarla birlikte render et",
+            "cmd": "helm template <RELEASE> <CHART> --include-crds",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Render With Kubernetes Version Override",
+            "desc": "Set the Capabilities.KubeVersion used in templates",
+            "desc_tr": "Şablonlarda kullanılan Capabilities.KubeVersion değerini ayarla",
+            "cmd": "helm template <RELEASE> <CHART> --kube-version 1.29.0",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Render With API Versions For Capabilities",
+            "desc": "Declare available API versions for Capabilities.APIVersions",
+            "desc_tr": "Capabilities.APIVersions için mevcut API sürümlerini bildir",
+            "cmd": "helm template <RELEASE> <CHART> --api-versions networking.k8s.io/v1/Ingress",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Skip Tests When Rendering",
+            "desc": "Exclude test hook manifests from the output",
+            "desc_tr": "Çıktıdan test hook manifestlerini hariç tut",
+            "cmd": "helm template <RELEASE> <CHART> --skip-tests",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Render To Output Directory",
+            "desc": "Write each rendered manifest to files in a directory",
+            "desc_tr": "Render edilen her manifesti bir dizindeki dosyalara yaz",
+            "cmd": "helm template <RELEASE> <CHART> --output-dir <PATH>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Generate A Release Name Automatically",
+            "desc": "Let Helm generate the release name instead of supplying one",
+            "desc_tr": "Release adını vermek yerine Helm'in otomatik üretmesine izin ver",
+            "cmd": "helm template <CHART> --generate-name",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Debug An Install Render Without Applying",
+            "desc": "Client-side dry run of install to inspect rendered manifests",
+            "desc_tr": "Render edilmiş manifestleri incelemek için install'ı istemci tarafı dry-run yap",
+            "cmd": "helm install <RELEASE> <CHART> --dry-run --debug",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Debug An Upgrade Render",
+            "desc": "Preview manifests an upgrade would apply without changing state",
+            "desc_tr": "Durumu değiştirmeden bir upgrade'in uygulayacağı manifestleri önizle",
+            "cmd": "helm upgrade <RELEASE> <CHART> --dry-run --debug",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Show Computed Values For A Release",
+            "desc": "Display the user-supplied values of a deployed release",
+            "desc_tr": "Dağıtılmış bir release'in kullanıcı tarafından verilen değerlerini göster",
+            "cmd": "helm get values <RELEASE> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Show All Computed Values Including Defaults",
+            "desc": "Display the full merged values, including chart defaults",
+            "desc_tr": "Chart varsayılanları dahil tam birleştirilmiş değerleri göster",
+            "cmd": "helm get values <RELEASE> -n <NAMESPACE> --all",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Show Default Values Of A Chart",
+            "desc": "Print the chart's default values.yaml contents",
+            "desc_tr": "Chart'ın varsayılan values.yaml içeriğini yazdır",
+            "cmd": "helm show values <CHART>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Lint A Chart With Strict Values",
+            "desc": "Validate chart and values, treating warnings as errors",
+            "desc_tr": "Chart ve değerleri doğrula; uyarıları hata olarak değerlendir",
+            "cmd": "helm lint <CHART> --strict -f values-prod.yaml",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Inspect Rendered Manifests Of A Release",
+            "desc": "Retrieve the final manifests Helm applied for a release",
+            "desc_tr": "Helm'in bir release için uyguladığı son manifestleri al",
+            "cmd": "helm get manifest <RELEASE> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Render Template Then Diff Against Cluster",
+            "desc": "Use the helm-diff plugin to preview changes from new values",
+            "desc_tr": "Yeni değerlerin getireceği değişiklikleri helm-diff eklentisiyle önizle",
+            "cmd": "helm diff upgrade <RELEASE> <CHART> -f values-prod.yaml",
+            "tags": [
+              "tool"
+            ],
+            "note": "Requires the helm-diff plugin: helm plugin install https://github.com/databus23/helm-diff"
+          },
+          {
+            "title": "Validate Values Against values.schema.json",
+            "desc": "Trigger JSON Schema validation of values during render",
+            "desc_tr": "Render sırasında değerlerin values.schema.json ile doğrulanmasını tetikle",
+            "cmd": "helm template <RELEASE> <CHART> -f values-prod.yaml",
+            "tags": [
+              "advanced"
+            ],
+            "note": "If the chart ships a values.schema.json, Helm automatically validates merged values against it during template/install."
+          }
+        ]
+      },
+      {
+        "name": "Repositories & OCI registries",
+        "commands": [
+          {
+            "title": "Add a Helm Chart Repository",
+            "desc": "Register a remote chart repository under a local name",
+            "desc_tr": "Uzak bir chart deposunu yerel bir isim altinda kaydet",
+            "cmd": "helm repo add <REGISTRY> https://<DOMAIN>/charts",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List Configured Repositories",
+            "desc": "Show all repositories currently added to your client",
+            "desc_tr": "Istemcine eklenmis tum depolari listele",
+            "cmd": "helm repo list",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Update Local Repo Cache",
+            "desc": "Fetch the latest index for all added repositories",
+            "desc_tr": "Eklenmis tum depolarin en guncel index'ini cek",
+            "cmd": "helm repo update",
+            "tags": [
+              "essential"
+            ],
+            "note": "Tek bir depo icin: 'helm repo update <REGISTRY>'. Yeni chart surumlerini gormeden once mutlaka calistir."
+          },
+          {
+            "title": "Remove a Repository",
+            "desc": "Delete a repository from the local configuration",
+            "desc_tr": "Bir depoyu yerel yapilandirmadan kaldir",
+            "cmd": "helm repo remove <REGISTRY>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Search Repositories for a Chart",
+            "desc": "Search added repos for charts matching a keyword",
+            "desc_tr": "Eklenmis depolarda anahtar kelimeye uyan chart'lari ara",
+            "cmd": "helm search repo <FILE> --versions",
+            "tags": [
+              "essential"
+            ],
+            "note": "--versions tum yayinlanmis surumleri gosterir; -l kisaltmasi da kullanilabilir."
+          },
+          {
+            "title": "Search Artifact Hub",
+            "desc": "Search the public Artifact Hub for charts across many repos",
+            "desc_tr": "Cok sayida depodaki chart'lar icin genel Artifact Hub'i ara",
+            "cmd": "helm search hub <FILE> --max-col-width 0",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Show Repository Index Contents",
+            "desc": "Inspect the cached index.yaml of a repository",
+            "desc_tr": "Bir deponun onbellekteki index.yaml dosyasini incele",
+            "cmd": "helm repo index <PATH> --url https://<DOMAIN>/charts",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Statik bir chart deposu host ederken paketlenmis chart'larin bulundugu dizinde index.yaml uretir."
+          },
+          {
+            "title": "Package a Chart for Publishing",
+            "desc": "Bundle a chart directory into a versioned .tgz archive",
+            "desc_tr": "Bir chart dizinini surumlu .tgz arsivine paketle",
+            "cmd": "helm package <PATH> --destination <PATH>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Pull a Chart from a Repository",
+            "desc": "Download a chart archive without installing it",
+            "desc_tr": "Bir chart arsivini kurmadan indir",
+            "cmd": "helm pull <REGISTRY>/<FILE> --version <FILE> --untar",
+            "tags": [
+              "essential"
+            ],
+            "note": "--untar arsivi acar; --verify ile imza dogrulamasi (provenance) eklenebilir."
+          },
+          {
+            "title": "Add an Authenticated Repository",
+            "desc": "Register a private repo with username and password",
+            "desc_tr": "Kullanici adi ve parola ile ozel bir depoyu kaydet",
+            "cmd": "helm repo add <REGISTRY> https://<DOMAIN>/charts --username <FILE> --password-stdin",
+            "tags": [
+              "advanced"
+            ],
+            "note": "--password-stdin parolayi stdin'den okur; gecmise parola sizmasini onler."
+          },
+          {
+            "title": "Login to an OCI Registry",
+            "desc": "Authenticate the Helm client to an OCI-compliant registry",
+            "desc_tr": "Helm istemcisini OCI uyumlu bir registry'ye kimlik dogrula",
+            "cmd": "helm registry login <REGISTRY> --username <FILE> --password-stdin",
+            "tags": [
+              "essential"
+            ],
+            "note": "Helm 3.8+ ile OCI varsayilan olarak etkin; kimlik bilgileri Docker config'e yazilir."
+          },
+          {
+            "title": "Logout from an OCI Registry",
+            "desc": "Remove stored credentials for an OCI registry",
+            "desc_tr": "Bir OCI registry icin saklanan kimlik bilgilerini kaldir",
+            "cmd": "helm registry logout <REGISTRY>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Push a Chart to an OCI Registry",
+            "desc": "Publish a packaged chart as an OCI artifact",
+            "desc_tr": "Paketlenmis bir chart'i OCI artefakti olarak yayinla",
+            "cmd": "helm push <FILE>.tgz oci://<REGISTRY>/charts",
+            "tags": [
+              "essential"
+            ],
+            "note": "Hedef yola chart adini EKLEME; Helm onu chart metadata'sindan turetir."
+          },
+          {
+            "title": "Pull a Chart from an OCI Registry",
+            "desc": "Download a chart stored as an OCI artifact",
+            "desc_tr": "OCI artefakti olarak saklanan bir chart'i indir",
+            "cmd": "helm pull oci://<REGISTRY>/charts/<FILE> --version <FILE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Install Directly from an OCI Registry",
+            "desc": "Install a release straight from an OCI chart reference",
+            "desc_tr": "Bir release'i OCI chart referansindan dogrudan kur",
+            "cmd": "helm install <FILE> oci://<REGISTRY>/charts/<FILE> --version <FILE> -n <NAMESPACE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Show Chart Metadata from OCI",
+            "desc": "Display Chart.yaml info from an OCI-hosted chart",
+            "desc_tr": "OCI'da barindirilan bir chart'tan Chart.yaml bilgisini goster",
+            "cmd": "helm show chart oci://<REGISTRY>/charts/<FILE> --version <FILE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Show Default Values from a Repo Chart",
+            "desc": "Print the default values.yaml of a chart before install",
+            "desc_tr": "Kurulumdan once bir chart'in varsayilan values.yaml'ini yazdir",
+            "cmd": "helm show values <REGISTRY>/<FILE> --version <FILE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "List OCI Chart Tags",
+            "desc": "List available chart versions (tags) in an OCI registry",
+            "desc_tr": "Bir OCI registry'deki mevcut chart surumlerini (etiketleri) listele",
+            "cmd": "helm show chart oci://<REGISTRY>/charts/<FILE> 2>/dev/null; oras repo tags <REGISTRY>/charts/<FILE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Helm OCI etiket listelemeyi yerel desteklemez; etiketler icin ORAS veya 'crane ls' kullan."
+          },
+          {
+            "title": "Inspect an OCI Chart Manifest with ORAS",
+            "desc": "Fetch the raw OCI manifest of a chart artifact",
+            "desc_tr": "Bir chart artefaktinin ham OCI manifest'ini cek",
+            "cmd": "oras manifest fetch <REGISTRY>/charts/<FILE>:<FILE> --pretty",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Helm chart'larinin mediaType'i application/vnd.cncf.helm.config.v1+json olmalidir."
+          },
+          {
+            "title": "Update Dependencies from Repositories",
+            "desc": "Resolve and download subchart dependencies into charts/",
+            "desc_tr": "Alt-chart bagimliliklarini cozumle ve charts/ dizinine indir",
+            "cmd": "helm dependency update <PATH>",
+            "tags": [
+              "essential"
+            ],
+            "note": "Chart.yaml icindeki dependencies bolumunde tanimli depolarin onceden eklenmis olmasi gerekir."
+          },
+          {
+            "title": "List Chart Dependencies",
+            "desc": "Show the dependency tree and its repository sources",
+            "desc_tr": "Bagimlilik agacini ve depo kaynaklarini goster",
+            "cmd": "helm dependency list <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Verify a Chart's Provenance",
+            "desc": "Validate the integrity and signature of a packaged chart",
+            "desc_tr": "Paketlenmis bir chart'in butunlugunu ve imzasini dogrula",
+            "cmd": "helm verify <FILE>.tgz",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Yaninda .prov dosyasi ve dogrulama icin halka acik GPG anahtari (keyring) gerektirir."
+          },
+          {
+            "title": "Sign a Chart During Packaging",
+            "desc": "Create a cryptographically signed provenance file",
+            "desc_tr": "Kriptografik olarak imzali bir provenance dosyasi olustur",
+            "cmd": "helm package <PATH> --sign --key '<FILE>' --keyring ~/.gnupg/secring.gpg",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Sign an OCI Chart with Cosign",
+            "desc": "Sign a chart artifact in an OCI registry using cosign",
+            "desc_tr": "Bir OCI registry'deki chart artefaktini cosign ile imzala",
+            "cmd": "cosign sign <REGISTRY>/charts/<FILE>@sha256:<FILE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Anahtarsiz (keyless) imzalama icin COSIGN_EXPERIMENTAL=1 ve OIDC kullanilabilir."
+          },
+          {
+            "title": "Copy a Chart Between OCI Registries",
+            "desc": "Mirror a chart artifact across registries with ORAS",
+            "desc_tr": "ORAS ile bir chart artefaktini registry'ler arasinda yansit",
+            "cmd": "oras cp <REGISTRY>/charts/<FILE>:<FILE> <REGISTRY>/charts/<FILE>:<FILE>",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Manage Repo Plugins with helm-s3",
+            "desc": "Initialize an S3 bucket as a Helm chart repository",
+            "desc_tr": "Bir S3 bucket'ini Helm chart deposu olarak baslat",
+            "cmd": "helm plugin install https://github.com/hypnoglow/helm-s3.git && helm s3 init s3://<FILE>/charts",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "Kurulduktan sonra 'helm repo add' ile s3:// URL'i normal bir HTTP depo gibi eklenir."
+          },
+          {
+            "title": "Push to an S3 Repository",
+            "desc": "Publish a packaged chart to an S3-backed repo",
+            "desc_tr": "Paketlenmis bir chart'i S3 tabanli depoya yayinla",
+            "cmd": "helm s3 push <FILE>.tgz <REGISTRY> --relative",
+            "tags": [
+              "tool",
+              "advanced"
+            ]
+          },
+          {
+            "title": "Login to a Cloud Registry via Provider CLI",
+            "desc": "Authenticate Helm OCI using a cloud provider token",
+            "desc_tr": "Bir bulut saglayici token'i ile Helm OCI kimlik dogrula",
+            "cmd": "aws ecr get-login-password --region <FILE> | helm registry login --username AWS --password-stdin <REGISTRY>",
+            "tags": [
+              "tool",
+              "advanced"
+            ],
+            "note": "ECR token'lari 12 saat gecerlidir; CI'da her calismada yeniden olusturulmasi gerekir."
+          }
+        ]
+      },
+      {
+        "name": "Chart Security (helm lint, checkov, kubeconform)",
+        "commands": [
+          {
+            "title": "Lint a Helm chart",
+            "desc": "Run Helm's built-in linter against a chart directory",
+            "desc_tr": "Helm'in yerleşik linter aracını bir chart dizinine karşı çalıştır",
+            "cmd": "helm lint <PATH>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Strict lint with custom values",
+            "desc": "Fail on warnings and apply a values override file",
+            "desc_tr": "Uyarılarda da başarısız ol ve bir values geçersiz kılma dosyası uygula",
+            "cmd": "helm lint <PATH> --strict --values <FILE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Lint with subchart dependencies",
+            "desc": "Validate the chart together with its dependent subcharts",
+            "desc_tr": "Chart'ı bağımlı alt-chart'larıyla birlikte doğrula",
+            "cmd": "helm lint <PATH> --with-subcharts",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Render templates to inspect output",
+            "desc": "Render manifests locally without installing to review generated YAML",
+            "desc_tr": "Kurulum yapmadan manifestoları yerelde render et ve üretilen YAML'ı incele",
+            "cmd": "helm template <RELEASE> <PATH> --values <FILE>",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Render and pipe into a scanner",
+            "desc": "Stream rendered manifests directly into a policy scanner via stdin",
+            "desc_tr": "Render edilmiş manifestoları stdin üzerinden doğrudan bir policy tarayıcıya akıt",
+            "cmd": "helm template <RELEASE> <PATH> | kubeconform -strict -summary -",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Validate manifests with kubeconform",
+            "desc": "Schema-validate Kubernetes YAML against upstream API schemas",
+            "desc_tr": "Kubernetes YAML'ını upstream API şemalarına karşı şema doğrula",
+            "cmd": "kubeconform -strict -summary <FILE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "kubeconform for a target cluster version",
+            "desc": "Validate against a specific Kubernetes version and ignore missing schemas",
+            "desc_tr": "Belirli bir Kubernetes sürümüne karşı doğrula ve eksik şemaları yoksay",
+            "cmd": "kubeconform -kubernetes-version 1.30.0 -ignore-missing-schemas -strict <FILE>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "kubeconform with CRD schema locations",
+            "desc": "Add custom and CRD schema sources for full validation coverage",
+            "desc_tr": "Tam doğrulama kapsamı için özel ve CRD şema kaynakları ekle",
+            "cmd": "kubeconform -schema-location default -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' -summary <FILE>",
+            "tags": [
+              "advanced"
+            ],
+            "note": "The datreeio/CRDs-catalog provides JSON schemas for hundreds of popular CRDs."
+          },
+          {
+            "title": "kubeconform JUnit output for CI",
+            "desc": "Emit JUnit XML so CI systems can report validation results",
+            "desc_tr": "CI sistemlerinin doğrulama sonuçlarını raporlayabilmesi için JUnit XML üret",
+            "cmd": "kubeconform -output junit -strict <FILE> > kubeconform-report.xml",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Scan a Helm chart with Checkov",
+            "desc": "Run Checkov's Helm framework against a chart directory",
+            "desc_tr": "Checkov'un Helm framework'ünü bir chart dizinine karşı çalıştır",
+            "cmd": "checkov -d <PATH> --framework helm",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Checkov compact output",
+            "desc": "Show concise pass/fail summary without full code blocks",
+            "desc_tr": "Tam kod bloklarını göstermeden kısa geç/kal özetini göster",
+            "cmd": "checkov -d <PATH> --framework helm --compact --quiet",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Checkov skip specific checks",
+            "desc": "Suppress individual policy checks by their Checkov ID",
+            "desc_tr": "Checkov ID'lerine göre belirli policy kontrollerini bastır",
+            "cmd": "checkov -d <PATH> --framework helm --skip-check CKV_K8S_8,CKV_K8S_9",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Checkov enforce only hard-fail",
+            "desc": "Fail the run only on HIGH/CRITICAL while reporting everything",
+            "desc_tr": "Her şeyi raporlarken yalnızca HIGH/CRITICAL durumunda başarısız ol",
+            "cmd": "checkov -d <PATH> --framework helm --hard-fail-on HIGH --soft-fail-on MEDIUM",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Checkov SARIF for code scanning",
+            "desc": "Produce SARIF output for GitHub/GitLab security dashboards",
+            "desc_tr": "GitHub/GitLab güvenlik panoları için SARIF çıktısı üret",
+            "cmd": "checkov -d <PATH> --framework helm --output sarif --output-file-path .",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Scan a Helm chart with Trivy",
+            "desc": "Run Trivy misconfiguration scanning over a Helm chart",
+            "desc_tr": "Bir Helm chart üzerinde Trivy yanlış-yapılandırma taraması çalıştır",
+            "cmd": "trivy config <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Trivy config scan with severity gate",
+            "desc": "Scan a chart and exit non-zero only on high/critical findings",
+            "desc_tr": "Bir chart'ı tara ve yalnızca high/critical bulgularda sıfır olmayan kodla çık",
+            "cmd": "trivy config --severity HIGH,CRITICAL --exit-code 1 <PATH>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Trivy scan with Helm value overrides",
+            "desc": "Inject Helm values during Trivy's chart rendering",
+            "desc_tr": "Trivy'nin chart render aşamasında Helm değerlerini enjekte et",
+            "cmd": "trivy config --helm-set image.tag=<IMAGE> --helm-values <FILE> <PATH>",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Scan a chart with kube-linter",
+            "desc": "Detect misconfigurations and security issues in a chart",
+            "desc_tr": "Bir chart'taki yanlış yapılandırmaları ve güvenlik sorunlarını tespit et",
+            "cmd": "kube-linter lint <PATH>",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Audit a chart with Polaris",
+            "desc": "Run Polaris best-practice audit against a Helm chart",
+            "desc_tr": "Bir Helm chart'a karşı Polaris en-iyi-uygulama denetimi çalıştır",
+            "cmd": "polaris audit --helm-chart <PATH> --helm-values <FILE> --format pretty",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Conftest OPA policy check on rendered chart",
+            "desc": "Evaluate rendered manifests against Rego policies",
+            "desc_tr": "Render edilmiş manifestoları Rego policy'lerine karşı değerlendir",
+            "cmd": "helm template <RELEASE> <PATH> | conftest test --policy <PATH> -",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Datree policy scan of a chart",
+            "desc": "Render and run Datree's managed policy checks on manifests",
+            "desc_tr": "Manifestoları render edip Datree'nin yönetilen policy kontrollerini çalıştır",
+            "cmd": "helm template <RELEASE> <PATH> | datree test -",
+            "tags": [
+              "tool"
+            ]
+          },
+          {
+            "title": "Verify chart provenance signature",
+            "desc": "Validate the cryptographic signature and integrity of a chart",
+            "desc_tr": "Bir chart'ın kriptografik imzasını ve bütünlüğünü doğrula",
+            "cmd": "helm verify <PATH>/<FILE>.tgz --keyring <PATH>/pubring.gpg",
+            "tags": [
+              "advanced"
+            ],
+            "note": "Requires a .prov provenance file alongside the packaged .tgz; create it with 'helm package --sign'."
+          },
+          {
+            "title": "Sign a chart during packaging",
+            "desc": "Package a chart and generate a signed provenance record",
+            "desc_tr": "Bir chart'ı paketle ve imzalı bir provenance kaydı üret",
+            "cmd": "helm package <PATH> --sign --key '<KEY_NAME>' --keyring <PATH>/secring.gpg",
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Install-time chart validation",
+            "desc": "Dry-run an install with server-side validation before applying",
+            "desc_tr": "Uygulamadan önce sunucu-tarafı doğrulamayla bir kurulumu kuru çalıştır",
+            "cmd": "helm install <RELEASE> <PATH> --dry-run=server --debug",
+            "tags": [
+              "essential"
+            ]
+          },
+          {
+            "title": "Diff a chart upgrade before applying",
+            "desc": "Preview manifest changes a release upgrade would introduce",
+            "desc_tr": "Bir release yükseltmesinin getireceği manifesto değişikliklerini önizle",
+            "cmd": "helm diff upgrade <RELEASE> <PATH> --values <FILE>",
+            "tags": [
+              "tool"
+            ],
+            "note": "Requires the helm-diff plugin: 'helm plugin install https://github.com/databus23/helm-diff'."
+          },
+          {
+            "title": "Scan a packaged chart artifact from a registry",
+            "desc": "Pull an OCI chart and scan its rendered output for misconfigs",
+            "desc_tr": "Bir OCI chart'ı çek ve render çıktısını yanlış-yapılandırmalar için tara",
+            "cmds": [
+              "helm pull oci://<REGISTRY>/<PATH> --untar --untardir ./chart",
+              "trivy config --severity HIGH,CRITICAL ./chart"
+            ],
+            "tags": [
+              "advanced"
+            ]
+          },
+          {
+            "title": "Combined lint and schema-validate pipeline",
+            "desc": "Lint strictly then schema-validate rendered output in one shot",
+            "desc_tr": "Önce katı linting yap, sonra render çıktısını tek seferde şema doğrula",
+            "cmd": "helm lint <PATH> --strict && helm template <RELEASE> <PATH> | kubeconform -strict -ignore-missing-schemas -summary -",
+            "tags": [
+              "essential"
+            ]
+          }
+        ]
+      }
+    ]
   }
 ];
