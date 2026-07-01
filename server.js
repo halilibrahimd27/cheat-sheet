@@ -104,7 +104,19 @@ function atomicWrite(file, str) {
   if (fs.existsSync(file)) {
     try { fs.copyFileSync(file, file + ".bak"); } catch { /* best effort */ }
   }
-  fs.renameSync(tmp, file);
+  try {
+    fs.renameSync(tmp, file);
+  } catch (e) {
+    // Windows (esp. OneDrive/Defender-synced folders like Desktop) can briefly
+    // lock the target and make rename fail with EPERM/EBUSY. Fall back to a
+    // direct overwrite so a save never 500s the request.
+    try {
+      fs.writeFileSync(file, str, "utf8");
+      try { fs.rmSync(tmp, { force: true }); } catch { /* leftover tmp is harmless */ }
+    } catch {
+      throw e;
+    }
+  }
 }
 function readJSON(file, fallback) {
   try {

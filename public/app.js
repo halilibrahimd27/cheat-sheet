@@ -186,7 +186,11 @@
       if (text) data = JSON.parse(text);
     } catch { data = null; }
     if (!res.ok) {
-      toast((data && data.error) ? data.error : ("HTTP " + res.status), "error");
+      const msg = (data && data.error) ? data.error : ("HTTP " + res.status);
+      // Surface which request failed so a 500 is diagnosable (path without ids).
+      const where = method + " " + url.replace(/^.*(\/api\/[a-z-]+).*$/i, "$1");
+      toast(msg + " · " + where, "error");
+      console.error("[api] " + res.status + " " + method + " " + url, data);
     }
     return data;
   }
