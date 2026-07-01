@@ -133,7 +133,7 @@
     {
       "id": "machines-ad-deep",
       "title": "AD environment — full professional engagement model (owner follow-up on #2a)",
-      "status": "pending",
+      "status": "done",
       "_note": "Owner feedback after batch 6: the AD support was only a flat host list + attack-path text. Owner wants a REAL, professional engagement model. Build it properly, not tokenistically.",
       "files": ["public/app.js", "public/style.css", "public/checklist-templates.js", "server.js", "test/api.test.js"],
       "items": [

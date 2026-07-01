@@ -58,7 +58,9 @@
       copyCmd: "Copy command", defaultChecklist: "Default checklist",
       wuTemplate: "Template", wuMachine: "Link machine",
       history: "History", noHistory: "No copied commands yet.",
-      clearHistory: "Clear", copyAll: "Copy all", paletteHint: "Search commands & actions…", goto: "Go to"
+      clearHistory: "Clear", copyAll: "Copy all", paletteHint: "Search commands & actions…", goto: "Go to",
+      engagement: "Engagement", connections: "Connections", fromMachine: "Add from machine…",
+      newHost: "+ New host", objective: "Objective", loot: "Loot / creds"
     },
     tr: {
       allCommands: "Tum Komutlar", favorites: "Favoriler", search: "Komut ara...",
@@ -95,7 +97,9 @@
       copyCmd: "Komutu kopyala", defaultChecklist: "Varsayilan liste",
       wuTemplate: "Sablon", wuMachine: "Makine bagla",
       history: "Gecmis", noHistory: "Henuz kopyalanan komut yok.",
-      clearHistory: "Temizle", copyAll: "Tumunu kopyala", paletteHint: "Komut ve eylem ara…", goto: "Git"
+      clearHistory: "Temizle", copyAll: "Tumunu kopyala", paletteHint: "Komut ve eylem ara…", goto: "Git",
+      engagement: "Operasyon", connections: "Baglantilar", fromMachine: "Makineden ekle…",
+      newHost: "+ Yeni host", objective: "Hedef", loot: "Loot / kimlik"
     }
   };
   function t(key) { return (T[lang] && T[lang][key]) || T.en[key] || key; }
@@ -745,6 +749,7 @@ user -> ... -> Domain Admin
 
   // ── Machines (target tracking) ──
   let openMachineId = null;
+  let openHostId = null; // expanded host inside an AD engagement
   async function loadMachines() { machines = await api("GET", "/api/machines") || []; }
 
   // Static checklist playbooks (from checklist-templates.js — baked, offline).
@@ -776,6 +781,96 @@ user -> ... -> Domain Admin
     if (s.includes("linux")) return "🐧";
     if (s.includes("ad") || s.includes("domain") || s.includes("active dir")) return "🏢";
     return "🖥";
+  }
+
+  // ── AD engagement (multi-host) helpers ──
+  // Normalize a host object (migrates batch-6 flat {name,ip,os,owned} rows).
+  function normHost(h) {
+    if (!h.id) h.id = Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+    if (!Array.isArray(h.checklist)) h.checklist = [];
+    if (!Array.isArray(h.links)) h.links = [];
+    if (typeof h.loot !== "string") h.loot = "";
+    if (typeof h.notes !== "string") h.notes = "";
+    if (typeof h.role !== "string") h.role = "";
+    h.owned = !!h.owned;
+    return h;
+  }
+  function checklistStats(list) {
+    const total = (list || []).length, done = (list || []).filter(c => c.done).length;
+    return { total, done, pct: total ? Math.round(done / total * 100) : 0 };
+  }
+  function isDcRole(h) {
+    const s = ((h.role || "") + " " + (h.os || "") + " " + (h.name || "")).toLowerCase();
+    return s.indexOf("dc") >= 0 || s.indexOf("domain contro") >= 0;
+  }
+  function focusHost(id) {
+    openHostId = id; render();
+    setTimeout(() => { const el = document.getElementById("host-" + id); if (el) el.scrollIntoView({ behavior: motionBehavior(), block: "center" }); }, 60);
+  }
+  // Phase-grouped checklist DOM for a host (reuses the machine checklist look).
+  function buildChecklistBlock(list, onChange) {
+    const wrap = document.createElement("div"); wrap.className = "host-checklist";
+    let cur = null; for (const g of groupByPhase(list)) { if (g.items.some(x => !x.item.done)) { cur = g.phase; break; } }
+    groupByPhase(list).forEach(g => {
+      const gDone = g.items.filter(x => x.item.done).length;
+      const pw = document.createElement("div"); pw.className = "checklist-phase" + (g.phase === cur ? " current" : "");
+      const ph = document.createElement("div"); ph.className = "checklist-phase-header";
+      ph.innerHTML = '<span class="checklist-phase-name">' + escapeHtml(g.phase) + '</span><span class="checklist-phase-count">' + gDone + '/' + g.items.length + '</span>';
+      pw.appendChild(ph);
+      g.items.forEach(({ item, i }) => {
+        const row = document.createElement("div"); row.className = "checklist-item" + (item.done ? " done" : "");
+        const cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = !!item.done;
+        const toggle = () => { list[i].done = cb.checked; row.classList.toggle("done", cb.checked); onChange(); };
+        cb.addEventListener("change", toggle);
+        const body = document.createElement("div"); body.className = "checklist-body";
+        const lab = document.createElement("span"); lab.className = "checklist-label"; lab.textContent = item.label;
+        lab.addEventListener("click", () => { cb.checked = !cb.checked; toggle(); });
+        body.appendChild(lab);
+        if (item.hint) {
+          const hr = document.createElement("div"); hr.className = "checklist-hint";
+          const code = document.createElement("code"); code.textContent = item.hint;
+          const cbn = document.createElement("button"); cbn.className = "checklist-hint-copy"; cbn.textContent = "⧉"; cbn.title = t("copyCmd"); cbn.setAttribute("aria-label", t("copyCmd"));
+          cbn.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); copyText(applyIpToCode(item.hint), () => { announce(t("copied")); toast(t("copied"), "ok"); }); });
+          hr.appendChild(code); hr.appendChild(cbn); body.appendChild(hr);
+        }
+        row.appendChild(cb); row.appendChild(body);
+        pw.appendChild(row);
+      });
+      wrap.appendChild(pw);
+    });
+    return wrap;
+  }
+  // Deterministic radial node-link diagram of the engagement (vanilla SVG).
+  function buildAdSchematic(m) {
+    const NS = "http://www.w3.org/2000/svg";
+    const hosts = m.hosts || [];
+    const svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("viewBox", "0 0 400 260"); svg.setAttribute("class", "ad-schematic");
+    svg.setAttribute("role", "img"); svg.setAttribute("aria-label", "AD host map");
+    const cx = 200, cy = 125, R = hosts.length > 1 ? 92 : 0, pos = {};
+    hosts.forEach((h, i) => { const a = -Math.PI / 2 + (i / hosts.length) * Math.PI * 2; pos[h.id] = { x: cx + R * Math.cos(a), y: cy + R * Math.sin(a) }; });
+    const drawn = {};
+    hosts.forEach(h => (h.links || []).forEach(lid => {
+      if (!pos[lid]) return; const key = [h.id, lid].sort().join("|"); if (drawn[key]) return; drawn[key] = 1;
+      const ln = document.createElementNS(NS, "line");
+      ln.setAttribute("x1", pos[h.id].x); ln.setAttribute("y1", pos[h.id].y);
+      ln.setAttribute("x2", pos[lid].x); ln.setAttribute("y2", pos[lid].y); ln.setAttribute("class", "ad-edge");
+      svg.appendChild(ln);
+    }));
+    hosts.forEach(h => {
+      const p = pos[h.id];
+      const g = document.createElementNS(NS, "g");
+      g.setAttribute("class", "ad-node" + (h.owned ? " owned" : "") + (isDcRole(h) ? " dc" : "") + (h.id === openHostId ? " sel" : ""));
+      g.setAttribute("tabindex", "0"); g.setAttribute("role", "button"); g.setAttribute("aria-label", h.name || "host");
+      const c = document.createElementNS(NS, "circle"); c.setAttribute("cx", p.x); c.setAttribute("cy", p.y); c.setAttribute("r", 17);
+      const ic = document.createElementNS(NS, "text"); ic.setAttribute("x", p.x); ic.setAttribute("y", p.y + 1); ic.setAttribute("class", "ad-node-icon"); ic.setAttribute("text-anchor", "middle"); ic.setAttribute("dominant-baseline", "central"); ic.textContent = isDcRole(h) ? "★" : osIconFor(h.os);
+      const lb = document.createElementNS(NS, "text"); lb.setAttribute("x", p.x); lb.setAttribute("y", p.y + 33); lb.setAttribute("class", "ad-node-label"); lb.setAttribute("text-anchor", "middle"); lb.textContent = (h.name || "host").slice(0, 16);
+      g.appendChild(c); g.appendChild(ic); g.appendChild(lb);
+      g.addEventListener("click", () => focusHost(h.id));
+      g.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); focusHost(h.id); } });
+      svg.appendChild(g);
+    });
+    return svg;
   }
   async function createMachine() {
     const tplOpts = [{ value: "", label: t("defaultChecklist") }]
@@ -977,40 +1072,146 @@ user -> ... -> Domain Admin
       page.appendChild(checkSection);
     }
 
-    // Hosts (AD / network engagement) + attack path
-    const hostSection = document.createElement("div"); hostSection.className = "machine-section";
-    hostSection.innerHTML = '<div class="machine-section-head"><h3>🖧 ' + t("hosts") + '</h3><button class="btn btn-secondary btn-sm machine-addhost">' + t("addHost") + '</button></div>';
-    const hostList = document.createElement("div"); hostList.className = "machine-hosts";
-    m.hosts = m.hosts || [];
-    if (!m.hosts.length) { const eh = document.createElement("p"); eh.className = "machine-hosts-empty"; eh.textContent = t("noHosts"); hostList.appendChild(eh); }
-    m.hosts.forEach((h, hi) => {
-      const row = document.createElement("div"); row.className = "machine-host-row" + (h.owned ? " owned" : "");
-      row.innerHTML =
+    // ── AD / network engagement (multi-host) ──
+    m.hosts = (m.hosts || []).map(normHost);
+    let adSvgHost = null;
+    const hostPersist = () => { saveMachine(m.id, { hosts: m.hosts }); showMachineStatus(); };
+
+    function buildHostCard(h) {
+      const st = checklistStats(h.checklist);
+      const card = document.createElement("div"); card.className = "host-card" + (h.owned ? " owned" : "") + (h.id === openHostId ? " open" : ""); card.id = "host-" + h.id;
+      const head = document.createElement("div"); head.className = "host-card-head";
+      head.innerHTML =
         '<input type="checkbox" class="host-owned" title="' + t("owned") + '" aria-label="' + t("owned") + '"' + (h.owned ? " checked" : "") + '>' +
-        '<input class="host-f host-name" placeholder="hostname" value="' + escapeHtml(h.name || "") + '" aria-label="hostname">' +
-        '<input class="host-f host-ip" placeholder="ip" value="' + escapeHtml(h.ip || "") + '" aria-label="ip">' +
-        '<input class="host-f host-os" placeholder="os / role" value="' + escapeHtml(h.os || "") + '" aria-label="os or role">' +
+        '<span class="host-icon" aria-hidden="true">' + (isDcRole(h) ? "★" : osIconFor(h.os)) + '</span>' +
+        '<span class="host-title">' + escapeHtml(h.name || "(host)") + '</span>' +
+        '<span class="host-ip">' + escapeHtml(h.ip || "") + '</span>' +
+        (h.role ? '<span class="host-role">' + escapeHtml(h.role) + '</span>' : '') +
+        '<span class="host-prog">' + (h.checklist.length ? st.done + "/" + st.total : "") + '</span>' +
+        '<button class="host-expand" aria-label="Toggle">' + (h.id === openHostId ? "▲" : "▼") + '</button>' +
         '<button class="host-del" title="Delete" aria-label="Delete host">🗑</button>';
-      const persist = () => { saveMachine(m.id, { hosts: m.hosts }); showMachineStatus(); };
-      row.querySelector(".host-owned").addEventListener("change", ev => { h.owned = ev.target.checked; row.classList.toggle("owned", h.owned); persist(); });
-      row.querySelector(".host-name").addEventListener("input", ev => { h.name = ev.target.value; persist(); });
-      row.querySelector(".host-ip").addEventListener("input", ev => { h.ip = ev.target.value; persist(); });
-      row.querySelector(".host-os").addEventListener("input", ev => { h.os = ev.target.value; persist(); });
-      row.querySelector(".host-del").addEventListener("click", () => { m.hosts.splice(hi, 1); saveMachine(m.id, { hosts: m.hosts }); render(); });
-      hostList.appendChild(row);
+      head.querySelector(".host-owned").addEventListener("change", e => { e.stopPropagation(); h.owned = e.target.checked; card.classList.toggle("owned", h.owned); hostPersist(); if (adSvgHost) adSvgHost(); });
+      head.querySelector(".host-del").addEventListener("click", e => {
+        e.stopPropagation();
+        if (!confirm(lang === "tr" ? "Host silinsin mi?" : "Delete this host?")) return;
+        m.hosts = m.hosts.filter(x => x.id !== h.id); if (openHostId === h.id) openHostId = null;
+        saveMachine(m.id, { hosts: m.hosts }); render();
+      });
+      const toggleOpen = e => { if (e.target.closest(".host-owned, .host-del")) return; openHostId = (openHostId === h.id) ? null : h.id; render(); };
+      head.addEventListener("click", toggleOpen);
+      card.appendChild(head);
+      if (h.id !== openHostId) return card;
+
+      const body = document.createElement("div"); body.className = "host-card-body";
+      const meta = document.createElement("div"); meta.className = "host-meta";
+      meta.innerHTML =
+        '<input class="host-f" data-k="name" placeholder="hostname" value="' + escapeHtml(h.name || "") + '" aria-label="hostname">' +
+        '<input class="host-f" data-k="ip" placeholder="ip" value="' + escapeHtml(h.ip || "") + '" aria-label="ip">' +
+        '<input class="host-f" data-k="os" placeholder="os" value="' + escapeHtml(h.os || "") + '" aria-label="os">' +
+        '<input class="host-f" data-k="role" placeholder="role (DC, SQL…)" value="' + escapeHtml(h.role || "") + '" aria-label="role">';
+      meta.querySelectorAll(".host-f").forEach(inp => inp.addEventListener("input", () => { h[inp.dataset.k] = inp.value; hostPersist(); }));
+      body.appendChild(meta);
+
+      const pbRow = document.createElement("div"); pbRow.className = "machine-playbook-row";
+      const sel = document.createElement("select"); sel.className = "form-select"; sel.setAttribute("aria-label", t("playbook"));
+      sel.innerHTML = '<option value="">' + t("defaultChecklist") + '</option>' + machineTemplates().map(tp => '<option value="' + tp.id + '"' + (h.template === tp.id ? " selected" : "") + '>' + tp.icon + " " + escapeHtml(tp.name) + '</option>').join("");
+      sel.addEventListener("change", () => {
+        const id = sel.value;
+        if (h.checklist.some(c => c.done) && !confirm(t("replacePlaybook"))) { sel.value = h.template || ""; return; }
+        const tp = id ? templateById(id) : null; h.template = id; h.checklist = tp ? templateToChecklist(tp) : [];
+        saveMachine(m.id, { hosts: m.hosts }); render();
+      });
+      pbRow.innerHTML = '<span class="machine-playbook-label">📖 ' + t("playbook") + '</span>';
+      pbRow.appendChild(sel); body.appendChild(pbRow);
+
+      if (h.checklist.length) {
+        body.appendChild(buildChecklistBlock(h.checklist, () => {
+          hostPersist();
+          const hp = head.querySelector(".host-prog"); const s2 = checklistStats(h.checklist); if (hp) hp.textContent = s2.done + "/" + s2.total;
+        }));
+      }
+
+      const others = m.hosts.filter(x => x.id !== h.id);
+      if (others.length) {
+        const conn = document.createElement("div"); conn.className = "host-conn";
+        conn.innerHTML = '<div class="machine-subhead">🔗 ' + t("connections") + '</div>';
+        const chips = document.createElement("div"); chips.className = "host-chips";
+        others.forEach(o => {
+          const chip = document.createElement("button"); chip.className = "host-chip" + (h.links.indexOf(o.id) >= 0 ? " on" : ""); chip.textContent = o.name || o.ip || "host";
+          chip.addEventListener("click", () => {
+            const i = h.links.indexOf(o.id); if (i >= 0) h.links.splice(i, 1); else h.links.push(o.id);
+            chip.classList.toggle("on"); saveMachine(m.id, { hosts: m.hosts }); if (adSvgHost) adSvgHost();
+          });
+          chips.appendChild(chip);
+        });
+        conn.appendChild(chips); body.appendChild(conn);
+      }
+
+      const lootLabel = document.createElement("div"); lootLabel.className = "machine-subhead"; lootLabel.textContent = "🔑 " + t("loot");
+      const loot = document.createElement("textarea"); loot.className = "machine-textarea"; loot.placeholder = "admin:Pass  |  svc_sql: hash  |  ticket.kirbi"; loot.value = h.loot || "";
+      loot.addEventListener("input", () => { h.loot = loot.value; hostPersist(); });
+      body.appendChild(lootLabel); body.appendChild(loot);
+
+      const notesLabel = document.createElement("div"); notesLabel.className = "machine-subhead"; notesLabel.textContent = "📝 " + t("notes");
+      const notes = document.createElement("textarea"); notes.className = "machine-textarea"; notes.placeholder = t("notes"); notes.value = h.notes || "";
+      notes.addEventListener("input", () => { h.notes = notes.value; hostPersist(); });
+      body.appendChild(notesLabel); body.appendChild(notes);
+
+      card.appendChild(body);
+      return card;
+    }
+
+    const adSection = document.createElement("div"); adSection.className = "machine-section ad-section";
+    const adHead = document.createElement("div"); adHead.className = "machine-section-head";
+    adHead.innerHTML = '<h3>🖧 ' + t("hosts") + ' <span class="ad-sub">· ' + t("engagement") + '</span></h3>';
+    const addWrap = document.createElement("div"); addWrap.className = "ad-add";
+    const fromSel = document.createElement("select"); fromSel.className = "form-select"; fromSel.setAttribute("aria-label", t("fromMachine"));
+    fromSel.innerHTML = '<option value="">' + t("fromMachine") + '</option>' + machines.filter(x => x.id !== m.id).map(x => '<option value="' + x.id + '">' + escapeHtml(x.name) + (x.ip ? " (" + escapeHtml(x.ip) + ")" : "") + '</option>').join("");
+    const newBtn = document.createElement("button"); newBtn.className = "btn btn-secondary btn-sm"; newBtn.textContent = t("newHost");
+    addWrap.appendChild(fromSel); addWrap.appendChild(newBtn); adHead.appendChild(addWrap);
+    adSection.appendChild(adHead);
+
+    fromSel.addEventListener("change", () => {
+      const src = machines.find(x => x.id === fromSel.value); fromSel.value = "";
+      if (!src) return;
+      const h = normHost({ name: src.name, ip: src.ip || "", os: src.os || "", role: "", owned: false, fromMachineId: src.id, template: src.template || "", checklist: (src.checklist || []).map(c => ({ id: c.id, label: c.label, hint: c.hint, phase: c.phase, done: false })) });
+      m.hosts.push(h); openHostId = h.id; saveMachine(m.id, { hosts: m.hosts }); render();
     });
-    hostSection.appendChild(hostList);
-    hostSection.querySelector(".machine-addhost").addEventListener("click", () => {
-      m.hosts.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 5), name: "", ip: "", os: "", owned: false });
-      saveMachine(m.id, { hosts: m.hosts }); render();
+    newBtn.addEventListener("click", () => {
+      const h = normHost({ name: "", ip: "", os: "", role: "", owned: false });
+      m.hosts.push(h); openHostId = h.id; saveMachine(m.id, { hosts: m.hosts }); render();
     });
-    const apLabel = document.createElement("div"); apLabel.className = "machine-subhead"; apLabel.textContent = "🧭 " + t("attackPath");
-    const apArea = document.createElement("textarea"); apArea.className = "machine-textarea";
-    apArea.placeholder = "user@host1 -> kerberoast svc -> WriteDACL -> DCSync -> DA";
-    apArea.value = m.attackPath || "";
-    apArea.addEventListener("input", () => { saveMachine(m.id, { attackPath: apArea.value }); showMachineStatus(); });
-    hostSection.appendChild(apLabel); hostSection.appendChild(apArea);
-    page.appendChild(hostSection);
+
+    if (!m.hosts.length) {
+      const e = document.createElement("p"); e.className = "machine-hosts-empty"; e.textContent = t("noHosts"); adSection.appendChild(e);
+    } else {
+      let aggT = 0, aggD = 0, owned = 0;
+      m.hosts.forEach(h => { const s = checklistStats(h.checklist); aggT += s.total; aggD += s.done; if (h.owned) owned++; });
+      const aggPct = aggT ? Math.round(aggD / aggT * 100) : 0;
+      const ov = document.createElement("div"); ov.className = "ad-overview";
+      ov.innerHTML =
+        '<span class="ad-stat"><strong>' + m.hosts.length + '</strong> ' + t("hosts").toLowerCase() + '</span>' +
+        '<span class="ad-stat"><strong>' + owned + '</strong> ' + t("owned").toLowerCase() + '</span>' +
+        '<span class="ad-stat"><strong>' + aggPct + '%</strong> ' + t("progress").toLowerCase() + '</span>';
+      adSection.appendChild(ov);
+
+      const schemWrap = document.createElement("div"); schemWrap.className = "ad-schematic-wrap";
+      schemWrap.appendChild(buildAdSchematic(m));
+      adSection.appendChild(schemWrap);
+      adSvgHost = () => { schemWrap.innerHTML = ""; schemWrap.appendChild(buildAdSchematic(m)); };
+
+      const cards = document.createElement("div"); cards.className = "host-cards";
+      m.hosts.forEach(h => cards.appendChild(buildHostCard(h)));
+      adSection.appendChild(cards);
+    }
+
+    const objLabel = document.createElement("div"); objLabel.className = "machine-subhead"; objLabel.textContent = "🧭 " + t("objective");
+    const objArea = document.createElement("textarea"); objArea.className = "machine-textarea";
+    objArea.placeholder = "user@host1 -> kerberoast svc -> WriteDACL -> DCSync -> DA";
+    objArea.value = m.attackPath || "";
+    objArea.addEventListener("input", () => { saveMachine(m.id, { attackPath: objArea.value }); showMachineStatus(); });
+    adSection.appendChild(objLabel); adSection.appendChild(objArea);
+    page.appendChild(adSection);
 
     // Services
     const svcSection = document.createElement("div"); svcSection.className = "machine-section";

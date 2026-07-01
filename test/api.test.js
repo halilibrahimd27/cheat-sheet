@@ -217,11 +217,19 @@ test("machines CRUD lifecycle seeds the 11-step checklist", async () => {
   // New engagement fields (template / AD hosts / attack path) persist.
   const upd2 = await api("PUT", `/api/machines/${id}`, {
     template: "linux-privesc",
-    hosts: [{ id: "h1", name: "DC01", ip: "10.10.10.2", owned: false }],
+    hosts: [{
+      id: "h1", name: "DC01", ip: "10.10.10.2", os: "Windows", role: "DC", owned: true,
+      template: "ad", links: ["h2"], loot: "administrator:hash", notes: "pwned",
+      checklist: [{ id: "ad-0-0", label: "Recon DC", phase: "Recon", done: true }],
+    }],
     attackPath: "foothold -> kerberoast -> DCSync -> DA",
   });
   assert.strictEqual(upd2.json.template, "linux-privesc");
   assert.strictEqual(upd2.json.hosts.length, 1);
+  // Full AD-host sub-schema (checklist / links / role) round-trips.
+  assert.strictEqual(upd2.json.hosts[0].checklist.length, 1);
+  assert.strictEqual(upd2.json.hosts[0].links[0], "h2");
+  assert.strictEqual(upd2.json.hosts[0].role, "DC");
   assert.strictEqual(upd2.json.attackPath, "foothold -> kerberoast -> DCSync -> DA");
   assert.strictEqual((await api("DELETE", `/api/machines/${id}`)).status, 200);
 });
