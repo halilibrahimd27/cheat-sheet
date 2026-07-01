@@ -126,3 +126,99 @@ test("security headers are present", async () => {
   const res = await fetch(base + "/api/categories");
   assert.strictEqual(res.headers.get("x-content-type-options"), "nosniff");
 });
+
+// ── Batch 1: correctness & hardening ──
+
+test("GET /api/health returns ok", async () => {
+  const r = await api("GET", "/api/health");
+  assert.strictEqual(r.status, 200);
+  assert.strictEqual(r.json.status, "ok");
+});
+
+test("POST /api/categories rejects a non-string name (no 500 crash)", async () => {
+  const r = await api("POST", "/api/categories", { name: 123 });
+  assert.strictEqual(r.status, 400);
+  assert.ok(r.json && r.json.error, "expected a JSON error body");
+});
+
+test("POST /api/categories rejects a name that reduces to an empty id", async () => {
+  const r = await api("POST", "/api/categories", { name: "###" });
+  assert.strictEqual(r.status, 400);
+});
+
+test("unknown /api/* route returns JSON 404, not the SPA HTML", async () => {
+  const res = await fetch(base + "/api/definitely-not-a-route");
+  assert.strictEqual(res.status, 404);
+  assert.match(res.headers.get("content-type") || "", /application\/json/);
+  const body = await res.json();
+  assert.ok(body.error);
+});
+
+test("index params reject non-integer junk (strict parseIndex)", async () => {
+  const c = await api("POST", "/api/categories", { name: "IdxTest" });
+  assert.strictEqual(c.status, 201);
+  const id = c.json.id;
+  await api("POST", `/api/categories/${id}/subcategories`, { name: "Sub" });
+  // "1abc" used to parseInt to 1; "0.9" to 0. Both must now 404.
+  assert.strictEqual((await api("PUT", `/api/categories/${id}/subcategories/1abc`, { name: "x" })).status, 404);
+  assert.strictEqual((await api("POST", `/api/categories/${id}/subcategories/0.9/commands`, { title: "x", cmd: "x" })).status, 404);
+  await api("DELETE", `/api/categories/${id}`);
+});
+
+test("malformed JSON body returns a JSON 400, not an HTML error page", async () => {
+  const res = await fetch(base + "/api/categories", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: "{ not valid json",
+  });
+  assert.strictEqual(res.status, 400);
+  assert.match(res.headers.get("content-type") || "", /application\/json/);
+});
+
+test("notes CRUD lifecycle with empty-array cleanup", async () => {
+  const catId = "notes-test-cat";
+  const post = await api("POST", `/api/notes/${catId}`, { text: "first note" });
+  assert.strictEqual(post.status, 201);
+  const noteId = post.json.id;
+  assert.strictEqual((await api("GET", `/api/notes/${catId}`)).json.length, 1);
+
+  const upd = await api("PUT", `/api/notes/${catId}/${noteId}`, { text: "edited" });
+  assert.strictEqual(upd.status, 200);
+  assert.strictEqual(upd.json.text, "edited");
+
+  assert.strictEqual((await api("DELETE", `/api/notes/${catId}/${noteId}`)).status, 200);
+  // Empty array is cleaned up → GET returns [].
+  assert.strictEqual((await api("GET", `/api/notes/${catId}`)).json.length, 0);
+});
+
+test("notes reject unsafe object-key catId (proto pollution)", async () => {
+  assert.strictEqual((await api("POST", "/api/notes/__proto__", { text: "x" })).status, 400);
+});
+
+test("writeups CRUD lifecycle", async () => {
+  assert.strictEqual((await api("POST", "/api/writeups", {})).status, 400);
+  const post = await api("POST", "/api/writeups", { title: "HTB Box", tags: ["htb"], content: "# notes" });
+  assert.strictEqual(post.status, 201);
+  const id = post.json.id;
+  assert.ok((await api("GET", "/api/writeups")).json.some((w) => w.id === id));
+  const upd = await api("PUT", `/api/writeups/${id}`, { title: "HTB Box (rooted)" });
+  assert.strictEqual(upd.json.title, "HTB Box (rooted)");
+  assert.strictEqual((await api("DELETE", `/api/writeups/${id}`)).status, 200);
+});
+
+test("machines CRUD lifecycle seeds the 11-step checklist", async () => {
+  assert.strictEqual((await api("POST", "/api/machines", {})).status, 400);
+  const post = await api("POST", "/api/machines", { name: "target01", ip: "10.10.10.5", os: "linux" });
+  assert.strictEqual(post.status, 201);
+  assert.strictEqual(post.json.checklist.length, 11);
+  const id = post.json.id;
+  const upd = await api("PUT", `/api/machines/${id}`, { ip: "10.10.10.9" });
+  assert.strictEqual(upd.json.ip, "10.10.10.9");
+  assert.strictEqual((await api("DELETE", `/api/machines/${id}`)).status, 200);
+});
+
+test("POST /api/reset restores seed categories", async () => {
+  const r = await api("POST", "/api/reset");
+  assert.strictEqual(r.status, 200);
+  assert.ok((await api("GET", "/api/categories")).json.length > 0);
+});

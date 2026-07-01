@@ -161,6 +161,32 @@ function isValidWriteupArray(arr) {
     w && typeof w === "object" &&
     (w.tags === undefined || (Array.isArray(w.tags) && w.tags.every((t) => typeof t === "string"))));
 }
+function isValidNotesMap(m) {
+  if (!m || typeof m !== "object" || Array.isArray(m)) return false;
+  return Object.keys(m).every((k) =>
+    CAT_ID_RE.test(k) &&
+    Array.isArray(m[k]) &&
+    m[k].every((n) => n && typeof n === "object" &&
+      typeof n.id === "string" && typeof n.text === "string"));
+}
+
+// ── Param & field validation helpers ──
+// Category ids are slugs (lowercase alphanum + dashes). Notes are keyed by
+// catId, so this also blocks __proto__/constructor object-key footguns.
+const CAT_ID_RE = /^[a-z0-9-]+$/;
+// Strict array-index parse: only bare non-negative integers. parseInt() used to
+// accept "1abc" / "0.9", silently mutating the wrong (or a fractional) record.
+function parseIndex(v) {
+  return typeof v === "string" && /^\d+$/.test(v) ? Number(v) : -1;
+}
+function isNonEmptyString(v) {
+  return typeof v === "string" && v.trim().length > 0;
+}
+
+// ── Health check (used by the Docker HEALTHCHECK) ──
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok", uptime: process.uptime() });
+});
 
 // ── GET all categories ──
 app.get("/api/categories", (req, res) => {
@@ -171,11 +197,18 @@ app.get("/api/categories", (req, res) => {
 app.post("/api/categories", (req, res) => {
   const data = readData();
   const { name, icon, description } = req.body;
-  if (!name) return res.status(400).json({ error: "name is required" });
-  const id = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/-+$/, "");
+  if (!isNonEmptyString(name)) return res.status(400).json({ error: "name is required" });
+  const id = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  if (!id) return res.status(400).json({ error: "name must contain letters or numbers" });
   if (data.find((c) => c.id === id))
     return res.status(409).json({ error: "Category already exists" });
-  const cat = { id, name, icon: icon || "📂", description: description || "", subcategories: [] };
+  const cat = {
+    id,
+    name,
+    icon: typeof icon === "string" && icon ? icon : "📂",
+    description: typeof description === "string" ? description : "",
+    subcategories: [],
+  };
   data.push(cat);
   writeData(data);
   res.status(201).json(cat);
@@ -186,9 +219,15 @@ app.put("/api/categories/:id", (req, res) => {
   const data = readData();
   const cat = data.find((c) => c.id === req.params.id);
   if (!cat) return res.status(404).json({ error: "Category not found" });
-  if (req.body.name) cat.name = req.body.name;
-  if (req.body.icon) cat.icon = req.body.icon;
-  if (req.body.description !== undefined) cat.description = req.body.description;
+  if (req.body.name !== undefined) {
+    if (!isNonEmptyString(req.body.name)) return res.status(400).json({ error: "name must be a non-empty string" });
+    cat.name = req.body.name;
+  }
+  if (typeof req.body.icon === "string" && req.body.icon) cat.icon = req.body.icon;
+  if (req.body.description !== undefined) {
+    if (typeof req.body.description !== "string") return res.status(400).json({ error: "description must be a string" });
+    cat.description = req.body.description;
+  }
   writeData(data);
   res.json(cat);
 });
@@ -209,7 +248,7 @@ app.post("/api/categories/:id/subcategories", (req, res) => {
   const cat = data.find((c) => c.id === req.params.id);
   if (!cat) return res.status(404).json({ error: "Category not found" });
   const { name } = req.body;
-  if (!name) return res.status(400).json({ error: "name is required" });
+  if (!isNonEmptyString(name)) return res.status(400).json({ error: "name is required" });
   const sub = { name, commands: [] };
   cat.subcategories.push(sub);
   writeData(data);
@@ -221,9 +260,12 @@ app.put("/api/categories/:id/subcategories/:subIdx", (req, res) => {
   const data = readData();
   const cat = data.find((c) => c.id === req.params.id);
   if (!cat) return res.status(404).json({ error: "Category not found" });
-  const sub = cat.subcategories[parseInt(req.params.subIdx)];
+  const sub = cat.subcategories[parseIndex(req.params.subIdx)];
   if (!sub) return res.status(404).json({ error: "Subcategory not found" });
-  if (req.body.name) sub.name = req.body.name;
+  if (req.body.name !== undefined) {
+    if (!isNonEmptyString(req.body.name)) return res.status(400).json({ error: "name must be a non-empty string" });
+    sub.name = req.body.name;
+  }
   writeData(data);
   res.json(sub);
 });
@@ -233,7 +275,7 @@ app.delete("/api/categories/:id/subcategories/:subIdx", (req, res) => {
   const data = readData();
   const cat = data.find((c) => c.id === req.params.id);
   if (!cat) return res.status(404).json({ error: "Category not found" });
-  const idx = parseInt(req.params.subIdx);
+  const idx = parseIndex(req.params.subIdx);
   if (!cat.subcategories[idx]) return res.status(404).json({ error: "Subcategory not found" });
   cat.subcategories.splice(idx, 1);
   writeData(data);
@@ -245,10 +287,10 @@ app.post("/api/categories/:id/subcategories/:subIdx/commands", (req, res) => {
   const data = readData();
   const cat = data.find((c) => c.id === req.params.id);
   if (!cat) return res.status(404).json({ error: "Category not found" });
-  const sub = cat.subcategories[parseInt(req.params.subIdx)];
+  const sub = cat.subcategories[parseIndex(req.params.subIdx)];
   if (!sub) return res.status(404).json({ error: "Subcategory not found" });
   const { title, desc, cmd, cmds, tags, note } = req.body;
-  if (!title) return res.status(400).json({ error: "title is required" });
+  if (!isNonEmptyString(title)) return res.status(400).json({ error: "title is required" });
   const command = { title, desc: desc || "" };
   if (cmds && cmds.length) command.cmds = cmds;
   else if (cmd) command.cmd = cmd;
@@ -264,9 +306,9 @@ app.put("/api/categories/:id/subcategories/:subIdx/commands/:cmdIdx", (req, res)
   const data = readData();
   const cat = data.find((c) => c.id === req.params.id);
   if (!cat) return res.status(404).json({ error: "Category not found" });
-  const sub = cat.subcategories[parseInt(req.params.subIdx)];
+  const sub = cat.subcategories[parseIndex(req.params.subIdx)];
   if (!sub) return res.status(404).json({ error: "Subcategory not found" });
-  const command = sub.commands[parseInt(req.params.cmdIdx)];
+  const command = sub.commands[parseIndex(req.params.cmdIdx)];
   if (!command) return res.status(404).json({ error: "Command not found" });
   if (req.body.title) command.title = req.body.title;
   if (req.body.desc !== undefined) command.desc = req.body.desc;
@@ -283,9 +325,9 @@ app.delete("/api/categories/:id/subcategories/:subIdx/commands/:cmdIdx", (req, r
   const data = readData();
   const cat = data.find((c) => c.id === req.params.id);
   if (!cat) return res.status(404).json({ error: "Category not found" });
-  const sub = cat.subcategories[parseInt(req.params.subIdx)];
+  const sub = cat.subcategories[parseIndex(req.params.subIdx)];
   if (!sub) return res.status(404).json({ error: "Subcategory not found" });
-  const idx = parseInt(req.params.cmdIdx);
+  const idx = parseIndex(req.params.cmdIdx);
   if (!sub.commands[idx]) return res.status(404).json({ error: "Command not found" });
   sub.commands.splice(idx, 1);
   writeData(data);
@@ -301,25 +343,33 @@ app.get("/api/notes", (req, res) => res.json(readNotes()));
 
 // Get notes for a specific category
 app.get("/api/notes/:catId", (req, res) => {
+  if (!CAT_ID_RE.test(req.params.catId)) return res.json([]);
   const notes = readNotes();
-  res.json(notes[req.params.catId] || []);
+  res.json(Object.prototype.hasOwnProperty.call(notes, req.params.catId) ? notes[req.params.catId] : []);
 });
 
 // Add a note to a category
 app.post("/api/notes/:catId", (req, res) => {
+  const catId = req.params.catId;
+  if (!CAT_ID_RE.test(catId)) return res.status(400).json({ error: "invalid category id" });
+  if (req.body.text !== undefined && typeof req.body.text !== "string")
+    return res.status(400).json({ error: "text must be a string" });
   const notes = readNotes();
-  if (!notes[req.params.catId]) notes[req.params.catId] = [];
+  if (!Object.prototype.hasOwnProperty.call(notes, catId)) notes[catId] = [];
   const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
   const note = { id, text: req.body.text || "", createdAt: new Date().toISOString() };
-  notes[req.params.catId].push(note);
+  notes[catId].push(note);
   writeNotes(notes);
   res.status(201).json(note);
 });
 
 // Update a specific note
 app.put("/api/notes/:catId/:noteId", (req, res) => {
+  if (!CAT_ID_RE.test(req.params.catId)) return res.status(404).json({ error: "not found" });
+  if (req.body.text !== undefined && typeof req.body.text !== "string")
+    return res.status(400).json({ error: "text must be a string" });
   const notes = readNotes();
-  const arr = notes[req.params.catId] || [];
+  const arr = Object.prototype.hasOwnProperty.call(notes, req.params.catId) ? notes[req.params.catId] : [];
   const note = arr.find(n => n.id === req.params.noteId);
   if (!note) return res.status(404).json({ error: "not found" });
   if (req.body.text !== undefined) note.text = req.body.text;
@@ -329,8 +379,9 @@ app.put("/api/notes/:catId/:noteId", (req, res) => {
 
 // Delete a specific note
 app.delete("/api/notes/:catId/:noteId", (req, res) => {
+  if (!CAT_ID_RE.test(req.params.catId)) return res.json({ ok: true });
   const notes = readNotes();
-  if (!notes[req.params.catId]) return res.json({ ok: true });
+  if (!Object.prototype.hasOwnProperty.call(notes, req.params.catId)) return res.json({ ok: true });
   notes[req.params.catId] = notes[req.params.catId].filter(n => n.id !== req.params.noteId);
   if (notes[req.params.catId].length === 0) delete notes[req.params.catId];
   writeNotes(notes);
@@ -346,7 +397,11 @@ app.get("/api/writeups", (req, res) => res.json(readWriteups()));
 app.post("/api/writeups", (req, res) => {
   const wups = readWriteups();
   const { title, tags, content } = req.body;
-  if (!title) return res.status(400).json({ error: "title required" });
+  if (!isNonEmptyString(title)) return res.status(400).json({ error: "title required" });
+  if (tags !== undefined && !(Array.isArray(tags) && tags.every(t => typeof t === "string")))
+    return res.status(400).json({ error: "tags must be an array of strings" });
+  if (content !== undefined && typeof content !== "string")
+    return res.status(400).json({ error: "content must be a string" });
   const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
   const wu = { id, title, tags: tags || [], content: content || "", createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
   wups.unshift(wu);
@@ -380,7 +435,7 @@ app.get("/api/machines", (req, res) => res.json(readMachines()));
 app.post("/api/machines", (req, res) => {
   const machines = readMachines();
   const { name, ip, os } = req.body;
-  if (!name) return res.status(400).json({ error: "name required" });
+  if (!isNonEmptyString(name)) return res.status(400).json({ error: "name required" });
   const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
   const machine = {
     id, name, ip: ip || "", os: os || "unknown",
@@ -424,7 +479,7 @@ app.delete("/api/machines/:id", (req, res) => {
 
 // ── Export / Import ──
 app.get("/api/export", (req, res) => {
-  res.setHeader("Content-Disposition", "attachment; filename=cheatsheet-backup.json");
+  res.setHeader("Content-Disposition", "attachment; filename=cheat-sheet-backup.json");
   res.json({ categories: readData(), notes: readNotes(), writeups: readWriteups(), machines: readMachines() });
 });
 
@@ -440,7 +495,7 @@ app.post("/api/import", (req, res) => {
   if (!body || typeof body !== "object") return res.status(400).json({ error: "invalid import body" });
   if (body.categories !== undefined && !isValidCategoryArray(body.categories))
     return res.status(400).json({ error: "invalid categories format" });
-  if (body.notes !== undefined && (typeof body.notes !== "object" || Array.isArray(body.notes)))
+  if (body.notes !== undefined && !isValidNotesMap(body.notes))
     return res.status(400).json({ error: "invalid notes format" });
   if (body.writeups !== undefined && !isValidWriteupArray(body.writeups))
     return res.status(400).json({ error: "invalid writeups format" });
@@ -466,9 +521,25 @@ app.post("/api/reset", (req, res) => {
   res.json({ ok: true });
 });
 
+// Unknown API routes must return JSON 404 — not the SPA HTML shell (which the
+// frontend api() helper would then try to JSON.parse and fail opaquely).
+app.use("/api", (req, res) => res.status(404).json({ error: "not found" }));
+
 // SPA fallback
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+// Terminal error handler — guarantees every failure is machine-readable JSON in
+// the {error} shape the frontend/tests expect, instead of Express's HTML page.
+// The 4-arg signature is what makes Express treat this as an error handler.
+app.use((err, req, res, next) => {
+  if (err && err.type === "entity.parse.failed")
+    return res.status(400).json({ error: "invalid JSON body" });
+  if (err && (err.type === "entity.too.large" || err.status === 413))
+    return res.status(413).json({ error: "request body too large" });
+  console.error(err);
+  res.status(500).json({ error: "internal server error" });
 });
 
 if (require.main === module) {

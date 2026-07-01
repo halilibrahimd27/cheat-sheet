@@ -1,0 +1,182 @@
+{
+  "_comment": "Self-paced improvement roadmap for the cheat-sheet app. Autonomous multi-session build: each batch is implemented fully, tested, committed, then a wakeup is scheduled ~1min later to continue with the next pending batch. HARD RULE (from owner): 100% local, ZERO external runtime dependencies, NO AI/cloud features. gzip etc. must use Node built-ins (zlib). HTB/THM checklists are authored at build-time and baked as STATIC data — the app never phones home. On each wakeup: read this file, pick the first 'pending' batch, implement it, run `npm test`, commit with a 'feat:'/'fix:' message, mark 'done', schedule next wakeup.",
+  "owner_priorities": [
+    "Tag filter under the search box is buggy — must work correctly",
+    "Overhaul Write-ups AND Machines (design + functionality). Machines: situation-aware checklists (Linux/Windows privesc, Web, AD multi-machine with captured creds/loot, etc.) baked from HTB/THM/OSCP methodology; strong visual presentation that references the next steps while solving a box",
+    "Improve overall app design"
+  ],
+  "constraints": {
+    "no_external_runtime_deps": true,
+    "no_ai_or_cloud": true,
+    "no_new_npm_packages_shipped": true,
+    "built_ins_only_for_perf": "use node:zlib for compression, no 'compression' package",
+    "typescript_devdep": "avoid — keep dependency-free (JSDoc only if ever needed)"
+  },
+  "batches": [
+    {
+      "id": "backend-correctness",
+      "title": "Backend correctness & API hardening",
+      "status": "done",
+      "files": ["server.js", "test/api.test.js"],
+      "items": [
+        "Guard non-string category name (500 crash fix)",
+        "Reject category names that reduce to an empty id",
+        "JSON 404 for unknown /api/* routes (stop serving SPA HTML)",
+        "Strict integer parsing for subIdx/cmdIdx",
+        "Express error-handling middleware (JSON {error} for parse/too-large/500)",
+        "Validate catId charset before using as notes object key (proto-pollution)",
+        "Type validation on notes/subcategory/writeup/machine write handlers",
+        "Add GET /api/health endpoint (used later by Docker HEALTHCHECK)",
+        "Reconcile export filename to cheat-sheet-backup.json",
+        "Tests: health, bad-name, empty-id, /api typo 404, strict index, notes/writeups/machines/reset/export CRUD, invalid JSON body"
+      ]
+    },
+    {
+      "id": "frontend-robustness-filterfix",
+      "title": "Frontend robustness + TAG FILTER FIX (owner priority #1)",
+      "status": "pending",
+      "files": ["public/app.js"],
+      "items": [
+        "FIX: tag filter chips under search not filtering correctly",
+        "Harden api() helper: check res.ok, handle 401/500/non-JSON, surface toast",
+        "Fix innerHTML += no-results footgun (detaches listeners)",
+        "Handle clipboard/upload/fetch failures with user feedback",
+        "Reconcile frontend export download name",
+        "Route hardcoded EN strings through t() (i18n gaps)"
+      ]
+    },
+    {
+      "id": "performance",
+      "title": "Performance (local-only, built-ins)",
+      "status": "pending",
+      "files": ["server.js", "public/app.js", "public/service-worker.js", "public/index.html"],
+      "items": [
+        "In-memory cache of commands.json (invalidate on write)",
+        "gzip responses via node:zlib (no dependency)",
+        "Scoped rendering: don't full re-render on favorite/collapse/tag",
+        "Parallelize the 4 loadData fetches",
+        "Precompute per-command lowercased search haystack",
+        "Service worker: stale-while-revalidate + versioned cache + update prompt",
+        "Non-blocking font loading"
+      ]
+    },
+    {
+      "id": "design-overhaul",
+      "title": "Overall design overhaul (owner priority #3)",
+      "status": "pending",
+      "files": ["public/style.css", "public/index.html", "public/app.js"],
+      "items": [
+        "Refined visual system: spacing, typography scale, card design, sidebar",
+        "prefers-color-scheme default with manual override",
+        "Shell syntax highlighting in code blocks (flags/strings/pipes)",
+        "Polished copy/toast feedback",
+        "Fix low-contrast tokens (WCAG AA)",
+        "Micro-interactions consistent with reduced-motion"
+      ]
+    },
+    {
+      "id": "accessibility-pwa",
+      "title": "Accessibility & PWA quality",
+      "status": "pending",
+      "files": ["public/index.html", "public/app.js", "public/style.css", "public/manifest.json", "public/service-worker.js"],
+      "items": [
+        "aria-label on icon-only buttons; aria-hidden decorative glyphs",
+        ":focus-visible indicators everywhere",
+        "Sidebar/cards as real buttons (keyboard operable)",
+        "aria-live region for copy/save/search announcements",
+        "Real dialog role + focus trap for modal/varbar/ipbar/kbdhelp",
+        "prefers-reduced-motion",
+        "Sync <html lang> with active language",
+        "Complete manifest (maskable icons, shortcuts, screenshots), offline fallback"
+      ]
+    },
+    {
+      "id": "machines-overhaul",
+      "title": "Machines overhaul — situation-aware checklists + AD + visuals (owner priority #2a)",
+      "status": "pending",
+      "files": ["public/app.js", "public/style.css", "server.js", "data/checklist-templates.js OR public/checklist-templates.js"],
+      "items": [
+        "Author STATIC checklist templates from HTB/THM/OSCP methodology (Linux privesc, Windows privesc, Web, AD, initial recon, general box)",
+        "Machine type/OS/context selector that swaps the checklist template",
+        "AD environment mode: multiple hosts, captured creds/hashes/tickets, host relationships, attack-path notes",
+        "Loot/credentials table, services table improvements",
+        "Phase-based visual progress; context-aware 'next step' references while solving",
+        "Redesign machine card + detail view visually"
+      ]
+    },
+    {
+      "id": "writeups-overhaul",
+      "title": "Write-ups overhaul — design + function (owner priority #2b)",
+      "status": "pending",
+      "files": ["public/app.js", "public/style.css", "server.js"],
+      "items": [
+        "Redesigned editor + list UI",
+        "Report templates (HTB/OSCP-style) inserted locally",
+        "Better markdown preview + live split view",
+        "Cross-link write-ups to machines/commands",
+        "Improved image handling UX, export polish"
+      ]
+    },
+    {
+      "id": "command-palette-power",
+      "title": "Command palette + power features",
+      "status": "pending",
+      "files": ["public/app.js", "public/index.html", "public/style.css"],
+      "items": [
+        "Fuzzy Ctrl+K command palette with ranking + jump actions",
+        "Command run history panel (local)",
+        "Per-command variable fill with remembered values",
+        "Deep-linkable command/view URLs",
+        "Copy multi-line command as chained script"
+      ]
+    },
+    {
+      "id": "stable-ids",
+      "title": "Stable IDs for subcategories/commands + favorites migration",
+      "status": "pending",
+      "files": ["server.js", "public/app.js", "test/api.test.js"],
+      "items": [
+        "Add stable ids to subcategories/commands (backfill on load)",
+        "Address by id where safe; keep index routes working",
+        "Key favorites by stable id; migrate existing localStorage keys",
+        "Dedicated reorder endpoint instead of overloading /api/import"
+      ]
+    },
+    {
+      "id": "content-quality",
+      "title": "Content quality + validator",
+      "status": "pending",
+      "files": ["scripts/validate-content.js", "seed.js", "scripts/fix-translations.js", ".github/workflows/ci.yml", "package.json"],
+      "items": [
+        "scripts/validate-content.js (schema, tags enum, unique ids, desc_tr != desc, placeholders)",
+        "Wire validator into CI + npm script",
+        "Fix ~168 'Turklish' desc_tr strings in older categories",
+        "Duplicate detection + optional see-also cross-refs",
+        "Deprecation deny-list (crackmapexec->nxc, docker-compose v1)"
+      ]
+    },
+    {
+      "id": "devops-hardening",
+      "title": "DevOps hardening (repo config only, no app deps)",
+      "status": "pending",
+      "files": ["Dockerfile", "docker-compose.yml", ".dockerignore", ".github/workflows/ci.yml"],
+      "items": [
+        "Non-root container user + healthcheck (uses /api/health)",
+        "Tighten .dockerignore",
+        "CI: Node 18/20/22 matrix, npm audit, least-priv permissions",
+        "compose resource limits + log rotation",
+        "Optimize/relocate the 8 large PNG screenshots"
+      ]
+    },
+    {
+      "id": "content-expansion",
+      "title": "Content expansion toward 5500 (Mobile, Cloud IR, Purple Team, LLM/AI security)",
+      "status": "pending",
+      "files": ["seed.js", "scripts/content-progress.json", "scripts/merge-category.js"],
+      "items": [
+        "Author 4 new categories (~556 cmds) following the merge-category workflow",
+        "Bilingual EN+TR, validated by the new content validator"
+      ]
+    }
+  ]
+}
