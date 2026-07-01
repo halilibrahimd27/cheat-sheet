@@ -158,12 +158,12 @@
     return data;
   }
   async function loadData() {
-    CATEGORIES = await api("GET", "/api/categories") || [];
-    await loadNotes();
-    await loadWriteups();
-    await loadMachines();
+    // Fetch all four collections in parallel instead of chaining four round-trips.
+    await Promise.all([loadCategories(), loadNotes(), loadWriteups(), loadMachines()]);
+    buildSearchIndex();
     render();
   }
+  async function loadCategories() { CATEGORIES = await api("GET", "/api/categories") || []; }
 
   function getStats() {
     let tc = 0, ts = 0;
@@ -176,10 +176,14 @@
   function isFav(catId, subIdx, cmdIdx) { return favorites.includes(favKey(catId, subIdx, cmdIdx)); }
   function toggleFav(catId, subIdx, cmdIdx) {
     const k = favKey(catId, subIdx, cmdIdx);
-    if (favorites.includes(k)) favorites = favorites.filter(f => f !== k);
-    else favorites.push(k);
+    const nowFav = !favorites.includes(k);
+    if (nowFav) favorites.push(k); else favorites = favorites.filter(f => f !== k);
     localStorage.setItem("cs-favorites", JSON.stringify(favorites));
-    render();
+    if (activeCategory === "favs") { render(); return; }
+    // Scoped update: flip the matching star(s) + refresh the cheap sidebar,
+    // instead of rebuilding every command card in the view.
+    document.querySelectorAll('.fav-btn[data-fav="' + k + '"]').forEach(b => b.classList.toggle("fav-active", nowFav));
+    buildSidebar();
   }
   function getFavCommands() {
     const r = [];
@@ -804,7 +808,7 @@
     const hdr = document.createElement("div"); hdr.className = "cmd-card-header";
     hdr.innerHTML = '<div class="cmd-title">' + hl(cmd.title) + '</div>' +
       '<div class="cmd-header-actions">' + tagsH +
-      '<button class="cmd-action-btn fav-btn' + (fav ? " fav-active" : "") + '" title="Favorite">★</button>' +
+      '<button class="cmd-action-btn fav-btn' + (fav ? " fav-active" : "") + '" data-fav="' + favKey(catId, subIdx, cmdIdx) + '" title="Favorite">★</button>' +
       '<button class="cmd-action-btn edit-btn" title="Edit">✎</button>' +
       '<button class="cmd-action-btn delete-btn" title="Delete">✕</button></div>';
     hdr.querySelector(".fav-btn").addEventListener("click", e => { e.stopPropagation(); toggleFav(catId, subIdx, cmdIdx); });
@@ -867,10 +871,22 @@
     hdr.querySelector('[data-act="sub"]').addEventListener("click", e => { e.stopPropagation(); addSubcategory(cat.id); });
     hdr.querySelector('[data-act="edit"]').addEventListener("click", e => { e.stopPropagation(); editCategory(cat); });
     hdr.querySelector('[data-act="del"]').addEventListener("click", e => { e.stopPropagation(); deleteCategory(cat); });
-    hdr.addEventListener("click", e => { if (e.target.closest(".category-actions")) return; if (collapsedSections.has(cat.id)) collapsedSections.delete(cat.id); else collapsedSections.add(cat.id); render(); });
+    hdr.addEventListener("click", e => {
+      if (e.target.closest(".category-actions")) return;
+      const nowCollapsed = !collapsedSections.has(cat.id);
+      if (nowCollapsed) {
+        collapsedSections.add(cat.id);
+        hdr.classList.add("collapsed");
+        sec.querySelectorAll(".category-desc, .category-notes, .category-body").forEach(el => el.remove());
+      } else {
+        collapsedSections.delete(cat.id);
+        hdr.classList.remove("collapsed");
+        fillCatContent();
+      }
+    });
     sec.appendChild(hdr);
 
-    if (!collapsed) {
+    function fillCatContent() {
       const catDesc = (lang === "tr" && cat.description_tr) ? cat.description_tr : cat.description;
       if (catDesc) { const d = document.createElement("p"); d.className = "category-desc"; d.textContent = catDesc; sec.appendChild(d); }
       // Notes area — multiple notes per category
@@ -929,7 +945,25 @@
       });
       sec.appendChild(body);
     }
+    if (!collapsed) fillCatContent();
     return sec;
+  }
+
+  // Precomputed lowercased search haystack per command (kept off the objects in a
+  // WeakMap so it never leaks into exports/imports). Rebuilt whenever data loads.
+  const HAY = new WeakMap();
+  function hay(c) {
+    let h = HAY.get(c);
+    if (h === undefined) {
+      h = [c.title, c.desc, c.cmd, ...(c.cmds || []), ...(c.tags || []), c.note || ""].join(" ").toLowerCase();
+      HAY.set(c, h);
+    }
+    return h;
+  }
+  function buildSearchIndex() {
+    CATEGORIES.forEach(cat => (cat.subcategories || []).forEach(sub => (sub.commands || []).forEach(c => {
+      HAY.set(c, [c.title, c.desc, c.cmd, ...(c.cmds || []), ...(c.tags || []), c.note || ""].join(" ").toLowerCase());
+    })));
   }
 
   function filterCmds(commands) {
@@ -937,7 +971,7 @@
     if (activeTag !== "all") r = r.filter(c => (c.tags || []).includes(activeTag));
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      r = r.filter(c => [c.title, c.desc, c.cmd, ...(c.cmds || []), ...(c.tags || []), c.note || ""].join(" ").toLowerCase().includes(q));
+      r = r.filter(c => hay(c).includes(q));
     }
     return r;
   }
@@ -960,7 +994,7 @@
       currentSection.textContent = t("favorites"); hero.style.display = "none";
       let favs = getFavCommands();
       if (activeTag !== "all") favs = favs.filter(f => (f.cmd.tags || []).includes(activeTag));
-      if (searchQuery) { const q = searchQuery.toLowerCase(); favs = favs.filter(f => [f.cmd.title, f.cmd.desc, f.cmd.cmd, ...(f.cmd.cmds || []), ...(f.cmd.tags || []), f.cmd.note || ""].join(" ").toLowerCase().includes(q)); }
+      if (searchQuery) { const q = searchQuery.toLowerCase(); favs = favs.filter(f => hay(f.cmd).includes(q)); }
       if (favs.length === 0) {
         contentArea.innerHTML = '<div class="no-results"><h3>⭐ ' + t("favorites") + '</h3><p>' + (lang === "tr" ? "Henuz favori komut eklemediniz. Komutlardaki ★ ikonuna tiklayin." : "No favorites yet. Click ★ on commands to add them.") + '</p></div>';
         return;

@@ -22,6 +22,7 @@ const browserGlobals = {
 const swGlobals = {
   self: "readonly", caches: "readonly", fetch: "readonly",
   Promise: "readonly", URL: "readonly", console: "readonly",
+  Response: "readonly",
 };
 
 const commonRules = {

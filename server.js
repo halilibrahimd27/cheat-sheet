@@ -2,6 +2,7 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
+const zlib = require("zlib");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,6 +20,48 @@ app.use((req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("X-Frame-Options", "DENY");
   res.setHeader("Referrer-Policy", "no-referrer");
+  next();
+});
+
+// ── Response compression (gzip) via Node's built-in zlib — no dependency ──
+// Buffers the response and gzips compressible bodies >1KB. The big win is the
+// ~2MB /api/categories JSON; static JS/CSS/HTML also shrink ~3-10x. Uploads and
+// range/304 responses are passed through untouched.
+app.use((req, res, next) => {
+  if (!/\bgzip\b/.test(req.headers["accept-encoding"] || "")) return next();
+  const chunks = [];
+  const _write = res.write.bind(res);
+  const _end = res.end.bind(res);
+  let buffering = true;
+  res.write = function (chunk, enc) {
+    if (chunk) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk, typeof enc === "string" ? enc : "utf8"));
+    return true;
+  };
+  res.end = function (chunk, enc, cb) {
+    if (!buffering) return _end(chunk, enc, cb);
+    buffering = false;
+    if (typeof chunk === "function") { cb = chunk; chunk = null; }
+    else if (typeof enc === "function") { cb = enc; enc = null; }
+    if (chunk) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk, typeof enc === "string" ? enc : "utf8"));
+    const body = Buffer.concat(chunks);
+    res.write = _write; res.end = _end;
+    const type = String(res.getHeader("Content-Type") || "");
+    const compressible = /json|javascript|text\/|css|html|xml|svg/i.test(type);
+    if (res.getHeader("Content-Encoding") || res.statusCode === 206 || res.statusCode === 304 || body.length < 1024 || !compressible) {
+      if (body.length) _write(body);
+      return _end(cb);
+    }
+    zlib.gzip(body, (err, gz) => {
+      try {
+        if (err) { if (body.length) _write(body); return _end(cb); }
+        res.setHeader("Content-Encoding", "gzip");
+        res.setHeader("Vary", "Accept-Encoding");
+        res.setHeader("Content-Length", gz.length);
+        _write(gz);
+        _end(cb);
+      } catch { /* client disconnected */ }
+    });
+  };
   next();
 });
 
@@ -136,14 +179,21 @@ function ensureDataFile() {
   }
 }
 
+// In-memory cache of the parsed commands DB. The file is the source of truth but
+// it almost never changes out-of-band, so re-reading + re-parsing ~2MB on every
+// request is pure waste. Reads serve the cache; writes update disk AND the cache.
+let commandsCache = null;
 function readData() {
+  if (commandsCache) return commandsCache;
   ensureDataFile();
-  return readJSON(DATA_FILE, []);
+  commandsCache = readJSON(DATA_FILE, []);
+  return commandsCache;
 }
 
 function writeData(data) {
   ensureDataFile();
   atomicWrite(DATA_FILE, JSON.stringify(data, null, 2));
+  commandsCache = data;
 }
 
 // ── Import validation ──

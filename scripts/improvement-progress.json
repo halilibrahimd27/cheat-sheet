@@ -48,7 +48,7 @@
     {
       "id": "performance",
       "title": "Performance (local-only, built-ins)",
-      "status": "pending",
+      "status": "done",
       "files": ["server.js", "public/app.js", "public/service-worker.js", "public/index.html"],
       "items": [
         "In-memory cache of commands.json (invalidate on write)",
