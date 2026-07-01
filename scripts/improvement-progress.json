@@ -146,6 +146,21 @@
       ]
     },
     {
+      "id": "writeups-report-pro",
+      "title": "Write-up report formats — genuinely professional templates (owner follow-up on #2b)",
+      "status": "pending",
+      "_note": "Owner feedback: batch-7 write-up templates were basic section skeletons. Owner wants FULLY professional report formats. Author real, complete, industry-standard STATIC templates — not tokenistic.",
+      "files": ["public/app.js", "public/style.css"],
+      "items": [
+        "Rewrite WRITEUP_TEMPLATES with genuinely professional, complete report structures (static, offline). At minimum: (1) OSCP exam report — administrative info, high-level summary, methodology, per-target vulnerability details with proof.txt/local.txt placeholders, steps to reproduce, maintaining access, house cleaning, appendices; (2) HTB/CTF write-up — machine info box, recon (nmap), enumeration, foothold with numbered steps, privesc, flags, beyond-root/lessons; (3) Pentest engagement report — executive summary, scope & rules of engagement, findings summary TABLE with severity, per-finding detail (description/impact/evidence/CVSS/remediation/references); (4) Bug bounty report — title, summary, steps to reproduce, impact, PoC, remediation.",
+        "Add a severity/CVSS helper: quick-insert a findings table row and severity badges; a small static CVSS v3.1 qualitative scale reference.",
+        "Insert-section menu (append individual sections like 'Add Finding', 'Add Target') beyond whole-template insertion.",
+        "Ensure the markdown renderer handles tables (| a | b |) so the findings tables render in preview/export; keep XSS-safe.",
+        "Professional print/PDF stylesheet for reports (headings, tables, page structure) reusing existing export path.",
+        "Reuse batch-4 tokens + batch-5 a11y; keep everything local and static."
+      ]
+    },
+    {
       "id": "stable-ids",
       "title": "Stable IDs for subcategories/commands + favorites migration",
       "status": "pending",
