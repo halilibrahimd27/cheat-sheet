@@ -1735,3 +1735,36 @@ body {
     .wu-split { grid-template-columns: 1fr; }
     .wu-split .wu-page-editor, .wu-preview { min-height: 300px; }
 }
+
+/* ============================================
+   Command palette + history (batch 8)
+   ============================================ */
+.palette-overlay { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(3px); }
+.palette-overlay.active { display: flex; align-items: flex-start; justify-content: center; padding-top: 12vh; }
+.palette {
+    width: min(92vw, 640px); max-height: 70vh; display: flex; flex-direction: column;
+    background: var(--bg-secondary); border: 1px solid var(--border-secondary);
+    border-radius: var(--radius-md); box-shadow: var(--shadow-lg); overflow: hidden;
+}
+.palette-input {
+    padding: 15px 18px; font-size: 16px; background: var(--bg-secondary); border: none;
+    border-bottom: 1px solid var(--border-primary); color: var(--text-primary); outline: none;
+    font-family: 'Inter', sans-serif;
+}
+.palette-list { overflow-y: auto; }
+.palette-item {
+    display: flex; align-items: center; gap: 10px; padding: 9px 16px; cursor: pointer;
+    font-size: 13px; color: var(--text-primary); border-left: 2px solid transparent;
+}
+.palette-item.sel { background: var(--accent-glow); border-left-color: var(--accent-primary); }
+.palette-icon { width: 18px; text-align: center; flex-shrink: 0; }
+.palette-label { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 46%; }
+.palette-sub { color: var(--text-tertiary); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.palette-kind { margin-left: auto; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-tertiary); background: var(--bg-badge); padding: 2px 6px; border-radius: 4px; flex-shrink: 0; }
+
+.history-list { display: flex; flex-direction: column; gap: 8px; }
+.history-row { display: flex; align-items: flex-start; gap: 10px; }
+.history-body { flex: 1; min-width: 0; }
+.history-body .cmd-code { margin: 0; }
+.history-meta { font-size: 11px; color: var(--text-tertiary); margin-top: 4px; }
+.cmd-copyall-btn { margin-top: 8px; }

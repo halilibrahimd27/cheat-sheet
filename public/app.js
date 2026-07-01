@@ -11,6 +11,7 @@
   let searchQuery = "";
   let collapsedSections = new Set();
   let favorites = JSON.parse(localStorage.getItem("cs-favorites") || "[]");
+  let cmdHistory = JSON.parse(localStorage.getItem("cs-history") || "[]");
   let activeTag = "all";
   let categoryNotes = {};
   let writeups = [];
@@ -55,7 +56,9 @@
       noHosts: "No extra hosts yet. Add domain / network machines here.",
       replacePlaybook: "Replace the current checklist with this playbook? Current progress will be lost.",
       copyCmd: "Copy command", defaultChecklist: "Default checklist",
-      wuTemplate: "Template", wuMachine: "Link machine"
+      wuTemplate: "Template", wuMachine: "Link machine",
+      history: "History", noHistory: "No copied commands yet.",
+      clearHistory: "Clear", copyAll: "Copy all", paletteHint: "Search commands & actions…", goto: "Go to"
     },
     tr: {
       allCommands: "Tum Komutlar", favorites: "Favoriler", search: "Komut ara...",
@@ -90,7 +93,9 @@
       noHosts: "Henuz ek makine yok. Domain / ag makinelerini buraya ekleyin.",
       replacePlaybook: "Mevcut kontrol listesi bu oyun kitabiyla degistirilsin mi? Mevcut ilerleme kaybolur.",
       copyCmd: "Komutu kopyala", defaultChecklist: "Varsayilan liste",
-      wuTemplate: "Sablon", wuMachine: "Makine bagla"
+      wuTemplate: "Sablon", wuMachine: "Makine bagla",
+      history: "Gecmis", noHistory: "Henuz kopyalanan komut yok.",
+      clearHistory: "Temizle", copyAll: "Tumunu kopyala", paletteHint: "Komut ve eylem ara…", goto: "Git"
     }
   };
   function t(key) { return (T[lang] && T[lang][key]) || T.en[key] || key; }
@@ -246,6 +251,7 @@
       if (val) { localStorage.setItem("cs-var-" + v, val); result = result.split(v).join(val); }
     });
     copyText(result, () => {
+      recordHistory(result);
       $("varBarApply").textContent = "✓ " + t("copied");
       setTimeout(() => { $("varBarApply").textContent = t("applyCopy"); varBar.classList.remove("active"); }, 1200);
     });
@@ -1120,6 +1126,7 @@ user -> ... -> Domain Admin
     mkNavItem("📝", "Write-ups", writeups.length, activeCategory === "writeups", () => { activeCategory = "writeups"; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); });
     // Machines
     mkNavItem("🖥", t("machines"), machines.length, activeCategory === "machines", () => { activeCategory = "machines"; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); });
+    mkNavItem("🕘", t("history"), cmdHistory.length, activeCategory === "history", () => { activeCategory = "history"; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); });
     // Categories
     CATEGORIES.forEach((cat, idx) => {
       let cnt = 0; cat.subcategories.forEach(s => (cnt += s.commands.length));
@@ -1167,7 +1174,17 @@ user -> ... -> Domain Admin
     if (descText) { const d = document.createElement("div"); d.className = "cmd-desc"; d.innerHTML = hl(descText); card.appendChild(d); }
     const cmds = cmd.cmds || (cmd.cmd ? [cmd.cmd] : []);
     if (cmds.length === 1) card.appendChild(mkCode(cmds[0]));
-    else if (cmds.length > 1) { const m = document.createElement("div"); m.className = "cmd-multi"; cmds.forEach(c => m.appendChild(mkCode(c))); card.appendChild(m); }
+    else if (cmds.length > 1) {
+      const m = document.createElement("div"); m.className = "cmd-multi";
+      cmds.forEach(c => m.appendChild(mkCode(c)));
+      const allBtn = document.createElement("button"); allBtn.className = "btn btn-secondary btn-sm cmd-copyall-btn"; allBtn.textContent = "⧉ " + t("copyAll");
+      allBtn.addEventListener("click", () => {
+        const joined = applyIpToCode(cmds.join("\n"));
+        copyText(joined, () => { recordHistory(joined); announce(t("copied")); allBtn.textContent = "✓ " + t("copied"); setTimeout(() => { allBtn.textContent = "⧉ " + t("copyAll"); }, 1500); });
+      });
+      m.appendChild(allBtn);
+      card.appendChild(m);
+    }
     if (cmd.note) { const n = document.createElement("div"); n.className = "cmd-note"; n.innerHTML = "💡 " + escapeHtml(cmd.note).replace(/`([^`]+)`/g, "<code>$1</code>"); card.appendChild(n); }
     return card;
   }
@@ -1185,7 +1202,7 @@ user -> ... -> Domain Admin
       const applied = applyIpToCode(code);
       const hasVars = /<[A-Z_]+>/.test(applied);
       if (hasVars) { openVarBar(applied); return; }
-      copyText(applied, () => { b.textContent = t("copied"); b.classList.add("copied"); announce(t("copied")); setTimeout(() => { b.textContent = t("copy"); b.classList.remove("copied"); }, 1500); });
+      copyText(applied, () => { recordHistory(applied); b.textContent = t("copied"); b.classList.add("copied"); announce(t("copied")); setTimeout(() => { b.textContent = t("copy"); b.classList.remove("copied"); }, 1500); });
     });
     w.appendChild(c); w.appendChild(b); return w;
   }
@@ -1350,11 +1367,14 @@ user -> ... -> Domain Admin
 
   function render() {
     buildSidebar(); contentArea.innerHTML = ""; focusedCmdIdx = -1;
+    syncHash();
 
     // Write-ups view
     if (activeCategory === "writeups") { renderWriteupsPage(); return; }
     // Machines view
     if (activeCategory === "machines") { renderMachinesPage(); return; }
+    // History view
+    if (activeCategory === "history") { renderHistoryPage(); return; }
 
     // Favorites view
     if (activeCategory === "favs") {
@@ -1464,22 +1484,180 @@ user -> ... -> Domain Admin
       const applied = applyIpToCode(code);
       if (/<[A-Z_]+>/.test(applied)) openVarBar(code);
       else copyText(applied, () => {
+        recordHistory(applied);
         const btn = cards[focusedCmdIdx].querySelector(".cmd-copy-btn");
-        if (btn) { btn.textContent = t("copied"); btn.classList.add("copied"); setTimeout(() => { btn.textContent = t("copy"); btn.classList.remove("copied"); }, 1500); }
+        if (btn) { btn.textContent = t("copied"); btn.classList.add("copied"); announce(t("copied")); setTimeout(() => { btn.textContent = t("copy"); btn.classList.remove("copied"); }, 1500); }
       });
     }
   }
+
+  // ── Command history (local) ──
+  function recordHistory(text) {
+    if (!text) return; text = String(text);
+    cmdHistory = cmdHistory.filter(h => h.cmd !== text);
+    cmdHistory.unshift({ cmd: text, ts: Date.now() });
+    if (cmdHistory.length > 100) cmdHistory = cmdHistory.slice(0, 100);
+    localStorage.setItem("cs-history", JSON.stringify(cmdHistory));
+  }
+  function renderHistoryPage() {
+    currentSection.textContent = t("history"); hero.style.display = "none"; contentArea.innerHTML = "";
+    const hdr = document.createElement("div"); hdr.className = "writeups-header";
+    hdr.innerHTML = '<div class="wu-header-top"><h2>🕘 ' + t("history") + '</h2><button class="btn btn-secondary" id="clearHistBtn">' + t("clearHistory") + '</button></div>';
+    contentArea.appendChild(hdr);
+    hdr.querySelector("#clearHistBtn").addEventListener("click", () => {
+      if (!cmdHistory.length || !confirm(t("clearHistory") + "?")) return;
+      cmdHistory = []; localStorage.setItem("cs-history", "[]"); render();
+    });
+    if (!cmdHistory.length) { const e = document.createElement("div"); e.className = "no-results"; e.innerHTML = "<h3>" + t("noHistory") + "</h3>"; contentArea.appendChild(e); return; }
+    const list = document.createElement("div"); list.className = "history-list";
+    cmdHistory.forEach(h => {
+      const row = document.createElement("div"); row.className = "history-row";
+      const code = document.createElement("pre"); code.className = "cmd-code"; code.innerHTML = hlCode(h.cmd);
+      const meta = document.createElement("div"); meta.className = "history-meta"; meta.textContent = new Date(h.ts).toLocaleString();
+      const copyBtn = document.createElement("button"); copyBtn.className = "cmd-copy-btn"; copyBtn.textContent = t("copy"); copyBtn.setAttribute("aria-label", t("copy"));
+      copyBtn.addEventListener("click", () => copyText(applyIpToCode(h.cmd), () => { copyBtn.textContent = t("copied"); copyBtn.classList.add("copied"); announce(t("copied")); setTimeout(() => { copyBtn.textContent = t("copy"); copyBtn.classList.remove("copied"); }, 1500); }));
+      const body = document.createElement("div"); body.className = "history-body"; body.appendChild(code); body.appendChild(meta);
+      row.appendChild(body); row.appendChild(copyBtn);
+      list.appendChild(row);
+    });
+    contentArea.appendChild(list);
+  }
+
+  // ── Fuzzy command palette (Ctrl+K) ──
+  const palette = document.createElement("div"); palette.className = "palette-overlay"; palette.id = "palette";
+  palette.innerHTML =
+    '<div class="palette" role="dialog" aria-modal="true" aria-label="Command palette">' +
+      '<input class="palette-input" type="text" autocomplete="off" spellcheck="false" aria-label="Command palette">' +
+      '<div class="palette-list" role="listbox"></div>' +
+    '</div>';
+  document.body.appendChild(palette);
+  const paletteInput = palette.querySelector(".palette-input");
+  const paletteList = palette.querySelector(".palette-list");
+  let paletteItems = [], paletteSel = 0, paletteBase = [];
+
+  function fuzzyScore(hayStr, q) {
+    if (!q) return 0;
+    let score = 0, qi = 0, prev = -2;
+    for (let i = 0; i < hayStr.length && qi < q.length; i++) {
+      if (hayStr[i] === q[qi]) {
+        score += 1;
+        if (prev === i - 1) score += 2;
+        if (i === 0 || /[\s\-_/:.]/.test(hayStr[i - 1])) score += 3;
+        prev = i; qi++;
+      }
+    }
+    return qi === q.length ? score - hayStr.length * 0.002 : -1;
+  }
+  function navTo(target) { closePalette(); activeCategory = target; searchQuery = ""; searchInput.value = ""; openWriteupId = null; openMachineId = null; render(); }
+  function buildPaletteBase() {
+    const items = [];
+    const act = (icon, label, run) => items.push({ type: "action", icon, label, hay: label.toLowerCase(), run });
+    act("📋", t("goto") + ": " + t("allCommands"), () => navTo(null));
+    act("⭐", t("goto") + ": " + t("favorites"), () => navTo("favs"));
+    act("📝", t("goto") + ": Write-ups", () => navTo("writeups"));
+    act("🖥", t("goto") + ": " + t("machines"), () => navTo("machines"));
+    act("🕘", t("goto") + ": " + t("history"), () => navTo("history"));
+    CATEGORIES.forEach(cat => { const nm = (lang === "tr" && cat.name_tr) ? cat.name_tr : cat.name; act(cat.icon, t("goto") + ": " + nm, () => navTo(cat.id)); });
+    CATEGORIES.forEach(cat => cat.subcategories.forEach((sub, si) => sub.commands.forEach((cmd, ci) => {
+      const nm = (lang === "tr" && cat.name_tr) ? cat.name_tr : cat.name;
+      items.push({ type: "cmd", icon: "»", label: cmd.title, sub: nm + " › " + sub.name, hay: hay(cmd), cmd: cmd });
+    })));
+    return items;
+  }
+  function paletteExec(item) {
+    if (!item) return;
+    if (item.type === "action") { item.run(); return; }
+    const applied = applyIpToCode(item.cmd.cmds ? item.cmd.cmds.join("\n") : (item.cmd.cmd || ""));
+    closePalette();
+    if (/<[A-Z_]+>/.test(applied)) { openVarBar(applied); return; }
+    copyText(applied, () => { recordHistory(applied); announce(t("copied")); toast(t("copied"), "ok"); });
+  }
+  function renderPalette() {
+    const q = paletteInput.value.trim().toLowerCase();
+    let out;
+    if (!q) { out = paletteBase.filter(x => x.type === "action").slice(0, 40); }
+    else {
+      const scored = [];
+      for (const it of paletteBase) { const s = fuzzyScore(it.hay, q); if (s >= 0) scored.push({ it: it, s: s }); }
+      scored.sort((a, b) => b.s - a.s);
+      out = scored.slice(0, 50).map(x => x.it);
+    }
+    paletteItems = out; paletteSel = 0;
+    paletteList.innerHTML = "";
+    out.forEach((it, idx) => {
+      const row = document.createElement("div"); row.className = "palette-item" + (idx === 0 ? " sel" : "");
+      row.setAttribute("role", "option"); row.setAttribute("aria-selected", idx === 0 ? "true" : "false");
+      row.innerHTML = '<span class="palette-icon" aria-hidden="true">' + escapeHtml(it.icon || "") + '</span><span class="palette-label">' + escapeHtml(it.label) + '</span>' + (it.sub ? '<span class="palette-sub">' + escapeHtml(it.sub) + '</span>' : '') + '<span class="palette-kind">' + (it.type === "cmd" ? "copy" : "go") + '</span>';
+      row.addEventListener("click", () => paletteExec(it));
+      row.addEventListener("mousemove", () => setPaletteSel(idx));
+      paletteList.appendChild(row);
+    });
+  }
+  function setPaletteSel(idx) {
+    const rows = paletteList.children; if (!rows.length) return;
+    paletteSel = Math.max(0, Math.min(idx, rows.length - 1));
+    for (let i = 0; i < rows.length; i++) { const on = i === paletteSel; rows[i].classList.toggle("sel", on); rows[i].setAttribute("aria-selected", on ? "true" : "false"); }
+    rows[paletteSel].scrollIntoView({ block: "nearest" });
+  }
+  function openPalette() {
+    paletteBase = buildPaletteBase();
+    paletteInput.value = "";
+    palette.classList.add("active");
+    renderPalette();
+    setTimeout(() => paletteInput.focus(), 0);
+  }
+  function closePalette() { palette.classList.remove("active"); }
+  paletteInput.addEventListener("input", renderPalette);
+  paletteInput.addEventListener("keydown", e => {
+    if (e.key === "ArrowDown") { e.preventDefault(); setPaletteSel(paletteSel + 1); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); setPaletteSel(paletteSel - 1); }
+    else if (e.key === "Enter") { e.preventDefault(); paletteExec(paletteItems[paletteSel]); }
+    else if (e.key === "Escape") { e.preventDefault(); closePalette(); }
+  });
+  palette.addEventListener("click", e => { if (e.target === palette) closePalette(); });
+
+  // ── Deep-linking (hash routing) ──
+  let suppressHash = false;
+  function stateToHash() {
+    if (activeCategory === "favs") return "favorites";
+    if (activeCategory === "writeups") return "writeups";
+    if (activeCategory === "machines") return "machines";
+    if (activeCategory === "history") return "history";
+    if (activeCategory) return "cat/" + activeCategory;
+    return "";
+  }
+  function syncHash() {
+    const h = stateToHash();
+    if ((window.location.hash || "").replace(/^#/, "") === h) return;
+    suppressHash = true;
+    window.history.replaceState(null, "", window.location.pathname + (h ? "#" + h : ""));
+    setTimeout(() => { suppressHash = false; }, 0);
+  }
+  function applyHash() {
+    const raw = (window.location.hash || "").replace(/^#/, "");
+    let target = null;
+    if (raw === "favorites" || raw === "favs") target = "favs";
+    else if (raw === "writeups") target = "writeups";
+    else if (raw === "machines") target = "machines";
+    else if (raw === "history") target = "history";
+    else if (raw.indexOf("cat/") === 0) { const id = raw.slice(4); target = CATEGORIES.some(c => c.id === id) ? id : null; }
+    activeCategory = target; searchQuery = ""; searchInput.value = "";
+    openWriteupId = null; openMachineId = null;
+    render();
+  }
+  window.addEventListener("hashchange", () => { if (!suppressHash) applyHash(); });
 
   document.addEventListener("keydown", e => {
     const active = document.activeElement;
     const isInput = active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA" || active.isContentEditable);
 
-    // Ctrl+K — search
-    if ((e.ctrlKey || e.metaKey) && e.key === "k") { e.preventDefault(); searchInput.focus(); searchInput.select(); return; }
+    // Ctrl+K — command palette
+    if ((e.ctrlKey || e.metaKey) && e.key === "k") { e.preventDefault(); openPalette(); return; }
     // Ctrl+I — IP changer
     if ((e.ctrlKey || e.metaKey) && e.key === "i") { e.preventDefault(); ipBar.classList.toggle("active"); if (ipBar.classList.contains("active")) ipFields.LHOST.focus(); return; }
     // Escape
     if (e.key === "Escape") {
+      if (palette.classList.contains("active")) { closePalette(); return; }
       if (kbdHelp.classList.contains("active")) { kbdHelp.classList.remove("active"); return; }
       if (ipBar.classList.contains("active")) { ipBar.classList.remove("active"); return; }
       if (varBar.classList.contains("active")) { varBar.classList.remove("active"); return; }
@@ -1546,9 +1724,10 @@ user -> ... -> Domain Admin
   // ── Init ──
   document.documentElement.setAttribute("data-lang", lang);
   searchInput.placeholder = t("search");
-  // Honor a launch hash (used by PWA manifest shortcuts, e.g. /#machines).
+  // Honor a launch hash (PWA shortcuts + deep links, e.g. /#machines, /#cat/recon).
   const launchHash = (window.location.hash || "").replace(/^#/, "");
-  const hashView = { favorites: "favs", favs: "favs", writeups: "writeups", machines: "machines" }[launchHash];
+  const hashView = { favorites: "favs", favs: "favs", writeups: "writeups", machines: "machines", history: "history" }[launchHash];
   if (hashView) activeCategory = hashView;
+  else if (launchHash.indexOf("cat/") === 0) activeCategory = launchHash.slice(4);
   loadData();
 })();

@@ -120,7 +120,7 @@
     {
       "id": "command-palette-power",
       "title": "Command palette + power features",
-      "status": "pending",
+      "status": "done",
       "files": ["public/app.js", "public/index.html", "public/style.css"],
       "items": [
         "Fuzzy Ctrl+K command palette with ranking + jump actions",
