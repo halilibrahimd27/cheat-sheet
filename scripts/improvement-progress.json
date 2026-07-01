@@ -247,7 +247,7 @@
     {
       "id": "readme-refresh",
       "title": "README refresh — document all new features (owner asked)",
-      "status": "pending",
+      "status": "done",
       "_note": "Owner: 'her şey bitince readme yi de güncelle'. Do this LAST.",
       "files": ["README.md"],
       "items": [

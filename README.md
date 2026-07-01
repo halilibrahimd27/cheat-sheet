@@ -31,23 +31,21 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 
 - **Offensive Security + DevSecOps** — full penetration-testing lifecycle *and* container / Kubernetes / IaC / CI-CD security
 - **Full CRUD** — Add, edit, and delete your own categories, subcategories, and commands
-- **Instant search** with `Ctrl+K` keyboard shortcut
-- **One-click copy** on every command block
-- **Dark / Light theme** toggle with persistent preference
+- **Fuzzy command palette** — `Ctrl+K` opens a ranked search across every command, plus jump-to actions (Favorites, Write-ups, Machines, History, categories)
+- **One-click copy** on every command block; multi-line commands copy as a single chained script
+- **Command history** — every copied command is logged locally with a timestamp, for reporting and quick re-copy
+- **Dark / Light theme** — follows your OS preference, with a manual toggle
 - **Safe placeholders** — All IPs and sensitive values use `<TARGET_IP>`, `<ATTACKER_IP>`, `<DOMAIN>`, etc.
-- **Mobile responsive** sidebar navigation
-- **Variable Fill Bar** — Fill `<PLACEHOLDER>` values in the UI and auto-copy completed command
-- **Quick IP Changer** — Set `LHOST`/`RHOST`/`LPORT`/`DOMAIN`/`USER` once, applied to every command
-- **Favorites** — Bookmark frequently used commands (stored in browser)
-- **Tag filtering** — Filter by `essential`, `tool`, `advanced`
-- **Write-ups** — Built-in Markdown editor for machine write-ups with image upload + MD/PDF export
-- **Machines** — Per-target tracker with an OSCP-style 11-step checklist
-- **Notes** — Per-category sticky notes
-- **Export / Import** your custom command database as JSON
-- **TR/EN** bilingual interface and content
-- **PWA** — Installable, works offline
-- **Docker ready** — Single command deployment
-- **Secure by default** — Binds to `127.0.0.1`, optional HTTP Basic Auth, hardened uploads
+- **Variable Fill Bar** + **Quick IP Changer** — fill `<PLACEHOLDER>` values once and auto-apply them to every command
+- **Favorites** (id-stable, survive reordering) and **tag filtering** by `essential` / `tool` / `advanced`
+- **Machines** — per-target tracker with **situation-aware playbooks** (Linux/Windows privesc, Web, Active Directory) and an **AD engagement mode**: attach hosts as real machines, an interactive **node-link schematic** with per-host progress rings + connection drawing, and per-host checklists, loot and notes
+- **Write-ups** — split live-preview Markdown editor with a formatting toolbar, **professional report templates** (OSCP exam / HTB-CTF / pentest engagement / bug-bounty), findings tables, task lists, auto table-of-contents, image upload (paste & drag-and-drop) and MD/PDF export
+- **Notes** — per-category sticky notes
+- **Deep links & PWA** — bookmarkable views (`#machines`, `#cat/<id>`), installable, works offline
+- **Export / Import** your database as JSON; a **content validator** keeps the seed data structurally sound (wired into CI)
+- **Mobile responsive** sidebar navigation, accessible (keyboard-operable, ARIA, reduced-motion)
+- **TR / EN** bilingual interface
+- **Docker ready & hardened** — single-command deploy, runs **non-root** with a **healthcheck**, binds to `127.0.0.1`, optional HTTP Basic Auth, magic-byte-validated uploads
 
 ## Categories
 
@@ -185,7 +183,7 @@ This is a **local-first, single-user** tool. Defaults are chosen so it is safe o
 - Toggle dark/light theme with the `◐` button
 
 ### Keyboard Shortcuts
-`Ctrl+K` search · `Ctrl+I` Quick IP Changer · `?` shortcuts · `j`/`k` navigate · `Enter` copy focused · `g h/f/w/m` go Home/Favorites/Write-ups/Machines
+`Ctrl+K` command palette · `Ctrl+I` Quick IP Changer · `?` shortcuts · `j`/`k` navigate · `Enter` copy focused · `g h/f/w/m` go Home/Favorites/Write-ups/Machines · in the write-up editor `Ctrl+B`/`Ctrl+I`/`Ctrl+K` = bold/italic/link
 
 ### Adding Your Own Commands
 1. Click **+ New Category** in the sidebar to create a category
@@ -215,6 +213,7 @@ All commands use safe placeholders instead of real IPs:
 |--------|----------|-------------|
 | `GET` | `/api/categories` | List all categories |
 | `POST` | `/api/categories` | Create a category |
+| `POST` | `/api/categories/reorder` | Reorder categories by id list |
 | `PUT` | `/api/categories/:id` | Update a category |
 | `DELETE` | `/api/categories/:id` | Delete a category |
 | `POST` | `/api/categories/:id/subcategories` | Add subcategory |
@@ -230,6 +229,7 @@ All commands use safe placeholders instead of real IPs:
 | `GET` | `/api/export` | Download full backup (JSON) |
 | `POST` | `/api/import` | Import from JSON (validated) |
 | `POST` | `/api/reset` | Reset to default commands |
+| `GET` | `/api/health` | Liveness probe (used by the Docker HEALTHCHECK) |
 
 ## Tech Stack
 
@@ -249,14 +249,17 @@ cheat-sheet/
 ├── seed.js                 # Default commands (seed data)
 ├── .env.example            # Configuration template
 ├── scripts/
-│   └── update-readme.js    # Regenerate stats + category table from seed.js
-├── test/                   # API smoke tests (node:test)
+│   ├── update-readme.js    # Regenerate stats + category table from seed.js
+│   ├── validate-content.js # Seed structure/quality validator (runs in CI)
+│   └── merge-category.js   # Merge a category JSON into seed.js
+├── test/                   # API tests (node:test)
 ├── public/
 │   ├── index.html          # Main HTML
 │   ├── style.css           # Dark/Light theme styles
 │   ├── app.js              # Frontend logic + CRUD
+│   ├── checklist-templates.js  # Static HTB/THM/OSCP machine playbooks
 │   ├── manifest.json       # PWA manifest
-│   └── service-worker.js   # Offline cache
+│   └── service-worker.js   # Offline cache (stale-while-revalidate)
 └── data/                   # Persistent data (auto-generated, git-ignored)
 ```
 
