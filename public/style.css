@@ -1781,17 +1781,27 @@ body {
 /* Schematic node-link diagram */
 .ad-schematic-wrap { background: var(--bg-code); border: 1px solid var(--border-primary); border-radius: var(--radius-md); margin-bottom: 16px; }
 .ad-schematic { width: 100%; height: auto; display: block; }
-.ad-edge { stroke: var(--border-secondary); stroke-width: 1.5; }
+.ad-edge { stroke: var(--accent-secondary); stroke-width: 2; opacity: 0.7; }
 .ad-node { cursor: pointer; }
-.ad-node circle { fill: var(--bg-card); stroke: var(--border-secondary); stroke-width: 2; transition: stroke 0.15s, fill 0.15s; }
-.ad-node:hover circle { stroke: var(--accent-primary); }
-.ad-node.owned circle { fill: var(--accent-green); stroke: var(--accent-green); }
-.ad-node.dc circle { stroke: var(--accent-yellow); stroke-width: 3; }
-.ad-node.sel circle { stroke: var(--accent-primary); stroke-width: 3; }
-.ad-node-icon { font-size: 15px; }
-.ad-node-label { font-size: 11px; fill: var(--text-secondary); font-family: 'Inter', sans-serif; }
+.ad-node .ad-ring-bg { fill: none; stroke: var(--border-primary); stroke-width: 4; }
+.ad-node .ad-ring { fill: none; stroke-width: 4; stroke-linecap: round; transition: stroke 0.15s; }
+.ad-node.p-low .ad-ring { stroke: var(--accent-red); }
+.ad-node.p-mid .ad-ring { stroke: var(--accent-yellow); }
+.ad-node.p-done .ad-ring { stroke: var(--accent-green); }
+.ad-node .ad-node-face { fill: var(--bg-card); stroke: var(--border-secondary); stroke-width: 1.5; transition: stroke 0.15s; }
+.ad-node:hover .ad-node-face { stroke: var(--accent-primary); }
+.ad-node.dc .ad-node-face { stroke: var(--accent-yellow); stroke-width: 2.5; }
+.ad-node.open .ad-node-face { stroke: var(--accent-primary); stroke-width: 2.5; }
+.ad-node.picking .ad-node-face { stroke: var(--accent-primary); stroke-width: 3; stroke-dasharray: 3 2; }
+.ad-node-icon { font-size: 14px; }
+.ad-node-label { font-size: 11px; fill: var(--text-primary); font-family: 'Inter', sans-serif; }
+.ad-node-pct { font-size: 10px; fill: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; }
 .ad-node:focus-visible { outline: none; }
-.ad-node:focus-visible circle { stroke: var(--accent-primary); stroke-width: 3; }
+.ad-node:focus-visible .ad-node-face { stroke: var(--accent-primary); stroke-width: 3; }
+.ad-connect-btn { margin-left: auto; }
+.ad-connect-hint { font-size: 12px; color: var(--accent-primary); margin-bottom: 8px; }
+.host-badge { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; padding: 1px 6px; border-radius: 4px; background: var(--accent-glow); color: var(--accent-secondary); }
+.host-open-btn { margin-bottom: 10px; }
 
 /* Host cards */
 .host-cards { display: flex; flex-direction: column; gap: 8px; }
