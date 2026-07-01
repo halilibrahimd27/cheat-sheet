@@ -783,7 +783,7 @@
       const nc = getNotesCount(cat.id);
       const label = cnt + (nc > 0 ? " + " + nc + "📝" : "");
       const catName = (lang === "tr" && cat.name_tr) ? cat.name_tr : cat.name;
-      const item = mkNavItem(cat.icon, catName, label, activeCategory === cat.id, () => { activeCategory = cat.id; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); window.scrollTo({ top: 0, behavior: "smooth" }); });
+      const item = mkNavItem(cat.icon, catName, label, activeCategory === cat.id, () => { activeCategory = cat.id; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); window.scrollTo({ top: 0, behavior: motionBehavior() }); });
       item.draggable = true;
       item.addEventListener("dragstart", e => handleDragStart(e, idx));
       item.addEventListener("dragover", handleDragOver);
@@ -843,10 +843,23 @@
   }
 
   function hlCode(code) {
-    let h = escapeHtml(code);
-    h = h.replace(/&lt;([A-Z_]+)&gt;/g, '<span class="placeholder-var">&lt;$1&gt;</span>');
-    h = h.replace(/^(#.*)$/gm, '<span style="color:var(--text-tertiary);font-style:italic">$1</span>');
-    return h;
+    // Tokenize the RAW command and escape each piece once, so highlighting can
+    // never corrupt escaped entities. Alternation order encodes precedence:
+    // comment, string, <PLACEHOLDER>, operator, sudo/doas, flag.
+    const TOKEN = /((?:^|[ \t])#[^\n]*)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|(<[A-Z_]+>)|(\|\||&&|>>|2>|>|<|\|)|((?:^|\s)(?:sudo|doas)\b)|(\s--?[A-Za-z0-9][\w-]*)/gm;
+    let out = "", last = 0, m;
+    while ((m = TOKEN.exec(code)) !== null) {
+      out += escapeHtml(code.slice(last, m.index));
+      if (m[1]) out += '<span class="tok-comment">' + escapeHtml(m[1]) + '</span>';
+      else if (m[2]) out += '<span class="tok-str">' + escapeHtml(m[2]) + '</span>';
+      else if (m[3]) out += '<span class="placeholder-var">' + escapeHtml(m[3]) + '</span>';
+      else if (m[4]) out += '<span class="tok-op">' + escapeHtml(m[4]) + '</span>';
+      else if (m[5]) { const lead = m[5].replace(/\S+$/, ""); out += escapeHtml(lead) + '<span class="tok-cmd">' + escapeHtml(m[5].trim()) + '</span>'; }
+      else if (m[6]) { const lead = m[6].replace(/\S+$/, ""); out += escapeHtml(lead) + '<span class="tok-flag">' + escapeHtml(m[6].trim()) + '</span>'; }
+      last = m.index + m[0].length;
+    }
+    out += escapeHtml(code.slice(last));
+    return out;
   }
   function hl(text) {
     if (!searchQuery) return escapeHtml(text);
@@ -1085,7 +1098,7 @@
     if (focusedCmdIdx < 0) focusedCmdIdx = 0;
     if (focusedCmdIdx >= cards.length) focusedCmdIdx = cards.length - 1;
     cards[focusedCmdIdx].classList.add("kbd-focused");
-    cards[focusedCmdIdx].scrollIntoView({ behavior: "smooth", block: "center" });
+    cards[focusedCmdIdx].scrollIntoView({ behavior: motionBehavior(), block: "center" });
   }
   function copyFocused() {
     const cards = getFocusableCards();
@@ -1152,10 +1165,11 @@
 
   const saved = localStorage.getItem("cheatsheet-theme");
   if (saved) document.documentElement.setAttribute("data-theme", saved);
+  else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) document.documentElement.setAttribute("data-theme", "light");
   $("themeToggle").addEventListener("click", () => { const n = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light"; document.documentElement.setAttribute("data-theme", n); localStorage.setItem("cheatsheet-theme", n); });
 
   const btt = document.createElement("button"); btt.className = "back-to-top"; btt.innerHTML = "↑"; document.body.appendChild(btt);
-  btt.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+  btt.addEventListener("click", () => window.scrollTo({ top: 0, behavior: motionBehavior() }));
   window.addEventListener("scroll", () => btt.classList.toggle("visible", window.scrollY > 400));
 
   function escapeHtml(s) {
@@ -1164,6 +1178,8 @@
       .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
   }
   function escapeRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+  // "auto" when the user asked for reduced motion, else "smooth".
+  function motionBehavior() { return (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) ? "auto" : "smooth"; }
 
   // ── Init ──
   document.documentElement.setAttribute("data-lang", lang);

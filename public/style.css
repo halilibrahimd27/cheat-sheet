@@ -20,7 +20,7 @@
 
     --text-primary: #e2e8f0;
     --text-secondary: #94a3b8;
-    --text-tertiary: #64748b;
+    --text-tertiary: #8792a6; /* lifted for WCAG AA contrast on dark bg */
     --text-code: #7dd3fc;
     --text-heading: #f1f5f9;
 
@@ -65,7 +65,7 @@
 
     --text-primary: #1e293b;
     --text-secondary: #475569;
-    --text-tertiary: #94a3b8;
+    --text-tertiary: #5f6b7a; /* darkened for WCAG AA contrast on light bg */
     --text-code: #4338ca;
     --text-heading: #0f172a;
 
@@ -1523,3 +1523,43 @@ body {
 .toast-out { animation: toastOut 0.3s ease forwards; }
 @keyframes toastIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(10px); } }
+
+/* ============================================
+   Design refinements (batch 4)
+   ============================================ */
+
+/* Shell syntax highlighting tokens inside code blocks */
+.cmd-code .tok-comment { color: var(--text-tertiary); font-style: italic; }
+.cmd-code .tok-str { color: var(--accent-green); }
+.cmd-code .tok-op { color: var(--accent-pink); }
+.cmd-code .tok-flag { color: var(--accent-yellow); }
+.cmd-code .tok-cmd { color: var(--accent-cyan); font-weight: 600; }
+
+/* Card & control polish (transitions + subtle hover lift) */
+.cmd-card { transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition); }
+.cmd-card:hover { border-color: var(--border-secondary); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.cmd-copy-btn { transition: background var(--transition), color var(--transition), border-color var(--transition); }
+.cmd-copy-btn.copied { color: var(--accent-green); border-color: var(--accent-green); }
+.tag-filter { transition: background var(--transition), color var(--transition), border-color var(--transition); }
+.nav-item, .btn-icon, .cat-action-btn, .sub-action-btn, .cmd-action-btn { transition: background var(--transition), color var(--transition), border-color var(--transition); }
+
+/* Keyboard focus ring for all interactive controls (expanded in the a11y batch) */
+:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 2px; border-radius: var(--radius-sm); }
+
+/* Refined, theme-aware scrollbars */
+* { scrollbar-width: thin; scrollbar-color: var(--border-secondary) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-secondary); border-radius: 6px; border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); background-clip: padding-box; }
+
+/* Honor reduced-motion: disable animations, transitions and smooth scroll */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

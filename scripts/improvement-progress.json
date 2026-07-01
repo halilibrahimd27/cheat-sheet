@@ -63,7 +63,7 @@
     {
       "id": "design-overhaul",
       "title": "Overall design overhaul (owner priority #3)",
-      "status": "pending",
+      "status": "done",
       "files": ["public/style.css", "public/index.html", "public/app.js"],
       "items": [
         "Refined visual system: spacing, typography scale, card design, sidebar",
