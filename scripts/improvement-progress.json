@@ -163,7 +163,7 @@
     {
       "id": "stable-ids",
       "title": "Stable IDs for subcategories/commands + favorites migration",
-      "status": "pending",
+      "status": "done",
       "files": ["server.js", "public/app.js", "test/api.test.js"],
       "items": [
         "Add stable ids to subcategories/commands (backfill on load)",

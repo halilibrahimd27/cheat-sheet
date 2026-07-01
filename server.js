@@ -183,15 +183,33 @@ function ensureDataFile() {
 // it almost never changes out-of-band, so re-reading + re-parsing ~2MB on every
 // request is pure waste. Reads serve the cache; writes update disk AND the cache.
 let commandsCache = null;
+function genId(prefix) { return prefix + crypto.randomBytes(4).toString("hex"); }
+// Backfill stable ids onto subcategories/commands so the frontend can key
+// favorites by identity (not position). One-time, idempotent, additive.
+function backfillIds(data) {
+  let changed = false;
+  for (const cat of data) {
+    for (const sub of cat.subcategories || []) {
+      if (!sub.id) { sub.id = genId("s"); changed = true; }
+      for (const cmd of sub.commands || []) {
+        if (!cmd.id) { cmd.id = genId("c"); changed = true; }
+      }
+    }
+  }
+  return changed;
+}
 function readData() {
   if (commandsCache) return commandsCache;
   ensureDataFile();
-  commandsCache = readJSON(DATA_FILE, []);
+  const data = readJSON(DATA_FILE, []);
+  if (backfillIds(data)) atomicWrite(DATA_FILE, JSON.stringify(data, null, 2));
+  commandsCache = data;
   return commandsCache;
 }
 
 function writeData(data) {
   ensureDataFile();
+  backfillIds(data); // guarantee stable ids after reset / import / reorder / create
   atomicWrite(DATA_FILE, JSON.stringify(data, null, 2));
   commandsCache = data;
 }
@@ -292,6 +310,19 @@ app.delete("/api/categories/:id", (req, res) => {
   res.json({ ok: true });
 });
 
+// ── Reorder categories (dedicated endpoint; was overloading /api/import) ──
+app.post("/api/categories/reorder", (req, res) => {
+  const order = req.body && req.body.order;
+  if (!Array.isArray(order)) return res.status(400).json({ error: "order must be an array of category ids" });
+  const data = readData();
+  const byId = new Map(data.map((c) => [c.id, c]));
+  const out = [];
+  for (const id of order) { if (byId.has(id)) { out.push(byId.get(id)); byId.delete(id); } }
+  for (const c of byId.values()) out.push(c); // keep any not listed
+  writeData(out);
+  res.json({ ok: true, categories: out.length });
+});
+
 // ── POST new subcategory ──
 app.post("/api/categories/:id/subcategories", (req, res) => {
   const data = readData();
@@ -299,7 +330,7 @@ app.post("/api/categories/:id/subcategories", (req, res) => {
   if (!cat) return res.status(404).json({ error: "Category not found" });
   const { name } = req.body;
   if (!isNonEmptyString(name)) return res.status(400).json({ error: "name is required" });
-  const sub = { name, commands: [] };
+  const sub = { id: genId("s"), name, commands: [] };
   cat.subcategories.push(sub);
   writeData(data);
   res.status(201).json(sub);
@@ -341,7 +372,7 @@ app.post("/api/categories/:id/subcategories/:subIdx/commands", (req, res) => {
   if (!sub) return res.status(404).json({ error: "Subcategory not found" });
   const { title, desc, cmd, cmds, tags, note } = req.body;
   if (!isNonEmptyString(title)) return res.status(400).json({ error: "title is required" });
-  const command = { title, desc: desc || "" };
+  const command = { id: genId("c"), title, desc: desc || "" };
   if (cmds && cmds.length) command.cmds = cmds;
   else if (cmd) command.cmd = cmd;
   command.tags = tags || [];

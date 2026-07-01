@@ -192,6 +192,7 @@
     // Fetch all four collections in parallel instead of chaining four round-trips.
     await Promise.all([loadCategories(), loadNotes(), loadWriteups(), loadMachines()]);
     buildSearchIndex();
+    migrateFavorites();
     render();
   }
   async function loadCategories() { CATEGORIES = await api("GET", "/api/categories") || []; }
@@ -203,31 +204,50 @@
   }
 
   // ── Favorites ──
-  function favKey(catId, subIdx, cmdIdx) { return catId + ":" + subIdx + ":" + cmdIdx; }
-  function isFav(catId, subIdx, cmdIdx) { return favorites.includes(favKey(catId, subIdx, cmdIdx)); }
-  function toggleFav(catId, subIdx, cmdIdx) {
-    const k = favKey(catId, subIdx, cmdIdx);
+  // Favorites are keyed by each command's stable id (backfilled server-side), so
+  // they survive reordering / deletion of sibling commands.
+  function isFav(cmd) { return !!(cmd && cmd.id && favorites.includes(cmd.id)); }
+  function toggleFav(cmd) {
+    if (!cmd || !cmd.id) return;
+    const k = cmd.id;
     const nowFav = !favorites.includes(k);
     if (nowFav) favorites.push(k); else favorites = favorites.filter(f => f !== k);
     localStorage.setItem("cs-favorites", JSON.stringify(favorites));
     if (activeCategory === "favs") { render(); return; }
-    // Scoped update: flip the matching star(s) + refresh the cheap sidebar,
-    // instead of rebuilding every command card in the view.
+    // Scoped update: flip the matching star(s) + refresh the cheap sidebar.
     document.querySelectorAll('.fav-btn[data-fav="' + k + '"]').forEach(b => b.classList.toggle("fav-active", nowFav));
     buildSidebar();
   }
   function getFavCommands() {
-    const r = [];
-    favorites.forEach(k => {
-      const [cid, si, ci] = k.split(":");
-      const cat = CATEGORIES.find(c => c.id === cid);
-      if (!cat) return;
-      const sub = cat.subcategories[parseInt(si)];
-      if (!sub) return;
-      const cmd = sub.commands[parseInt(ci)];
-      if (cmd) r.push({ cmd, catId: cid, subIdx: parseInt(si), cmdIdx: parseInt(ci), subName: sub.name });
+    const r = [], seen = {};
+    favorites.forEach(id => {
+      if (seen[id]) return;
+      for (const cat of CATEGORIES) {
+        for (let si = 0; si < cat.subcategories.length; si++) {
+          const ci = cat.subcategories[si].commands.findIndex(c => c.id === id);
+          if (ci >= 0) { r.push({ cmd: cat.subcategories[si].commands[ci], catId: cat.id, subIdx: si, cmdIdx: ci, subName: cat.subcategories[si].name }); seen[id] = 1; return; }
+        }
+      }
     });
     return r;
+  }
+  // One-time migration of legacy positional favorites (catId:subIdx:cmdIdx) → ids.
+  function migrateFavorites() {
+    let changed = false;
+    favorites = favorites.map(k => {
+      if (/^[a-z0-9-]+:\d+:\d+$/.test(k)) {
+        const [cid, si, ci] = k.split(":");
+        const cat = CATEGORIES.find(c => c.id === cid);
+        const sub = cat && cat.subcategories[+si];
+        const cmd = sub && sub.commands[+ci];
+        if (cmd && cmd.id) { changed = true; return cmd.id; }
+        return null;
+      }
+      return k;
+    }).filter(Boolean);
+    const uniq = [], s = {}; favorites.forEach(k => { if (!s[k]) { s[k] = 1; uniq.push(k); } });
+    favorites = uniq;
+    if (changed) localStorage.setItem("cs-favorites", JSON.stringify(favorites));
   }
 
   // ── Variable Fill ──
@@ -1509,10 +1529,11 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   async function handleDrop(e, targetIdx) {
     e.preventDefault();
     if (dragSrcCatIdx === null || dragSrcCatIdx === targetIdx) return;
-    const data = [...CATEGORIES];
-    const [moved] = data.splice(dragSrcCatIdx, 1);
-    data.splice(targetIdx, 0, moved);
-    await api("POST", "/api/import", data);
+    const order = CATEGORIES.map(c => c.id);
+    const [moved] = order.splice(dragSrcCatIdx, 1);
+    order.splice(targetIdx, 0, moved);
+    // Dedicated reorder endpoint (was overloading /api/import with the whole DB).
+    await api("POST", "/api/categories/reorder", { order });
     await loadData();
     dragSrcCatIdx = null;
   }
@@ -1572,15 +1593,15 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   // ── Render ──
   function renderCard(cmd, catId, subIdx, cmdIdx) {
     const card = document.createElement("div"); card.className = "cmd-card";
-    const fav = isFav(catId, subIdx, cmdIdx);
+    const fav = isFav(cmd);
     const tagsH = (cmd.tags || []).map(t => '<span class="cmd-tag ' + String(t).replace(/[^a-z0-9_-]/gi, "") + '">' + escapeHtml(t) + '</span>').join("");
     const hdr = document.createElement("div"); hdr.className = "cmd-card-header";
     hdr.innerHTML = '<div class="cmd-title">' + hl(cmd.title) + '</div>' +
       '<div class="cmd-header-actions">' + tagsH +
-      '<button class="cmd-action-btn fav-btn' + (fav ? " fav-active" : "") + '" data-fav="' + favKey(catId, subIdx, cmdIdx) + '" title="Favorite">★</button>' +
+      '<button class="cmd-action-btn fav-btn' + (fav ? " fav-active" : "") + '" data-fav="' + (cmd.id || "") + '" title="Favorite">★</button>' +
       '<button class="cmd-action-btn edit-btn" title="Edit">✎</button>' +
       '<button class="cmd-action-btn delete-btn" title="Delete">✕</button></div>';
-    hdr.querySelector(".fav-btn").addEventListener("click", e => { e.stopPropagation(); toggleFav(catId, subIdx, cmdIdx); });
+    hdr.querySelector(".fav-btn").addEventListener("click", e => { e.stopPropagation(); toggleFav(cmd); });
     hdr.querySelector(".edit-btn").addEventListener("click", e => { e.stopPropagation(); editCommand(catId, subIdx, cmdIdx, cmd); });
     hdr.querySelector(".delete-btn").addEventListener("click", e => { e.stopPropagation(); deleteCommand(catId, subIdx, cmdIdx); });
     card.appendChild(hdr);

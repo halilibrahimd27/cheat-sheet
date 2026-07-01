@@ -239,3 +239,38 @@ test("POST /api/reset restores seed categories", async () => {
   assert.strictEqual(r.status, 200);
   assert.ok((await api("GET", "/api/categories")).json.length > 0);
 });
+
+// ── Stable ids + reorder ──
+
+test("new subcategories and commands get stable ids", async () => {
+  const c = await api("POST", "/api/categories", { name: "IdStable" });
+  const id = c.json.id;
+  const s = await api("POST", `/api/categories/${id}/subcategories`, { name: "Sub" });
+  assert.ok(typeof s.json.id === "string" && s.json.id.length > 0, "subcategory id");
+  const cmd = await api("POST", `/api/categories/${id}/subcategories/0/commands`, { title: "T", cmd: "x" });
+  assert.ok(typeof cmd.json.id === "string" && cmd.json.id.length > 0, "command id");
+  await api("DELETE", `/api/categories/${id}`);
+});
+
+test("seed data is backfilled with stable ids on read", async () => {
+  const cats = (await api("GET", "/api/categories")).json;
+  const cat = cats.find((c) => (c.subcategories || []).some((s) => (s.commands || []).length));
+  assert.ok(cat, "expected a seeded category with commands");
+  const sub = cat.subcategories.find((s) => s.commands.length);
+  assert.ok(typeof sub.id === "string" && sub.id.length > 0, "subcategory backfilled id");
+  assert.ok(typeof sub.commands[0].id === "string" && sub.commands[0].id.length > 0, "command backfilled id");
+});
+
+test("POST /api/categories/reorder moves categories and validates input", async () => {
+  const a = await api("POST", "/api/categories", { name: "ReorderA" });
+  const b = await api("POST", "/api/categories", { name: "ReorderB" });
+  const ids = (await api("GET", "/api/categories")).json.map((c) => c.id);
+  const rest = ids.filter((x) => x !== a.json.id && x !== b.json.id);
+  const order = [b.json.id, a.json.id].concat(rest); // force b before a
+  assert.strictEqual((await api("POST", "/api/categories/reorder", { order })).status, 200);
+  const after = (await api("GET", "/api/categories")).json.map((c) => c.id);
+  assert.ok(after.indexOf(b.json.id) < after.indexOf(a.json.id), "b now precedes a");
+  assert.strictEqual((await api("POST", "/api/categories/reorder", { order: "nope" })).status, 400);
+  await api("DELETE", `/api/categories/${a.json.id}`);
+  await api("DELETE", `/api/categories/${b.json.id}`);
+});
