@@ -11,8 +11,8 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 [![Docker](https://img.shields.io/badge/docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)](#docker-recommended)
 <!-- STATS:BADGES -->
-[![Commands](https://img.shields.io/badge/commands-4944-success?style=flat-square)](#categories)
-[![Categories](https://img.shields.io/badge/categories-50-orange?style=flat-square)](#categories)
+[![Commands](https://img.shields.io/badge/commands-5040-success?style=flat-square)](#categories)
+[![Categories](https://img.shields.io/badge/categories-53-orange?style=flat-square)](#categories)
 <!-- /STATS:BADGES -->
 
 > **⭐ If this saved you time, please leave a star.** It's the simplest way to support this work.
@@ -22,7 +22,7 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 ---
 
 <!-- STATS:START -->
-**4944 commands** across **50 categories** and **307 subcategories** — bilingual interface (English + Türkçe).
+**5040 commands** across **53 categories** and **320 subcategories** — bilingual interface (English + Türkçe).
 <!-- STATS:END -->
 
 > Runs **100% locally**. No account, no telemetry, no cloud — your data never leaves your machine.
@@ -105,6 +105,9 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 | 48 | ⎈ Helm & Package Management | 110 | Helm chart operations and security: install, upgrade, templating, repositories, and cha… |
 | 49 | 🔗 Service Mesh & Network Security | 108 | Service mesh operations and zero-trust networking: Istio, Linkerd, Cilium, and mTLS. |
 | 50 | 📊 Observability & Detection Engineering | 136 | Security observability and detection: log pipelines, SIEM queries, and detection-as-cod… |
+| 51 | 📱 Mobile Application Security | 40 | Android and iOS application security testing: static reversing, dynamic instrumentation… |
+| 52 | 🤖 LLM / AI Security | 32 | Testing LLM-powered applications: prompt injection and jailbreaks, automated red-team s… |
+| 53 | 🟣 Purple Team & Detection Validation | 24 | Adversary emulation and detection validation: Atomic Red Team, MITRE Caldera, ATT&CK ma… |
 <!-- CATEGORIES:END -->
 
 ## Quick Start

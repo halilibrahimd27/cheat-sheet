@@ -52,7 +52,10 @@ let action;
 if (idx >= 0) { data[idx] = clean; action = "replaced"; }
 else { data.push(clean); action = "added"; }
 
-const out = "// cheat-sheet Command Database\nmodule.exports = " + JSON.stringify(data, null, 2) + ";\n";
+// Preserve the file's existing line endings so the diff stays minimal.
+const eol = /\r\n/.test(fs.readFileSync(SEED, "utf8")) ? "\r\n" : "\n";
+let out = "// cheat-sheet Command Database\nmodule.exports = " + JSON.stringify(data, null, 2) + ";\n";
+if (eol === "\r\n") out = out.replace(/\n/g, "\r\n");
 fs.writeFileSync(SEED, out, "utf8");
 
 let n = 0;
