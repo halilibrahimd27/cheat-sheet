@@ -95,6 +95,14 @@
   overlay.className = "sidebar-overlay";
   document.body.appendChild(overlay);
 
+  // ── Screen-reader live region (announces copy / search results) ──
+  const srStatus = document.createElement("div");
+  srStatus.className = "sr-only";
+  srStatus.setAttribute("aria-live", "polite");
+  srStatus.setAttribute("aria-atomic", "true");
+  document.body.appendChild(srStatus);
+  function announce(msg) { if (!msg) return; srStatus.textContent = ""; setTimeout(() => { srStatus.textContent = msg; }, 30); }
+
   // ── Toast notifications ──
   let toastHost = null;
   function toast(msg, type) {
@@ -264,6 +272,22 @@
 
   // ── Modal ──
   let modalCallback = null;
+  let lastModalFocus = null;
+  const modalEl = $("modal");
+  function focusableIn(container) {
+    return Array.prototype.slice.call(container.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    )).filter(el => el.offsetParent !== null);
+  }
+  function trapFocus(container, e) {
+    if (e.key !== "Tab") return;
+    const list = focusableIn(container);
+    if (!list.length) return;
+    const first = list[0], last = list[list.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+  modalEl.addEventListener("keydown", e => trapFocus(modalEl, e));
   function openModal(title, fields, data, cb) {
     modalTitle.textContent = title; modalCallback = cb; modalBody.innerHTML = "";
     fields.forEach(f => {
@@ -278,8 +302,15 @@
       modalBody.appendChild(g);
     });
     modalOverlay.classList.add("active");
+    lastModalFocus = document.activeElement;
+    const firstField = modalBody.querySelector("input, textarea");
+    setTimeout(() => { (firstField || modalSave).focus(); }, 0);
   }
-  function closeModal() { modalOverlay.classList.remove("active"); modalCallback = null; }
+  function closeModal() {
+    modalOverlay.classList.remove("active"); modalCallback = null;
+    if (lastModalFocus && lastModalFocus.focus) lastModalFocus.focus();
+    lastModalFocus = null;
+  }
   function getModalData() { const d = {}; modalBody.querySelectorAll("input,textarea").forEach(el => { d[el.id.replace("field-", "")] = el.value; }); return d; }
   $("modalClose").addEventListener("click", closeModal);
   $("modalCancel").addEventListener("click", closeModal);
@@ -418,6 +449,8 @@
     const grid = document.createElement("div"); grid.className = "wu-file-grid";
     writeups.forEach(wu => {
       const file = document.createElement("div"); file.className = "wu-file-card";
+      file.setAttribute("role", "button"); file.setAttribute("tabindex", "0");
+      file.setAttribute("aria-label", wu.title);
       const tagsH = (wu.tags || []).map(t => '<span class="wu-tag">' + escapeHtml(t) + '</span>').join("");
       const date = new Date(wu.updatedAt).toLocaleDateString();
       const preview = (wu.content || "").substring(0, 120).replace(/\n/g, " ");
@@ -430,6 +463,7 @@
         '</div>' +
         '<button class="wu-file-delete" title="Delete">🗑</button>';
       file.addEventListener("click", () => { openWriteupId = wu.id; render(); });
+      file.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target === file) { e.preventDefault(); openWriteupId = wu.id; render(); } });
       file.querySelector(".wu-file-delete").addEventListener("click", e => deleteWriteup(wu.id, e));
       grid.appendChild(file);
     });
@@ -610,6 +644,8 @@
       const pct = total > 0 ? Math.round(done / total * 100) : 0;
       const osIcon = (m.os || "").toLowerCase().includes("windows") ? "🪟" : (m.os || "").toLowerCase().includes("linux") ? "🐧" : "🖥";
       const card = document.createElement("div"); card.className = "machine-card";
+      card.setAttribute("role", "button"); card.setAttribute("tabindex", "0");
+      card.setAttribute("aria-label", m.name + (m.ip ? ", " + m.ip : ""));
       card.innerHTML =
         '<div class="machine-card-top">' +
           '<span class="machine-os-icon">' + osIcon + '</span>' +
@@ -618,6 +654,7 @@
         '</div>' +
         '<div class="machine-progress"><div class="machine-progress-bar"><div class="machine-progress-fill" style="width:' + pct + '%"></div></div><span class="machine-progress-text">' + done + '/' + total + ' (' + pct + '%)</span></div>';
       card.addEventListener("click", () => { openMachineId = m.id; render(); });
+      card.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target === card) { e.preventDefault(); openMachineId = m.id; render(); } });
       card.querySelector(".machine-del-btn").addEventListener("click", e => deleteMachine(m.id, e));
       grid.appendChild(card);
     });
@@ -725,6 +762,7 @@
   $("langToggle").addEventListener("click", () => {
     lang = lang === "en" ? "tr" : "en";
     document.documentElement.setAttribute("data-lang", lang);
+    document.documentElement.lang = lang;
     localStorage.setItem("cs-lang", lang);
     searchInput.placeholder = t("search");
     render();
@@ -794,8 +832,13 @@
   function mkNavItem(icon, text, count, active, onClick) {
     const item = document.createElement("div");
     item.className = "nav-item" + (active ? " active" : "");
-    item.innerHTML = '<span class="nav-item-icon">' + escapeHtml(icon) + '</span><span class="nav-item-text">' + escapeHtml(text) + '</span><span class="nav-item-count">' + count + '</span>';
+    item.setAttribute("role", "button");
+    item.setAttribute("tabindex", "0");
+    item.setAttribute("aria-label", text);
+    if (active) item.setAttribute("aria-current", "true");
+    item.innerHTML = '<span class="nav-item-icon" aria-hidden="true">' + escapeHtml(icon) + '</span><span class="nav-item-text">' + escapeHtml(text) + '</span><span class="nav-item-count">' + count + '</span>';
     item.addEventListener("click", onClick);
+    item.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onClick(e); } });
     sidebarNav.appendChild(item);
     return item;
   }
@@ -837,7 +880,7 @@
       const applied = applyIpToCode(code);
       const hasVars = /<[A-Z_]+>/.test(applied);
       if (hasVars) { openVarBar(applied); return; }
-      copyText(applied, () => { b.textContent = t("copied"); b.classList.add("copied"); setTimeout(() => { b.textContent = t("copy"); b.classList.remove("copied"); }, 1500); });
+      copyText(applied, () => { b.textContent = t("copied"); b.classList.add("copied"); announce(t("copied")); setTimeout(() => { b.textContent = t("copy"); b.classList.remove("copied"); }, 1500); });
     });
     w.appendChild(c); w.appendChild(b); return w;
   }
@@ -873,6 +916,10 @@
     const collapsed = collapsedSections.has(cat.id);
     // Header - draggable
     const hdr = document.createElement("div"); hdr.className = "category-header" + (collapsed ? " collapsed" : "");
+    hdr.setAttribute("role", "button");
+    hdr.setAttribute("tabindex", "0");
+    hdr.setAttribute("aria-expanded", String(!collapsed));
+    hdr.setAttribute("aria-label", cat.name);
     hdr.draggable = true;
     hdr.addEventListener("dragstart", e => handleDragStart(e, catIdx));
     hdr.addEventListener("dragover", handleDragOver);
@@ -896,7 +943,9 @@
         hdr.classList.remove("collapsed");
         fillCatContent();
       }
+      hdr.setAttribute("aria-expanded", String(!nowCollapsed));
     });
+    hdr.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target === hdr) { e.preventDefault(); hdr.click(); } });
     sec.appendChild(hdr);
 
     function fillCatContent() {
@@ -1027,6 +1076,7 @@
 
     if (searchQuery) {
       let total = 0; cats.forEach(c => c.subcategories.forEach(s => (total += filterCmds(s.commands).length)));
+      announce(total + " " + t("commands") + " " + t("matching"));
       const sh = document.createElement("div"); sh.className = "search-results-header";
       sh.innerHTML = "<h2>" + t("searchResults") + "</h2><p>" + total + " " + t("commands") + " " + t("matching") + ' "' + escapeHtml(searchQuery) + '"</p>';
       contentArea.appendChild(sh);
@@ -1166,11 +1216,18 @@
   const saved = localStorage.getItem("cheatsheet-theme");
   if (saved) document.documentElement.setAttribute("data-theme", saved);
   else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) document.documentElement.setAttribute("data-theme", "light");
+  // Keep the document language in sync with the UI language for screen readers.
+  document.documentElement.lang = lang;
+  document.documentElement.setAttribute("data-lang", lang);
   $("themeToggle").addEventListener("click", () => { const n = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light"; document.documentElement.setAttribute("data-theme", n); localStorage.setItem("cheatsheet-theme", n); });
 
-  const btt = document.createElement("button"); btt.className = "back-to-top"; btt.innerHTML = "↑"; document.body.appendChild(btt);
+  const btt = document.createElement("button"); btt.className = "back-to-top"; btt.innerHTML = "↑"; btt.setAttribute("aria-label", "Back to top"); document.body.appendChild(btt);
   btt.addEventListener("click", () => window.scrollTo({ top: 0, behavior: motionBehavior() }));
   window.addEventListener("scroll", () => btt.classList.toggle("visible", window.scrollY > 400));
+
+  // Offline/online feedback (the SW already serves cached data offline).
+  window.addEventListener("offline", () => toast(lang === "tr" ? "Cevrimdisi - degisiklikler kaydedilemeyebilir" : "Offline - changes may not be saved", "error"));
+  window.addEventListener("online", () => toast(lang === "tr" ? "Yeniden cevrimici" : "Back online", "ok"));
 
   function escapeHtml(s) {
     return String(s == null ? "" : s)
@@ -1184,5 +1241,9 @@
   // ── Init ──
   document.documentElement.setAttribute("data-lang", lang);
   searchInput.placeholder = t("search");
+  // Honor a launch hash (used by PWA manifest shortcuts, e.g. /#machines).
+  const launchHash = (window.location.hash || "").replace(/^#/, "");
+  const hashView = { favorites: "favs", favs: "favs", writeups: "writeups", machines: "machines" }[launchHash];
+  if (hashView) activeCategory = hashView;
   loadData();
 })();

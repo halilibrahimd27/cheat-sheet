@@ -77,7 +77,7 @@
     {
       "id": "accessibility-pwa",
       "title": "Accessibility & PWA quality",
-      "status": "pending",
+      "status": "done",
       "files": ["public/index.html", "public/app.js", "public/style.css", "public/manifest.json", "public/service-worker.js"],
       "items": [
         "aria-label on icon-only buttons; aria-hidden decorative glyphs",

@@ -13,21 +13,22 @@
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
 </head>
 <body>
-    <aside class="sidebar" id="sidebar">
+    <a href="#mainContent" class="skip-link">Skip to content</a>
+    <aside class="sidebar" id="sidebar" aria-label="Categories and tools">
         <div class="sidebar-header">
             <div class="logo">
-                <span class="logo-icon">◈</span>
+                <span class="logo-icon" aria-hidden="true">◈</span>
                 <span class="logo-text">cheat-sheet</span>
             </div>
-            <button class="sidebar-toggle" id="sidebarClose" title="Close sidebar">✕</button>
+            <button class="sidebar-toggle" id="sidebarClose" title="Close sidebar" aria-label="Close sidebar">✕</button>
         </div>
-        <div class="search-box">
-            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <input type="text" id="searchInput" placeholder="Search commands..." autocomplete="off">
+        <div class="search-box" role="search">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" id="searchInput" placeholder="Search commands..." autocomplete="off" aria-label="Search commands">
             <kbd class="search-shortcut">Ctrl+K</kbd>
         </div>
         <!-- Tag Filters -->
-        <div class="tag-filters" id="tagFilters">
+        <div class="tag-filters" id="tagFilters" role="group" aria-label="Filter by tag">
             <button class="tag-filter active" data-tag="all">All</button>
             <button class="tag-filter" data-tag="essential">essential</button>
             <button class="tag-filter" data-tag="tool">tool</button>
@@ -51,19 +52,19 @@
         </div>
     </aside>
 
-    <main class="main-content" id="mainContent">
+    <main class="main-content" id="mainContent" aria-label="Commands">
         <header class="top-bar">
-            <button class="sidebar-toggle-open" id="sidebarOpen" title="Open sidebar">☰</button>
+            <button class="sidebar-toggle-open" id="sidebarOpen" title="Open sidebar" aria-label="Open sidebar">☰</button>
             <div class="breadcrumb" id="breadcrumb">
                 <span>cheat-sheet</span>
                 <span class="breadcrumb-sep">›</span>
                 <span id="currentSection">All Commands</span>
             </div>
             <div class="top-actions">
-                <button class="btn-icon" id="ipChangerToggle" title="Quick IP Changer (Ctrl+I)">🌐</button>
-                <button class="btn-icon" id="expandAll" title="Expand all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M7 10l5 5 5-5"/></svg></button>
-                <button class="btn-icon" id="collapseAll" title="Collapse all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M7 14l5-5 5 5"/></svg></button>
-                <button class="btn-icon theme-toggle" id="themeToggle" title="Toggle theme">◐</button>
+                <button class="btn-icon" id="ipChangerToggle" title="Quick IP Changer (Ctrl+I)" aria-label="Quick IP Changer">🌐</button>
+                <button class="btn-icon" id="expandAll" title="Expand all" aria-label="Expand all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></button>
+                <button class="btn-icon" id="collapseAll" title="Collapse all" aria-label="Collapse all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true"><path d="M7 14l5-5 5 5"/></svg></button>
+                <button class="btn-icon theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle light/dark theme">◐</button>
             </div>
         </header>
         <!-- Quick IP Changer Bar -->
@@ -90,10 +91,10 @@
     </main>
 
     <!-- Variable Fill Bar -->
-    <div class="var-bar" id="varBar">
+    <div class="var-bar" id="varBar" role="region" aria-label="Fill placeholders">
         <div class="var-bar-header">
             <span>🔧 Fill Placeholders</span>
-            <button class="var-bar-close" id="varBarClose">✕</button>
+            <button class="var-bar-close" id="varBarClose" aria-label="Close">✕</button>
         </div>
         <div class="var-bar-fields" id="varBarFields"></div>
         <div class="var-bar-actions">
@@ -103,10 +104,10 @@
 
     <!-- Modal -->
     <div class="modal-overlay" id="modalOverlay">
-        <div class="modal" id="modal">
+        <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
             <div class="modal-header">
                 <h3 id="modalTitle">Add Command</h3>
-                <button class="modal-close" id="modalClose">✕</button>
+                <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
             </div>
             <div class="modal-body" id="modalBody"></div>
             <div class="modal-footer">
@@ -118,8 +119,8 @@
 
     <!-- Keyboard Shortcuts Help -->
     <div class="kbd-help-overlay" id="kbdHelp">
-        <div class="kbd-help-panel">
-            <div class="kbd-help-header"><h3>Keyboard Shortcuts</h3><button class="kbd-help-close" id="kbdHelpClose">&times;</button></div>
+        <div class="kbd-help-panel" role="dialog" aria-modal="true" aria-labelledby="kbdHelpTitle">
+            <div class="kbd-help-header"><h3 id="kbdHelpTitle">Keyboard Shortcuts</h3><button class="kbd-help-close" id="kbdHelpClose" aria-label="Close">&times;</button></div>
             <div class="kbd-help-body">
                 <div class="kbd-row"><kbd>Ctrl+K</kbd><span>Search</span></div>
                 <div class="kbd-row"><kbd>Ctrl+I</kbd><span>Quick IP Changer</span></div>

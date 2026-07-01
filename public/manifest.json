@@ -1,16 +1,34 @@
 {
   "name": "cheat-sheet — Pentest Command Handbook",
   "short_name": "cheat-sheet",
-  "description": "Offensive Security Command Reference for OSCP+ and penetration testing",
+  "description": "Offensive Security & DevSecOps command reference for OSCP+, pentest and cloud-native security. 100% local.",
+  "id": "/",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "any",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["productivity", "utilities", "security"],
   "background_color": "#0f1117",
   "theme_color": "#0f1117",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◈</text></svg>",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230f1117'/><text x='50' y='50' font-size='60' text-anchor='middle' dominant-baseline='central' fill='%236366f1'>◈</text></svg>",
       "sizes": "any",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230f1117'/><text x='50' y='50' font-size='46' text-anchor='middle' dominant-baseline='central' fill='%236366f1'>◈</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
+  ],
+  "shortcuts": [
+    { "name": "Favorites", "url": "/#favorites" },
+    { "name": "Write-ups", "url": "/#writeups" },
+    { "name": "Machines", "url": "/#machines" }
   ]
 }
