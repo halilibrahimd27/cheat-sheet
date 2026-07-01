@@ -48,7 +48,13 @@
       services: "Services", credentials: "Credentials", notes: "Notes",
       exportMd: "Export MD", exportPdf: "Export PDF", termCopy: "Terminal Copy",
       newSub: "New Subcategory", netErr: "Network error - is the server running?",
-      copyFail: "Copy failed", termCopied: "Copied in terminal format!"
+      copyFail: "Copy failed", termCopied: "Copied in terminal format!",
+      playbook: "Playbook", applyPlaybook: "Apply", progress: "Progress",
+      currentPhase: "Current phase", nextSteps: "Next steps", allDone: "All done!",
+      hosts: "Hosts", addHost: "+ Host", owned: "Owned", attackPath: "Attack Path",
+      noHosts: "No extra hosts yet. Add domain / network machines here.",
+      replacePlaybook: "Replace the current checklist with this playbook? Current progress will be lost.",
+      copyCmd: "Copy command", defaultChecklist: "Default checklist"
     },
     tr: {
       allCommands: "Tum Komutlar", favorites: "Favoriler", search: "Komut ara...",
@@ -76,7 +82,13 @@
       services: "Servisler", credentials: "Kimlik Bilgileri", notes: "Notlar",
       exportMd: "MD Aktar", exportPdf: "PDF Aktar", termCopy: "Terminal Kopyala",
       newSub: "Yeni Alt Kategori", netErr: "Ag hatasi - sunucu calisiyor mu?",
-      copyFail: "Kopyalama basarisiz", termCopied: "Terminal formatinda kopyalandi!"
+      copyFail: "Kopyalama basarisiz", termCopied: "Terminal formatinda kopyalandi!",
+      playbook: "Oyun Kitabi", applyPlaybook: "Uygula", progress: "Ilerleme",
+      currentPhase: "Mevcut asama", nextSteps: "Sonraki adimlar", allDone: "Tamamlandi!",
+      hosts: "Makineler", addHost: "+ Makine", owned: "Ele gecirildi", attackPath: "Saldiri Yolu",
+      noHosts: "Henuz ek makine yok. Domain / ag makinelerini buraya ekleyin.",
+      replacePlaybook: "Mevcut kontrol listesi bu oyun kitabiyla degistirilsin mi? Mevcut ilerleme kaybolur.",
+      copyCmd: "Komutu kopyala", defaultChecklist: "Varsayilan liste"
     }
   };
   function t(key) { return (T[lang] && T[lang][key]) || T.en[key] || key; }
@@ -295,6 +307,11 @@
       const l = document.createElement("label"); l.textContent = f.label; l.setAttribute("for", "field-" + f.key); g.appendChild(l);
       if (f.type === "textarea") {
         const ta = document.createElement("textarea"); ta.id = "field-" + f.key; ta.rows = f.rows || 4; ta.placeholder = f.placeholder || ""; ta.value = data[f.key] || ""; g.appendChild(ta);
+      } else if (f.type === "select") {
+        const sel = document.createElement("select"); sel.id = "field-" + f.key; sel.className = "form-select";
+        const cur = data[f.key] !== undefined ? data[f.key] : f.value;
+        (f.options || []).forEach(o => { const opt = document.createElement("option"); opt.value = o.value; opt.textContent = o.label; if (o.value === cur) opt.selected = true; sel.appendChild(opt); });
+        g.appendChild(sel);
       } else {
         const inp = document.createElement("input"); inp.type = "text"; inp.id = "field-" + f.key; inp.placeholder = f.placeholder || ""; inp.value = data[f.key] || ""; g.appendChild(inp);
       }
@@ -311,7 +328,7 @@
     if (lastModalFocus && lastModalFocus.focus) lastModalFocus.focus();
     lastModalFocus = null;
   }
-  function getModalData() { const d = {}; modalBody.querySelectorAll("input,textarea").forEach(el => { d[el.id.replace("field-", "")] = el.value; }); return d; }
+  function getModalData() { const d = {}; modalBody.querySelectorAll("input, textarea, select").forEach(el => { d[el.id.replace("field-", "")] = el.value; }); return d; }
   $("modalClose").addEventListener("click", closeModal);
   $("modalCancel").addEventListener("click", closeModal);
   modalOverlay.addEventListener("click", e => { if (e.target === modalOverlay) closeModal(); });
@@ -591,13 +608,50 @@
   // ── Machines (target tracking) ──
   let openMachineId = null;
   async function loadMachines() { machines = await api("GET", "/api/machines") || []; }
+
+  // Static checklist playbooks (from checklist-templates.js — baked, offline).
+  function machineTemplates() { return window.CHECKLIST_TEMPLATES || []; }
+  function templateById(id) { return machineTemplates().find(x => x.id === id) || null; }
+  function templateToChecklist(tpl) {
+    const out = [];
+    tpl.phases.forEach((ph, pi) => ph.items.forEach((it, ii) => {
+      out.push({ id: tpl.id + "-" + pi + "-" + ii, label: it.label, hint: it.hint || "", phase: ph.name, done: false });
+    }));
+    return out;
+  }
+  function groupByPhase(checklist) {
+    const groups = [], seen = {};
+    (checklist || []).forEach((item, i) => {
+      const phase = item.phase || "Checklist";
+      if (seen[phase] === undefined) { seen[phase] = groups.length; groups.push({ phase, items: [] }); }
+      groups[seen[phase]].items.push({ item, i });
+    });
+    return groups;
+  }
+  function currentPhaseName(m) {
+    for (const g of groupByPhase(m.checklist)) { if (g.items.some(x => !x.item.done)) return g.phase; }
+    return null;
+  }
+  function osIconFor(os) {
+    const s = (os || "").toLowerCase();
+    if (s.includes("windows")) return "🪟";
+    if (s.includes("linux")) return "🐧";
+    if (s.includes("ad") || s.includes("domain") || s.includes("active dir")) return "🏢";
+    return "🖥";
+  }
   async function createMachine() {
+    const tplOpts = [{ value: "", label: t("defaultChecklist") }]
+      .concat(machineTemplates().map(tpl => ({ value: tpl.id, label: tpl.icon + " " + tpl.name })));
     openModal(t("addMachine"), [
       { key: "name", label: t("machineName"), placeholder: "e.g., Lame" },
       { key: "ip", label: t("machineIP"), placeholder: "10.10.10.3" },
-      { key: "os", label: t("machineOS"), placeholder: "Linux / Windows" }
+      { key: "os", label: t("machineOS"), placeholder: "Linux / Windows" },
+      { key: "template", label: t("playbook"), type: "select", options: tplOpts }
     ], {}, async fd => {
       const m = await api("POST", "/api/machines", { name: fd.name, ip: fd.ip, os: fd.os });
+      if (!m || !m.id) return;
+      const tpl = fd.template ? templateById(fd.template) : null;
+      if (tpl) await api("PUT", "/api/machines/" + m.id, { template: tpl.id, checklist: templateToChecklist(tpl) });
       await loadMachines(); openMachineId = m.id; render();
     });
   }
@@ -642,7 +696,9 @@
       const done = (m.checklist || []).filter(c => c.done).length;
       const total = (m.checklist || []).length;
       const pct = total > 0 ? Math.round(done / total * 100) : 0;
-      const osIcon = (m.os || "").toLowerCase().includes("windows") ? "🪟" : (m.os || "").toLowerCase().includes("linux") ? "🐧" : "🖥";
+      const osIcon = osIconFor(m.os);
+      const tpl = m.template ? templateById(m.template) : null;
+      const phase = currentPhaseName(m);
       const card = document.createElement("div"); card.className = "machine-card";
       card.setAttribute("role", "button"); card.setAttribute("tabindex", "0");
       card.setAttribute("aria-label", m.name + (m.ip ? ", " + m.ip : ""));
@@ -650,9 +706,11 @@
         '<div class="machine-card-top">' +
           '<span class="machine-os-icon">' + osIcon + '</span>' +
           '<div class="machine-info"><div class="machine-name">' + escapeHtml(m.name) + '</div><div class="machine-ip">' + escapeHtml(m.ip || "No IP") + '</div></div>' +
-          '<button class="machine-del-btn" title="Delete">🗑</button>' +
+          '<button class="machine-del-btn" title="Delete" aria-label="Delete machine">🗑</button>' +
         '</div>' +
-        '<div class="machine-progress"><div class="machine-progress-bar"><div class="machine-progress-fill" style="width:' + pct + '%"></div></div><span class="machine-progress-text">' + done + '/' + total + ' (' + pct + '%)</span></div>';
+        (tpl ? '<div class="machine-card-badge">' + tpl.icon + ' ' + escapeHtml(tpl.name) + '</div>' : '') +
+        '<div class="machine-progress"><div class="machine-progress-bar"><div class="machine-progress-fill" style="width:' + pct + '%"></div></div><span class="machine-progress-text">' + done + '/' + total + ' (' + pct + '%)</span></div>' +
+        (total > 0 ? '<div class="machine-card-phase' + (phase ? '' : ' done') + '">' + (phase ? '▸ ' + escapeHtml(phase) : '✅ ' + t("allDone")) + '</div>' : '');
       card.addEventListener("click", () => { openMachineId = m.id; render(); });
       card.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target === card) { e.preventDefault(); openMachineId = m.id; render(); } });
       card.querySelector(".machine-del-btn").addEventListener("click", e => deleteMachine(m.id, e));
@@ -673,55 +731,170 @@
     topbar.querySelector(".wu-delete-btn").addEventListener("click", () => deleteMachine(m.id));
     page.appendChild(topbar);
 
-    // Machine header info
+    // Header with editable IP / OS
     const info = document.createElement("div"); info.className = "machine-info-section";
-    const osIcon = (m.os || "").toLowerCase().includes("windows") ? "🪟" : (m.os || "").toLowerCase().includes("linux") ? "🐧" : "🖥";
     info.innerHTML =
       '<div class="machine-detail-header">' +
-        '<span class="machine-detail-icon">' + osIcon + '</span>' +
-        '<div><h1 class="machine-detail-name">' + escapeHtml(m.name) + '</h1><span class="machine-detail-ip">' + escapeHtml(m.ip || "") + '</span> <span class="machine-detail-os">' + escapeHtml(m.os || "") + '</span></div>' +
+        '<span class="machine-detail-icon">' + osIconFor(m.os) + '</span>' +
+        '<div class="machine-detail-meta">' +
+          '<h1 class="machine-detail-name">' + escapeHtml(m.name) + '</h1>' +
+          '<div class="machine-meta-fields">' +
+            '<input class="machine-meta-input" data-k="ip" placeholder="IP" value="' + escapeHtml(m.ip || "") + '" aria-label="IP">' +
+            '<input class="machine-meta-input" data-k="os" placeholder="OS" value="' + escapeHtml(m.os || "") + '" aria-label="OS">' +
+          '</div>' +
+        '</div>' +
       '</div>';
+    info.querySelectorAll(".machine-meta-input").forEach(inp => inp.addEventListener("input", () => {
+      m[inp.dataset.k] = inp.value; const patch = {}; patch[inp.dataset.k] = inp.value;
+      saveMachine(m.id, patch); showMachineStatus();
+    }));
     page.appendChild(info);
 
-    // Checklist
-    const checkSection = document.createElement("div"); checkSection.className = "machine-section";
-    checkSection.innerHTML = '<h3>Checklist</h3>';
-    const checkList = document.createElement("div"); checkList.className = "machine-checklist";
-    (m.checklist || []).forEach((item, idx) => {
-      const row = document.createElement("label"); row.className = "checklist-item" + (item.done ? " done" : "");
-      row.innerHTML = '<input type="checkbox"' + (item.done ? " checked" : "") + '><span>' + escapeHtml(item.label) + '</span>';
-      row.querySelector("input").addEventListener("change", e => {
-        m.checklist[idx].done = e.target.checked;
-        saveMachine(m.id, { checklist: m.checklist });
-        row.classList.toggle("done", e.target.checked);
-        showMachineStatus();
-      });
-      checkList.appendChild(row);
+    // Playbook selector — swaps in a situation-aware checklist template
+    const pbRow = document.createElement("div"); pbRow.className = "machine-playbook-row";
+    const pbLabel = document.createElement("span"); pbLabel.className = "machine-playbook-label"; pbLabel.textContent = "📖 " + t("playbook");
+    const pbSel = document.createElement("select"); pbSel.className = "form-select machine-playbook-select"; pbSel.setAttribute("aria-label", t("playbook"));
+    const optDef = document.createElement("option"); optDef.value = ""; optDef.textContent = t("defaultChecklist");
+    if (!m.template) optDef.selected = true; pbSel.appendChild(optDef);
+    machineTemplates().forEach(tpl => { const o = document.createElement("option"); o.value = tpl.id; o.textContent = tpl.icon + " " + tpl.name; if (m.template === tpl.id) o.selected = true; pbSel.appendChild(o); });
+    pbSel.addEventListener("change", async () => {
+      const id = pbSel.value;
+      if ((m.checklist || []).some(c => c.done) && !confirm(t("replacePlaybook"))) { pbSel.value = m.template || ""; return; }
+      const tpl = id ? templateById(id) : null;
+      m.template = id; m.checklist = tpl ? templateToChecklist(tpl) : [];
+      await api("PUT", "/api/machines/" + m.id, { template: id, checklist: m.checklist });
+      render();
     });
-    checkSection.appendChild(checkList);
-    page.appendChild(checkSection);
+    pbRow.appendChild(pbLabel); pbRow.appendChild(pbSel);
+    page.appendChild(pbRow);
+
+    // Progress overview + next steps
+    const total = (m.checklist || []).length;
+    const done = (m.checklist || []).filter(c => c.done).length;
+    const pct = total > 0 ? Math.round(done / total * 100) : 0;
+    const curPhase = currentPhaseName(m);
+    const nextItems = (m.checklist || []).filter(c => !c.done).slice(0, 3);
+    if (total > 0) {
+      const overview = document.createElement("div"); overview.className = "machine-overview";
+      overview.innerHTML =
+        '<div class="machine-overview-top">' +
+          '<div class="machine-overview-pct">' + pct + '%</div>' +
+          '<div class="machine-overview-info">' +
+            '<div class="machine-overview-phase">' + (curPhase ? t("currentPhase") + ': <strong>' + escapeHtml(curPhase) + '</strong>' : t("allDone")) + '</div>' +
+            '<div class="machine-overview-bar"><div class="machine-overview-fill" style="width:' + pct + '%"></div></div>' +
+            '<div class="machine-overview-count">' + done + '/' + total + '</div>' +
+          '</div>' +
+        '</div>' +
+        (nextItems.length ? '<div class="machine-nextsteps"><span class="machine-nextsteps-label">' + t("nextSteps") + '</span><ul>' + nextItems.map(it => '<li>' + escapeHtml(it.label) + '</li>').join("") + '</ul></div>' : '');
+      page.appendChild(overview);
+    }
+
+    function updateProgressUI() {
+      const tt = (m.checklist || []).length;
+      const dd = (m.checklist || []).filter(c => c.done).length;
+      const pp = tt > 0 ? Math.round(dd / tt * 100) : 0;
+      const fill = page.querySelector(".machine-overview-fill"); if (fill) fill.style.width = pp + "%";
+      const pctEl = page.querySelector(".machine-overview-pct"); if (pctEl) pctEl.textContent = pp + "%";
+      const cntEl = page.querySelector(".machine-overview-count"); if (cntEl) cntEl.textContent = dd + "/" + tt;
+      page.querySelectorAll(".checklist-phase").forEach(pw => {
+        const badge = pw.querySelector(".checklist-phase-count");
+        if (badge) badge.textContent = pw.querySelectorAll(".checklist-item.done").length + "/" + pw.querySelectorAll(".checklist-item").length;
+      });
+    }
+
+    // Phase-grouped checklist with command hints
+    if (total > 0) {
+      const checkSection = document.createElement("div"); checkSection.className = "machine-section";
+      groupByPhase(m.checklist).forEach(g => {
+        const gDone = g.items.filter(x => x.item.done).length;
+        const phaseWrap = document.createElement("div"); phaseWrap.className = "checklist-phase" + (g.phase === curPhase ? " current" : "");
+        const ph = document.createElement("div"); ph.className = "checklist-phase-header";
+        ph.innerHTML = '<span class="checklist-phase-name">' + escapeHtml(g.phase) + '</span><span class="checklist-phase-count">' + gDone + '/' + g.items.length + '</span>';
+        phaseWrap.appendChild(ph);
+        g.items.forEach(({ item, i }) => {
+          const row = document.createElement("div"); row.className = "checklist-item" + (item.done ? " done" : "");
+          const cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = !!item.done; cb.id = "ck-" + m.id + "-" + i;
+          cb.addEventListener("change", () => {
+            m.checklist[i].done = cb.checked;
+            saveMachine(m.id, { checklist: m.checklist });
+            row.classList.toggle("done", cb.checked);
+            updateProgressUI(); showMachineStatus();
+          });
+          const body = document.createElement("div"); body.className = "checklist-body";
+          const lab = document.createElement("label"); lab.className = "checklist-label"; lab.setAttribute("for", cb.id); lab.textContent = item.label;
+          body.appendChild(lab);
+          if (item.hint) {
+            const hintRow = document.createElement("div"); hintRow.className = "checklist-hint";
+            const code = document.createElement("code"); code.textContent = item.hint;
+            const copyBtn = document.createElement("button"); copyBtn.className = "checklist-hint-copy"; copyBtn.textContent = "⧉"; copyBtn.title = t("copyCmd"); copyBtn.setAttribute("aria-label", t("copyCmd"));
+            copyBtn.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); copyText(applyIpToCode(item.hint), () => { announce(t("copied")); toast(t("copied"), "ok"); }); });
+            hintRow.appendChild(code); hintRow.appendChild(copyBtn);
+            body.appendChild(hintRow);
+          }
+          row.appendChild(cb); row.appendChild(body);
+          phaseWrap.appendChild(row);
+        });
+        checkSection.appendChild(phaseWrap);
+      });
+      page.appendChild(checkSection);
+    }
+
+    // Hosts (AD / network engagement) + attack path
+    const hostSection = document.createElement("div"); hostSection.className = "machine-section";
+    hostSection.innerHTML = '<div class="machine-section-head"><h3>🖧 ' + t("hosts") + '</h3><button class="btn btn-secondary btn-sm machine-addhost">' + t("addHost") + '</button></div>';
+    const hostList = document.createElement("div"); hostList.className = "machine-hosts";
+    m.hosts = m.hosts || [];
+    if (!m.hosts.length) { const eh = document.createElement("p"); eh.className = "machine-hosts-empty"; eh.textContent = t("noHosts"); hostList.appendChild(eh); }
+    m.hosts.forEach((h, hi) => {
+      const row = document.createElement("div"); row.className = "machine-host-row" + (h.owned ? " owned" : "");
+      row.innerHTML =
+        '<input type="checkbox" class="host-owned" title="' + t("owned") + '" aria-label="' + t("owned") + '"' + (h.owned ? " checked" : "") + '>' +
+        '<input class="host-f host-name" placeholder="hostname" value="' + escapeHtml(h.name || "") + '" aria-label="hostname">' +
+        '<input class="host-f host-ip" placeholder="ip" value="' + escapeHtml(h.ip || "") + '" aria-label="ip">' +
+        '<input class="host-f host-os" placeholder="os / role" value="' + escapeHtml(h.os || "") + '" aria-label="os or role">' +
+        '<button class="host-del" title="Delete" aria-label="Delete host">🗑</button>';
+      const persist = () => { saveMachine(m.id, { hosts: m.hosts }); showMachineStatus(); };
+      row.querySelector(".host-owned").addEventListener("change", ev => { h.owned = ev.target.checked; row.classList.toggle("owned", h.owned); persist(); });
+      row.querySelector(".host-name").addEventListener("input", ev => { h.name = ev.target.value; persist(); });
+      row.querySelector(".host-ip").addEventListener("input", ev => { h.ip = ev.target.value; persist(); });
+      row.querySelector(".host-os").addEventListener("input", ev => { h.os = ev.target.value; persist(); });
+      row.querySelector(".host-del").addEventListener("click", () => { m.hosts.splice(hi, 1); saveMachine(m.id, { hosts: m.hosts }); render(); });
+      hostList.appendChild(row);
+    });
+    hostSection.appendChild(hostList);
+    hostSection.querySelector(".machine-addhost").addEventListener("click", () => {
+      m.hosts.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 5), name: "", ip: "", os: "", owned: false });
+      saveMachine(m.id, { hosts: m.hosts }); render();
+    });
+    const apLabel = document.createElement("div"); apLabel.className = "machine-subhead"; apLabel.textContent = "🧭 " + t("attackPath");
+    const apArea = document.createElement("textarea"); apArea.className = "machine-textarea";
+    apArea.placeholder = "user@host1 -> kerberoast svc -> WriteDACL -> DCSync -> DA";
+    apArea.value = m.attackPath || "";
+    apArea.addEventListener("input", () => { saveMachine(m.id, { attackPath: apArea.value }); showMachineStatus(); });
+    hostSection.appendChild(apLabel); hostSection.appendChild(apArea);
+    page.appendChild(hostSection);
 
     // Services
     const svcSection = document.createElement("div"); svcSection.className = "machine-section";
-    svcSection.innerHTML = '<h3>' + t("services") + '</h3>';
+    svcSection.innerHTML = '<h3>🔌 ' + t("services") + '</h3>';
     const svcArea = document.createElement("textarea"); svcArea.className = "machine-textarea";
     svcArea.placeholder = "22/tcp  SSH  OpenSSH 7.9\n80/tcp  HTTP Apache 2.4\n445/tcp SMB  Samba 4.9";
     svcArea.value = (m.services || []).join("\n");
     svcArea.addEventListener("input", () => { saveMachine(m.id, { services: svcArea.value.split("\n").filter(Boolean) }); showMachineStatus(); });
     svcSection.appendChild(svcArea); page.appendChild(svcSection);
 
-    // Credentials
+    // Credentials / loot
     const credSection = document.createElement("div"); credSection.className = "machine-section";
-    credSection.innerHTML = '<h3>' + t("credentials") + '</h3>';
+    credSection.innerHTML = '<h3>🔑 ' + t("credentials") + '</h3>';
     const credArea = document.createElement("textarea"); credArea.className = "machine-textarea";
-    credArea.placeholder = "admin:password123\nroot:toor\nuser:hash:abc123...";
+    credArea.placeholder = "admin:password123\nsvc_sql:S3cr3t! (kerberoast)\nuser:aad3b435...:hash";
     credArea.value = (m.credentials || []).join("\n");
     credArea.addEventListener("input", () => { saveMachine(m.id, { credentials: credArea.value.split("\n").filter(Boolean) }); showMachineStatus(); });
     credSection.appendChild(credArea); page.appendChild(credSection);
 
     // Notes
     const noteSection = document.createElement("div"); noteSection.className = "machine-section";
-    noteSection.innerHTML = '<h3>' + t("notes") + '</h3>';
+    noteSection.innerHTML = '<h3>📝 ' + t("notes") + '</h3>';
     const noteArea = document.createElement("textarea"); noteArea.className = "machine-textarea machine-notes-area";
     noteArea.placeholder = lang === "tr" ? "Makine notlari..." : "Machine notes...";
     noteArea.value = m.notes || "";

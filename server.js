@@ -513,7 +513,7 @@ app.put("/api/machines/:id", (req, res) => {
   const machines = readMachines();
   const m = machines.find(x => x.id === req.params.id);
   if (!m) return res.status(404).json({ error: "not found" });
-  for (const key of ["name", "ip", "os", "services", "credentials", "notes", "checklist"]) {
+  for (const key of ["name", "ip", "os", "services", "credentials", "notes", "checklist", "template", "hosts", "attackPath"]) {
     if (req.body[key] !== undefined) m[key] = req.body[key];
   }
   m.updatedAt = new Date().toISOString();

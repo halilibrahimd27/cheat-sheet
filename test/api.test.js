@@ -214,6 +214,15 @@ test("machines CRUD lifecycle seeds the 11-step checklist", async () => {
   const id = post.json.id;
   const upd = await api("PUT", `/api/machines/${id}`, { ip: "10.10.10.9" });
   assert.strictEqual(upd.json.ip, "10.10.10.9");
+  // New engagement fields (template / AD hosts / attack path) persist.
+  const upd2 = await api("PUT", `/api/machines/${id}`, {
+    template: "linux-privesc",
+    hosts: [{ id: "h1", name: "DC01", ip: "10.10.10.2", owned: false }],
+    attackPath: "foothold -> kerberoast -> DCSync -> DA",
+  });
+  assert.strictEqual(upd2.json.template, "linux-privesc");
+  assert.strictEqual(upd2.json.hosts.length, 1);
+  assert.strictEqual(upd2.json.attackPath, "foothold -> kerberoast -> DCSync -> DA");
   assert.strictEqual((await api("DELETE", `/api/machines/${id}`)).status, 200);
 });
 

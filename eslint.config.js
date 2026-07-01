@@ -43,7 +43,7 @@ module.exports = [
     rules: commonRules,
   },
   {
-    files: ["public/app.js"],
+    files: ["public/app.js", "public/checklist-templates.js"],
     languageOptions: { ecmaVersion: 2022, sourceType: "script", globals: browserGlobals },
     rules: commonRules,
   },

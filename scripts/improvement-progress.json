@@ -93,7 +93,7 @@
     {
       "id": "machines-overhaul",
       "title": "Machines overhaul — situation-aware checklists + AD + visuals (owner priority #2a)",
-      "status": "pending",
+      "status": "done",
       "files": ["public/app.js", "public/style.css", "server.js", "data/checklist-templates.js OR public/checklist-templates.js"],
       "items": [
         "Author STATIC checklist templates from HTB/THM/OSCP methodology (Linux privesc, Windows privesc, Web, AD, initial recon, general box)",
