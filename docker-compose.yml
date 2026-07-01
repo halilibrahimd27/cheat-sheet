@@ -14,6 +14,19 @@ services:
       - HOST=0.0.0.0
       # - AUTH_USER=admin
       # - AUTH_PASS=change-me
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:3000/api/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    # Bound container memory and rotate logs so a runaway can't exhaust the host.
+    mem_limit: 256m
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   cheat-sheet-data:

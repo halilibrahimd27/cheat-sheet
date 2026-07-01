@@ -189,7 +189,7 @@
     {
       "id": "devops-hardening",
       "title": "DevOps hardening (repo config only, no app deps)",
-      "status": "pending",
+      "status": "done",
       "files": ["Dockerfile", "docker-compose.yml", ".dockerignore", ".github/workflows/ci.yml"],
       "items": [
         "Non-root container user + healthcheck (uses /api/health)",

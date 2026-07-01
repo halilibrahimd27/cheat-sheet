@@ -1,4 +1,15 @@
 node_modules
 data
 .git
+.gitignore
+.github
+test
+scripts
 *.md
+image*.png
+.env
+.env.example
+.dockerignore
+Dockerfile
+docker-compose.yml
+eslint.config.js
