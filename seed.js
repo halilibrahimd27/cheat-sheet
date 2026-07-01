@@ -117,7 +117,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Dene: zone transferi dnsrecüzerinden üzerinde"
+            "desc_tr": "dnsrecon ile zone transfer dene"
           },
           {
             "title": "DNSRecon Brute Force",
@@ -144,7 +144,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: subdomains search engines and public sources kullanarak"
+            "desc_tr": "Arama motorları ve açık kaynaklarla alt alan adlarını keşfet"
           },
           {
             "title": "Amass Passive Enum",
@@ -172,7 +172,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Topla: emails, subdomains, hosts public sources üzerinden"
+            "desc_tr": "Açık kaynaklardan e-posta, alt alan adı ve host topla"
           },
           {
             "title": "Shodan Host Info",
@@ -181,7 +181,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Sorgula: Shodan for target IP information"
+            "desc_tr": "Hedef IP bilgisi için Shodan'ı sorgula"
           },
           {
             "title": "Shodan Domain Search",
@@ -190,7 +190,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Ara: Shodan for hosts related a domain'e"
+            "desc_tr": "Bir alan adıyla ilişkili hostlar için Shodan'da ara"
           },
           {
             "title": "Google Dork - Site Files",
@@ -200,7 +200,7 @@ module.exports = [
               "essential"
             ],
             "note": "Use in browser or via googler CLI",
-            "desc_tr": "Bul: açık files a domaüzerinde içinde"
+            "desc_tr": "Bir alan adında açıkta kalan dosyaları bul"
           },
           {
             "title": "Google Dork - Login Pages",
@@ -210,7 +210,7 @@ module.exports = [
               "essential"
             ],
             "note": "Use in browser",
-            "desc_tr": "Keşfet: logportals içinde"
+            "desc_tr": "Giriş (login) sayfalarını keşfet"
           },
           {
             "title": "Google Dork - Directory Listings",
@@ -220,7 +220,7 @@ module.exports = [
               "essential"
             ],
             "note": "Use in browser",
-            "desc_tr": "Bul: open dizlisteleme içinde"
+            "desc_tr": "Açık dizin listelemelerini bul"
           },
           {
             "title": "Google Dork - Config Files",
@@ -240,7 +240,7 @@ module.exports = [
               "essential"
             ],
             "note": "Use in browser",
-            "desc_tr": "Bul: açık database dumps"
+            "desc_tr": "Açıkta kalan veritabanı dökümlerini bul"
           },
           {
             "title": "Google Dork - Sensitive Directories",
@@ -250,7 +250,7 @@ module.exports = [
               "essential"
             ],
             "note": "Use in browser",
-            "desc_tr": "Keşfet: backup or sensitive paths"
+            "desc_tr": "Yedek veya hassas yolları keşfet"
           },
           {
             "title": "DMITRY Deep Information Gathering",
@@ -259,7 +259,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Topla: WHOIS, netcraft, subdomain, email, and port info"
+            "desc_tr": "WHOIS, netcraft, alt alan adı, e-posta ve port bilgisi topla"
           },
           {
             "title": "Fierce DNS Recon",
@@ -286,7 +286,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Al: only the answer sectidig üzerinden üzerinde"
+            "desc_tr": "dig'den yalnızca cevap (answer) bölümünü al"
           },
           {
             "title": "Dig AAAA (IPv6) Record",
@@ -295,7 +295,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Sorgula: IPv6 AAAA records"
+            "desc_tr": "IPv6 AAAA kayıtlarını sorgula"
           },
           {
             "title": "Dig SRV Records",
@@ -304,7 +304,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Sorgula: SRV records for service discovery"
+            "desc_tr": "Servis keşfi için SRV kayıtlarını sorgula"
           },
           {
             "title": "Dig with Specific DNS Server",
@@ -313,7 +313,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Sorgula: a belirli DNS server"
+            "desc_tr": "Belirli bir DNS sunucusunu sorgula"
           },
           {
             "title": "Nslookup Interactive",
@@ -382,7 +382,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Tara: ma subnet for NetBIOS names and MACs"
+            "desc_tr": "NetBIOS adları ve MAC'ler için alt ağı tara"
           },
           {
             "title": "Finger User Enumeration Script",
@@ -391,7 +391,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: commusers finger service üzerinden üzerinde"
+            "desc_tr": "finger servisi üzerinden yaygın kullanıcıları listele"
           },
           {
             "title": "nslookup Forward",
@@ -400,7 +400,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çözümle: domain"
+            "desc_tr": "Resolve domain"
           },
           {
             "title": "nslookup Reverse",
@@ -418,7 +418,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Sorgula: belirli DNS server"
+            "desc_tr": "Query specific DNS server"
           },
           {
             "title": "nslookup MX",
@@ -427,7 +427,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Sorgula: MX records"
+            "desc_tr": "Query MX records"
           },
           {
             "title": "Waybackurls",
@@ -514,7 +514,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Tara: ma top UDP ports for commservices üzerinde"
+            "desc_tr": "Scan top UDP ports for common services"
           },
           {
             "title": "Nmap Quick Top 1000",
@@ -532,7 +532,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Tara: ma belirli ports of interest"
+            "desc_tr": "Scan specific ports of interest"
           },
           {
             "title": "Nmap Ping Sweep",
@@ -541,7 +541,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Keşfet: live hosts a subnet üzerinde"
+            "desc_tr": "Discover live hosts on a subnet"
           },
           {
             "title": "Nmap List Scan",
@@ -550,7 +550,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: targets tarama (DNS resolutionly) üzerinde olmadan"
+            "desc_tr": "List targets without scanning (DNS resolution only)"
           },
           {
             "title": "Masscan Full Port Scan",
@@ -649,7 +649,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Tara: ma decoy IPs ile"
+            "desc_tr": "Scan with decoy IPs"
           },
           {
             "title": "Nmap MAC Spoof",
@@ -676,7 +676,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Ekle: padding evade IDS'e"
+            "desc_tr": "Add padding to evade IDS"
           },
           {
             "title": "Bash Ping Sweep",
@@ -694,7 +694,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Tara: ma tüm portlar at moderate speed — good for unstable networks"
+            "desc_tr": "Scan all ports at moderate speed — good for unstable networks"
           },
           {
             "title": "Nmap All Ports (Rate 3000, No Ping)",
@@ -736,7 +736,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Araştır: açık portlar for service versions discovered ports üzerinde"
+            "desc_tr": "Probe open ports for service versions on discovered ports"
           },
           {
             "title": "Nmap Aggressive Scan",
@@ -754,7 +754,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dene: operating system fingerprinting"
+            "desc_tr": "Attempt operating system fingerprinting"
           },
           {
             "title": "Nmap Default Scripts",
@@ -763,7 +763,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: default NSE script suite services'e karşı"
+            "desc_tr": "Run default NSE script suite against services"
           },
           {
             "title": "Nmap All Scripts Safe",
@@ -772,7 +772,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Çalıştır: tüm safe-category NSE scripts"
+            "desc_tr": "Run all safe-category NSE scripts"
           },
           {
             "title": "Nmap Vulnerability Scripts",
@@ -781,7 +781,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: zafiyet(ler) tarama scripts"
+            "desc_tr": "Run vulnerability scanning scripts"
           },
           {
             "title": "Nmap Script Category Run",
@@ -790,7 +790,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Çalıştır: belirli NSE script categories"
+            "desc_tr": "Run specific NSE script categories"
           },
           {
             "title": "Netcat Banner Grab",
@@ -799,7 +799,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: service and grab banner manually'e"
+            "desc_tr": "Connect to service and grab banner manually"
           },
           {
             "title": "Nmap Banner Grab Script",
@@ -826,7 +826,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: web directories"
+            "desc_tr": "Enumerate web directories"
           },
           {
             "title": "Nmap DNS Brute",
@@ -853,7 +853,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: MySQL"
+            "desc_tr": "Enumerate MySQL"
           },
           {
             "title": "Nmap MSSQL Info",
@@ -862,7 +862,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: MSSQL"
+            "desc_tr": "Enumerate MSSQL"
           },
           {
             "title": "Nmap RDP Info",
@@ -871,7 +871,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çıkart: RDP hostname/domain"
+            "desc_tr": "Extract RDP hostname/domain"
           },
           {
             "title": "Nmap VNC Info",
@@ -880,7 +880,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: VNC"
+            "desc_tr": "Enumerate VNC"
           },
           {
             "title": "Nmap Redis Info",
@@ -889,7 +889,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Al: Redis info"
+            "desc_tr": "Get Redis info"
           },
           {
             "title": "Nmap MongoDB",
@@ -898,7 +898,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: MongoDB"
+            "desc_tr": "Enumerate MongoDB"
           },
           {
             "title": "Nmap NFS Shares",
@@ -907,7 +907,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: NFS exports"
+            "desc_tr": "List NFS exports"
           },
           {
             "title": "RPCinfo",
@@ -916,7 +916,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: RPC services"
+            "desc_tr": "List RPC services"
           },
           {
             "title": "Showmount NFS",
@@ -925,7 +925,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: NFS directories"
+            "desc_tr": "Show NFS directories"
           }
         ],
         "name_tr": "Service Fingerprinting"
@@ -941,7 +941,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Listele: SMB shares, users, groups, policies"
+            "desc_tr": "Enumerate SMB shares, users, groups, policies"
           },
           {
             "title": "Enum4linux-ng Full Scan",
@@ -959,7 +959,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: SMB shares boş oturum ile"
+            "desc_tr": "List SMB shares with null session"
           },
           {
             "title": "SMBClient Connect to Share",
@@ -968,7 +968,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: a belirli share'e"
+            "desc_tr": "Belirli bir paylaşıma bağlan"
           },
           {
             "title": "SMBClient Null Auth Connect",
@@ -977,7 +977,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: share boş oturum ile'e"
+            "desc_tr": "Connect to share with null session"
           },
           {
             "title": "SMBMap Enumerate Shares",
@@ -987,7 +987,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Listele: shares and permissions"
+            "desc_tr": "Paylaşımları ve izinleri listele"
           },
           {
             "title": "SMBMap Authenticated",
@@ -997,7 +997,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Listele: shares kimlik bilgileri ile"
+            "desc_tr": "Enumerate shares with credentials"
           },
           {
             "title": "SMBMap Recursive Listing",
@@ -1015,7 +1015,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "İndir: a file a share üzerinden"
+            "desc_tr": "Download a file from a share"
           },
           {
             "title": "CrackMapExec SMB Enum",
@@ -1025,7 +1025,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Listele: SMB info, shares, users"
+            "desc_tr": "Enumerate SMB info, shares, users"
           },
           {
             "title": "CrackMapExec SMB Shares",
@@ -1034,7 +1034,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: shares kimlik bilgileri ile"
+            "desc_tr": "List shares with credentials"
           },
           {
             "title": "CrackMapExec SMB Users",
@@ -1043,7 +1043,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: etki alanı kullanıcıları SMB üzerinden"
+            "desc_tr": "Enumerate domain users via SMB"
           },
           {
             "title": "CrackMapExec SMB Sessions",
@@ -1052,7 +1052,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: active sessions"
+            "desc_tr": "Enumerate active sessions"
           },
           {
             "title": "Nmap SMB Enum Shares",
@@ -1061,7 +1061,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: SMB shares NSE üzerinden"
+            "desc_tr": "Enumerate SMB shares via NSE"
           },
           {
             "title": "Nmap SMB Enum Users",
@@ -1070,7 +1070,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: SMB users NSE üzerinden"
+            "desc_tr": "Enumerate SMB users via NSE"
           },
           {
             "title": "Nmap SMB OS Discovery",
@@ -1079,7 +1079,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Keşfet: OS SMB üzerinden"
+            "desc_tr": "Discover OS via SMB"
           },
           {
             "title": "Nmap SMB Vuln Scan",
@@ -1097,7 +1097,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Tara: ma subnet for NetBIOS name information"
+            "desc_tr": "Scan subnet for NetBIOS name information"
           },
           {
             "title": "NBTScan Single Host",
@@ -1106,7 +1106,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Al: NetBIOS info for single target"
+            "desc_tr": "Get NetBIOS info for single target"
           },
           {
             "title": "NBTScan Subnet",
@@ -1148,7 +1148,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Al: system description"
+            "desc_tr": "Retrieve system description"
           },
           {
             "title": "SNMPWalk Running Processes",
@@ -1157,7 +1157,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: çalışan process SNMP üzerinden"
+            "desc_tr": "Enumerate running processes via SNMP"
           },
           {
             "title": "SNMPWalk Installed Software",
@@ -1166,7 +1166,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Listele: yüklü software"
+            "desc_tr": "Enumerate installed software"
           },
           {
             "title": "SNMPWalk TCP Connections",
@@ -1175,7 +1175,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Listele: active TCP connections"
+            "desc_tr": "Enumerate active TCP connections"
           },
           {
             "title": "SNMPWalk User Accounts",
@@ -1184,7 +1184,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: Windows user accounts SNMP üzerinden"
+            "desc_tr": "Enumerate Windows user accounts via SNMP"
           },
           {
             "title": "OneSixtyOne Community Brute",
@@ -1247,7 +1247,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dene: anonymous LDAP listeleme"
+            "desc_tr": "Attempt anonymous LDAP enumeration"
           },
           {
             "title": "LDAPSearch Dump All",
@@ -1256,7 +1256,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dökümle: entire LDAP directory kimlik bilgileri ile"
+            "desc_tr": "Dump entire LDAP directory with credentials"
           },
           {
             "title": "LDAPSearch Find Users",
@@ -1265,7 +1265,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çıkart: tüm user objects LDAP üzerinden"
+            "desc_tr": "Extract all user objects from LDAP"
           },
           {
             "title": "LDAPSearch Find Computers",
@@ -1274,7 +1274,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Çıkart: computer objects LDAP üzerinden"
+            "desc_tr": "Extract computer objects from LDAP"
           },
           {
             "title": "RPCClient Null Session",
@@ -1283,7 +1283,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: boş oturum enumerate ile'e"
+            "desc_tr": "Connect with null session to enumerate"
           },
           {
             "title": "RPCClient Enum Domain Users",
@@ -1292,7 +1292,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: etki alanı kullanıcıları RPC üzerinden"
+            "desc_tr": "Enumerate domain users via RPC"
           },
           {
             "title": "RPCClient Enum Domain Groups",
@@ -1301,7 +1301,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: etki alanı grupları RPC üzerinden"
+            "desc_tr": "Enumerate domain groups via RPC"
           },
           {
             "title": "RPCClient Query User",
@@ -1310,7 +1310,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Al: details for a belirli user RID"
+            "desc_tr": "Get details for a specific user RID"
           },
           {
             "title": "RPCClient Enum Printers",
@@ -1319,7 +1319,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Listele: printers RPC üzerinden"
+            "desc_tr": "Enumerate printers via RPC"
           },
           {
             "title": "RPCClient Server Info",
@@ -1328,7 +1328,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Al: server info RPC üzerinden"
+            "desc_tr": "Get server info via RPC"
           },
           {
             "title": "Finger User Enumeration",
@@ -1337,7 +1337,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: users finger service üzerinden"
+            "desc_tr": "Enumerate users via finger service"
           },
           {
             "title": "Finger Specific User",
@@ -1346,7 +1346,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Sorgula: belirli user finger üzerinden"
+            "desc_tr": "Query specific user via finger"
           },
           {
             "title": "Ident User Enum",
@@ -1355,7 +1355,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: users identd service üzerinden"
+            "desc_tr": "Enumerate users via identd service"
           },
           {
             "title": "SMTP User Enum VRFY",
@@ -1364,7 +1364,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: users SMTP VRFY command üzerinden"
+            "desc_tr": "Enumerate users via SMTP VRFY command"
           },
           {
             "title": "SMTP User Enum RCPT",
@@ -1373,7 +1373,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: users SMTP RCPT üzerinden'e"
+            "desc_tr": "Enumerate users via SMTP RCPT TO"
           },
           {
             "title": "Finger Enumeration",
@@ -1382,7 +1382,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: users finger üzerinden"
+            "desc_tr": "Enumerate users via finger"
           },
           {
             "title": "SMTP User VRFY",
@@ -1391,7 +1391,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Doğrula: users SMTP üzerinden"
+            "desc_tr": "Verify users via SMTP"
           },
           {
             "title": "SMTP User RCPT",
@@ -1400,7 +1400,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: RCPT üzerinden'e"
+            "desc_tr": "Enumerate via RCPT TO"
           },
           {
             "title": "SMTP User EXPN",
@@ -1443,7 +1443,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Al: HTTP response headers"
+            "desc_tr": "Retrieve HTTP response headers"
           },
           {
             "title": "Curl Full Response",
@@ -1452,7 +1452,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Al: full HTTP response headers ile"
+            "desc_tr": "Get full HTTP response with headers"
           },
           {
             "title": "Curl Follow Redirects",
@@ -1507,7 +1507,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Algıla: Web ApplicatiFirewalls üzerinde"
+            "desc_tr": "Web uygulama güvenlik duvarlarını (WAF) tespit et"
           },
           {
             "title": "wafw00f All WAFs",
@@ -1561,7 +1561,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çıkart: HTTP headers nmap NSE üzerinden"
+            "desc_tr": "Extract HTTP headers via nmap NSE"
           },
           {
             "title": "Curl CORS Test",
@@ -1579,7 +1579,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Algıla: web app firewalls"
+            "desc_tr": "Detect web app firewalls"
           },
           {
             "title": "WAF Fingerprint All",
@@ -1631,7 +1631,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: tüm vuln-category NSE scripts"
+            "desc_tr": "Run all vuln-category NSE scripts"
           },
           {
             "title": "Nmap MS17-010 (EternalBlue)",
@@ -1694,7 +1694,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: allowed HTTP methods (PUT, DELETE)"
+            "desc_tr": "Enumerate allowed HTTP methods (PUT, DELETE)"
           },
           {
             "title": "Nmap HTTP Robots Check",
@@ -1703,7 +1703,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Al: and display robots.txt"
+            "desc_tr": "Retrieve and display robots.txt"
           },
           {
             "title": "Nmap HTTP Enum",
@@ -1712,7 +1712,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: commweb directories and files üzerinde"
+            "desc_tr": "Enumerate common web directories and files"
           },
           {
             "title": "Nmap RDP Bluekeep Check",
@@ -1758,7 +1758,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: SSL/TLS ciphers and protocols"
+            "desc_tr": "Enumerate SSL/TLS ciphers and protocols"
           },
           {
             "title": "Nmap SSL Certificate Info",
@@ -1767,7 +1767,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çıkart: SSL certificate details"
+            "desc_tr": "Extract SSL certificate details"
           },
           {
             "title": "Nmap SSH Brute Force",
@@ -1803,7 +1803,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: NFS exports and permissions"
+            "desc_tr": "Enumerate NFS exports and permissions"
           },
           {
             "title": "Nmap MySQL Audit",
@@ -1812,7 +1812,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: MySQL audit and empty password check"
+            "desc_tr": "Run MySQL audit and empty password check"
           },
           {
             "title": "Nmap LDAP RootDSE",
@@ -1821,7 +1821,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Sorgula: LDAP root DSE for domainfo içinde"
+            "desc_tr": "Query LDAP root DSE for domain info"
           },
           {
             "title": "Nmap DNS Brute Force",
@@ -1875,7 +1875,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bul: config backups"
+            "desc_tr": "Find config backups"
           }
         ],
         "name_tr": "Network-Level Scanning"
@@ -1911,7 +1911,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Çalıştır: Nuclei tüm default templates ile"
+            "desc_tr": "Run Nuclei with all default templates"
           },
           {
             "title": "Nuclei Severity Filter",
@@ -1920,7 +1920,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çalıştır: Nuclei for critical and high severity only"
+            "desc_tr": "Run Nuclei for critical and high severity only"
           },
           {
             "title": "Nuclei Specific Tags",
@@ -1929,7 +1929,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çalıştır: Nuclei templates matching belirli tags"
+            "desc_tr": "Run Nuclei templates matching specific tags"
           },
           {
             "title": "Nuclei with Target List",
@@ -1938,7 +1938,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çalıştır: Nuclei multiple targets file üzerinden'e karşı"
+            "desc_tr": "Run Nuclei against multiple targets from file"
           },
           {
             "title": "Nuclei Technology-Specific",
@@ -1947,7 +1947,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çalıştır: Nuclei for a belirli technology stack"
+            "desc_tr": "Run Nuclei for a specific technology stack"
           },
           {
             "title": "AutoRecon",
@@ -2010,7 +2010,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Listele: plugins known zafiyet(ler) ile"
+            "desc_tr": "Enumerate plugins with known vulnerabilities"
           },
           {
             "title": "WPScan Enumerate Users",
@@ -2020,7 +2020,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Listele: WordPress usernames"
+            "desc_tr": "Enumerate WordPress usernames"
           },
           {
             "title": "WPScan with Custom WP Path",
@@ -2029,7 +2029,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Tara: ma WordPress non-standard path üzerinde"
+            "desc_tr": "Scan WordPress on non-standard path"
           },
           {
             "title": "JoomScan Full Scan",
@@ -2047,7 +2047,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: Joomla components"
+            "desc_tr": "Enumerate Joomla components"
           },
           {
             "title": "DroopeScan Drupal",
@@ -2056,7 +2056,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Tara: ma Drupal installatifor zafiyet(ler) üzerinde"
+            "desc_tr": "Scan Drupal installation for vulnerabilities"
           },
           {
             "title": "DroopeScan SilverStripe",
@@ -2065,7 +2065,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Tara: ma SilverStripe CMS"
+            "desc_tr": "Scan SilverStripe CMS"
           }
         ],
         "name_tr": "CMS-Specific Scanners"
@@ -2238,7 +2238,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Keşfet: gizli GET parameters"
+            "desc_tr": "Discover hidden GET parameters"
           },
           {
             "title": "FFUF POST Parameter Fuzzing",
@@ -2248,7 +2248,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Keşfet: gizli POST parameters"
+            "desc_tr": "Discover hidden POST parameters"
           },
           {
             "title": "FFUF Value Fuzzing",
@@ -2327,7 +2327,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Oku: PHP source code base64 wrapper üzerinden"
+            "desc_tr": "Read PHP source code via base64 wrapper"
           },
           {
             "title": "LFI PHP Input Wrapper",
@@ -2336,7 +2336,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: PHP code input wrapper üzerinden"
+            "desc_tr": "Execute PHP code via input wrapper"
           },
           {
             "title": "LFI Data Wrapper",
@@ -2345,7 +2345,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Çalıştır: PHP data:// wrapper üzerinden"
+            "desc_tr": "Execute PHP via data:// wrapper"
           },
           {
             "title": "LFI Expect Wrapper",
@@ -2355,7 +2355,7 @@ module.exports = [
               "advanced"
             ],
             "note": "Requires expect module enabled",
-            "desc_tr": "Çalıştır: commands expect wrapper üzerinden"
+            "desc_tr": "Execute commands via expect wrapper"
           },
           {
             "title": "LFI Log Poisoning (Apache)",
@@ -2460,7 +2460,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Başlat: a web server host RFI payloads'e"
+            "desc_tr": "Start a web server to host RFI payloads"
           }
         ],
         "name_tr": "Remote File Inclusion"
@@ -2538,7 +2538,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Algıla: blind enjeksiysleep delay ile üzerinde"
+            "desc_tr": "Detect blind injection with sleep delay"
           },
           {
             "title": "Blind Command Injection (OOB)",
@@ -2550,7 +2550,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Algıla: blind enjeksiyout-of-band DNS/HTTP üzerinden üzerinde"
+            "desc_tr": "Detect blind injection via out-of-band DNS/HTTP"
           },
           {
             "title": "Command Injection Rev Shell",
@@ -2574,7 +2574,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Yükle: a basic PHP web kabuğu"
+            "desc_tr": "Upload a basic PHP web shell"
           },
           {
             "title": "Upload Double Extension Bypass",
@@ -2583,7 +2583,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Atla: extensifilter double extension ile üzerinde"
+            "desc_tr": "Bypass extension filter with double extension"
           },
           {
             "title": "Upload Content-Type Bypass",
@@ -2592,7 +2592,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Atla: content-type validation"
+            "desc_tr": "Bypass content-type validation"
           },
           {
             "title": "Upload .htaccess Override",
@@ -2606,7 +2606,7 @@ module.exports = [
               "advanced"
             ],
             "note": "shell.jpg contains PHP code",
-            "desc_tr": "Yükle: .htaccess make .jpg execute as PHP'e"
+            "desc_tr": "Upload .htaccess to make .jpg execute as PHP"
           },
           {
             "title": "Upload Case Variation",
@@ -2615,7 +2615,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Atla: case-altered extensiile üzerinde"
+            "desc_tr": "Bypass with case-altered extension"
           },
           {
             "title": "Upload Alternate PHP Extensions",
@@ -2672,7 +2672,7 @@ module.exports = [
               "advanced"
             ],
             "note": "2130706433 = 127.0.0.1 in decimal",
-            "desc_tr": "Atla: filters decimal IP kullanarak"
+            "desc_tr": "Bypass filters using decimal IP"
           },
           {
             "title": "SSRF Localhost Bypass (Hex)",
@@ -2681,7 +2681,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Atla: filters hex IP kullanarak"
+            "desc_tr": "Bypass filters using hex IP"
           },
           {
             "title": "SSRF Localhost Bypass (Short)",
@@ -2690,7 +2690,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Atla: shortened localhost kullanarak"
+            "desc_tr": "Bypass using shortened localhost"
           },
           {
             "title": "SSRF IPv6 Localhost",
@@ -2699,7 +2699,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Atla: IPv6 localhost kullanarak"
+            "desc_tr": "Bypass using IPv6 localhost"
           },
           {
             "title": "SSRF AWS Metadata",
@@ -2717,7 +2717,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çal: AWS IAM role kimlik bilgileri"
+            "desc_tr": "Steal AWS IAM role credentials"
           },
           {
             "title": "SSRF GCP Metadata",
@@ -2735,7 +2735,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Tara: ma internal ports SSRF üzerinden"
+            "desc_tr": "Scan internal ports via SSRF"
           },
           {
             "title": "SSRF File Protocol",
@@ -2744,7 +2744,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Oku: yerel files file:// protocol üzerinden"
+            "desc_tr": "Read local files via file:// protocol"
           }
         ],
         "name_tr": "Server-Side Request Forgery"
@@ -2759,7 +2759,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Oku: yerel file XXE üzerinden"
+            "desc_tr": "Read local file via XXE"
           },
           {
             "title": "XXE File Read (Windows)",
@@ -2768,7 +2768,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Oku: yerel file Windows target üzerinde"
+            "desc_tr": "Read local file on Windows target"
           },
           {
             "title": "XXE SSRF",
@@ -2786,7 +2786,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Oku: PHP source XXE base64 kodlama üzerinden ile"
+            "desc_tr": "Read PHP source via XXE with base64 encoding"
           },
           {
             "title": "XXE OOB Exfiltration",
@@ -2889,7 +2889,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: Java deserializatipayload üzerinde"
+            "desc_tr": "Generate Java deserialization payload"
           },
           {
             "title": "Ysoserial Java Payload (CommonsCollections5)",
@@ -2898,7 +2898,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: CC5 gadget chapayload içinde"
+            "desc_tr": "Generate CC5 gadget chain payload"
           },
           {
             "title": "Ysoserial Java Payload (CommonsCollections7)",
@@ -2907,7 +2907,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: CC7 gadget chapayload içinde"
+            "desc_tr": "Generate CC7 gadget chain payload"
           },
           {
             "title": "PHP Deserialization Payload",
@@ -2926,7 +2926,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Oluştur: malicious Pythpickle payload üzerinde"
+            "desc_tr": "Generate malicious Python pickle payload"
           },
           {
             "title": ".NET Ysoserial Payload",
@@ -2936,7 +2936,7 @@ module.exports = [
               "tool"
             ],
             "note": "Windows tool for .NET targets",
-            "desc_tr": "Oluştur: .NET deserializatipayload üzerinde"
+            "desc_tr": "Generate .NET deserialization payload"
           }
         ],
         "name_tr": "Insecure Deserialization"
@@ -2971,7 +2971,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dökümle: Flask/Jinja2 configuration"
+            "desc_tr": "Dump Flask/Jinja2 configuration"
           },
           {
             "title": "SSTI Jinja2 RCE (Python3)",
@@ -3064,7 +3064,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çıkart: Flask secret key config üzerinden"
+            "desc_tr": "Extract Flask secret key via config"
           },
           {
             "title": "SSTI Twig Detection",
@@ -3084,7 +3084,7 @@ module.exports = [
               "essential"
             ],
             "note": "Freemarker uses ${} syntax",
-            "desc_tr": "Algıla: Freemarker assign üzerinden"
+            "desc_tr": "Detect Freemarker via assign"
           },
           {
             "title": "SSTI Mako RCE (Python)",
@@ -3173,7 +3173,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çöz: zme JWT token parts manually"
+            "desc_tr": "Decode JWT token parts manually"
           },
           {
             "title": "JWT None Algorithm Attack",
@@ -3196,7 +3196,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kır: JWT HMAC secret hashcat ile"
+            "desc_tr": "Crack JWT HMAC secret with hashcat"
           },
           {
             "title": "JWT Weak Secret Crack (john)",
@@ -3205,7 +3205,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kır: JWT HMAC secret john ile"
+            "desc_tr": "Crack JWT HMAC secret with john"
           },
           {
             "title": "JWT Algorithm Confusion (RS256 to HS256)",
@@ -3248,7 +3248,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çöz: zme JWT token"
+            "desc_tr": "Decode JWT token"
           },
           {
             "title": "JWT None Algorithm",
@@ -3257,7 +3257,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Atla: none alg ile"
+            "desc_tr": "Bypass with none alg"
           },
           {
             "title": "JWT Crack Secret",
@@ -3350,7 +3350,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bağlan: a WebSocket endpoint'e"
+            "desc_tr": "Connect to a WebSocket endpoint"
           },
           {
             "title": "WebSocket XSS via Message",
@@ -3383,7 +3383,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Atla: header üzerinden"
+            "desc_tr": "Bypass via header"
           },
           {
             "title": "403 Bypass — X-Rewrite-URL",
@@ -3392,7 +3392,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Atla: rewrite header üzerinden"
+            "desc_tr": "Bypass via rewrite header"
           },
           {
             "title": "403 Bypass — Path Tricks",
@@ -3436,7 +3436,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dökümle: entire schema"
+            "desc_tr": "Dump entire schema"
           },
           {
             "title": "GraphQL Queries List",
@@ -3445,7 +3445,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: available queries"
+            "desc_tr": "List available queries"
           }
         ],
         "name_tr": "GraphQL Attacks"
@@ -3589,7 +3589,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Algıla: blind SQLi time delay üzerinden"
+            "desc_tr": "Detect blind SQLi via time delay"
           },
           {
             "title": "SQLi Stacked Query Test",
@@ -3628,7 +3628,7 @@ module.exports = [
               "essential"
             ],
             "note": "Adjust number of columns to match ORDER BY result",
-            "desc_tr": "Bul: number of columns and visible positions"
+            "desc_tr": "Find number of columns and visible positions"
           },
           {
             "title": "MySQL Version via UNION",
@@ -3637,7 +3637,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çıkart: MySQL version"
+            "desc_tr": "Extract MySQL version"
           },
           {
             "title": "MySQL Current User via UNION",
@@ -3646,7 +3646,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çıkart: mevcut database user"
+            "desc_tr": "Extract current database user"
           },
           {
             "title": "MySQL Current Database",
@@ -3655,7 +3655,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çıkart: mevcut database name"
+            "desc_tr": "Extract current database name"
           },
           {
             "title": "MySQL List Databases",
@@ -3664,7 +3664,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm databases"
+            "desc_tr": "Enumerate all databases"
           },
           {
             "title": "MySQL List Tables",
@@ -3673,7 +3673,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tables a database içinde"
+            "desc_tr": "Enumerate tables in a database"
           },
           {
             "title": "MySQL List Columns",
@@ -3682,7 +3682,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: columns a table içinde"
+            "desc_tr": "Enumerate columns in a table"
           },
           {
             "title": "MySQL Dump Data",
@@ -3691,7 +3691,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çıkart: data belirli columns üzerinden"
+            "desc_tr": "Extract data from specific columns"
           },
           {
             "title": "MySQL Read File",
@@ -3700,7 +3700,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Oku: file filesystem SQL üzerinden üzerinden"
+            "desc_tr": "Read file from filesystem via SQL"
           },
           {
             "title": "MySQL Write File",
@@ -3709,7 +3709,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Yaz: a web kabuğu SQL enjeksiyüzerinden üzerinde"
+            "desc_tr": "Write a web shell via SQL injection"
           },
           {
             "title": "MSSQL Version via UNION",
@@ -3718,7 +3718,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çıkart: MSSQL version"
+            "desc_tr": "Extract MSSQL version"
           },
           {
             "title": "MSSQL List Databases",
@@ -3727,7 +3727,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: MSSQL databases"
+            "desc_tr": "Enumerate MSSQL databases"
           },
           {
             "title": "MSSQL List Tables",
@@ -3736,7 +3736,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: MSSQL tables"
+            "desc_tr": "Enumerate MSSQL tables"
           },
           {
             "title": "PostgreSQL Version via UNION",
@@ -3745,7 +3745,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çıkart: PostgreSQL version"
+            "desc_tr": "Extract PostgreSQL version"
           },
           {
             "title": "PostgreSQL List Databases",
@@ -3754,7 +3754,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: PostgreSQL databases"
+            "desc_tr": "Enumerate PostgreSQL databases"
           },
           {
             "title": "PostgreSQL List Tables",
@@ -3763,7 +3763,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: PostgreSQL tables"
+            "desc_tr": "Enumerate PostgreSQL tables"
           },
           {
             "title": "SQLite Version via UNION",
@@ -3772,7 +3772,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çıkart: SQLite version"
+            "desc_tr": "Extract SQLite version"
           },
           {
             "title": "SQLite List Tables",
@@ -3781,7 +3781,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: SQLite tables"
+            "desc_tr": "Enumerate SQLite tables"
           },
           {
             "title": "SQLite Table Schema",
@@ -3790,7 +3790,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Al: table DDL/schema"
+            "desc_tr": "Get table DDL/schema"
           }
         ],
         "name_tr": "UNION Extraction"
@@ -3805,7 +3805,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Çıkart: data XML extractvalue error üzerinden"
+            "desc_tr": "Extract data via XML extractvalue error"
           },
           {
             "title": "MySQL UpdateXML Error",
@@ -3814,7 +3814,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Çıkart: data XML updatexml error üzerinden"
+            "desc_tr": "Extract data via XML updatexml error"
           },
           {
             "title": "MySQL Double Query Error",
@@ -3832,7 +3832,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Çıkart: data CONVERT type error üzerinden"
+            "desc_tr": "Extract data via CONVERT type error"
           },
           {
             "title": "PostgreSQL Cast Error",
@@ -3841,7 +3841,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Çıkart: data CAST type error üzerinden"
+            "desc_tr": "Extract data via CAST type error"
           }
         ],
         "name_tr": "Error-Based Extraction"
@@ -3856,7 +3856,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çıkart: versicharacter by character üzerinde"
+            "desc_tr": "Extract version character by character"
           },
           {
             "title": "Boolean Blind Database Length",
@@ -3874,7 +3874,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çıkart: database name one character at a time"
+            "desc_tr": "Extract database name one character at a time"
           },
           {
             "title": "Boolean Blind Table Count",
@@ -3893,7 +3893,7 @@ module.exports = [
               "advanced"
             ],
             "note": "Binary search for each character: narrow between 32-127",
-            "desc_tr": "Çıkart: character ASCII comparisüzerinden üzerinde"
+            "desc_tr": "Extract character via ASCII comparison"
           }
         ],
         "name_tr": "Blind Boolean Extraction"
@@ -4000,7 +4000,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Listele: tüm databases"
+            "desc_tr": "Tüm veritabanlarını listele"
           },
           {
             "title": "SQLMap Enumerate Tables",
@@ -4010,7 +4010,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Listele: tables a database içinde"
+            "desc_tr": "List tables in a database"
           },
           {
             "title": "SQLMap Enumerate Columns",
@@ -4020,7 +4020,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Listele: columns a table içinde"
+            "desc_tr": "List columns in a table"
           },
           {
             "title": "SQLMap Dump Table",
@@ -4030,7 +4030,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Dökümle: data a table üzerinden"
+            "desc_tr": "Dump data from a table"
           },
           {
             "title": "SQLMap OS Shell",
@@ -4040,7 +4040,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Al: an interactive OS shell SQLi üzerinden"
+            "desc_tr": "Get an interactive OS shell via SQLi"
           },
           {
             "title": "SQLMap File Read",
@@ -4050,7 +4050,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Oku: file target filesystem üzerinden"
+            "desc_tr": "Read file from target filesystem"
           },
           {
             "title": "SQLMap File Write",
@@ -4060,7 +4060,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Yaz: file target filesystem'e"
+            "desc_tr": "Write file to target filesystem"
           },
           {
             "title": "SQLMap Specify Technique",
@@ -4107,7 +4107,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Dökümle: entire database"
+            "desc_tr": "Dump entire database"
           },
           {
             "title": "SQLMap Tamper space2comment",
@@ -4117,7 +4117,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Değiştir: spaces comments bypass WAF ile'e"
+            "desc_tr": "Replace spaces with comments to bypass WAF"
           },
           {
             "title": "SQLMap Tamper charencode",
@@ -4147,7 +4147,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Değiştir: > BETWEEN bypass WAF ile'e"
+            "desc_tr": "Replace > with BETWEEN to bypass WAF"
           },
           {
             "title": "SQLMap Tamper Chain (WAF Bypass)",
@@ -4177,7 +4177,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Yönlendir: SQLMap Burp for inspection üzerinden"
+            "desc_tr": "Route SQLMap through Burp for inspection"
           },
           {
             "title": "SQLMap Custom Injection Point",
@@ -4205,7 +4205,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Yönlendir: vekil sunucu (proxy) üzerinden"
+            "desc_tr": "Route through proxy"
           },
           {
             "title": "SQLMap Risk/Level",
@@ -4251,7 +4251,7 @@ module.exports = [
               "essential"
             ],
             "note": "Requires sysadmin privileges",
-            "desc_tr": "Etkinleştir: xp_cmdshell for OS komut enjeksiyonu"
+            "desc_tr": "OS komutu çalıştırmak için xp_cmdshell'i etkinleştir"
           },
           {
             "title": "MSSQL Execute Command",
@@ -4260,7 +4260,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: OS command xp_cmdshell üzerinden"
+            "desc_tr": "xp_cmdshell ile OS komutu çalıştır"
           },
           {
             "title": "MSSQL Steal Hash (xp_dirtree)",
@@ -4270,7 +4270,7 @@ module.exports = [
               "essential"
             ],
             "note": "Catch hash with responder or smbserver",
-            "desc_tr": "Zorla: NTLM kimlik doğrulama attacker SMB share'e"
+            "desc_tr": "Force NTLM authentication to attacker SMB share"
           },
           {
             "title": "MSSQL Steal Hash (xp_subdirs)",
@@ -4288,7 +4288,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Zorla: auth OPENROWSET üzerinden"
+            "desc_tr": "Force auth via OPENROWSET"
           },
           {
             "title": "MSSQL Linked Servers",
@@ -4297,7 +4297,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Listele: linked servers for yanal hareket"
+            "desc_tr": "Enumerate linked servers for lateral movement"
           },
           {
             "title": "MSSQL Impersonate Users",
@@ -4321,7 +4321,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Oku: files filesystem üzerinden"
+            "desc_tr": "Read files from filesystem"
           },
           {
             "title": "PostgreSQL COPY TO File",
@@ -4330,7 +4330,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Yaz: data a file'e"
+            "desc_tr": "Write data to a file"
           },
           {
             "title": "PostgreSQL COPY FROM File",
@@ -4339,7 +4339,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Oku: file ina table'e"
+            "desc_tr": "Read file into a table"
           },
           {
             "title": "PostgreSQL Command Execution",
@@ -4349,7 +4349,7 @@ module.exports = [
               "advanced"
             ],
             "note": "Requires superuser privileges",
-            "desc_tr": "Çalıştır: OS commands COPY PROGRAM üzerinden"
+            "desc_tr": "Execute OS commands via COPY PROGRAM"
           },
           {
             "title": "PostgreSQL Large Object RCE",
@@ -4379,7 +4379,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm database users and roles"
+            "desc_tr": "Enumerate all database users and roles"
           },
           {
             "title": "PostgreSQL UDF Command Execution",
@@ -4392,7 +4392,7 @@ module.exports = [
               "advanced"
             ],
             "note": "Requires plpythonu extension",
-            "desc_tr": "Oluştur: a functifor OS komut enjeksiyonu üzerinde"
+            "desc_tr": "Create a function for OS command execution"
           },
           {
             "title": "PostgreSQL Reverse Shell",
@@ -4416,7 +4416,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Atla: log$ne operator ile içinde"
+            "desc_tr": "Bypass login with $ne operator"
           },
           {
             "title": "MongoDB Auth Bypass ($gt)",
@@ -4425,7 +4425,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Atla: log$gt operator ile içinde"
+            "desc_tr": "Bypass login with $gt operator"
           },
           {
             "title": "MongoDB Regex Extraction",
@@ -4435,7 +4435,7 @@ module.exports = [
               "essential"
             ],
             "note": "Iterate characters: ^a, ^ab, ^abc... until match found",
-            "desc_tr": "Çıkart: data character by character $regex üzerinden"
+            "desc_tr": "Extract data character by character via $regex"
           },
           {
             "title": "MongoDB $where JavaScript Injection",
@@ -4466,7 +4466,7 @@ module.exports = [
               "advanced"
             ],
             "note": "First find length, then brute force each character",
-            "desc_tr": "Çıkart: password length then chars regex üzerinden"
+            "desc_tr": "Extract password length then chars via regex"
           },
           {
             "title": "NoSQLMap Automated Testing",
@@ -4493,7 +4493,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Atla: log$ne ile içinde"
+            "desc_tr": "Bypass login with $ne"
           },
           {
             "title": "NoSQL $regex Bypass",
@@ -4691,7 +4691,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çal: cookies Image object üzerinden"
+            "desc_tr": "Steal cookies via Image object"
           },
           {
             "title": "XSS Cookie Steal (Fetch)",
@@ -4700,7 +4700,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çal: cookies fetch API üzerinden"
+            "desc_tr": "Steal cookies via fetch API"
           },
           {
             "title": "XSS Cookie Steal (XMLHttpRequest)",
@@ -4709,7 +4709,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çal: cookies XHR üzerinden"
+            "desc_tr": "Steal cookies via XHR"
           },
           {
             "title": "XSS Keylogger Injection",
@@ -4751,7 +4751,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Atla: filters HTML entities kullanarak"
+            "desc_tr": "Bypass filters using HTML entities"
           },
           {
             "title": "XSS URL Encoding",
@@ -4760,7 +4760,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Atla: WAF URL-encoded payload ile"
+            "desc_tr": "Bypass WAF with URL-encoded payload"
           },
           {
             "title": "XSS Double URL Encoding",
@@ -4787,7 +4787,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Atla: case-sensitive filters"
+            "desc_tr": "Bypass case-sensitive filters"
           },
           {
             "title": "XSS Null Byte Injection",
@@ -4796,7 +4796,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Atla: filters null byte ile"
+            "desc_tr": "Bypass filters with null byte"
           },
           {
             "title": "XSS No Parentheses",
@@ -4845,7 +4845,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Atla: CSP JSONP üzerinden"
+            "desc_tr": "Bypass CSP via JSONP"
           },
           {
             "title": "CSP Bypass base-uri",
@@ -5034,7 +5034,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Oluştur: Windows ters bağlantı kabuğu executable"
+            "desc_tr": "Generate Windows reverse shell executable"
           },
           {
             "title": "Windows Meterpreter EXE",
@@ -5044,7 +5044,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Oluştur: Windows Meterpreter executable"
+            "desc_tr": "Generate Windows Meterpreter executable"
           },
           {
             "title": "Windows Reverse Shell DLL",
@@ -5053,7 +5053,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: Windows ters bağlantı kabuğu DLL"
+            "desc_tr": "Generate Windows reverse shell DLL"
           },
           {
             "title": "Linux Reverse Shell ELF",
@@ -5063,7 +5063,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Oluştur: Linux ters bağlantı kabuğu binary"
+            "desc_tr": "Generate Linux reverse shell binary"
           },
           {
             "title": "Linux Meterpreter ELF",
@@ -5072,7 +5072,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: Linux Meterpreter binary"
+            "desc_tr": "Generate Linux Meterpreter binary"
           },
           {
             "title": "PHP Reverse Shell",
@@ -5082,7 +5082,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Oluştur: PHP ters bağlantı kabuğu script"
+            "desc_tr": "Generate PHP reverse shell script"
           },
           {
             "title": "JSP Reverse Shell",
@@ -5091,7 +5091,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: JSP ters bağlantı kabuğu"
+            "desc_tr": "Generate JSP reverse shell"
           },
           {
             "title": "WAR Reverse Shell",
@@ -5101,7 +5101,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Oluştur: WAR file ters bağlantı kabuğu for Tomcat"
+            "desc_tr": "Generate WAR file reverse shell for Tomcat"
           },
           {
             "title": "ASP Reverse Shell",
@@ -5110,7 +5110,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: classic ASP ters bağlantı kabuğu"
+            "desc_tr": "Generate classic ASP reverse shell"
           },
           {
             "title": "ASPX Reverse Shell",
@@ -5120,7 +5120,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Oluştur: ASPX ters bağlantı kabuğu"
+            "desc_tr": "Generate ASPX reverse shell"
           },
           {
             "title": "Python Reverse Shell",
@@ -5129,7 +5129,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: Pythters bağlantı kabuğu payload üzerinde"
+            "desc_tr": "Generate Python reverse shell payload"
           },
           {
             "title": "Bash Reverse Shell",
@@ -5138,7 +5138,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: Bash ters bağlantı kabuğu payload"
+            "desc_tr": "Generate Bash reverse shell payload"
           },
           {
             "title": "PowerShell Reverse Shell",
@@ -5147,7 +5147,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: PowerShell ters bağlantı kabuğu payload"
+            "desc_tr": "Generate PowerShell reverse shell payload"
           },
           {
             "title": "msfvenom Windows HTTPS",
@@ -5209,7 +5209,7 @@ module.exports = [
               "tool"
             ],
             "note": "Staged: / in payload name (reverse_tcp). Downloads second stage from handler.",
-            "desc_tr": "Oluştur: staged payload — smaller, needs handler"
+            "desc_tr": "Generate staged payload — smaller, needs handler"
           },
           {
             "title": "Stageless Payload (Windows)",
@@ -5220,7 +5220,7 @@ module.exports = [
               "tool"
             ],
             "note": "Stageless: _ in payload name (reverse_tcp). Contains full payload — larger but more reliable.",
-            "desc_tr": "Oluştur: stageless payload — self-contained"
+            "desc_tr": "Generate stageless payload — self-contained"
           },
           {
             "title": "Staged Payload (Linux)",
@@ -5229,7 +5229,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: staged Linux payload"
+            "desc_tr": "Generate staged Linux payload"
           },
           {
             "title": "Stageless Payload (Linux)",
@@ -5238,7 +5238,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: stageless Linux payload"
+            "desc_tr": "Generate stageless Linux payload"
           },
           {
             "title": "List Available Payloads",
@@ -5248,7 +5248,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Göster: tüm available msfvenom payloads"
+            "desc_tr": "Show all available msfvenom payloads"
           },
           {
             "title": "List Available Encoders",
@@ -5257,7 +5257,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Göster: tüm available payload encoders"
+            "desc_tr": "Show all available payload encoders"
           },
           {
             "title": "List Available Formats",
@@ -5266,7 +5266,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Göster: tüm available output formats"
+            "desc_tr": "Show all available output formats"
           },
           {
             "title": "List Payloads",
@@ -5275,7 +5275,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: tüm payloads"
+            "desc_tr": "Show all payloads"
           },
           {
             "title": "List Encoders",
@@ -5284,7 +5284,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Göster: encoders"
+            "desc_tr": "Show encoders"
           },
           {
             "title": "List Formats",
@@ -5293,7 +5293,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Göster: output formats"
+            "desc_tr": "Show output formats"
           }
         ],
         "name_tr": "Staged vs Stageless"
@@ -5368,7 +5368,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: VBA macro for Office documents"
+            "desc_tr": "Generate VBA macro for Office documents"
           },
           {
             "title": "HTA PowerShell Payload",
@@ -5377,7 +5377,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: HTA file PowerShell payload ile"
+            "desc_tr": "Generate HTA file with PowerShell payload"
           },
           {
             "title": "MSI Installer Payload",
@@ -5386,7 +5386,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: malicious MSI installer"
+            "desc_tr": "Generate malicious MSI installer"
           }
         ],
         "name_tr": "Office & Macro Payloads"
@@ -5401,7 +5401,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: shellcode Pythformat üzerinde içinde"
+            "desc_tr": "Generate shellcode in Python format"
           },
           {
             "title": "Raw Shellcode (C)",
@@ -5410,7 +5410,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: shellcode C format içinde"
+            "desc_tr": "Generate shellcode in C format"
           },
           {
             "title": "Raw Shellcode (C#)",
@@ -5419,7 +5419,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: shellcode C# format içinde"
+            "desc_tr": "Generate shellcode in C# format"
           },
           {
             "title": "Raw Shellcode (Hex)",
@@ -5428,7 +5428,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: shellcode as hex string"
+            "desc_tr": "Generate shellcode as hex string"
           },
           {
             "title": "Raw Shellcode (Raw)",
@@ -5437,7 +5437,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: raw binary shellcode"
+            "desc_tr": "Generate raw binary shellcode"
           },
           {
             "title": "Encoded Payload (Shikata)",
@@ -5447,7 +5447,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Kodla: a payload shikata_ga_nai encoder ile"
+            "desc_tr": "Encode payload with shikata_ga_nai encoder"
           },
           {
             "title": "Payload with Bad Chars Excluded",
@@ -5457,7 +5457,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Oluştur: payload avoiding null bytes and bad characters"
+            "desc_tr": "Generate payload avoiding null bytes and bad characters"
           },
           {
             "title": "x86 Encoded Payload",
@@ -5467,7 +5467,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Kodla: a x86 payload shikata_ga_nai ile"
+            "desc_tr": "Encode x86 payload with shikata_ga_nai"
           },
           {
             "title": "Donut PE to Shellcode",
@@ -5476,7 +5476,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Dönüştür: PE shellcode'e"
+            "desc_tr": "Convert PE to shellcode"
           },
           {
             "title": "ScareCrow Loader",
@@ -5510,7 +5510,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Başlat: a basic netcat listener"
+            "desc_tr": "Start a basic netcat listener"
           },
           {
             "title": "Rlwrap Netcat Listener",
@@ -5528,7 +5528,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Başlat: a socat listener"
+            "desc_tr": "Start a socat listener"
           },
           {
             "title": "Socat Encrypted Listener",
@@ -5558,7 +5558,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Başlat: MSF multi/handler for staged payloads"
+            "desc_tr": "Start MSF multi/handler for staged payloads"
           },
           {
             "title": "Metasploit Handler (One-Liner)",
@@ -5804,7 +5804,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "İndir: and execute ters bağlantı kabuğu script"
+            "desc_tr": "Download and execute reverse shell script"
           },
           {
             "title": "Nishang Invoke-PowerShellTcp",
@@ -5921,7 +5921,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Başlat: a dinleyen kabuk listener target üzerinde"
+            "desc_tr": "Start a bind shell listener on target"
           },
           {
             "title": "Netcat Bind Shell (mkfifo)",
@@ -5957,7 +5957,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: an established dinleyen kabuk'e"
+            "desc_tr": "Connect to an established bind shell"
           }
         ],
         "name_tr": "Bind Shells"
@@ -6027,7 +6027,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: commands uploaded web kabuğu üzerinden"
+            "desc_tr": "Execute commands via uploaded web shell"
           }
         ],
         "name_tr": "Web Shells"
@@ -6042,7 +6042,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Başlat: a PTY shell Pythile üzerinde"
+            "desc_tr": "Spawn a PTY shell with Python"
           },
           {
             "title": "Python2 PTY Spawn",
@@ -6051,7 +6051,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Başlat: a PTY shell Python2 ile"
+            "desc_tr": "Spawn a PTY shell with Python2"
           },
           {
             "title": "Script PTY Spawn",
@@ -6060,7 +6060,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Başlat: a PTY script command ile"
+            "desc_tr": "Spawn a PTY with script command"
           },
           {
             "title": "Full TTY Upgrade Process",
@@ -6085,7 +6085,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Başlat: PTY expect üzerinden"
+            "desc_tr": "Spawn PTY via expect"
           },
           {
             "title": "Socat TTY Upgrade",
@@ -6116,7 +6116,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ayarla: TERM for proper terminal behavior"
+            "desc_tr": "Set TERM for proper terminal behavior"
           },
           {
             "title": "Fix Shell PATH",
@@ -6125,7 +6125,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ayarla: PATH for full command availability"
+            "desc_tr": "Set PATH for full command availability"
           }
         ],
         "name_tr": "Interactive Shell Upgrade"
@@ -6150,7 +6150,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Al: detailed system information"
+            "desc_tr": "Get detailed system information"
           },
           {
             "title": "Hostname",
@@ -6159,7 +6159,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Al: computer name"
+            "desc_tr": "Get computer name"
           },
           {
             "title": "Current User",
@@ -6177,7 +6177,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm privileges for mevcut user"
+            "desc_tr": "List all privileges for current user"
           },
           {
             "title": "User Groups",
@@ -6186,7 +6186,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm group memberships"
+            "desc_tr": "List all group memberships"
           },
           {
             "title": "List Local Users",
@@ -6195,7 +6195,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm yerel user accounts"
+            "desc_tr": "Enumerate all local user accounts"
           },
           {
             "title": "User Details",
@@ -6204,7 +6204,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Al: details for a belirli user"
+            "desc_tr": "Get details for a specific user"
           },
           {
             "title": "Local Administrators",
@@ -6213,7 +6213,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: members of administrators group"
+            "desc_tr": "List members of administrators group"
           },
           {
             "title": "Network Configuration",
@@ -6240,7 +6240,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: active network connections"
+            "desc_tr": "Show active network connections"
           },
           {
             "title": "Running Processes",
@@ -6249,7 +6249,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm çalışan process"
+            "desc_tr": "List all running processes"
           },
           {
             "title": "Installed Software (WMIC)",
@@ -6258,7 +6258,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: yüklü software WMIC üzerinden"
+            "desc_tr": "List installed software via WMIC"
           },
           {
             "title": "Installed Patches",
@@ -6267,7 +6267,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: installed hotfixes"
+            "desc_tr": "List installed hotfixes"
           },
           {
             "title": "Scheduled Tasks",
@@ -6276,7 +6276,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm zamanlanmış görevler"
+            "desc_tr": "Tüm zamanlanmış görevleri listele"
           },
           {
             "title": "Firewall State",
@@ -6303,7 +6303,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm drives the system üzerinde"
+            "desc_tr": "List all drives on the system"
           },
           {
             "title": "WMIC Patches",
@@ -6312,7 +6312,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: yüklü patches"
+            "desc_tr": "List installed patches"
           },
           {
             "title": "Defender Status",
@@ -6339,7 +6339,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: firewall config"
+            "desc_tr": "List firewall config"
           },
           {
             "title": "Service Config",
@@ -6348,7 +6348,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Sorgula: service config"
+            "desc_tr": "Query service config"
           }
         ],
         "name_tr": "System Reconnaissance"
@@ -6363,7 +6363,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm Windows services"
+            "desc_tr": "Enumerate all Windows services"
           },
           {
             "title": "Service Details (SC)",
@@ -6372,7 +6372,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Al: configuratidetails bir servis içüzerinde içinde"
+            "desc_tr": "Get configuration details for a service"
           },
           {
             "title": "WMIC Service Paths",
@@ -6381,7 +6381,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: service binary paths (find unquoted)"
+            "desc_tr": "List service binary paths (find unquoted)"
           },
           {
             "title": "Find Unquoted Service Paths",
@@ -6430,7 +6430,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Durdur: and start a service"
+            "desc_tr": "Stop and start a service"
           },
           {
             "title": "DLL Hijacking Check",
@@ -6482,7 +6482,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ara: for unattended install files creds ile"
+            "desc_tr": "Search for unattended install files with creds"
           },
           {
             "title": "Registry Run Keys",
@@ -6503,7 +6503,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: writable zamanlanmış görevler binaries"
+            "desc_tr": "Find writable scheduled task binaries"
           },
           {
             "title": "Stored Credentials (cmdkey)",
@@ -6512,7 +6512,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: cached kimlik bilgileri"
+            "desc_tr": "List cached credentials"
           },
           {
             "title": "RunAs with Saved Creds",
@@ -6521,7 +6521,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: as another user stored kimlik bilgileri ile"
+            "desc_tr": "Execute as another user with stored credentials"
           }
         ],
         "name_tr": "Registry & Scheduled Tasks"
@@ -6625,7 +6625,7 @@ module.exports = [
               "tool"
             ],
             "note": "SeDebugPrivilege allows reading any process memory",
-            "desc_tr": "Dökümle: LSASS debug privilege ile"
+            "desc_tr": "Dump LSASS with debug privilege"
           },
           {
             "title": "SeDebugPrivilege Procdump LSASS",
@@ -6636,7 +6636,7 @@ module.exports = [
               "tool"
             ],
             "note": "Analyze dump offline with pypykatz or mimikatz",
-            "desc_tr": "Dökümle: LSASS process memory procdump ile"
+            "desc_tr": "Dump LSASS process memory with procdump"
           },
           {
             "title": "SeBackupPrivilege File Read",
@@ -6649,7 +6649,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Oku: any file backup privilege kullanarak"
+            "desc_tr": "Read any file using backup privilege"
           },
           {
             "title": "SeRestorePrivilege DLL Hijack",
@@ -6659,7 +6659,7 @@ module.exports = [
               "advanced"
             ],
             "note": "Write a malicious DLL to a system path, then trigger the service",
-            "desc_tr": "Yaz: any locatirestore privilege kullanarak üzerinde'e"
+            "desc_tr": "Write to any location using restore privilege"
           },
           {
             "title": "SeTakeOwnershipPrivilege",
@@ -6681,7 +6681,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm mevcut token privileges status ile"
+            "desc_tr": "List all current token privileges with status"
           },
           {
             "title": "Get-Acl Check Permissions",
@@ -6717,7 +6717,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: writable directories Program Files içinde"
+            "desc_tr": "Find writable directories in Program Files"
           },
           {
             "title": "icacls Check Service Binaries",
@@ -6760,7 +6760,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Oku: PowerShell komut geçmişi"
+            "desc_tr": "PowerShell komut geçmişini oku"
           },
           {
             "title": "PowerShell History (PS)",
@@ -6769,7 +6769,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Oku: PS history PowerShell üzerinden"
+            "desc_tr": "Read PS history from PowerShell"
           },
           {
             "title": "WiFi Passwords",
@@ -6781,7 +6781,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çıkart: kayıtlı WiFi passwords"
+            "desc_tr": "Extract saved WiFi passwords"
           },
           {
             "title": "SAM & SYSTEM Backup Files",
@@ -6808,7 +6808,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Çıkart: SAM volume shadow copies üzerinden"
+            "desc_tr": "Extract SAM via volume shadow copies"
           },
           {
             "title": "IIS Web.config Credentials",
@@ -6826,7 +6826,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ara: registry for password entries"
+            "desc_tr": "Search registry for password entries"
           },
           {
             "title": "DPAPI Credential Files",
@@ -6835,7 +6835,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Bul: DPAPI-protected kimlik bilgileri files"
+            "desc_tr": "Find DPAPI-protected credential files"
           },
           {
             "title": "DPAPI Master Keys Location",
@@ -6844,7 +6844,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Bul: DPAPI master key files"
+            "desc_tr": "Find DPAPI master key files"
           },
           {
             "title": "Mimikatz DPAPI Decrypt",
@@ -6873,7 +6873,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ara: for KeePass database files"
+            "desc_tr": "Search for KeePass database files"
           },
           {
             "title": "Find SSH Keys (Windows)",
@@ -6882,7 +6882,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ara: for SSH private keys Windows üzerinde"
+            "desc_tr": "Search for SSH private keys on Windows"
           },
           {
             "title": "Saved RDP Credentials",
@@ -6900,7 +6900,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ara: for yapılandırma dosyası potential kimlik bilgileri ile"
+            "desc_tr": "Search for config files with potential credentials"
           },
           {
             "title": "Browser Saved Passwords (SharpChromium)",
@@ -6909,7 +6909,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çıkart: kayıtlı browser passwords"
+            "desc_tr": "Extract saved browser passwords"
           },
           {
             "title": "Snaffler Credential Finder",
@@ -6931,7 +6931,7 @@ module.exports = [
               "essential"
             ],
             "note": "Check Groups.xml, Services.xml, Scheduledtasks.xml",
-            "desc_tr": "Bul: Group Policy passwords"
+            "desc_tr": "Find Group Policy passwords"
           },
           {
             "title": "Invoke-PrivescCheck",
@@ -6977,7 +6977,7 @@ module.exports = [
               "essential"
             ],
             "note": "Both HKCU and HKLM keys must be set to 1",
-            "desc_tr": "Kur: malicious MSI SYSTEM privileges ile"
+            "desc_tr": "Install malicious MSI with SYSTEM privileges"
           }
         ],
         "name_tr": "AlwaysInstallElevated"
@@ -7002,7 +7002,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bul: missing KBs and suggest yetki yükseltme"
+            "desc_tr": "Find missing KBs and suggest privilege escalation"
           },
           {
             "title": "Sherlock (PowerShell)",
@@ -7011,7 +7011,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bul: missing patches for known privesc"
+            "desc_tr": "Find missing patches for known privesc"
           },
           {
             "title": "Check System Architecture",
@@ -7029,7 +7029,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Al: exact OS versiand build üzerinde"
+            "desc_tr": "Get exact OS version and build"
           }
         ],
         "name_tr": "Kernel Exploits"
@@ -7106,7 +7106,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çalıştır: Seatbelt targeted security checks ile"
+            "desc_tr": "Run Seatbelt with targeted security checks"
           },
           {
             "title": "Seatbelt Remote Execution",
@@ -7116,7 +7116,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Çalıştır: Seatbelt a uzak host'e karşı"
+            "desc_tr": "Run Seatbelt against a remote host"
           },
           {
             "title": "SharpUp Specific Checks",
@@ -7125,7 +7125,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çalıştır: SharpUp belirli zafiyet(ler) checks ile"
+            "desc_tr": "Run SharpUp with specific vulnerability checks"
           },
           {
             "title": "JAWS Enumeration",
@@ -7182,7 +7182,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Atla: fodhelper üzerinden"
+            "desc_tr": "Bypass via fodhelper"
           },
           {
             "title": "UAC — eventvwr",
@@ -7194,7 +7194,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Atla: Event Viewer üzerinden"
+            "desc_tr": "Bypass via Event Viewer"
           },
           {
             "title": "UAC — sdclt",
@@ -7207,7 +7207,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Atla: sdclt üzerinden"
+            "desc_tr": "Bypass via sdclt"
           }
         ],
         "name_tr": "UAC Bypass"
@@ -7232,7 +7232,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: mevcut user and group memberships"
+            "desc_tr": "Mevcut kullanıcı ve grup üyeliklerini göster"
           },
           {
             "title": "Kernel Version",
@@ -7250,7 +7250,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: operating system release details"
+            "desc_tr": "Show operating system release details"
           },
           {
             "title": "Proc Version",
@@ -7259,7 +7259,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: kernel versiproc üzerinden üzerinde"
+            "desc_tr": "Show kernel version from proc"
           },
           {
             "title": "Environment Variables",
@@ -7268,7 +7268,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm ortam değişkenleri"
+            "desc_tr": "List all environment variables"
           },
           {
             "title": "Network Interfaces",
@@ -7277,7 +7277,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: ağ arayüzü"
+            "desc_tr": "Show network interfaces"
           },
           {
             "title": "Active Connections",
@@ -7286,7 +7286,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: dinleyen portlar and connections"
+            "desc_tr": "Show listening ports and connections"
           },
           {
             "title": "Running Processes",
@@ -7295,7 +7295,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: tüm çalışan process"
+            "desc_tr": "Show all running processes"
           },
           {
             "title": "Installed Packages (Debian)",
@@ -7304,7 +7304,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: yüklü packages"
+            "desc_tr": "Kurulu paketleri listele"
           },
           {
             "title": "Installed Packages (RHEL)",
@@ -7313,7 +7313,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: yüklü packages"
+            "desc_tr": "Kurulu paketleri listele"
           },
           {
             "title": "All Users",
@@ -7322,7 +7322,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm users passwd file üzerinden"
+            "desc_tr": "List all users from passwd file"
           },
           {
             "title": "Readable Shadow",
@@ -7340,7 +7340,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: home directories and their contents"
+            "desc_tr": "List home directories and their contents"
           },
           {
             "title": "SSH Keys",
@@ -7349,7 +7349,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ara: for SSH private keys"
+            "desc_tr": "Search for SSH private keys"
           },
           {
             "title": "Bash History",
@@ -7358,7 +7358,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Oku: bash history for tüm accessible users"
+            "desc_tr": "Read bash history for all accessible users"
           },
           {
             "title": "Installed Packages (RedHat)",
@@ -7367,7 +7367,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: RPM packages"
+            "desc_tr": "List RPM packages"
           },
           {
             "title": "Enabled Services",
@@ -7376,7 +7376,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: enabled services"
+            "desc_tr": "List enabled services"
           },
           {
             "title": "Internal Port Scan",
@@ -7385,7 +7385,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Tara: ma ports bash ile"
+            "desc_tr": "Scan ports with bash"
           }
         ],
         "name_tr": "System Reconnaissance"
@@ -7400,7 +7400,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: tüm SUID binaries the system üzerinde"
+            "desc_tr": "Find all SUID binaries on the system"
           },
           {
             "title": "Find SGID Binaries",
@@ -7409,7 +7409,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: tüm SGID binaries the system üzerinde"
+            "desc_tr": "Find all SGID binaries on the system"
           },
           {
             "title": "Find SUID+SGID",
@@ -7418,7 +7418,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: tüm SUID and SGID binaries"
+            "desc_tr": "Find all SUID and SGID binaries"
           },
           {
             "title": "SUID bash -p",
@@ -7506,7 +7506,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: what mevcut user can run as sudo"
+            "desc_tr": "Show what current user can run as sudo"
           },
           {
             "title": "Sudo bash",
@@ -7596,7 +7596,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Yaz: privileged files sudo tee üzerinden'e"
+            "desc_tr": "Write to privileged files via sudo tee"
           },
           {
             "title": "Sudo wget File Overwrite",
@@ -7614,7 +7614,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kopyala: files as root sudo cp üzerinden"
+            "desc_tr": "Copy files as root via sudo cp"
           },
           {
             "title": "Sudo env Shell",
@@ -7698,7 +7698,7 @@ module.exports = [
               "advanced"
             ],
             "note": "Works when sudoers has (ALL, !root) - sudo < 1.8.28",
-            "desc_tr": "Atla: sudo runas restrictiUID -1 ile üzerinde"
+            "desc_tr": "Bypass sudo runas restriction with UID -1"
           },
           {
             "title": "Sudo NOPASSWD Abuse",
@@ -7755,7 +7755,7 @@ module.exports = [
               "advanced"
             ],
             "note": "Create a malicious shared library",
-            "desc_tr": "Oku: files sudo ssh-keygen üzerinden"
+            "desc_tr": "Read files via sudo ssh-keygen"
           },
           {
             "title": "Sudo strace Shell",
@@ -7783,7 +7783,7 @@ module.exports = [
               "advanced"
             ],
             "note": "Then: su hacker (no password needed)",
-            "desc_tr": "Ekle: root user strace — full command enjeksiytraced process üzerinden üzerinde üzerinden"
+            "desc_tr": "Add root user via strace — full command injection through traced process"
           }
         ],
         "name_tr": "Sudo Misconfigurations"
@@ -7798,7 +7798,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm crgörevleri for mevcut user üzerinde"
+            "desc_tr": "List all cron jobs for current user"
           },
           {
             "title": "System Cron Jobs",
@@ -7821,7 +7821,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: crscripts that are world-writable üzerinde"
+            "desc_tr": "Find cron scripts that are world-writable"
           },
           {
             "title": "Monitor Cron with pspy",
@@ -7869,7 +7869,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: systemd timers"
+            "desc_tr": "List systemd timers"
           }
         ],
         "name_tr": "Scheduled Task Exploitation"
@@ -7884,7 +7884,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: tüm binaries capabilities set ile"
+            "desc_tr": "Find all binaries with capabilities set"
           },
           {
             "title": "cap_setuid Python",
@@ -7911,7 +7911,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Oku: any file the system üzerinde"
+            "desc_tr": "Read any file on the system"
           },
           {
             "title": "cap_net_bind_service",
@@ -7939,7 +7939,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ekle: root user writable passwd file'e"
+            "desc_tr": "Add root user to writable passwd file"
           },
           {
             "title": "World-Writable Files",
@@ -7948,7 +7948,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: world-writable files"
+            "desc_tr": "Find world-writable files"
           },
           {
             "title": "World-Writable Directories",
@@ -7957,7 +7957,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: world-writable directories"
+            "desc_tr": "Herkesçe yazılabilir dizinleri bul"
           },
           {
             "title": "PATH Hijack via SUID Binary",
@@ -7986,7 +7986,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Bul: shared library misconfigurations"
+            "desc_tr": "Find shared library misconfigurations"
           }
         ],
         "name_tr": "Writable Files & PATH Hijack"
@@ -8121,7 +8121,7 @@ module.exports = [
               "essential"
             ],
             "note": "Works on sudo < 1.8.28 with (ALL, !root) config",
-            "desc_tr": "Atla: sudo user restriction"
+            "desc_tr": "Bypass sudo user restriction"
           }
         ],
         "name_tr": "Kernel Exploits"
@@ -8145,7 +8145,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağla: host filesystem escape container'e"
+            "desc_tr": "Mount host filesystem to escape container"
           },
           {
             "title": "Docker Socket Escape",
@@ -8246,7 +8246,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "İndir: and import Alpine image for LXD escape"
+            "desc_tr": "Download and import Alpine image for LXD escape"
           },
           {
             "title": "Check Group Memberships",
@@ -8265,7 +8265,7 @@ module.exports = [
               "advanced"
             ],
             "note": "Disk group allows raw access to block devices",
-            "desc_tr": "Oku: raw filesystem if disk group içinde"
+            "desc_tr": "Read raw filesystem if in disk group"
           },
           {
             "title": "ADM Group Log Access",
@@ -8274,7 +8274,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oku: sensitive logs if adm group içinde"
+            "desc_tr": "Read sensitive logs if in adm group"
           },
           {
             "title": "Docker Group Mount Host",
@@ -8320,7 +8320,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağla: NFS share attacker machine üzerinde"
+            "desc_tr": "Mount NFS share on attacker machine"
           },
           {
             "title": "NFS SUID Shell Exploit",
@@ -8335,7 +8335,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Oluştur: SUID binary NFS share as root üzerinde"
+            "desc_tr": "Create SUID binary on NFS share as root"
           }
         ],
         "name_tr": "NFS Abuse"
@@ -8361,7 +8361,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Çalıştır: LinPEAS uploading target'e sonra"
+            "desc_tr": "Run LinPEAS after uploading to target"
           },
           {
             "title": "LinEnum",
@@ -8400,7 +8400,7 @@ module.exports = [
               "tool"
             ],
             "note": "-a=all, -s=superfast, -e=extra checks",
-            "desc_tr": "Çalıştır: LinPEAS belirli check categories ile"
+            "desc_tr": "Run LinPEAS with specific check categories"
           },
           {
             "title": "LinPrivChecker",
@@ -8443,7 +8443,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ara: command histories"
+            "desc_tr": "Search command histories"
           },
           {
             "title": "SSH Keys Search",
@@ -8452,7 +8452,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: SSH private keys"
+            "desc_tr": "Find SSH private keys"
           },
           {
             "title": "Web App Configs",
@@ -8464,7 +8464,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: configs passwords ile"
+            "desc_tr": "Find configs with passwords"
           },
           {
             "title": "Find Database Files",
@@ -8473,7 +8473,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ara: for DB files"
+            "desc_tr": "Search for DB files"
           },
           {
             "title": "Find Backups",
@@ -8482,7 +8482,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: backup files"
+            "desc_tr": "Find backup files"
           },
           {
             "title": "Check /opt /srv",
@@ -8739,7 +8739,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Püskürt: SSH keys a target'e karşı"
+            "desc_tr": "Spray SSH keys against a target"
           },
           {
             "title": "Hydra MySQL",
@@ -8833,7 +8833,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Püskürt: kimlik bilgileri subnet SSH üzerinden genelinde"
+            "desc_tr": "Spray credentials across subnet via SSH"
           },
           {
             "title": "CrackMapExec SSH User List",
@@ -8851,7 +8851,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: AD users"
+            "desc_tr": "Active Directory kullanıcılarını listele"
           },
           {
             "title": "Kerbrute Password Spray",
@@ -8860,7 +8860,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Püskürt: password"
+            "desc_tr": "Spray password"
           }
         ],
         "name_tr": "Online Brute Force"
@@ -8876,7 +8876,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kır: MD5 hashes"
+            "desc_tr": "Crack MD5 hashes"
           },
           {
             "title": "Hashcat SHA1",
@@ -8886,7 +8886,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kır: SHA1 hashes"
+            "desc_tr": "Crack SHA1 hashes"
           },
           {
             "title": "Hashcat MD5Crypt",
@@ -8896,7 +8896,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kır: Linux MD5 crypt ($1$)"
+            "desc_tr": "Crack Linux MD5 crypt ($1$)"
           },
           {
             "title": "Hashcat NTLM",
@@ -8906,7 +8906,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kır: Windows NTLM hashes"
+            "desc_tr": "Crack Windows NTLM hashes"
           },
           {
             "title": "Hashcat SHA256",
@@ -8916,7 +8916,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kır: SHA256 hashes"
+            "desc_tr": "Crack SHA256 hashes"
           },
           {
             "title": "Hashcat SHA512",
@@ -8925,7 +8925,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kır: SHA512 hashes"
+            "desc_tr": "Crack SHA512 hashes"
           },
           {
             "title": "Hashcat SHA512Crypt",
@@ -8935,7 +8935,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kır: Linux SHA512 crypt ($6$)"
+            "desc_tr": "Crack Linux SHA512 crypt ($6$)"
           },
           {
             "title": "Hashcat bcrypt",
@@ -8944,7 +8944,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kır: bcrypt hashes"
+            "desc_tr": "bcrypt hash'lerini kır"
           },
           {
             "title": "Hashcat NetNTLMv2",
@@ -8954,7 +8954,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kır: NetNTLMv2 hashes (Responder captures)"
+            "desc_tr": "Crack NetNTLMv2 hashes (Responder captures)"
           },
           {
             "title": "Hashcat NetNTLMv1",
@@ -8963,7 +8963,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kır: NetNTLMv1 hashes"
+            "desc_tr": "Crack NetNTLMv1 hashes"
           },
           {
             "title": "Hashcat Kerberoast (TGS-REP)",
@@ -8973,7 +8973,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kır: Kerberoasted service ticket hashes"
+            "desc_tr": "Crack Kerberoasted service ticket hashes"
           },
           {
             "title": "Hashcat AS-REP Roast",
@@ -8983,7 +8983,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kır: AS-REP roasted hashes"
+            "desc_tr": "AS-REP roasting hash'lerini kır"
           },
           {
             "title": "Hashcat WPA2",
@@ -8992,7 +8992,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kır: WPA2 handshake"
+            "desc_tr": "Crack WPA2 handshake"
           },
           {
             "title": "Hashcat Kerberos 5 TGS-REP RC4",
@@ -9001,7 +9001,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kır: Kerberos 5 etype 23"
+            "desc_tr": "Crack Kerberos 5 etype 23"
           },
           {
             "title": "Hashcat Kerberos 5 TGS-REP AES256",
@@ -9010,7 +9010,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Kır: Kerberos 5 etype 18"
+            "desc_tr": "Crack Kerberos 5 etype 18"
           },
           {
             "title": "Hashcat MD4 (NTLM raw)",
@@ -9019,7 +9019,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kır: raw MD4/NTLM"
+            "desc_tr": "Crack raw MD4/NTLM"
           },
           {
             "title": "Hashcat with Rules",
@@ -9029,7 +9029,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kır: rule-based transformations kullanarak"
+            "desc_tr": "Crack using rule-based transformations"
           },
           {
             "title": "Hashcat OneRuleToRuleThemAll",
@@ -9038,7 +9038,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kır: the most comprehensive rule ile"
+            "desc_tr": "Crack with the most comprehensive rule"
           },
           {
             "title": "Hashcat Mask Attack",
@@ -9109,7 +9109,7 @@ module.exports = [
               "tool"
             ],
             "note": "PRINCE combines words from the wordlist in various ways",
-            "desc_tr": "Oluştur: word combinations kelime listesi üzerinden"
+            "desc_tr": "Generate word combinations from wordlist"
           },
           {
             "title": "Hashcat DES Crypt",
@@ -9118,7 +9118,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kır: DES crypt hashes"
+            "desc_tr": "Crack DES crypt hashes"
           },
           {
             "title": "Hashcat MSSQL (2012+)",
@@ -9127,7 +9127,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kır: MSSQL 2012/2014 hashes"
+            "desc_tr": "Crack MSSQL 2012/2014 hashes"
           },
           {
             "title": "Hashcat MySQL 4.1+",
@@ -9136,7 +9136,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kır: MySQL SHA1 hashes"
+            "desc_tr": "Crack MySQL SHA1 hashes"
           },
           {
             "title": "Hashcat PostgreSQL MD5",
@@ -9145,7 +9145,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kır: PostgreSQL MD5 hashes"
+            "desc_tr": "Crack PostgreSQL MD5 hashes"
           },
           {
             "title": "Hashcat scrypt",
@@ -9155,7 +9155,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Kır: scrypt hashes"
+            "desc_tr": "Crack scrypt hashes"
           },
           {
             "title": "Hashcat DPAPI Master Key",
@@ -9165,7 +9165,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Kır: DPAPI master key files"
+            "desc_tr": "Crack DPAPI master key files"
           },
           {
             "title": "Hashcat Increment Mode",
@@ -9217,7 +9217,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kır: hashes default kelime listesi ile"
+            "desc_tr": "Crack hashes with default wordlist"
           },
           {
             "title": "John with Format",
@@ -9227,7 +9227,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kır: specified hash format ile"
+            "desc_tr": "Crack with specified hash format"
           },
           {
             "title": "John NTLM",
@@ -9237,7 +9237,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kır: NTLM hashes"
+            "desc_tr": "Crack NTLM hashes"
           },
           {
             "title": "John Show Cracked",
@@ -9256,7 +9256,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kır: mangling rules ile"
+            "desc_tr": "Crack with mangling rules"
           },
           {
             "title": "ssh2john Extract Hash",
@@ -9266,7 +9266,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Çıkart: hash SSH özel anahtar üzerinden"
+            "desc_tr": "Extract hash from SSH private key"
           },
           {
             "title": "zip2john Extract Hash",
@@ -9276,7 +9276,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Çıkart: hash password-protected ZIP üzerinden"
+            "desc_tr": "Extract hash from password-protected ZIP"
           },
           {
             "title": "zip2john + John Full Workflow",
@@ -9291,7 +9291,7 @@ module.exports = [
               "tool"
             ],
             "note": "john --show displays cracked passwords after the run",
-            "desc_tr": "Çıkart: ZIP hash and crack rockyou — complete workflow ile"
+            "desc_tr": "Extract ZIP hash and crack with rockyou — complete workflow"
           },
           {
             "title": "ssh2john Extract SSH Key Hash",
@@ -9301,7 +9301,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Çıkart: hash passphrase-protected SSH özel anahtar üzerinden"
+            "desc_tr": "Extract hash from passphrase-protected SSH private key"
           },
           {
             "title": "ssh2john + John Full Workflow",
@@ -9315,7 +9315,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kır: SSH key passphrase john ile"
+            "desc_tr": "Crack SSH key passphrase with john"
           },
           {
             "title": "rar2john Extract Hash",
@@ -9324,7 +9324,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çıkart: hash RAR archive üzerinden"
+            "desc_tr": "Extract hash from RAR archive"
           },
           {
             "title": "keepass2john Extract Hash",
@@ -9334,7 +9334,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Çıkart: hash KeePass database üzerinden"
+            "desc_tr": "Extract hash from KeePass database"
           },
           {
             "title": "office2john Extract Hash",
@@ -9343,7 +9343,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çıkart: hash Office document üzerinden"
+            "desc_tr": "Extract hash from Office document"
           },
           {
             "title": "pdf2john Extract Hash",
@@ -9352,7 +9352,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çıkart: hash password-protected PDF üzerinden"
+            "desc_tr": "Extract hash from password-protected PDF"
           },
           {
             "title": "7z2john Extract Hash",
@@ -9361,7 +9361,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çıkart: hash 7-Zip archive üzerinden"
+            "desc_tr": "Extract hash from 7-Zip archive"
           },
           {
             "title": "gpg2john Extract Hash",
@@ -9370,7 +9370,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çıkart: hash GPG key üzerinden"
+            "desc_tr": "Extract hash from GPG key"
           },
           {
             "title": "bitlocker2john Extract Hash",
@@ -9379,7 +9379,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çıkart: hash BitLocker volume üzerinden"
+            "desc_tr": "Extract hash from BitLocker volume"
           },
           {
             "title": "ansible2john Extract Hash",
@@ -9388,7 +9388,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çıkart: hash Ansible vault üzerinden"
+            "desc_tr": "Extract hash from Ansible vault"
           },
           {
             "title": "krb5tgs2john Extract Hash",
@@ -9397,7 +9397,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çıkart: Kerberos TGS ticket hash"
+            "desc_tr": "Extract Kerberos TGS ticket hash"
           },
           {
             "title": "John SHA512Crypt Format",
@@ -9406,7 +9406,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kır: Linux SHA512 crypt hashes"
+            "desc_tr": "Crack Linux SHA512 crypt hashes"
           },
           {
             "title": "John bcrypt Format",
@@ -9415,7 +9415,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kır: bcrypt hashes"
+            "desc_tr": "bcrypt hash'lerini kır"
           },
           {
             "title": "John Kerberos TGS",
@@ -9425,7 +9425,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kır: Kerberoasted TGS hashes"
+            "desc_tr": "Crack Kerberoasted TGS hashes"
           },
           {
             "title": "John AS-REP Hash",
@@ -9435,7 +9435,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kır: AS-REP roasted hashes"
+            "desc_tr": "AS-REP roasting hash'lerini kır"
           },
           {
             "title": "John NetNTLMv2",
@@ -9445,7 +9445,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kır: NetNTLMv2 hashes captured by Responder"
+            "desc_tr": "Crack NetNTLMv2 hashes captured by Responder"
           },
           {
             "title": "John MSSQL Hash",
@@ -9454,7 +9454,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kır: MSSQL password hashes"
+            "desc_tr": "Crack MSSQL password hashes"
           },
           {
             "title": "John MySQL Hash",
@@ -9463,7 +9463,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kır: MySQL password hashes"
+            "desc_tr": "Crack MySQL password hashes"
           },
           {
             "title": "John List Formats",
@@ -9473,7 +9473,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Listele: tüm supported hash formats"
+            "desc_tr": "List all supported hash formats"
           },
           {
             "title": "John Incremental Mode",
@@ -9491,7 +9491,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çıkart: hash WPA handshake pcap üzerinden"
+            "desc_tr": "Extract hash from WPA handshake pcap"
           },
           {
             "title": "vncpasswd Decrypt",
@@ -9562,7 +9562,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Dökümle: plaintext passwords memory üzerinden"
+            "desc_tr": "Dump plaintext passwords from memory"
           },
           {
             "title": "Mimikatz SAM Dump",
@@ -9572,7 +9572,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Dökümle: SAM database hashes"
+            "desc_tr": "Dump SAM database hashes"
           },
           {
             "title": "Mimikatz DCSync",
@@ -9621,7 +9621,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Oluştur: a Golden Ticket"
+            "desc_tr": "Create a Golden Ticket"
           },
           {
             "title": "Mimikatz DPAPI Vault",
@@ -9641,7 +9641,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Dökümle: secrets uzak host (Impacket) üzerinden"
+            "desc_tr": "Dump secrets from remote host (Impacket)"
           },
           {
             "title": "Secretsdump with Hash",
@@ -9651,7 +9651,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Dökümle: secrets NTLM hash (PtH) kullanarak"
+            "desc_tr": "Dump secrets using NTLM hash (PtH)"
           },
           {
             "title": "Secretsdump Local SAM",
@@ -9661,7 +9661,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Çıkart: hashes yerel SAM/SYSTEM files üzerinden"
+            "desc_tr": "Extract hashes from local SAM/SYSTEM files"
           },
           {
             "title": "Pypykatz Live Dump",
@@ -9688,7 +9688,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çıkart: kimlik bilgileri various applications üzerinden"
+            "desc_tr": "Extract credentials from various applications"
           },
           {
             "title": "Mimikatz DPAPI",
@@ -9706,7 +9706,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Dökümle: Vault creds"
+            "desc_tr": "Dump Vault creds"
           },
           {
             "title": "Mimikatz Skeleton Key",
@@ -9716,7 +9716,7 @@ module.exports = [
               "advanced"
             ],
             "note": "All accounts accept 'mimikatz' as password",
-            "desc_tr": "Kur: backdoor key"
+            "desc_tr": "Install backdoor key"
           },
           {
             "title": "Pypykatz Minidump",
@@ -9734,7 +9734,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çıkart: tüm stored passwords"
+            "desc_tr": "Extract all stored passwords"
           },
           {
             "title": "Password Policy",
@@ -9763,7 +9763,7 @@ module.exports = [
               "essential"
             ],
             "note": "Requires root or shadow group",
-            "desc_tr": "Oku: password hashes shadow file üzerinden"
+            "desc_tr": "Read password hashes from shadow file"
           },
           {
             "title": "Unshadow for John",
@@ -9781,7 +9781,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çıkart: stored kimlik bilgileri Linux üzerinde"
+            "desc_tr": "Extract stored credentials on Linux"
           },
           {
             "title": "Search for Password Files",
@@ -9790,7 +9790,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: files containing passwords"
+            "desc_tr": "Find files containing passwords"
           },
           {
             "title": "Check SSH Keys",
@@ -9799,7 +9799,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: readable SSH private keys"
+            "desc_tr": "Find readable SSH private keys"
           },
           {
             "title": "Check Cached Credentials",
@@ -9828,7 +9828,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Püskürt: password SMB accounts genelinde"
+            "desc_tr": "Spray password across SMB accounts"
           },
           {
             "title": "CrackMapExec Spray Multiple Passwords",
@@ -9837,7 +9837,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Püskürt: multiple passwords users'e karşı"
+            "desc_tr": "Spray multiple passwords against users"
           },
           {
             "title": "Kerbrute User Enumeration",
@@ -9847,7 +9847,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Listele: valid AD users Kerberos üzerinden"
+            "desc_tr": "Enumerate valid AD users via Kerberos"
           },
           {
             "title": "Kerbrute Password Spray",
@@ -9857,7 +9857,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Püskürt: a password Kerberos pre-auth üzerinden"
+            "desc_tr": "Spray a password via Kerberos pre-auth"
           },
           {
             "title": "Spray with Hydra",
@@ -9882,7 +9882,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Oluştur: kelime listesi by spidering target website"
+            "desc_tr": "Generate wordlist by spidering target website"
           },
           {
             "title": "CeWL with Emails",
@@ -9891,7 +9891,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: kelime listesi and extract email addresses"
+            "desc_tr": "Generate wordlist and extract email addresses"
           },
           {
             "title": "Crunch Wordlist Generator",
@@ -9901,7 +9901,7 @@ module.exports = [
               "tool"
             ],
             "note": "@=lower %%=digit ^=special ,=upper",
-            "desc_tr": "Oluştur: özel kelime listesi pattern ile"
+            "desc_tr": "Generate custom wordlist with pattern"
           },
           {
             "title": "Crunch with Charset",
@@ -9910,7 +9910,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: kelime listesi özel character set ile"
+            "desc_tr": "Generate wordlist with custom character set"
           },
           {
             "title": "CUPP Interactive Profiling",
@@ -9919,7 +9919,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: targeted kelime listesi personal info üzerinden"
+            "desc_tr": "Generate targeted wordlist from personal info"
           },
           {
             "title": "Username Anarchy",
@@ -9928,7 +9928,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: username permutations names üzerinden"
+            "desc_tr": "Generate username permutations from names"
           },
           {
             "title": "Kwprocessor Keyboard Walks",
@@ -9938,7 +9938,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Oluştur: keyboard walk patterns"
+            "desc_tr": "Generate keyboard walk patterns"
           },
           {
             "title": "Mentalist GUI Wordlist",
@@ -9973,7 +9973,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kodla: a payload shikata_ga_nai ile"
+            "desc_tr": "Encode payload with shikata_ga_nai"
           },
           {
             "title": "Msfvenom Multi-Encoder",
@@ -10002,7 +10002,7 @@ module.exports = [
               "tool"
             ],
             "note": "Interactive tool — select payload type and configure options",
-            "desc_tr": "Oluştur: AV-evasive payloads Veil ile"
+            "desc_tr": "Generate AV-evasive payloads with Veil"
           },
           {
             "title": "Shellter Injection",
@@ -10022,7 +10022,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Dönüştür: PE/.NET/DLL position-independent shellcode'e"
+            "desc_tr": "Convert PE/.NET/DLL to position-independent shellcode"
           },
           {
             "title": "Donut with Parameters",
@@ -10057,7 +10057,7 @@ module.exports = [
               "essential"
             ],
             "note": "Obfuscated to avoid string detection",
-            "desc_tr": "Yamala: AMSI memory içinde"
+            "desc_tr": "Patch AMSI in memory"
           },
           {
             "title": "AMSI Bypass (Matt Graeber)",
@@ -10066,7 +10066,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Zorla: AMSI initializatifailure üzerinde"
+            "desc_tr": "Force AMSI initialization failure"
           },
           {
             "title": "AMSI Bypass (PowerShell Downgrade)",
@@ -10100,7 +10100,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: script bypassing executipolicy üzerinde"
+            "desc_tr": "Run script bypassing execution policy"
           },
           {
             "title": "Bypass Execution Policy (Unrestricted)",
@@ -10109,7 +10109,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ayarla: unrestricted executipolicy üzerinde"
+            "desc_tr": "Set unrestricted execution policy"
           },
           {
             "title": "Bypass via Pipe",
@@ -10118,7 +10118,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Atla: executipolicy by piping script üzerinde"
+            "desc_tr": "Bypass execution policy by piping script"
           },
           {
             "title": "Bypass via Encoded Command",
@@ -10127,7 +10127,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: base64-encoded PowerShell command"
+            "desc_tr": "Execute base64-encoded PowerShell command"
           },
           {
             "title": "Bypass via Download Cradle (IEX)",
@@ -10136,7 +10136,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "İndir: and execute script memory içinde"
+            "desc_tr": "Scripti indir ve bellekte çalıştır"
           },
           {
             "title": "Bypass via Download Cradle (IWR)",
@@ -10145,7 +10145,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "İndir: and invoke Invoke-WebRequest kullanarak"
+            "desc_tr": "Download and invoke using Invoke-WebRequest"
           },
           {
             "title": "Invoke-Obfuscation",
@@ -10184,7 +10184,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ekle: path exclusion"
+            "desc_tr": "Add path exclusion"
           },
           {
             "title": "ETW Patch",
@@ -10193,7 +10193,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Yamala: ETW evade logging'e"
+            "desc_tr": "Patch ETW to evade logging"
           }
         ],
         "name_tr": "PowerShell Evasion"
@@ -10218,7 +10218,7 @@ module.exports = [
               "essential"
             ],
             "note": "Create .csproj file with embedded C# shellcode runner",
-            "desc_tr": "Çalıştır: C# code MSBuild (whitelisted) üzerinden"
+            "desc_tr": "Execute C# code via MSBuild (whitelisted)"
           },
           {
             "title": "InstallUtil AppLocker Bypass",
@@ -10227,7 +10227,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: .NET assembly InstallUtil üzerinden"
+            "desc_tr": "Execute .NET assembly via InstallUtil"
           },
           {
             "title": "Regsvcs AppLocker Bypass",
@@ -10236,7 +10236,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Çalıştır: .NET assembly regsvcs üzerinden"
+            "desc_tr": "Execute .NET assembly via regsvcs"
           },
           {
             "title": "Regasm AppLocker Bypass",
@@ -10245,7 +10245,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Çalıştır: .NET assembly regasm üzerinden"
+            "desc_tr": "Execute .NET assembly via regasm"
           },
           {
             "title": "CLM Bypass via PSBypassCLM",
@@ -10255,7 +10255,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Atla: Constrained Language Mode özel runspace ile"
+            "desc_tr": "Bypass Constrained Language Mode with custom runspace"
           }
         ],
         "name_tr": "AppLocker & CLM Bypass"
@@ -10270,7 +10270,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "İndir: files Windows certutil kullanarak"
+            "desc_tr": "Download files using Windows certutil"
           },
           {
             "title": "Certutil Base64 Decode",
@@ -10279,7 +10279,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çöz: zme base64-encoded payload certutil ile"
+            "desc_tr": "Decode base64-encoded payload with certutil"
           },
           {
             "title": "MSHTA Execution",
@@ -10288,7 +10288,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: HTA payload mshta üzerinden"
+            "desc_tr": "Execute HTA payload via mshta"
           },
           {
             "title": "MSHTA Inline VBScript",
@@ -10297,7 +10297,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Çalıştır: inline VBScript mshta üzerinden"
+            "desc_tr": "Execute inline VBScript via mshta"
           },
           {
             "title": "Rundll32 Execution",
@@ -10306,7 +10306,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: DLL payload rundll32 üzerinden"
+            "desc_tr": "Execute DLL payload via rundll32"
           },
           {
             "title": "Wscript Execution",
@@ -10315,7 +10315,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: script Windows Script Host üzerinden"
+            "desc_tr": "Execute script via Windows Script Host"
           },
           {
             "title": "Cscript Execution",
@@ -10324,7 +10324,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: script cscript üzerinden"
+            "desc_tr": "Execute script via cscript"
           },
           {
             "title": "Chameleon Python Obfuscator",
@@ -10354,7 +10354,7 @@ module.exports = [
               "advanced"
             ],
             "note": "Host .sct file on attacker with embedded VBScript/JScript",
-            "desc_tr": "Çalıştır: COM scriptlet regsvr32 üzerinden"
+            "desc_tr": "Execute COM scriptlet via regsvr32"
           },
           {
             "title": "XSL Script Processing",
@@ -10363,7 +10363,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Çalıştır: code WMIC XSL transform üzerinden"
+            "desc_tr": "Execute code via WMIC XSL transform"
           },
           {
             "title": "Disable Windows Defender (Admin)",
@@ -10383,7 +10383,7 @@ module.exports = [
               "essential"
             ],
             "note": "Requires local admin privileges",
-            "desc_tr": "Ekle: exclusiavoid tarama payload directory üzerinde'e"
+            "desc_tr": "Add exclusion to avoid scanning payload directory"
           },
           {
             "title": "Add Defender Exclusion Process",
@@ -10407,7 +10407,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: HTA payload"
+            "desc_tr": "Execute HTA payload"
           },
           {
             "title": "LOL regsvr32",
@@ -10416,7 +10416,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: SCT file"
+            "desc_tr": "Execute SCT file"
           },
           {
             "title": "LOL cmstp",
@@ -10425,7 +10425,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Çalıştır: INF payload"
+            "desc_tr": "Execute INF payload"
           },
           {
             "title": "LOL forfiles",
@@ -10434,7 +10434,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çalıştır: forfiles üzerinden"
+            "desc_tr": "Execute via forfiles"
           },
           {
             "title": "LOL msiexec",
@@ -10443,7 +10443,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: MSI remotely"
+            "desc_tr": "Execute MSI remotely"
           },
           {
             "title": "LOL bash.exe (WSL)",
@@ -10452,7 +10452,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çalıştır: WSL üzerinden"
+            "desc_tr": "Execute via WSL"
           }
         ],
         "name_tr": "Living Off The Land (LOLBins)"
@@ -10478,7 +10478,7 @@ module.exports = [
               "essential"
             ],
             "note": "Access remote service at localhost:<LOCAL_PORT>",
-            "desc_tr": "Yönlendir: yerel port uzak service SSH'e üzerinden"
+            "desc_tr": "Forward local port to remote service through SSH"
           },
           {
             "title": "SSH Remote Port Forward",
@@ -10497,7 +10497,7 @@ module.exports = [
               "essential"
             ],
             "note": "Configure proxychains to use socks5 127.0.0.1 1080",
-            "desc_tr": "Oluştur: SOCKS vekil sunucu (proxy) SSH tunnel üzerinden"
+            "desc_tr": "Create SOCKS proxy through SSH tunnel"
           },
           {
             "title": "SSH Jump Host",
@@ -10515,7 +10515,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: SSH tunnel background içinde"
+            "desc_tr": "Run SSH tunnel in background"
           },
           {
             "title": "SSH Dynamic SOCKS (Background)",
@@ -10534,7 +10534,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Yönlendir: traffic SSH like a VPN üzerinden"
+            "desc_tr": "Route traffic through SSH like a VPN"
           },
           {
             "title": "SSHuttle Exclude Subnet",
@@ -10543,7 +10543,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Yönlendir: excluded networks ile"
+            "desc_tr": "Route with excluded networks"
           },
           {
             "title": "SSH with Key and Forward",
@@ -10604,7 +10604,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Başlat: chisel server attacker machine üzerinde"
+            "desc_tr": "Start chisel server on attacker machine"
           },
           {
             "title": "Chisel SOCKS Proxy (Client)",
@@ -10615,7 +10615,7 @@ module.exports = [
               "tool"
             ],
             "note": "Creates SOCKS5 proxy on attacker at 127.0.0.1:1080",
-            "desc_tr": "Oluştur: reverse SOCKS vekil sunucu (proxy) target üzerinden"
+            "desc_tr": "Create reverse SOCKS proxy from target"
           },
           {
             "title": "Chisel Reverse Port Forward",
@@ -10625,7 +10625,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Yönlendir: belirli port back attacker'e"
+            "desc_tr": "Forward specific port back to attacker"
           },
           {
             "title": "Chisel Forward Port",
@@ -10634,7 +10634,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Yönlendir: yerel port uzak service'e"
+            "desc_tr": "Yerel portu uzak servise yönlendir"
           },
           {
             "title": "Chisel Multiple Tunnels",
@@ -10644,7 +10644,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Oluştur: multiple tunnels single connection içinde"
+            "desc_tr": "Create multiple tunnels in single connection"
           }
         ],
         "name_tr": "Chisel Tunnels"
@@ -10663,7 +10663,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Oluştur: TUN interface attacker (Linux) üzerinde"
+            "desc_tr": "Create TUN interface on attacker (Linux)"
           },
           {
             "title": "Ligolo-ng Start Proxy",
@@ -10673,7 +10673,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Başlat: ligolo-ng vekil sunucu (proxy) attacker üzerinde"
+            "desc_tr": "Start ligolo-ng proxy on attacker"
           },
           {
             "title": "Ligolo-ng Agent Connect",
@@ -10683,7 +10683,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Çalıştır: agent compromised host connect back üzerinde'e"
+            "desc_tr": "Run agent on compromised host to connect back"
           },
           {
             "title": "Ligolo-ng Add Route",
@@ -10693,7 +10693,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Ekle: route access internal network'e"
+            "desc_tr": "Add route to access internal network"
           },
           {
             "title": "Ligolo-ng Start Tunnel",
@@ -10708,7 +10708,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Başlat: the tunnel ligolo vekil sunucu (proxy) console üzerinden"
+            "desc_tr": "Start the tunnel from ligolo proxy console"
           },
           {
             "title": "Ligolo-ng Add Listener",
@@ -10719,7 +10719,7 @@ module.exports = [
               "tool"
             ],
             "note": "Allows catching reverse shells through the tunnel",
-            "desc_tr": "Ekle: a listener the agent for reverse connections üzerinde"
+            "desc_tr": "Add a listener on the agent for reverse connections"
           },
           {
             "title": "Ligolo-ng Windows Agent",
@@ -10729,7 +10729,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Çalıştır: agent compromised Windows host üzerinde"
+            "desc_tr": "Run agent on compromised Windows host"
           },
           {
             "title": "Ligolo-ng List Sessions",
@@ -10738,7 +10738,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: aktif agent oturumları proxy konsolunda"
+            "desc_tr": "List active agent sessions in proxy console"
           },
           {
             "title": "Ligolo-ng List Interfaces",
@@ -10747,7 +10747,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: bağlı agent'ın ağ arayüzlerini"
+            "desc_tr": "Show network interfaces of connected agent"
           },
           {
             "title": "Ligolo-ng Delete Route",
@@ -10756,7 +10756,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Sil: tünel bittiğinde route'u kaldır"
+            "desc_tr": "Remove route when done with tunnel"
           },
           {
             "title": "Ligolo-ng Double Pivot Setup",
@@ -10821,7 +10821,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Yapılandır: proxychains for SOCKS vekil sunucu (proxy)"
+            "desc_tr": "Configure proxychains for SOCKS proxy"
           },
           {
             "title": "Proxychains Nmap",
@@ -10831,7 +10831,7 @@ module.exports = [
               "essential"
             ],
             "note": "Only TCP connect scan (-sT) works through proxychains",
-            "desc_tr": "Çalıştır: nmap SOCKS vekil sunucu (proxy) üzerinden"
+            "desc_tr": "Run nmap through SOCKS proxy"
           },
           {
             "title": "Proxychains Curl",
@@ -10849,7 +10849,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: WinRM vekil sunucu (proxy)'e üzerinden"
+            "desc_tr": "Connect to WinRM through proxy"
           },
           {
             "title": "Proxychains CrackMapExec",
@@ -10858,7 +10858,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: CrackMapExec vekil sunucu (proxy) üzerinden"
+            "desc_tr": "Run CrackMapExec through proxy"
           },
           {
             "title": "Proxychains SMBClient",
@@ -10867,7 +10867,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: SMB share vekil sunucu (proxy)'e üzerinden"
+            "desc_tr": "Connect to SMB share through proxy"
           },
           {
             "title": "Proxychains SSH",
@@ -10963,7 +10963,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Oluştur: port forward netsh kullanarak"
+            "desc_tr": "Create port forward using netsh"
           },
           {
             "title": "Netsh Show Port Forwards",
@@ -10972,7 +10972,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm active port forwards"
+            "desc_tr": "Aktif port yönlendirmelerini listele"
           },
           {
             "title": "Netsh Delete Port Forward",
@@ -10981,7 +10981,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kaldır: a port forward rule"
+            "desc_tr": "Remove a port forward rule"
           },
           {
             "title": "Netsh Firewall Allow Port",
@@ -10990,7 +10990,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Aç: firewall port for the forward"
+            "desc_tr": "Open firewall port for the forward"
           },
           {
             "title": "Plink Local Forward",
@@ -11034,7 +11034,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Yönlendir: port socat kullanarak"
+            "desc_tr": "Forward port using socat"
           },
           {
             "title": "Socat Port Forward (Background)",
@@ -11052,7 +11052,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Oluştur: netcat relay for port forwarding"
+            "desc_tr": "Create netcat relay for port forwarding"
           },
           {
             "title": "Rpivot Server (Attacker)",
@@ -11061,7 +11061,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Başlat: rpivot SOCKS server attacker üzerinde"
+            "desc_tr": "Start rpivot SOCKS server on attacker"
           },
           {
             "title": "Rpivot Client (Target)",
@@ -11070,7 +11070,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bağlan: rpivot client attacker server'e"
+            "desc_tr": "Connect rpivot client to attacker server"
           },
           {
             "title": "Dnscat2 Server",
@@ -11080,7 +11080,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Başlat: DNS tunnel server"
+            "desc_tr": "Start DNS tunnel server"
           },
           {
             "title": "Dnscat2 Client",
@@ -11090,7 +11090,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Bağlan: DNS tunnel target üzerinden üzerinden"
+            "desc_tr": "Connect via DNS tunnel from target"
           },
           {
             "title": "Iodine DNS Tunnel Server",
@@ -11100,7 +11100,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Oluştur: IP-over-DNS tunnel server"
+            "desc_tr": "Create IP-over-DNS tunnel server"
           },
           {
             "title": "Iodine DNS Tunnel Client",
@@ -11110,7 +11110,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Bağlan: IP-over-DNS tunnel'e"
+            "desc_tr": "Connect to IP-over-DNS tunnel"
           },
           {
             "title": "ICMP Shell (icmpsh)",
@@ -11125,7 +11125,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Başlat: ICMP-based ters bağlantı kabuğu listener"
+            "desc_tr": "Start ICMP-based reverse shell listener"
           },
           {
             "title": "Neo-reGeorg Tunnel",
@@ -11150,7 +11150,7 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Oluştur: SOCKS vekil sunucu (proxy) Windows PowerShell üzerinden üzerinde"
+            "desc_tr": "Create SOCKS proxy on Windows via PowerShell"
           },
           {
             "title": "FPipe Port Forward (Windows)",
@@ -11225,7 +11225,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Start the Metasploit database service",
-            "desc_tr": "Başlat: the Metasploit database service"
+            "desc_tr": "Start the Metasploit database service"
           },
           {
             "title": "Launch Metasploit Console",
@@ -11234,7 +11234,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Start Metasploit Framework console in quiet mode",
-            "desc_tr": "Başlat: Metasploit Framework console quiet mode içinde"
+            "desc_tr": "Start Metasploit Framework console in quiet mode"
           },
           {
             "title": "Check Database Status",
@@ -11243,7 +11243,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Verify database connectivity inside msfconsole",
-            "desc_tr": "Doğrula: database connectivity inside msfconsole"
+            "desc_tr": "Verify database connectivity inside msfconsole"
           },
           {
             "title": "Create Workspace",
@@ -11252,7 +11252,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Create a new workspace to organize engagements",
-            "desc_tr": "Oluştur: a new workspace organize engagements'e"
+            "desc_tr": "Create a new workspace to organize engagements"
           },
           {
             "title": "List Workspaces",
@@ -11261,7 +11261,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all available workspaces",
-            "desc_tr": "Listele: tüm available workspaces"
+            "desc_tr": "List all available workspaces"
           },
           {
             "title": "Switch Workspace",
@@ -11279,7 +11279,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Delete a workspace and its associated data",
-            "desc_tr": "Sil: a workspace and its associated data"
+            "desc_tr": "Delete a workspace and its associated data"
           },
           {
             "title": "Search for Modules",
@@ -11288,7 +11288,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Search for exploit modules by keyword and platform",
-            "desc_tr": "Ara: for istismar modules by keyword and platform"
+            "desc_tr": "Search for exploit modules by keyword and platform"
           },
           {
             "title": "Search CVE",
@@ -11297,7 +11297,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Search modules by CVE identifier",
-            "desc_tr": "Ara: modules by CVE identifier"
+            "desc_tr": "Search modules by CVE identifier"
           },
           {
             "title": "Use a Module",
@@ -11333,7 +11333,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List compatible payloads for the current exploit",
-            "desc_tr": "Listele: compatible payloads for the mevcut istismar"
+            "desc_tr": "List compatible payloads for the current exploit"
           },
           {
             "title": "Show Targets",
@@ -11342,7 +11342,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List available target configurations for the exploit",
-            "desc_tr": "Listele: available target configurations for the istismar"
+            "desc_tr": "List available target configurations for the exploit"
           },
           {
             "title": "Set Module Option",
@@ -11351,7 +11351,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Set a module-specific option",
-            "desc_tr": "Ayarla: a module-belirli option"
+            "desc_tr": "Set a module-specific option"
           },
           {
             "title": "Set Global Option",
@@ -11360,7 +11360,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Set a global option persisting across modules",
-            "desc_tr": "Ayarla: a global optipersisting modules üzerinde genelinde"
+            "desc_tr": "Set a global option persisting across modules"
           },
           {
             "title": "Import Nmap Scan",
@@ -11369,7 +11369,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Run nmap and import results directly into the database",
-            "desc_tr": "Çalıştır: nmap and import results directly inthe database'e"
+            "desc_tr": "Run nmap and import results directly into the database"
           },
           {
             "title": "Import External Scan",
@@ -11387,7 +11387,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Show all hosts stored in the current workspace database",
-            "desc_tr": "Göster: tüm hosts stored the mevcut workspace database içinde"
+            "desc_tr": "Show all hosts stored in the current workspace database"
           },
           {
             "title": "List Discovered Services",
@@ -11396,7 +11396,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Show all services found in the current workspace",
-            "desc_tr": "Göster: tüm services found the mevcut workspace içinde"
+            "desc_tr": "Show all services found in the current workspace"
           },
           {
             "title": "List Stored Credentials",
@@ -11405,7 +11405,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Show all credentials gathered in the workspace",
-            "desc_tr": "Göster: tüm kimlik bilgileri gathered the workspace içinde"
+            "desc_tr": "Show all credentials gathered in the workspace"
           },
           {
             "title": "List Loot",
@@ -11414,7 +11414,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Show all loot (files, hashes) collected in the workspace",
-            "desc_tr": "Göster: tüm loot (files, hashes) collected the workspace içinde"
+            "desc_tr": "Show all loot (files, hashes) collected in the workspace"
           }
         ],
         "name_tr": "Framework Setup & Navigation"
@@ -11532,7 +11532,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Start a background listener for incoming reverse shells",
-            "desc_tr": "Başlat: a background listener for incoming reverse shells"
+            "desc_tr": "Start a background listener for incoming reverse shells"
           },
           {
             "title": "Multi/Handler (Linux)",
@@ -11547,7 +11547,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Start a background listener for Linux reverse meterpreter",
-            "desc_tr": "Başlat: a background listener for Linux reverse meterpreter"
+            "desc_tr": "Start a background listener for Linux reverse meterpreter"
           },
           {
             "title": "Run Exploit as Background Job",
@@ -11709,7 +11709,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Show the user the meterpreter process is running as",
-            "desc_tr": "Göster: the user the meterpreter process is running as"
+            "desc_tr": "Show the user the meterpreter process is running as"
           },
           {
             "title": "Elevate to SYSTEM",
@@ -11718,7 +11718,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Attempt to escalate privileges to NT AUTHORITY\\SYSTEM",
-            "desc_tr": "Dene: escalate privileges to NT AUTHORITY\\SYSTEM'e"
+            "desc_tr": "Attempt to escalate privileges to NT AUTHORITY\\SYSTEM"
           },
           {
             "title": "Dump Password Hashes",
@@ -11727,7 +11727,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Dump SAM database password hashes (requires SYSTEM)",
-            "desc_tr": "Dökümle: SAM database password hashes (requires SYSTEM)"
+            "desc_tr": "Dump SAM database password hashes (requires SYSTEM)"
           },
           {
             "title": "Load Kiwi (Mimikatz)",
@@ -11736,7 +11736,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Load the Kiwi extension for credential extraction",
-            "desc_tr": "Yükle: the Kiwi extensifor kimlik bilgileri extraction üzerinde"
+            "desc_tr": "Load the Kiwi extension for credential extraction"
           },
           {
             "title": "Dump All Credentials",
@@ -11745,7 +11745,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Dump all credentials including Kerberos tickets via Kiwi",
-            "desc_tr": "Dökümle: tüm kimlik bilgileri including Kerberos tickets Kiwi üzerinden"
+            "desc_tr": "Dump all credentials including Kerberos tickets via Kiwi"
           },
           {
             "title": "Dump Kerberos Credentials",
@@ -11754,7 +11754,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Dump Kerberos tickets from memory via Kiwi",
-            "desc_tr": "Dökümle: Kerberos tickets memory Kiwi üzerinden üzerinden"
+            "desc_tr": "Dump Kerberos tickets from memory via Kiwi"
           },
           {
             "title": "Dump WiFi Passwords",
@@ -11763,7 +11763,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "List and dump saved WiFi credentials via Kiwi",
-            "desc_tr": "Listele: and dump kayıtlı WiFi kimlik bilgileri Kiwi üzerinden"
+            "desc_tr": "List and dump saved WiFi credentials via Kiwi"
           },
           {
             "title": "Upload File to Target",
@@ -11772,7 +11772,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Upload a file from attacker to target machine",
-            "desc_tr": "Yükle: a file attacker target machine üzerinden'e"
+            "desc_tr": "Upload a file from attacker to target machine"
           },
           {
             "title": "Download File from Target",
@@ -11781,7 +11781,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Download a file from target to attacker machine",
-            "desc_tr": "İndir: a file target attacker machine üzerinden'e"
+            "desc_tr": "Download a file from target to attacker machine"
           },
           {
             "title": "Search for Files",
@@ -11790,7 +11790,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Search for files matching a pattern on the target",
-            "desc_tr": "Ara: for files matching a pattern the target üzerinde"
+            "desc_tr": "Search for files matching a pattern on the target"
           },
           {
             "title": "Search for Password Files",
@@ -11799,7 +11799,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Search for files containing password in the name",
-            "desc_tr": "Ara: for files containing password the name içinde"
+            "desc_tr": "Search for files containing password in the name"
           },
           {
             "title": "List Running Processes",
@@ -11808,7 +11808,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all running processes on the target",
-            "desc_tr": "Listele: tüm çalışan process the target üzerinde"
+            "desc_tr": "List all running processes on the target"
           },
           {
             "title": "Migrate to Another Process",
@@ -11826,7 +11826,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Open an interactive system command shell",
-            "desc_tr": "Aç: an interactive system command shell"
+            "desc_tr": "Open an interactive system command shell"
           },
           {
             "title": "Background Current Session",
@@ -11844,7 +11844,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Capture a screenshot of the target's desktop",
-            "desc_tr": "Yakala: a screenshot of the target's desktop"
+            "desc_tr": "Capture a screenshot of the target's desktop"
           },
           {
             "title": "Keylog Start",
@@ -11853,7 +11853,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Start capturing keystrokes on the target",
-            "desc_tr": "Başlat: capturing keystrokes the target üzerinde"
+            "desc_tr": "Start capturing keystrokes on the target"
           },
           {
             "title": "Keylog Dump",
@@ -11862,7 +11862,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Dump captured keystrokes",
-            "desc_tr": "Dökümle: captured keystrokes"
+            "desc_tr": "Dump captured keystrokes"
           },
           {
             "title": "Enable RDP",
@@ -11871,7 +11871,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Enable Remote Desktop on the target",
-            "desc_tr": "Etkinleştir: uzak Desktop the target üzerinde"
+            "desc_tr": "Enable Remote Desktop on the target"
           },
           {
             "title": "Persistence via Registry",
@@ -11880,7 +11880,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Install a persistent reverse connection backdoor",
-            "desc_tr": "Kur: a persistent reverse connectibackdoor üzerinde"
+            "desc_tr": "Install a persistent reverse connection backdoor"
           },
           {
             "title": "Local Exploit Suggester",
@@ -11898,7 +11898,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate currently and recently logged on users",
-            "desc_tr": "Listele: currently and recently logged users üzerinde"
+            "desc_tr": "Enumerate currently and recently logged on users"
           },
           {
             "title": "Enum Shares",
@@ -11907,7 +11907,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate network shares on the target",
-            "desc_tr": "Listele: network shares the target üzerinde"
+            "desc_tr": "Enumerate network shares on the target"
           },
           {
             "title": "Enum Linux System",
@@ -11916,7 +11916,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate system information on a Linux target",
-            "desc_tr": "Listele: system information a Linux target üzerinde"
+            "desc_tr": "Enumerate system information on a Linux target"
           },
           {
             "title": "Clear Event Logs",
@@ -11938,7 +11938,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Başlat: keylogger"
+            "desc_tr": "Start keylogger"
           },
           {
             "title": "Shell to Meterpreter",
@@ -11966,7 +11966,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all active meterpreter/shell sessions",
-            "desc_tr": "Listele: tüm active meterpreter/shell sessions"
+            "desc_tr": "List all active meterpreter/shell sessions"
           },
           {
             "title": "Interact with Session",
@@ -11999,7 +11999,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Add a route to an internal network through a meterpreter session",
-            "desc_tr": "Ekle: a route an internal network a meterpreter session'e üzerinden"
+            "desc_tr": "Add a route to an internal network through a meterpreter session"
           },
           {
             "title": "Auto-Route (Meterpreter)",
@@ -12008,7 +12008,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Add route from within a meterpreter session",
-            "desc_tr": "Ekle: route witha meterpreter sessiüzerinden üzerinde içinde"
+            "desc_tr": "Add route from within a meterpreter session"
           },
           {
             "title": "Print Routes",
@@ -12032,7 +12032,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Start a SOCKS5 proxy to route tools through the pivot",
-            "desc_tr": "Başlat: a SOCKS5 vekil sunucu (proxy) route tools the pivot'e üzerinden"
+            "desc_tr": "Start a SOCKS5 proxy to route tools through the pivot"
           },
           {
             "title": "Port Forward (Local)",
@@ -12041,7 +12041,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Forward a local port to a remote service through meterpreter",
-            "desc_tr": "Yönlendir: a yerel port a uzak service meterpreter'e üzerinden"
+            "desc_tr": "Forward a local port to a remote service through meterpreter"
           },
           {
             "title": "Port Forward (List)",
@@ -12050,7 +12050,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List all active port forwards",
-            "desc_tr": "Listele: tüm active port forwards"
+            "desc_tr": "Aktif port yönlendirmelerini listele"
           },
           {
             "title": "Port Forward (Flush)",
@@ -12059,7 +12059,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Remove all active port forwards",
-            "desc_tr": "Kaldır: tüm active port forwards"
+            "desc_tr": "Remove all active port forwards"
           },
           {
             "title": "Upgrade Shell to Meterpreter",
@@ -12093,7 +12093,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Scan for SMB versions across a range of hosts",
-            "desc_tr": "Tara: ma for SMB versions a range of hosts genelinde"
+            "desc_tr": "Scan for SMB versions across a range of hosts"
           },
           {
             "title": "TCP Port Scanner",
@@ -12166,7 +12166,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Scan for common directories on web servers",
-            "desc_tr": "Tara: ma for commdirectories on web servers üzerinde"
+            "desc_tr": "Scan for common directories on web servers"
           },
           {
             "title": "SNMP Community Scanner",
@@ -12179,7 +12179,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate SNMP community strings and information",
-            "desc_tr": "Listele: SNMP community strings and information"
+            "desc_tr": "Enumerate SNMP community strings and information"
           },
           {
             "title": "VNC None Auth Scanner",
@@ -12192,7 +12192,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Scan for VNC servers with no authentication",
-            "desc_tr": "Tara: ma for VNC servers no kimlik doğrulama ile"
+            "desc_tr": "Scan for VNC servers with no authentication"
           },
           {
             "title": "MSSQL Login Scanner",
@@ -12251,7 +12251,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Scan for NFS shares across the network",
-            "desc_tr": "Tara: ma for NFS shares the network genelinde"
+            "desc_tr": "Scan for NFS shares across the network"
           },
           {
             "title": "SMTP User Enum",
@@ -12265,7 +12265,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate users via SMTP VRFY/EXPN/RCPT",
-            "desc_tr": "Listele: users SMTP VRFY/EXPN/RCPT üzerinden"
+            "desc_tr": "Enumerate users via SMTP VRFY/EXPN/RCPT"
           },
           {
             "title": "RDP BlueKeep Scanner",
@@ -12278,7 +12278,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Scan for CVE-2019-0708 BlueKeep vulnerability",
-            "desc_tr": "Tara: ma for CVE-2019-0708 BlueKeep zafiyet(ler)"
+            "desc_tr": "Scan for CVE-2019-0708 BlueKeep vulnerability"
           },
           {
             "title": "HTTP WordPress Scanner",
@@ -12292,7 +12292,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Scan WordPress installations for common issues",
-            "desc_tr": "Tara: ma WordPress installations for commissues üzerinde"
+            "desc_tr": "Scan WordPress installations for common issues"
           },
           {
             "title": "IPMI Hash Dumper",
@@ -12305,7 +12305,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Dump IPMI password hashes (RAKP authentication)",
-            "desc_tr": "Dökümle: IPMI password hashes (RAKP kimlik doğrulama)"
+            "desc_tr": "Dump IPMI password hashes (RAKP authentication)"
           }
         ],
         "name_tr": "Auxiliary Modules"
@@ -12320,7 +12320,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Collect various credentials from the target",
-            "desc_tr": "Topla: various kimlik bilgileri the target üzerinden"
+            "desc_tr": "Collect various credentials from the target"
           },
           {
             "title": "Windows Enum Applications",
@@ -12329,7 +12329,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate installed applications on Windows target",
-            "desc_tr": "Listele: installed applications Windows target üzerinde"
+            "desc_tr": "Enumerate installed applications on Windows target"
           },
           {
             "title": "Windows Enum Services",
@@ -12338,7 +12338,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate running services on Windows target",
-            "desc_tr": "Listele: çalışan service Windows target üzerinde"
+            "desc_tr": "Enumerate running services on Windows target"
           },
           {
             "title": "Windows Enum Patches",
@@ -12347,7 +12347,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate installed patches and hotfixes",
-            "desc_tr": "Listele: yüklü patches and hotfixes"
+            "desc_tr": "Enumerate installed patches and hotfixes"
           },
           {
             "title": "Windows Check VM",
@@ -12356,7 +12356,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Detect if target is a virtual machine",
-            "desc_tr": "Algıla: if target is a virtual machine"
+            "desc_tr": "Detect if target is a virtual machine"
           },
           {
             "title": "Windows Enum Domain",
@@ -12365,7 +12365,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate domain information from Windows target",
-            "desc_tr": "Listele: domainformatiWindows target üzerinden üzerinde içinde"
+            "desc_tr": "Enumerate domain information from Windows target"
           },
           {
             "title": "Windows Enum Domain Users",
@@ -12374,7 +12374,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate Active Directory users",
-            "desc_tr": "Listele: Active Directory users"
+            "desc_tr": "Enumerate Active Directory users"
           },
           {
             "title": "Windows Enum Domain Groups",
@@ -12383,7 +12383,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate Active Directory groups",
-            "desc_tr": "Listele: Active Directory groups"
+            "desc_tr": "Enumerate Active Directory groups"
           },
           {
             "title": "Linux Enum Network",
@@ -12392,7 +12392,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate network configuration on Linux target",
-            "desc_tr": "Listele: network configuration Linux target üzerinde"
+            "desc_tr": "Enumerate network configuration on Linux target"
           },
           {
             "title": "Linux Enum Users/History",
@@ -12401,7 +12401,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate users and their command history",
-            "desc_tr": "Listele: users and their komut geçmişi"
+            "desc_tr": "Enumerate users and their command history"
           },
           {
             "title": "Linux Hashdump",
@@ -12410,7 +12410,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Dump password hashes from /etc/shadow",
-            "desc_tr": "Dökümle: password hashes /etc/shadow üzerinden"
+            "desc_tr": "Dump password hashes from /etc/shadow"
           },
           {
             "title": "Multi Gather SSH Creds",
@@ -12419,7 +12419,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Collect SSH keys and known hosts from target",
-            "desc_tr": "Topla: SSH keys and known hosts target üzerinden"
+            "desc_tr": "Collect SSH keys and known hosts from target"
           },
           {
             "title": "Multi Gather Firefox Creds",
@@ -12428,7 +12428,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Extract saved passwords from Firefox profiles",
-            "desc_tr": "Çıkart: kayıtlı passwords Firefox profiles üzerinden"
+            "desc_tr": "Extract saved passwords from Firefox profiles"
           },
           {
             "title": "Multi Manage Autoroute",
@@ -12437,7 +12437,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Add routes to internal subnets through the session",
-            "desc_tr": "Ekle: routes internal subnets the session'e üzerinden"
+            "desc_tr": "Add routes to internal subnets through the session"
           }
         ],
         "name_tr": "Post-Exploitation Modules"
@@ -12462,7 +12462,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Collect all BloodHound data from the domain",
-            "desc_tr": "Topla: tüm BloodHound data the domaüzerinden içinde"
+            "desc_tr": "Collect all BloodHound data from the domain"
           },
           {
             "title": "SharpHound (Stealth)",
@@ -12471,7 +12471,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Collect BloodHound data using only DC queries for stealth",
-            "desc_tr": "Topla: BloodHound data only DC queries for stealth kullanarak"
+            "desc_tr": "Collect BloodHound data using only DC queries for stealth"
           },
           {
             "title": "BloodHound-Python (Remote)",
@@ -12480,7 +12480,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Collect BloodHound data remotely from Linux",
-            "desc_tr": "Topla: BloodHound data remotely Linux üzerinden"
+            "desc_tr": "Collect BloodHound data remotely from Linux"
           },
           {
             "title": "Start Neo4j for BloodHound",
@@ -12489,7 +12489,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Start the Neo4j database backend for BloodHound",
-            "desc_tr": "Başlat: the Neo4j database backend for BloodHound"
+            "desc_tr": "Start the Neo4j database backend for BloodHound"
           },
           {
             "title": "PowerView Get-Domain",
@@ -12498,7 +12498,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Get information about the current domain",
-            "desc_tr": "Al: informatiabout the mevcut domaüzerinde içinde"
+            "desc_tr": "Get information about the current domain"
           },
           {
             "title": "PowerView Get-DomainController",
@@ -12507,7 +12507,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate domain controllers in the current domain",
-            "desc_tr": "Listele: domacontrollers in the mevcut domain içinde"
+            "desc_tr": "Enumerate domain controllers in the current domain"
           },
           {
             "title": "AD Module Get-ADDomain",
@@ -12516,7 +12516,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Get detailed domain information via AD PowerShell module",
-            "desc_tr": "Al: detailed domainformatiAD PowerShell module üzerinden üzerinde içinde"
+            "desc_tr": "Get detailed domain information via AD PowerShell module"
           },
           {
             "title": "Enum4linux-ng Full Scan",
@@ -12534,7 +12534,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Dump all domain objects via LDAP into HTML reports",
-            "desc_tr": "Dökümle: tüm domaobjects LDAP inHTML reports üzerinden'e içinde"
+            "desc_tr": "Dump all domain objects via LDAP into HTML reports"
           },
           {
             "title": "Windapsearch Users",
@@ -12543,7 +12543,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate domain users via LDAP",
-            "desc_tr": "Listele: etki alanı kullanıcıları LDAP üzerinden"
+            "desc_tr": "Enumerate domain users via LDAP"
           },
           {
             "title": "Windapsearch Computers",
@@ -12552,7 +12552,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate domain computers via LDAP",
-            "desc_tr": "Listele: etki alanı bilgisayarları LDAP üzerinden"
+            "desc_tr": "Enumerate domain computers via LDAP"
           },
           {
             "title": "Kerbrute User Enumeration",
@@ -12561,7 +12561,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate valid domain usernames via Kerberos without authentication",
-            "desc_tr": "Listele: valid domausernames Kerberos kimlik doğrulama üzerinden içinde olmadan"
+            "desc_tr": "Enumerate valid domain usernames via Kerberos without authentication"
           },
           {
             "title": "Impacket GetADUsers",
@@ -12570,7 +12570,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate all domain users via LDAP with impacket",
-            "desc_tr": "Listele: tüm etki alanı kullanıcıları LDAP impacket üzerinden ile"
+            "desc_tr": "Enumerate all domain users via LDAP with impacket"
           },
           {
             "title": "Impacket Lookupsid",
@@ -12579,7 +12579,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate domain SIDs and associated accounts via RPC",
-            "desc_tr": "Listele: domaSIDs and associated accounts RPC üzerinden içinde"
+            "desc_tr": "Enumerate domain SIDs and associated accounts via RPC"
           },
           {
             "title": "DNS Zone Transfer Attempt",
@@ -12588,7 +12588,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Attempt a DNS zone transfer from a domain controller",
-            "desc_tr": "Dene: a DNS zone transferi a etki alanı denetleyicisi (DC) üzerinden"
+            "desc_tr": "Attempt a DNS zone transfer from a domain controller"
           },
           {
             "title": "PingCastle",
@@ -12606,7 +12606,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dökümle: AD LDAP üzerinden"
+            "desc_tr": "Dump AD via LDAP"
           }
         ],
         "name_tr": "Domain Discovery"
@@ -12621,7 +12621,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate all domain users with key attributes",
-            "desc_tr": "Listele: tüm etki alanı kullanıcıları key attributes ile"
+            "desc_tr": "Enumerate all domain users with key attributes"
           },
           {
             "title": "PowerView Get Specific User",
@@ -12630,7 +12630,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Get all properties for a specific domain user",
-            "desc_tr": "Al: tüm properties for a belirli etki alanı kullanıcıları"
+            "desc_tr": "Get all properties for a specific domain user"
           },
           {
             "title": "PowerView Get Domain Groups",
@@ -12639,7 +12639,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all domain groups",
-            "desc_tr": "Listele: tüm etki alanı grupları"
+            "desc_tr": "Tüm domain gruplarını listele"
           },
           {
             "title": "PowerView Get Group Members",
@@ -12657,7 +12657,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all domain computers with OS info",
-            "desc_tr": "Listele: tüm etki alanı bilgisayarları OS info ile"
+            "desc_tr": "List all domain computers with OS info"
           },
           {
             "title": "PowerView Get Domain OUs",
@@ -12666,7 +12666,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate all Organizational Units in the domain",
-            "desc_tr": "Listele: tüm Organizational Units the domain içinde"
+            "desc_tr": "Enumerate all Organizational Units in the domain"
           },
           {
             "title": "PowerView Get Domain GPOs",
@@ -12675,7 +12675,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List all Group Policy Objects in the domain",
-            "desc_tr": "Listele: tüm Group Policy Objects the domain içinde"
+            "desc_tr": "List all Group Policy Objects in the domain"
           },
           {
             "title": "AD Module Get-ADUser (All)",
@@ -12684,7 +12684,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate all AD users with properties",
-            "desc_tr": "Listele: tüm AD users properties ile"
+            "desc_tr": "Enumerate all AD users with properties"
           },
           {
             "title": "AD Module Get-ADGroup",
@@ -12693,7 +12693,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List all AD groups with their scope",
-            "desc_tr": "Listele: tüm AD groups their scope ile"
+            "desc_tr": "List all AD groups with their scope"
           },
           {
             "title": "AD Module Get-ADComputer",
@@ -12702,7 +12702,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate all AD computers with OS and last logon",
-            "desc_tr": "Listele: tüm AD computers OS and last logile üzerinde"
+            "desc_tr": "Enumerate all AD computers with OS and last logon"
           },
           {
             "title": "Net User Domain Query",
@@ -12711,7 +12711,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all domain users via built-in Windows command",
-            "desc_tr": "Listele: tüm etki alanı kullanıcıları built-Windows command üzerinden içinde"
+            "desc_tr": "List all domain users via built-in Windows command"
           },
           {
             "title": "Net Group Domain Admins",
@@ -12720,7 +12720,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List members of Domain Admins via built-in command",
-            "desc_tr": "Listele: members of DomaAdmin built-in command üzerinden içinde"
+            "desc_tr": "List members of Domain Admins via built-in command"
           },
           {
             "title": "Find Users with Descriptions",
@@ -12730,7 +12730,7 @@ module.exports = [
             ],
             "desc": "Find users with descriptions that may contain passwords",
             "note": "Descriptions often contain password hints or temporary passwords",
-            "desc_tr": "Bul: users descriptions that may contapasswords ile içinde"
+            "desc_tr": "Find users with descriptions that may contain passwords"
           },
           {
             "title": "PowerView Find Local Admin Access",
@@ -12739,7 +12739,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Find machines where the current user has local admin access",
-            "desc_tr": "Bul: machines where the mevcut user has yerel yönetici access"
+            "desc_tr": "Find machines where the current user has local admin access"
           },
           {
             "title": "PowerView Get-NetSession",
@@ -12748,7 +12748,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate active sessions on a target computer",
-            "desc_tr": "Listele: active sessions a target computer üzerinde"
+            "desc_tr": "Enumerate active sessions on a target computer"
           },
           {
             "title": "PowerView Get-NetLoggedon",
@@ -12757,7 +12757,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate users logged onto a target computer",
-            "desc_tr": "Listele: users logged ona target computer'e"
+            "desc_tr": "Enumerate users logged onto a target computer"
           },
           {
             "title": "PowerView Invoke-ShareFinder",
@@ -12766,7 +12766,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Find accessible network shares across the domain",
-            "desc_tr": "Bul: accessible network shares the domain genelinde"
+            "desc_tr": "Find accessible network shares across the domain"
           },
           {
             "title": "PowerView Get-DomainSID",
@@ -12775,7 +12775,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Get the current domain SID",
-            "desc_tr": "Al: the mevcut domaSID içinde"
+            "desc_tr": "Get the current domain SID"
           },
           {
             "title": "PowerView Find-LocalAdminAccess Threaded",
@@ -12784,7 +12784,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Find machines where current user has local admin (threaded)",
-            "desc_tr": "Bul: machines where mevcut user has yerel yönetici (threaded)"
+            "desc_tr": "Find machines where current user has local admin (threaded)"
           },
           {
             "title": "Windapsearch Groups",
@@ -12793,7 +12793,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate domain groups via LDAP",
-            "desc_tr": "Listele: etki alanı grupları LDAP üzerinden"
+            "desc_tr": "Enumerate domain groups via LDAP"
           },
           {
             "title": "Windapsearch Privileged Users",
@@ -12802,7 +12802,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate domain admins via LDAP",
-            "desc_tr": "Listele: DomaAdmin LDAP üzerinden içinde"
+            "desc_tr": "Enumerate domain admins via LDAP"
           },
           {
             "title": "Windapsearch Unconstrained Delegation",
@@ -12811,7 +12811,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Find unconstrained delegation computers via LDAP",
-            "desc_tr": "Bul: sınırsız delegasycomputers LDAP üzerinden üzerinde"
+            "desc_tr": "Find unconstrained delegation computers via LDAP"
           },
           {
             "title": "LDAP Domain Dump HTML",
@@ -12820,7 +12820,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Generate browsable HTML reports of domain objects",
-            "desc_tr": "Oluştur: browsable HTML reports of domaobjects içinde"
+            "desc_tr": "Generate browsable HTML reports of domain objects"
           },
           {
             "title": "Kerbrute Brute Force",
@@ -12838,7 +12838,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Find GPOs that can be modified by non-admin users",
-            "desc_tr": "Bul: GPOs that can be modified by non-admusers içinde"
+            "desc_tr": "Find GPOs that can be modified by non-admin users"
           },
           {
             "title": "Enum GPO Linked to OUs",
@@ -12865,7 +12865,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Generate comprehensive AD reconnaissance report",
-            "desc_tr": "Oluştur: comprehensive AD keşif report"
+            "desc_tr": "Generate comprehensive AD reconnaissance report"
           }
         ],
         "name_tr": "User & Group Enumeration"
@@ -12880,7 +12880,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Find ACLs with interesting permissions across the domain",
-            "desc_tr": "Bul: ACLs ilginç permissions the domaile içinde genelinde"
+            "desc_tr": "Find ACLs with interesting permissions across the domain"
           },
           {
             "title": "Get ACL for Specific User",
@@ -12898,7 +12898,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Find all ACL entries that grant permissions to a specific user",
-            "desc_tr": "Bul: tüm ACL entries that grant permissions a belirli user'e"
+            "desc_tr": "Find all ACL entries that grant permissions to a specific user"
           },
           {
             "title": "Get ACL on Domain Object",
@@ -12907,7 +12907,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Search for GenericAll permissions at the domain level",
-            "desc_tr": "Ara: for GenericAll permissions at the domalevel içinde"
+            "desc_tr": "Search for GenericAll permissions at the domain level"
           },
           {
             "title": "Check WriteDACL on Group",
@@ -12925,7 +12925,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Find writable Group Policy Objects for potential abuse",
-            "desc_tr": "Bul: writable Group Policy Objects for potential abuse"
+            "desc_tr": "Find writable Group Policy Objects for potential abuse"
           }
         ],
         "name_tr": "ACL Analysis"
@@ -12940,7 +12940,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate all domain trust relationships",
-            "desc_tr": "Listele: tüm etki alanı güven ilişkileri relationships"
+            "desc_tr": "Enumerate all domain trust relationships"
           },
           {
             "title": "PowerView Get Forest Trusts",
@@ -12949,7 +12949,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate forest-level trust relationships",
-            "desc_tr": "Listele: forest-level trust relationships"
+            "desc_tr": "Enumerate forest-level trust relationships"
           },
           {
             "title": "AD Module Get-ADTrust",
@@ -12958,7 +12958,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all AD trust relationships via AD module",
-            "desc_tr": "Listele: tüm AD trust relationships AD module üzerinden"
+            "desc_tr": "List all AD trust relationships via AD module"
           },
           {
             "title": "Map All Domain Trusts",
@@ -12976,7 +12976,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Find users from foreign domains in local groups",
-            "desc_tr": "Bul: users foreign domains yerel groups üzerinden içinde"
+            "desc_tr": "Find users from foreign domains in local groups"
           },
           {
             "title": "Find Domain Shares",
@@ -12985,7 +12985,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Find accessible domain shares across the network",
-            "desc_tr": "Bul: accessible domashares the network içinde genelinde"
+            "desc_tr": "Find accessible domain shares across the network"
           },
           {
             "title": "Invoke-ShareFinder",
@@ -12994,7 +12994,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Discover and enumerate network shares across the domain",
-            "desc_tr": "Keşfet: and enumerate network shares the domain genelinde"
+            "desc_tr": "Discover and enumerate network shares across the domain"
           }
         ],
         "name_tr": "Trust Mapping"
@@ -13009,7 +13009,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Find users with SPNs set (Kerberoastable)",
-            "desc_tr": "Bul: users SPNs set (Kerberoastable) ile"
+            "desc_tr": "Find users with SPNs set (Kerberoastable)"
           },
           {
             "title": "Find AS-REP Roastable Users",
@@ -13018,7 +13018,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Find users with Kerberos pre-auth disabled",
-            "desc_tr": "Bul: users Kerberos pre-auth disabled ile"
+            "desc_tr": "Find users with Kerberos pre-auth disabled"
           },
           {
             "title": "Setspn Query All SPNs",
@@ -13027,7 +13027,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Query all registered SPNs in the domain",
-            "desc_tr": "Sorgula: tüm registered SPNs the domain içinde"
+            "desc_tr": "Query all registered SPNs in the domain"
           },
           {
             "title": "Find Unconstrained Delegation",
@@ -13036,7 +13036,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Find computers with unconstrained delegation enabled",
-            "desc_tr": "Bul: computers sınırsız delegasyenabled ile üzerinde"
+            "desc_tr": "Find computers with unconstrained delegation enabled"
           },
           {
             "title": "Find Constrained Delegation",
@@ -13045,7 +13045,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Find computers with constrained delegation configured",
-            "desc_tr": "Bul: computers kısıtlı delegasyconfigured ile üzerinde"
+            "desc_tr": "Find computers with constrained delegation configured"
           },
           {
             "title": "Find User Constrained Delegation",
@@ -13054,7 +13054,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Find users with constrained delegation configured",
-            "desc_tr": "Bul: users kısıtlı delegasyconfigured ile üzerinde"
+            "desc_tr": "Find users with constrained delegation configured"
           },
           {
             "title": "Find RBCD Targets",
@@ -13063,7 +13063,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Find computers where RBCD can be configured",
-            "desc_tr": "Bul: computers where RBCD can be configured"
+            "desc_tr": "Find computers where RBCD can be configured"
           },
           {
             "title": "LAPS Password Discovery",
@@ -13073,7 +13073,7 @@ module.exports = [
             ],
             "desc": "Read LAPS passwords if the current user has access",
             "note": "Requires read permission on ms-Mcs-AdmPwd attribute",
-            "desc_tr": "Oku: LAPS passwords if the mevcut user has access"
+            "desc_tr": "Read LAPS passwords if the current user has access"
           },
           {
             "title": "Check LAPS Deployment",
@@ -13091,7 +13091,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Find all delegation configurations using impacket",
-            "desc_tr": "Bul: tüm delegaticonfigurations impacket kullanarak üzerinde"
+            "desc_tr": "Find all delegation configurations using impacket"
           }
         ],
         "name_tr": "SPN & Delegation Discovery"
@@ -13106,7 +13106,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: CAs"
+            "desc_tr": "Enumerate CAs"
           },
           {
             "title": "Certify Find Vulnerable",
@@ -13115,7 +13115,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: zafiyet(ler) templates"
+            "desc_tr": "Find vulnerable templates"
           },
           {
             "title": "Certipy Find Vulnerable",
@@ -13149,7 +13149,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Request TGS tickets for all SPNs and save hashes for cracking",
-            "desc_tr": "İste: TGS tickets for tüm SPNs and save hashes for cracking"
+            "desc_tr": "Request TGS tickets for all SPNs and save hashes for cracking"
           },
           {
             "title": "Kerberoasting (Rubeus)",
@@ -13158,7 +13158,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Request and dump TGS tickets for all Kerberoastable users",
-            "desc_tr": "İste: and dump TGS tickets for tüm Kerberoastable users"
+            "desc_tr": "Request and dump TGS tickets for all Kerberoastable users"
           },
           {
             "title": "Kerberoast Specific User",
@@ -13176,7 +13176,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Crack TGS-REP hashes (Kerberoast) with hashcat",
-            "desc_tr": "Kır: TGS-REP hashes (Kerberoast) hashcat ile"
+            "desc_tr": "Crack TGS-REP hashes (Kerberoast) with hashcat"
           },
           {
             "title": "AS-REP Roasting (Impacket)",
@@ -13185,7 +13185,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Extract AS-REP hashes for users without pre-auth",
-            "desc_tr": "Çıkart: AS-REP hashes for users pre-auth olmadan"
+            "desc_tr": "Extract AS-REP hashes for users without pre-auth"
           },
           {
             "title": "AS-REP Roasting (Rubeus)",
@@ -13194,7 +13194,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Extract AS-REP hashes using Rubeus on Windows",
-            "desc_tr": "Çıkart: AS-REP hashes Rubeus Windows kullanarak üzerinde"
+            "desc_tr": "Extract AS-REP hashes using Rubeus on Windows"
           },
           {
             "title": "Crack AS-REP Hashes",
@@ -13203,7 +13203,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Crack AS-REP hashes with hashcat",
-            "desc_tr": "Kır: AS-REP hashes hashcat ile"
+            "desc_tr": "Crack AS-REP hashes with hashcat"
           },
           {
             "title": "Overpass the Hash (Rubeus)",
@@ -13212,7 +13212,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Request TGT using NTLM hash and inject into current session",
-            "desc_tr": "İste: TGT NTLM hash and inject incurrent sessikullanarak üzerinde'e"
+            "desc_tr": "Request TGT using NTLM hash and inject into current session"
           },
           {
             "title": "Overpass the Hash (Impacket)",
@@ -13221,7 +13221,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Request TGT using NTLM hash and save to ccache file",
-            "desc_tr": "İste: TGT NTLM hash and save ccache file kullanarak'e"
+            "desc_tr": "Request TGT using NTLM hash and save to ccache file"
           },
           {
             "title": "Pass the Ticket (.kirbi)",
@@ -13239,7 +13239,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Set ccache file for Linux Kerberos authentication",
-            "desc_tr": "Ayarla: ccache file for Linux Kerberos kimlik doğrulama"
+            "desc_tr": "Set ccache file for Linux Kerberos authentication"
           }
         ],
         "name_tr": "Kerberos Attacks"
@@ -13263,7 +13263,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Run Responder in analyze mode to see traffic without poisoning",
-            "desc_tr": "Çalıştır: Responder analyze mode see traffic poisoning'e içinde olmadan"
+            "desc_tr": "Run Responder in analyze mode to see traffic without poisoning"
           },
           {
             "title": "NTLM Relay to SMB",
@@ -13272,7 +13272,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Relay captured NTLM authentication to SMB targets for SAM dump",
-            "desc_tr": "Yönlendir: captured NTLM kimlik doğrulama SMB targets for SAM dump'e"
+            "desc_tr": "Relay captured NTLM authentication to SMB targets for SAM dump"
           },
           {
             "title": "NTLM Relay to LDAP",
@@ -13281,7 +13281,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Relay NTLM auth to LDAP and configure RBCD",
-            "desc_tr": "Yönlendir: NTLM auth LDAP and configure RBCD'e"
+            "desc_tr": "Relay NTLM auth to LDAP and configure RBCD"
           },
           {
             "title": "NTLM Relay to LDAP (Shadow Creds)",
@@ -13290,7 +13290,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Relay to LDAP and add shadow credentials for PKINIT auth",
-            "desc_tr": "Yönlendir: LDAP and add shadow kimlik bilgileri for PKINIT auth'e"
+            "desc_tr": "Relay to LDAP and add shadow credentials for PKINIT auth"
           },
           {
             "title": "NTLM Relay Execute Command",
@@ -13299,7 +13299,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Relay NTLM auth and execute a command on the target",
-            "desc_tr": "Yönlendir: NTLM auth and execute a command the target üzerinde"
+            "desc_tr": "Relay NTLM auth and execute a command on the target"
           },
           {
             "title": "PetitPotam Coercion",
@@ -13335,7 +13335,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Attempt all known coercion methods against a target",
-            "desc_tr": "Dene: tüm known coercimethods a target üzerinde'e karşı"
+            "desc_tr": "Attempt all known coercion methods against a target"
           },
           {
             "title": "mitm6 IPv6 DNS Takeover",
@@ -13373,7 +13373,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Crack captured Net-NTLMv2 hashes with hashcat",
-            "desc_tr": "Kır: captured Net-NTLMv2 hashes hashcat ile"
+            "desc_tr": "Crack captured Net-NTLMv2 hashes with hashcat"
           },
           {
             "title": "Crack NTLMv1 Hash",
@@ -13382,7 +13382,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Crack captured NTLMv1 hashes with hashcat",
-            "desc_tr": "Kır: captured NTLMv1 hashes hashcat ile"
+            "desc_tr": "Crack captured NTLMv1 hashes with hashcat"
           },
           {
             "title": "NTLM Relay Interactive Shell",
@@ -13391,7 +13391,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Get an interactive SMB shell through NTLM relay",
-            "desc_tr": "Al: an interactive SMB shell NTLM relay üzerinden"
+            "desc_tr": "Get an interactive SMB shell through NTLM relay"
           },
           {
             "title": "NTLM Relay Dump Secrets",
@@ -13400,7 +13400,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Relay and dump LAPS, ADCS, and gMSA data",
-            "desc_tr": "Yönlendir: and dump LAPS, ADCS, and gMSA data"
+            "desc_tr": "Relay and dump LAPS, ADCS, and gMSA data"
           },
           {
             "title": "Generate Targets List (No SMB Signing)",
@@ -13409,7 +13409,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Generate list of hosts without SMB signing for relay attacks",
-            "desc_tr": "Oluştur: list of hosts SMB signing for relay attacks olmadan"
+            "desc_tr": "Generate list of hosts without SMB signing for relay attacks"
           }
         ],
         "name_tr": "Credential Relay"
@@ -13545,7 +13545,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Configure RBCD via AD module and abuse with Rubeus",
-            "desc_tr": "Yapılandır: RBCD AD module and abuse Rubeus üzerinden ile"
+            "desc_tr": "Configure RBCD via AD module and abuse with Rubeus"
           }
         ],
         "name_tr": "Delegation Exploitation"
@@ -13569,7 +13569,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Dump all domain hashes via DCSync with impacket",
-            "desc_tr": "Dökümle: tüm domahashes DCSync impacket üzerinden ile içinde"
+            "desc_tr": "Dump all domain hashes via DCSync with impacket"
           },
           {
             "title": "DCSync Specific User",
@@ -13656,7 +13656,7 @@ module.exports = [
             ],
             "desc": "Add ACL to AdminSDHolder for persistent domain admin access",
             "note": "SDProp propagates permissions to all protected groups every 60 min",
-            "desc_tr": "Ekle: ACL AdminSDHolder for persistent DomaAdmin access'e içinde"
+            "desc_tr": "Add ACL to AdminSDHolder for persistent domain admin access"
           },
           {
             "title": "LAPS Abuse (CrackMapExec)",
@@ -13665,7 +13665,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Dump LAPS passwords for all computers if authorized",
-            "desc_tr": "Dökümle: LAPS passwords for tüm computers if authorized"
+            "desc_tr": "Dump LAPS passwords for all computers if authorized"
           },
           {
             "title": "Shadow Credentials Attack",
@@ -13674,7 +13674,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Add shadow credentials to a computer object for PKINIT auth",
-            "desc_tr": "Ekle: shadow kimlik bilgileri a computer object for PKINIT auth'e"
+            "desc_tr": "Add shadow credentials to a computer object for PKINIT auth"
           },
           {
             "title": "DPAPI Master Key Extraction",
@@ -13683,7 +13683,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Extract DPAPI backup keys from the domain controller",
-            "desc_tr": "Çıkart: DPAPI backup keys the etki alanı denetleyicisi (DC) üzerinden"
+            "desc_tr": "Extract DPAPI backup keys from the domain controller"
           },
           {
             "title": "Group Policy Abuse (SharpGPOAbuse)",
@@ -13701,7 +13701,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Add scheduled task via writable GPO for code execution",
-            "desc_tr": "Ekle: zamanlanmış görevler writable GPO for kod çalıştırma üzerinden"
+            "desc_tr": "Add scheduled task via writable GPO for code execution"
           },
           {
             "title": "Shadow Credentials (Whisker)",
@@ -13710,7 +13710,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Add shadow credentials to a computer account using Whisker",
-            "desc_tr": "Ekle: shadow kimlik bilgileri a computer account Whisker kullanarak'e"
+            "desc_tr": "Add shadow credentials to a computer account using Whisker"
           },
           {
             "title": "Shadow Credentials + Rubeus PKINIT",
@@ -13733,7 +13733,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Read LAPS password with PowerView if authorized",
-            "desc_tr": "Oku: LAPS password PowerView if authorized ile"
+            "desc_tr": "Read LAPS password with PowerView if authorized"
           },
           {
             "title": "LAPS Abuse (LAPSToolkit)",
@@ -13746,7 +13746,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate LAPS deployment and find who can read passwords",
-            "desc_tr": "Listele: LAPS deployment and find who can read passwords"
+            "desc_tr": "Enumerate LAPS deployment and find who can read passwords"
           },
           {
             "title": "ADCS ESC1 (Certify)",
@@ -13755,7 +13755,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Find vulnerable AD CS certificate templates (ESC1-ESC8)",
-            "desc_tr": "Bul: zafiyet(ler) AD CS certificate templates (ESC1-ESC8)"
+            "desc_tr": "Find vulnerable AD CS certificate templates (ESC1-ESC8)"
           },
           {
             "title": "ADCS ESC1 Request Cert",
@@ -13764,7 +13764,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Request certificate as Administrator via vulnerable template",
-            "desc_tr": "İste: certificate as Administrator zafiyet(ler) template üzerinden"
+            "desc_tr": "Request certificate as Administrator via vulnerable template"
           },
           {
             "title": "ADCS Certipy Find",
@@ -13773,7 +13773,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Find vulnerable certificate templates with certipy",
-            "desc_tr": "Bul: zafiyet(ler) certificate templates certipy ile"
+            "desc_tr": "Find vulnerable certificate templates with certipy"
           },
           {
             "title": "ADCS Certipy ESC1 Exploit",
@@ -13841,7 +13841,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Add a user to Domain Admins if you have write access",
-            "desc_tr": "Ekle: a user DomaAdmin if you have write access'e içinde"
+            "desc_tr": "Add a user to Domain Admins if you have write access"
           },
           {
             "title": "ForceChangePassword (PowerView)",
@@ -13850,7 +13850,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Force reset a user's password if you have the permission",
-            "desc_tr": "Zorla: reset a user's password if you have the permission"
+            "desc_tr": "Force reset a user's password if you have the permission"
           },
           {
             "title": "ZeroLogon CVE-2020-1472",
@@ -13860,7 +13860,7 @@ module.exports = [
               "advanced"
             ],
             "note": "DANGEROUS: Can break AD",
-            "desc_tr": "Sıfırla: DC password empty'e"
+            "desc_tr": "Reset DC password to empty"
           },
           {
             "title": "PrintNightmare",
@@ -13893,7 +13893,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "İste: cert as admin"
+            "desc_tr": "Request cert as admin"
           },
           {
             "title": "Certipy Auth",
@@ -13911,7 +13911,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Yönlendir: ADCS'e"
+            "desc_tr": "Relay to ADCS"
           }
         ],
         "name_tr": "ADCS Exploitation"
@@ -13972,7 +13972,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Execute command via Task Scheduler service",
-            "desc_tr": "Çalıştır: command Task Scheduler service üzerinden"
+            "desc_tr": "Execute command via Task Scheduler service"
           },
           {
             "title": "Impacket DCOMExec",
@@ -14011,7 +14011,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: DCOM üzerinden"
+            "desc_tr": "Execute via DCOM"
           }
         ],
         "name_tr": "Impacket Execution"
@@ -14053,7 +14053,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Upload a file to target via Evil-WinRM session",
-            "desc_tr": "Yükle: a file target Evil-WinRM sessiüzerinden üzerinde'e"
+            "desc_tr": "Upload a file to target via Evil-WinRM session"
           },
           {
             "title": "Evil-WinRM Download File",
@@ -14062,7 +14062,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Download a file from target via Evil-WinRM session",
-            "desc_tr": "İndir: a file target Evil-WinRM sessiüzerinden üzerinden üzerinde"
+            "desc_tr": "Download a file from target via Evil-WinRM session"
           },
           {
             "title": "Enter-PSSession (PowerShell)",
@@ -14080,7 +14080,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Execute commands on a remote host via PS remoting",
-            "desc_tr": "Çalıştır: commands a uzak host PS remoting üzerinden üzerinde"
+            "desc_tr": "Execute commands on a remote host via PS remoting"
           },
           {
             "title": "Invoke-Command (Multiple Hosts)",
@@ -14089,7 +14089,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Execute commands on multiple remote hosts simultaneously",
-            "desc_tr": "Çalıştır: commands multiple uzak hosts simultaneously üzerinde"
+            "desc_tr": "Execute commands on multiple remote hosts simultaneously"
           },
           {
             "title": "New-PSSession Persistent",
@@ -14101,7 +14101,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Create and enter a persistent PowerShell remoting session",
-            "desc_tr": "Oluştur: and enter a persistent PowerShell remoting session"
+            "desc_tr": "Create and enter a persistent PowerShell remoting session"
           },
           {
             "title": "WinRS Remote Command",
@@ -14110,7 +14110,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Execute command remotely via Windows Remote Shell",
-            "desc_tr": "Çalıştır: command remotely Windows uzak Shell üzerinden"
+            "desc_tr": "Execute command remotely via Windows Remote Shell"
           },
           {
             "title": "Invoke-Command Multi",
@@ -14119,7 +14119,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: multiple targets üzerinde"
+            "desc_tr": "Execute on multiple targets"
           },
           {
             "title": "New-PSSession + Copy",
@@ -14132,7 +14132,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Oluştur: sessiand copy files üzerinde"
+            "desc_tr": "Create session and copy files"
           },
           {
             "title": "runas /netonly",
@@ -14141,7 +14141,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: different domacreds ile içinde"
+            "desc_tr": "Run with different domain creds"
           }
         ],
         "name_tr": "WinRM & PowerShell Remoting"
@@ -14165,7 +14165,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Run remote command as SYSTEM with PsExec",
-            "desc_tr": "Çalıştır: uzak command as SYSTEM PsExec ile"
+            "desc_tr": "Run remote command as SYSTEM with PsExec"
           },
           {
             "title": "Remote Service Creation (sc.exe)",
@@ -14178,7 +14178,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Create and start a remote service for command execution",
-            "desc_tr": "Oluştur: and start a uzak service for komut enjeksiyonu"
+            "desc_tr": "Create and start a remote service for command execution"
           },
           {
             "title": "Remote Scheduled Task",
@@ -14200,7 +14200,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Execute a remote process via WMI command line",
-            "desc_tr": "Çalıştır: a uzak process WMI command line üzerinden"
+            "desc_tr": "Execute a remote process via WMI command line"
           },
           {
             "title": "CrackMapExec Command Exec",
@@ -14209,7 +14209,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Execute command via SMB with CrackMapExec",
-            "desc_tr": "Çalıştır: command SMB CrackMapExec üzerinden ile"
+            "desc_tr": "Execute command via SMB with CrackMapExec"
           },
           {
             "title": "CrackMapExec PowerShell Exec",
@@ -14218,7 +14218,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Execute PowerShell command via SMB with CME",
-            "desc_tr": "Çalıştır: PowerShell command SMB CME üzerinden ile"
+            "desc_tr": "Execute PowerShell command via SMB with CME"
           },
           {
             "title": "CrackMapExec Dump SAM",
@@ -14227,7 +14227,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Dump local SAM hashes from target via CME",
-            "desc_tr": "Dökümle: yerel SAM hashes target CME üzerinden üzerinden"
+            "desc_tr": "Dump local SAM hashes from target via CME"
           },
           {
             "title": "CrackMapExec Dump LSA",
@@ -14236,7 +14236,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Dump LSA secrets from target via CME",
-            "desc_tr": "Dökümle: LSA secrets target CME üzerinden üzerinden"
+            "desc_tr": "Dump LSA secrets from target via CME"
           },
           {
             "title": "CrackMapExec Dump NTDS",
@@ -14245,7 +14245,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Dump all domain hashes from NTDS.dit via CME",
-            "desc_tr": "Dökümle: tüm domahashes NTDS.dit CME üzerinden üzerinden içinde"
+            "desc_tr": "Dump all domain hashes from NTDS.dit via CME"
           },
           {
             "title": "Runas with Network Credentials",
@@ -14255,7 +14255,7 @@ module.exports = [
             ],
             "desc": "Spawn cmd.exe with alternate network credentials",
             "note": "Only affects network authentication, not local",
-            "desc_tr": "Başlat: cmd.exe alternate network kimlik bilgileri ile"
+            "desc_tr": "Spawn cmd.exe with alternate network credentials"
           },
           {
             "title": "SharpRDP Remote Desktop Exec",
@@ -14264,7 +14264,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Execute commands via RDP protocol without full GUI session",
-            "desc_tr": "Çalıştır: commands RDP protocol full GUI sessiüzerinden üzerinde olmadan"
+            "desc_tr": "Execute commands via RDP protocol without full GUI session"
           }
         ],
         "name_tr": "Windows Remote Services"
@@ -14279,7 +14279,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Connect via RDP with xfreerdp",
-            "desc_tr": "Bağlan: RDP xfreerdp üzerinden ile"
+            "desc_tr": "Connect via RDP with xfreerdp"
           },
           {
             "title": "xfreerdp (Hash — Restricted Admin)",
@@ -14306,7 +14306,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Connect via RDP with rdesktop",
-            "desc_tr": "Bağlan: RDP rdesktop üzerinden ile"
+            "desc_tr": "Connect via RDP with rdesktop"
           },
           {
             "title": "Enable RDP Remotely",
@@ -14315,7 +14315,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Enable RDP on a remote host via CrackMapExec",
-            "desc_tr": "Etkinleştir: RDP a uzak host CrackMapExec üzerinden üzerinde"
+            "desc_tr": "Enable RDP on a remote host via CrackMapExec"
           },
           {
             "title": "xfreerdp with Certificate Ignore",
@@ -14357,7 +14357,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List available shares on a remote host",
-            "desc_tr": "Listele: available shares a uzak host üzerinde"
+            "desc_tr": "List available shares on a remote host"
           },
           {
             "title": "Access Share via smbclient",
@@ -14393,7 +14393,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Copy files from remote share via Windows copy command",
-            "desc_tr": "Kopyala: files uzak share Windows copy command üzerinden üzerinden"
+            "desc_tr": "Copy files from remote share via Windows copy command"
           },
           {
             "title": "CME lsassy",
@@ -14402,7 +14402,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dökümle: LSASS remotely"
+            "desc_tr": "Dump LSASS remotely"
           }
         ],
         "name_tr": "File Shares & Data Collection"
@@ -14427,7 +14427,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Set up AWS access key, secret key, region, and output format",
-            "desc_tr": "Ayarla: up AWS access key, secret key, region, and output format"
+            "desc_tr": "Set up AWS access key, secret key, region, and output format"
           },
           {
             "title": "Set AWS Env Variables",
@@ -14440,7 +14440,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Set AWS credentials via environment variables",
-            "desc_tr": "Ayarla: AWS kimlik bilgileri ortam değişkenleri üzerinden"
+            "desc_tr": "Set AWS credentials via environment variables"
           },
           {
             "title": "Set Session Token",
@@ -14449,7 +14449,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Set temporary session token for assumed roles",
-            "desc_tr": "Ayarla: temporary sessitoken for assumed roles üzerinde"
+            "desc_tr": "Set temporary session token for assumed roles"
           },
           {
             "title": "Verify Current Identity",
@@ -14458,7 +14458,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Show the current AWS identity (account, ARN, user ID)",
-            "desc_tr": "Göster: the mevcut AWS identity (account, ARN, user ID)"
+            "desc_tr": "Show the current AWS identity (account, ARN, user ID)"
           },
           {
             "title": "Use Specific Profile",
@@ -14467,7 +14467,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Verify identity for a specific named profile",
-            "desc_tr": "Doğrula: identity for a belirli named profile"
+            "desc_tr": "Verify identity for a specific named profile"
           },
           {
             "title": "Assume IAM Role",
@@ -14491,7 +14491,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate all IAM users in the account",
-            "desc_tr": "Listele: tüm IAM users the account içinde"
+            "desc_tr": "Enumerate all IAM users in the account"
           },
           {
             "title": "List IAM Roles",
@@ -14500,7 +14500,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate all IAM roles in the account",
-            "desc_tr": "Listele: tüm IAM roles the account içinde"
+            "desc_tr": "Enumerate all IAM roles in the account"
           },
           {
             "title": "List IAM Groups",
@@ -14509,7 +14509,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate all IAM groups in the account",
-            "desc_tr": "Listele: tüm IAM groups the account içinde"
+            "desc_tr": "Enumerate all IAM groups in the account"
           },
           {
             "title": "List Managed Policies",
@@ -14518,7 +14518,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all attached managed policies",
-            "desc_tr": "Listele: tüm attached managed policies"
+            "desc_tr": "List all attached managed policies"
           },
           {
             "title": "Get User Inline Policy",
@@ -14527,7 +14527,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Retrieve the contents of an inline user policy",
-            "desc_tr": "Al: the contents of an inline user policy"
+            "desc_tr": "Retrieve the contents of an inline user policy"
           },
           {
             "title": "List Attached User Policies",
@@ -14536,7 +14536,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List managed policies attached to a specific user",
-            "desc_tr": "Listele: managed policies attached a belirli user'e"
+            "desc_tr": "List managed policies attached to a specific user"
           },
           {
             "title": "List User Inline Policies",
@@ -14545,7 +14545,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List inline policies for a specific user",
-            "desc_tr": "Listele: inline policies for a belirli user"
+            "desc_tr": "List inline policies for a specific user"
           },
           {
             "title": "Get Policy Version Detail",
@@ -14563,7 +14563,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List managed policies attached to a group",
-            "desc_tr": "Listele: managed policies attached a group'e"
+            "desc_tr": "List managed policies attached to a group"
           },
           {
             "title": "List Role Policies",
@@ -14572,7 +14572,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List managed policies attached to a role",
-            "desc_tr": "Listele: managed policies attached a role'e"
+            "desc_tr": "List managed policies attached to a role"
           },
           {
             "title": "Get Access Key Info",
@@ -14581,7 +14581,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List access keys for a user",
-            "desc_tr": "Listele: access keys for a user"
+            "desc_tr": "List access keys for a user"
           },
           {
             "title": "Enumerate-IAM Script",
@@ -14605,7 +14605,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all S3 buckets in the account",
-            "desc_tr": "Listele: tüm S3 buckets the account içinde"
+            "desc_tr": "List all S3 buckets in the account"
           },
           {
             "title": "List S3 Bucket Contents",
@@ -14623,7 +14623,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Download a file from S3",
-            "desc_tr": "İndir: a file S3 üzerinden"
+            "desc_tr": "Download a file from S3"
           },
           {
             "title": "Sync S3 Bucket",
@@ -14632,7 +14632,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Download entire bucket contents",
-            "desc_tr": "İndir: entire bucket contents"
+            "desc_tr": "Download entire bucket contents"
           },
           {
             "title": "Public S3 Access (No Auth)",
@@ -14641,7 +14641,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List bucket contents without authentication",
-            "desc_tr": "Listele: bucket contents kimlik doğrulama olmadan"
+            "desc_tr": "List bucket contents without authentication"
           },
           {
             "title": "Get Bucket ACL",
@@ -14659,7 +14659,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Retrieve the bucket policy JSON",
-            "desc_tr": "Al: the bucket policy JSON"
+            "desc_tr": "Retrieve the bucket policy JSON"
           },
           {
             "title": "Check Bucket Website",
@@ -14677,7 +14677,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all EC2 instances with key details",
-            "desc_tr": "Listele: tüm EC2 instances key details ile"
+            "desc_tr": "List all EC2 instances with key details"
           },
           {
             "title": "Describe Security Groups",
@@ -14686,7 +14686,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate security group rules for open ports",
-            "desc_tr": "Listele: security group rules for açık portlar"
+            "desc_tr": "Enumerate security group rules for open ports"
           },
           {
             "title": "Describe VPCs",
@@ -14695,7 +14695,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List all VPCs in the region",
-            "desc_tr": "Listele: tüm VPCs the region içinde"
+            "desc_tr": "List all VPCs in the region"
           },
           {
             "title": "Describe Subnets",
@@ -14704,7 +14704,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List all subnets with CIDR info",
-            "desc_tr": "Listele: tüm subnets CIDR info ile"
+            "desc_tr": "List all subnets with CIDR info"
           },
           {
             "title": "Describe Snapshots (Own)",
@@ -14713,7 +14713,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List EBS snapshots owned by current account",
-            "desc_tr": "Listele: EBS snapshots owned by mevcut account"
+            "desc_tr": "List EBS snapshots owned by current account"
           },
           {
             "title": "List Lambda Functions",
@@ -14722,7 +14722,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all Lambda functions with runtime info",
-            "desc_tr": "Listele: tüm Lambda functions runtime info ile"
+            "desc_tr": "List all Lambda functions with runtime info"
           },
           {
             "title": "Get Lambda Function Code",
@@ -14731,7 +14731,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Get Lambda function details and download code URL",
-            "desc_tr": "Al: Lambda functidetails and download code URL üzerinde"
+            "desc_tr": "Get Lambda function details and download code URL"
           },
           {
             "title": "Get Lambda Policy",
@@ -14740,7 +14740,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Get resource-based policy for a Lambda function",
-            "desc_tr": "Al: resource-based policy for a Lambda function"
+            "desc_tr": "Get resource-based policy for a Lambda function"
           },
           {
             "title": "Describe RDS Instances",
@@ -14749,7 +14749,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List RDS database instances",
-            "desc_tr": "Listele: RDS database instances"
+            "desc_tr": "List RDS database instances"
           },
           {
             "title": "List EKS Clusters",
@@ -14758,7 +14758,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List all EKS Kubernetes clusters",
-            "desc_tr": "Listele: tüm EKS Kubernetes clusters"
+            "desc_tr": "List all EKS Kubernetes clusters"
           },
           {
             "title": "List ECR Images",
@@ -14767,7 +14767,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List images in an ECR container registry",
-            "desc_tr": "Listele: images an ECR container registry içinde"
+            "desc_tr": "List images in an ECR container registry"
           },
           {
             "title": "EC2 Snapshots",
@@ -14776,7 +14776,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: snapshots secrets ile"
+            "desc_tr": "Find snapshots with secrets"
           },
           {
             "title": "EC2 User Data",
@@ -14794,7 +14794,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Dökümle: table contents"
+            "desc_tr": "Dump table contents"
           },
           {
             "title": "CloudWatch Logs",
@@ -14803,7 +14803,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: log groups"
+            "desc_tr": "Enumerate log groups"
           }
         ],
         "name_tr": "Storage & Compute Enumeration"
@@ -14818,7 +14818,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all secrets in AWS Secrets Manager",
-            "desc_tr": "Listele: tüm secrets AWS Secrets Manager içinde"
+            "desc_tr": "List all secrets in AWS Secrets Manager"
           },
           {
             "title": "Get Secret Value",
@@ -14827,7 +14827,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Retrieve the actual secret value",
-            "desc_tr": "Al: the actual secret value"
+            "desc_tr": "Retrieve the actual secret value"
           },
           {
             "title": "List SSM Parameters",
@@ -14836,7 +14836,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all SSM Parameter Store entries",
-            "desc_tr": "Listele: tüm SSM Parameter Store entries"
+            "desc_tr": "List all SSM Parameter Store entries"
           },
           {
             "title": "Get SSM Parameter (Decrypted)",
@@ -14845,7 +14845,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Get SSM parameter value including SecureString decryption",
-            "desc_tr": "Al: SSM parameter value including SecureString decryption"
+            "desc_tr": "Get SSM parameter value including SecureString decryption"
           },
           {
             "title": "IMDSv1 — Get Credentials",
@@ -14855,7 +14855,7 @@ module.exports = [
             ],
             "desc": "Retrieve IAM role credentials from EC2 instance metadata v1",
             "note": "Only works from within an EC2 instance",
-            "desc_tr": "Al: IAM role kimlik bilgileri EC2 instance metadata v1 üzerinden"
+            "desc_tr": "Retrieve IAM role credentials from EC2 instance metadata v1"
           },
           {
             "title": "IMDSv2 — Get Token + Credentials",
@@ -14867,7 +14867,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Retrieve credentials from IMDSv2 (token required)",
-            "desc_tr": "Al: kimlik bilgileri IMDSv2 (token required) üzerinden"
+            "desc_tr": "Retrieve credentials from IMDSv2 (token required)"
           },
           {
             "title": "IMDS — List Available Roles",
@@ -14876,7 +14876,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Discover IAM roles available on the instance",
-            "desc_tr": "Keşfet: IAM roles available the instance üzerinde"
+            "desc_tr": "Discover IAM roles available on the instance"
           },
           {
             "title": "EC2 User Data",
@@ -14885,7 +14885,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Retrieve and decode EC2 instance user data (may contain secrets)",
-            "desc_tr": "Al: and kod çözme EC2 instance user data (may contasecrets) içinde"
+            "desc_tr": "Retrieve and decode EC2 instance user data (may contain secrets)"
           }
         ],
         "name_tr": "Secrets & Metadata"
@@ -14900,7 +14900,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Create new access keys for a user (requires iam:CreateAccessKey)",
-            "desc_tr": "Oluştur: new access keys for a user (requires iam:CreateAccessKey)"
+            "desc_tr": "Create new access keys for a user (requires iam:CreateAccessKey)"
           },
           {
             "title": "Attach Admin Policy to User",
@@ -14918,7 +14918,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Add an inline policy granting full access to a user",
-            "desc_tr": "Ekle: an inline policy granting full access a user'e"
+            "desc_tr": "Add an inline policy granting full access to a user"
           },
           {
             "title": "Add User to Admin Group",
@@ -14927,7 +14927,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Add user to a group with elevated permissions",
-            "desc_tr": "Ekle: user a group elevated permissions ile'e"
+            "desc_tr": "Add user to a group with elevated permissions"
           },
           {
             "title": "Update Lambda Code for Escalation",
@@ -14936,7 +14936,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Replace Lambda function code to escalate via its IAM role",
-            "desc_tr": "Değiştir: Lambda functicode escalate its IAM role üzerinden üzerinde'e"
+            "desc_tr": "Replace Lambda function code to escalate via its IAM role"
           },
           {
             "title": "Create Login Profile",
@@ -14945,7 +14945,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Create console login for a user that only had API access",
-            "desc_tr": "Oluştur: console logfor a user that only had API access içinde"
+            "desc_tr": "Create console login for a user that only had API access"
           }
         ],
         "name_tr": "Privilege Escalation"
@@ -14969,7 +14969,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate permissions for the current Pacu session identity",
-            "desc_tr": "Listele: permissions for the mevcut Pacu sessiidentity üzerinde"
+            "desc_tr": "Enumerate permissions for the current Pacu session identity"
           },
           {
             "title": "Pacu — Privesc Scan",
@@ -14978,7 +14978,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Scan for privilege escalation paths in IAM",
-            "desc_tr": "Tara: ma for yetki yükseltme paths IAM içinde"
+            "desc_tr": "Scan for privilege escalation paths in IAM"
           },
           {
             "title": "Pacu — Enum EC2",
@@ -14987,7 +14987,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate EC2 instances and related resources",
-            "desc_tr": "Listele: EC2 instances and related resources"
+            "desc_tr": "Enumerate EC2 instances and related resources"
           },
           {
             "title": "Pacu — Enum S3",
@@ -14996,7 +14996,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate S3 buckets and their permissions",
-            "desc_tr": "Listele: S3 buckets and their permissions"
+            "desc_tr": "Enumerate S3 buckets and their permissions"
           },
           {
             "title": "Pacu — Enum Lambda",
@@ -15005,7 +15005,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate Lambda functions and configurations",
-            "desc_tr": "Listele: Lambda functions and configurations"
+            "desc_tr": "Enumerate Lambda functions and configurations"
           },
           {
             "title": "ScoutSuite AWS Audit",
@@ -15014,7 +15014,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Run comprehensive AWS security audit with ScoutSuite",
-            "desc_tr": "Çalıştır: comprehensive AWS security audit ScoutSuite ile"
+            "desc_tr": "Run comprehensive AWS security audit with ScoutSuite"
           },
           {
             "title": "Prowler AWS Audit",
@@ -15023,7 +15023,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Run CIS benchmark and security best practices audit",
-            "desc_tr": "Çalıştır: CIS benchmark and security best practices audit"
+            "desc_tr": "Run CIS benchmark and security best practices audit"
           },
           {
             "title": "S3Scanner",
@@ -15032,7 +15032,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Scan for misconfigured and public S3 buckets",
-            "desc_tr": "Tara: ma for misconfigured and public S3 buckets"
+            "desc_tr": "Scan for misconfigured and public S3 buckets"
           },
           {
             "title": "CloudMapper Visualization",
@@ -15041,7 +15041,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Collect and visualize AWS network infrastructure",
-            "desc_tr": "Topla: and visualize AWS network infrastructure"
+            "desc_tr": "Collect and visualize AWS network infrastructure"
           }
         ],
         "name_tr": "Automated Tools"
@@ -15066,7 +15066,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Start a simple HTTP server on port 80",
-            "desc_tr": "Başlat: a simple HTTP server port 80 üzerinde"
+            "desc_tr": "Start a simple HTTP server on port 80"
           },
           {
             "title": "Python2 HTTP Server",
@@ -15075,7 +15075,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Start a Python 2 HTTP server on port 80",
-            "desc_tr": "Başlat: a Pyth2 HTTP server on port 80 üzerinde"
+            "desc_tr": "Start a Python 2 HTTP server on port 80"
           },
           {
             "title": "PHP Built-in Server",
@@ -15084,7 +15084,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Start a PHP development server for hosting files",
-            "desc_tr": "Başlat: a PHP development server for hosting files"
+            "desc_tr": "Start a PHP development server for hosting files"
           },
           {
             "title": "Ruby HTTP Server",
@@ -15093,7 +15093,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Start a Ruby HTTP server in the current directory",
-            "desc_tr": "Başlat: a Ruby HTTP server the mevcut directory içinde"
+            "desc_tr": "Start a Ruby HTTP server in the current directory"
           },
           {
             "title": "Busybox HTTP Server",
@@ -15120,7 +15120,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Start an SMB server sharing the current directory",
-            "desc_tr": "Başlat: an SMB server sharing the mevcut directory"
+            "desc_tr": "Start an SMB server sharing the current directory"
           },
           {
             "title": "Impacket SMB Server (With Auth)",
@@ -15138,7 +15138,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Start a writable FTP server on port 21",
-            "desc_tr": "Başlat: a writable FTP server port 21 üzerinde"
+            "desc_tr": "Start a writable FTP server on port 21"
           },
           {
             "title": "TFTP Server",
@@ -15147,7 +15147,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Start a TFTP server for simple file transfers",
-            "desc_tr": "Başlat: a TFTP server for simple file transfers"
+            "desc_tr": "Start a TFTP server for simple file transfers"
           },
           {
             "title": "Netcat Listener (Receive File)",
@@ -15198,7 +15198,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Download file using wget",
-            "desc_tr": "İndir: file wget kullanarak"
+            "desc_tr": "Download file using wget"
           },
           {
             "title": "curl Download",
@@ -15207,7 +15207,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Download file using curl",
-            "desc_tr": "İndir: file curl kullanarak"
+            "desc_tr": "Download file using curl"
           },
           {
             "title": "curl Execute in Memory",
@@ -15216,7 +15216,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Download and execute script without writing to disk",
-            "desc_tr": "İndir: and execute script writing disk'e olmadan"
+            "desc_tr": "Download and execute script without writing to disk"
           },
           {
             "title": "SCP Download",
@@ -15234,7 +15234,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Upload file from target to attacker",
-            "desc_tr": "Yükle: file target attacker üzerinden'e"
+            "desc_tr": "Upload file from target to attacker"
           },
           {
             "title": "SFTP Transfer",
@@ -15274,7 +15274,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Download file via socat",
-            "desc_tr": "İndir: file socat üzerinden"
+            "desc_tr": "Download file via socat"
           },
           {
             "title": "Bash /dev/tcp Download",
@@ -15283,7 +15283,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Download file using bash built-in /dev/tcp (no external tools)",
-            "desc_tr": "İndir: file bash built-/dev/tcp (no external tools) kullanarak içinde"
+            "desc_tr": "Download file using bash built-in /dev/tcp (no external tools)"
           },
           {
             "title": "Wget Recursive Download",
@@ -15307,7 +15307,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Download file via certutil (LOLBin)",
-            "desc_tr": "İndir: file certutil (LOLBin) üzerinden"
+            "desc_tr": "Download file via certutil (LOLBin)"
           },
           {
             "title": "PowerShell DownloadFile",
@@ -15316,7 +15316,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Download file via .NET WebClient",
-            "desc_tr": "İndir: file .NET WebClient üzerinden"
+            "desc_tr": "Download file via .NET WebClient"
           },
           {
             "title": "PowerShell Invoke-WebRequest",
@@ -15325,7 +15325,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Download file via Invoke-WebRequest (IWR)",
-            "desc_tr": "İndir: file Invoke-WebRequest (IWR) üzerinden"
+            "desc_tr": "Download file via Invoke-WebRequest (IWR)"
           },
           {
             "title": "PowerShell IEX (In-Memory)",
@@ -15334,7 +15334,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Download and execute PowerShell script in memory",
-            "desc_tr": "İndir: and execute PowerShell script memory içinde"
+            "desc_tr": "Download and execute PowerShell script in memory"
           },
           {
             "title": "BitsAdmin Download",
@@ -15343,7 +15343,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Download file via BITS service",
-            "desc_tr": "İndir: file BITS service üzerinden"
+            "desc_tr": "Download file via BITS service"
           },
           {
             "title": "Start-BitsTransfer",
@@ -15352,7 +15352,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Download file via PowerShell BITS cmdlet",
-            "desc_tr": "İndir: file PowerShell BITS cmdlet üzerinden"
+            "desc_tr": "Download file via PowerShell BITS cmdlet"
           },
           {
             "title": "Copy from SMB Share",
@@ -15361,7 +15361,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Copy file from attacker's SMB share",
-            "desc_tr": "Kopyala: file attacker's SMB share üzerinden"
+            "desc_tr": "Copy file from attacker's SMB share"
           },
           {
             "title": "Net Use SMB Mount",
@@ -15374,7 +15374,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Mount SMB share, copy file, and clean up",
-            "desc_tr": "Bağla: SMB share, copy file, and clean up"
+            "desc_tr": "Mount SMB share, copy file, and clean up"
           },
           {
             "title": "PowerShell Upload (POST)",
@@ -15383,7 +15383,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Upload file from target to attacker via HTTP POST",
-            "desc_tr": "Yükle: file target attacker HTTP POST üzerinden üzerinden'e"
+            "desc_tr": "Upload file from target to attacker via HTTP POST"
           },
           {
             "title": "Expand CAB File Transfer",
@@ -15427,7 +15427,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Encode file as base64 for text-based exfil (LOLBin)",
-            "desc_tr": "Kodla: a file as base64 for text-based exfil (LOLBin)"
+            "desc_tr": "Encode file as base64 for text-based exfil (LOLBin)"
           }
         ],
         "name_tr": "Windows Target Downloads"
@@ -15496,7 +15496,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Encode a file to base64 for text-based transfer",
-            "desc_tr": "Kodla: a a file base64 for text-based transfer'e"
+            "desc_tr": "Encode a file to base64 for text-based transfer"
           },
           {
             "title": "Base64 Decode (Linux)",
@@ -15505,7 +15505,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Decode a base64 encoded file",
-            "desc_tr": "Çöz: zme a base64 encoded file"
+            "desc_tr": "Decode a base64 encoded file"
           },
           {
             "title": "Base64 Encode (PowerShell)",
@@ -15532,7 +15532,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Convert file to hex representation for transfer",
-            "desc_tr": "Dönüştür: file hex representatifor transfer üzerinde'e"
+            "desc_tr": "Convert file to hex representation for transfer"
           },
           {
             "title": "xxd Hex Decode",
@@ -15559,7 +15559,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Extract hidden data from a steganographic image",
-            "desc_tr": "Çıkart: gizli data a steganographic image üzerinden"
+            "desc_tr": "Extract hidden data from a steganographic image"
           },
           {
             "title": "Exiftool Embed in Metadata",
@@ -15577,7 +15577,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Read all metadata from a file",
-            "desc_tr": "Oku: tüm metadata a file üzerinden"
+            "desc_tr": "Read all metadata from a file"
           }
         ],
         "name_tr": "Encoding & Steganography Transfers"
@@ -15602,7 +15602,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Start Chisel server in reverse mode for client connections",
-            "desc_tr": "Başlat: Chisel server reverse mode for client connections içinde"
+            "desc_tr": "Start Chisel server in reverse mode for client connections"
           },
           {
             "title": "Chisel Client Reverse SOCKS",
@@ -15611,7 +15611,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Create reverse SOCKS5 proxy through Chisel",
-            "desc_tr": "Oluştur: reverse SOCKS5 vekil sunucu (proxy) Chisel üzerinden"
+            "desc_tr": "Create reverse SOCKS5 proxy through Chisel"
           },
           {
             "title": "Chisel Client Reverse Port Forward",
@@ -15629,7 +15629,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Create forward SOCKS proxy through Chisel",
-            "desc_tr": "Oluştur: forward SOCKS vekil sunucu (proxy) Chisel üzerinden"
+            "desc_tr": "Create forward SOCKS proxy through Chisel"
           },
           {
             "title": "Chisel Client (HTTPS)",
@@ -15647,7 +15647,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Start HTTPTunnel server forwarding to a local service",
-            "desc_tr": "Başlat: HTTPTunnel server forwarding a yerel service'e"
+            "desc_tr": "Start HTTPTunnel server forwarding to a local service"
           },
           {
             "title": "HTTPTunnel Client (Target)",
@@ -15656,7 +15656,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Connect through HTTPTunnel from target",
-            "desc_tr": "Bağlan: HTTPTunnel target üzerinden üzerinden"
+            "desc_tr": "Connect through HTTPTunnel from target"
           },
           {
             "title": "Neo-reGeorg Generate Tunnel",
@@ -15665,7 +15665,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Generate web shell tunnel files for various languages",
-            "desc_tr": "Oluştur: web kabuğu tunnel files for various languages"
+            "desc_tr": "Generate web shell tunnel files for various languages"
           },
           {
             "title": "Neo-reGeorg Connect",
@@ -15674,7 +15674,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Connect to deployed Neo-reGeorg web tunnel",
-            "desc_tr": "Bağlan: deployed Neo-reGeorg web tunnel'e"
+            "desc_tr": "Connect to deployed Neo-reGeorg web tunnel"
           },
           {
             "title": "Tunna Setup",
@@ -15714,7 +15714,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Start dnscat2 C2 server listening for DNS queries",
-            "desc_tr": "Başlat: dnscat2 C2 server listening for DNS queries"
+            "desc_tr": "Start dnscat2 C2 server listening for DNS queries"
           },
           {
             "title": "dnscat2 Client",
@@ -15723,7 +15723,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Connect to dnscat2 server from target via DNS",
-            "desc_tr": "Bağlan: dnscat2 server target DNS üzerinden üzerinden'e"
+            "desc_tr": "Connect to dnscat2 server from target via DNS"
           },
           {
             "title": "dnscat2 PowerShell Client",
@@ -15732,7 +15732,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Connect to dnscat2 from Windows via PowerShell",
-            "desc_tr": "Bağlan: dnscat2 Windows PowerShell üzerinden üzerinden'e"
+            "desc_tr": "Connect to dnscat2 from Windows via PowerShell"
           },
           {
             "title": "Iodine Server",
@@ -15741,7 +15741,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Start iodine DNS tunnel server with virtual IP range",
-            "desc_tr": "Başlat: iodine DNS tunnel server virtual IP range ile"
+            "desc_tr": "Start iodine DNS tunnel server with virtual IP range"
           },
           {
             "title": "Iodine Client",
@@ -15750,7 +15750,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Connect to iodine DNS tunnel from target",
-            "desc_tr": "Bağlan: iodine DNS tunnel target üzerinden'e"
+            "desc_tr": "Connect to iodine DNS tunnel from target"
           },
           {
             "title": "dns2tcp Server",
@@ -15759,7 +15759,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Start dns2tcp daemon for DNS tunneling",
-            "desc_tr": "Başlat: dns2tcp daemfor DNS tunneling üzerinde"
+            "desc_tr": "Start dns2tcp daemon for DNS tunneling"
           },
           {
             "title": "dns2tcp Client",
@@ -15768,7 +15768,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Connect to dns2tcp and forward SSH through DNS",
-            "desc_tr": "Bağlan: dns2tcp and forward SSH DNS'e üzerinden"
+            "desc_tr": "Connect to dns2tcp and forward SSH through DNS"
           }
         ],
         "name_tr": "DNS Tunneling"
@@ -15786,7 +15786,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Start ICMP shell listener (disable kernel ICMP replies first)",
-            "desc_tr": "Başlat: ICMP shell listener (disable kernel ICMP replies first)"
+            "desc_tr": "Start ICMP shell listener (disable kernel ICMP replies first)"
           },
           {
             "title": "icmpsh Client (Windows Target)",
@@ -15795,7 +15795,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Connect ICMP reverse shell from Windows target",
-            "desc_tr": "Bağlan: ICMP ters bağlantı kabuğu Windows target üzerinden"
+            "desc_tr": "Connect ICMP reverse shell from Windows target"
           },
           {
             "title": "ptunnel-ng Server",
@@ -15804,7 +15804,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Start ICMP tunnel server forwarding to SSH",
-            "desc_tr": "Başlat: ICMP tunnel server forwarding SSH'e"
+            "desc_tr": "Start ICMP tunnel server forwarding to SSH"
           },
           {
             "title": "ptunnel-ng Client",
@@ -15813,7 +15813,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Connect through ICMP tunnel to reach remote service",
-            "desc_tr": "Bağlan: ICMP tunnel reach uzak service'e üzerinden"
+            "desc_tr": "Connect through ICMP tunnel to reach remote service"
           },
           {
             "title": "Nping ICMP Data Exfil",
@@ -15858,7 +15858,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Create an encrypted communication channel via OpenSSL",
-            "desc_tr": "Oluştur: an encrypted communicatichannel OpenSSL üzerinden üzerinde"
+            "desc_tr": "Create an encrypted communication channel via OpenSSL"
           },
           {
             "title": "Socat SSL Tunnel (Server)",
@@ -15867,7 +15867,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Create an SSL listener that forwards to a local service",
-            "desc_tr": "Oluştur: an SSL listener that forwards a yerel service'e"
+            "desc_tr": "Create an SSL listener that forwards to a local service"
           },
           {
             "title": "Socat SSL Tunnel (Client)",
@@ -15876,7 +15876,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Connect to a socat SSL tunnel and expose locally",
-            "desc_tr": "Bağlan: a socat SSL tunnel and expose locally'e"
+            "desc_tr": "Connect to a socat SSL tunnel and expose locally"
           },
           {
             "title": "SSH Over HTTP (corkscrew)",
@@ -15919,7 +15919,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Start GoPhish phishing framework (default admin: https://127.0.0.1:3333)",
-            "desc_tr": "Başlat: GoPhish phishing framework (default admin: https://127.0.0.1:3333)"
+            "desc_tr": "Start GoPhish phishing framework (default admin: https://127.0.0.1:3333)"
           },
           {
             "title": "SET (Social Engineering Toolkit)",
@@ -15953,7 +15953,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Start King Phisher phishing campaign server",
-            "desc_tr": "Başlat: King Phisher phishing campaign server"
+            "desc_tr": "Start King Phisher phishing campaign server"
           },
           {
             "title": "Evilginx2 Launch",
@@ -15962,7 +15962,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Start Evilginx2 reverse proxy for session hijacking phishing",
-            "desc_tr": "Başlat: Evilginx2 reverse vekil sunucu (proxy) for sessihijacking phishing üzerinde"
+            "desc_tr": "Start Evilginx2 reverse proxy for session hijacking phishing"
           },
           {
             "title": "Evilginx2 Setup Phishlet",
@@ -15978,7 +15978,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Configure Evilginx2 phishlet for MitM credential and session capture",
-            "desc_tr": "Yapılandır: Evilginx2 phishlet for MitM kimlik bilgileri and sessicapture üzerinde"
+            "desc_tr": "Configure Evilginx2 phishlet for MitM credential and session capture"
           },
           {
             "title": "Modlishka Launch",
@@ -15987,7 +15987,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Start Modlishka reverse proxy phishing framework",
-            "desc_tr": "Başlat: Modlishka reverse vekil sunucu (proxy) phishing framework"
+            "desc_tr": "Start Modlishka reverse proxy phishing framework"
           },
           {
             "title": "Simple HTTPS Phishing Server",
@@ -16072,7 +16072,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Verify if an email address exists via SMTP RCPT TO",
-            "desc_tr": "Doğrula: if an email address exists SMTP RCPT üzerinden'e"
+            "desc_tr": "Verify if an email address exists via SMTP RCPT TO"
           },
           {
             "title": "theHarvester Email Enum",
@@ -16081,7 +16081,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate email addresses from public sources",
-            "desc_tr": "Listele: email addresses public sources üzerinden"
+            "desc_tr": "Enumerate email addresses from public sources"
           }
         ],
         "name_tr": "Email Reconnaissance"
@@ -16123,7 +16123,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Start the Browser Exploitation Framework",
-            "desc_tr": "Başlat: the Browser istismar Framework"
+            "desc_tr": "Start the Browser Exploitation Framework"
           },
           {
             "title": "PHP Credential Logger",
@@ -16141,7 +16141,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Capture credentials via WPAD proxy auto-discovery",
-            "desc_tr": "Yakala: kimlik bilgileri WPAD vekil sunucu (proxy) auto-discovery üzerinden"
+            "desc_tr": "Capture credentials via WPAD proxy auto-discovery"
           }
         ],
         "name_tr": "Credential Harvesting"
@@ -16156,7 +16156,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Generate an HTA file that executes PowerShell meterpreter",
-            "desc_tr": "Oluştur: an HTA file that executes PowerShell meterpreter"
+            "desc_tr": "Generate an HTA file that executes PowerShell meterpreter"
           },
           {
             "title": "Macro Payload (msfvenom)",
@@ -16165,7 +16165,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Generate VBA macro code for embedding in Office documents",
-            "desc_tr": "Oluştur: VBA macro code for embedding Office documents içinde"
+            "desc_tr": "Generate VBA macro code for embedding in Office documents"
           },
           {
             "title": "VBA Macro Payload (Raw PS)",
@@ -16174,7 +16174,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Generate VBA payload for macro-enabled documents",
-            "desc_tr": "Oluştur: VBA payload for macro-enabled documents"
+            "desc_tr": "Generate VBA payload for macro-enabled documents"
           },
           {
             "title": "URL File Payload",
@@ -16187,7 +16187,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Create a .url file pointing to a remote payload",
-            "desc_tr": "Oluştur: a .url file pointing a uzak payload'e"
+            "desc_tr": "Create a .url file pointing to a remote payload"
           },
           {
             "title": "LNK Payload (PowerShell)",
@@ -16196,7 +16196,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Create a malicious LNK shortcut with hidden PowerShell execution",
-            "desc_tr": "Oluştur: a malicious LNK shortcut gizli PowerShell executiile üzerinde"
+            "desc_tr": "Create a malicious LNK shortcut with hidden PowerShell execution"
           },
           {
             "title": "URL Shortener with Redirect",
@@ -16214,7 +16214,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Generate obfuscated PowerShell macro payload with Unicorn",
-            "desc_tr": "Oluştur: obfuscated PowerShell macro payload Unicorn ile"
+            "desc_tr": "Generate obfuscated PowerShell macro payload with Unicorn"
           },
           {
             "title": "ISO Payload Container",
@@ -16241,7 +16241,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bul: username networks genelinde"
+            "desc_tr": "Find username across networks"
           },
           {
             "title": "Holehe Email Check",
@@ -16293,7 +16293,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Search Exploit-DB for exploits matching a keyword",
-            "desc_tr": "Ara: istismar-DB for exploits matching a keyword"
+            "desc_tr": "Search Exploit-DB for exploits matching a keyword"
           },
           {
             "title": "SearchSploit Exact Title Match",
@@ -16302,7 +16302,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Search only in exploit titles for exact matches",
-            "desc_tr": "Ara: only istismar titles for exact matches içinde"
+            "desc_tr": "Search only in exploit titles for exact matches"
           },
           {
             "title": "SearchSploit Copy Exploit",
@@ -16311,7 +16311,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Copy an exploit to the current working directory",
-            "desc_tr": "Kopyala: an istismar the mevcut working directory'e"
+            "desc_tr": "Copy an exploit to the current working directory"
           },
           {
             "title": "SearchSploit Examine Exploit",
@@ -16347,7 +16347,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Search but exclude denial of service exploits",
-            "desc_tr": "Ara: but exclude denial of service exploits"
+            "desc_tr": "Search but exclude denial of service exploits"
           },
           {
             "title": "SearchSploit by Platform",
@@ -16356,7 +16356,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Filter exploits by platform",
-            "desc_tr": "Filtrele: exploits by platform"
+            "desc_tr": "Filter exploits by platform"
           },
           {
             "title": "GitHub CVE Search",
@@ -16365,7 +16365,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Search GitHub for CVE proof-of-concept exploits",
-            "desc_tr": "Ara: GitHub for CVE proof-of-concept exploits"
+            "desc_tr": "Search GitHub for CVE proof-of-concept exploits"
           },
           {
             "title": "Google Dork for Exploits",
@@ -16434,7 +16434,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Convert Python 2 exploit to Python 3 syntax",
-            "desc_tr": "Dönüştür: Pyth2 istismar Python 3 syntax üzerinde'e"
+            "desc_tr": "Convert Python 2 exploit to Python 3 syntax"
           },
           {
             "title": "Install Python Dependencies",
@@ -16443,7 +16443,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Install common Python modules needed by exploits",
-            "desc_tr": "Kur: commPython modules needed by exploits üzerinde"
+            "desc_tr": "Install common Python modules needed by exploits"
           },
           {
             "title": "Compile with Debug Symbols",
@@ -16485,7 +16485,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Generate a unique pattern for offset identification",
-            "desc_tr": "Oluştur: a unique pattern for offset identification"
+            "desc_tr": "Generate a unique pattern for offset identification"
           },
           {
             "title": "Find Pattern Offset",
@@ -16503,7 +16503,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Generate all byte values (0x01-0xFF) for bad character analysis",
-            "desc_tr": "Oluştur: tüm byte values (0x01-0xFF) for bad character analysis"
+            "desc_tr": "Generate all byte values (0x01-0xFF) for bad character analysis"
           },
           {
             "title": "msfvenom Bad Char Shellcode",
@@ -16512,7 +16512,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Generate shellcode excluding specified bad characters",
-            "desc_tr": "Oluştur: shellcode excluding specified bad characters"
+            "desc_tr": "Generate shellcode excluding specified bad characters"
           },
           {
             "title": "Mona Find JMP ESP",
@@ -16522,7 +16522,7 @@ module.exports = [
             ],
             "desc": "Find JMP ESP instruction address in a loaded module",
             "note": "Run inside Immunity Debugger",
-            "desc_tr": "Bul: JMP ESP instructiaddress a loaded module üzerinde içinde"
+            "desc_tr": "Find JMP ESP instruction address in a loaded module"
           },
           {
             "title": "Mona List Modules",
@@ -16531,7 +16531,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all loaded modules with memory protections (ASLR, DEP, etc.)",
-            "desc_tr": "Listele: tüm loaded modules memory protections (ASLR, DEP, etc.) ile"
+            "desc_tr": "List all loaded modules with memory protections (ASLR, DEP, etc.)"
           },
           {
             "title": "Mona Generate Bytearray",
@@ -16540,7 +16540,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Generate a byte array excluding null bytes for bad char testing",
-            "desc_tr": "Oluştur: a byte array excluding null bytes for bad char testing"
+            "desc_tr": "Generate a byte array excluding null bytes for bad char testing"
           },
           {
             "title": "Mona Compare Bytearray",
@@ -16549,7 +16549,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Compare memory with bytearray to identify bad characters",
-            "desc_tr": "Karşılaştır: memory bytearray identify bad characters ile'e"
+            "desc_tr": "Compare memory with bytearray to identify bad characters"
           },
           {
             "title": "Mona Suggest Gadgets (ROP)",
@@ -16558,7 +16558,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Find ROP gadgets for DEP bypass",
-            "desc_tr": "Bul: ROP gadgets for DEP bypass"
+            "desc_tr": "Find ROP gadgets for DEP bypass"
           },
           {
             "title": "Check Binary Protections",
@@ -16576,7 +16576,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Oluştur: unique pattern"
+            "desc_tr": "Generate unique pattern"
           },
           {
             "title": "Pattern Offset",
@@ -16585,7 +16585,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: EIP offset"
+            "desc_tr": "Find EIP offset"
           },
           {
             "title": "Checksec",
@@ -16603,7 +16603,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Bul: ROP gadgets"
+            "desc_tr": "Find ROP gadgets"
           },
           {
             "title": "one_gadget",
@@ -16612,7 +16612,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Bul: magic gadgets"
+            "desc_tr": "Find magic gadgets"
           },
           {
             "title": "GDB with GEF",
@@ -16688,7 +16688,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Generate shellcode using pwntools shellcraft",
-            "desc_tr": "Oluştur: shellcode pwntools shellcraft kullanarak"
+            "desc_tr": "Generate shellcode using pwntools shellcraft"
           },
           {
             "title": "Pwntools Find ROP Gadgets",
@@ -16702,7 +16702,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Enumerate ROP gadgets with pwntools",
-            "desc_tr": "Listele: ROP gadgets pwntools ile"
+            "desc_tr": "Enumerate ROP gadgets with pwntools"
           },
           {
             "title": "Python Socket Exploit Template",
@@ -16727,7 +16727,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Generate a NOP sled for shellcode alignment",
-            "desc_tr": "Oluştur: a NOP sled for shellcode alignment"
+            "desc_tr": "Generate a NOP sled for shellcode alignment"
           }
         ],
         "name_tr": "Scripting Exploits"
@@ -16870,7 +16870,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate valid usernames via SMTP VRFY",
-            "desc_tr": "Listele: valid usernames SMTP VRFY üzerinden"
+            "desc_tr": "Enumerate valid usernames via SMTP VRFY"
           },
           {
             "title": "Quick Win: Default Credentials",
@@ -16921,7 +16921,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Dump IPMI hashes (usually crackable)",
-            "desc_tr": "Dökümle: IPMI hashes (usually crackable)"
+            "desc_tr": "Dump IPMI hashes (usually crackable)"
           }
         ],
         "name_tr": "Phase 2 — Initial Access Patterns"
@@ -16973,7 +16973,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Find SUID binaries for potential privilege escalation",
-            "desc_tr": "Bul: SUID binaries for potential yetki yükseltme"
+            "desc_tr": "Find SUID binaries for potential privilege escalation"
           },
           {
             "title": "Post-Exploit Step 5: Cron Jobs",
@@ -16987,7 +16987,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate scheduled tasks for exploitation",
-            "desc_tr": "Listele: zamanlanmış görevler for istismar"
+            "desc_tr": "Enumerate scheduled tasks for exploitation"
           },
           {
             "title": "Post-Exploit Step 6: Capabilities",
@@ -16996,7 +16996,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Find binaries with Linux capabilities set",
-            "desc_tr": "Bul: binaries Linux capabilities set ile"
+            "desc_tr": "Find binaries with Linux capabilities set"
           },
           {
             "title": "Post-Exploit Step 7: Kernel Info",
@@ -17020,7 +17020,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate network config for pivoting opportunities",
-            "desc_tr": "Listele: network config for pivoting opportunities"
+            "desc_tr": "Enumerate network config for pivoting opportunities"
           },
           {
             "title": "Post-Exploit Step 9: Sensitive Files",
@@ -17034,7 +17034,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Search for sensitive files, configs, and backups",
-            "desc_tr": "Ara: for hassas dosyalar, configs, and backups"
+            "desc_tr": "Search for sensitive files, configs, and backups"
           },
           {
             "title": "Windows Post-Exploit: User Info",
@@ -17061,7 +17061,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Search for stored credentials and passwords in Windows",
-            "desc_tr": "Ara: for stored kimlik bilgileri and passwords Windows içinde"
+            "desc_tr": "Search for stored credentials and passwords in Windows"
           }
         ],
         "name_tr": "Phase 3 — Post-Exploitation Checklist"
@@ -17120,7 +17120,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Add SOCKS proxy to proxychains configuration",
-            "desc_tr": "Ekle: SOCKS vekil sunucu (proxy) proxychains configuration'e"
+            "desc_tr": "Add SOCKS proxy to proxychains configuration"
           },
           {
             "title": "Pivot Step 6: Scan Through Proxy",
@@ -17138,7 +17138,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Create SOCKS proxy via SSH dynamic port forwarding",
-            "desc_tr": "Oluştur: SOCKS vekil sunucu (proxy) SSH dynamic port forwarding üzerinden"
+            "desc_tr": "Create SOCKS proxy via SSH dynamic port forwarding"
           },
           {
             "title": "SSH Local Port Forward",
@@ -17147,7 +17147,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Forward a specific internal service to attacker's localhost",
-            "desc_tr": "Yönlendir: a belirli internal service attacker's localhost'e"
+            "desc_tr": "Forward a specific internal service to attacker's localhost"
           },
           {
             "title": "Double Pivot (SSH Chain)",
@@ -17179,7 +17179,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Capture proof of compromise on Linux targets",
-            "desc_tr": "Yakala: proof of compromise Linux targets üzerinde"
+            "desc_tr": "Capture proof of compromise on Linux targets"
           },
           {
             "title": "Windows Proof Capture",
@@ -17195,7 +17195,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Capture proof of compromise on Windows targets",
-            "desc_tr": "Yakala: proof of compromise Windows targets üzerinde"
+            "desc_tr": "Capture proof of compromise on Windows targets"
           },
           {
             "title": "Screenshot with Timestamp (Linux)",
@@ -17213,7 +17213,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Capture terminal output to a file for proof",
-            "desc_tr": "Yakala: terminal output a file for proof'e"
+            "desc_tr": "Capture terminal output to a file for proof"
           },
           {
             "title": "Archive Engagement Data",
@@ -17241,7 +17241,7 @@ module.exports = [
               "essential"
             ],
             "desc": "FTP: version scan, anonymous access, brute force",
-            "desc_tr": "FTP: versitarama, anonim erişim, kaba kuvvet saldırısı üzerinde"
+            "desc_tr": "FTP: version scan, anonymous access, brute force"
           },
           {
             "title": "Port 22 — SSH Checks",
@@ -17254,7 +17254,7 @@ module.exports = [
               "essential"
             ],
             "desc": "SSH: version scan, algorithm audit, brute force",
-            "desc_tr": "SSH: versitarama, algorithm audit, kaba kuvvet saldırısı üzerinde"
+            "desc_tr": "SSH: version scan, algorithm audit, brute force"
           },
           {
             "title": "Port 25 — SMTP Checks",
@@ -17266,7 +17266,7 @@ module.exports = [
               "essential"
             ],
             "desc": "SMTP: commands, user enumeration, vulnerability scan",
-            "desc_tr": "SMTP: commands, user listeleme, zafiyet(ler) tarama"
+            "desc_tr": "SMTP: commands, user enumeration, vulnerability scan"
           },
           {
             "title": "Port 53 — DNS Checks",
@@ -17279,7 +17279,7 @@ module.exports = [
               "essential"
             ],
             "desc": "DNS: zone transfer, full record enumeration",
-            "desc_tr": "DNS: zone transferi, full record listeleme"
+            "desc_tr": "DNS: zone transfer, full record enumeration"
           },
           {
             "title": "Port 80/443 — HTTP(S) Checks",
@@ -17292,7 +17292,7 @@ module.exports = [
               "essential"
             ],
             "desc": "HTTP: technology identification, vuln scan, directory brute",
-            "desc_tr": "HTTP: technology identification, vuln tarama, directory brute"
+            "desc_tr": "HTTP: technology identification, vuln scan, directory brute"
           },
           {
             "title": "Port 110/995 — POP3 Checks",
@@ -17332,7 +17332,7 @@ module.exports = [
               "essential"
             ],
             "desc": "SMB: share enum, user enum, vuln scan, null session",
-            "desc_tr": "SMB: share enum, user enum, vuln tarama, boş oturum"
+            "desc_tr": "SMB: share enum, user enum, vuln scan, null session"
           },
           {
             "title": "Port 161 — SNMP Checks",
@@ -17345,7 +17345,7 @@ module.exports = [
               "essential"
             ],
             "desc": "SNMP: community string brute force and enumeration",
-            "desc_tr": "SNMP: community string kaba kuvvet saldırısı and listeleme"
+            "desc_tr": "SNMP: community string brute force and enumeration"
           },
           {
             "title": "Port 389/636 — LDAP Checks",
@@ -17357,7 +17357,7 @@ module.exports = [
               "essential"
             ],
             "desc": "LDAP: anonymous bind, base DN enumeration",
-            "desc_tr": "LDAP: anonim erişim, base DN listeleme"
+            "desc_tr": "LDAP: anonymous bind, base DN enumeration"
           },
           {
             "title": "Port 1433 — MSSQL Checks",
@@ -17370,7 +17370,7 @@ module.exports = [
               "essential"
             ],
             "desc": "MSSQL: info gathering, authentication, query execution",
-            "desc_tr": "MSSQL: info gathering, kimlik doğrulama, query execution"
+            "desc_tr": "MSSQL: info gathering, authentication, query execution"
           },
           {
             "title": "Port 1521 — Oracle Checks",
@@ -17382,7 +17382,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Oracle: SID brute force and ODAT enumeration",
-            "desc_tr": "Oracle: SID kaba kuvvet saldırısı and ODAT listeleme"
+            "desc_tr": "Oracle: SID brute force and ODAT enumeration"
           },
           {
             "title": "Port 2049 — NFS Checks",
@@ -17394,7 +17394,7 @@ module.exports = [
               "essential"
             ],
             "desc": "NFS: share listing and mount options",
-            "desc_tr": "NFS: paylaşım listeleme ve mount seçenekleri"
+            "desc_tr": "NFS: share listing and mount options"
           },
           {
             "title": "Port 3306 — MySQL Checks",
@@ -17407,7 +17407,7 @@ module.exports = [
               "essential"
             ],
             "desc": "MySQL: info, authentication, brute force",
-            "desc_tr": "MySQL: info, kimlik doğrulama, kaba kuvvet saldırısı"
+            "desc_tr": "MySQL: info, authentication, brute force"
           },
           {
             "title": "Port 3389 — RDP Checks",
@@ -17419,7 +17419,7 @@ module.exports = [
               "essential"
             ],
             "desc": "RDP: encryption check, MS12-020 vuln, connection test",
-            "desc_tr": "RDP: encrypticheck, MS12-020 vuln, connection test üzerinde"
+            "desc_tr": "RDP: encryption check, MS12-020 vuln, connection test"
           },
           {
             "title": "Port 5432 — PostgreSQL Checks",
@@ -17431,7 +17431,7 @@ module.exports = [
               "tool"
             ],
             "desc": "PostgreSQL: brute force and connection test",
-            "desc_tr": "PostgreSQL: kaba kuvvet saldırısı and connectitest üzerinde"
+            "desc_tr": "PostgreSQL: brute force and connection test"
           },
           {
             "title": "Port 5900 — VNC Checks",
@@ -17443,7 +17443,7 @@ module.exports = [
               "tool"
             ],
             "desc": "VNC: version info, brute force, connection",
-            "desc_tr": "VNC: versiinfo, kaba kuvvet saldırısı, connection üzerinde"
+            "desc_tr": "VNC: version info, brute force, connection"
           },
           {
             "title": "Port 5985 — WinRM Checks",
@@ -17456,7 +17456,7 @@ module.exports = [
               "essential"
             ],
             "desc": "WinRM: authentication testing and shell access",
-            "desc_tr": "WinRM: kimlik doğrulama testing and shell access"
+            "desc_tr": "WinRM: authentication testing and shell access"
           },
           {
             "title": "Port 6379 — Redis Checks",
@@ -17469,7 +17469,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Redis: info gathering, unauthenticated access, config dump",
-            "desc_tr": "Redis: bilgi toplama, kimliksiz erişim, yapılandırma dökümü"
+            "desc_tr": "Redis: info gathering, unauthenticated access, config dump"
           },
           {
             "title": "Port 8080/8443 — Web App Checks",
@@ -17494,7 +17494,7 @@ module.exports = [
               "tool"
             ],
             "desc": "MongoDB: info gathering and unauthenticated database listing",
-            "desc_tr": "MongoDB: bilgi toplama ve kimliksiz veritabanı listeleme"
+            "desc_tr": "MongoDB: info gathering and unauthenticated database listing"
           }
         ],
         "name_tr": "Quick Service Checks"
@@ -17645,7 +17645,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all running Docker containers",
-            "desc_tr": "Listele: tüm running Docker containers"
+            "desc_tr": "List all running Docker containers"
           },
           {
             "title": "List All Containers",
@@ -17654,7 +17654,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all containers including stopped ones",
-            "desc_tr": "Listele: tüm containers including stopped ones"
+            "desc_tr": "List all containers including stopped ones"
           },
           {
             "title": "List Docker Images",
@@ -17663,7 +17663,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all locally available Docker images",
-            "desc_tr": "Listele: tüm locally available Docker images"
+            "desc_tr": "List all locally available Docker images"
           },
           {
             "title": "Inspect Container Config",
@@ -17681,7 +17681,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Get an interactive shell inside a running container",
-            "desc_tr": "Al: an interactive shell inside a running container"
+            "desc_tr": "Get an interactive shell inside a running container"
           },
           {
             "title": "Check if Inside Container",
@@ -17732,7 +17732,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Mount the host root filesystem into a new container",
-            "desc_tr": "Bağla: the host root filesystem ina new container'e"
+            "desc_tr": "Mount the host root filesystem into a new container"
           },
           {
             "title": "nsenter Host Escape",
@@ -17750,7 +17750,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List current container capabilities for escape assessment",
-            "desc_tr": "Listele: mevcut container capabilities for escape assessment"
+            "desc_tr": "List current container capabilities for escape assessment"
           },
           {
             "title": "Docker API Unauthenticated",
@@ -17768,7 +17768,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Extract environment variables that may contain secrets",
-            "desc_tr": "Çıkart: ortam değişkenleri that may contasecrets içinde"
+            "desc_tr": "Extract environment variables that may contain secrets"
           },
           {
             "title": "Escape via SYS_ADMIN Cap",
@@ -17813,7 +17813,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: registry"
+            "desc_tr": "Enumerate registry"
           },
           {
             "title": "nsenter Escape",
@@ -17837,7 +17837,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all pods across all namespaces",
-            "desc_tr": "Listele: tüm pods tüm namespaces genelinde"
+            "desc_tr": "List all pods across all namespaces"
           },
           {
             "title": "Get All Nodes",
@@ -17846,7 +17846,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all cluster nodes with detailed info",
-            "desc_tr": "Listele: tüm cluster nodes detailed info ile"
+            "desc_tr": "List all cluster nodes with detailed info"
           },
           {
             "title": "Get Secrets",
@@ -17855,7 +17855,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all secrets in the cluster",
-            "desc_tr": "Listele: tüm secrets the cluster içinde"
+            "desc_tr": "List all secrets in the cluster"
           },
           {
             "title": "Decode Secret",
@@ -17864,7 +17864,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Decode and view a Kubernetes secret's values",
-            "desc_tr": "Çöz: zme and view a Kubernetes secret's values"
+            "desc_tr": "Decode and view a Kubernetes secret's values"
           },
           {
             "title": "Get ConfigMaps",
@@ -17873,7 +17873,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all ConfigMaps that may contain sensitive configuration",
-            "desc_tr": "Listele: tüm ConfigMaps that may contasensitive configuration içinde"
+            "desc_tr": "List all ConfigMaps that may contain sensitive configuration"
           },
           {
             "title": "View ConfigMap Data",
@@ -17891,7 +17891,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List all permissions for the current service account",
-            "desc_tr": "Listele: tüm permissions for the mevcut service account"
+            "desc_tr": "List all permissions for the current service account"
           },
           {
             "title": "Check Cluster Admin",
@@ -17909,7 +17909,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Get an interactive shell in a running pod",
-            "desc_tr": "Al: an interactive shell a running pod içinde"
+            "desc_tr": "Get an interactive shell in a running pod"
           },
           {
             "title": "Copy File from Pod",
@@ -17918,7 +17918,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Copy a file from a pod to the local machine",
-            "desc_tr": "Kopyala: a file a pod the yerel machine üzerinden'e"
+            "desc_tr": "Copy a file from a pod to the local machine"
           },
           {
             "title": "Get Service Accounts",
@@ -17927,7 +17927,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List all service accounts in the cluster",
-            "desc_tr": "Listele: tüm service accounts the cluster içinde"
+            "desc_tr": "List all service accounts in the cluster"
           },
           {
             "title": "Get Cluster Role Bindings",
@@ -17936,7 +17936,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List cluster role bindings to find privileged accounts",
-            "desc_tr": "Listele: cluster role bindings find privileged accounts'e"
+            "desc_tr": "List cluster role bindings to find privileged accounts"
           },
           {
             "title": "Read Service Account Token",
@@ -17945,7 +17945,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Read the mounted service account token from within a pod",
-            "desc_tr": "Oku: the mounted service account token witha pod üzerinden içinde"
+            "desc_tr": "Read the mounted service account token from within a pod"
           },
           {
             "title": "Kubernetes API from Pod",
@@ -17954,7 +17954,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Query Kubernetes API using the mounted service account token",
-            "desc_tr": "Sorgula: Kubernetes API the mounted service account token kullanarak"
+            "desc_tr": "Query Kubernetes API using the mounted service account token"
           },
           {
             "title": "Get Pod Security Policies",
@@ -17963,7 +17963,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List Pod Security Policies to find misconfigurations",
-            "desc_tr": "Listele: Pod Security Policies find misconfigurations'e"
+            "desc_tr": "List Pod Security Policies to find misconfigurations"
           },
           {
             "title": "Etcd Read Secrets",
@@ -17972,7 +17972,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Enumerate etcd keys if etcd is accessible",
-            "desc_tr": "Listele: etcd keys if etcd is accessible"
+            "desc_tr": "Enumerate etcd keys if etcd is accessible"
           },
           {
             "title": "Etcd Dump Kubernetes Secrets",
@@ -17981,7 +17981,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Dump all Kubernetes secrets directly from etcd",
-            "desc_tr": "Dökümle: tüm Kubernetes secrets directly etcd üzerinden"
+            "desc_tr": "Dump all Kubernetes secrets directly from etcd"
           },
           {
             "title": "Create Privileged Pod",
@@ -17990,7 +17990,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Create a privileged pod mounting the host filesystem",
-            "desc_tr": "Oluştur: a privileged pod mounting the host filesystem"
+            "desc_tr": "Create a privileged pod mounting the host filesystem"
           },
           {
             "title": "Get Ingress Rules",
@@ -17999,7 +17999,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List all ingress rules for endpoint discovery",
-            "desc_tr": "Listele: tüm ingress rules for endpoint discovery"
+            "desc_tr": "List all ingress rules for endpoint discovery"
           },
           {
             "title": "Get Network Policies",
@@ -18008,7 +18008,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List network policies to find unrestricted namespaces",
-            "desc_tr": "Listele: network policies find unrestricted namespaces'e"
+            "desc_tr": "List network policies to find unrestricted namespaces"
           },
           {
             "title": "Get Persistent Volumes",
@@ -18017,7 +18017,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List persistent volumes and claims for data access",
-            "desc_tr": "Listele: persistent volumes and claims for data access"
+            "desc_tr": "List persistent volumes and claims for data access"
           },
           {
             "title": "Get DaemonSets",
@@ -18026,7 +18026,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List DaemonSets running on all nodes",
-            "desc_tr": "Listele: DaemonSets running tüm nodes üzerinde"
+            "desc_tr": "List DaemonSets running on all nodes"
           },
           {
             "title": "Get Pod Environment Variables",
@@ -18035,7 +18035,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Extract environment variables from a running pod",
-            "desc_tr": "Çıkart: ortam değişkenleri a running pod üzerinden"
+            "desc_tr": "Extract environment variables from a running pod"
           },
           {
             "title": "Get Pod Logs",
@@ -18053,7 +18053,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Start local proxy to Kubernetes API for easy access",
-            "desc_tr": "Başlat: yerel vekil sunucu (proxy) Kubernetes API for easy access'e"
+            "desc_tr": "Start local proxy to Kubernetes API for easy access"
           },
           {
             "title": "List RBAC Roles",
@@ -18062,7 +18062,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List all RBAC roles to identify overly permissive roles",
-            "desc_tr": "Listele: tüm RBAC roles identify overly permissive roles'e"
+            "desc_tr": "List all RBAC roles to identify overly permissive roles"
           },
           {
             "title": "List RBAC Bindings",
@@ -18071,7 +18071,7 @@ module.exports = [
               "tool"
             ],
             "desc": "List role bindings to find privilege assignments",
-            "desc_tr": "Listele: role bindings find privilege assignments'e"
+            "desc_tr": "List role bindings to find privilege assignments"
           },
           {
             "title": "Kube-Hunter Remote Scan",
@@ -18080,7 +18080,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Scan Kubernetes cluster for security issues remotely",
-            "desc_tr": "Tara: ma Kubernetes cluster for security issues remotely"
+            "desc_tr": "Scan Kubernetes cluster for security issues remotely"
           },
           {
             "title": "Kube-Hunter Internal Scan",
@@ -18089,7 +18089,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Scan Kubernetes cluster from within a pod",
-            "desc_tr": "Tara: ma Kubernetes cluster witha pod üzerinden içinde"
+            "desc_tr": "Scan Kubernetes cluster from within a pod"
           },
           {
             "title": "Kube-Bench CIS Benchmark",
@@ -18098,7 +18098,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Run CIS Kubernetes Benchmark checks",
-            "desc_tr": "Çalıştır: CIS Kubernetes Benchmark checks"
+            "desc_tr": "Run CIS Kubernetes Benchmark checks"
           },
           {
             "title": "Trivy Image Scan",
@@ -18107,7 +18107,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Scan a container image for vulnerabilities",
-            "desc_tr": "Tara: ma a container image for zafiyet(ler)"
+            "desc_tr": "Scan a container image for vulnerabilities"
           },
           {
             "title": "Trivy Filesystem Scan",
@@ -18116,7 +18116,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Scan filesystem for vulnerabilities and misconfigurations",
-            "desc_tr": "Tara: ma filesystem for zafiyet(ler) and misconfigurations"
+            "desc_tr": "Scan filesystem for vulnerabilities and misconfigurations"
           },
           {
             "title": "Trivy K8s Cluster Scan",
@@ -18125,7 +18125,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Scan Kubernetes cluster for security issues",
-            "desc_tr": "Tara: ma Kubernetes cluster for security issues"
+            "desc_tr": "Scan Kubernetes cluster for security issues"
           },
           {
             "title": "Docker Bench Security",
@@ -18134,7 +18134,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Run Docker CIS Benchmark security audit",
-            "desc_tr": "Çalıştır: Docker CIS Benchmark security audit"
+            "desc_tr": "Run Docker CIS Benchmark security audit"
           },
           {
             "title": "Falco Runtime Security",
@@ -18172,7 +18172,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Execute system commands via Jenkins Groovy Script Console",
-            "desc_tr": "Çalıştır: system commands Jenkins Groovy Script Console üzerinden"
+            "desc_tr": "Execute system commands via Jenkins Groovy Script Console"
           },
           {
             "title": "Jenkins Credential Dump (Groovy)",
@@ -18181,7 +18181,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Dump all stored credentials from Jenkins via Groovy",
-            "desc_tr": "Dökümle: tüm stored kimlik bilgileri Jenkins Groovy üzerinden üzerinden"
+            "desc_tr": "Dump all stored credentials from Jenkins via Groovy"
           },
           {
             "title": "Jenkins Decrypt Secret",
@@ -18199,7 +18199,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Execute Groovy script via Jenkins API remotely",
-            "desc_tr": "Çalıştır: Groovy script Jenkins API remotely üzerinden"
+            "desc_tr": "Execute Groovy script via Jenkins API remotely"
           },
           {
             "title": "GitLab CI Token from Runner",
@@ -18212,7 +18212,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Extract GitLab CI runner registration tokens",
-            "desc_tr": "Çıkart: GitLab CI runner registratitokens üzerinde"
+            "desc_tr": "Extract GitLab CI runner registration tokens"
           },
           {
             "title": "GitLab CI Variables",
@@ -18221,7 +18221,7 @@ module.exports = [
               "essential"
             ],
             "desc": "List CI/CD variables (secrets) for a GitLab project",
-            "desc_tr": "Listele: CI/CD variables (secrets) for a GitLab project"
+            "desc_tr": "List CI/CD variables (secrets) for a GitLab project"
           },
           {
             "title": "GitHub Actions Secrets Exposure",
@@ -18262,7 +18262,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Extract secrets from Terraform state files",
-            "desc_tr": "Çıkart: secrets Terraform state files üzerinden"
+            "desc_tr": "Extract secrets from Terraform state files"
           },
           {
             "title": "Terraform State from S3",
@@ -18271,7 +18271,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Download Terraform state file from S3 bucket",
-            "desc_tr": "İndir: Terraform state file S3 bucket üzerinden"
+            "desc_tr": "Download Terraform state file from S3 bucket"
           },
           {
             "title": "ArgoCD Token Extraction",
@@ -18280,7 +18280,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Extract ArgoCD initial admin password from Kubernetes",
-            "desc_tr": "Çıkart: ArgoCD initial admpassword Kubernetes üzerinden içinde"
+            "desc_tr": "Extract ArgoCD initial admin password from Kubernetes"
           },
           {
             "title": "Helm Release Secrets",
@@ -18289,7 +18289,7 @@ module.exports = [
               "advanced"
             ],
             "desc": "Decode Helm release secrets which may contain sensitive values",
-            "desc_tr": "Çöz: zme Helm release secrets which may contasensitive values içinde"
+            "desc_tr": "Decode Helm release secrets which may contain sensitive values"
           },
           {
             "title": "CI/CD Environment Variables",
@@ -18302,7 +18302,7 @@ module.exports = [
               "essential"
             ],
             "desc": "Dump all environment variables in CI/CD pipeline context",
-            "desc_tr": "Dökümle: tüm ortam değişkenleri CI/CD pipeline context içinde"
+            "desc_tr": "Dump all environment variables in CI/CD pipeline context"
           },
           {
             "title": "Docker Registry Credentials",
@@ -18315,7 +18315,7 @@ module.exports = [
               "tool"
             ],
             "desc": "Extract Docker registry credentials from config files",
-            "desc_tr": "Çıkart: Docker registry kimlik bilgileri yapılandırma dosyası üzerinden"
+            "desc_tr": "Extract Docker registry credentials from config files"
           }
         ],
         "name_tr": "CI/CD Pipeline Attacks"
@@ -18339,7 +18339,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: Azure AD users"
+            "desc_tr": "Enumerate Azure AD users"
           },
           {
             "title": "Azure List VMs",
@@ -18348,7 +18348,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: VMs"
+            "desc_tr": "Enumerate VMs"
           },
           {
             "title": "Azure Key Vaults",
@@ -18357,7 +18357,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: key vaults"
+            "desc_tr": "Enumerate key vaults"
           },
           {
             "title": "GCloud Login",
@@ -18375,7 +18375,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: projects"
+            "desc_tr": "List projects"
           },
           {
             "title": "GCloud Instances",
@@ -18384,7 +18384,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: compute VMs"
+            "desc_tr": "List compute VMs"
           },
           {
             "title": "GCloud Secrets",
@@ -18396,7 +18396,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: secrets"
+            "desc_tr": "List secrets"
           },
           {
             "title": "ROADtools Azure AD",
@@ -18409,7 +18409,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Dökümle: Azure AD"
+            "desc_tr": "Dump Azure AD"
           },
           {
             "title": "AzureHound",
@@ -18444,7 +18444,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Keşfet: live hosts and OS info SMB üzerinden"
+            "desc_tr": "Discover live hosts and OS info via SMB"
           },
           {
             "title": "NXC SMB Null Session",
@@ -18471,7 +18471,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm SMB shares"
+            "desc_tr": "List all SMB shares"
           },
           {
             "title": "NXC SMB Enumerate Users",
@@ -18480,7 +18480,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: etki alanı kullanıcıları RID kaba kuvvet saldırısı üzerinden"
+            "desc_tr": "List domain users via RID brute force"
           },
           {
             "title": "NXC SMB Enumerate Groups",
@@ -18489,7 +18489,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: etki alanı grupları"
+            "desc_tr": "Domain gruplarını listele"
           },
           {
             "title": "NXC SMB Enumerate Logged Users",
@@ -18498,7 +18498,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: currently logged users içinde"
+            "desc_tr": "Show currently logged in users"
           },
           {
             "title": "NXC SMB Password Policy",
@@ -18507,7 +18507,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Al: domaparola politikası içinde"
+            "desc_tr": "Get domain password policy"
           },
           {
             "title": "NXC SMB RID Brute",
@@ -18516,7 +18516,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: users RID cycling (no creds needed) üzerinden"
+            "desc_tr": "Enumerate users via RID cycling (no creds needed)"
           },
           {
             "title": "NXC SMB Enumerate Sessions",
@@ -18525,7 +18525,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: active SMB sessions"
+            "desc_tr": "Show active SMB sessions"
           },
           {
             "title": "NXC SMB Disks",
@@ -18534,7 +18534,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: yerel disks"
+            "desc_tr": "List local disks"
           },
           {
             "title": "NXC SMB Local Groups",
@@ -18543,7 +18543,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: yerel groups"
+            "desc_tr": "Enumerate local groups"
           },
           {
             "title": "NXC SMB Interfaces",
@@ -18552,7 +18552,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: ağ arayüzü"
+            "desc_tr": "List network interfaces"
           }
         ],
         "name_tr": "SMB Enumeration"
@@ -18576,7 +18576,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Püskürt: a password a user list'e karşı"
+            "desc_tr": "Spray a password against a user list"
           },
           {
             "title": "NXC SMB Pass the Hash",
@@ -18594,7 +18594,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: command SMBExec üzerinden"
+            "desc_tr": "Run command via SMBExec"
           },
           {
             "title": "NXC SMB PowerShell Exec",
@@ -18603,7 +18603,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: PowerShell command SMB üzerinden"
+            "desc_tr": "Run PowerShell command via SMB"
           },
           {
             "title": "NXC SMB WMI Exec",
@@ -18612,7 +18612,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: command WMI üzerinden"
+            "desc_tr": "Execute command via WMI"
           },
           {
             "title": "NXC SMB AT Exec",
@@ -18621,7 +18621,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çalıştır: command zamanlanmış görevler üzerinden"
+            "desc_tr": "Execute command via scheduled task"
           },
           {
             "title": "NXC SMB Kerberos Auth",
@@ -18859,7 +18859,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dökümle: SAM database (yerel hashes)"
+            "desc_tr": "Dump SAM database (local hashes)"
           },
           {
             "title": "NXC LSA Dump",
@@ -18868,7 +18868,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dökümle: LSA secrets"
+            "desc_tr": "Dump LSA secrets"
           },
           {
             "title": "NXC NTDS Dump",
@@ -18877,7 +18877,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dökümle: NTDS.dit (domahashes) DCSync üzerinden içinde"
+            "desc_tr": "Dump NTDS.dit (domain hashes) via DCSync"
           },
           {
             "title": "NXC Mimikatz Module",
@@ -18886,7 +18886,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çalıştır: Mimikatz logonpasswords"
+            "desc_tr": "Run Mimikatz logonpasswords"
           },
           {
             "title": "NXC Lsassy Module",
@@ -18895,7 +18895,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Dökümle: kimlik bilgileri lsassy ile"
+            "desc_tr": "Dump credentials with lsassy"
           },
           {
             "title": "NXC Spider Shares",
@@ -18913,7 +18913,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ara: for GPP stored passwords"
+            "desc_tr": "Search for GPP stored passwords"
           },
           {
             "title": "NXC GPP Auto-Login",
@@ -18922,7 +18922,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: GPP autologkimlik bilgileri içinde"
+            "desc_tr": "Find GPP autologin credentials"
           },
           {
             "title": "NXC Zerologon Check",
@@ -18967,7 +18967,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Yükle: file target share'e"
+            "desc_tr": "Upload file to target share"
           },
           {
             "title": "NXC Get File",
@@ -18976,7 +18976,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "İndir: file target share üzerinden"
+            "desc_tr": "Download file from target share"
           }
         ],
         "name_tr": "SMB Modules"
@@ -19000,7 +19000,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: command over WinRM"
+            "desc_tr": "Run command over WinRM"
           },
           {
             "title": "NXC WinRM Shell",
@@ -19009,7 +19009,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Al: interactive shell WinRM üzerinden"
+            "desc_tr": "Get interactive shell via WinRM"
           },
           {
             "title": "NXC LDAP Enumerate",
@@ -19027,7 +19027,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: Kerberoastable users LDAP üzerinden"
+            "desc_tr": "Find Kerberoastable users via LDAP"
           },
           {
             "title": "NXC LDAP ASREPRoast",
@@ -19036,7 +19036,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: AS-REP roastable users"
+            "desc_tr": "Find AS-REP roastable users"
           },
           {
             "title": "NXC LDAP Trusted For Delegation",
@@ -19045,7 +19045,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: sınırsız delegasyaccounts üzerinde"
+            "desc_tr": "Find unconstrained delegation accounts"
           },
           {
             "title": "NXC LDAP Password Not Required",
@@ -19054,7 +19054,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: accounts no password required ile"
+            "desc_tr": "Find accounts with no password required"
           },
           {
             "title": "NXC MSSQL Auth",
@@ -19072,7 +19072,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: SQL query"
+            "desc_tr": "Run SQL query"
           },
           {
             "title": "NXC MSSQL OS Command",
@@ -19081,7 +19081,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: OS command xp_cmdshell üzerinden"
+            "desc_tr": "xp_cmdshell ile OS komutu çalıştır"
           },
           {
             "title": "NXC MSSQL Windows Auth",
@@ -19206,7 +19206,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Topla: tüm data types"
+            "desc_tr": "Collect all data types"
           },
           {
             "title": "SharpHound Default Collection",
@@ -19372,7 +19372,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Başlat: Neo4j database for BloodHound"
+            "desc_tr": "Start Neo4j database for BloodHound"
           },
           {
             "title": "Neo4j Console",
@@ -19381,7 +19381,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Aç: Neo4j web console"
+            "desc_tr": "Open Neo4j web console"
           },
           {
             "title": "BloodHound Start (Linux)",
@@ -19401,7 +19401,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çalıştır: BloodHound Community EditiDocker üzerinde içinde"
+            "desc_tr": "Run BloodHound Community Edition in Docker"
           },
           {
             "title": "Neo4j Clear Database",
@@ -19411,7 +19411,7 @@ module.exports = [
               "tool"
             ],
             "note": "Run in Neo4j browser at :7474",
-            "desc_tr": "Temizle: tüm BloodHound data Neo4j üzerinden"
+            "desc_tr": "Clear all BloodHound data from Neo4j"
           }
         ],
         "name_tr": "BloodHound Setup"
@@ -19597,7 +19597,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Listele: ADCS and find zafiyet(ler) templates"
+            "desc_tr": "Enumerate ADCS and find vulnerable templates"
           },
           {
             "title": "Certipy Find All Templates",
@@ -19606,7 +19606,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm certificate templates"
+            "desc_tr": "List all certificate templates"
           },
           {
             "title": "Certipy Find via Hash",
@@ -19615,7 +19615,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: ADCS NTLM hash ile"
+            "desc_tr": "Enumerate ADCS with NTLM hash"
           },
           {
             "title": "Certify Find (Windows)",
@@ -19625,7 +19625,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Bul: zafiyet(ler) certificate templates Windows üzerinden"
+            "desc_tr": "Find vulnerable certificate templates from Windows"
           },
           {
             "title": "Certify Find All (Windows)",
@@ -19634,7 +19634,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: tüm certificate templates Windows üzerinden"
+            "desc_tr": "List all certificate templates from Windows"
           },
           {
             "title": "NXC LDAP ADCS Enum",
@@ -19643,7 +19643,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bul: ADCS servers NXC üzerinden"
+            "desc_tr": "Find ADCS servers via NXC"
           }
         ],
         "name_tr": "Certipy Enumeration"
@@ -19658,7 +19658,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "İste: cert DA UPN SAN field ile içinde"
+            "desc_tr": "Request cert with DA UPN in SAN field"
           },
           {
             "title": "ESC1 Auth with Certificate",
@@ -19676,7 +19676,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "İste: cert as another user (Windows)"
+            "desc_tr": "Request cert as another user (Windows)"
           },
           {
             "title": "Convert PEM to PFX",
@@ -19687,7 +19687,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dönüştür: Certify output PFX ile kullanmak içRubeus'e içinde"
+            "desc_tr": "Convert Certify output to PFX for use with Rubeus"
           }
         ],
         "name_tr": "ESC1 — SAN Impersonation"
@@ -19729,7 +19729,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Değiştir: template be zafiyet(ler) (ESC1 config)'e"
+            "desc_tr": "Modify template to be vulnerable (ESC1 config)"
           }
         ],
         "name_tr": "ESC2, ESC3, ESC4"
@@ -19756,7 +19756,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Ekle: ManageCA right enable EDITF flag'e"
+            "desc_tr": "Add ManageCA right to enable EDITF flag"
           },
           {
             "title": "ESC8 Web Enrollment NTLM Relay",
@@ -19768,7 +19768,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Yönlendir: DC$ auth ADCS HTTP enrollment'e"
+            "desc_tr": "Relay DC$ auth to ADCS HTTP enrollment"
           },
           {
             "title": "Golden Certificate (Certipy)",
@@ -19819,7 +19819,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Ekle: user DomaAdmin cert auth üzerinden'e içinde"
+            "desc_tr": "Add user to Domain Admins via cert auth"
           }
         ],
         "name_tr": "Certificate Authentication"
@@ -19854,7 +19854,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: FTP anonymous kimlik bilgileri directly ile'e"
+            "desc_tr": "Connect to FTP with anonymous credentials directly"
           },
           {
             "title": "FTP Get Single File",
@@ -19864,7 +19864,7 @@ module.exports = [
               "essential"
             ],
             "note": "Run inside FTP session after connecting",
-            "desc_tr": "İndir: a belirli file FTP sessiüzerinden üzerinde"
+            "desc_tr": "Download a specific file from FTP session"
           },
           {
             "title": "FTP Put File (Upload)",
@@ -19874,7 +19874,7 @@ module.exports = [
               "essential"
             ],
             "note": "Run inside FTP session",
-            "desc_tr": "Yükle: a file FTP server'e"
+            "desc_tr": "Upload a file to FTP server"
           },
           {
             "title": "FTP List Files Recursively",
@@ -19883,7 +19883,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm files recursively login sonra"
+            "desc_tr": "List all files recursively after login"
           },
           {
             "title": "Hydra FTP Brute Force",
@@ -19920,7 +19920,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "İndir: tüm files FTP üzerinden"
+            "desc_tr": "Download all files from FTP"
           },
           {
             "title": "cURL FTP Enum",
@@ -19929,7 +19929,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: FTP directory curl ile"
+            "desc_tr": "List FTP directory with curl"
           }
         ],
         "name_tr": "FTP (21)"
@@ -19944,7 +19944,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: SSH server'e"
+            "desc_tr": "Connect to SSH server"
           },
           {
             "title": "SSH with Private Key",
@@ -19953,7 +19953,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: özel anahtar file kullanarak"
+            "desc_tr": "Connect using private key file"
           },
           {
             "title": "SSH Fix Key Permissions",
@@ -19980,7 +19980,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Listele: valid SSH users"
+            "desc_tr": "Enumerate valid SSH users"
           },
           {
             "title": "SSH Tunnel Local Forward",
@@ -19989,7 +19989,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Yönlendir: yerel port uzak service'e"
+            "desc_tr": "Yerel portu uzak servise yönlendir"
           },
           {
             "title": "SSH Tunnel Remote Forward",
@@ -20007,7 +20007,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Oluştur: SOCKS5 vekil sunucu (proxy) SSH üzerinden"
+            "desc_tr": "Create SOCKS5 proxy through SSH"
           },
           {
             "title": "SSH ProxyJump",
@@ -20016,7 +20016,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bağlan: jump host üzerinden"
+            "desc_tr": "Connect through jump host"
           },
           {
             "title": "SSH Force Password Auth",
@@ -20040,7 +20040,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: and grab SMTP banner"
+            "desc_tr": "Connect and grab SMTP banner"
           },
           {
             "title": "SMTP VRFY User Enum",
@@ -20050,7 +20050,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Listele: valid users VRFY command üzerinden"
+            "desc_tr": "Enumerate valid users via VRFY command"
           },
           {
             "title": "SMTP EXPN User Enum",
@@ -20059,7 +20059,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: users EXPN command üzerinden"
+            "desc_tr": "Enumerate users via EXPN command"
           },
           {
             "title": "SMTP RCPT User Enum",
@@ -20068,7 +20068,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: users RCPT method üzerinden'e"
+            "desc_tr": "Enumerate users via RCPT TO method"
           },
           {
             "title": "SMTP Send Email (Swaks)",
@@ -20107,7 +20107,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: POP3 and check mail'e"
+            "desc_tr": "Connect to POP3 and check mail"
           },
           {
             "title": "IMAP Manual Connect",
@@ -20122,7 +20122,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: IMAP manually'e"
+            "desc_tr": "Connect to IMAP manually"
           },
           {
             "title": "Hydra POP3 Brute",
@@ -20140,7 +20140,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oku: emails curl ile"
+            "desc_tr": "Read emails with curl"
           }
         ],
         "name_tr": "POP3 / IMAP (110/143)"
@@ -20155,7 +20155,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dene: AXFR zone transferi"
+            "desc_tr": "Attempt AXFR zone transfer"
           },
           {
             "title": "DNS Reverse Lookup Zone",
@@ -20164,7 +20164,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Dene: reverse zone transferi"
+            "desc_tr": "Attempt reverse zone transfer"
           },
           {
             "title": "DNSChef Spoof",
@@ -20207,7 +20207,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Al: HTTP headers and response info"
+            "desc_tr": "Get HTTP headers and response info"
           },
           {
             "title": "cURL Follow Redirects",
@@ -20253,7 +20253,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Algıla: Web ApplicatiFirewalls üzerinde"
+            "desc_tr": "Web uygulama güvenlik duvarlarını (WAF) tespit et"
           }
         ],
         "name_tr": "HTTP/HTTPS (80/443/8080)"
@@ -20268,7 +20268,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: SMB shares (no auth)"
+            "desc_tr": "List SMB shares (no auth)"
           },
           {
             "title": "SMBClient Connect Share",
@@ -20277,7 +20277,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: a belirli share'e"
+            "desc_tr": "Belirli bir paylaşıma bağlan"
           },
           {
             "title": "SMBClient Get File",
@@ -20286,7 +20286,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "İndir: file SMB share üzerinden"
+            "desc_tr": "Download file from SMB share"
           },
           {
             "title": "SMBClient Recursive Download",
@@ -20300,7 +20300,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "İndir: tüm files share recursively üzerinden"
+            "desc_tr": "Download all files from share recursively"
           },
           {
             "title": "SMBMap Enumerate Shares",
@@ -20310,7 +20310,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Listele: shares and permissions"
+            "desc_tr": "Paylaşımları ve izinleri listele"
           },
           {
             "title": "SMBMap Recursive Listing",
@@ -20319,7 +20319,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: tüm files tüm shares üzerinde"
+            "desc_tr": "List all files on all shares"
           },
           {
             "title": "SMBMap Execute Command",
@@ -20328,7 +20328,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çalıştır: command SMBMap üzerinden"
+            "desc_tr": "Execute command via SMBMap"
           },
           {
             "title": "Mount SMB Share (Linux)",
@@ -20337,7 +20337,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağla: SMB share yerel directory'e"
+            "desc_tr": "Mount SMB share to local directory"
           },
           {
             "title": "EternalBlue (MS17-010)",
@@ -20363,7 +20363,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Bağlan: MSSQL impacket ile'e"
+            "desc_tr": "Connect to MSSQL with impacket"
           },
           {
             "title": "MSSQL SA Login",
@@ -20372,7 +20372,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: as SA user"
+            "desc_tr": "Connect as SA user"
           },
           {
             "title": "Impacket MSSQL with DC-IP",
@@ -20477,7 +20477,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Etkinleştir: xp_cmdshell for OS komut enjeksiyonu"
+            "desc_tr": "OS komutu çalıştırmak için xp_cmdshell'i etkinleştir"
           },
           {
             "title": "MSSQL List Databases",
@@ -20486,7 +20486,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm databases"
+            "desc_tr": "Tüm veritabanlarını listele"
           },
           {
             "title": "MSSQL List Users",
@@ -20495,7 +20495,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: database users and roles"
+            "desc_tr": "List database users and roles"
           },
           {
             "title": "MSSQL Steal Hash (Responder)",
@@ -20504,7 +20504,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Zorla: NTLM auth capture hash'e"
+            "desc_tr": "Force NTLM auth to capture hash"
           },
           {
             "title": "MSSQL Write File",
@@ -20516,7 +20516,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Yaz: file OLE Automatiüzerinden üzerinde"
+            "desc_tr": "Write file via OLE Automation"
           },
           {
             "title": "Sqsh MSSQL Connect",
@@ -20525,7 +20525,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bağlan: MSSQL sqsh ile'e"
+            "desc_tr": "Connect to MSSQL with sqsh"
           }
         ],
         "name_tr": "MSSQL (1433)"
@@ -20540,7 +20540,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: MySQL locally'e"
+            "desc_tr": "Connect to MySQL locally"
           },
           {
             "title": "MySQL Show Databases",
@@ -20549,7 +20549,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm databases"
+            "desc_tr": "Tüm veritabanlarını listele"
           },
           {
             "title": "MySQL Show Tables",
@@ -20558,7 +20558,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tables mevcut database içinde"
+            "desc_tr": "List tables in current database"
           },
           {
             "title": "MySQL Dump All Databases",
@@ -20567,7 +20567,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dökümle: tüm databases"
+            "desc_tr": "Dump all databases"
           },
           {
             "title": "MySQL Read File",
@@ -20576,7 +20576,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Oku: yerel file MySQL üzerinden"
+            "desc_tr": "Read local file via MySQL"
           },
           {
             "title": "MySQL Write File (INTO OUTFILE)",
@@ -20585,7 +20585,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Yaz: web kabuğu MySQL üzerinden"
+            "desc_tr": "Write webshell via MySQL"
           },
           {
             "title": "MySQL User Hashes",
@@ -20594,7 +20594,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dökümle: MySQL user hashes"
+            "desc_tr": "Dump MySQL user hashes"
           },
           {
             "title": "Hydra MySQL Brute",
@@ -20618,7 +20618,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: RDP xfreerdp ile'e"
+            "desc_tr": "Connect to RDP with xfreerdp"
           },
           {
             "title": "RDP with Domain",
@@ -20627,7 +20627,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: RDP domakimlik bilgileri ile'e içinde"
+            "desc_tr": "Connect to RDP with domain credentials"
           },
           {
             "title": "RDP Pass-the-Hash",
@@ -20636,7 +20636,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Bağlan: RDP NTLM hash (Restricted Admrequired) kullanarak'e içinde"
+            "desc_tr": "Connect to RDP using NTLM hash (Restricted Admin required)"
           },
           {
             "title": "RDP Drive Mount",
@@ -20645,7 +20645,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bağla: yerel drive RDP session içinde"
+            "desc_tr": "Mount local drive in RDP session"
           },
           {
             "title": "RDP Ignore Cert",
@@ -20663,7 +20663,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bağlan: NLA for older systems olmadan"
+            "desc_tr": "Connect without NLA for older systems"
           },
           {
             "title": "Hydra RDP Brute",
@@ -20681,7 +20681,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bağlan: rdesktop üzerinden"
+            "desc_tr": "Connect via rdesktop"
           }
         ],
         "name_tr": "RDP (3389)"
@@ -20696,7 +20696,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: VNC server'e"
+            "desc_tr": "Connect to VNC server"
           },
           {
             "title": "Hydra VNC Brute",
@@ -20729,7 +20729,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: unauthenticated Redis'e"
+            "desc_tr": "Connect to unauthenticated Redis"
           },
           {
             "title": "Redis Auth",
@@ -20747,7 +20747,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Al: Redis server information"
+            "desc_tr": "Get Redis server information"
           },
           {
             "title": "Redis List Keys",
@@ -20756,7 +20756,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm keys database içinde"
+            "desc_tr": "List all keys in database"
           },
           {
             "title": "Redis Get All Values",
@@ -20765,7 +20765,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dökümle: tüm key-value pairs"
+            "desc_tr": "Dump all key-value pairs"
           },
           {
             "title": "Redis Write SSH Key",
@@ -20779,7 +20779,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Yaz: SSH authorized_keys Redis üzerinden"
+            "desc_tr": "Write SSH authorized_keys via Redis"
           },
           {
             "title": "Redis Write Webshell",
@@ -20793,7 +20793,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Yaz: PHP web kabuğu Redis üzerinden"
+            "desc_tr": "Write PHP webshell via Redis"
           },
           {
             "title": "Redis Cron Job RCE",
@@ -20807,7 +20807,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Yaz: crgörevleri for ters bağlantı kabuğu Redis üzerinden üzerinde"
+            "desc_tr": "Write cron job for reverse shell via Redis"
           }
         ],
         "name_tr": "Redis (6379)"
@@ -20822,7 +20822,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağlan: unauthenticated MongoDB'e"
+            "desc_tr": "Connect to unauthenticated MongoDB"
           },
           {
             "title": "MongoDB List Databases",
@@ -20831,7 +20831,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: tüm databases"
+            "desc_tr": "Show all databases"
           },
           {
             "title": "MongoDB List Collections",
@@ -20840,7 +20840,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: collections mevcut DB içinde"
+            "desc_tr": "Show collections in current DB"
           },
           {
             "title": "MongoDB Dump All",
@@ -20849,7 +20849,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dökümle: tüm MongoDB data"
+            "desc_tr": "Dump all MongoDB data"
           },
           {
             "title": "MongoDB NoSQLi Auth Bypass",
@@ -20873,7 +20873,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: NFS exported directories"
+            "desc_tr": "List NFS exported directories"
           },
           {
             "title": "Mount NFS Share",
@@ -20882,7 +20882,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bağla: NFS share locally"
+            "desc_tr": "Mount NFS share locally"
           },
           {
             "title": "Mount NFS v3",
@@ -20891,7 +20891,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Zorla: NFS versi3 üzerinde"
+            "desc_tr": "Force NFS version 3"
           },
           {
             "title": "NFS no_root_squash Abuse",
@@ -20905,7 +20905,7 @@ module.exports = [
               "advanced"
             ],
             "note": "Then on target: /tmp/bash -p",
-            "desc_tr": "Yaz: SUID bash if no_root_squash is set"
+            "desc_tr": "Write SUID bash if no_root_squash is set"
           }
         ],
         "name_tr": "NFS (2049)"
@@ -20929,7 +20929,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Sorgula: LDAP kimlik bilgileri ile"
+            "desc_tr": "Query LDAP with credentials"
           },
           {
             "title": "LDAP Dump All Users",
@@ -20938,7 +20938,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm AD users"
+            "desc_tr": "Enumerate all AD users"
           },
           {
             "title": "LDAP Dump All Computers",
@@ -20947,7 +20947,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm computer objects"
+            "desc_tr": "List all computer objects"
           },
           {
             "title": "LDAP Dump Domain Admins",
@@ -20956,7 +20956,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Al: DomaAdmin grup üyelikleri içinde"
+            "desc_tr": "Get Domain Admin group members"
           },
           {
             "title": "LDAP Password in Attributes",
@@ -20965,7 +20965,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Ara: for passwords LDAP attributes içinde"
+            "desc_tr": "Search for passwords in LDAP attributes"
           },
           {
             "title": "ldapdomaindump",
@@ -20991,7 +20991,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Bağlan: WinRM Evil-WinRM ile'e"
+            "desc_tr": "Connect to WinRM with Evil-WinRM"
           },
           {
             "title": "Evil-WinRM with Hash",
@@ -21009,7 +21009,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bağlan: WinRM SSL (5986) ile'e"
+            "desc_tr": "Connect to WinRM with SSL (5986)"
           },
           {
             "title": "Evil-WinRM File Upload",
@@ -21018,7 +21018,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Yükle: file target'e"
+            "desc_tr": "Upload file to target"
           },
           {
             "title": "Evil-WinRM Run Script",
@@ -21028,7 +21028,7 @@ module.exports = [
               "tool"
             ],
             "note": "Run inside evil-winrm session",
-            "desc_tr": "Yükle: and run PowerShell script"
+            "desc_tr": "Load and run PowerShell script"
           },
           {
             "title": "Evil-WinRM Upload (In-Session)",
@@ -21038,7 +21038,7 @@ module.exports = [
               "essential"
             ],
             "note": "Run inside evil-winrm session",
-            "desc_tr": "Yükle: file withevil-winrm sessiüzerinden üzerinde içinde"
+            "desc_tr": "Upload file from within evil-winrm session"
           },
           {
             "title": "Evil-WinRM Download (In-Session)",
@@ -21048,7 +21048,7 @@ module.exports = [
               "essential"
             ],
             "note": "Run inside evil-winrm session",
-            "desc_tr": "İndir: file target withsessiüzerinden üzerinde içinde"
+            "desc_tr": "Download file from target within session"
           },
           {
             "title": "Evil-WinRM Execute PS Script (In-Session)",
@@ -21058,7 +21058,7 @@ module.exports = [
               "tool"
             ],
             "note": "Run inside evil-winrm session",
-            "desc_tr": "Çalıştır: a PowerShell script memory içinde"
+            "desc_tr": "Execute a PowerShell script in memory"
           },
           {
             "title": "Evil-WinRM Menu (In-Session)",
@@ -21198,7 +21198,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Atla: PowerShell executipolicy üzerinde"
+            "desc_tr": "Bypass PowerShell execution policy"
           },
           {
             "title": "PowerShell Download Cradle",
@@ -21207,7 +21207,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "İndir: and execute script memory içinde"
+            "desc_tr": "Scripti indir ve bellekte çalıştır"
           },
           {
             "title": "PowerShell EncodedCommand",
@@ -21216,7 +21216,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: base64 encoded command"
+            "desc_tr": "Execute base64 encoded command"
           },
           {
             "title": "Encode PS Command (Linux)",
@@ -21225,7 +21225,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kodla: a PowerShell command base64'e"
+            "desc_tr": "Encode PowerShell command to base64"
           },
           {
             "title": "PowerShell Invoke-Expression",
@@ -21234,7 +21234,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: string as command"
+            "desc_tr": "Execute string as command"
           },
           {
             "title": "PowerShell Download File",
@@ -21243,7 +21243,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "İndir: file disk'e"
+            "desc_tr": "Download file to disk"
           },
           {
             "title": "PowerShell Check Language Mode",
@@ -21286,7 +21286,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Yükle: PowerView inmemory'e"
+            "desc_tr": "Load PowerView into memory"
           },
           {
             "title": "Get Domain Info",
@@ -21295,7 +21295,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Al: domainformation içinde"
+            "desc_tr": "Get domain information"
           },
           {
             "title": "Get Domain Controller",
@@ -21304,7 +21304,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: domacontrollers içinde"
+            "desc_tr": "Domain controller'ları listele"
           },
           {
             "title": "Get All Domain Users",
@@ -21313,7 +21313,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm etki alanı kullanıcıları"
+            "desc_tr": "Enumerate all domain users"
           },
           {
             "title": "Get User Description",
@@ -21322,7 +21322,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: passwords user descriptions içinde"
+            "desc_tr": "Find passwords in user descriptions"
           },
           {
             "title": "Get Domain Groups",
@@ -21331,7 +21331,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm etki alanı grupları"
+            "desc_tr": "Tüm domain gruplarını listele"
           },
           {
             "title": "Get Domain Admin Members",
@@ -21340,7 +21340,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: DomaAdmin grup üyelikleri içinde"
+            "desc_tr": "List Domain Admin group members"
           },
           {
             "title": "Get Domain Computers",
@@ -21349,7 +21349,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm etki alanı bilgisayarları"
+            "desc_tr": "Tüm domain bilgisayarlarını listele"
           },
           {
             "title": "Find Local Admins",
@@ -21358,7 +21358,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: yerel yönetici rights for mevcut user"
+            "desc_tr": "Find local admin rights for current user"
           },
           {
             "title": "Get Logged On Users",
@@ -21367,7 +21367,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Al: logged users domaüzerinde içinde genelinde"
+            "desc_tr": "Get logged on users across domain"
           },
           {
             "title": "Get Domain Trusts",
@@ -21376,7 +21376,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: etki alanı güven ilişkileri"
+            "desc_tr": "Enumerate domain trusts"
           },
           {
             "title": "Get Forest Trusts",
@@ -21385,7 +21385,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: forest trusts"
+            "desc_tr": "Enumerate forest trusts"
           },
           {
             "title": "Find Interesting Files",
@@ -21394,7 +21394,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Ara: for hassas dosyalar shares üzerinde"
+            "desc_tr": "Search for sensitive files on shares"
           },
           {
             "title": "Get SPNs (Kerberoast)",
@@ -21403,7 +21403,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: tüm service principal names"
+            "desc_tr": "Find all service principal names"
           },
           {
             "title": "Invoke-Kerberoast",
@@ -21421,7 +21421,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: accounts pre-auth disabled ile"
+            "desc_tr": "Find accounts with pre-auth disabled"
           },
           {
             "title": "Get ACL Rights",
@@ -21430,7 +21430,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Bul: ACL rights for a belirli user"
+            "desc_tr": "Find ACL rights for a specific user"
           },
           {
             "title": "Find ObjectAcl Write Paths",
@@ -21439,7 +21439,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Bul: write/modify rights tüm objects genelinde"
+            "desc_tr": "Find write/modify rights across all objects"
           },
           {
             "title": "Unconstrained Delegation",
@@ -21448,7 +21448,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: computers sınırsız delegasyile üzerinde"
+            "desc_tr": "Find computers with unconstrained delegation"
           },
           {
             "title": "Constrained Delegation",
@@ -21457,7 +21457,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: accounts kısıtlı delegasyile üzerinde"
+            "desc_tr": "Find accounts with constrained delegation"
           }
         ],
         "name_tr": "PowerView — AD Enumeration"
@@ -21473,7 +21473,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Yükle: PowerUp inmemory'e"
+            "desc_tr": "Load PowerUp into memory"
           },
           {
             "title": "Invoke-AllChecks",
@@ -21482,7 +21482,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: tüm PowerUp yetki yükseltme checks"
+            "desc_tr": "Run all PowerUp privilege escalation checks"
           },
           {
             "title": "Get-ServiceUnquoted",
@@ -21491,7 +21491,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: services unquoted paths ile"
+            "desc_tr": "Find services with unquoted paths"
           },
           {
             "title": "Get-ModifiableService",
@@ -21500,7 +21500,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: services mevcut user can modify"
+            "desc_tr": "Find services current user can modify"
           },
           {
             "title": "Get-ModifiableServiceFile",
@@ -21509,7 +21509,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: services writable binaries ile"
+            "desc_tr": "Find services with writable binaries"
           },
           {
             "title": "Invoke-ServiceAbuse",
@@ -21527,7 +21527,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Değiştir: service binary özel payload ile"
+            "desc_tr": "Replace service binary with custom payload"
           },
           {
             "title": "Get AlwaysInstallElevated",
@@ -21545,7 +21545,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: unattended installatifiles creds ile üzerinde"
+            "desc_tr": "Find unattended installation files with creds"
           },
           {
             "title": "Get-CachedGPPPassword",
@@ -21554,7 +21554,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: cached GPP passwords"
+            "desc_tr": "Find cached GPP passwords"
           }
         ],
         "name_tr": "PowerUp — Privilege Escalation"
@@ -21578,7 +21578,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Yamala: AMSI.dll memory içinde"
+            "desc_tr": "Patch AMSI.dll in memory"
           },
           {
             "title": "Disable Windows Defender (Admin)",
@@ -21596,7 +21596,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Ekle: path Defender exclusilist üzerinde'e"
+            "desc_tr": "Add path to Defender exclusion list"
           },
           {
             "title": "ETW Bypass",
@@ -21629,7 +21629,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm AD users"
+            "desc_tr": "List all AD users"
           },
           {
             "title": "Get-ADGroup Members",
@@ -21638,7 +21638,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: members of a group"
+            "desc_tr": "List members of a group"
           },
           {
             "title": "Get-ADComputer All",
@@ -21647,7 +21647,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm etki alanı bilgisayarları"
+            "desc_tr": "Tüm domain bilgisayarlarını listele"
           },
           {
             "title": "Get-ADDomainController",
@@ -21656,7 +21656,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: domacontrollers içinde"
+            "desc_tr": "Domain controller'ları listele"
           },
           {
             "title": "Get-ADTrust",
@@ -21665,7 +21665,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: etki alanı güven ilişkileri"
+            "desc_tr": "List domain trusts"
           },
           {
             "title": "Set-ADAccountPassword",
@@ -21674,7 +21674,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Sıfırla: user password (if rights allow)"
+            "desc_tr": "Reset user password (if rights allow)"
           }
         ],
         "name_tr": "Active Directory Module (Native)"
@@ -21700,7 +21700,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Al: SYSTEM shell SMB üzerinden"
+            "desc_tr": "Get SYSTEM shell via SMB"
           },
           {
             "title": "PsExec with Hash",
@@ -21719,7 +21719,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Al: shell WMI (semi-interactive) üzerinden"
+            "desc_tr": "Get shell via WMI (semi-interactive)"
           },
           {
             "title": "WMIExec with Hash",
@@ -21737,7 +21737,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Al: SYSTEM shell SMB service creatiüzerinden üzerinde"
+            "desc_tr": "Get SYSTEM shell via SMB service creation"
           },
           {
             "title": "AtExec Command",
@@ -21746,7 +21746,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çalıştır: command Task Scheduler üzerinden"
+            "desc_tr": "Execute command via Task Scheduler"
           },
           {
             "title": "DCOMExec Remote Shell",
@@ -21755,7 +21755,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Çalıştır: DCOM (MMC20) üzerinden"
+            "desc_tr": "Execute via DCOM (MMC20)"
           }
         ],
         "name_tr": "Remote Execution"
@@ -21771,7 +21771,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Al: TGS tickets for Kerberoasting"
+            "desc_tr": "Get TGS tickets for Kerberoasting"
           },
           {
             "title": "GetUserSPNs with Hash",
@@ -21790,7 +21790,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Al: AS-REP hashes for roasting"
+            "desc_tr": "Get AS-REP hashes for roasting"
           },
           {
             "title": "GetNPUsers Single User",
@@ -21808,7 +21808,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Al: TGT for a user"
+            "desc_tr": "Get TGT for a user"
           },
           {
             "title": "getST S4U (Delegation)",
@@ -21817,7 +21817,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Al: service ticket S4U2Self/S4U2Proxy üzerinden"
+            "desc_tr": "Get service ticket via S4U2Self/S4U2Proxy"
           },
           {
             "title": "Ticketer Silver Ticket",
@@ -21860,7 +21860,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Dökümle: SAM and LSA secrets remotely"
+            "desc_tr": "Dump SAM and LSA secrets remotely"
           },
           {
             "title": "SecretsDump with Hash",
@@ -21869,7 +21869,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dökümle: secrets NTLM hash kullanarak"
+            "desc_tr": "Dump secrets using NTLM hash"
           },
           {
             "title": "SecretsDump DCSync",
@@ -21887,7 +21887,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Al: only NTLM hashes DC üzerinden"
+            "desc_tr": "Get only NTLM hashes from DC"
           },
           {
             "title": "SecretsDump from NTDS",
@@ -21896,7 +21896,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Dökümle: copied NTDS.dit file üzerinden"
+            "desc_tr": "Dump from copied NTDS.dit file"
           }
         ],
         "name_tr": "Credential Dumping"
@@ -21912,7 +21912,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Yönlendir: NTLM auth execute commands'e"
+            "desc_tr": "Relay NTLM auth to execute commands"
           },
           {
             "title": "NTLM Relay Interactive Shell",
@@ -21921,7 +21921,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Al: interactive SMB shell relay üzerinden"
+            "desc_tr": "Get interactive SMB shell via relay"
           },
           {
             "title": "NTLM Relay Execute Command",
@@ -21930,7 +21930,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çalıştır: command relay üzerinden"
+            "desc_tr": "Execute command via relay"
           },
           {
             "title": "NTLM Relay to LDAP (DA)",
@@ -21939,7 +21939,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Yönlendir: LDAP to add user to DA'e"
+            "desc_tr": "Relay to LDAP to add user to DA"
           },
           {
             "title": "NTLM Relay MultiRelay",
@@ -21948,7 +21948,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Yönlendir: multiple targets list üzerinden'e"
+            "desc_tr": "Relay to multiple targets from list"
           },
           {
             "title": "Responder Start",
@@ -21958,7 +21958,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Başlat: Responder capture NTLM hashes'e"
+            "desc_tr": "Start Responder to capture NTLM hashes"
           },
           {
             "title": "Responder without SMB/HTTP",
@@ -21968,7 +21968,7 @@ module.exports = [
               "essential"
             ],
             "note": "Disable SMB and HTTP in /etc/responder/Responder.conf first",
-            "desc_tr": "Çalıştır: Responder while ntlmrelayx is active"
+            "desc_tr": "Run Responder while ntlmrelayx is active"
           },
           {
             "title": "Mitm6 IPv6 Poisoning",
@@ -21994,7 +21994,7 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Bul: delegaticonfigurations üzerinde"
+            "desc_tr": "Find delegation configurations"
           },
           {
             "title": "GetADUsers",
@@ -22003,7 +22003,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: AD users"
+            "desc_tr": "Active Directory kullanıcılarını listele"
           },
           {
             "title": "Lookupsid RID Brute",
@@ -22012,7 +22012,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: users SID/RID kaba kuvvet saldırısı üzerinden"
+            "desc_tr": "Enumerate users via SID/RID brute force"
           },
           {
             "title": "Samrdump User Enum",
@@ -22021,7 +22021,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: users SAMR protocol üzerinden"
+            "desc_tr": "Enumerate users via SAMR protocol"
           },
           {
             "title": "Reg.py Registry Query",
@@ -22064,7 +22064,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dökümle: açık metpasswords and NTLM hashes LSASS üzerinden içinde"
+            "desc_tr": "Dump cleartext passwords and NTLM hashes from LSASS"
           },
           {
             "title": "Sekurlsa WDIGEST",
@@ -22073,7 +22073,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Göster: WDigest kimlik bilgileri (açık metif enabled) içinde"
+            "desc_tr": "Show WDigest credentials (cleartext if enabled)"
           },
           {
             "title": "Sekurlsa MSVCACHE",
@@ -22082,7 +22082,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Dökümle: önbelleğe alınmış kimlik bilgileri kimlik bilgileri"
+            "desc_tr": "Önbellekteki domain kimlik bilgilerini dök"
           },
           {
             "title": "Sekurlsa Kerberos Tickets",
@@ -22091,7 +22091,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: Kerberos tickets memory içinde"
+            "desc_tr": "List Kerberos tickets in memory"
           },
           {
             "title": "Sekurlsa All Creds",
@@ -22100,7 +22100,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dökümle: tüm kimlik bilgileri types at once"
+            "desc_tr": "Dump all credential types at once"
           },
           {
             "title": "Sekurlsa DPAPI Keys",
@@ -22109,7 +22109,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Çıkart: DPAPI master keys"
+            "desc_tr": "Extract DPAPI master keys"
           },
           {
             "title": "Enable WDigest",
@@ -22119,7 +22119,7 @@ module.exports = [
               "advanced"
             ],
             "note": "Requires re-login to take effect",
-            "desc_tr": "Zorla: WDigest cache açık metcreds'e içinde"
+            "desc_tr": "Force WDigest to cache cleartext creds"
           }
         ],
         "name_tr": "Credential Extraction"
@@ -22134,7 +22134,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dökümle: yerel SAM hashes"
+            "desc_tr": "Dump local SAM hashes"
           },
           {
             "title": "LSADUMP LSA Patch",
@@ -22143,7 +22143,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dökümle: LSA secrets patch method kullanarak"
+            "desc_tr": "Dump LSA secrets using patch method"
           },
           {
             "title": "LSADUMP DCSYNC",
@@ -22170,7 +22170,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dökümle: LSA secrets (service account creds, DPAPI)"
+            "desc_tr": "Dump LSA secrets (service account creds, DPAPI)"
           },
           {
             "title": "LSADUMP Cache",
@@ -22179,7 +22179,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Dökümle: önbelleğe alınmış kimlik bilgileri kimlik bilgileri"
+            "desc_tr": "Önbellekteki domain kimlik bilgilerini dök"
           }
         ],
         "name_tr": "SAM & LSA Dumps"
@@ -22194,7 +22194,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm Kerberos tickets"
+            "desc_tr": "List all Kerberos tickets"
           },
           {
             "title": "Kerberos Pass-the-Ticket",
@@ -22212,7 +22212,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaldır: tüm Kerberos tickets memory üzerinden"
+            "desc_tr": "Remove all Kerberos tickets from memory"
           },
           {
             "title": "Golden Ticket",
@@ -22221,7 +22221,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Oluştur: a golden ticket"
+            "desc_tr": "Create a golden ticket"
           },
           {
             "title": "Silver Ticket",
@@ -22230,7 +22230,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Oluştur: a silver ticket bir servis için"
+            "desc_tr": "Create a silver ticket for a service"
           },
           {
             "title": "Overpass-the-Hash",
@@ -22263,7 +22263,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Dökümle: Windows Vault kimlik bilgileri"
+            "desc_tr": "Dump Windows Vault credentials"
           },
           {
             "title": "Vault List",
@@ -22272,7 +22272,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Listele: Windows Vault entries"
+            "desc_tr": "List Windows Vault entries"
           },
           {
             "title": "Crypto Export Certs",
@@ -22291,7 +22291,7 @@ module.exports = [
               "advanced"
             ],
             "note": "Allows logging in with 'mimikatz' as any user's password — AD-wide",
-            "desc_tr": "Yamala: DC allow skeletkey password üzerinde'e"
+            "desc_tr": "Patch DC to allow skeleton key password"
           }
         ],
         "name_tr": "Misc Mimikatz"
@@ -22316,7 +22316,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Al: OS, hostname, and patch level"
+            "desc_tr": "Get OS, hostname, and patch level"
           },
           {
             "title": "Current User & Groups",
@@ -22325,7 +22325,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: mevcut user and group memberships"
+            "desc_tr": "Mevcut kullanıcı ve grup üyeliklerini göster"
           },
           {
             "title": "Net Users",
@@ -22334,7 +22334,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: yerel users"
+            "desc_tr": "List local users"
           },
           {
             "title": "Net Local Groups",
@@ -22343,7 +22343,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: yerel groups"
+            "desc_tr": "List local groups"
           },
           {
             "title": "Local Admins",
@@ -22352,7 +22352,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: yerel yönetici grup üyelikleri"
+            "desc_tr": "List local administrator group members"
           },
           {
             "title": "Domain Users",
@@ -22361,7 +22361,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: etki alanı kullanıcıları"
+            "desc_tr": "List domain users"
           },
           {
             "title": "Domain Groups",
@@ -22370,7 +22370,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: etki alanı grupları"
+            "desc_tr": "Domain gruplarını listele"
           },
           {
             "title": "Domain Controllers",
@@ -22379,7 +22379,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: domacontrollers içinde"
+            "desc_tr": "Find domain controllers"
           },
           {
             "title": "Network Interfaces",
@@ -22388,7 +22388,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: tüm ağ arayüzü and IPs"
+            "desc_tr": "Show all network interfaces and IPs"
           },
           {
             "title": "ARP Table",
@@ -22397,7 +22397,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: ARP cache for aktif host keşfi"
+            "desc_tr": "Show ARP cache for host discovery"
           },
           {
             "title": "Routing Table",
@@ -22406,7 +22406,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: yönlendirme tablosu"
+            "desc_tr": "Yönlendirme tablosunu göster"
           },
           {
             "title": "Listening Ports",
@@ -22415,7 +22415,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: tüm dinleyen portlar"
+            "desc_tr": "Dinlenen tüm portları göster"
           },
           {
             "title": "Active Connections",
@@ -22424,7 +22424,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: tüm aktif bağlantılar"
+            "desc_tr": "Show all active connections"
           },
           {
             "title": "Running Processes",
@@ -22433,7 +22433,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm çalışan process PID ile"
+            "desc_tr": "List all running processes with PID"
           },
           {
             "title": "Processes with Network",
@@ -22451,7 +22451,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: yüklü programs"
+            "desc_tr": "List installed programs"
           },
           {
             "title": "Installed Patches",
@@ -22460,7 +22460,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: installed Windows patches"
+            "desc_tr": "List installed Windows patches"
           },
           {
             "title": "Scheduled Tasks",
@@ -22469,7 +22469,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm zamanlanmış görevler"
+            "desc_tr": "Tüm zamanlanmış görevleri listele"
           },
           {
             "title": "Services Running",
@@ -22478,7 +22478,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: çalışan service"
+            "desc_tr": "List running services"
           },
           {
             "title": "PowerShell History",
@@ -22487,7 +22487,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Oku: PowerShell komut geçmişi"
+            "desc_tr": "PowerShell komut geçmişini oku"
           },
           {
             "title": "Environment Variables",
@@ -22496,7 +22496,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Göster: tüm ortam değişkenleri"
+            "desc_tr": "Show all environment variables"
           },
           {
             "title": "Firewall Status",
@@ -22529,7 +22529,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ara: tüm files for password string"
+            "desc_tr": "Search all files for password string"
           },
           {
             "title": "Search Specific Extensions",
@@ -22538,7 +22538,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: potentially hassas dosyalar"
+            "desc_tr": "Find potentially sensitive files"
           },
           {
             "title": "Registry Passwords",
@@ -22547,7 +22547,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ara: registry for password strings"
+            "desc_tr": "Search registry for password strings"
           },
           {
             "title": "Registry Passwords HKCU",
@@ -22556,7 +22556,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ara: HKCU for passwords"
+            "desc_tr": "Search HKCU for passwords"
           },
           {
             "title": "Unattend Files",
@@ -22581,7 +22581,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kopyala: SAM/SYSTEM çevrimdışı kırma için"
+            "desc_tr": "Copy SAM/SYSTEM for offline cracking"
           },
           {
             "title": "DPAPI Blob Hunt",
@@ -22590,7 +22590,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Bul: DPAPI blobs (kimlik bilgileri files)"
+            "desc_tr": "Find DPAPI blobs (credential files)"
           },
           {
             "title": "WiFi Passwords",
@@ -22599,7 +22599,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Dökümle: kayıtlı WiFi passwords"
+            "desc_tr": "Dump saved WiFi passwords"
           },
           {
             "title": "PuTTY Saved Sessions",
@@ -22617,7 +22617,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bul: Chrome password database"
+            "desc_tr": "Find Chrome password database"
           },
           {
             "title": "IIS Web.config",
@@ -22673,7 +22673,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Zorla: restart — closes tüm apps warning olmadan"
+            "desc_tr": "Force restart — closes all apps without warning"
           },
           {
             "title": "Cancel Shutdown",
@@ -22700,7 +22700,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "İndir: file Windows built-certutil (LOLBin) kullanarak içinde"
+            "desc_tr": "Download file using Windows built-in certutil (LOLBin)"
           }
         ],
         "name_tr": "System Control Commands"
@@ -22715,7 +22715,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ekle: kalıcılık HKCU Run key üzerinden"
+            "desc_tr": "Add persistence via HKCU Run key"
           },
           {
             "title": "Registry Run Key (System)",
@@ -22724,7 +22724,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ekle: kalıcılık HKLM Run key (requires admin) üzerinden"
+            "desc_tr": "Add persistence via HKLM Run key (requires admin)"
           },
           {
             "title": "Scheduled Task Persistence",
@@ -22733,7 +22733,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Oluştur: zamanlanmış görevler for kalıcılık"
+            "desc_tr": "Create scheduled task for persistence"
           },
           {
             "title": "New Service",
@@ -22745,7 +22745,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Oluştur: new Windows service for kalıcılık"
+            "desc_tr": "Create new Windows service for persistence"
           },
           {
             "title": "Startup Folder User",
@@ -22754,7 +22754,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Yerleştir: payload user startup folder içinde"
+            "desc_tr": "Place payload in user startup folder"
           },
           {
             "title": "Startup Folder Global",
@@ -22763,7 +22763,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Yerleştir: payload global startup folder (admin) içinde"
+            "desc_tr": "Place payload in global startup folder (admin)"
           }
         ],
         "name_tr": "Windows Persistence"
@@ -22788,7 +22788,7 @@ module.exports = [
               "tool"
             ],
             "note": "Run in Meterpreter with load incognito",
-            "desc_tr": "Listele: available impersonatitokens üzerinde"
+            "desc_tr": "List available impersonation tokens"
           },
           {
             "title": "Incognito Impersonate",
@@ -22833,7 +22833,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çalıştır: process as different user"
+            "desc_tr": "Run process as different user"
           },
           {
             "title": "RunAs with Saved Cred",
@@ -22842,7 +22842,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çalıştır: as user kayıtlı kimlik bilgileri ile"
+            "desc_tr": "Run as user with saved credentials"
           }
         ],
         "name_tr": "Token & Impersonation"
@@ -22867,7 +22867,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: mevcut user and tüm groups"
+            "desc_tr": "Show current user and all groups"
           },
           {
             "title": "System Info",
@@ -22885,7 +22885,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm system users"
+            "desc_tr": "List all system users"
           },
           {
             "title": "Sudo Rights",
@@ -22903,7 +22903,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: tüm ağ arayüzü"
+            "desc_tr": "Show all network interfaces"
           },
           {
             "title": "Routing Table",
@@ -22912,7 +22912,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: yönlendirme tablosu"
+            "desc_tr": "Yönlendirme tablosunu göster"
           },
           {
             "title": "ARP Cache",
@@ -22921,7 +22921,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: ARP table for aktif host keşfi"
+            "desc_tr": "Show ARP table for host discovery"
           },
           {
             "title": "Listening Ports",
@@ -22930,7 +22930,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: tüm dinleyen portlar"
+            "desc_tr": "Dinlenen tüm portları göster"
           },
           {
             "title": "All Connections",
@@ -22939,7 +22939,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Göster: tüm active network connections"
+            "desc_tr": "Show all active network connections"
           },
           {
             "title": "Running Processes",
@@ -22948,7 +22948,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Listele: tüm processes details ile"
+            "desc_tr": "List all processes with details"
           },
           {
             "title": "Processes as Root",
@@ -22957,7 +22957,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: processes running as root"
+            "desc_tr": "Find processes running as root"
           },
           {
             "title": "Cron Jobs",
@@ -22979,7 +22979,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Oku: komut geçmişi"
+            "desc_tr": "Read command history"
           },
           {
             "title": "Recently Modified Files",
@@ -22988,7 +22988,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bul: files modified last 10 minutes içinde"
+            "desc_tr": "Find files modified in last 10 minutes"
           },
           {
             "title": "Writable Directories",
@@ -22997,7 +22997,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: world-writable directories"
+            "desc_tr": "Herkesçe yazılabilir dizinleri bul"
           },
           {
             "title": "Mounted Filesystems",
@@ -23006,7 +23006,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Göster: tüm mounted filesystems"
+            "desc_tr": "Show all mounted filesystems"
           },
           {
             "title": "SUID Files",
@@ -23015,7 +23015,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: SUID binaries"
+            "desc_tr": "SUID binary'lerini bul"
           },
           {
             "title": "SGID Files",
@@ -23024,7 +23024,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: SGID binaries"
+            "desc_tr": "Find SGID binaries"
           },
           {
             "title": "Capabilities",
@@ -23033,7 +23033,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: binaries special capabilities ile"
+            "desc_tr": "Find binaries with special capabilities"
           }
         ],
         "name_tr": "Situational Awareness"
@@ -23057,7 +23057,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: tüm SSH private keys"
+            "desc_tr": "Find all SSH private keys"
           },
           {
             "title": "Config Files",
@@ -23066,7 +23066,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: tüm .conf and .yapılandırma dosyası"
+            "desc_tr": "Find all .conf and .config files"
           },
           {
             "title": "Web App Configs",
@@ -23075,7 +23075,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: web applicatiyapılandırma dosyası üzerinde"
+            "desc_tr": "Find web application config files"
           },
           {
             "title": "MySQL Credentials",
@@ -23084,7 +23084,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bul: MySQL config kimlik bilgileri ile"
+            "desc_tr": "Find MySQL config with credentials"
           },
           {
             "title": "WordPress Config",
@@ -23093,7 +23093,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bul: WordPress database kimlik bilgileri"
+            "desc_tr": "Find WordPress database credentials"
           },
           {
             "title": "Shadow File",
@@ -23102,7 +23102,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Oku: /etc/shadow if accessible"
+            "desc_tr": "Read /etc/shadow if accessible"
           },
           {
             "title": "Stored SSH Keys",
@@ -23111,7 +23111,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bul: authorized_keys files"
+            "desc_tr": "Find authorized_keys files"
           },
           {
             "title": "History Files",
@@ -23120,7 +23120,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bul: tüm shell history files"
+            "desc_tr": "Find all shell history files"
           },
           {
             "title": "Last Login",
@@ -23129,7 +23129,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Göster: last loginfo içinde"
+            "desc_tr": "Show last login info"
           }
         ],
         "name_tr": "Credential Hunting"
@@ -23144,7 +23144,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ekle: SSH genel anahtar authorized_keys'e"
+            "desc_tr": "Add SSH public key to authorized_keys"
           },
           {
             "title": "Cron Job Reverse Shell",
@@ -23153,7 +23153,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ekle: crgörevleri for ters bağlantı kabuğu kalıcılık üzerinde"
+            "desc_tr": "Add cron job for reverse shell persistence"
           },
           {
             "title": "SUID Bash Copy",
@@ -23166,7 +23166,7 @@ module.exports = [
               "advanced"
             ],
             "note": "Then: /tmp/.bash -p for root shell",
-            "desc_tr": "Oluştur: SUID copy of bash for kalıcılık"
+            "desc_tr": "Create SUID copy of bash for persistence"
           },
           {
             "title": ".bashrc Persistence",
@@ -23175,7 +23175,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Ekle: payload .bashrc for logkalıcılık'e içinde"
+            "desc_tr": "Add payload to .bashrc for login persistence"
           },
           {
             "title": "Systemd Service Persistence",
@@ -23188,7 +23188,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Oluştur: systemd service for kalıcılık (root)"
+            "desc_tr": "Create systemd service for persistence (root)"
           },
           {
             "title": "LD_PRELOAD Persistence",
@@ -23240,7 +23240,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Tara: ma and list tüm nearby WiFi networks"
+            "desc_tr": "Scan and list all nearby WiFi networks"
           },
           {
             "title": "Target Specific Network",
@@ -23249,7 +23249,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Yakala: packets belirli network üzerinden"
+            "desc_tr": "Capture packets from specific network"
           },
           {
             "title": "Scan with Kismet",
@@ -23282,7 +23282,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Yakala: 4-way handshake client üzerinden"
+            "desc_tr": "Capture 4-way handshake from client"
           },
           {
             "title": "Deauth to Force Handshake",
@@ -23291,7 +23291,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Zorla: client reconnect and capture handshake'e"
+            "desc_tr": "Force client to reconnect and capture handshake"
           },
           {
             "title": "Crack WPA with Aircrack",
@@ -23300,7 +23300,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kır: captured WPA handshake"
+            "desc_tr": "Crack captured WPA handshake"
           },
           {
             "title": "Convert to Hashcat Format",
@@ -23309,7 +23309,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Dönüştür: .cap hashcat format (22000)'e"
+            "desc_tr": "Convert .cap to hashcat format (22000)"
           },
           {
             "title": "Crack WPA with Hashcat",
@@ -23318,7 +23318,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kır: WPA hash hashcat ile"
+            "desc_tr": "Crack WPA hash with hashcat"
           },
           {
             "title": "PMKID Attack",
@@ -23327,7 +23327,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Yakala: PMKID waiting for handshake olmadan"
+            "desc_tr": "Capture PMKID without waiting for handshake"
           },
           {
             "title": "PMKID Extract Hash",
@@ -23336,7 +23336,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Çıkart: PMKID hash capture üzerinden"
+            "desc_tr": "Extract PMKID hash from capture"
           }
         ],
         "name_tr": "WPA/WPA2 Attacks"
@@ -23351,7 +23351,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Tara: ma for WPS-enabled networks"
+            "desc_tr": "Scan for WPS-enabled networks"
           },
           {
             "title": "Reaver WPS PIN Attack",
@@ -23387,7 +23387,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Oluştur: rogue AP for kimlik bilgileri capture"
+            "desc_tr": "Create rogue AP for credential capture"
           },
           {
             "title": "Evil Twin (airbase-ng)",
@@ -23396,7 +23396,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Oluştur: fake AP airbase-ng ile"
+            "desc_tr": "Create fake AP with airbase-ng"
           }
         ],
         "name_tr": "WPS & Other Attacks"
@@ -23449,7 +23449,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Yönlendir: Pythrequests Burp vekil sunucu (proxy) üzerinde üzerinden"
+            "desc_tr": "Route Python requests through Burp proxy"
           },
           {
             "title": "FoxyProxy Setup",
@@ -23459,7 +23459,7 @@ module.exports = [
               "essential"
             ],
             "note": "Install FoxyProxy Standard extension, create a Burp profile",
-            "desc_tr": "Yapılandır: FoxyProxy browser extensifor Burp üzerinde"
+            "desc_tr": "Configure FoxyProxy browser extension for Burp"
           },
           {
             "title": "Install Burp CA Certificate",
@@ -23469,7 +23469,7 @@ module.exports = [
               "essential"
             ],
             "note": "Browse to http://burp with proxy active, or use this curl command",
-            "desc_tr": "İndir: and install Burp CA cert for HTTPS interception"
+            "desc_tr": "Download and install Burp CA cert for HTTPS interception"
           },
           {
             "title": "SQLMap Through Burp",
@@ -23478,7 +23478,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Yönlendir: SQLMap traffic Burp for inspection üzerinden"
+            "desc_tr": "Route SQLMap traffic through Burp for inspection"
           },
           {
             "title": "Nikto Through Burp",
@@ -23487,7 +23487,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Yönlendir: Nikscans Burp'e üzerinden"
+            "desc_tr": "Route Nikto scans through Burp"
           },
           {
             "title": "Gobuster Through Burp",
@@ -23496,7 +23496,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Yönlendir: Gobuster Burp vekil sunucu (proxy) üzerinden"
+            "desc_tr": "Route Gobuster through Burp proxy"
           }
         ],
         "name_tr": "Proxy Setup & Configuration"
@@ -23551,7 +23551,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Oluştur: sequential number payloads for ID listeleme"
+            "desc_tr": "Generate sequential number payloads for ID enumeration"
           },
           {
             "title": "Intruder Payload — Recursive Grep",
@@ -23561,7 +23561,7 @@ module.exports = [
               "advanced"
             ],
             "note": "Useful for brute forcing forms with anti-CSRF tokens",
-            "desc_tr": "Çıkart: token response and use next request (CSRF bypass) üzerinden içinde"
+            "desc_tr": "Extract token from response and use in next request (CSRF bypass)"
           }
         ],
         "name_tr": "Intruder Attack Types"
@@ -23576,7 +23576,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Yönlendir: intercepted request Repeater for manual testing'e"
+            "desc_tr": "Forward intercepted request to Repeater for manual testing"
           },
           {
             "title": "Send to Intruder",
@@ -23585,7 +23585,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Yönlendir: request Intruder for automated attacks'e"
+            "desc_tr": "Forward request to Intruder for automated attacks"
           },
           {
             "title": "Copy as cURL Command",
@@ -23594,7 +23594,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kopyala: request as curl command for CLI usage"
+            "desc_tr": "Copy request as curl command for CLI usage"
           },
           {
             "title": "Match & Replace Header",
@@ -23612,7 +23612,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Değiştir: server responses in-transit (e.g., remove client-side validation)"
+            "desc_tr": "Modify server responses in-transit (e.g., remove client-side validation)"
           },
           {
             "title": "Engagement Tools — Discover Content",
@@ -23630,7 +23630,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Ara: for developer comments responses içinde"
+            "desc_tr": "Search for developer comments in responses"
           },
           {
             "title": "Save Request to File",
@@ -23640,7 +23640,7 @@ module.exports = [
               "essential"
             ],
             "note": "Used with: sqlmap -r request.txt",
-            "desc_tr": "Kaydet: a request ile kullanmak içsqlmap -r flag içinde"
+            "desc_tr": "Save a request for use with sqlmap -r flag"
           }
         ],
         "name_tr": "Repeater & Common Workflows"
@@ -23656,7 +23656,7 @@ module.exports = [
               "essential"
             ],
             "note": "Pro version only — tests for SQLi, XSS, SSRF etc.",
-            "desc_tr": "Çalıştır: active zafiyet(ler) tarama a target üzerinde"
+            "desc_tr": "Run active vulnerability scan on a target"
           },
           {
             "title": "Passive Scan",
@@ -23674,7 +23674,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Tara: ma a single request for zafiyet(ler)"
+            "desc_tr": "Scan a single request for vulnerabilities"
           },
           {
             "title": "Extension — ActiveScan++",
@@ -23720,7 +23720,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Keşfet: gizli parameters and headers"
+            "desc_tr": "Discover hidden parameters and headers"
           },
           {
             "title": "Extension — JWT Editor",
@@ -23753,7 +23753,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Yönlendir: intercepted request server'e"
+            "desc_tr": "Forward intercepted request to server"
           },
           {
             "title": "Drop Request",
@@ -23771,7 +23771,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ara: tüm captured HTTP history üzerinden"
+            "desc_tr": "Search through all captured HTTP history"
           },
           {
             "title": "Scope Filtering",
@@ -23781,7 +23781,7 @@ module.exports = [
               "essential"
             ],
             "note": "Then enable 'Show only in-scope items' in Proxy history filter",
-            "desc_tr": "Sınırla: Burp only capture target traffic'e"
+            "desc_tr": "Limit Burp to only capture target traffic"
           },
           {
             "title": "Decoder — Base64 Decode",
@@ -23790,7 +23790,7 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Çöz: zme base64 strings"
+            "desc_tr": "Decode base64 strings"
           },
           {
             "title": "Decoder — URL Encode",
@@ -23808,7 +23808,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Karşılaştır: two responses side by side spot differences'e"
+            "desc_tr": "Compare two responses side by side to spot differences"
           },
           {
             "title": "Disable JavaScript in Browser",
@@ -23817,7 +23817,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Atla: client-side validatiby disabling JS üzerinde"
+            "desc_tr": "Bypass client-side validation by disabling JS"
           }
         ],
         "name_tr": "Useful Shortcuts & Tips"
@@ -24049,7 +24049,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Göster: available encoders"
+            "desc_tr": "Show available encoders"
           },
           {
             "title": "List All Payloads",
@@ -24058,7 +24058,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Göster: tüm available payloads"
+            "desc_tr": "Show all available payloads"
           },
           {
             "title": "List All Formats",
@@ -24067,7 +24067,7 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Göster: output format options"
+            "desc_tr": "Show output format options"
           },
           {
             "title": "Shikata Ga Nai Encoding",
@@ -24076,7 +24076,7 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Kodla: a payload shikata_ga_nai (x86) ile"
+            "desc_tr": "Encode payload with shikata_ga_nai (x86)"
           },
           {
             "title": "Multi-Encoder Chain",
@@ -40070,7 +40070,7 @@ module.exports = [
           {
             "title": "Grep for GitHub Actions Script Injection Sinks",
             "desc": "Find attacker-controlled context interpolated into run: steps (injection)",
-            "desc_tr": "run: adımlarına enjekte edilen saldırgan kontrollü context'leri bul (injection)",
+            "desc_tr": "Find attacker-controlled context interpolated into run: steps (injection)",
             "cmd": "grep -rEn '\\$\\{\\{\\s*github\\.(event\\.(issue\\.title|issue\\.body|pull_request\\.title|pull_request\\.body|comment\\.body|review\\.body)|head_ref)' .github/workflows/",
             "tags": [
               "essential"

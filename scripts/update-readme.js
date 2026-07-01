@@ -53,7 +53,7 @@ md = replaceBlock(
 
 md = replaceBlock(
   md, "<!-- STATS:START -->", "<!-- STATS:END -->",
-  `**${totalCmds} commands** across **${totalCats} categories** and **${totalSubs} subcategories** — every command bilingual (English + Türkçe).`
+  `**${totalCmds} commands** across **${totalCats} categories** and **${totalSubs} subcategories** — bilingual interface (English + Türkçe).`
 );
 
 md = replaceBlock(

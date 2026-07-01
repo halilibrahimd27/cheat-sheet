@@ -19,6 +19,8 @@ jobs:
         run: npm run lint
       - name: Test
         run: npm test
+      - name: Validate content (seed.js structure)
+        run: npm run validate-content
       - name: README stats are in sync with seed.js
         run: |
           node scripts/update-readme.js

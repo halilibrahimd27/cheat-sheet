@@ -22,7 +22,7 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 ---
 
 <!-- STATS:START -->
-**4944 commands** across **50 categories** and **307 subcategories** — every command bilingual (English + Türkçe).
+**4944 commands** across **50 categories** and **307 subcategories** — bilingual interface (English + Türkçe).
 <!-- STATS:END -->
 
 > Runs **100% locally**. No account, no telemetry, no cloud — your data never leaves your machine.

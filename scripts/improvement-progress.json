@@ -175,7 +175,8 @@
     {
       "id": "content-quality",
       "title": "Content quality + validator",
-      "status": "pending",
+      "status": "done",
+      "_result": "validator added + wired to CI; 1268 garbled desc_tr eliminated (67 hand-translated to proper Turkish, 1201 reverted to clean English/untranslated); 212 duplicate cmd strings reported. Remaining 1202 untranslated tracked by the validator for future translation work.",
       "files": ["scripts/validate-content.js", "seed.js", "scripts/fix-translations.js", ".github/workflows/ci.yml", "package.json"],
       "items": [
         "scripts/validate-content.js (schema, tags enum, unique ids, desc_tr != desc, placeholders)",

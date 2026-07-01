@@ -8,6 +8,7 @@
     "dev": "node --watch server.js",
     "test": "node --test",
     "lint": "eslint .",
+    "validate-content": "node scripts/validate-content.js",
     "update-readme": "node scripts/update-readme.js"
   },
   "engines": {
