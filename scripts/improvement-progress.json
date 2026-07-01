@@ -209,6 +209,51 @@
         "Author 4 new categories (~556 cmds) following the merge-category workflow",
         "Bilingual EN+TR, validated by the new content validator"
       ]
+    },
+    {
+      "id": "machines-ad-pro",
+      "title": "AD engagement pro-fix (owner round 2)",
+      "status": "done",
+      "_result": "Hosts are real machines (machineId refs) so new hosts appear in the main Machines list and share progress; per-node progress rings + % on the schematic; 'Connect' mode to draw links on the graph; node icon by type; open-machine, role, per-host playbook/checklist/loot/notes; per-id saveMachine debounce."
+    },
+    {
+      "id": "writeups-pro-2",
+      "title": "Write-ups round 2 — genuinely enterprise editor & rendering (owner)",
+      "status": "pending",
+      "_note": "Owner says write-ups still not professional/enterprise. Push further, don't be tokenistic.",
+      "files": ["public/app.js", "public/style.css"],
+      "items": [
+        "Editor toolbar with real formatting actions (bold/italic/code/H2/link/list/table/image) that insert markdown at the cursor — not just template dropdowns.",
+        "Polished document-style read view (typographic scale, max-width, TOC from headings, metadata header, print CSS parity).",
+        "Autosave status + word count + last-saved time; keyboard Ctrl+B/Ctrl+K-in-editor.",
+        "Renderer: task lists ([ ]/[x]), blockquotes, numbered lists, nested lists; keep XSS-safe.",
+        "Report cover/header block and section navigation; ensure MD/PDF export matches on-screen quality."
+      ]
+    },
+    {
+      "id": "design-overhaul-2",
+      "title": "Overall design overhaul round 2 — enterprise polish (owner)",
+      "status": "pending",
+      "_note": "Owner reiterated the whole app's design should be improved. Make it feel like a polished, cohesive product.",
+      "files": ["public/style.css", "public/index.html", "public/app.js"],
+      "items": [
+        "Refine the design system: consistent spacing scale, elevation/shadows, radii, refined sidebar, sticky top bar, active-state accents.",
+        "Command card redesign: cleaner header, better tag chips, hover, copy affordance.",
+        "Empty states, loading skeletons, and toast polish; consistent iconography.",
+        "Hero/landing polish; refined light theme; density option.",
+        "Verify contrast + reduced-motion still hold."
+      ]
+    },
+    {
+      "id": "readme-refresh",
+      "title": "README refresh — document all new features (owner asked)",
+      "status": "pending",
+      "_note": "Owner: 'her şey bitince readme yi de güncelle'. Do this LAST.",
+      "files": ["README.md"],
+      "items": [
+        "Update Features to list: AD engagement (schematic, per-host playbooks, linking), situation-aware Machines playbooks, professional write-up report templates + tables, fuzzy command palette, command history, deep-links, content validator.",
+        "Keep the auto-generated STATS/CATEGORIES blocks intact (run update-readme.js); refresh screenshots note; keep claims accurate (bilingual interface; ~1200 command descriptions still English-only, tracked)."
+      ]
     }
   ]
 }
