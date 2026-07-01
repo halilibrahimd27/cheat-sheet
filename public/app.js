@@ -735,7 +735,17 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     h = h.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
     h = h.replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
     h = h.replace(/`([^`]+)`/g, "<code class=\"wu-inline-code\">$1</code>");
-    h = h.replace(/(?:^|\n)((?:[-*] .*(?:\n|$))+)/g, (m, block) => "\n<ul class=\"wu-list\">" + block.trim().split(/\n/).map(l => "<li>" + l.replace(/^[-*]\s+/, "") + "</li>").join("") + "</ul>");
+    // Blockquotes ("> " is escaped to "&gt; ").
+    h = h.replace(/(?:^|\n)((?:&gt; ?.*(?:\n|$))+)/g, (m, block) => "\n<blockquote class=\"wu-quote\">" + block.trim().split(/\n/).map(l => l.replace(/^&gt; ?/, "")).join("<br>") + "</blockquote>");
+    // Ordered lists.
+    h = h.replace(/(?:^|\n)((?:\d+\. .*(?:\n|$))+)/g, (m, block) => "\n<ol class=\"wu-list\">" + block.trim().split(/\n/).map(l => "<li>" + l.replace(/^\d+\.\s+/, "") + "</li>").join("") + "</ol>");
+    // Unordered lists + GitHub-style task lists.
+    h = h.replace(/(?:^|\n)((?:[-*] .*(?:\n|$))+)/g, (m, block) => "\n<ul class=\"wu-list\">" + block.trim().split(/\n/).map(l => {
+      const item = l.replace(/^[-*]\s+/, "");
+      const task = item.match(/^\[([ xX])\]\s?(.*)$/);
+      if (task) return "<li class=\"wu-task\"><input type=\"checkbox\" disabled" + (/[xX]/.test(task[1]) ? " checked" : "") + "> " + task[2] + "</li>";
+      return "<li>" + item + "</li>";
+    }).join("") + "</ul>");
     // Markdown tables: header row, a | --- | separator, then body rows.
     h = h.replace(/^(\|.+\|)[ \t]*\n\|[ :|\-]+\|[ \t]*\n((?:\|.*\|[ \t]*(?:\n|$))*)/gm, (m, header, body) => {
       const cells = r => r.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map(c => c.trim());
@@ -744,7 +754,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       return "<table class=\"wu-table\"><thead><tr>" + th + "</tr></thead><tbody>" + rows + "</tbody></table>\n";
     });
     h = h.replace(/\n/g, "<br>");
-    h = h.replace(/<br>\s*(<(?:h[1-6]|pre|ul|hr|div|table)[^>]*>)/g, "$1").replace(/(<\/(?:h[1-6]|pre|ul|div|table)>)\s*<br>/g, "$1").replace(/(<hr[^>]*>)\s*<br>/g, "$1");
+    h = h.replace(/<br>\s*(<(?:h[1-6]|pre|ul|ol|hr|div|table|blockquote)[^>]*>)/g, "$1").replace(/(<\/(?:h[1-6]|pre|ul|ol|div|table|blockquote)>)\s*<br>/g, "$1").replace(/(<hr[^>]*>)\s*<br>/g, "$1");
     h = h.replace(/ZZCODEBLOCKZZ(\d+)ZZ/g, (m, i) => "<pre class=\"wu-code-block\">" + blocks[+i] + "</pre>");
     return h;
   }
@@ -755,6 +765,21 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     ta.selectionStart = ta.selectionEnd = s + text.length;
     ta.focus();
   }
+  // Wrap the selection (or a placeholder) with markdown markers.
+  function wuWrap(ta, pre, post, placeholder) {
+    const s = ta.selectionStart, e = ta.selectionEnd, val = ta.value;
+    const sel = val.slice(s, e) || (placeholder || "text");
+    ta.value = val.slice(0, s) + pre + sel + post + val.slice(e);
+    ta.selectionStart = s + pre.length; ta.selectionEnd = s + pre.length + sel.length; ta.focus();
+  }
+  // Prepend a prefix to the start of the current line (headings, lists, quotes).
+  function wuLinePrefix(ta, prefix) {
+    const s = ta.selectionStart, val = ta.value;
+    const ls = val.lastIndexOf("\n", s - 1) + 1;
+    ta.value = val.slice(0, ls) + prefix + val.slice(ls);
+    ta.selectionStart = ta.selectionEnd = s + prefix.length; ta.focus();
+  }
+  function wuWordCount(s) { return (String(s || "").trim().match(/\S+/g) || []).length; }
   async function createWriteup() {
     openModal("New Write-up", [
       { key: "title", label: "Title", placeholder: "e.g., HackTheBox — Lame" },
@@ -901,11 +926,42 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       editor.placeholder = lang === "tr" ? "Markdown yazin — sagda canli onizleme..." : "Write Markdown — live preview on the right...";
       const preview = document.createElement("div"); preview.className = "wu-preview wu-read-body";
       function syncPreview() { preview.innerHTML = renderMarkdown(editor.value); }
-      function commit() { saveWu(wu.id, { content: editor.value }); showStatus(); syncPreview(); }
+      function updateWc() { const el = page.querySelector(".wu-wordcount"); if (el) el.textContent = wuWordCount(editor.value) + (lang === "tr" ? " kelime" : " words"); }
+      function commit() { saveWu(wu.id, { content: editor.value }); showStatus(); syncPreview(); updateWc(); }
+
+      // Formatting toolbar — inserts markdown at the cursor / around the selection.
+      const fmt = document.createElement("div"); fmt.className = "wu-format-toolbar";
+      [
+        ["B", "Bold", () => wuWrap(editor, "**", "**", "bold")],
+        ["I", "Italic", () => wuWrap(editor, "*", "*", "italic")],
+        ["</>", "Code", () => wuWrap(editor, "`", "`", "code")],
+        ["H", "Heading", () => wuLinePrefix(editor, "## ")],
+        ["🔗", "Link", () => wuWrap(editor, "[", "](https://)", "text")],
+        ["•", "Bullet list", () => wuLinePrefix(editor, "- ")],
+        ["1.", "Numbered list", () => wuLinePrefix(editor, "1. ")],
+        ["☑", "Task", () => wuLinePrefix(editor, "- [ ] ")],
+        ["❝", "Quote", () => wuLinePrefix(editor, "> ")],
+        ["▦", "Table", () => insertAtCursor(editor, "\n| Col | Col |\n| --- | --- |\n|  |  |\n")]
+      ].forEach(([label, title, fn]) => {
+        const b = document.createElement("button"); b.className = "wu-fmt-btn"; b.type = "button"; b.textContent = label; b.title = title; b.setAttribute("aria-label", title);
+        b.addEventListener("click", () => { fn(); commit(); });
+        fmt.appendChild(b);
+      });
+      const wcEl = document.createElement("span"); wcEl.className = "wu-wordcount"; fmt.appendChild(wcEl);
+      page.appendChild(fmt);
+
       editor.addEventListener("input", commit);
+      // In-editor shortcuts (stopPropagation so the global Ctrl+K/Ctrl+I don't also fire).
+      editor.addEventListener("keydown", ev => {
+        if (!(ev.ctrlKey || ev.metaKey)) return;
+        const k = ev.key.toLowerCase();
+        if (k === "b") { ev.preventDefault(); ev.stopPropagation(); wuWrap(editor, "**", "**", "bold"); commit(); }
+        else if (k === "i") { ev.preventDefault(); ev.stopPropagation(); wuWrap(editor, "*", "*", "italic"); commit(); }
+        else if (k === "k") { ev.preventDefault(); ev.stopPropagation(); wuWrap(editor, "[", "](https://)", "text"); commit(); }
+      });
       split.appendChild(editor); split.appendChild(preview);
       page.appendChild(split);
-      syncPreview();
+      syncPreview(); updateWc();
 
       // Image upload (button, paste, drag-drop)
       async function uploadImage(file) {
@@ -965,12 +1021,26 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       page.appendChild(tagsRow);
 
       const dateLine = document.createElement("div"); dateLine.className = "wu-page-date";
-      dateLine.textContent = (lang === "tr" ? "Son guncelleme: " : "Last updated: ") + new Date(wu.updatedAt).toLocaleString();
+      dateLine.textContent = (lang === "tr" ? "Son guncelleme: " : "Last updated: ") + new Date(wu.updatedAt).toLocaleString() + " · " + wuWordCount(wu.content) + (lang === "tr" ? " kelime" : " words");
       page.appendChild(dateLine);
 
       const body = document.createElement("div"); body.className = "wu-read-body";
       const content = wu.content || (lang === "tr" ? "Henuz icerik yok. Duzenle butonuna tiklayin." : "No content yet. Click Edit to start writing.");
       body.innerHTML = renderMarkdown(content);
+
+      // Auto table-of-contents from headings (in-page scroll, no hash routing).
+      const heads = body.querySelectorAll(".wu-heading");
+      if (heads.length >= 3) {
+        const toc = document.createElement("nav"); toc.className = "wu-toc"; toc.setAttribute("aria-label", "Contents");
+        toc.innerHTML = '<div class="wu-toc-title">' + (lang === "tr" ? "İçindekiler" : "Contents") + '</div>';
+        heads.forEach((hd, i) => {
+          hd.id = "wuh-" + i;
+          const a = document.createElement("button"); a.className = "wu-toc-item lvl-" + hd.tagName.toLowerCase(); a.type = "button"; a.textContent = hd.textContent;
+          a.addEventListener("click", () => hd.scrollIntoView({ behavior: motionBehavior(), block: "start" }));
+          toc.appendChild(a);
+        });
+        page.appendChild(toc);
+      }
       page.appendChild(body);
     }
 

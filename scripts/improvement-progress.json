@@ -219,7 +219,7 @@
     {
       "id": "writeups-pro-2",
       "title": "Write-ups round 2 — genuinely enterprise editor & rendering (owner)",
-      "status": "pending",
+      "status": "done",
       "_note": "Owner says write-ups still not professional/enterprise. Push further, don't be tokenistic.",
       "files": ["public/app.js", "public/style.css"],
       "items": [
