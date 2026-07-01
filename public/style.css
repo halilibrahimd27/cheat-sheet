@@ -1713,3 +1713,25 @@ body {
 .host-f:focus { outline: none; border-color: var(--accent-primary); }
 .host-del { flex-shrink: 0; background: none; border: none; cursor: pointer; font-size: 14px; opacity: 0.6; }
 .host-del:hover { opacity: 1; }
+
+/* ============================================
+   Write-ups overhaul (batch 7)
+   ============================================ */
+.wu-toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+.wu-tool-select { min-width: 160px; }
+.wu-split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: stretch; }
+.wu-split .wu-page-editor { min-height: 60vh; margin: 0; }
+.wu-page-editor.dragging { border-color: var(--accent-primary); box-shadow: 0 0 0 2px var(--accent-glow); }
+.wu-preview {
+    min-height: 60vh; max-height: 72vh; overflow-y: auto;
+    background: var(--bg-card); border: 1px solid var(--border-primary);
+    border-radius: var(--radius-sm); padding: 16px 20px;
+}
+.wu-link { color: var(--accent-cyan); text-decoration: underline; }
+.wu-list { margin: 8px 0 8px 22px; }
+.wu-list li { margin: 2px 0; }
+.wu-hr { border: none; border-top: 1px solid var(--border-primary); margin: 16px 0; }
+@media (max-width: 900px) {
+    .wu-split { grid-template-columns: 1fr; }
+    .wu-split .wu-page-editor, .wu-preview { min-height: 300px; }
+}

@@ -54,7 +54,8 @@
       hosts: "Hosts", addHost: "+ Host", owned: "Owned", attackPath: "Attack Path",
       noHosts: "No extra hosts yet. Add domain / network machines here.",
       replacePlaybook: "Replace the current checklist with this playbook? Current progress will be lost.",
-      copyCmd: "Copy command", defaultChecklist: "Default checklist"
+      copyCmd: "Copy command", defaultChecklist: "Default checklist",
+      wuTemplate: "Template", wuMachine: "Link machine"
     },
     tr: {
       allCommands: "Tum Komutlar", favorites: "Favoriler", search: "Komut ara...",
@@ -88,7 +89,8 @@
       hosts: "Makineler", addHost: "+ Makine", owned: "Ele gecirildi", attackPath: "Saldiri Yolu",
       noHosts: "Henuz ek makine yok. Domain / ag makinelerini buraya ekleyin.",
       replacePlaybook: "Mevcut kontrol listesi bu oyun kitabiyla degistirilsin mi? Mevcut ilerleme kaybolur.",
-      copyCmd: "Komutu kopyala", defaultChecklist: "Varsayilan liste"
+      copyCmd: "Komutu kopyala", defaultChecklist: "Varsayilan liste",
+      wuTemplate: "Sablon", wuMachine: "Makine bagla"
     }
   };
   function t(key) { return (T[lang] && T[lang][key]) || T.en[key] || key; }
@@ -412,6 +414,110 @@
   // ── Write-ups (server-backed, file-style) ──
   let openWriteupId = null;
   async function loadWriteups() { writeups = await api("GET", "/api/writeups") || []; }
+
+  // Static, offline report boilerplate — inserted client-side, never fetched.
+  const WRITEUP_TEMPLATES = {
+    htb: `# {TITLE}
+
+**Platform:** HackTheBox   **Difficulty:**
+**IP:** \`<TARGET_IP>\`   **OS:**
+
+## Recon
+
+\`\`\`
+nmap -p- --min-rate 5000 -oA nmap/all <TARGET_IP>
+nmap -sC -sV -p<PORT> -oA nmap/svc <TARGET_IP>
+\`\`\`
+
+## Enumeration
+
+## Foothold
+
+## Privilege Escalation
+
+## Loot
+
+- user.txt:
+- root.txt:
+
+## Lessons Learned
+`,
+    oscp: `# {TITLE}
+
+## Vulnerability
+
+## Proof of Concept
+
+\`\`\`
+\`\`\`
+
+## Exploitation Steps
+
+1.
+2.
+
+## Proof (local.txt / proof.txt)
+
+\`\`\`
+\`\`\`
+
+## Remediation
+`,
+    ad: `# {TITLE}
+
+**Domain:** \`<DOMAIN>\`   **DC:** \`<DC_IP>\`
+
+## Recon
+
+## Initial Foothold
+
+## Credential Access
+
+## Lateral Movement
+
+## Domain Privilege Escalation
+
+## Domain Admin
+
+## Attack Path
+
+\`\`\`
+user -> ... -> Domain Admin
+\`\`\`
+`
+  };
+
+  // Allow only safe URL schemes in rendered markdown (blocks javascript: etc.).
+  function mdSafeUrl(u) {
+    u = String(u == null ? "" : u).trim();
+    return /^(https?:\/\/|\/uploads\/|\/|data:image\/)/i.test(u) ? u : "#";
+  }
+  // Minimal, XSS-safe Markdown → HTML. Escapes first, then applies formatting;
+  // fenced code is pulled out to placeholders so its content is never re-parsed.
+  function renderMarkdown(src) {
+    const blocks = [];
+    let h = escapeHtml(src == null ? "" : src);
+    h = h.replace(/```([\s\S]*?)```/g, (m, code) => { blocks.push(code.replace(/^\n/, "")); return "ZZCODEBLOCKZZ" + (blocks.length - 1) + "ZZ"; });
+    h = h.replace(/^(#{1,6})\s+(.*)$/gm, (m, hh, txt) => { const lvl = Math.min(hh.length + 1, 6); return "<h" + lvl + " class=\"wu-heading\">" + txt + "</h" + lvl + ">"; });
+    h = h.replace(/^\s*(?:---|\*\*\*)\s*$/gm, "<hr class=\"wu-hr\">");
+    h = h.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (m, alt, url) => "<div class=\"wu-img-container\"><img src=\"" + mdSafeUrl(url) + "\" alt=\"" + alt + "\" class=\"wu-read-img\"><span class=\"wu-img-caption\">" + alt + "</span></div>");
+    h = h.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, txt, url) => "<a href=\"" + mdSafeUrl(url) + "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"wu-link\">" + txt + "</a>");
+    h = h.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
+    h = h.replace(/`([^`]+)`/g, "<code class=\"wu-inline-code\">$1</code>");
+    h = h.replace(/(?:^|\n)((?:[-*] .*(?:\n|$))+)/g, (m, block) => "\n<ul class=\"wu-list\">" + block.trim().split(/\n/).map(l => "<li>" + l.replace(/^[-*]\s+/, "") + "</li>").join("") + "</ul>");
+    h = h.replace(/\n/g, "<br>");
+    h = h.replace(/<br>\s*(<(?:h[1-6]|pre|ul|hr|div)[^>]*>)/g, "$1").replace(/(<\/(?:h[1-6]|pre|ul|div)>)\s*<br>/g, "$1").replace(/(<hr[^>]*>)\s*<br>/g, "$1");
+    h = h.replace(/ZZCODEBLOCKZZ(\d+)ZZ/g, (m, i) => "<pre class=\"wu-code-block\">" + blocks[+i] + "</pre>");
+    return h;
+  }
+  function insertAtCursor(ta, text) {
+    const s = ta.selectionStart != null ? ta.selectionStart : ta.value.length;
+    const e = ta.selectionEnd != null ? ta.selectionEnd : ta.value.length;
+    ta.value = ta.value.slice(0, s) + text + ta.value.slice(e);
+    ta.selectionStart = ta.selectionEnd = s + text.length;
+    ta.focus();
+  }
   async function createWriteup() {
     openModal("New Write-up", [
       { key: "title", label: "Title", placeholder: "e.g., HackTheBox — Lame" },
@@ -419,8 +525,9 @@
     ], {}, async fd => {
       const tags = fd.tags.split(",").map(s => s.trim()).filter(Boolean);
       const wu = await api("POST", "/api/writeups", { title: fd.title, tags, content: "" });
+      if (!wu || !wu.id) return;
       await loadWriteups();
-      openWriteupId = wu.id;
+      openWriteupId = wu.id; wuEditMode = true;
       render();
     });
   }
@@ -521,9 +628,9 @@
     page.appendChild(topbar);
 
     if (wuEditMode) {
-      // ── EDIT MODE ──
+      // ── EDIT MODE (split editor + live preview) ──
       const titleInput = document.createElement("input"); titleInput.className = "wu-page-title";
-      titleInput.value = wu.title; titleInput.placeholder = "Write-up title...";
+      titleInput.value = wu.title; titleInput.placeholder = "Write-up title..."; titleInput.setAttribute("aria-label", "Title");
       titleInput.addEventListener("input", () => { saveWu(wu.id, { title: titleInput.value }); showStatus(); });
       page.appendChild(titleInput);
 
@@ -537,39 +644,71 @@
       });
       page.appendChild(tagsRow);
 
-      // Image upload button
-      const imgBar = document.createElement("div"); imgBar.className = "wu-img-bar";
-      imgBar.innerHTML = '<button class="btn btn-secondary btn-sm wu-img-btn">📷 ' + (lang === "tr" ? "Gorsel Ekle" : "Add Image") + '</button>' +
-        '<input type="file" class="wu-img-input" accept="image/*" style="display:none">' +
-        '<span class="wu-img-hint">' + (lang === "tr" ? "Gorsel yukleyin, link otomatik eklenir" : "Upload image, link auto-inserted") + '</span>';
-      const imgInput = imgBar.querySelector(".wu-img-input");
-      imgBar.querySelector(".wu-img-btn").addEventListener("click", () => imgInput.click());
-      page.appendChild(imgBar);
+      // Toolbar: template + machine link + image
+      const toolbar = document.createElement("div"); toolbar.className = "wu-toolbar";
+      const tplSel = document.createElement("select"); tplSel.className = "form-select wu-tool-select"; tplSel.setAttribute("aria-label", t("wuTemplate"));
+      tplSel.innerHTML = '<option value="">📄 ' + t("wuTemplate") + '…</option><option value="htb">HTB</option><option value="oscp">OSCP</option><option value="ad">Active Directory</option>';
+      const mcSel = document.createElement("select"); mcSel.className = "form-select wu-tool-select"; mcSel.setAttribute("aria-label", t("wuMachine"));
+      mcSel.innerHTML = '<option value="">🔗 ' + t("wuMachine") + '…</option>' + machines.map(mm => '<option value="' + mm.id + '">' + escapeHtml(mm.name) + (mm.ip ? " (" + escapeHtml(mm.ip) + ")" : "") + '</option>').join("");
+      const imgBtn = document.createElement("button"); imgBtn.className = "btn btn-secondary btn-sm"; imgBtn.textContent = "📷 " + (lang === "tr" ? "Gorsel" : "Image");
+      const imgInput = document.createElement("input"); imgInput.type = "file"; imgInput.accept = "image/*"; imgInput.style.display = "none";
+      toolbar.appendChild(tplSel); toolbar.appendChild(mcSel); toolbar.appendChild(imgBtn); toolbar.appendChild(imgInput);
+      page.appendChild(toolbar);
 
-      const editor = document.createElement("textarea"); editor.className = "wu-page-editor";
+      // Split: editor | live preview
+      const split = document.createElement("div"); split.className = "wu-split";
+      const editor = document.createElement("textarea"); editor.className = "wu-page-editor"; editor.setAttribute("aria-label", "Markdown content");
       editor.value = wu.content || "";
-      editor.placeholder = lang === "tr" ? "Write-up iceriginizi buraya yazin..." : "Write your content here...";
-      editor.addEventListener("input", () => { saveWu(wu.id, { content: editor.value }); showStatus(); });
+      editor.placeholder = lang === "tr" ? "Markdown yazin — sagda canli onizleme..." : "Write Markdown — live preview on the right...";
+      const preview = document.createElement("div"); preview.className = "wu-preview wu-read-body";
+      function syncPreview() { preview.innerHTML = renderMarkdown(editor.value); }
+      function commit() { saveWu(wu.id, { content: editor.value }); showStatus(); syncPreview(); }
+      editor.addEventListener("input", commit);
+      split.appendChild(editor); split.appendChild(preview);
+      page.appendChild(split);
+      syncPreview();
 
-      imgInput.addEventListener("change", async e => {
-        const file = e.target.files[0]; if (!file) return;
+      // Image upload (button, paste, drag-drop)
+      async function uploadImage(file) {
+        if (!file) return;
         const reader = new FileReader();
         reader.onload = async () => {
-          const res = await api("POST", "/api/upload", { data: reader.result, filename: file.name });
-          if (res && res.url) {
-            const pos = editor.selectionStart;
-            const text = editor.value;
-            const imgTag = "\n![" + file.name + "](" + res.url + ")\n";
-            editor.value = text.slice(0, pos) + imgTag + text.slice(pos);
-            saveWu(wu.id, { content: editor.value });
-            showStatus();
-          }
+          const res = await api("POST", "/api/upload", { data: reader.result, filename: file.name || "image.png" });
+          if (res && res.url) { insertAtCursor(editor, "\n![" + (file.name || "image") + "](" + res.url + ")\n"); commit(); }
         };
         reader.readAsDataURL(file);
-        e.target.value = "";
+      }
+      imgBtn.addEventListener("click", () => imgInput.click());
+      imgInput.addEventListener("change", e => { uploadImage(e.target.files[0]); e.target.value = ""; });
+      editor.addEventListener("paste", e => {
+        const items = (e.clipboardData && e.clipboardData.items) || [];
+        for (const it of items) { if (it.type && it.type.indexOf("image") === 0) { e.preventDefault(); uploadImage(it.getAsFile()); break; } }
+      });
+      editor.addEventListener("dragover", e => { e.preventDefault(); editor.classList.add("dragging"); });
+      editor.addEventListener("dragleave", () => editor.classList.remove("dragging"));
+      editor.addEventListener("drop", e => {
+        e.preventDefault(); editor.classList.remove("dragging");
+        const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+        if (f && f.type && f.type.indexOf("image") === 0) uploadImage(f);
       });
 
-      page.appendChild(editor);
+      // Template inserter
+      tplSel.addEventListener("change", () => {
+        const key = tplSel.value; tplSel.value = "";
+        if (!key || !WRITEUP_TEMPLATES[key]) return;
+        const tpl = WRITEUP_TEMPLATES[key].replace(/\{TITLE\}/g, wu.title || "Write-up");
+        if (editor.value.trim() && !confirm(lang === "tr" ? "Sablon mevcut icerige eklensin mi?" : "Append this template to the current content?")) return;
+        editor.value = editor.value.trim() ? (editor.value.replace(/\s+$/, "") + "\n\n" + tpl) : tpl;
+        commit(); editor.focus();
+      });
+      // Machine cross-link
+      mcSel.addEventListener("change", () => {
+        const mm = machines.find(x => x.id === mcSel.value); mcSel.value = "";
+        if (!mm) return;
+        insertAtCursor(editor, "\n**Target:** " + (mm.name || "") + (mm.ip ? " (`" + mm.ip + "`)" : "") + (mm.os ? " — " + mm.os : "") + "\n");
+        commit();
+      });
+
       setTimeout(() => editor.focus(), 100);
     } else {
       // ── READ MODE ──
@@ -585,15 +724,8 @@
       page.appendChild(dateLine);
 
       const body = document.createElement("div"); body.className = "wu-read-body";
-      // Simple rendering: preserve line breaks, highlight code-like lines
       const content = wu.content || (lang === "tr" ? "Henuz icerik yok. Duzenle butonuna tiklayin." : "No content yet. Click Edit to start writing.");
-      body.innerHTML = escapeHtml(content)
-        .replace(/^(#{1,3})\s+(.*)$/gm, (m, h, t) => '<h' + (h.length + 1) + ' class="wu-heading">' + t + '</h' + (h.length + 1) + '>')
-        .replace(/^(```[\s\S]*?```)$/gm, '<pre class="wu-code-block">$1</pre>')
-        .replace(/`([^`]+)`/g, '<code class="wu-inline-code">$1</code>')
-        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-        .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<div class="wu-img-container"><img src="$2" alt="$1" class="wu-read-img"><span class="wu-img-caption">$1</span></div>')
-        .replace(/\n/g, '<br>');
+      body.innerHTML = renderMarkdown(content);
       page.appendChild(body);
     }
 

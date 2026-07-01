@@ -107,7 +107,7 @@
     {
       "id": "writeups-overhaul",
       "title": "Write-ups overhaul — design + function (owner priority #2b)",
-      "status": "pending",
+      "status": "done",
       "files": ["public/app.js", "public/style.css", "server.js"],
       "items": [
         "Redesigned editor + list UI",
