@@ -233,7 +233,7 @@
     {
       "id": "design-overhaul-2",
       "title": "Overall design overhaul round 2 — enterprise polish (owner)",
-      "status": "pending",
+      "status": "done",
       "_note": "Owner reiterated the whole app's design should be improved. Make it feel like a polished, cohesive product.",
       "files": ["public/style.css", "public/index.html", "public/app.js"],
       "items": [
