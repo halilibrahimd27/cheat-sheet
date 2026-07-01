@@ -131,6 +131,21 @@
       ]
     },
     {
+      "id": "machines-ad-deep",
+      "title": "AD environment — full professional engagement model (owner follow-up on #2a)",
+      "status": "pending",
+      "_note": "Owner feedback after batch 6: the AD support was only a flat host list + attack-path text. Owner wants a REAL, professional engagement model. Build it properly, not tokenistically.",
+      "files": ["public/app.js", "public/style.css", "public/checklist-templates.js", "server.js", "test/api.test.js"],
+      "items": [
+        "Each AD host is a FULL sub-target: its own OS/role, its own playbook + phase checklist (reuse templateToChecklist), its own loot/creds, notes, and owned status — not just name/ip. Click a host to expand/work its checklist inline; per-host progress shown.",
+        "Link EXISTING machines as hosts: pick from the machine list to attach one as a host in the engagement (store a reference/copy), plus create-new-host inline. Avoid duplication footguns.",
+        "Interconnected SCHEMATIC view: a vanilla-JS/SVG node-link diagram of the engagement — DC highlighted, owned hosts colored, edges = pivots/attack path (editable relationships model, e.g. host.links = [hostId]). Deterministic layout (radial/grid), no external libs. Clicking a node focuses that host.",
+        "Engagement-level overview: total hosts, owned count, aggregate checklist progress across hosts, and the current objective (e.g. path to DA).",
+        "Persist new structure via server (extend machine schema: hosts[] with checklist/loot/os/role/links). Keep backward compatibility with batch-6 flat hosts (migrate {name,ip,os,owned} rows gracefully). Add tests.",
+        "Strong, realistic visuals reusing batch-4 tokens; keyboard/aria per batch-5. Must feel like a genuine AD engagement workspace."
+      ]
+    },
+    {
       "id": "stable-ids",
       "title": "Stable IDs for subcategories/commands + favorites migration",
       "status": "pending",
