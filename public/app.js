@@ -46,7 +46,9 @@
       addMachineDesc: "Track target machines, services, credentials, and progress.",
       machineName: "Machine Name", machineIP: "IP Address", machineOS: "Operating System",
       services: "Services", credentials: "Credentials", notes: "Notes",
-      exportMd: "Export MD", exportPdf: "Export PDF", termCopy: "Terminal Copy"
+      exportMd: "Export MD", exportPdf: "Export PDF", termCopy: "Terminal Copy",
+      newSub: "New Subcategory", netErr: "Network error - is the server running?",
+      copyFail: "Copy failed", termCopied: "Copied in terminal format!"
     },
     tr: {
       allCommands: "Tum Komutlar", favorites: "Favoriler", search: "Komut ara...",
@@ -72,7 +74,9 @@
       addMachineDesc: "Hedef makineleri, servisleri, kimlik bilgilerini ve ilerlemeyi takip edin.",
       machineName: "Makine Adi", machineIP: "IP Adresi", machineOS: "Isletim Sistemi",
       services: "Servisler", credentials: "Kimlik Bilgileri", notes: "Notlar",
-      exportMd: "MD Aktar", exportPdf: "PDF Aktar", termCopy: "Terminal Kopyala"
+      exportMd: "MD Aktar", exportPdf: "PDF Aktar", termCopy: "Terminal Kopyala",
+      newSub: "Yeni Alt Kategori", netErr: "Ag hatasi - sunucu calisiyor mu?",
+      copyFail: "Kopyalama basarisiz", termCopied: "Terminal formatinda kopyalandi!"
     }
   };
   function t(key) { return (T[lang] && T[lang][key]) || T.en[key] || key; }
@@ -91,14 +95,70 @@
   overlay.className = "sidebar-overlay";
   document.body.appendChild(overlay);
 
+  // ── Toast notifications ──
+  let toastHost = null;
+  function toast(msg, type) {
+    if (!msg) return;
+    if (!toastHost) {
+      toastHost = document.createElement("div");
+      toastHost.className = "toast-host";
+      toastHost.setAttribute("aria-live", "polite");
+      document.body.appendChild(toastHost);
+    }
+    const el = document.createElement("div");
+    el.className = "toast" + (type ? " toast-" + type : "");
+    el.textContent = msg;
+    toastHost.appendChild(el);
+    setTimeout(() => { el.classList.add("toast-out"); setTimeout(() => el.remove(), 300); }, 2600);
+  }
+
+  // ── Clipboard (works on http/LAN without a secure context; never fails silently) ──
+  function fallbackCopy(text) {
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      const ok = document.execCommand("copy");
+      ta.remove();
+      return ok;
+    } catch { return false; }
+  }
+  function copyText(text, onOk) {
+    const ok = () => { if (onOk) onOk(); };
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(ok).catch(() => {
+        if (fallbackCopy(text)) ok(); else toast(t("copyFail"), "error");
+      });
+    } else if (fallbackCopy(text)) {
+      ok();
+    } else {
+      toast(t("copyFail"), "error");
+    }
+  }
+
   // ── API ──
   async function api(method, url, body) {
     const o = { method, headers: { "Content-Type": "application/json" } };
     if (body) o.body = JSON.stringify(body);
-    return (await fetch(url, o)).json();
+    let res;
+    try {
+      res = await fetch(url, o);
+    } catch {
+      toast(t("netErr"), "error");
+      return null;
+    }
+    let data = null;
+    try {
+      const text = await res.text();
+      if (text) data = JSON.parse(text);
+    } catch { data = null; }
+    if (!res.ok) {
+      toast((data && data.error) ? data.error : ("HTTP " + res.status), "error");
+    }
+    return data;
   }
   async function loadData() {
-    CATEGORIES = await api("GET", "/api/categories");
+    CATEGORIES = await api("GET", "/api/categories") || [];
     await loadNotes();
     await loadWriteups();
     await loadMachines();
@@ -140,7 +200,7 @@
   function openVarBar(code) {
     varBarCode = code;
     const vars = [...new Set(code.match(/<[A-Z_]+>/g) || [])];
-    if (vars.length === 0) { navigator.clipboard.writeText(code); return; }
+    if (vars.length === 0) { copyText(code, () => toast(t("copied"), "ok")); return; }
     varBarFields.innerHTML = "";
     vars.forEach(v => {
       const saved = localStorage.getItem("cs-var-" + v) || "";
@@ -159,7 +219,7 @@
       const v = inp.dataset.var, val = inp.value;
       if (val) { localStorage.setItem("cs-var-" + v, val); result = result.split(v).join(val); }
     });
-    navigator.clipboard.writeText(result).then(() => {
+    copyText(result, () => {
       $("varBarApply").textContent = "✓ " + t("copied");
       setTimeout(() => { $("varBarApply").textContent = t("applyCopy"); varBar.classList.remove("active"); }, 1200);
     });
@@ -243,7 +303,7 @@
     await loadData();
   }
   function addSubcategory(catId) {
-    openModal("New Subcategory", [{ key: "name", label: t("subName") }], {}, async d => { await api("POST", "/api/categories/" + catId + "/subcategories", d); });
+    openModal(t("newSub"), [{ key: "name", label: t("subName") }], {}, async d => { await api("POST", "/api/categories/" + catId + "/subcategories", d); });
   }
   function editSubcategory(catId, subIdx, sub) {
     openModal(t("edit"), [{ key: "name", label: t("subName") }], sub, async d => { await api("PUT", "/api/categories/" + catId + "/subcategories/" + subIdx, d); });
@@ -279,7 +339,7 @@
   }
 
   // ── Notes (multiple per category, server-backed) ──
-  async function loadNotes() { categoryNotes = await api("GET", "/api/notes"); }
+  async function loadNotes() { categoryNotes = await api("GET", "/api/notes") || {}; }
   function getNotes(catId) { return categoryNotes[catId] || []; }
   function getNotesCount(catId) { return (categoryNotes[catId] || []).length; }
   async function addNote(catId) {
@@ -299,7 +359,7 @@
 
   // ── Write-ups (server-backed, file-style) ──
   let openWriteupId = null;
-  async function loadWriteups() { writeups = await api("GET", "/api/writeups"); }
+  async function loadWriteups() { writeups = await api("GET", "/api/writeups") || []; }
   async function createWriteup() {
     openModal("New Write-up", [
       { key: "title", label: "Title", placeholder: "e.g., HackTheBox — Lame" },
@@ -441,7 +501,7 @@
         const reader = new FileReader();
         reader.onload = async () => {
           const res = await api("POST", "/api/upload", { data: reader.result, filename: file.name });
-          if (res.url) {
+          if (res && res.url) {
             const pos = editor.selectionStart;
             const text = editor.value;
             const imgTag = "\n![" + file.name + "](" + res.url + ")\n";
@@ -492,7 +552,7 @@
 
   // ── Machines (target tracking) ──
   let openMachineId = null;
-  async function loadMachines() { machines = await api("GET", "/api/machines"); }
+  async function loadMachines() { machines = await api("GET", "/api/machines") || []; }
   async function createMachine() {
     openModal(t("addMachine"), [
       { key: "name", label: t("machineName"), placeholder: "e.g., Lame" },
@@ -773,7 +833,7 @@
       const applied = applyIpToCode(code);
       const hasVars = /<[A-Z_]+>/.test(applied);
       if (hasVars) { openVarBar(applied); return; }
-      navigator.clipboard.writeText(applied).then(() => { b.textContent = t("copied"); b.classList.add("copied"); setTimeout(() => { b.textContent = t("copy"); b.classList.remove("copied"); }, 1500); });
+      copyText(applied, () => { b.textContent = t("copied"); b.classList.add("copied"); setTimeout(() => { b.textContent = t("copy"); b.classList.remove("copied"); }, 1500); });
     });
     w.appendChild(c); w.appendChild(b); return w;
   }
@@ -855,7 +915,7 @@
       }
       cat.subcategories.forEach((sub, subIdx) => {
         const filtered = filterCmds(sub.commands);
-        if (searchQuery && filtered.length === 0) return;
+        if (isFiltering() && filtered.length === 0) return;
         const subDiv = document.createElement("div"); subDiv.className = "subcategory";
         const subH = document.createElement("div"); subH.className = "subcategory-title";
         const subName = (lang === "tr" && sub.name_tr) ? sub.name_tr : sub.name;
@@ -864,7 +924,7 @@
         subH.querySelector('[data-act="edit"]').addEventListener("click", () => editSubcategory(cat.id, subIdx, sub));
         subH.querySelector('[data-act="del"]').addEventListener("click", () => deleteSubcategory(cat.id, subIdx));
         subDiv.appendChild(subH);
-        (searchQuery ? filtered : sub.commands).forEach(cmd => { subDiv.appendChild(renderCard(cmd, cat.id, subIdx, sub.commands.indexOf(cmd))); });
+        (isFiltering() ? filtered : sub.commands).forEach(cmd => { subDiv.appendChild(renderCard(cmd, cat.id, subIdx, sub.commands.indexOf(cmd))); });
         body.appendChild(subDiv);
       });
       sec.appendChild(body);
@@ -882,6 +942,10 @@
     return r;
   }
   function catHasResults(cat) { return cat.subcategories.some(s => filterCmds(s.commands).length > 0); }
+  // True when any filter (tag chip OR search) is narrowing the list. The content
+  // render must then use filterCmds() results, not the raw command arrays — this
+  // is the fix for the tag chips doing nothing unless a search was also active.
+  function isFiltering() { return activeTag !== "all" || !!searchQuery; }
 
   function render() {
     buildSidebar(); contentArea.innerHTML = ""; focusedCmdIdx = -1;
@@ -894,7 +958,9 @@
     // Favorites view
     if (activeCategory === "favs") {
       currentSection.textContent = t("favorites"); hero.style.display = "none";
-      const favs = getFavCommands();
+      let favs = getFavCommands();
+      if (activeTag !== "all") favs = favs.filter(f => (f.cmd.tags || []).includes(activeTag));
+      if (searchQuery) { const q = searchQuery.toLowerCase(); favs = favs.filter(f => [f.cmd.title, f.cmd.desc, f.cmd.cmd, ...(f.cmd.cmds || []), ...(f.cmd.tags || []), f.cmd.note || ""].join(" ").toLowerCase().includes(q)); }
       if (favs.length === 0) {
         contentArea.innerHTML = '<div class="no-results"><h3>⭐ ' + t("favorites") + '</h3><p>' + (lang === "tr" ? "Henuz favori komut eklemediniz. Komutlardaki ★ ikonuna tiklayin." : "No favorites yet. Click ★ on commands to add them.") + '</p></div>';
         return;
@@ -905,16 +971,21 @@
 
     let cats = CATEGORIES;
     if (activeCategory) { cats = CATEGORIES.filter(c => c.id === activeCategory); currentSection.textContent = cats.length ? ((lang === "tr" && cats[0].name_tr) ? cats[0].name_tr : cats[0].name) : t("allCommands"); hero.style.display = "none"; }
-    else { currentSection.textContent = searchQuery ? t("searchResults") + ': "' + searchQuery + '"' : t("allCommands"); hero.style.display = searchQuery ? "none" : ""; }
+    else {
+      currentSection.textContent = searchQuery
+        ? t("searchResults") + ': "' + searchQuery + '"'
+        : (activeTag !== "all" ? t("allCommands") + " · " + activeTag : t("allCommands"));
+      hero.style.display = isFiltering() ? "none" : "";
+    }
 
     if (searchQuery) {
       let total = 0; cats.forEach(c => c.subcategories.forEach(s => (total += filterCmds(s.commands).length)));
       const sh = document.createElement("div"); sh.className = "search-results-header";
       sh.innerHTML = "<h2>" + t("searchResults") + "</h2><p>" + total + " " + t("commands") + " " + t("matching") + ' "' + escapeHtml(searchQuery) + '"</p>';
       contentArea.appendChild(sh);
-      if (total === 0) { contentArea.innerHTML += '<div class="no-results"><h3>' + t("noResults") + '</h3><p>' + t("tryDiff") + '</p></div>'; return; }
+      if (total === 0) { const nr = document.createElement("div"); nr.className = "no-results"; nr.innerHTML = "<h3>" + t("noResults") + "</h3><p>" + t("tryDiff") + "</p>"; contentArea.appendChild(nr); return; }
     }
-    cats.forEach((c, i) => { if (searchQuery && !catHasResults(c)) return; contentArea.appendChild(renderCat(c, CATEGORIES.indexOf(c))); });
+    cats.forEach((c) => { if (isFiltering() && !catHasResults(c)) return; contentArea.appendChild(renderCat(c, CATEGORIES.indexOf(c))); });
   }
 
   // ── PDF/Markdown Export for Write-ups ──
@@ -961,7 +1032,7 @@
         cmds.forEach(c => { output += applyIpToCode(c) + "\n"; });
       });
     });
-    navigator.clipboard.writeText(output).then(() => alert(lang === "tr" ? "Terminal formatinda kopyalandi!" : "Copied in terminal format!"));
+    copyText(output, () => toast(t("termCopied"), "ok"));
   }
 
   // ── Search ──
@@ -990,7 +1061,7 @@
       const code = codeEl.textContent;
       const applied = applyIpToCode(code);
       if (/<[A-Z_]+>/.test(applied)) openVarBar(code);
-      else navigator.clipboard.writeText(applied).then(() => {
+      else copyText(applied, () => {
         const btn = cards[focusedCmdIdx].querySelector(".cmd-copy-btn");
         if (btn) { btn.textContent = t("copied"); btn.classList.add("copied"); setTimeout(() => { btn.textContent = t("copy"); btn.classList.remove("copied"); }, 1500); }
       });

@@ -34,7 +34,7 @@
     {
       "id": "frontend-robustness-filterfix",
       "title": "Frontend robustness + TAG FILTER FIX (owner priority #1)",
-      "status": "pending",
+      "status": "done",
       "files": ["public/app.js"],
       "items": [
         "FIX: tag filter chips under search not filtering correctly",
