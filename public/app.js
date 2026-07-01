@@ -56,7 +56,7 @@
       noHosts: "No extra hosts yet. Add domain / network machines here.",
       replacePlaybook: "Replace the current checklist with this playbook? Current progress will be lost.",
       copyCmd: "Copy command", defaultChecklist: "Default checklist",
-      wuTemplate: "Template", wuMachine: "Link machine",
+      wuTemplate: "Template", wuMachine: "Link machine", wuSection: "Section",
       history: "History", noHistory: "No copied commands yet.",
       clearHistory: "Clear", copyAll: "Copy all", paletteHint: "Search commands & actions…", goto: "Go to",
       engagement: "Engagement", connections: "Connections", fromMachine: "Add from machine…",
@@ -95,7 +95,7 @@
       noHosts: "Henuz ek makine yok. Domain / ag makinelerini buraya ekleyin.",
       replacePlaybook: "Mevcut kontrol listesi bu oyun kitabiyla degistirilsin mi? Mevcut ilerleme kaybolur.",
       copyCmd: "Komutu kopyala", defaultChecklist: "Varsayilan liste",
-      wuTemplate: "Sablon", wuMachine: "Makine bagla",
+      wuTemplate: "Sablon", wuMachine: "Makine bagla", wuSection: "Bolum",
       history: "Gecmis", noHistory: "Henuz kopyalanan komut yok.",
       clearHistory: "Temizle", copyAll: "Tumunu kopyala", paletteHint: "Komut ve eylem ara…", goto: "Git",
       engagement: "Operasyon", connections: "Baglantilar", fromMachine: "Makineden ekle…",
@@ -427,73 +427,271 @@
 
   // Static, offline report boilerplate — inserted client-side, never fetched.
   const WRITEUP_TEMPLATES = {
-    htb: `# {TITLE}
+    oscp: `# {TITLE}
 
-**Platform:** HackTheBox   **Difficulty:**
-**IP:** \`<TARGET_IP>\`   **OS:**
+## Administrative Information
 
-## Recon
+- **Author / Candidate:**
+- **Date:**
+- **Assessment:** OSCP Exam
+- **In-scope targets:** \`<TARGET_IP>\`
+
+## High-Level Summary
+
+One-paragraph narrative of which hosts were compromised and the overall path to
+each foothold and privilege escalation.
+
+### Compromised Hosts
+
+| Host | IP | Highest Access | Proof |
+| --- | --- | --- | --- |
+| target01 | \`<TARGET_IP>\` | root / SYSTEM | proof.txt |
+
+## Methodology
+
+Recon → enumeration → exploitation → post-exploitation, repeated per target.
+
+---
+
+## Target: \`<TARGET_IP>\`
+
+### Service Enumeration
 
 \`\`\`
 nmap -p- --min-rate 5000 -oA nmap/all <TARGET_IP>
 nmap -sC -sV -p<PORT> -oA nmap/svc <TARGET_IP>
 \`\`\`
 
+| Port | Service | Version |
+| --- | --- | --- |
+|  |  |  |
+
+### Vulnerability
+
+- **Name:**
+- **Description:**
+
+### Exploitation — Steps to Reproduce
+
+1.
+2.
+3.
+
+\`\`\`
+# exploit / payload
+\`\`\`
+
+### Proof (local.txt / proof.txt)
+
+\`\`\`
+type C:\\Users\\Administrator\\Desktop\\proof.txt   # or: cat /root/proof.txt
+\`\`\`
+
+### Privilege Escalation
+
+- **Vector:**
+
+1.
+2.
+
+## Maintaining Access
+
+Persistence used (only if in scope).
+
+## House Cleaning
+
+- [ ] Removed uploaded tools / payloads
+- [ ] Reverted configuration changes
+- [ ] Removed any created accounts
+
+## Appendices
+
+### Appendix A — Commands Used
+
+\`\`\`
+\`\`\`
+`,
+    htb: `# {TITLE}
+
+> **Box:**   ·   **OS:**   ·   **Difficulty:**   ·   **IP:** \`<TARGET_IP>\`
+
+## Reconnaissance
+
+\`\`\`
+nmap -p- --min-rate 5000 -oA nmap/all <TARGET_IP>
+nmap -sC -sV -p<PORT> -oA nmap/svc <TARGET_IP>
+\`\`\`
+
+| Port | Service | Notes |
+| --- | --- | --- |
+|  |  |  |
+
 ## Enumeration
 
 ## Foothold
 
+- **Vulnerability:**
+
+1.
+2.
+
+\`\`\`
+\`\`\`
+
+## User Flag
+
+\`\`\`
+cat /home/*/user.txt
+\`\`\`
+
 ## Privilege Escalation
 
-## Loot
+- **Vector:**
 
-- user.txt:
-- root.txt:
+1.
+2.
 
-## Lessons Learned
+## Root Flag
+
+\`\`\`
+cat /root/root.txt
+\`\`\`
+
+## Beyond Root / Lessons Learned
+
+-
 `,
-    oscp: `# {TITLE}
+    pentest: `# {TITLE}
 
-## Vulnerability
+## Executive Summary
+
+Non-technical overview of the engagement for management: overall risk posture,
+the most serious issues, and key recommendations.
+
+## Scope & Rules of Engagement
+
+- **Client:**
+- **Assessment type:** External / Internal / Web / Wireless
+- **In-scope:** \`<NETWORK>/<CIDR>\`, \`<TARGET_URL>\`
+- **Out-of-scope:**
+- **Testing window:**
+- **Authorization:** Signed authorization on file.
+
+## Findings Summary
+
+| # | Finding | Severity | CVSS | Status |
+| --- | --- | --- | --- | --- |
+| 1 |  | Critical |  | Open |
+| 2 |  | High |  | Open |
+| 3 |  | Medium |  | Open |
+
+## Findings
+
+### [Critical] Finding Title
+
+- **Description:**
+- **Affected assets:**
+- **Impact:**
+- **CVSS v3.1:**  (vector: )
+- **Evidence:**
+
+\`\`\`
+\`\`\`
+
+- **Steps to Reproduce:**
+  1.
+  2.
+- **Remediation:**
+- **References:**
+
+## Conclusion
+
+## Appendix — Methodology & Tooling
+`,
+    bugbounty: `# {TITLE}
+
+- **Target:** \`<TARGET_URL>\`
+- **Weakness / Type:**
+- **Severity:**    **CVSS v3.1:**  (vector: )
+
+## Summary
+
+One-paragraph description of the vulnerability and where it occurs.
+
+## Steps to Reproduce
+
+1.
+2.
+3.
 
 ## Proof of Concept
 
 \`\`\`
 \`\`\`
 
-## Exploitation Steps
+## Impact
 
-1.
-2.
-
-## Proof (local.txt / proof.txt)
-
-\`\`\`
-\`\`\`
+What an attacker can achieve by exploiting this.
 
 ## Remediation
+
+## References
+`
+  };
+
+  // Individual sections that can be appended at the cursor (static, offline).
+  const WRITEUP_SECTIONS = {
+    finding: `
+### [Severity] Finding Title
+
+- **Description:**
+- **Affected assets:**
+- **Impact:**
+- **CVSS v3.1:**  (vector: )
+- **Evidence:**
+
+\`\`\`
+\`\`\`
+
+- **Steps to Reproduce:**
+  1.
+  2.
+- **Remediation:**
+- **References:**
 `,
-    ad: `# {TITLE}
+    findingsTable: `
+| # | Finding | Severity | CVSS | Status |
+| --- | --- | --- | --- | --- |
+| 1 |  | High |  | Open |
+`,
+    target: `
+## Target: \`<TARGET_IP>\`
 
-**Domain:** \`<DOMAIN>\`   **DC:** \`<DC_IP>\`
-
-## Recon
-
-## Initial Foothold
-
-## Credential Access
-
-## Lateral Movement
-
-## Domain Privilege Escalation
-
-## Domain Admin
-
-## Attack Path
+### Service Enumeration
 
 \`\`\`
-user -> ... -> Domain Admin
+nmap -sC -sV -p<PORT> <TARGET_IP>
 \`\`\`
+
+| Port | Service | Version |
+| --- | --- | --- |
+|  |  |  |
+`,
+    execSummary: `
+## Executive Summary
+
+Non-technical overview of the engagement, overall risk, and key takeaways.
+`,
+    cvss: `
+### CVSS v3.1 Qualitative Severity Scale
+
+| Rating | CVSS Score |
+| --- | --- |
+| None | 0.0 |
+| Low | 0.1 – 3.9 |
+| Medium | 4.0 – 6.9 |
+| High | 7.0 – 8.9 |
+| Critical | 9.0 – 10.0 |
 `
   };
 
@@ -516,8 +714,15 @@ user -> ... -> Domain Admin
     h = h.replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
     h = h.replace(/`([^`]+)`/g, "<code class=\"wu-inline-code\">$1</code>");
     h = h.replace(/(?:^|\n)((?:[-*] .*(?:\n|$))+)/g, (m, block) => "\n<ul class=\"wu-list\">" + block.trim().split(/\n/).map(l => "<li>" + l.replace(/^[-*]\s+/, "") + "</li>").join("") + "</ul>");
+    // Markdown tables: header row, a | --- | separator, then body rows.
+    h = h.replace(/^(\|.+\|)[ \t]*\n\|[ :|\-]+\|[ \t]*\n((?:\|.*\|[ \t]*(?:\n|$))*)/gm, (m, header, body) => {
+      const cells = r => r.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map(c => c.trim());
+      const th = cells(header).map(c => "<th>" + c + "</th>").join("");
+      const rows = body.replace(/\n+$/, "").split("\n").filter(l => l.trim()).map(r => "<tr>" + cells(r).map(c => "<td>" + c + "</td>").join("") + "</tr>").join("");
+      return "<table class=\"wu-table\"><thead><tr>" + th + "</tr></thead><tbody>" + rows + "</tbody></table>\n";
+    });
     h = h.replace(/\n/g, "<br>");
-    h = h.replace(/<br>\s*(<(?:h[1-6]|pre|ul|hr|div)[^>]*>)/g, "$1").replace(/(<\/(?:h[1-6]|pre|ul|div)>)\s*<br>/g, "$1").replace(/(<hr[^>]*>)\s*<br>/g, "$1");
+    h = h.replace(/<br>\s*(<(?:h[1-6]|pre|ul|hr|div|table)[^>]*>)/g, "$1").replace(/(<\/(?:h[1-6]|pre|ul|div|table)>)\s*<br>/g, "$1").replace(/(<hr[^>]*>)\s*<br>/g, "$1");
     h = h.replace(/ZZCODEBLOCKZZ(\d+)ZZ/g, (m, i) => "<pre class=\"wu-code-block\">" + blocks[+i] + "</pre>");
     return h;
   }
@@ -657,12 +862,14 @@ user -> ... -> Domain Admin
       // Toolbar: template + machine link + image
       const toolbar = document.createElement("div"); toolbar.className = "wu-toolbar";
       const tplSel = document.createElement("select"); tplSel.className = "form-select wu-tool-select"; tplSel.setAttribute("aria-label", t("wuTemplate"));
-      tplSel.innerHTML = '<option value="">📄 ' + t("wuTemplate") + '…</option><option value="htb">HTB</option><option value="oscp">OSCP</option><option value="ad">Active Directory</option>';
+      tplSel.innerHTML = '<option value="">📄 ' + t("wuTemplate") + '…</option><option value="oscp">OSCP exam report</option><option value="htb">HTB / CTF write-up</option><option value="pentest">Pentest report</option><option value="bugbounty">Bug bounty report</option>';
+      const secSel = document.createElement("select"); secSel.className = "form-select wu-tool-select"; secSel.setAttribute("aria-label", t("wuSection"));
+      secSel.innerHTML = '<option value="">➕ ' + t("wuSection") + '…</option><option value="finding">Finding</option><option value="findingsTable">Findings table</option><option value="target">Target</option><option value="execSummary">Executive summary</option><option value="cvss">CVSS scale</option>';
       const mcSel = document.createElement("select"); mcSel.className = "form-select wu-tool-select"; mcSel.setAttribute("aria-label", t("wuMachine"));
       mcSel.innerHTML = '<option value="">🔗 ' + t("wuMachine") + '…</option>' + machines.map(mm => '<option value="' + mm.id + '">' + escapeHtml(mm.name) + (mm.ip ? " (" + escapeHtml(mm.ip) + ")" : "") + '</option>').join("");
       const imgBtn = document.createElement("button"); imgBtn.className = "btn btn-secondary btn-sm"; imgBtn.textContent = "📷 " + (lang === "tr" ? "Gorsel" : "Image");
       const imgInput = document.createElement("input"); imgInput.type = "file"; imgInput.accept = "image/*"; imgInput.style.display = "none";
-      toolbar.appendChild(tplSel); toolbar.appendChild(mcSel); toolbar.appendChild(imgBtn); toolbar.appendChild(imgInput);
+      toolbar.appendChild(tplSel); toolbar.appendChild(secSel); toolbar.appendChild(mcSel); toolbar.appendChild(imgBtn); toolbar.appendChild(imgInput);
       page.appendChild(toolbar);
 
       // Split: editor | live preview
@@ -710,6 +917,12 @@ user -> ... -> Domain Admin
         if (editor.value.trim() && !confirm(lang === "tr" ? "Sablon mevcut icerige eklensin mi?" : "Append this template to the current content?")) return;
         editor.value = editor.value.trim() ? (editor.value.replace(/\s+$/, "") + "\n\n" + tpl) : tpl;
         commit(); editor.focus();
+      });
+      // Insert an individual section at the cursor
+      secSel.addEventListener("change", () => {
+        const key = secSel.value; secSel.value = "";
+        if (!key || !WRITEUP_SECTIONS[key]) return;
+        insertAtCursor(editor, WRITEUP_SECTIONS[key]); commit();
       });
       // Machine cross-link
       mcSel.addEventListener("change", () => {
@@ -1625,18 +1838,25 @@ user -> ... -> Domain Admin
   }
   function exportWriteupPdf(wu) {
     const win = window.open("", "_blank");
-    let html = "<!DOCTYPE html><html><head><meta charset='utf-8'><title>" + escapeHtml(wu.title) + "</title>";
-    html += "<style>body{font-family:Arial,sans-serif;max-width:800px;margin:40px auto;padding:0 20px;line-height:1.6}h1{border-bottom:2px solid #333;padding-bottom:8px}pre{background:#f4f4f4;padding:12px;border-radius:4px;overflow-x:auto;font-size:13px}code{background:#f4f4f4;padding:2px 4px;border-radius:3px;font-size:13px}.meta{color:#666;font-size:13px;margin-bottom:20px}img{max-width:100%}</style></head><body>";
+    if (!win) { toast(t("copyFail"), "error"); return; }
+    // Professional print stylesheet (element selectors match the renderMarkdown output).
+    const css =
+      "body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:36px auto;padding:0 24px;line-height:1.6;color:#1a1a1a}" +
+      "h1{border-bottom:3px solid #6366f1;padding-bottom:8px;font-size:26px}" +
+      "h2{border-bottom:1px solid #ccc;padding-bottom:4px;margin-top:28px;font-size:20px}" +
+      "h3{margin-top:20px;font-size:16px}h4,h5,h6{margin-top:14px}" +
+      "pre{background:#f5f5f7;padding:12px;border-radius:6px;overflow-x:auto;font-size:12.5px;border:1px solid #e5e5ea}" +
+      "code{background:#f5f5f7;padding:2px 5px;border-radius:4px;font-size:12.5px;font-family:Consolas,monospace}pre code{background:none;padding:0}" +
+      "table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13px}" +
+      "th,td{border:1px solid #d0d0d5;padding:7px 10px;text-align:left;vertical-align:top}th{background:#f0f0f4}" +
+      "a{color:#4338ca}img{max-width:100%;border:1px solid #e5e5ea;border-radius:4px;margin:8px 0}" +
+      ".meta{color:#666;font-size:13px;margin-bottom:20px}hr{border:none;border-top:1px solid #ddd;margin:18px 0}" +
+      "ul{margin:8px 0 8px 22px}@media print{a{color:#000;text-decoration:none}}";
+    let html = "<!DOCTYPE html><html><head><meta charset='utf-8'><title>" + escapeHtml(wu.title) + "</title><style>" + css + "</style></head><body>";
     html += "<h1>" + escapeHtml(wu.title) + "</h1>";
-    html += '<div class="meta">Tags: ' + (wu.tags || []).map(escapeHtml).join(", ") + " | " + escapeHtml(new Date(wu.updatedAt).toLocaleString()) + "</div><hr>";
-    // Simple markdown rendering for print
-    let content = escapeHtml(wu.content || "");
-    content = content.replace(/^(#{1,3})\s+(.*)$/gm, (m, h, t) => "<h" + (h.length + 1) + ">" + t + "</h" + (h.length + 1) + ">");
-    content = content.replace(/`([^`]+)`/g, "<code>$1</code>");
-    content = content.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
-    content = content.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
-    content = content.replace(/\n/g, "<br>");
-    html += content + "</body></html>";
+    html += '<div class="meta">Tags: ' + (wu.tags || []).map(escapeHtml).join(", ") + " &nbsp;|&nbsp; " + escapeHtml(new Date(wu.updatedAt).toLocaleString()) + "</div><hr>";
+    html += renderMarkdown(wu.content || "");
+    html += "</body></html>";
     win.document.write(html);
     win.document.close();
     setTimeout(() => { win.print(); }, 500);

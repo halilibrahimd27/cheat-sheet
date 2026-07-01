@@ -1816,3 +1816,11 @@ body {
 .host-chip { font-size: 12px; padding: 4px 10px; border-radius: 999px; background: var(--bg-tertiary); border: 1px solid var(--border-primary); color: var(--text-secondary); cursor: pointer; transition: all var(--transition); }
 .host-chip.on { background: var(--accent-glow); border-color: var(--accent-primary); color: var(--text-primary); }
 .host-card-body .machine-textarea { margin-bottom: 4px; }
+
+/* ============================================
+   Write-up tables (batch: writeups-report-pro)
+   ============================================ */
+.wu-read-body .wu-table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 13px; }
+.wu-read-body .wu-table th, .wu-read-body .wu-table td { border: 1px solid var(--border-primary); padding: 6px 10px; text-align: left; vertical-align: top; }
+.wu-read-body .wu-table th { background: var(--bg-tertiary); color: var(--text-heading); font-weight: 600; }
+.wu-read-body .wu-table tr:nth-child(even) td { background: var(--bg-secondary); }

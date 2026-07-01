@@ -148,7 +148,7 @@
     {
       "id": "writeups-report-pro",
       "title": "Write-up report formats — genuinely professional templates (owner follow-up on #2b)",
-      "status": "pending",
+      "status": "done",
       "_note": "Owner feedback: batch-7 write-up templates were basic section skeletons. Owner wants FULLY professional report formats. Author real, complete, industry-standard STATIC templates — not tokenistic.",
       "files": ["public/app.js", "public/style.css"],
       "items": [
