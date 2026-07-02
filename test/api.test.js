@@ -234,6 +234,49 @@ test("machines CRUD lifecycle seeds the 11-step checklist", async () => {
   assert.strictEqual((await api("DELETE", `/api/machines/${id}`)).status, 200);
 });
 
+test("machine metadata (platform/difficulty/status/tags/flags/timing) round-trips", async () => {
+  // Defaults on create.
+  const post = await api("POST", "/api/machines", { name: "meta01", platform: "HTB", difficulty: "Easy", tags: ["smb", "cve"] });
+  assert.strictEqual(post.status, 201);
+  assert.strictEqual(post.json.platform, "HTB");
+  assert.strictEqual(post.json.difficulty, "Easy");
+  assert.strictEqual(post.json.status, "not-started");
+  assert.deepStrictEqual(post.json.tags, ["smb", "cve"]);
+  assert.deepStrictEqual(post.json.userFlag, { value: "", capturedAt: null });
+  assert.deepStrictEqual(post.json.rootFlag, { value: "", capturedAt: null });
+  assert.strictEqual(post.json.startedAt, null);
+  assert.strictEqual(post.json.ownedAt, null);
+  const id = post.json.id;
+  // Non-string tags are filtered out; unknown platform falls back to "Custom".
+  const p2 = await api("POST", "/api/machines", { name: "meta02", tags: ["ok", 5, null] });
+  assert.deepStrictEqual(p2.json.tags, ["ok"]);
+  assert.strictEqual(p2.json.platform, "Custom");
+  // Flags + status + timing are writable via PUT.
+  const upd = await api("PUT", `/api/machines/${id}`, {
+    status: "owned",
+    userFlag: { value: "u", capturedAt: "2026-07-02T09:00:00Z" },
+    rootFlag: { value: "r", capturedAt: "2026-07-02T10:00:00Z" },
+    startedAt: "2026-07-02T08:00:00Z",
+    ownedAt: "2026-07-02T10:00:00Z",
+  });
+  assert.strictEqual(upd.json.status, "owned");
+  assert.strictEqual(upd.json.userFlag.value, "u");
+  assert.strictEqual(upd.json.rootFlag.capturedAt, "2026-07-02T10:00:00Z");
+  assert.strictEqual(upd.json.ownedAt, "2026-07-02T10:00:00Z");
+});
+
+test("write-up relatedMachine field round-trips", async () => {
+  const post = await api("POST", "/api/writeups", { title: "linked", tags: ["HTB"], content: "# x" });
+  assert.strictEqual(post.status, 201);
+  const id = post.json.id;
+  const upd = await api("PUT", `/api/writeups/${id}`, { relatedMachine: "m-abc123" });
+  assert.strictEqual(upd.status, 200);
+  assert.strictEqual(upd.json.relatedMachine, "m-abc123");
+  // It survives a round-trip through the collection.
+  const list = await api("GET", "/api/writeups");
+  assert.strictEqual(list.json.find((w) => w.id === id).relatedMachine, "m-abc123");
+});
+
 test("POST /api/reset restores seed categories", async () => {
   const r = await api("POST", "/api/reset");
   assert.strictEqual(r.status, 200);

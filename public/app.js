@@ -16,6 +16,17 @@
   let categoryNotes = {};
   let writeups = [];
   let machines = [];
+  // Write-up list view state (pins persist; query/tag are transient per session).
+  let wuPins = JSON.parse(localStorage.getItem("cs-wu-pins") || "[]");
+  let wuSort = localStorage.getItem("cs-wu-sort") || "recent";
+  let wuQuery = "", wuTagFilter = "all";
+  // Machine list dashboard filter/sort state (survives render() re-runs).
+  let machineFilter = { q: "", platform: "", status: "", tag: "", sort: "recent" };
+  // Machine metadata enumerations (shared by create modal, detail chips, cards).
+  const MACHINE_PLATFORMS = ["HTB", "THM", "PG", "OSCP", "Custom"];
+  const MACHINE_DIFFS = ["Easy", "Medium", "Hard", "Insane"];
+  const MACHINE_STATUSES = ["not-started", "in-progress", "owned", "reported"];
+  const ST_KEY = { "not-started": "stNotStarted", "in-progress": "stInProgress", "owned": "stOwned", "reported": "stReported" };
   let lang = localStorage.getItem("cs-lang") || "en";
   let dragSrcCatIdx = null;
   let focusedCmdIdx = -1;
@@ -61,7 +72,31 @@
       clearHistory: "Clear", copyAll: "Copy all", paletteHint: "Search commands & actions…", goto: "Go to",
       engagement: "Engagement", connections: "Connections", fromMachine: "Add from machine…",
       newHost: "+ New host", objective: "Objective", loot: "Loot / creds",
-      connect: "Connect", connectHint: "Click a node, then another, to link them. Click Connect again to finish.", hostRole: "Role"
+      connect: "Connect", connectHint: "Click a node, then another, to link them. Click Connect again to finish.", hostRole: "Role",
+      // — Machines round 3 (metadata, flags, dashboard, timing) —
+      mPlatform: "Platform", mDifficulty: "Difficulty", mStatus: "Status",
+      mTagsHint: "HTB, Linux, web (comma-separated)",
+      diff_easy: "Easy", diff_medium: "Medium", diff_hard: "Hard", diff_insane: "Insane",
+      stNotStarted: "Not started", stInProgress: "In progress", stOwned: "Owned", stReported: "Reported",
+      statTotal: "Total", statOwned: "Owned", statInProgress: "In progress", statAvg: "Avg progress",
+      mSearch: "Search machines…", filterAll: "All", filterPlatform: "Platform", filterStatus: "Status", filterTag: "Tag",
+      sortRecent: "Recent", sortName: "Name", sortProgress: "Progress", noMatches: "No machines match your filters.",
+      userFlag: "User flag", rootFlag: "Root flag", capture: "Capture", capturedAt: "Captured", notCaptured: "Not captured",
+      flags: "Flags", genWriteup: "Generate write-up", wuGenerated: "Write-up generated",
+      copyPhaseCmds: "Copy phase commands", noPhaseCmds: "No commands in this phase",
+      started: "Started", ownedAtLbl: "Owned at", elapsed: "Elapsed", timeToOwn: "Time to own",
+      exportMachineMd: "Export MD", addChecklistItem: "+ Add item", customItemPh: "Custom checklist item…",
+      // — Write-ups round 3 (list controls, create, export, cross-link) —
+      writeups: "Write-ups", writeupsDesc: "Document your pentest findings and write-ups. Click to open and edit.",
+      newWriteup: "+ New Write-up", wuSearch: "Search write-ups…", wuSort: "Sort",
+      wuSortRecent: "Recent", wuSortTitle: "Title", wuSortWords: "Word count",
+      wuAllTags: "All tags", wuNoMatch: "No write-ups match your filters.",
+      wuCount: "write-ups", wuTotalWords: "total words", wuWords: "words", wuMin: "min read",
+      wuPin: "Pin", wuUnpin: "Unpin", wuEmptyTitle: "No write-ups yet", wuEmptyBody: "Create your first write-up.",
+      wuNewTitle: "New Write-up", wuTitleLabel: "Title", wuTitlePh: "Write-up title...", wuStartBlank: "Blank document",
+      wuExportHtml: "Export HTML", wuCopyRendered: "Copy rendered",
+      wuRelatedMachine: "Related machine", wuOpenMachine: "Open machine",
+      wuEditTags: "Edit Tags", confirmDelWriteup: "Delete this write-up?", back: "Back", imageBtn: "Image", wuTags: "Tags"
     },
     tr: {
       allCommands: "Tum Komutlar", favorites: "Favoriler", search: "Komut ara...",
@@ -101,7 +136,31 @@
       clearHistory: "Temizle", copyAll: "Tumunu kopyala", paletteHint: "Komut ve eylem ara…", goto: "Git",
       engagement: "Operasyon", connections: "Baglantilar", fromMachine: "Makineden ekle…",
       newHost: "+ Yeni host", objective: "Hedef", loot: "Loot / kimlik",
-      connect: "Bağla", connectHint: "Bir düğüme, sonra diğerine tıklayarak bağla. Bitirmek için tekrar Bağla'ya tıkla.", hostRole: "Rol"
+      connect: "Bağla", connectHint: "Bir düğüme, sonra diğerine tıklayarak bağla. Bitirmek için tekrar Bağla'ya tıkla.", hostRole: "Rol",
+      // — Machines round 3 (ASCII-safe TR) —
+      mPlatform: "Platform", mDifficulty: "Zorluk", mStatus: "Durum",
+      mTagsHint: "HTB, Linux, web (virgul ile ayirin)",
+      diff_easy: "Kolay", diff_medium: "Orta", diff_hard: "Zor", diff_insane: "Cok Zor",
+      stNotStarted: "Baslanmadi", stInProgress: "Devam ediyor", stOwned: "Ele gecirildi", stReported: "Raporlandi",
+      statTotal: "Toplam", statOwned: "Ele gecirilen", statInProgress: "Devam eden", statAvg: "Ort. ilerleme",
+      mSearch: "Makine ara…", filterAll: "Tumu", filterPlatform: "Platform", filterStatus: "Durum", filterTag: "Etiket",
+      sortRecent: "Guncel", sortName: "Isim", sortProgress: "Ilerleme", noMatches: "Filtrelerle eslesen makine yok.",
+      userFlag: "User flag", rootFlag: "Root flag", capture: "Yakala", capturedAt: "Yakalandi", notCaptured: "Yakalanmadi",
+      flags: "Bayraklar", genWriteup: "Write-up olustur", wuGenerated: "Write-up olusturuldu",
+      copyPhaseCmds: "Asama komutlarini kopyala", noPhaseCmds: "Bu asamada komut yok",
+      started: "Baslatildi", ownedAtLbl: "Ele gecirilme", elapsed: "Gecen sure", timeToOwn: "Ele gecirme suresi",
+      exportMachineMd: "MD Aktar", addChecklistItem: "+ Madde ekle", customItemPh: "Ozel kontrol maddesi…",
+      // — Write-ups round 3 (ASCII-safe TR) —
+      writeups: "Write-up'lar", writeupsDesc: "Pentest bulgularinizi ve write-up'larinizi belgeleyin. Acmak icin tiklayin.",
+      newWriteup: "+ Yeni Write-up", wuSearch: "Write-up ara…", wuSort: "Sirala",
+      wuSortRecent: "En yeni", wuSortTitle: "Baslik", wuSortWords: "Kelime sayisi",
+      wuAllTags: "Tum etiketler", wuNoMatch: "Filtrelerle eslesen write-up yok.",
+      wuCount: "write-up", wuTotalWords: "toplam kelime", wuWords: "kelime", wuMin: "dk okuma",
+      wuPin: "Sabitle", wuUnpin: "Sabitlemeyi kaldir", wuEmptyTitle: "Henuz write-up yok", wuEmptyBody: "Ilk write-up'inizi olusturun.",
+      wuNewTitle: "Yeni Write-up", wuTitleLabel: "Baslik", wuTitlePh: "Write-up basligi...", wuStartBlank: "Bos belge",
+      wuExportHtml: "HTML Aktar", wuCopyRendered: "Bicimlendirilmis kopyala",
+      wuRelatedMachine: "Ilgili makine", wuOpenMachine: "Makineyi ac",
+      wuEditTags: "Etiketleri Duzenle", confirmDelWriteup: "Bu write-up silinsin mi?", back: "Geri", imageBtn: "Gorsel", wuTags: "Etiketler"
     }
   };
   function t(key) { return (T[lang] && T[lang][key]) || T.en[key] || key; }
@@ -452,30 +511,33 @@
   async function loadWriteups() { writeups = await api("GET", "/api/writeups") || []; }
 
   // Static, offline report boilerplate — inserted client-side, never fetched.
-  const WRITEUP_TEMPLATES = {
+const WRITEUP_TEMPLATES = {
     oscp: `# {TITLE}
 
 ## Administrative Information
 
 - **Author / Candidate:**
+- **OSID:**
 - **Date:**
-- **Assessment:** OSCP Exam
+- **Assessment:** OSCP Exam / Lab
 - **In-scope targets:** \`<TARGET_IP>\`
 
 ## High-Level Summary
 
 One-paragraph narrative of which hosts were compromised and the overall path to
-each foothold and privilege escalation.
+each foothold and privilege escalation. State the total points claimed.
 
 ### Compromised Hosts
 
-| Host | IP | Highest Access | Proof |
-| --- | --- | --- | --- |
-| target01 | \`<TARGET_IP>\` | root / SYSTEM | proof.txt |
+| Host | IP | Highest Access | local.txt | proof.txt | Points |
+| --- | --- | --- | --- | --- | --- |
+| target01 | \`<TARGET_IP>\` | root / SYSTEM | ✓ | ✓ | 20 |
 
 ## Methodology
 
-Recon → enumeration → exploitation → post-exploitation, repeated per target.
+Recon → enumeration → exploitation → post-exploitation, repeated per target. All
+exploitation was performed manually except where a single well-known public
+exploit was permitted per exam rules.
 
 ---
 
@@ -495,6 +557,7 @@ nmap -sC -sV -p<PORT> -oA nmap/svc <TARGET_IP>
 ### Vulnerability
 
 - **Name:**
+- **CVE / Reference:**
 - **Description:**
 
 ### Exploitation — Steps to Reproduce
@@ -507,10 +570,11 @@ nmap -sC -sV -p<PORT> -oA nmap/svc <TARGET_IP>
 # exploit / payload
 \`\`\`
 
-### Proof (local.txt / proof.txt)
+### Proof (local.txt)
 
 \`\`\`
-type C:\\Users\\Administrator\\Desktop\\proof.txt   # or: cat /root/proof.txt
+whoami && hostname && ip a   # or: ipconfig /all
+type C:\\Users\\<USER>\\Desktop\\local.txt   # or: cat /home/<USER>/local.txt
 \`\`\`
 
 ### Privilege Escalation
@@ -520,15 +584,26 @@ type C:\\Users\\Administrator\\Desktop\\proof.txt   # or: cat /root/proof.txt
 1.
 2.
 
+\`\`\`
+# priv-esc steps
+\`\`\`
+
+### Proof (proof.txt)
+
+\`\`\`
+whoami   # NT AUTHORITY\\SYSTEM or root
+type C:\\Users\\Administrator\\Desktop\\proof.txt   # or: cat /root/proof.txt
+\`\`\`
+
 ## Maintaining Access
 
-Persistence used (only if in scope).
+Persistence used (only if explicitly in scope).
 
 ## House Cleaning
 
 - [ ] Removed uploaded tools / payloads
 - [ ] Reverted configuration changes
-- [ ] Removed any created accounts
+- [ ] Removed any created accounts / scheduled tasks
 
 ## Appendices
 
@@ -554,9 +629,12 @@ nmap -sC -sV -p<PORT> -oA nmap/svc <TARGET_IP>
 
 ## Enumeration
 
+Describe each service explored and what was discovered.
+
 ## Foothold
 
 - **Vulnerability:**
+- **CVE / Reference:**
 
 1.
 2.
@@ -577,6 +655,9 @@ cat /home/*/user.txt
 1.
 2.
 
+\`\`\`
+\`\`\`
+
 ## Root Flag
 
 \`\`\`
@@ -589,18 +670,32 @@ cat /root/root.txt
 `,
     pentest: `# {TITLE}
 
+> **Classification:** CONFIDENTIAL   ·   **Version:** 1.0   ·   **Date:**
+
+## Document Control
+
+| Version | Date | Author | Notes |
+| --- | --- | --- | --- |
+| 0.1 | | | Draft |
+| 1.0 | | | Final |
+
 ## Executive Summary
 
 Non-technical overview of the engagement for management: overall risk posture,
-the most serious issues, and key recommendations.
+the most serious issues, and the key recommendations. Reference the counts below.
+
+| Critical | High | Medium | Low | Informational |
+| --- | --- | --- | --- | --- |
+| 0 | 0 | 0 | 0 | 0 |
 
 ## Scope & Rules of Engagement
 
 - **Client:**
-- **Assessment type:** External / Internal / Web / Wireless
+- **Assessment type:** External / Internal / Web / Wireless / Cloud
 - **In-scope:** \`<NETWORK>/<CIDR>\`, \`<TARGET_URL>\`
 - **Out-of-scope:**
 - **Testing window:**
+- **Methodology:** OWASP WSTG / PTES / NIST SP 800-115
 - **Authorization:** Signed authorization on file.
 
 ## Findings Summary
@@ -618,7 +713,7 @@ the most serious issues, and key recommendations.
 - **Description:**
 - **Affected assets:**
 - **Impact:**
-- **CVSS v3.1:**  (vector: )
+- **CVSS v3.1:** 9.8 (vector: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)
 - **Evidence:**
 
 \`\`\`
@@ -630,14 +725,24 @@ the most serious issues, and key recommendations.
 - **Remediation:**
 - **References:**
 
+## Remediation Roadmap
+
+| Priority | Finding | Recommended Fix | Owner | Target Date |
+| --- | --- | --- | --- | --- |
+| P1 |  |  |  |  |
+
 ## Conclusion
 
-## Appendix — Methodology & Tooling
+Summary of the security posture and the strategic recommendations.
+
+## Appendix A — Methodology & Tooling
+
+## Appendix B — CVSS Vectors
 `,
     bugbounty: `# {TITLE}
 
 - **Target:** \`<TARGET_URL>\`
-- **Weakness / Type:**
+- **Weakness / Type:** (e.g. CWE-89 SQL Injection)
 - **Severity:**    **CVSS v3.1:**  (vector: )
 
 ## Summary
@@ -652,21 +757,330 @@ One-paragraph description of the vulnerability and where it occurs.
 
 ## Proof of Concept
 
+\`\`\`http
+POST /endpoint HTTP/1.1
+Host: <TARGET_HOST>
+Content-Type: application/json
+
+{"param":"payload"}
+\`\`\`
+
+## Impact
+
+What an attacker can achieve by exploiting this, and the business impact.
+
+## Remediation
+
+## References
+
+- OWASP:
+- CWE:
+`,
+    oswe: `# {TITLE}
+
+> **Assessment:** White-Box Source-Code Review & Web Application Security Test
+> **Classification:** CONFIDENTIAL   ·   **Version:** 1.0   ·   **Date:**
+
+## Administrative Information
+
+- **Author:**
+- **Application:**    **Version / Commit:** \`<GIT_COMMIT>\`
+- **Repository:** \`<REPO_URL>\`
+- **Languages / Stack:**
+- **Environment tested:** \`<TARGET_URL>\`
+
+## Executive Summary
+
+Narrative describing the objective — an authenticated review of the application
+source resulting in a proof-of-concept exploit chain from unauthenticated
+attacker to remote code execution / full compromise.
+
+### Vulnerability Overview
+
+| # | Vulnerability | Component | Severity | CVSS |
+| --- | --- | --- | --- | --- |
+| 1 |  |  | Critical |  |
+
+## Methodology
+
+Manual static analysis of the code base guided by data-flow tracing (source →
+sink), supported by dynamic verification against a local instance. Focus areas:
+authentication, authorization, input validation, deserialization, SQL/ORM usage,
+template rendering, file handling, and secrets management.
+
+---
+
+## Vulnerability 1 — Title
+
+- **Type:** (e.g. CWE-89 SQL Injection)
+- **Location:** \`path/to/file.ext:LINE\`
+- **CVSS v3.1:** 9.8 (vector: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)
+
+### Vulnerable Code
+
+\`\`\`php
+// path/to/file.ext:LINE
+$query = "SELECT * FROM users WHERE id = " . $_GET['id'];
+\`\`\`
+
+### Data Flow (Source → Sink)
+
+1. **Source:** user-controlled input at \`...\`
+2. **Propagation:** value passed through \`...\` without sanitisation
+3. **Sink:** reaches \`...\` where it is executed
+
+### Proof of Concept
+
+\`\`\`
+# request / payload demonstrating exploitation
+\`\`\`
+
+### Impact
+
+### Remediation
+
+- Use parameterised queries / prepared statements.
+- Apply strict server-side input validation and output encoding.
+
+## Exploit Chain
+
+Step-by-step description of how the individual issues are combined into a single
+unauthenticated → RCE chain, with the automated exploit summarised below.
+
+\`\`\`python
+#!/usr/bin/env python3
+# Single-command PoC: python3 exploit.py <TARGET_URL>
+\`\`\`
+
+## Remediation Summary
+
+| # | Finding | Fix | Priority | Owner |
+| --- | --- | --- | --- | --- |
+| 1 |  |  | P1 |  |
+
+## Appendix A — Files Reviewed
+
+## Appendix B — References
+
+- OWASP ASVS:
+- CWE:
+`,
+    redteam: `# {TITLE}
+
+> **Engagement type:** Objective-Based Red Team Operation
+> **Classification:** CONFIDENTIAL — STRICTLY LIMITED DISTRIBUTION
+> **Version:** 1.0   ·   **Date:**
+
+## Administrative Information
+
+- **Client:**
+- **Operation window:**
+- **Assumed posture:** External / Assumed-Breach / Insider
+- **Authorization:** Signed Rules of Engagement & Get-Out-of-Jail letter on file.
+
+## Executive Summary
+
+Narrative for leadership describing whether the agreed objectives were achieved,
+the realistic threat scenario emulated, and the strategic security gaps exposed.
+
+### Objectives & Outcomes
+
+| # | Objective | Result | Detected? |
+| --- | --- | --- | --- |
+| 1 | Obtain Domain Admin | Achieved | No |
+| 2 | Access \`<CROWN_JEWEL>\` | Achieved | Partial |
+| 3 | Exfiltrate sample data set | Achieved | No |
+
+### Threat Emulation
+
+Emulated adversary / TTP profile (e.g. FIN7, APT29) and rationale.
+
+## Attack Narrative (Kill Chain)
+
+### 1. Reconnaissance
+
+### 2. Initial Access
+
+- **Technique:** T1566 Phishing
+- **Result:**
+
+\`\`\`
+\`\`\`
+
+### 3. Execution & Persistence
+
+### 4. Privilege Escalation
+
+### 5. Defense Evasion
+
+### 6. Credential Access
+
+### 7. Discovery & Lateral Movement
+
+### 8. Collection & Exfiltration
+
+### 9. Actions on Objective
+
+## MITRE ATT&CK Mapping
+
+| Tactic | Technique ID | Technique | Procedure Used |
+| --- | --- | --- | --- |
+| Initial Access | T1566.001 | Spearphishing Attachment |  |
+| Execution | T1059.001 | PowerShell |  |
+| Persistence | T1053.005 | Scheduled Task |  |
+| Priv. Escalation | T1068 | Exploitation for Priv. Esc. |  |
+| Defense Evasion | T1027 | Obfuscated Files or Information |  |
+| Credential Access | T1003.001 | LSASS Memory |  |
+| Lateral Movement | T1021.001 | Remote Desktop Protocol |  |
+| Exfiltration | T1041 | Exfiltration Over C2 Channel |  |
+
+## Detection & Response Assessment
+
+| # | Attacker Action | Logged? | Alerted? | Blue Team Response | Gap |
+| --- | --- | --- | --- | --- | --- |
+| 1 |  | Yes/No | Yes/No |  |  |
+
+## Strategic Recommendations
+
+1. **People:**
+2. **Process:**
+3. **Technology:**
+
+## Appendix A — Indicators of Compromise (IoCs)
+
+| Type | Value | Notes |
+| --- | --- | --- |
+| Domain |  | C2 |
+| Hash |  | Payload |
+
+## Appendix B — ATT&CK Navigator Layer
+
+## Appendix C — Compromised Accounts & Hosts
+`,
+    vulndisclosure: `# {TITLE}
+
+> **Security Advisory** — Responsible Disclosure
+> **Advisory ID:** ADV-<YEAR>-<NNNN>   ·   **Status:** Draft / Disclosed
+> **TLP:** AMBER
+
+## Summary
+
+| Field | Value |
+| --- | --- |
+| Vendor / Product |  |
+| Affected versions | \`<= X.Y.Z\` |
+| Fixed version |  |
+| Vulnerability type | (CWE-XXX) |
+| CVE | CVE-<YEAR>-<NNNNN> (requested / assigned) |
+| Severity | High |
+| CVSS v3.1 | 7.4 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N) |
+| Reported by |  |
+
+## Description
+
+Clear technical description of the vulnerability, the affected component, and the
+conditions required to trigger it.
+
+## Affected Components
+
+- **Component:**
+- **Location:** \`path/or/endpoint\`
+
+## Proof of Concept
+
 \`\`\`
 \`\`\`
 
 ## Impact
 
-What an attacker can achieve by exploiting this.
+What an attacker can achieve, the required privileges, and the realistic risk.
 
 ## Remediation
 
+- Upgrade to version \`<FIXED_VERSION>\` or later.
+- Interim mitigation:
+
+## Disclosure Timeline
+
+| Date | Event |
+| --- | --- |
+| <YYYY-MM-DD> | Vulnerability discovered |
+| <YYYY-MM-DD> | Vendor notified |
+| <YYYY-MM-DD> | Vendor acknowledged |
+| <YYYY-MM-DD> | Fix released |
+| <YYYY-MM-DD> | Public disclosure |
+
+## Credit
+
+Discovered and reported responsibly by <RESEARCHER>.
+
 ## References
+
+- Vendor advisory:
+- CVE:
+- CWE:
+`,
+    retest: `# {TITLE}
+
+> **Assessment:** Remediation Verification (Retest)
+> **Original report:**    ·   **Original date:**
+> **Retest date:**    ·   **Version:** 1.0
+
+## Administrative Information
+
+- **Client:**
+- **Original engagement ID:**
+- **Retest scope:** Previously reported findings only
+- **Authorization:** Signed authorization on file.
+
+## Executive Summary
+
+Overview of the retest outcome: how many previously reported issues are now
+resolved, how many remain, and the resulting change in overall risk posture.
+
+### Remediation Status Overview
+
+| Status | Count |
+| --- | --- |
+| ✅ Resolved |  |
+| 🟡 Partially Remediated |  |
+| ❌ Not Remediated |  |
+| ⚪ Risk Accepted |  |
+
+## Retest Results
+
+| # | Original Finding | Severity | Original Status | Retest Status |
+| --- | --- | --- | --- | --- |
+| 1 |  | High | Open | ✅ Resolved |
+| 2 |  | Medium | Open | ❌ Not Remediated |
+
+## Detailed Verification
+
+### Finding 1 — Title
+
+- **Original severity:**
+- **Retest status:** ✅ Resolved / 🟡 Partial / ❌ Not Remediated
+- **Remediation implemented:**
+- **Verification method:**
+
+\`\`\`
+# verification test / evidence
+\`\`\`
+
+- **Residual risk:**
+
+## Outstanding Risk
+
+Summary of the findings that remain open and the recommended next steps.
+
+## Conclusion
+
+## Appendix A — Verification Evidence
 `
   };
 
   // Individual sections that can be appended at the cursor (static, offline).
-  const WRITEUP_SECTIONS = {
+const WRITEUP_SECTIONS = {
     finding: `
 ### [Severity] Finding Title
 
@@ -718,6 +1132,111 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 | Medium | 4.0 – 6.9 |
 | High | 7.0 – 8.9 |
 | Critical | 9.0 – 10.0 |
+`,
+    attackChain: `
+## Attack Narrative (Kill Chain)
+
+### 1. Initial Access
+
+- **Technique:**
+- **Result:**
+
+\`\`\`
+\`\`\`
+
+### 2. Execution & Persistence
+
+### 3. Privilege Escalation
+
+### 4. Credential Access
+
+### 5. Lateral Movement
+
+### 6. Actions on Objective
+`,
+    mitreAttack: `
+## MITRE ATT&CK Mapping
+
+| Tactic | Technique ID | Technique | Procedure Used |
+| --- | --- | --- | --- |
+| Initial Access | T1566.001 | Spearphishing Attachment |  |
+| Execution | T1059.001 | PowerShell |  |
+| Persistence | T1053.005 | Scheduled Task |  |
+| Privilege Escalation | T1068 | Exploitation for Privilege Escalation |  |
+| Defense Evasion | T1027 | Obfuscated Files or Information |  |
+| Credential Access | T1003.001 | LSASS Memory |  |
+| Lateral Movement | T1021.001 | Remote Desktop Protocol |  |
+| Exfiltration | T1041 | Exfiltration Over C2 Channel |  |
+`,
+    remediationMatrix: `
+## Remediation Matrix
+
+| # | Finding | Recommended Fix | Priority | Owner | Target Date |
+| --- | --- | --- | --- | --- | --- |
+| 1 |  |  | P1 |  |  |
+| 2 |  |  | P2 |  |  |
+`,
+    toolsUsed: `
+## Tools Used
+
+| Tool | Version | Purpose |
+| --- | --- | --- |
+| Nmap |  | Port & service discovery |
+| Burp Suite |  | Web application testing |
+| BloodHound |  | AD attack-path analysis |
+| Metasploit |  | Exploitation framework |
+| CrackMapExec |  | Network / credential validation |
+`,
+    timeline: `
+## Engagement Timeline
+
+| Date | Time (UTC) | Activity | Notes |
+| --- | --- | --- | --- |
+| <YYYY-MM-DD> |  | Kick-off / scoping confirmed |  |
+| <YYYY-MM-DD> |  | Testing commenced |  |
+| <YYYY-MM-DD> |  | Critical finding reported |  |
+| <YYYY-MM-DD> |  | Testing concluded |  |
+| <YYYY-MM-DD> |  | Report delivered |  |
+`,
+    scope: `
+## Scope & Rules of Engagement
+
+| Item | Detail |
+| --- | --- |
+| Client |  |
+| Assessment type | External / Internal / Web / Cloud |
+| In-scope targets | \`<NETWORK>/<CIDR>\`, \`<TARGET_URL>\` |
+| Out-of-scope |  |
+| Testing window |  |
+| Permitted techniques |  |
+| Prohibited techniques | Denial of Service, social engineering |
+| Emergency contact |  |
+| Authorization | Signed authorization on file |
+`,
+    evidence: `
+### Evidence
+
+**Command:**
+
+\`\`\`
+\`\`\`
+
+**Output:**
+
+\`\`\`
+\`\`\`
+
+![Screenshot caption](/uploads/)
+`,
+    references: `
+## References
+
+- **OWASP Top 10:** https://owasp.org/www-project-top-ten/
+- **OWASP WSTG:** https://owasp.org/www-project-web-security-testing-guide/
+- **MITRE ATT&CK:** https://attack.mitre.org/
+- **CWE:** https://cwe.mitre.org/
+- **NVD / CVE:** https://nvd.nist.gov/
+- **CVSS Calculator:** https://www.first.org/cvss/calculator/3.1
 `
   };
 
@@ -731,25 +1250,45 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   function renderMarkdown(src) {
     const blocks = [];
     let h = escapeHtml(src == null ? "" : src);
-    h = h.replace(/```([\s\S]*?)```/g, (m, code) => { blocks.push(code.replace(/^\n/, "")); return "ZZCODEBLOCKZZ" + (blocks.length - 1) + "ZZ"; });
+    h = h.replace(/```([^\n`]*)\n?([\s\S]*?)```/g, (m, info, code) => { blocks.push({ lang: info.trim(), code: code.replace(/^\n/, "") }); return "ZZCODEBLOCKZZ" + (blocks.length - 1) + "ZZ"; });
     h = h.replace(/^(#{1,6})\s+(.*)$/gm, (m, hh, txt) => { const lvl = Math.min(hh.length + 1, 6); return "<h" + lvl + " class=\"wu-heading\">" + txt + "</h" + lvl + ">"; });
     h = h.replace(/^\s*(?:---|\*\*\*)\s*$/gm, "<hr class=\"wu-hr\">");
     h = h.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (m, alt, url) => "<div class=\"wu-img-container\"><img src=\"" + mdSafeUrl(url) + "\" alt=\"" + alt + "\" class=\"wu-read-img\"><span class=\"wu-img-caption\">" + alt + "</span></div>");
     h = h.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, txt, url) => "<a href=\"" + mdSafeUrl(url) + "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"wu-link\">" + txt + "</a>");
     h = h.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
     h = h.replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
+    h = h.replace(/~~([^~\n]+)~~/g, "<del>$1</del>");
     h = h.replace(/`([^`]+)`/g, "<code class=\"wu-inline-code\">$1</code>");
+    // Autolink bare http(s) URLs. Runs after the markdown-link/image and inline-code
+    // passes: the leading boundary class never matches right after href=" (that spot is
+    // preceded by a quote), so existing anchors aren't re-linked; the URL char class
+    // stops before "/</>/quotes so it can't break out of an attribute. mdSafeUrl
+    // re-validates the scheme and the URL text is already escaped.
+    h = h.replace(/(^|[\s(>])(https?:\/\/[^\s<>"')]+)/g, (m, pre, url) => pre + "<a href=\"" + mdSafeUrl(url) + "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"wu-link\">" + url + "</a>");
     // Blockquotes ("> " is escaped to "&gt; ").
     h = h.replace(/(?:^|\n)((?:&gt; ?.*(?:\n|$))+)/g, (m, block) => "\n<blockquote class=\"wu-quote\">" + block.trim().split(/\n/).map(l => l.replace(/^&gt; ?/, "")).join("<br>") + "</blockquote>");
-    // Ordered lists.
-    h = h.replace(/(?:^|\n)((?:\d+\. .*(?:\n|$))+)/g, (m, block) => "\n<ol class=\"wu-list\">" + block.trim().split(/\n/).map(l => "<li>" + l.replace(/^\d+\.\s+/, "") + "</li>").join("") + "</ol>");
-    // Unordered lists + GitHub-style task lists.
-    h = h.replace(/(?:^|\n)((?:[-*] .*(?:\n|$))+)/g, (m, block) => "\n<ul class=\"wu-list\">" + block.trim().split(/\n/).map(l => {
-      const item = l.replace(/^[-*]\s+/, "");
-      const task = item.match(/^\[([ xX])\]\s?(.*)$/);
-      if (task) return "<li class=\"wu-task\"><input type=\"checkbox\" disabled" + (/[xX]/.test(task[1]) ? " checked" : "") + "> " + task[2] + "</li>";
-      return "<li>" + item + "</li>";
-    }).join("") + "</ul>");
+    // Nested ordered / unordered / task lists (2 spaces or 1 tab per indent level).
+    // All item text is already HTML-escaped, so emitting nesting tags around it is safe.
+    h = h.replace(/(?:^|\n)((?:[ \t]*(?:[-*]|\d+\.)[ \t].*(?:\n|$))+)/g, (m, block) => {
+      const lines = block.replace(/\n+$/, "").split("\n");
+      const out = [];
+      const stack = []; // one entry per open list level: { type: 'ul' | 'ol' }
+      const close = to => { while (stack.length > to) out.push("</li></" + stack.pop().type + ">"); };
+      lines.forEach(line => {
+        const mm = line.match(/^([ \t]*)([-*]|\d+\.)[ \t]+(.*)$/); if (!mm) return;
+        const indent = (mm[1].replace(/\t/g, "  ").length / 2) | 0;
+        const type = /\d+\./.test(mm[2]) ? "ol" : "ul";
+        const text = mm[3];
+        const task = text.match(/^\[([ xX])\][ \t]?(.*)$/);
+        const li = task
+          ? "<li class=\"wu-task\"><input type=\"checkbox\" disabled" + (/[xX]/.test(task[1]) ? " checked" : "") + "> " + task[2]
+          : "<li>" + text;
+        if (indent + 1 > stack.length) { stack.push({ type }); out.push("<" + type + " class=\"wu-list\">" + li); }
+        else { close(indent + 1); out.push("</li>" + li); }
+      });
+      close(0);
+      return "\n" + out.join("");
+    });
     // Markdown tables: header row, a | --- | separator, then body rows.
     h = h.replace(/^(\|.+\|)[ \t]*\n\|[ :|\-]+\|[ \t]*\n((?:\|.*\|[ \t]*(?:\n|$))*)/gm, (m, header, body) => {
       const cells = r => r.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map(c => c.trim());
@@ -759,8 +1298,30 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     });
     h = h.replace(/\n/g, "<br>");
     h = h.replace(/<br>\s*(<(?:h[1-6]|pre|ul|ol|hr|div|table|blockquote)[^>]*>)/g, "$1").replace(/(<\/(?:h[1-6]|pre|ul|ol|div|table|blockquote)>)\s*<br>/g, "$1").replace(/(<hr[^>]*>)\s*<br>/g, "$1");
-    h = h.replace(/ZZCODEBLOCKZZ(\d+)ZZ/g, (m, i) => "<pre class=\"wu-code-block\">" + blocks[+i] + "</pre>");
+    h = h.replace(/ZZCODEBLOCKZZ(\d+)ZZ/g, (m, i) => {
+      const b = blocks[+i];
+      // b.code is already escaped (from the top-of-function escapeHtml); b.lang is
+      // user-controlled, so it MUST pass through escapeHtml to stay XSS-safe.
+      const lang = b.lang ? "<span class=\"wu-code-lang\">" + escapeHtml(b.lang) + "</span>" : "";
+      return "<div class=\"wu-code-wrap\"><div class=\"wu-code-head\">" + lang +
+        "<button type=\"button\" class=\"wu-code-copy\" title=\"" + t("copy") + "\">⧉ " + t("copy") + "</button></div>" +
+        "<pre class=\"wu-code-block\">" + b.code + "</pre></div>";
+    });
     return h;
+  }
+  // Wire the copy buttons rendered into markdown code blocks (read mode / preview).
+  function wireCodeCopies(container) {
+    container.querySelectorAll(".wu-code-copy").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const wrap = btn.closest(".wu-code-wrap"); const pre = wrap && wrap.querySelector("pre");
+        if (!pre) return;
+        copyText(pre.textContent, () => {
+          btn.textContent = "✓ " + t("copied");
+          announce(t("copied"));
+          setTimeout(() => { btn.textContent = "⧉ " + t("copy"); }, 1500);
+        });
+      });
+    });
   }
   function insertAtCursor(ta, text) {
     const s = ta.selectionStart != null ? ta.selectionStart : ta.value.length;
@@ -784,13 +1345,57 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     ta.selectionStart = ta.selectionEnd = s + prefix.length; ta.focus();
   }
   function wuWordCount(s) { return (String(s || "").trim().match(/\S+/g) || []).length; }
+  function wuReadMins(s) { return Math.max(1, Math.round(wuWordCount(s) / 200)); }
+  function wuIsPinned(id) { return wuPins.includes(id); }
+  function toggleWuPin(id, e) {
+    if (e) e.stopPropagation();
+    wuPins = wuIsPinned(id) ? wuPins.filter(x => x !== id) : wuPins.concat(id);
+    localStorage.setItem("cs-wu-pins", JSON.stringify(wuPins));
+    render();
+  }
+  function allWuTags() {
+    const s = new Set(); writeups.forEach(w => (w.tags || []).forEach(tg => s.add(tg)));
+    return Array.from(s).sort((a, b) => a.localeCompare(b));
+  }
+  // Search + tag filter, then sort, with pinned write-ups always floated to the top.
+  function visibleWriteups() {
+    const q = wuQuery.trim().toLowerCase();
+    let list = writeups.filter(w => {
+      if (wuTagFilter !== "all" && !(w.tags || []).includes(wuTagFilter)) return false;
+      if (!q) return true;
+      return (w.title || "").toLowerCase().includes(q)
+        || (w.content || "").toLowerCase().includes(q)
+        || (w.tags || []).some(tg => tg.toLowerCase().includes(q));
+    });
+    const cmp = {
+      title: (a, b) => (a.title || "").localeCompare(b.title || ""),
+      words: (a, b) => wuWordCount(b.content) - wuWordCount(a.content),
+      recent: (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
+    }[wuSort] || null;
+    if (cmp) list.sort(cmp);
+    list.sort((a, b) => (wuIsPinned(b.id) ? 1 : 0) - (wuIsPinned(a.id) ? 1 : 0)); // stable pin float
+    return list;
+  }
   async function createWriteup() {
-    openModal("New Write-up", [
-      { key: "title", label: "Title", placeholder: "e.g., HackTheBox — Lame" },
-      { key: "tags", label: "Tags", placeholder: "HTB, OSCP, Linux, Easy (comma-separated)" }
+    openModal(t("wuNewTitle"), [
+      { key: "title", label: t("wuTitleLabel"), placeholder: "e.g., HackTheBox — Lame" },
+      { key: "tags", label: t("wuTags"), placeholder: t("tagComma") },
+      { key: "template", label: t("wuTemplate"), type: "select", value: "", options: [
+        { value: "", label: t("wuStartBlank") },
+        { value: "oscp", label: "OSCP exam report" },
+        { value: "htb", label: "HTB / CTF write-up" },
+        { value: "pentest", label: "Pentest report" },
+        { value: "bugbounty", label: "Bug bounty report" },
+        { value: "oswe", label: "OSWE / whitebox report" },
+        { value: "redteam", label: "Red team operation" },
+        { value: "vulndisclosure", label: "Vulnerability disclosure" },
+        { value: "retest", label: "Remediation retest" }
+      ] }
     ], {}, async fd => {
       const tags = fd.tags.split(",").map(s => s.trim()).filter(Boolean);
-      const wu = await api("POST", "/api/writeups", { title: fd.title, tags, content: "" });
+      const content = fd.template && WRITEUP_TEMPLATES[fd.template]
+        ? WRITEUP_TEMPLATES[fd.template].replace(/\{TITLE\}/g, fd.title || "Write-up") : "";
+      const wu = await api("POST", "/api/writeups", { title: fd.title, tags, content });
       if (!wu || !wu.id) return;
       await loadWriteups();
       openWriteupId = wu.id; wuEditMode = true;
@@ -799,7 +1404,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   }
   async function deleteWriteup(id, e) {
     if (e) e.stopPropagation();
-    if (!confirm("Delete this write-up?")) return;
+    if (!confirm(t("confirmDelWriteup"))) return;
     await api("DELETE", "/api/writeups/" + id);
     if (openWriteupId === id) openWriteupId = null;
     await loadWriteups(); render();
@@ -811,7 +1416,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   }
 
   function renderWriteupsPage() {
-    currentSection.textContent = "Write-ups"; hero.style.display = "none";
+    currentSection.textContent = t("writeups"); hero.style.display = "none";
     contentArea.innerHTML = "";
 
     // If a write-up is open, show editor view
@@ -824,24 +1429,73 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
     // File list view
     const hdr = document.createElement("div"); hdr.className = "writeups-header";
-    hdr.innerHTML = '<div class="wu-header-top"><h2>📝 Write-ups</h2><button class="btn btn-primary" id="newWuBtn">+ New Write-up</button></div>' +
-      '<p>' + (lang === "tr" ? "Pentest notlarinizi ve write-up\'larinizi buraya yazin. Tiklayin ve duzenlemeye baslayin." : "Document your pentest findings and write-ups. Click to open and edit.") + '</p>';
+    hdr.innerHTML = '<div class="wu-header-top"><h2>📝 ' + t("writeups") + '</h2><button class="btn btn-primary" id="newWuBtn">' + t("newWriteup") + '</button></div>' +
+      '<p>' + t("writeupsDesc") + '</p>';
     contentArea.appendChild(hdr);
     hdr.querySelector("#newWuBtn").addEventListener("click", createWriteup);
 
     if (writeups.length === 0) {
       const empty = document.createElement("div"); empty.className = "no-results";
-      empty.innerHTML = '<h3>' + (lang === "tr" ? "Henuz write-up yok" : "No write-ups yet") + '</h3><p>' + (lang === "tr" ? "Ilk write-up\'inizi olusturun." : "Create your first write-up.") + '</p>';
+      empty.innerHTML = '<h3>' + t("wuEmptyTitle") + '</h3><p>' + t("wuEmptyBody") + '</p>';
       contentArea.appendChild(empty);
       return;
     }
 
+    // ── Controls: search + sort + tag chips + stats ──
+    const controls = document.createElement("div"); controls.className = "wu-list-controls";
+    const search = document.createElement("input");
+    search.type = "search"; search.className = "wu-list-search"; search.value = wuQuery;
+    search.placeholder = t("wuSearch"); search.setAttribute("aria-label", t("wuSearch"));
+    const sortSel = document.createElement("select"); sortSel.className = "form-select wu-tool-select"; sortSel.setAttribute("aria-label", t("wuSort"));
+    sortSel.innerHTML =
+      '<option value="recent">' + t("wuSortRecent") + '</option>' +
+      '<option value="title">' + t("wuSortTitle") + '</option>' +
+      '<option value="words">' + t("wuSortWords") + '</option>';
+    sortSel.value = wuSort;
+    let wuST; search.addEventListener("input", () => {
+      clearTimeout(wuST);
+      wuST = setTimeout(() => {
+        wuQuery = search.value; renderWriteupsPage();
+        const s = contentArea.querySelector(".wu-list-search"); if (s) { s.focus(); s.setSelectionRange(s.value.length, s.value.length); }
+      }, 180);
+    });
+    sortSel.addEventListener("change", () => { wuSort = sortSel.value; localStorage.setItem("cs-wu-sort", wuSort); renderWriteupsPage(); });
+    controls.appendChild(search); controls.appendChild(sortSel);
+    contentArea.appendChild(controls);
+
+    const chips = document.createElement("div"); chips.className = "wu-tag-chips";
+    const mkChip = (val, label) => {
+      const c = document.createElement("button"); c.type = "button";
+      c.className = "wu-chip" + (wuTagFilter === val ? " active" : "");
+      c.textContent = label; c.setAttribute("aria-pressed", String(wuTagFilter === val));
+      c.addEventListener("click", () => { wuTagFilter = val; renderWriteupsPage(); });
+      return c;
+    };
+    chips.appendChild(mkChip("all", t("wuAllTags")));
+    allWuTags().forEach(tg => chips.appendChild(mkChip(tg, tg)));
+    contentArea.appendChild(chips);
+
+    const list = visibleWriteups();
+    const totalWords = writeups.reduce((n, w) => n + wuWordCount(w.content), 0);
+    const stats = document.createElement("div"); stats.className = "wu-stats-line";
+    stats.textContent = writeups.length + " " + t("wuCount") + " · " + totalWords.toLocaleString() + " " + t("wuTotalWords") +
+      (list.length !== writeups.length ? " · " + list.length + " " + t("matching") : "");
+    contentArea.appendChild(stats);
+
+    if (list.length === 0) {
+      const nr = document.createElement("div"); nr.className = "no-results";
+      nr.innerHTML = "<h3>" + t("noResults") + "</h3><p>" + t("wuNoMatch") + "</p>";
+      contentArea.appendChild(nr);
+      return;
+    }
+
     const grid = document.createElement("div"); grid.className = "wu-file-grid";
-    writeups.forEach(wu => {
-      const file = document.createElement("div"); file.className = "wu-file-card";
+    list.forEach(wu => {
+      const pinned = wuIsPinned(wu.id);
+      const file = document.createElement("div"); file.className = "wu-file-card" + (pinned ? " pinned" : "");
       file.setAttribute("role", "button"); file.setAttribute("tabindex", "0");
       file.setAttribute("aria-label", wu.title);
-      const tagsH = (wu.tags || []).map(t => '<span class="wu-tag">' + escapeHtml(t) + '</span>').join("");
+      const tagsH = (wu.tags || []).map(tg => '<span class="wu-tag">' + escapeHtml(tg) + '</span>').join("");
       const date = new Date(wu.updatedAt).toLocaleDateString();
       const preview = (wu.content || "").substring(0, 120).replace(/\n/g, " ");
       file.innerHTML =
@@ -849,11 +1503,15 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         '<div class="wu-file-info">' +
           '<div class="wu-file-name">' + escapeHtml(wu.title) + '</div>' +
           '<div class="wu-file-preview">' + escapeHtml(preview) + (preview.length >= 120 ? "..." : "") + '</div>' +
-          '<div class="wu-file-meta"><span class="wu-date">' + date + '</span>' + tagsH + '</div>' +
+          '<div class="wu-file-meta"><span class="wu-date">' + date + '</span><span class="wu-readtime">' + wuReadMins(wu.content) + ' ' + t("wuMin") + '</span>' + tagsH + '</div>' +
         '</div>' +
-        '<button class="wu-file-delete" title="Delete">🗑</button>';
-      file.addEventListener("click", () => { openWriteupId = wu.id; render(); });
+        '<div class="wu-file-actions">' +
+          '<button class="wu-file-pin' + (pinned ? " active" : "") + '" title="' + (pinned ? t("wuUnpin") : t("wuPin")) + '" aria-label="' + (pinned ? t("wuUnpin") : t("wuPin")) + '">' + (pinned ? "📌" : "📍") + '</button>' +
+          '<button class="wu-file-delete" title="' + t("del") + '" aria-label="' + t("del") + '">🗑</button>' +
+        '</div>';
+      file.addEventListener("click", e => { if (e.target.closest(".wu-file-actions")) return; openWriteupId = wu.id; render(); });
       file.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target === file) { e.preventDefault(); openWriteupId = wu.id; render(); } });
+      file.querySelector(".wu-file-pin").addEventListener("click", e => toggleWuPin(wu.id, e));
       file.querySelector(".wu-file-delete").addEventListener("click", e => deleteWriteup(wu.id, e));
       grid.appendChild(file);
     });
@@ -867,22 +1525,32 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
     // Top bar
     const topbar = document.createElement("div"); topbar.className = "wu-editor-topbar";
+    const pinned0 = wuIsPinned(wu.id);
     topbar.innerHTML =
-      '<button class="wu-back-btn">\u2190 ' + (lang === "tr" ? "Geri" : "Back") + '</button>' +
+      '<button class="wu-back-btn">\u2190 ' + t("back") + '</button>' +
       '<div class="wu-editor-status" id="wuStatus"></div>' +
       '<div class="wu-topbar-actions">' +
+        '<button class="wu-pin-btn' + (pinned0 ? " active" : "") + '" title="' + (pinned0 ? t("wuUnpin") : t("wuPin")) + '" aria-label="' + (pinned0 ? t("wuUnpin") : t("wuPin")) + '">\uD83D\uDCCC</button>' +
         '<button class="btn btn-secondary btn-sm wu-export-md-btn">' + t("exportMd") + '</button>' +
+        '<button class="btn btn-secondary btn-sm wu-export-html-btn">' + t("wuExportHtml") + '</button>' +
         '<button class="btn btn-secondary btn-sm wu-export-pdf-btn">' + t("exportPdf") + '</button>' +
+        '<button class="btn btn-secondary btn-sm wu-copy-rendered-btn">' + t("wuCopyRendered") + '</button>' +
         (wuEditMode
-          ? '<button class="btn btn-primary btn-sm wu-save-btn">\uD83D\uDCBE ' + (lang === "tr" ? "Kaydet" : "Save") + '</button>'
-          : '<button class="btn btn-secondary btn-sm wu-edit-btn">\u270E ' + (lang === "tr" ? "Duzenle" : "Edit") + '</button>'
+          ? '<button class="btn btn-primary btn-sm wu-save-btn">\uD83D\uDCBE ' + t("save") + '</button>'
+          : '<button class="btn btn-secondary btn-sm wu-edit-btn">\u270E ' + t("edit") + '</button>'
         ) +
-        '<button class="wu-delete-btn">\uD83D\uDDD1</button>' +
+        '<button class="wu-delete-btn" title="' + t("del") + '" aria-label="' + t("del") + '">\uD83D\uDDD1</button>' +
       '</div>';
     topbar.querySelector(".wu-back-btn").addEventListener("click", () => { openWriteupId = null; wuEditMode = false; render(); });
     topbar.querySelector(".wu-delete-btn").addEventListener("click", () => deleteWriteup(wu.id));
+    topbar.querySelector(".wu-pin-btn").addEventListener("click", () => toggleWuPin(wu.id));
     topbar.querySelector(".wu-export-md-btn").addEventListener("click", () => exportWriteupMd(wu));
+    topbar.querySelector(".wu-export-html-btn").addEventListener("click", () => exportWriteupHtml(wu));
     topbar.querySelector(".wu-export-pdf-btn").addEventListener("click", () => exportWriteupPdf(wu));
+    topbar.querySelector(".wu-copy-rendered-btn").addEventListener("click", () => {
+      const tmp = document.createElement("div"); tmp.innerHTML = renderMarkdown(wu.content || "");
+      copyText(tmp.textContent || "", () => { announce(t("copied")); toast(t("copied"), "ok"); });
+    });
     if (wuEditMode) {
       topbar.querySelector(".wu-save-btn").addEventListener("click", async () => {
         wuEditMode = false;
@@ -896,15 +1564,15 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     if (wuEditMode) {
       // ── EDIT MODE (split editor + live preview) ──
       const titleInput = document.createElement("input"); titleInput.className = "wu-page-title";
-      titleInput.value = wu.title; titleInput.placeholder = "Write-up title..."; titleInput.setAttribute("aria-label", "Title");
+      titleInput.value = wu.title; titleInput.placeholder = t("wuTitlePh"); titleInput.setAttribute("aria-label", t("wuTitleLabel"));
       titleInput.addEventListener("input", () => { saveWu(wu.id, { title: titleInput.value }); showStatus(); });
       page.appendChild(titleInput);
 
       const tagsRow = document.createElement("div"); tagsRow.className = "wu-page-tags";
-      const tagsH = (wu.tags || []).map(t => '<span class="wu-tag">' + escapeHtml(t) + '</span>').join("");
-      tagsRow.innerHTML = tagsH + '<button class="wu-edit-tags-btn">✎ tags</button>';
+      const tagsH = (wu.tags || []).map(tg => '<span class="wu-tag">' + escapeHtml(tg) + '</span>').join("");
+      tagsRow.innerHTML = tagsH + '<button class="wu-edit-tags-btn">✎ ' + t("wuTags").toLowerCase() + '</button>';
       tagsRow.querySelector(".wu-edit-tags-btn").addEventListener("click", () => {
-        openModal("Edit Tags", [{ key: "tags", label: "Tags", placeholder: "HTB, OSCP, Linux" }],
+        openModal(t("wuEditTags"), [{ key: "tags", label: t("wuTags"), placeholder: "HTB, OSCP, Linux" }],
           { tags: (wu.tags || []).join(", ") },
           async fd => { const tags = fd.tags.split(",").map(s => s.trim()).filter(Boolean); await api("PUT", "/api/writeups/" + wu.id, { tags }); await loadWriteups(); render(); });
       });
@@ -913,15 +1581,39 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       // Toolbar: template + machine link + image
       const toolbar = document.createElement("div"); toolbar.className = "wu-toolbar";
       const tplSel = document.createElement("select"); tplSel.className = "form-select wu-tool-select"; tplSel.setAttribute("aria-label", t("wuTemplate"));
-      tplSel.innerHTML = '<option value="">📄 ' + t("wuTemplate") + '…</option><option value="oscp">OSCP exam report</option><option value="htb">HTB / CTF write-up</option><option value="pentest">Pentest report</option><option value="bugbounty">Bug bounty report</option>';
+      tplSel.innerHTML = '<option value="">📄 ' + t("wuTemplate") + '…</option>' +
+        '<option value="oscp">OSCP exam report</option>' +
+        '<option value="htb">HTB / CTF write-up</option>' +
+        '<option value="pentest">Pentest report</option>' +
+        '<option value="bugbounty">Bug bounty report</option>' +
+        '<option value="oswe">OSWE / whitebox report</option>' +
+        '<option value="redteam">Red team operation</option>' +
+        '<option value="vulndisclosure">Vulnerability disclosure</option>' +
+        '<option value="retest">Remediation retest</option>';
       const secSel = document.createElement("select"); secSel.className = "form-select wu-tool-select"; secSel.setAttribute("aria-label", t("wuSection"));
-      secSel.innerHTML = '<option value="">➕ ' + t("wuSection") + '…</option><option value="finding">Finding</option><option value="findingsTable">Findings table</option><option value="target">Target</option><option value="execSummary">Executive summary</option><option value="cvss">CVSS scale</option>';
+      secSel.innerHTML = '<option value="">➕ ' + t("wuSection") + '…</option>' +
+        '<option value="finding">Finding</option>' +
+        '<option value="findingsTable">Findings table</option>' +
+        '<option value="target">Target</option>' +
+        '<option value="execSummary">Executive summary</option>' +
+        '<option value="cvss">CVSS scale</option>' +
+        '<option value="attackChain">Attack narrative</option>' +
+        '<option value="mitreAttack">MITRE ATT&amp;CK map</option>' +
+        '<option value="remediationMatrix">Remediation matrix</option>' +
+        '<option value="toolsUsed">Tools used</option>' +
+        '<option value="timeline">Timeline</option>' +
+        '<option value="scope">Scope / RoE</option>' +
+        '<option value="evidence">Evidence block</option>' +
+        '<option value="references">References</option>';
       const mcSel = document.createElement("select"); mcSel.className = "form-select wu-tool-select"; mcSel.setAttribute("aria-label", t("wuMachine"));
       mcSel.innerHTML = '<option value="">🔗 ' + t("wuMachine") + '…</option>' + machines.map(mm => '<option value="' + mm.id + '">' + escapeHtml(mm.name) + (mm.ip ? " (" + escapeHtml(mm.ip) + ")" : "") + '</option>').join("");
-      const imgBtn = document.createElement("button"); imgBtn.className = "btn btn-secondary btn-sm"; imgBtn.textContent = "📷 " + (lang === "tr" ? "Gorsel" : "Image");
+      const relSel = document.createElement("select"); relSel.className = "form-select wu-tool-select"; relSel.setAttribute("aria-label", t("wuRelatedMachine"));
+      relSel.innerHTML = '<option value="">🖥 ' + t("wuRelatedMachine") + '…</option>' + machines.map(mm => '<option value="' + mm.id + '"' + (wu.relatedMachine === mm.id ? " selected" : "") + '>' + escapeHtml(mm.name) + (mm.ip ? " (" + escapeHtml(mm.ip) + ")" : "") + '</option>').join("");
+      const imgBtn = document.createElement("button"); imgBtn.className = "btn btn-secondary btn-sm"; imgBtn.textContent = "📷 " + t("imageBtn");
       const imgInput = document.createElement("input"); imgInput.type = "file"; imgInput.accept = "image/*"; imgInput.style.display = "none";
-      toolbar.appendChild(tplSel); toolbar.appendChild(secSel); toolbar.appendChild(mcSel); toolbar.appendChild(imgBtn); toolbar.appendChild(imgInput);
+      toolbar.appendChild(tplSel); toolbar.appendChild(secSel); toolbar.appendChild(mcSel); toolbar.appendChild(relSel); toolbar.appendChild(imgBtn); toolbar.appendChild(imgInput);
       page.appendChild(toolbar);
+      relSel.addEventListener("change", () => { wu.relatedMachine = relSel.value; saveWu(wu.id, { relatedMachine: relSel.value }); showStatus(); });
 
       // Split: editor | live preview
       const split = document.createElement("div"); split.className = "wu-split";
@@ -929,8 +1621,8 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       editor.value = wu.content || "";
       editor.placeholder = lang === "tr" ? "Markdown yazin — sagda canli onizleme..." : "Write Markdown — live preview on the right...";
       const preview = document.createElement("div"); preview.className = "wu-preview wu-read-body";
-      function syncPreview() { preview.innerHTML = renderMarkdown(editor.value); }
-      function updateWc() { const el = page.querySelector(".wu-wordcount"); if (el) el.textContent = wuWordCount(editor.value) + (lang === "tr" ? " kelime" : " words"); }
+      function syncPreview() { preview.innerHTML = renderMarkdown(editor.value); wireCodeCopies(preview); }
+      function updateWc() { const el = page.querySelector(".wu-wordcount"); if (el) el.textContent = wuWordCount(editor.value) + " " + t("wuWords") + " · " + wuReadMins(editor.value) + " " + t("wuMin"); }
       function commit() { saveWu(wu.id, { content: editor.value }); showStatus(); syncPreview(); updateWc(); }
 
       // Formatting toolbar — inserts markdown at the cursor / around the selection.
@@ -1021,16 +1713,28 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       page.appendChild(title);
 
       const tagsRow = document.createElement("div"); tagsRow.className = "wu-page-tags";
-      tagsRow.innerHTML = (wu.tags || []).map(t => '<span class="wu-tag">' + escapeHtml(t) + '</span>').join("");
+      tagsRow.innerHTML = (wu.tags || []).map(tg => '<span class="wu-tag">' + escapeHtml(tg) + '</span>').join("");
       page.appendChild(tagsRow);
 
       const dateLine = document.createElement("div"); dateLine.className = "wu-page-date";
-      dateLine.textContent = (lang === "tr" ? "Son guncelleme: " : "Last updated: ") + new Date(wu.updatedAt).toLocaleString() + " · " + wuWordCount(wu.content) + (lang === "tr" ? " kelime" : " words");
+      dateLine.textContent = (lang === "tr" ? "Son guncelleme: " : "Last updated: ") + new Date(wu.updatedAt).toLocaleString() +
+        " · " + wuWordCount(wu.content) + " " + t("wuWords") + " · " + wuReadMins(wu.content) + " " + t("wuMin");
       page.appendChild(dateLine);
+
+      // Related-machine deep-link chip (if one is linked and still exists).
+      const rel = machines.find(x => x.id === wu.relatedMachine);
+      if (rel) {
+        const link = document.createElement("button"); link.className = "wu-related-machine"; link.type = "button";
+        link.innerHTML = osIconFor(rel.os) + " " + escapeHtml(rel.name) + (rel.ip ? " (" + escapeHtml(rel.ip) + ")" : "");
+        link.title = t("wuOpenMachine");
+        link.addEventListener("click", () => { openWriteupId = null; wuEditMode = false; openMachineId = rel.id; activeCategory = "machines"; render(); window.scrollTo({ top: 0, behavior: motionBehavior() }); });
+        page.appendChild(link);
+      }
 
       const body = document.createElement("div"); body.className = "wu-read-body";
       const content = wu.content || (lang === "tr" ? "Henuz icerik yok. Duzenle butonuna tiklayin." : "No content yet. Click Edit to start writing.");
       body.innerHTML = renderMarkdown(content);
+      wireCodeCopies(body);
 
       // Auto table-of-contents from headings (in-page scroll, no hash routing).
       const heads = body.querySelectorAll(".wu-heading");
@@ -1091,6 +1795,35 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     if (s.includes("linux")) return "🐧";
     if (s.includes("ad") || s.includes("domain") || s.includes("active dir")) return "🏢";
     return "🖥";
+  }
+
+  // ── Machine metadata helpers (platform / difficulty / status / flags / timing) ──
+  function machineStatus(m) { return (m && m.status) || "not-started"; }
+  function stLabel(v) { return t(ST_KEY[v] || "stNotStarted"); }
+  function diffLabel(v) { return v ? t("diff_" + String(v).toLowerCase()) : ""; }
+  function isCaptured(f) { return !!(f && f.capturedAt); }
+  // Elapsed time between two ISO timestamps (to = now when null), as "Xh Ym".
+  function fmtElapsed(fromISO, toISO) {
+    if (!fromISO) return "—";
+    const ms = (toISO ? new Date(toISO) : new Date()) - new Date(fromISO);
+    if (!(ms > 0)) return "—";
+    const h = Math.floor(ms / 3.6e6), mn = Math.floor((ms % 3.6e6) / 6e4);
+    return (h ? h + "h " : "") + mn + "m";
+  }
+  // Auto-advance status + stamp startedAt/ownedAt from activity. Returns a patch
+  // of the fields that changed (empty object if none) so callers can persist once.
+  function machineAutoProgress(m) {
+    const patch = {};
+    if (!m.startedAt && ((m.checklist || []).some(c => c.done) || machineStatus(m) === "in-progress")) {
+      m.startedAt = new Date().toISOString(); patch.startedAt = m.startedAt;
+    }
+    const owned = isCaptured(m.rootFlag) || machineStatus(m) === "owned" || machineStatus(m) === "reported";
+    if (owned && !m.ownedAt) { m.ownedAt = new Date().toISOString(); patch.ownedAt = m.ownedAt; }
+    if (machineStatus(m) === "not-started" && ((m.checklist || []).some(c => c.done) || isCaptured(m.userFlag))) {
+      m.status = "in-progress"; patch.status = m.status;
+    }
+    if (isCaptured(m.rootFlag) && machineStatus(m) === "in-progress") { m.status = "owned"; patch.status = m.status; }
+    return patch;
   }
 
   // ── AD engagement (multi-host) helpers ──
@@ -1201,9 +1934,13 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       { key: "name", label: t("machineName"), placeholder: "e.g., Lame" },
       { key: "ip", label: t("machineIP"), placeholder: "10.10.10.3" },
       { key: "os", label: t("machineOS"), placeholder: "Linux / Windows" },
+      { key: "platform", label: t("mPlatform"), type: "select", value: "HTB", options: MACHINE_PLATFORMS.map(p => ({ value: p, label: p })) },
+      { key: "difficulty", label: t("mDifficulty"), type: "select", value: "", options: [{ value: "", label: "—" }].concat(MACHINE_DIFFS.map(d => ({ value: d, label: diffLabel(d) }))) },
+      { key: "tags", label: t("wuTags"), placeholder: t("mTagsHint") },
       { key: "template", label: t("playbook"), type: "select", options: tplOpts }
     ], {}, async fd => {
-      const m = await api("POST", "/api/machines", { name: fd.name, ip: fd.ip, os: fd.os });
+      const tags = (fd.tags || "").split(",").map(s => s.trim()).filter(Boolean);
+      const m = await api("POST", "/api/machines", { name: fd.name, ip: fd.ip, os: fd.os, platform: fd.platform, difficulty: fd.difficulty, tags });
       if (!m || !m.id) return;
       const tpl = fd.template ? templateById(fd.template) : null;
       if (tpl) await api("PUT", "/api/machines/" + m.id, { template: tpl.id, checklist: templateToChecklist(tpl) });
@@ -1222,6 +1959,60 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   function saveMachine(id, data) {
     clearTimeout(machineTimers[id]);
     machineTimers[id] = setTimeout(() => api("PUT", "/api/machines/" + id, data), 400);
+  }
+
+  // Build a Markdown report body from a tracked machine's structured data.
+  function machineToMarkdown(m) {
+    const flagLine = f => (isCaptured(f) ? "✅ " + t("capturedAt") + " " + new Date(f.capturedAt).toLocaleDateString() : "⬜ " + t("notCaptured"));
+    let md = "# " + (m.name || "Machine") + " — " + (m.platform || "Custom") + "\n\n";
+    md += "> **" + t("machineName") + ":** " + (m.name || "") + " · **" + t("machineOS") + ":** " + (m.os || "—") +
+      " · **" + t("mDifficulty") + ":** " + (diffLabel(m.difficulty) || "—") +
+      " · **" + t("mPlatform") + ":** " + (m.platform || "Custom") + " · **IP:** `" + (m.ip || "—") + "`\n";
+    md += "> **" + t("mStatus") + ":** " + stLabel(machineStatus(m)) +
+      " · **" + t("userFlag") + ":** " + flagLine(m.userFlag) +
+      " · **" + t("rootFlag") + ":** " + flagLine(m.rootFlag) + "\n\n";
+    md += "## " + t("services") + "\n\n";
+    md += (m.services || []).length ? "```\n" + (m.services || []).join("\n") + "\n```\n\n" : "_—_\n\n";
+    md += "## " + t("credentials") + "\n\n";
+    md += (m.credentials || []).length ? (m.credentials || []).map(c => "- `" + c + "`").join("\n") + "\n\n" : "_—_\n\n";
+    md += "## " + t("attackPath") + "\n\n";
+    md += m.attackPath ? "```\n" + m.attackPath + "\n```\n\n" : "_—_\n\n";
+    const groups = groupByPhase(m.checklist);
+    if (groups.length) {
+      md += "## " + t("progress") + "\n\n";
+      groups.forEach(g => {
+        const gd = g.items.filter(x => x.item.done).length;
+        md += "### " + g.phase + " (" + gd + "/" + g.items.length + ")\n\n";
+        g.items.forEach(({ item }) => { md += "- [" + (item.done ? "x" : " ") + "] " + item.label + "\n"; });
+        md += "\n";
+      });
+    }
+    if (m.notes) md += "## " + t("notes") + "\n\n" + m.notes + "\n\n";
+    md += "---\n\n";
+    // Append the report skeleton (OSCP/PG → oscp; otherwise htb), with the box IP filled in.
+    const tplKey = (m.platform === "OSCP" || m.platform === "PG") ? "oscp" : "htb";
+    const skeleton = WRITEUP_TEMPLATES[tplKey].replace(/\{TITLE\}/g, (m.name || "Machine") + " — Report");
+    md += (m.ip ? skeleton.split("<TARGET_IP>").join(m.ip) : skeleton);
+    return md;
+  }
+  async function generateWriteupFromMachine(m) {
+    const content = machineToMarkdown(m);
+    const title = (m.name || "Machine") + " — " + (m.platform || "Custom");
+    const tags = ["writeup", m.platform, m.difficulty].filter(Boolean);
+    const wu = await api("POST", "/api/writeups", { title, tags, content });
+    if (!wu || !wu.id) { toast(t("netErr"), "error"); return; }
+    await api("PUT", "/api/writeups/" + wu.id, { relatedMachine: m.id });
+    await loadWriteups();
+    openMachineId = null; openWriteupId = wu.id; wuEditMode = true; activeCategory = "writeups";
+    render();
+    toast(t("wuGenerated"), "ok");
+  }
+  function exportMachineMd(m) {
+    const blob = new Blob([machineToMarkdown(m)], { type: "text/markdown" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = (m.name || "machine").replace(/[^a-z0-9]/gi, "_") + ".md";
+    a.click(); URL.revokeObjectURL(a.href);
   }
 
   function renderMachinesPage() {
@@ -1247,32 +2038,103 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       return;
     }
 
-    const grid = document.createElement("div"); grid.className = "machine-grid";
-    machines.forEach(m => {
-      const done = (m.checklist || []).filter(c => c.done).length;
-      const total = (m.checklist || []).length;
-      const pct = total > 0 ? Math.round(done / total * 100) : 0;
-      const osIcon = osIconFor(m.os);
-      const tpl = m.template ? templateById(m.template) : null;
-      const phase = currentPhaseName(m);
-      const card = document.createElement("div"); card.className = "machine-card";
-      card.setAttribute("role", "button"); card.setAttribute("tabindex", "0");
-      card.setAttribute("aria-label", m.name + (m.ip ? ", " + m.ip : ""));
-      card.innerHTML =
-        '<div class="machine-card-top">' +
-          '<span class="machine-os-icon">' + osIcon + '</span>' +
-          '<div class="machine-info"><div class="machine-name">' + escapeHtml(m.name) + '</div><div class="machine-ip">' + escapeHtml(m.ip || "No IP") + '</div></div>' +
-          '<button class="machine-del-btn" title="Delete" aria-label="Delete machine">🗑</button>' +
-        '</div>' +
-        (tpl ? '<div class="machine-card-badge">' + tpl.icon + ' ' + escapeHtml(tpl.name) + '</div>' : '') +
-        '<div class="machine-progress"><div class="machine-progress-bar"><div class="machine-progress-fill" style="width:' + pct + '%"></div></div><span class="machine-progress-text">' + done + '/' + total + ' (' + pct + '%)</span></div>' +
-        (total > 0 ? '<div class="machine-card-phase' + (phase ? '' : ' done') + '">' + (phase ? '▸ ' + escapeHtml(phase) : '✅ ' + t("allDone")) + '</div>' : '');
-      card.addEventListener("click", () => { openMachineId = m.id; render(); });
-      card.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target === card) { e.preventDefault(); openMachineId = m.id; render(); } });
-      card.querySelector(".machine-del-btn").addEventListener("click", e => deleteMachine(m.id, e));
-      grid.appendChild(card);
-    });
-    contentArea.appendChild(grid);
+    // ── Aggregate stats dashboard ──
+    const total = machines.length;
+    const owned = machines.filter(m => machineStatus(m) === "owned" || machineStatus(m) === "reported").length;
+    const inProg = machines.filter(m => machineStatus(m) === "in-progress").length;
+    const avg = total ? Math.round(machines.reduce((s, m) => { const c = m.checklist || []; return s + (c.length ? c.filter(x => x.done).length / c.length * 100 : 0); }, 0) / total) : 0;
+    const statsBar = document.createElement("div"); statsBar.className = "machine-stats-bar";
+    statsBar.innerHTML =
+      '<div class="machine-stat"><strong>' + total + '</strong>' + t("statTotal") + '</div>' +
+      '<div class="machine-stat"><strong class="s-owned">' + owned + '</strong>' + t("statOwned") + '</div>' +
+      '<div class="machine-stat"><strong class="s-prog">' + inProg + '</strong>' + t("statInProgress") + '</div>' +
+      '<div class="machine-stat"><strong>' + avg + '%</strong>' + t("statAvg") + '</div>';
+    contentArea.appendChild(statsBar);
+
+    // ── Controls: search + platform/status/tag filters + sort ──
+    const controls = document.createElement("div"); controls.className = "machine-controls";
+    const mSearch = document.createElement("input"); mSearch.type = "search"; mSearch.className = "wu-list-search"; mSearch.value = machineFilter.q;
+    mSearch.placeholder = t("mSearch"); mSearch.setAttribute("aria-label", t("mSearch"));
+    const platformsPresent = Array.from(new Set(machines.map(m => m.platform || "Custom")));
+    const tagsPresent = Array.from(new Set(machines.flatMap(m => m.tags || []))).sort((a, b) => a.localeCompare(b));
+    const mkSel = (cls, label, cur, opts) => {
+      const s = document.createElement("select"); s.className = "form-select machine-filter-sel"; s.dataset.f = cls; s.setAttribute("aria-label", label);
+      s.innerHTML = opts.map(o => '<option value="' + escapeHtml(o.value) + '"' + (o.value === cur ? " selected" : "") + '>' + escapeHtml(o.label) + '</option>').join("");
+      return s;
+    };
+    const platSel = mkSel("platform", t("filterPlatform"), machineFilter.platform, [{ value: "", label: t("filterPlatform") + ": " + t("filterAll") }].concat(platformsPresent.map(p => ({ value: p, label: p }))));
+    const statSel = mkSel("status", t("filterStatus"), machineFilter.status, [{ value: "", label: t("filterStatus") + ": " + t("filterAll") }].concat(MACHINE_STATUSES.map(v => ({ value: v, label: stLabel(v) }))));
+    const tagSel = mkSel("tag", t("filterTag"), machineFilter.tag, [{ value: "", label: t("filterTag") + ": " + t("filterAll") }].concat(tagsPresent.map(tg => ({ value: tg, label: tg }))));
+    const sortSel = mkSel("sort", t("wuSort"), machineFilter.sort, [{ value: "recent", label: t("wuSort") + ": " + t("sortRecent") }, { value: "name", label: t("sortName") }, { value: "progress", label: t("sortProgress") }]);
+    controls.appendChild(mSearch); controls.appendChild(platSel); controls.appendChild(statSel); controls.appendChild(tagSel); controls.appendChild(sortSel);
+    contentArea.appendChild(controls);
+
+    const gridWrap = document.createElement("div"); contentArea.appendChild(gridWrap);
+    function applyMachineView() {
+      const q = machineFilter.q.trim().toLowerCase();
+      let list = machines.filter(m => {
+        if (machineFilter.platform && (m.platform || "Custom") !== machineFilter.platform) return false;
+        if (machineFilter.status && machineStatus(m) !== machineFilter.status) return false;
+        if (machineFilter.tag && !(m.tags || []).includes(machineFilter.tag)) return false;
+        if (!q) return true;
+        return [m.name, m.ip, m.os].some(v => (v || "").toLowerCase().includes(q)) || (m.tags || []).some(tg => tg.toLowerCase().includes(q));
+      });
+      const pctOf = m => { const c = m.checklist || []; return c.length ? c.filter(x => x.done).length / c.length : 0; };
+      const cmp = {
+        name: (a, b) => (a.name || "").localeCompare(b.name || ""),
+        progress: (a, b) => pctOf(b) - pctOf(a),
+        recent: (a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0),
+      }[machineFilter.sort] || null;
+      if (cmp) list.sort(cmp);
+      return list;
+    }
+    function renderGrid() {
+      gridWrap.innerHTML = "";
+      const list = applyMachineView();
+      if (list.length === 0) {
+        const nr = document.createElement("div"); nr.className = "no-results";
+        nr.innerHTML = "<h3>" + t("noResults") + "</h3><p>" + t("noMatches") + "</p>";
+        gridWrap.appendChild(nr); return;
+      }
+      const grid = document.createElement("div"); grid.className = "machine-grid";
+      list.forEach(m => {
+        const done = (m.checklist || []).filter(c => c.done).length;
+        const tot = (m.checklist || []).length;
+        const pct = tot > 0 ? Math.round(done / tot * 100) : 0;
+        const st = machineStatus(m);
+        const diff = m.difficulty || "";
+        const phase = currentPhaseName(m);
+        const chips = (m.tags || []).slice(0, 3).map(tg => '<span class="machine-tag">' + escapeHtml(tg) + '</span>').join("");
+        const card = document.createElement("div"); card.className = "machine-card";
+        card.setAttribute("role", "button"); card.setAttribute("tabindex", "0");
+        card.setAttribute("aria-label", m.name + (m.ip ? ", " + m.ip : "") + ", " + stLabel(st));
+        card.innerHTML =
+          '<div class="machine-card-top">' +
+            '<span class="machine-os-icon">' + osIconFor(m.os) + '</span>' +
+            '<div class="machine-info"><div class="machine-name">' + escapeHtml(m.name) + '</div><div class="machine-ip">' + escapeHtml(m.ip || "No IP") + '</div></div>' +
+            (isCaptured(m.userFlag) ? '<span class="flag-chip user" title="' + t("userFlag") + '">🚩</span>' : '') +
+            (isCaptured(m.rootFlag) ? '<span class="flag-chip root" title="' + t("rootFlag") + '">👑</span>' : '') +
+            '<button class="machine-del-btn" title="' + t("del") + '" aria-label="' + t("del") + '">🗑</button>' +
+          '</div>' +
+          '<div class="machine-card-meta">' +
+            '<span class="machine-status st-' + st + '">' + stLabel(st) + '</span>' +
+            '<span class="machine-plat">' + escapeHtml(m.platform || "Custom") + '</span>' +
+            (diff ? '<span class="diff-badge diff-' + String(diff).toLowerCase() + '">' + escapeHtml(diffLabel(diff)) + '</span>' : '') +
+            chips +
+          '</div>' +
+          '<div class="machine-progress"><div class="machine-progress-bar"><div class="machine-progress-fill" style="width:' + pct + '%"></div></div><span class="machine-progress-text">' + done + '/' + tot + ' (' + pct + '%)</span></div>' +
+          (tot > 0 ? '<div class="machine-card-phase' + (phase ? '' : ' done') + '">' + (phase ? '▸ ' + escapeHtml(phase) : '✅ ' + t("allDone")) + '</div>' : '');
+        card.addEventListener("click", e => { if (e.target.closest(".machine-del-btn")) return; openMachineId = m.id; render(); });
+        card.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target === card) { e.preventDefault(); openMachineId = m.id; render(); } });
+        card.querySelector(".machine-del-btn").addEventListener("click", e => deleteMachine(m.id, e));
+        grid.appendChild(card);
+      });
+      gridWrap.appendChild(grid);
+    }
+    // Live filter without a full render() so the search box keeps focus.
+    let mST; mSearch.addEventListener("input", () => { clearTimeout(mST); mST = setTimeout(() => { machineFilter.q = mSearch.value; renderGrid(); }, 150); });
+    [platSel, statSel, tagSel, sortSel].forEach(sel => sel.addEventListener("change", () => { machineFilter[sel.dataset.f] = sel.value; renderGrid(); }));
+    renderGrid();
   }
 
   function renderMachineDetail(m) {
@@ -1280,30 +2142,56 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
     // Top bar
     const topbar = document.createElement("div"); topbar.className = "wu-editor-topbar";
-    topbar.innerHTML = '<button class="wu-back-btn">\u2190 ' + (lang === "tr" ? "Geri" : "Back") + '</button>' +
+    topbar.innerHTML = '<button class="wu-back-btn">← ' + t("back") + '</button>' +
       '<div class="wu-editor-status" id="machineStatus"></div>' +
-      '<button class="wu-delete-btn">🗑</button>';
+      '<div class="wu-topbar-actions">' +
+        '<button class="btn btn-secondary btn-sm machine-genwu-btn">📄 ' + t("genWriteup") + '</button>' +
+        '<button class="btn btn-secondary btn-sm machine-export-btn">' + t("exportMachineMd") + '</button>' +
+        '<button class="wu-delete-btn" title="' + t("del") + '" aria-label="' + t("del") + '">🗑</button>' +
+      '</div>';
     topbar.querySelector(".wu-back-btn").addEventListener("click", () => { openMachineId = null; render(); });
     topbar.querySelector(".wu-delete-btn").addEventListener("click", () => deleteMachine(m.id));
+    topbar.querySelector(".machine-genwu-btn").addEventListener("click", () => generateWriteupFromMachine(m));
+    topbar.querySelector(".machine-export-btn").addEventListener("click", () => exportMachineMd(m));
     page.appendChild(topbar);
 
-    // Header with editable IP / OS
+    // Header with editable name / IP / OS + metadata chips (platform/difficulty/status/tags)
     const info = document.createElement("div"); info.className = "machine-info-section";
+    const platOpts = MACHINE_PLATFORMS.map(p => '<option value="' + p + '"' + ((m.platform || "Custom") === p ? " selected" : "") + '>' + p + '</option>').join("");
+    const diffOpts = '<option value="">—</option>' + MACHINE_DIFFS.map(d => '<option value="' + d + '"' + (m.difficulty === d ? " selected" : "") + '>' + escapeHtml(diffLabel(d)) + '</option>').join("");
+    const statOpts = MACHINE_STATUSES.map(v => '<option value="' + v + '"' + (machineStatus(m) === v ? " selected" : "") + '>' + escapeHtml(stLabel(v)) + '</option>').join("");
     info.innerHTML =
       '<div class="machine-detail-header">' +
         '<span class="machine-detail-icon">' + osIconFor(m.os) + '</span>' +
         '<div class="machine-detail-meta">' +
-          '<h1 class="machine-detail-name">' + escapeHtml(m.name) + '</h1>' +
+          '<input class="machine-detail-name-input" data-k="name" value="' + escapeHtml(m.name) + '" aria-label="' + t("machineName") + '">' +
           '<div class="machine-meta-fields">' +
             '<input class="machine-meta-input" data-k="ip" placeholder="IP" value="' + escapeHtml(m.ip || "") + '" aria-label="IP">' +
             '<input class="machine-meta-input" data-k="os" placeholder="OS" value="' + escapeHtml(m.os || "") + '" aria-label="OS">' +
           '</div>' +
+          '<div class="machine-meta-chips">' +
+            '<label class="machine-chip-field"><span>' + t("mPlatform") + '</span><select class="form-select machine-chip-sel" data-sk="platform">' + platOpts + '</select></label>' +
+            '<label class="machine-chip-field"><span>' + t("mDifficulty") + '</span><select class="form-select machine-chip-sel" data-sk="difficulty">' + diffOpts + '</select></label>' +
+            '<label class="machine-chip-field"><span>' + t("mStatus") + '</span><select class="form-select machine-chip-sel" data-sk="status">' + statOpts + '</select></label>' +
+          '</div>' +
+          '<div class="machine-tags-row">' + (m.tags || []).map(tg => '<span class="machine-tag">' + escapeHtml(tg) + '</span>').join("") + '<button class="wu-edit-tags-btn machine-edit-tags">✎ ' + t("wuTags").toLowerCase() + '</button></div>' +
         '</div>' +
       '</div>';
-    info.querySelectorAll(".machine-meta-input").forEach(inp => inp.addEventListener("input", () => {
+    info.querySelectorAll(".machine-meta-input, .machine-detail-name-input").forEach(inp => inp.addEventListener("input", () => {
       m[inp.dataset.k] = inp.value; const patch = {}; patch[inp.dataset.k] = inp.value;
       saveMachine(m.id, patch); showMachineStatus();
     }));
+    info.querySelectorAll(".machine-chip-sel").forEach(sel => sel.addEventListener("change", () => {
+      const k = sel.dataset.sk; m[k] = sel.value;
+      const patch = {}; patch[k] = sel.value;
+      Object.assign(patch, machineAutoProgress(m)); // stamp startedAt/ownedAt & auto-advance
+      saveMachine(m.id, patch); render();
+    }));
+    info.querySelector(".machine-edit-tags").addEventListener("click", () => {
+      openModal(t("wuEditTags"), [{ key: "tags", label: t("wuTags"), placeholder: t("mTagsHint") }],
+        { tags: (m.tags || []).join(", ") },
+        async fd => { m.tags = fd.tags.split(",").map(s => s.trim()).filter(Boolean); await api("PUT", "/api/machines/" + m.id, { tags: m.tags }); await loadMachines(); render(); });
+    });
     page.appendChild(info);
 
     // Playbook selector — swaps in a situation-aware checklist template
@@ -1330,6 +2218,14 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const pct = total > 0 ? Math.round(done / total * 100) : 0;
     const curPhase = currentPhaseName(m);
     const nextItems = (m.checklist || []).filter(c => !c.done).slice(0, 3);
+    const startedTs = m.startedAt || m.createdAt;
+    const timingHtml =
+      '<div class="machine-timing">' +
+        '<span>⏱ ' + t("started") + ': <strong>' + (startedTs ? new Date(startedTs).toLocaleString() : "—") + '</strong></span>' +
+        (m.ownedAt
+          ? '<span>👑 ' + t("timeToOwn") + ': <strong>' + fmtElapsed(startedTs, m.ownedAt) + '</strong></span>'
+          : '<span>⏳ ' + t("elapsed") + ': <strong>' + fmtElapsed(startedTs, null) + '</strong></span>') +
+      '</div>';
     if (total > 0) {
       const overview = document.createElement("div"); overview.className = "machine-overview";
       overview.innerHTML =
@@ -1341,9 +2237,43 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
             '<div class="machine-overview-count">' + done + '/' + total + '</div>' +
           '</div>' +
         '</div>' +
+        timingHtml +
         (nextItems.length ? '<div class="machine-nextsteps"><span class="machine-nextsteps-label">' + t("nextSteps") + '</span><ul>' + nextItems.map(it => '<li>' + escapeHtml(it.label) + '</li>').join("") + '</ul></div>' : '');
       page.appendChild(overview);
+    } else {
+      const timing = document.createElement("div"); timing.className = "machine-overview"; timing.innerHTML = timingHtml;
+      page.appendChild(timing);
     }
+
+    // ── Flag capture (user / root) ──
+    const flagSection = document.createElement("div"); flagSection.className = "machine-section machine-flags";
+    flagSection.innerHTML = '<h3>🚩 ' + t("flags") + '</h3>';
+    [["userFlag", "🚩", t("userFlag")], ["rootFlag", "👑", t("rootFlag")]].forEach(([fk, icon, label]) => {
+      const f = m[fk] || { value: "", capturedAt: null };
+      const row = document.createElement("div"); row.className = "flag-row" + (f.capturedAt ? " captured" : "");
+      row.innerHTML =
+        '<span class="flag-icon" aria-hidden="true">' + icon + '</span>' +
+        '<span class="flag-label">' + label + '</span>' +
+        '<input class="machine-meta-input flag-input" placeholder="' + label + '" value="' + escapeHtml(f.value || "") + '" aria-label="' + label + '">' +
+        '<span class="flag-time">' + (f.capturedAt ? t("capturedAt") + " " + new Date(f.capturedAt).toLocaleString() : t("notCaptured")) + '</span>';
+      const inp = row.querySelector(".flag-input");
+      inp.addEventListener("input", () => {
+        const val = inp.value.trim();
+        m[fk] = { value: inp.value, capturedAt: val ? ((m[fk] && m[fk].capturedAt) || new Date().toISOString()) : null };
+        const patch = {}; patch[fk] = m[fk];
+        // Keep the matching checklist item in sync so progress reflects the flag.
+        const re = fk === "userFlag" ? /user-?flag|local\.txt|user\.txt/i : /root-?flag|proof\.txt|root\.txt/i;
+        const it = (m.checklist || []).find(c => re.test((c.id || "") + " " + (c.label || "")));
+        if (it) { it.done = !!val; patch.checklist = m.checklist; }
+        Object.assign(patch, machineAutoProgress(m));
+        saveMachine(m.id, patch);
+        row.classList.toggle("captured", !!val);
+        row.querySelector(".flag-time").textContent = m[fk].capturedAt ? t("capturedAt") + " " + new Date(m[fk].capturedAt).toLocaleString() : t("notCaptured");
+        updateProgressUI(); showMachineStatus();
+      });
+      flagSection.appendChild(row);
+    });
+    page.appendChild(flagSection);
 
     function updateProgressUI() {
       const tt = (m.checklist || []).length;
@@ -1365,14 +2295,24 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         const gDone = g.items.filter(x => x.item.done).length;
         const phaseWrap = document.createElement("div"); phaseWrap.className = "checklist-phase" + (g.phase === curPhase ? " current" : "");
         const ph = document.createElement("div"); ph.className = "checklist-phase-header";
-        ph.innerHTML = '<span class="checklist-phase-name">' + escapeHtml(g.phase) + '</span><span class="checklist-phase-count">' + gDone + '/' + g.items.length + '</span>';
+        ph.innerHTML = '<span class="checklist-phase-name">' + escapeHtml(g.phase) + '</span>' +
+          '<span class="checklist-phase-right"><span class="checklist-phase-count">' + gDone + '/' + g.items.length + '</span>' +
+          '<button class="checklist-phase-copy" title="' + t("copyPhaseCmds") + '" aria-label="' + t("copyPhaseCmds") + '">⧉</button></span>';
+        ph.querySelector(".checklist-phase-copy").addEventListener("click", ev => {
+          ev.stopPropagation();
+          const cmds = g.items.map(({ item }) => item.hint).filter(Boolean).map(applyIpToCode);
+          if (!cmds.length) { toast(t("noPhaseCmds"), "error"); return; }
+          copyText("# " + g.phase + "\n" + cmds.join("\n"), () => { announce(t("copied")); toast(t("copied"), "ok"); });
+        });
         phaseWrap.appendChild(ph);
         g.items.forEach(({ item, i }) => {
           const row = document.createElement("div"); row.className = "checklist-item" + (item.done ? " done" : "");
           const cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = !!item.done; cb.id = "ck-" + m.id + "-" + i;
           cb.addEventListener("change", () => {
             m.checklist[i].done = cb.checked;
-            saveMachine(m.id, { checklist: m.checklist });
+            const patch = { checklist: m.checklist };
+            Object.assign(patch, machineAutoProgress(m)); // first tick stamps startedAt / advances status
+            saveMachine(m.id, patch);
             row.classList.toggle("done", cb.checked);
             updateProgressUI(); showMachineStatus();
           });
@@ -2012,30 +2952,49 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     a.download = (wu.title || "writeup").replace(/[^a-z0-9]/gi, "_") + ".md";
     a.click(); URL.revokeObjectURL(a.href);
   }
+  // Shared print/standalone stylesheet — selectors match the renderMarkdown output.
+  // Reused by both PDF (print window) and HTML (standalone file) export paths.
+  const WU_PRINT_CSS =
+    "body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:36px auto;padding:0 24px;line-height:1.6;color:#1a1a1a}" +
+    "h1{border-bottom:3px solid #6366f1;padding-bottom:8px;font-size:26px}" +
+    "h2{border-bottom:1px solid #ccc;padding-bottom:4px;margin-top:28px;font-size:20px}" +
+    "h3{margin-top:20px;font-size:16px}h4,h5,h6{margin-top:14px}" +
+    ".wu-code-wrap{margin:12px 0}.wu-code-head{display:flex;justify-content:space-between;align-items:center;background:#ececf2;border:1px solid #e5e5ea;border-bottom:none;border-radius:6px 6px 0 0;padding:3px 10px;font-size:11px;color:#555}.wu-code-wrap pre{margin:0;border-radius:0 0 6px 6px}" +
+    "pre{background:#f5f5f7;padding:12px;border-radius:6px;overflow-x:auto;font-size:12.5px;border:1px solid #e5e5ea;white-space:pre-wrap;word-break:break-word}" +
+    "code{background:#f5f5f7;padding:2px 5px;border-radius:4px;font-size:12.5px;font-family:Consolas,monospace}pre code{background:none;padding:0}" +
+    "table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13px}" +
+    "th,td{border:1px solid #d0d0d5;padding:7px 10px;text-align:left;vertical-align:top}th{background:#f0f0f4}" +
+    "del{color:#999}blockquote{border-left:3px solid #ccc;margin:10px 0;padding:4px 14px;color:#555}" +
+    "a{color:#4338ca}img{max-width:100%;border:1px solid #e5e5ea;border-radius:4px;margin:8px 0}" +
+    ".meta{color:#666;font-size:13px;margin-bottom:20px}hr{border:none;border-top:1px solid #ddd;margin:18px 0}" +
+    "ul,ol{margin:8px 0 8px 22px}" +
+    "@media print{a{color:#000;text-decoration:none}.wu-code-head,.wu-code-copy{display:none}pre,table,blockquote,.wu-code-wrap{break-inside:avoid}h1,h2,h3{break-after:avoid}}";
+  function wuMetaHtml(wu) {
+    return '<div class="meta">' + t("wuTags") + ": " + (wu.tags || []).map(escapeHtml).join(", ") +
+      " &nbsp;|&nbsp; " + escapeHtml(new Date(wu.updatedAt).toLocaleString()) +
+      " &nbsp;|&nbsp; " + wuReadMins(wu.content) + " " + t("wuMin") + "</div><hr>";
+  }
   function exportWriteupPdf(wu) {
     const win = window.open("", "_blank");
     if (!win) { toast(t("copyFail"), "error"); return; }
-    // Professional print stylesheet (element selectors match the renderMarkdown output).
-    const css =
-      "body{font-family:'Segoe UI',Arial,sans-serif;max-width:820px;margin:36px auto;padding:0 24px;line-height:1.6;color:#1a1a1a}" +
-      "h1{border-bottom:3px solid #6366f1;padding-bottom:8px;font-size:26px}" +
-      "h2{border-bottom:1px solid #ccc;padding-bottom:4px;margin-top:28px;font-size:20px}" +
-      "h3{margin-top:20px;font-size:16px}h4,h5,h6{margin-top:14px}" +
-      "pre{background:#f5f5f7;padding:12px;border-radius:6px;overflow-x:auto;font-size:12.5px;border:1px solid #e5e5ea}" +
-      "code{background:#f5f5f7;padding:2px 5px;border-radius:4px;font-size:12.5px;font-family:Consolas,monospace}pre code{background:none;padding:0}" +
-      "table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13px}" +
-      "th,td{border:1px solid #d0d0d5;padding:7px 10px;text-align:left;vertical-align:top}th{background:#f0f0f4}" +
-      "a{color:#4338ca}img{max-width:100%;border:1px solid #e5e5ea;border-radius:4px;margin:8px 0}" +
-      ".meta{color:#666;font-size:13px;margin-bottom:20px}hr{border:none;border-top:1px solid #ddd;margin:18px 0}" +
-      "ul{margin:8px 0 8px 22px}@media print{a{color:#000;text-decoration:none}}";
-    let html = "<!DOCTYPE html><html><head><meta charset='utf-8'><title>" + escapeHtml(wu.title) + "</title><style>" + css + "</style></head><body>";
-    html += "<h1>" + escapeHtml(wu.title) + "</h1>";
-    html += '<div class="meta">Tags: ' + (wu.tags || []).map(escapeHtml).join(", ") + " &nbsp;|&nbsp; " + escapeHtml(new Date(wu.updatedAt).toLocaleString()) + "</div><hr>";
+    let html = "<!DOCTYPE html><html lang='" + lang + "'><head><meta charset='utf-8'><title>" + escapeHtml(wu.title) + "</title><style>" + WU_PRINT_CSS + "</style></head><body>";
+    html += "<h1>" + escapeHtml(wu.title) + "</h1>" + wuMetaHtml(wu);
     html += renderMarkdown(wu.content || "");
     html += "</body></html>";
     win.document.write(html);
     win.document.close();
     setTimeout(() => { win.print(); }, 500);
+  }
+  function exportWriteupHtml(wu) {
+    const html = "<!DOCTYPE html><html lang='" + lang + "'><head><meta charset='utf-8'>" +
+      "<meta name='viewport' content='width=device-width,initial-scale=1'>" +
+      "<title>" + escapeHtml(wu.title) + "</title><style>" + WU_PRINT_CSS + "</style></head><body>" +
+      "<h1>" + escapeHtml(wu.title) + "</h1>" + wuMetaHtml(wu) + renderMarkdown(wu.content || "") + "</body></html>";
+    const blob = new Blob([html], { type: "text/html" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = (wu.title || "writeup").replace(/[^a-z0-9]/gi, "_") + ".html";
+    a.click(); URL.revokeObjectURL(a.href);
   }
 
   // ── Terminal Integration (copy all commands as terminal-friendly format) ──
@@ -2218,7 +3177,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   function stateToHash() {
     if (activeCategory === "favs") return "favorites";
     if (activeCategory === "writeups") return "writeups";
-    if (activeCategory === "machines") return "machines";
+    if (activeCategory === "machines") return openMachineId ? "machines/" + openMachineId : "machines";
     if (activeCategory === "history") return "history";
     if (activeCategory) return "cat/" + activeCategory;
     return "";
@@ -2232,14 +3191,16 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   }
   function applyHash() {
     const raw = (window.location.hash || "").replace(/^#/, "");
-    let target = null;
+    let target = null, mid = null;
     if (raw === "favorites" || raw === "favs") target = "favs";
     else if (raw === "writeups") target = "writeups";
     else if (raw === "machines") target = "machines";
+    else if (raw.indexOf("machines/") === 0) { target = "machines"; mid = raw.slice(9); }
     else if (raw === "history") target = "history";
     else if (raw.indexOf("cat/") === 0) { const id = raw.slice(4); target = CATEGORIES.some(c => c.id === id) ? id : null; }
     activeCategory = target; searchQuery = ""; searchInput.value = "";
-    openWriteupId = null; openMachineId = null;
+    openWriteupId = null;
+    openMachineId = mid && machines.some(x => x.id === mid) ? mid : null;
     render();
   }
   window.addEventListener("hashchange", () => { if (!suppressHash) applyHash(); });
@@ -2325,6 +3286,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   const launchHash = (window.location.hash || "").replace(/^#/, "");
   const hashView = { favorites: "favs", favs: "favs", writeups: "writeups", machines: "machines", history: "history" }[launchHash];
   if (hashView) activeCategory = hashView;
+  else if (launchHash.indexOf("machines/") === 0) { activeCategory = "machines"; openMachineId = launchHash.slice(9); }
   else if (launchHash.indexOf("cat/") === 0) activeCategory = launchHash.slice(4);
   loadData();
 })();

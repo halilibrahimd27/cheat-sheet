@@ -1922,3 +1922,139 @@ body {
 [data-theme="light"] .top-bar { box-shadow: 0 1px 0 var(--border-primary), 0 6px 16px -14px rgba(0,0,0,0.15); }
 [data-theme="light"] .cmd-card:hover { box-shadow: 0 6px 18px -10px rgba(0,0,0,0.18); }
 [data-theme="light"] .sidebar { box-shadow: 1px 0 0 var(--border-primary); }
+
+/* ============================================
+   Round 3 — Machines metadata, flags, dashboard,
+   timing + Write-ups list controls / rich code
+   (additive; safe, theme-aware)
+   ============================================ */
+
+/* ── Reveal opacity-hidden card actions on keyboard focus (a11y: WCAG 2.4.7) ── */
+.wu-file-card:focus-within .wu-file-delete,
+.wu-file-card:focus-within .wu-file-pin,
+.machine-card:focus-within .machine-del-btn { opacity: 1; }
+
+/* ── Machines: aggregate stats dashboard ── */
+.machine-stats-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.machine-stat {
+    flex: 1; min-width: 110px; display: flex; flex-direction: column; gap: 2px;
+    background: var(--bg-card); border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md); padding: 10px 14px;
+    font-size: 12px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.4px;
+}
+.machine-stat strong { font-size: 22px; color: var(--accent-primary); font-family: 'JetBrains Mono', monospace; }
+.machine-stat strong.s-owned { color: var(--accent-green); }
+.machine-stat strong.s-prog { color: var(--accent-yellow); }
+
+/* ── Machines: list controls (search + filters + sort) ── */
+.machine-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.machine-controls .wu-list-search {
+    flex: 1; min-width: 180px; background: var(--bg-input); border: 1px solid var(--border-primary);
+    border-radius: var(--radius-sm); color: var(--text-primary); padding: 8px 12px; font-size: 13px;
+}
+.machine-controls .wu-list-search:focus { outline: none; border-color: var(--accent-primary); box-shadow: 0 0 0 2px var(--accent-glow); }
+.machine-filter-sel { min-width: 140px; }
+
+/* ── Machines: card metadata (status pill, difficulty, platform, tags, flags) ── */
+.machine-card-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 8px 0; }
+.machine-status { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; padding: 2px 8px; border-radius: 999px; border: 1px solid transparent; }
+.machine-status.st-not-started { background: var(--bg-badge); color: var(--text-tertiary); border-color: var(--border-primary); }
+.machine-status.st-in-progress { background: rgba(251, 191, 36, 0.14); color: var(--accent-yellow); border-color: rgba(251, 191, 36, 0.35); }
+.machine-status.st-owned { background: rgba(52, 211, 153, 0.14); color: var(--accent-green); border-color: rgba(52, 211, 153, 0.4); }
+.machine-status.st-reported { background: rgba(99, 102, 241, 0.16); color: var(--accent-secondary); border-color: rgba(99, 102, 241, 0.4); }
+.machine-plat { font-size: 10px; padding: 2px 8px; border-radius: 999px; background: var(--bg-badge); color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; }
+.diff-badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 999px; border: 1px solid transparent; }
+.diff-badge.diff-easy { background: rgba(52, 211, 153, 0.14); color: var(--accent-green); border-color: rgba(52, 211, 153, 0.35); }
+.diff-badge.diff-medium { background: rgba(251, 191, 36, 0.14); color: var(--accent-yellow); border-color: rgba(251, 191, 36, 0.35); }
+.diff-badge.diff-hard { background: rgba(251, 146, 60, 0.14); color: var(--accent-orange); border-color: rgba(251, 146, 60, 0.35); }
+.diff-badge.diff-insane { background: rgba(248, 113, 113, 0.14); color: var(--accent-red); border-color: rgba(248, 113, 113, 0.4); }
+.machine-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: rgba(34, 211, 238, 0.12); color: var(--accent-cyan); }
+.flag-chip { font-size: 14px; flex-shrink: 0; }
+.flag-chip.user { filter: saturate(1.2); }
+
+/* ── Machines: detail editable name + metadata chip selectors ── */
+.machine-detail-name-input {
+    width: 100%; background: transparent; border: 1px solid transparent; border-radius: var(--radius-sm);
+    color: var(--text-heading); font-size: 26px; font-weight: 700; padding: 2px 6px; margin: -2px -6px 4px;
+    font-family: inherit; transition: border-color var(--transition), background var(--transition);
+}
+.machine-detail-name-input:hover { border-color: var(--border-primary); }
+.machine-detail-name-input:focus { outline: none; background: var(--bg-input); border-color: var(--accent-primary); box-shadow: 0 0 0 2px var(--accent-glow); }
+.machine-meta-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.machine-chip-field { display: flex; flex-direction: column; gap: 3px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-tertiary); }
+.machine-chip-field .form-select { min-width: 130px; padding: 5px 10px; font-size: 12px; }
+.machine-tags-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 10px; }
+
+/* ── Machines: flag capture rows ── */
+.machine-flags .flag-row {
+    display: flex; align-items: center; gap: 10px; padding: 8px 10px; margin-bottom: 6px;
+    background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: var(--radius-sm); flex-wrap: wrap;
+}
+.machine-flags .flag-row.captured { border-color: var(--accent-green); box-shadow: inset 3px 0 0 var(--accent-green); }
+.flag-icon { font-size: 16px; }
+.flag-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); min-width: 72px; }
+.flag-input { flex: 1; min-width: 160px; }
+.flag-time { font-size: 11px; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; }
+
+/* ── Machines: timing line ── */
+.machine-timing { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-primary); font-size: 12px; color: var(--text-tertiary); }
+.machine-timing strong { color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+
+/* ── Machines: per-phase copy button ── */
+.checklist-phase-right { display: flex; align-items: center; gap: 8px; }
+.checklist-phase-copy {
+    background: transparent; border: 1px solid transparent; border-radius: var(--radius-sm);
+    color: var(--text-tertiary); cursor: pointer; font-size: 12px; width: 24px; height: 22px; line-height: 1;
+    transition: color var(--transition), border-color var(--transition);
+}
+.checklist-phase-copy:hover { color: var(--accent-primary); border-color: var(--accent-primary); }
+
+/* ── Write-ups: list controls, chips, stats, pins, reading time ── */
+.wu-list-controls { display: flex; gap: 10px; margin: 4px 0 10px; flex-wrap: wrap; }
+.wu-list-search {
+    flex: 1; min-width: 200px; background: var(--bg-input); border: 1px solid var(--border-primary);
+    border-radius: var(--radius-sm); color: var(--text-primary); padding: 8px 12px; font-size: 13px;
+}
+.wu-list-search:focus { outline: none; border-color: var(--accent-primary); box-shadow: 0 0 0 2px var(--accent-glow); }
+.wu-tag-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.wu-chip {
+    border: 1px solid var(--border-primary); border-radius: 14px; padding: 3px 12px;
+    background: transparent; color: var(--text-secondary); cursor: pointer; font-size: 12px;
+    transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+.wu-chip:hover { border-color: var(--accent-primary); color: var(--text-primary); }
+.wu-chip.active { background: var(--accent-primary); color: #fff; border-color: var(--accent-primary); }
+.wu-stats-line { color: var(--text-tertiary); font-size: 12px; margin-bottom: 12px; font-family: 'JetBrains Mono', monospace; }
+.wu-readtime { font-size: 11px; color: var(--text-tertiary); }
+.wu-file-card.pinned { border-color: var(--accent-primary); box-shadow: inset 3px 0 0 var(--accent-primary); }
+.wu-file-actions { display: flex; flex-direction: column; gap: 4px; align-items: center; }
+.wu-file-pin, .wu-pin-btn {
+    background: none; border: none; cursor: pointer; opacity: 0.5; font-size: 14px; padding: 2px;
+    transition: opacity var(--transition), transform var(--transition);
+}
+.wu-file-card:hover .wu-file-pin { opacity: 0.8; }
+.wu-file-pin.active, .wu-pin-btn.active { opacity: 1; filter: drop-shadow(0 0 3px var(--accent-glow)); }
+.wu-file-pin:hover, .wu-pin-btn:hover { transform: scale(1.15); opacity: 1; }
+.wu-related-machine {
+    display: inline-flex; align-items: center; gap: 6px; margin: 4px 0 16px;
+    background: var(--bg-card); border: 1px solid var(--border-primary); border-left: 3px solid var(--accent-cyan);
+    border-radius: var(--radius-sm); color: var(--accent-cyan); cursor: pointer; padding: 6px 12px; font-size: 13px;
+    transition: background var(--transition), border-color var(--transition);
+}
+.wu-related-machine:hover { background: var(--bg-card-hover); border-color: var(--accent-primary); }
+
+/* ── Write-ups: rich fenced code block (language label + copy button) ── */
+.wu-read-body .wu-code-wrap { margin: 12px 0; border: 1px solid var(--border-primary); border-radius: var(--radius-sm); overflow: hidden; }
+.wu-read-body .wu-code-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    padding: 4px 10px; background: var(--bg-tertiary); border-bottom: 1px solid var(--border-primary);
+}
+.wu-read-body .wu-code-lang { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; }
+.wu-read-body .wu-code-copy {
+    margin-left: auto; background: transparent; border: 1px solid var(--border-secondary); border-radius: var(--radius-sm);
+    color: var(--text-secondary); cursor: pointer; font-size: 11px; padding: 2px 8px;
+    transition: color var(--transition), border-color var(--transition);
+}
+.wu-read-body .wu-code-copy:hover { color: var(--accent-primary); border-color: var(--accent-primary); }
+.wu-read-body .wu-code-wrap .wu-code-block { margin: 0; border: none; border-radius: 0; }
+.wu-read-body del { color: var(--text-tertiary); }

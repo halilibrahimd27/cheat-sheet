@@ -508,6 +508,7 @@ app.put("/api/writeups/:id", (req, res) => {
   if (req.body.title !== undefined) wu.title = req.body.title;
   if (req.body.tags !== undefined) wu.tags = req.body.tags;
   if (req.body.content !== undefined) wu.content = req.body.content;
+  if (req.body.relatedMachine !== undefined) wu.relatedMachine = req.body.relatedMachine;
   wu.updatedAt = new Date().toISOString();
   writeWriteups(wups);
   res.json(wu);
@@ -527,11 +528,18 @@ function writeMachines(d) { atomicWrite(MACHINES_FILE, JSON.stringify(d, null, 2
 app.get("/api/machines", (req, res) => res.json(readMachines()));
 app.post("/api/machines", (req, res) => {
   const machines = readMachines();
-  const { name, ip, os } = req.body;
+  const { name, ip, os, platform, difficulty, status, tags } = req.body;
   if (!isNonEmptyString(name)) return res.status(400).json({ error: "name required" });
   const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
   const machine = {
     id, name, ip: ip || "", os: os || "unknown",
+    platform: typeof platform === "string" && platform ? platform : "Custom",
+    difficulty: typeof difficulty === "string" ? difficulty : "",
+    status: typeof status === "string" && status ? status : "not-started",
+    tags: Array.isArray(tags) ? tags.filter(t => typeof t === "string") : [],
+    userFlag: { value: "", capturedAt: null },
+    rootFlag: { value: "", capturedAt: null },
+    startedAt: null, ownedAt: null,
     services: [], credentials: [], notes: "",
     checklist: [
       { id: "nmap", label: "Initial Nmap Scan", done: false },
@@ -556,7 +564,8 @@ app.put("/api/machines/:id", (req, res) => {
   const machines = readMachines();
   const m = machines.find(x => x.id === req.params.id);
   if (!m) return res.status(404).json({ error: "not found" });
-  for (const key of ["name", "ip", "os", "services", "credentials", "notes", "checklist", "template", "hosts", "attackPath"]) {
+  for (const key of ["name", "ip", "os", "services", "credentials", "notes", "checklist", "template", "hosts", "attackPath",
+    "platform", "difficulty", "status", "tags", "userFlag", "rootFlag", "startedAt", "ownedAt"]) {
     if (req.body[key] !== undefined) m[key] = req.body[key];
   }
   m.updatedAt = new Date().toISOString();
