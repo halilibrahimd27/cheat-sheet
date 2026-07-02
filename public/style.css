@@ -2083,3 +2083,43 @@ body {
 .wu-read-body .wu-code-copy:hover { color: var(--accent-primary); border-color: var(--accent-primary); }
 .wu-read-body .wu-code-wrap .wu-code-block { margin: 0; border: none; border-radius: 0; }
 .wu-read-body del { color: var(--text-tertiary); }
+
+/* ============================================
+   Round 4 — palette jump targets, loading/error
+   states, editable checklist, service quick-scan
+   ============================================ */
+
+/* App loading + error/retry states (initial data load) */
+.app-loading, .app-error { text-align: center; padding: 64px 20px; color: var(--text-secondary); }
+.app-spinner {
+    width: 34px; height: 34px; margin: 0 auto 14px; border-radius: 50%;
+    border: 3px solid var(--border-primary); border-top-color: var(--accent-primary);
+    animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.app-error-icon { font-size: 40px; margin-bottom: 8px; }
+.app-error h3 { color: var(--text-heading); margin-bottom: 6px; }
+.app-error p { max-width: 440px; margin: 0 auto 16px; }
+
+/* Editable checklist: per-item delete + add-item row */
+.checklist-item-del {
+    flex-shrink: 0; background: none; border: none; cursor: pointer; color: var(--text-tertiary);
+    font-size: 13px; padding: 0 4px; opacity: 0; margin-top: 2px; transition: opacity var(--transition), color var(--transition);
+}
+.checklist-item:hover .checklist-item-del, .checklist-item:focus-within .checklist-item-del { opacity: 0.7; }
+.checklist-item-del:hover { color: var(--accent-red); opacity: 1; }
+.checklist-add { display: flex; gap: 8px; padding: 8px 12px; border-top: 1px dashed var(--border-primary); background: var(--bg-card); }
+.checklist-add-input {
+    flex: 1; min-width: 0; background: var(--bg-input); border: 1px solid var(--border-primary);
+    border-radius: var(--radius-sm); color: var(--text-primary); padding: 5px 10px; font-size: 12px;
+}
+.checklist-add-input:focus { outline: none; border-color: var(--accent-primary); box-shadow: 0 0 0 2px var(--accent-glow); }
+
+/* Services: port quick-scan chips */
+.svc-quick { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.svc-chip {
+    font-size: 11px; font-family: 'JetBrains Mono', monospace; padding: 3px 10px; border-radius: 999px;
+    background: var(--bg-tertiary); border: 1px solid var(--border-primary); color: var(--text-secondary); cursor: pointer;
+    transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+.svc-chip:hover { background: var(--accent-glow); border-color: var(--accent-primary); color: var(--text-primary); }

@@ -87,6 +87,8 @@
       dragHint: "Tip: drag a node to reposition it.",
       detailTab: "Details", reportTab: "Report", saveAsWriteup: "Save as write-up",
       reportLive: "This report is generated live from the machine's current data. Export it, or save an editable copy as a write-up.",
+      loading: "Loading…", loadErrTitle: "Couldn't reach the server", loadErrBody: "The app couldn't load your data. Make sure the server is running, then retry.", retry: "Retry",
+      svcScanHint: "Copy a service scan for this port", delItem: "Remove item", jumpMachine: "Machine", jumpWriteup: "Write-up",
       copyPhaseCmds: "Copy phase commands", noPhaseCmds: "No commands in this phase",
       started: "Started", ownedAtLbl: "Owned at", elapsed: "Elapsed", timeToOwn: "Time to own",
       exportMachineMd: "Export MD", addChecklistItem: "+ Add item", customItemPh: "Custom checklist item…",
@@ -155,6 +157,8 @@
       dragHint: "Ipucu: bir dugumu surukleyerek yeniden konumlandirabilirsiniz.",
       detailTab: "Detay", reportTab: "Rapor", saveAsWriteup: "Write-up olarak kaydet",
       reportLive: "Bu rapor makinenin guncel verisinden canli uretilir. Disa aktarabilir ya da duzenlenebilir bir write-up olarak kaydedebilirsiniz.",
+      loading: "Yukleniyor…", loadErrTitle: "Sunucuya ulasilamadi", loadErrBody: "Uygulama verilerinizi yukleyemedi. Sunucunun calistigindan emin olun ve tekrar deneyin.", retry: "Tekrar dene",
+      svcScanHint: "Bu port icin servis taramasi kopyala", delItem: "Maddeyi kaldir", jumpMachine: "Makine", jumpWriteup: "Write-up",
       copyPhaseCmds: "Asama komutlarini kopyala", noPhaseCmds: "Bu asamada komut yok",
       started: "Baslatildi", ownedAtLbl: "Ele gecirilme", elapsed: "Gecen sure", timeToOwn: "Ele gecirme suresi",
       exportMachineMd: "MD Aktar", addChecklistItem: "+ Madde ekle", customItemPh: "Ozel kontrol maddesi…",
@@ -261,14 +265,27 @@
     }
     return data;
   }
+  function showLoading() {
+    hero.style.display = "none";
+    contentArea.innerHTML = '<div class="app-loading" role="status" aria-live="polite"><div class="app-spinner" aria-hidden="true"></div><p>' + t("loading") + '</p></div>';
+  }
+  function showLoadError() {
+    hero.style.display = "none";
+    contentArea.innerHTML = '<div class="app-error"><div class="app-error-icon" aria-hidden="true">⚠️</div><h3>' + t("loadErrTitle") + '</h3><p>' + t("loadErrBody") + '</p><button class="btn btn-primary" id="retryBtn">' + t("retry") + '</button></div>';
+    const b = document.getElementById("retryBtn"); if (b) b.addEventListener("click", loadData);
+  }
   async function loadData() {
-    // Fetch all four collections in parallel instead of chaining four round-trips.
-    await Promise.all([loadCategories(), loadNotes(), loadWriteups(), loadMachines()]);
+    showLoading();
+    // Categories are the critical collection — if the server is unreachable, show
+    // a retryable error instead of a permanently blank screen.
+    const cats = await api("GET", "/api/categories");
+    if (cats == null) { showLoadError(); return; }
+    CATEGORIES = cats;
+    await Promise.all([loadNotes(), loadWriteups(), loadMachines()]);
     buildSearchIndex();
     migrateFavorites();
     render();
   }
-  async function loadCategories() { CATEGORIES = await api("GET", "/api/categories") || []; }
 
   function getStats() {
     let tc = 0, ts = 0;
@@ -2481,9 +2498,30 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
             hintRow.appendChild(code); hintRow.appendChild(copyBtn);
             body.appendChild(hintRow);
           }
-          row.appendChild(cb); row.appendChild(body);
+          const del = document.createElement("button"); del.className = "checklist-item-del"; del.textContent = "✕"; del.title = t("delItem"); del.setAttribute("aria-label", t("delItem"));
+          del.addEventListener("click", ev => {
+            ev.stopPropagation();
+            m.checklist.splice(i, 1);
+            saveMachine(m.id, { checklist: m.checklist });
+            render();
+          });
+          row.appendChild(cb); row.appendChild(body); row.appendChild(del);
           phaseWrap.appendChild(row);
         });
+        // Add a custom item to this phase.
+        const addRow = document.createElement("div"); addRow.className = "checklist-add";
+        const addInp = document.createElement("input"); addInp.className = "checklist-add-input"; addInp.placeholder = t("customItemPh"); addInp.setAttribute("aria-label", t("customItemPh"));
+        const addBtn = document.createElement("button"); addBtn.className = "btn btn-secondary btn-sm"; addBtn.textContent = t("addChecklistItem");
+        const addItem = () => {
+          const label = addInp.value.trim(); if (!label) return;
+          m.checklist.push({ id: "custom-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), label, hint: "", phase: g.phase, done: false });
+          saveMachine(m.id, { checklist: m.checklist });
+          render();
+        };
+        addBtn.addEventListener("click", addItem);
+        addInp.addEventListener("keydown", ev => { if (ev.key === "Enter") { ev.preventDefault(); addItem(); } });
+        addRow.appendChild(addInp); addRow.appendChild(addBtn);
+        phaseWrap.appendChild(addRow);
         checkSection.appendChild(phaseWrap);
       });
       page.appendChild(checkSection);
@@ -2702,8 +2740,29 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const svcArea = document.createElement("textarea"); svcArea.className = "machine-textarea";
     svcArea.placeholder = "22/tcp  SSH  OpenSSH 7.9\n80/tcp  HTTP Apache 2.4\n445/tcp SMB  Samba 4.9";
     svcArea.value = (m.services || []).join("\n");
-    svcArea.addEventListener("input", () => { saveMachine(m.id, { services: svcArea.value.split("\n").filter(Boolean) }); showMachineStatus(); });
-    svcSection.appendChild(svcArea); page.appendChild(svcSection);
+    const svcQuick = document.createElement("div"); svcQuick.className = "svc-quick";
+    // Parse ports out of the (nmap-style) services text and offer targeted re-scan copies.
+    function parsePorts(text) {
+      const set = []; const seen = {};
+      (text.match(/\b(\d{1,5})\/(?:tcp|udp)\b/gi) || []).forEach(tok => { const p = tok.split("/")[0]; if (!seen[p] && +p > 0 && +p < 65536) { seen[p] = 1; set.push(p); } });
+      return set;
+    }
+    function renderSvcQuick() {
+      svcQuick.innerHTML = "";
+      const ports = parsePorts(svcArea.value);
+      if (!ports.length) return;
+      const ip = m.ip || "<TARGET_IP>";
+      const mkChip = (label, cmd, title) => {
+        const b = document.createElement("button"); b.className = "svc-chip"; b.textContent = label; b.title = title;
+        b.addEventListener("click", () => copyText(cmd, () => { announce(t("copied")); toast(t("copied"), "ok"); }));
+        return b;
+      };
+      svcQuick.appendChild(mkChip("🔎 nmap -sCV (" + ports.length + ")", "nmap -sCV -p" + ports.join(",") + " " + ip, t("svcScanHint")));
+      ports.slice(0, 12).forEach(p => svcQuick.appendChild(mkChip(p, "nmap -sCV -p" + p + " " + ip, t("svcScanHint"))));
+    }
+    svcArea.addEventListener("input", () => { saveMachine(m.id, { services: svcArea.value.split("\n").filter(Boolean) }); showMachineStatus(); renderSvcQuick(); });
+    svcSection.appendChild(svcArea); svcSection.appendChild(svcQuick); page.appendChild(svcSection);
+    renderSvcQuick();
 
     // Credentials / loot
     const credSection = document.createElement("div"); credSection.className = "machine-section";
@@ -3140,11 +3199,27 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     win.document.close();
     setTimeout(() => { win.print(); }, 500);
   }
-  function exportWriteupHtml(wu) {
-    const html = "<!DOCTYPE html><html lang='" + lang + "'><head><meta charset='utf-8'>" +
+  // Inline every /uploads/... image as a base64 data URI so an exported HTML file
+  // is fully self-contained (works when opened away from the server). Best-effort:
+  // a fetch that fails leaves the original URL untouched.
+  async function inlineUploads(html) {
+    const urls = Array.from(new Set(html.match(/\/uploads\/[A-Za-z0-9._-]+/g) || []));
+    for (const u of urls) {
+      try {
+        const res = await fetch(u); if (!res.ok) continue;
+        const blob = await res.blob();
+        const dataUri = await new Promise((resolve, reject) => { const fr = new FileReader(); fr.onload = () => resolve(fr.result); fr.onerror = reject; fr.readAsDataURL(blob); });
+        html = html.split('"' + u + '"').join('"' + dataUri + '"');
+      } catch { /* leave the URL as-is */ }
+    }
+    return html;
+  }
+  async function exportWriteupHtml(wu) {
+    let html = "<!DOCTYPE html><html lang='" + lang + "'><head><meta charset='utf-8'>" +
       "<meta name='viewport' content='width=device-width,initial-scale=1'>" +
       "<title>" + escapeHtml(wu.title) + "</title><style>" + WU_PRINT_CSS + "</style></head><body>" +
       "<h1>" + escapeHtml(wu.title) + "</h1>" + wuMetaHtml(wu) + renderMarkdown(wu.content || "") + "</body></html>";
+    html = await inlineUploads(html);
     const blob = new Blob([html], { type: "text/html" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
@@ -3260,15 +3335,25 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     return qi === q.length ? score - hayStr.length * 0.002 : -1;
   }
   function navTo(target) { closePalette(); activeCategory = target; searchQuery = ""; searchInput.value = ""; openWriteupId = null; openMachineId = null; render(); }
+  // Jump straight to a specific machine / write-up (opens its detail/editor view).
+  function navToMachine(id) { closePalette(); activeCategory = "machines"; openMachineId = id; openWriteupId = null; searchQuery = ""; searchInput.value = ""; render(); window.scrollTo({ top: 0, behavior: motionBehavior() }); }
+  function navToWriteup(id) { closePalette(); activeCategory = "writeups"; openWriteupId = id; openMachineId = null; wuEditMode = false; searchQuery = ""; searchInput.value = ""; render(); window.scrollTo({ top: 0, behavior: motionBehavior() }); }
   function buildPaletteBase() {
     const items = [];
-    const act = (icon, label, run) => items.push({ type: "action", icon, label, hay: label.toLowerCase(), run });
+    const act = (icon, label, run, sub, extraHay) => items.push({ type: "action", icon, label, sub, hay: (label + " " + (extraHay || "")).toLowerCase(), run });
     act("📋", t("goto") + ": " + t("allCommands"), () => navTo(null));
     act("⭐", t("goto") + ": " + t("favorites"), () => navTo("favs"));
-    act("📝", t("goto") + ": Write-ups", () => navTo("writeups"));
+    act("📝", t("goto") + ": " + t("writeups"), () => navTo("writeups"));
     act("🖥", t("goto") + ": " + t("machines"), () => navTo("machines"));
     act("🕘", t("goto") + ": " + t("history"), () => navTo("history"));
     CATEGORIES.forEach(cat => { const nm = (lang === "tr" && cat.name_tr) ? cat.name_tr : cat.name; act(cat.icon, t("goto") + ": " + nm, () => navTo(cat.id)); });
+    // Machines + write-ups are first-class jump targets, searchable by name/ip/os/tags/title.
+    machines.forEach(mm => act(osIconFor(mm.os), mm.name, () => navToMachine(mm.id),
+      t("jumpMachine") + " · " + (mm.ip || "—") + (mm.platform ? " · " + mm.platform : ""),
+      [mm.ip, mm.os, mm.platform].concat(mm.tags || []).filter(Boolean).join(" ")));
+    writeups.forEach(wu => act("📄", wu.title, () => navToWriteup(wu.id),
+      t("jumpWriteup") + ((wu.tags || []).length ? " · " + wu.tags.join(", ") : ""),
+      (wu.tags || []).join(" ")));
     CATEGORIES.forEach(cat => cat.subcategories.forEach((sub, si) => sub.commands.forEach((cmd, ci) => {
       const nm = (lang === "tr" && cat.name_tr) ? cat.name_tr : cat.name;
       items.push({ type: "cmd", icon: "»", label: cmd.title, sub: nm + " › " + sub.name, hay: hay(cmd), cmd: cmd });
