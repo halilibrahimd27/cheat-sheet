@@ -2730,7 +2730,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const objArea = document.createElement("textarea"); objArea.className = "machine-textarea";
     objArea.placeholder = "user@host1 -> kerberoast svc -> WriteDACL -> DCSync -> DA";
     objArea.value = m.attackPath || "";
-    objArea.addEventListener("input", () => { saveMachine(m.id, { attackPath: objArea.value }); showMachineStatus(); });
+    objArea.addEventListener("input", () => { m.attackPath = objArea.value; saveMachine(m.id, { attackPath: m.attackPath }); showMachineStatus(); });
     adSection.appendChild(objLabel); adSection.appendChild(objArea);
     page.appendChild(adSection);
 
@@ -2760,7 +2760,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       svcQuick.appendChild(mkChip("🔎 nmap -sCV (" + ports.length + ")", "nmap -sCV -p" + ports.join(",") + " " + ip, t("svcScanHint")));
       ports.slice(0, 12).forEach(p => svcQuick.appendChild(mkChip(p, "nmap -sCV -p" + p + " " + ip, t("svcScanHint"))));
     }
-    svcArea.addEventListener("input", () => { saveMachine(m.id, { services: svcArea.value.split("\n").filter(Boolean) }); showMachineStatus(); renderSvcQuick(); });
+    svcArea.addEventListener("input", () => { m.services = svcArea.value.split("\n").filter(Boolean); saveMachine(m.id, { services: m.services }); showMachineStatus(); renderSvcQuick(); });
     svcSection.appendChild(svcArea); svcSection.appendChild(svcQuick); page.appendChild(svcSection);
     renderSvcQuick();
 
@@ -2770,7 +2770,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const credArea = document.createElement("textarea"); credArea.className = "machine-textarea";
     credArea.placeholder = "admin:password123\nsvc_sql:S3cr3t! (kerberoast)\nuser:aad3b435...:hash";
     credArea.value = (m.credentials || []).join("\n");
-    credArea.addEventListener("input", () => { saveMachine(m.id, { credentials: credArea.value.split("\n").filter(Boolean) }); showMachineStatus(); });
+    credArea.addEventListener("input", () => { m.credentials = credArea.value.split("\n").filter(Boolean); saveMachine(m.id, { credentials: m.credentials }); showMachineStatus(); });
     credSection.appendChild(credArea); page.appendChild(credSection);
 
     // Notes
@@ -2779,7 +2779,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const noteArea = document.createElement("textarea"); noteArea.className = "machine-textarea machine-notes-area";
     noteArea.placeholder = lang === "tr" ? "Makine notlari..." : "Machine notes...";
     noteArea.value = m.notes || "";
-    noteArea.addEventListener("input", () => { saveMachine(m.id, { notes: noteArea.value }); showMachineStatus(); });
+    noteArea.addEventListener("input", () => { m.notes = noteArea.value; saveMachine(m.id, { notes: m.notes }); showMachineStatus(); });
     noteSection.appendChild(noteArea); page.appendChild(noteSection);
 
     contentArea.appendChild(page);
