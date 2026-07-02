@@ -83,6 +83,10 @@
       sortRecent: "Recent", sortName: "Name", sortProgress: "Progress", noMatches: "No machines match your filters.",
       userFlag: "User flag", rootFlag: "Root flag", capture: "Capture", capturedAt: "Captured", notCaptured: "Not captured",
       flags: "Flags", genWriteup: "Generate write-up", wuGenerated: "Write-up generated",
+      filledFrom: "Placeholders filled from", machineNoIp: "That machine has no IP yet — set one to fill the target.",
+      dragHint: "Tip: drag a node to reposition it.",
+      detailTab: "Details", reportTab: "Report", saveAsWriteup: "Save as write-up",
+      reportLive: "This report is generated live from the machine's current data. Export it, or save an editable copy as a write-up.",
       copyPhaseCmds: "Copy phase commands", noPhaseCmds: "No commands in this phase",
       started: "Started", ownedAtLbl: "Owned at", elapsed: "Elapsed", timeToOwn: "Time to own",
       exportMachineMd: "Export MD", addChecklistItem: "+ Add item", customItemPh: "Custom checklist item…",
@@ -147,6 +151,10 @@
       sortRecent: "Guncel", sortName: "Isim", sortProgress: "Ilerleme", noMatches: "Filtrelerle eslesen makine yok.",
       userFlag: "User flag", rootFlag: "Root flag", capture: "Yakala", capturedAt: "Yakalandi", notCaptured: "Yakalanmadi",
       flags: "Bayraklar", genWriteup: "Write-up olustur", wuGenerated: "Write-up olusturuldu",
+      filledFrom: "Degiskenler dolduruldu:", machineNoIp: "Bu makinenin IP'si yok — once IP girin.",
+      dragHint: "Ipucu: bir dugumu surukleyerek yeniden konumlandirabilirsiniz.",
+      detailTab: "Detay", reportTab: "Rapor", saveAsWriteup: "Write-up olarak kaydet",
+      reportLive: "Bu rapor makinenin guncel verisinden canli uretilir. Disa aktarabilir ya da duzenlenebilir bir write-up olarak kaydedebilirsiniz.",
       copyPhaseCmds: "Asama komutlarini kopyala", noPhaseCmds: "Bu asamada komut yok",
       started: "Baslatildi", ownedAtLbl: "Ele gecirilme", elapsed: "Gecen sure", timeToOwn: "Ele gecirme suresi",
       exportMachineMd: "MD Aktar", addChecklistItem: "+ Madde ekle", customItemPh: "Ozel kontrol maddesi…",
@@ -1346,6 +1354,18 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   }
   function wuWordCount(s) { return (String(s || "").trim().match(/\S+/g) || []).length; }
   function wuReadMins(s) { return Math.max(1, Math.round(wuWordCount(s) / 200)); }
+  // Substitute a linked machine's real values into a report's target placeholders
+  // (<TARGET_IP>/<RHOST>/<TARGET_URL>) and fill the still-blank Box/OS/Difficulty
+  // header labels used by the HTB/CTF template. Non-destructive to other placeholders.
+  function fillMachinePlaceholders(content, m) {
+    let c = content;
+    if (m.ip) {
+      c = c.split("<TARGET_IP>").join(m.ip).split("<RHOST>").join(m.ip).split("<TARGET_URL>").join("http://" + m.ip);
+    }
+    const fill = (label, val) => { if (val) c = c.replace(new RegExp("(\\*\\*" + label + ":\\*\\*)(?=\\s+(?:\\u00b7|\\n|$))", "g"), "$1 " + val); };
+    fill("Box", m.name); fill("OS", m.os); fill("Difficulty", diffLabel(m.difficulty));
+    return c;
+  }
   function wuIsPinned(id) { return wuPins.includes(id); }
   function toggleWuPin(id, e) {
     if (e) e.stopPropagation();
@@ -1409,10 +1429,21 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     if (openWriteupId === id) openWriteupId = null;
     await loadWriteups(); render();
   }
-  let wuTimer = null;
+  // Debounced write-up save. Patches for the same write-up are MERGED (not
+  // replaced) so a rapid title→content or relatedMachine→content sequence never
+  // drops the earlier field. Switching to a different write-up flushes first.
+  let wuTimer = null, wuPending = {}, wuPendingId = null;
+  function flushWu() {
+    if (!wuPendingId) return;
+    const id = wuPendingId, data = wuPending;
+    wuPendingId = null; wuPending = {}; clearTimeout(wuTimer); wuTimer = null;
+    api("PUT", "/api/writeups/" + id, data);
+  }
   function saveWu(id, data) {
+    if (wuPendingId && wuPendingId !== id) flushWu();
+    wuPendingId = id; Object.assign(wuPending, data);
     clearTimeout(wuTimer);
-    wuTimer = setTimeout(() => api("PUT", "/api/writeups/" + id, data), 400);
+    wuTimer = setTimeout(flushWu, 400);
   }
 
   function renderWriteupsPage() {
@@ -1605,15 +1636,14 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         '<option value="scope">Scope / RoE</option>' +
         '<option value="evidence">Evidence block</option>' +
         '<option value="references">References</option>';
+      // Single machine control: links the write-up to a target AND fills its
+      // <TARGET_IP>/<TARGET_URL> placeholders + Box/OS/Difficulty header from the machine.
       const mcSel = document.createElement("select"); mcSel.className = "form-select wu-tool-select"; mcSel.setAttribute("aria-label", t("wuMachine"));
-      mcSel.innerHTML = '<option value="">🔗 ' + t("wuMachine") + '…</option>' + machines.map(mm => '<option value="' + mm.id + '">' + escapeHtml(mm.name) + (mm.ip ? " (" + escapeHtml(mm.ip) + ")" : "") + '</option>').join("");
-      const relSel = document.createElement("select"); relSel.className = "form-select wu-tool-select"; relSel.setAttribute("aria-label", t("wuRelatedMachine"));
-      relSel.innerHTML = '<option value="">🖥 ' + t("wuRelatedMachine") + '…</option>' + machines.map(mm => '<option value="' + mm.id + '"' + (wu.relatedMachine === mm.id ? " selected" : "") + '>' + escapeHtml(mm.name) + (mm.ip ? " (" + escapeHtml(mm.ip) + ")" : "") + '</option>').join("");
+      mcSel.innerHTML = '<option value="">🔗 ' + t("wuMachine") + '…</option>' + machines.map(mm => '<option value="' + mm.id + '"' + (wu.relatedMachine === mm.id ? " selected" : "") + '>' + escapeHtml(mm.name) + (mm.ip ? " (" + escapeHtml(mm.ip) + ")" : "") + '</option>').join("");
       const imgBtn = document.createElement("button"); imgBtn.className = "btn btn-secondary btn-sm"; imgBtn.textContent = "📷 " + t("imageBtn");
       const imgInput = document.createElement("input"); imgInput.type = "file"; imgInput.accept = "image/*"; imgInput.style.display = "none";
-      toolbar.appendChild(tplSel); toolbar.appendChild(secSel); toolbar.appendChild(mcSel); toolbar.appendChild(relSel); toolbar.appendChild(imgBtn); toolbar.appendChild(imgInput);
+      toolbar.appendChild(tplSel); toolbar.appendChild(secSel); toolbar.appendChild(mcSel); toolbar.appendChild(imgBtn); toolbar.appendChild(imgInput);
       page.appendChild(toolbar);
-      relSel.addEventListener("change", () => { wu.relatedMachine = relSel.value; saveWu(wu.id, { relatedMachine: relSel.value }); showStatus(); });
 
       // Split: editor | live preview
       const split = document.createElement("div"); split.className = "wu-split";
@@ -1698,12 +1728,20 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         if (!key || !WRITEUP_SECTIONS[key]) return;
         insertAtCursor(editor, WRITEUP_SECTIONS[key]); commit();
       });
-      // Machine cross-link
+      // Machine link: persist the cross-link AND fill the report's placeholders +
+      // Box/OS/Difficulty header from the machine's real values.
       mcSel.addEventListener("change", () => {
-        const mm = machines.find(x => x.id === mcSel.value); mcSel.value = "";
-        if (!mm) return;
-        insertAtCursor(editor, "\n**Target:** " + (mm.name || "") + (mm.ip ? " (`" + mm.ip + "`)" : "") + (mm.os ? " — " + mm.os : "") + "\n");
-        commit();
+        const id = mcSel.value;
+        const mm = machines.find(x => x.id === id);
+        wu.relatedMachine = id;
+        saveWu(wu.id, { relatedMachine: id });
+        if (!mm) { showStatus(); return; }
+        const filled = fillMachinePlaceholders(editor.value, mm);
+        if (filled !== editor.value) { editor.value = filled; commit(); }
+        else showStatus();
+        const miss = !mm.ip;
+        toast(miss ? t("machineNoIp") : (t("filledFrom") + " " + (mm.name || "")), miss ? "error" : "ok");
+        editor.focus();
       });
 
       setTimeout(() => editor.focus(), 100);
@@ -1763,6 +1801,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   // ── Machines (target tracking) ──
   let openMachineId = null;
   let openHostId = null; // expanded host inside an AD engagement
+  let machineTab = "detail", machineTabFor = null; // "detail" | "report", per open machine
   let adConnectMode = false, adConnectSel = null; // graph connection drawing
   async function loadMachines() { machines = await api("GET", "/api/machines") || []; }
 
@@ -1893,35 +1932,96 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   // Deterministic radial node-link diagram of the engagement (vanilla SVG).
   // Each node shows a progress ring from its checklist; onNodeClick drives
   // expand vs. connect-mode linking.
+  // Clamp a node centre so its ring + label/pct text stay inside the viewBox.
+  function clampNode(x, y) { return { x: Math.max(24, Math.min(396, x)), y: Math.max(22, Math.min(230, y)) }; }
   function buildAdSchematic(m, onNodeClick) {
     const NS = "http://www.w3.org/2000/svg";
+    const VBW = 420, VBH = 285;
     const nodes = (m.hosts || []).map(hostNode);
     const svg = document.createElementNS(NS, "svg");
-    svg.setAttribute("viewBox", "0 0 420 285"); svg.setAttribute("class", "ad-schematic");
+    svg.setAttribute("viewBox", "0 0 " + VBW + " " + VBH); svg.setAttribute("class", "ad-schematic");
     svg.setAttribute("role", "img"); svg.setAttribute("aria-label", "AD engagement host map");
+    // Position: a saved per-host position (h.pos, set by dragging) wins; otherwise
+    // fall back to the deterministic radial layout.
     const cx = 210, cy = 130, R = nodes.length > 1 ? 100 : 0, pos = {};
-    nodes.forEach((n, i) => { const a = -Math.PI / 2 + (i / nodes.length) * Math.PI * 2; pos[n.id] = { x: cx + R * Math.cos(a), y: cy + R * Math.sin(a) }; });
-    const drawn = {};
+    nodes.forEach((n, i) => {
+      const saved = n.entry && n.entry.pos;
+      if (saved && typeof saved.x === "number" && typeof saved.y === "number") pos[n.id] = clampNode(saved.x, saved.y);
+      else { const a = -Math.PI / 2 + (i / nodes.length) * Math.PI * 2; pos[n.id] = { x: cx + R * Math.cos(a), y: cy + R * Math.sin(a) }; }
+    });
+    // Edges — keep refs so we can move endpoints live while dragging.
+    const edges = [], drawn = {};
     nodes.forEach(n => (n.links || []).forEach(lid => {
       if (!pos[lid]) return; const key = [n.id, lid].sort().join("|"); if (drawn[key]) return; drawn[key] = 1;
       const ln = document.createElementNS(NS, "line");
       ln.setAttribute("x1", pos[n.id].x); ln.setAttribute("y1", pos[n.id].y);
       ln.setAttribute("x2", pos[lid].x); ln.setAttribute("y2", pos[lid].y); ln.setAttribute("class", "ad-edge");
-      svg.appendChild(ln);
+      edges.push({ ln, a: n.id, b: lid }); svg.appendChild(ln);
     }));
+    function updateEdges(id) {
+      edges.forEach(e => {
+        if (e.a === id) { e.ln.setAttribute("x1", pos[id].x); e.ln.setAttribute("y1", pos[id].y); }
+        if (e.b === id) { e.ln.setAttribute("x2", pos[id].x); e.ln.setAttribute("y2", pos[id].y); }
+      });
+    }
+    // Convert a pointer event to viewBox coords (SVG is width:100%/height:auto → no letterbox).
+    function toVB(ev) {
+      const r = svg.getBoundingClientRect();
+      return { x: (ev.clientX - r.left) / r.width * VBW, y: (ev.clientY - r.top) / r.height * VBH };
+    }
     nodes.forEach(n => {
       const p = pos[n.id]; const pct = checklistStats(n.checklist).pct;
       const g = document.createElementNS(NS, "g");
       g.setAttribute("class", "ad-node " + progClass(pct) + (isDcRole(n) ? " dc" : "") + (n.id === openHostId ? " open" : "") + (n.id === adConnectSel ? " picking" : ""));
       g.setAttribute("tabindex", "0"); g.setAttribute("role", "button"); g.setAttribute("aria-label", (n.name || "host") + " " + pct + "%");
-      const bg = document.createElementNS(NS, "circle"); bg.setAttribute("cx", p.x); bg.setAttribute("cy", p.y); bg.setAttribute("r", 20); bg.setAttribute("class", "ad-ring-bg"); g.appendChild(bg);
-      if (pct >= 100) { const rf = document.createElementNS(NS, "circle"); rf.setAttribute("cx", p.x); rf.setAttribute("cy", p.y); rf.setAttribute("r", 20); rf.setAttribute("class", "ad-ring"); g.appendChild(rf); }
-      else if (pct > 0) { const arc = document.createElementNS(NS, "path"); arc.setAttribute("d", ringArc(p.x, p.y, 20, pct)); arc.setAttribute("class", "ad-ring"); g.appendChild(arc); }
-      const face = document.createElementNS(NS, "circle"); face.setAttribute("cx", p.x); face.setAttribute("cy", p.y); face.setAttribute("r", 15); face.setAttribute("class", "ad-node-face"); g.appendChild(face);
-      const ic = document.createElementNS(NS, "text"); ic.setAttribute("x", p.x); ic.setAttribute("y", p.y + 1); ic.setAttribute("class", "ad-node-icon"); ic.setAttribute("text-anchor", "middle"); ic.setAttribute("dominant-baseline", "central"); ic.textContent = isDcRole(n) ? "★" : osIconFor(n.os); g.appendChild(ic);
-      const lb = document.createElementNS(NS, "text"); lb.setAttribute("x", p.x); lb.setAttribute("y", p.y + 36); lb.setAttribute("class", "ad-node-label"); lb.setAttribute("text-anchor", "middle"); lb.textContent = (n.name || "host").slice(0, 16); g.appendChild(lb);
-      const pt = document.createElementNS(NS, "text"); pt.setAttribute("x", p.x); pt.setAttribute("y", p.y + 49); pt.setAttribute("class", "ad-node-pct"); pt.setAttribute("text-anchor", "middle"); pt.textContent = pct + "%"; g.appendChild(pt);
-      g.addEventListener("click", () => onNodeClick(n));
+      const bg = document.createElementNS(NS, "circle"); bg.setAttribute("r", 20); bg.setAttribute("class", "ad-ring-bg"); g.appendChild(bg);
+      let ring = null;
+      if (pct >= 100) { ring = document.createElementNS(NS, "circle"); ring.setAttribute("r", 20); ring.setAttribute("class", "ad-ring"); g.appendChild(ring); }
+      else if (pct > 0) { ring = document.createElementNS(NS, "path"); ring.setAttribute("class", "ad-ring"); ring.dataset.arc = "1"; g.appendChild(ring); }
+      const face = document.createElementNS(NS, "circle"); face.setAttribute("r", 15); face.setAttribute("class", "ad-node-face"); g.appendChild(face);
+      const ic = document.createElementNS(NS, "text"); ic.setAttribute("class", "ad-node-icon"); ic.setAttribute("text-anchor", "middle"); ic.setAttribute("dominant-baseline", "central"); ic.textContent = isDcRole(n) ? "★" : osIconFor(n.os); g.appendChild(ic);
+      const lb = document.createElementNS(NS, "text"); lb.setAttribute("class", "ad-node-label"); lb.setAttribute("text-anchor", "middle"); lb.textContent = (n.name || "host").slice(0, 16); g.appendChild(lb);
+      const pt = document.createElementNS(NS, "text"); pt.setAttribute("class", "ad-node-pct"); pt.setAttribute("text-anchor", "middle"); pt.textContent = pct + "%"; g.appendChild(pt);
+      // Position all of this node's elements at (x, y).
+      function place(x, y) {
+        pos[n.id] = { x, y };
+        [bg, face].forEach(c => { c.setAttribute("cx", x); c.setAttribute("cy", y); });
+        if (ring) { if (ring.dataset.arc) ring.setAttribute("d", ringArc(x, y, 20, pct)); else { ring.setAttribute("cx", x); ring.setAttribute("cy", y); } }
+        ic.setAttribute("x", x); ic.setAttribute("y", y + 1);
+        lb.setAttribute("x", x); lb.setAttribute("y", y + 36);
+        pt.setAttribute("x", x); pt.setAttribute("y", y + 49);
+        updateEdges(n.id);
+      }
+      place(p.x, p.y);
+
+      // Drag to reposition; a press with no meaningful movement is treated as a click.
+      let downX = 0, downY = 0, moved = false, dragging = false;
+      g.addEventListener("pointerdown", ev => {
+        if (ev.button != null && ev.button !== 0) return;
+        ev.preventDefault();
+        downX = ev.clientX; downY = ev.clientY; moved = false; dragging = true;
+        try { g.setPointerCapture(ev.pointerId); } catch { /* ignore */ }
+        g.classList.add("dragging");
+      });
+      g.addEventListener("pointermove", ev => {
+        if (!dragging) return;
+        if (Math.abs(ev.clientX - downX) + Math.abs(ev.clientY - downY) > 3) moved = true;
+        if (!moved) return;
+        const v = toVB(ev); const c = clampNode(v.x, v.y); place(c.x, c.y);
+      });
+      function endDrag(ev) {
+        if (!dragging) return;
+        dragging = false; g.classList.remove("dragging");
+        try { g.releasePointerCapture(ev.pointerId); } catch { /* ignore */ }
+        if (moved) {
+          // Persist the new position on the host entry (travels with m.hosts).
+          if (n.entry) { n.entry.pos = { x: Math.round(pos[n.id].x), y: Math.round(pos[n.id].y) }; saveMachine(m.id, { hosts: m.hosts }); }
+        } else {
+          onNodeClick(n); // it was a plain click
+        }
+      }
+      g.addEventListener("pointerup", endDrag);
+      g.addEventListener("pointercancel", endDrag);
       g.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); onNodeClick(n); } });
       svg.appendChild(g);
     });
@@ -1992,7 +2092,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     // Append the report skeleton (OSCP/PG → oscp; otherwise htb), with the box IP filled in.
     const tplKey = (m.platform === "OSCP" || m.platform === "PG") ? "oscp" : "htb";
     const skeleton = WRITEUP_TEMPLATES[tplKey].replace(/\{TITLE\}/g, (m.name || "Machine") + " — Report");
-    md += (m.ip ? skeleton.split("<TARGET_IP>").join(m.ip) : skeleton);
+    md += fillMachinePlaceholders(skeleton, m);
     return md;
   }
   async function generateWriteupFromMachine(m) {
@@ -2007,12 +2107,33 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     render();
     toast(t("wuGenerated"), "ok");
   }
+  function machineFileName(m) { return (m.name || "machine").replace(/[^a-z0-9]/gi, "_"); }
+  function machineReportHtml(m) {
+    return "<!DOCTYPE html><html lang='" + lang + "'><head><meta charset='utf-8'>" +
+      "<meta name='viewport' content='width=device-width,initial-scale=1'>" +
+      "<title>" + escapeHtml(m.name || "machine") + "</title><style>" + WU_PRINT_CSS + "</style></head><body>" +
+      renderMarkdown(machineToMarkdown(m)) + "</body></html>";
+  }
   function exportMachineMd(m) {
     const blob = new Blob([machineToMarkdown(m)], { type: "text/markdown" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = (m.name || "machine").replace(/[^a-z0-9]/gi, "_") + ".md";
+    a.download = machineFileName(m) + ".md";
     a.click(); URL.revokeObjectURL(a.href);
+  }
+  function exportMachineHtml(m) {
+    const blob = new Blob([machineReportHtml(m)], { type: "text/html" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = machineFileName(m) + ".html";
+    a.click(); URL.revokeObjectURL(a.href);
+  }
+  function exportMachinePdf(m) {
+    const win = window.open("", "_blank");
+    if (!win) { toast(t("copyFail"), "error"); return; }
+    win.document.write(machineReportHtml(m));
+    win.document.close();
+    setTimeout(() => { win.print(); }, 500);
   }
 
   function renderMachinesPage() {
@@ -2137,23 +2258,56 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     renderGrid();
   }
 
+  // Live, read-only report rendered from the machine's CURRENT data — no stored
+  // copy, always in sync. Export it, or snapshot an editable copy into Write-ups.
+  function renderMachineReport(m, page) {
+    const wrap = document.createElement("div"); wrap.className = "machine-report";
+    const bar = document.createElement("div"); bar.className = "machine-report-bar";
+    const mk = (label, fn, primary) => {
+      const b = document.createElement("button"); b.className = "btn btn-sm " + (primary ? "btn-primary" : "btn-secondary");
+      b.textContent = label; b.addEventListener("click", fn); return b;
+    };
+    bar.appendChild(mk("⬇ " + t("exportMachineMd"), () => exportMachineMd(m)));
+    bar.appendChild(mk("⬇ " + t("wuExportHtml"), () => exportMachineHtml(m)));
+    bar.appendChild(mk("⬇ " + t("exportPdf"), () => exportMachinePdf(m)));
+    bar.appendChild(mk("💾 " + t("saveAsWriteup"), () => generateWriteupFromMachine(m), true));
+    wrap.appendChild(bar);
+    const hint = document.createElement("p"); hint.className = "machine-report-hint"; hint.textContent = t("reportLive");
+    wrap.appendChild(hint);
+    const body = document.createElement("div"); body.className = "wu-read-body machine-report-body";
+    body.innerHTML = renderMarkdown(machineToMarkdown(m));
+    wireCodeCopies(body);
+    wrap.appendChild(body);
+    page.appendChild(wrap);
+  }
+
   function renderMachineDetail(m) {
     const page = document.createElement("div"); page.className = "machine-detail";
+    // Reset to the Detail tab whenever a different machine is opened.
+    if (machineTabFor !== m.id) { machineTab = "detail"; machineTabFor = m.id; }
 
     // Top bar
     const topbar = document.createElement("div"); topbar.className = "wu-editor-topbar";
     topbar.innerHTML = '<button class="wu-back-btn">← ' + t("back") + '</button>' +
       '<div class="wu-editor-status" id="machineStatus"></div>' +
       '<div class="wu-topbar-actions">' +
-        '<button class="btn btn-secondary btn-sm machine-genwu-btn">📄 ' + t("genWriteup") + '</button>' +
-        '<button class="btn btn-secondary btn-sm machine-export-btn">' + t("exportMachineMd") + '</button>' +
         '<button class="wu-delete-btn" title="' + t("del") + '" aria-label="' + t("del") + '">🗑</button>' +
       '</div>';
     topbar.querySelector(".wu-back-btn").addEventListener("click", () => { openMachineId = null; render(); });
     topbar.querySelector(".wu-delete-btn").addEventListener("click", () => deleteMachine(m.id));
-    topbar.querySelector(".machine-genwu-btn").addEventListener("click", () => generateWriteupFromMachine(m));
-    topbar.querySelector(".machine-export-btn").addEventListener("click", () => exportMachineMd(m));
     page.appendChild(topbar);
+
+    // Tab switcher: live Detail workspace vs. the auto-generated Report.
+    const tabs = document.createElement("div"); tabs.className = "machine-tabs"; tabs.setAttribute("role", "tablist");
+    [["detail", "🧩 " + t("detailTab")], ["report", "📄 " + t("reportTab")]].forEach(([key, label]) => {
+      const b = document.createElement("button"); b.className = "machine-tab" + (machineTab === key ? " active" : "");
+      b.type = "button"; b.textContent = label; b.setAttribute("role", "tab"); b.setAttribute("aria-selected", String(machineTab === key));
+      b.addEventListener("click", () => { if (machineTab !== key) { machineTab = key; machineTabFor = m.id; render(); } });
+      tabs.appendChild(b);
+    });
+    page.appendChild(tabs);
+
+    if (machineTab === "report") { renderMachineReport(m, page); contentArea.appendChild(page); return; }
 
     // Header with editable name / IP / OS + metadata chips (platform/difficulty/status/tags)
     const info = document.createElement("div"); info.className = "machine-info-section";
@@ -2527,6 +2681,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       redrawSchem = () => { schemWrap.innerHTML = ""; schemWrap.appendChild(buildAdSchematic(m, onNode)); };
       redrawSchem();
       adSection.appendChild(schemWrap);
+      if (!adConnectMode) { const dh = document.createElement("div"); dh.className = "ad-drag-hint"; dh.textContent = t("dragHint"); adSection.appendChild(dh); }
 
       const cards = document.createElement("div"); cards.className = "host-cards";
       m.hosts.forEach(h => cards.appendChild(buildHostCard(h)));

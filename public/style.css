@@ -1782,7 +1782,9 @@ body {
 .ad-schematic-wrap { background: var(--bg-code); border: 1px solid var(--border-primary); border-radius: var(--radius-md); margin-bottom: 16px; }
 .ad-schematic { width: 100%; height: auto; display: block; }
 .ad-edge { stroke: var(--accent-secondary); stroke-width: 2; opacity: 0.7; }
-.ad-node { cursor: pointer; }
+.ad-node { cursor: grab; touch-action: none; }
+.ad-node.dragging { cursor: grabbing; }
+.ad-node.dragging .ad-node-face { stroke: var(--accent-primary); stroke-width: 3; }
 .ad-node .ad-ring-bg { fill: none; stroke: var(--border-primary); stroke-width: 4; }
 .ad-node .ad-ring { fill: none; stroke-width: 4; stroke-linecap: round; transition: stroke 0.15s; }
 .ad-node.p-low .ad-ring { stroke: var(--accent-red); }
@@ -1800,6 +1802,7 @@ body {
 .ad-node:focus-visible .ad-node-face { stroke: var(--accent-primary); stroke-width: 3; }
 .ad-connect-btn { margin-left: auto; }
 .ad-connect-hint { font-size: 12px; color: var(--accent-primary); margin-bottom: 8px; }
+.ad-drag-hint { font-size: 11px; color: var(--text-tertiary); margin: -8px 0 12px; text-align: center; }
 .host-badge { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; padding: 1px 6px; border-radius: 4px; background: var(--accent-glow); color: var(--accent-secondary); }
 .host-open-btn { margin-bottom: 10px; }
 
@@ -1999,6 +2002,28 @@ body {
 /* ── Machines: timing line ── */
 .machine-timing { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-primary); font-size: 12px; color: var(--text-tertiary); }
 .machine-timing strong { color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+
+/* ── Machines: Detail / Report tab switcher ── */
+.machine-tabs { display: flex; gap: 4px; margin-bottom: 18px; border-bottom: 1px solid var(--border-primary); }
+.machine-tab {
+    background: transparent; border: none; border-bottom: 2px solid transparent;
+    color: var(--text-secondary); cursor: pointer; font-size: 13px; font-weight: 600;
+    padding: 8px 14px; margin-bottom: -1px; transition: color var(--transition), border-color var(--transition);
+}
+.machine-tab:hover { color: var(--text-primary); }
+.machine-tab.active { color: var(--accent-primary); border-bottom-color: var(--accent-primary); }
+
+/* ── Machines: live Report view ── */
+.machine-report-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.machine-report-hint {
+    font-size: 12px; color: var(--text-tertiary); margin: 0 0 16px; padding: 8px 12px;
+    background: var(--bg-card); border: 1px solid var(--border-primary);
+    border-left: 3px solid var(--accent-cyan); border-radius: var(--radius-sm);
+}
+.machine-report-body {
+    background: var(--bg-card); border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md); padding: 20px 24px;
+}
 
 /* ── Machines: per-phase copy button ── */
 .checklist-phase-right { display: flex; align-items: center; gap: 8px; }
