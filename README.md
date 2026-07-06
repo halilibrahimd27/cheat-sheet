@@ -135,6 +135,25 @@ Open **http://localhost:3000** in your browser.
 
 > By default the server binds to `127.0.0.1` (localhost only). See [Configuration](#configuration) to expose it on your network safely.
 
+### Static build (GitHub Pages — no server)
+
+The whole app can run with **no backend at all**: an in-browser adapter
+([`public/local-backend.js`](public/local-backend.js)) mirrors the REST API against
+**IndexedDB**, so your data still persists locally in the browser. This is what makes
+it publishable to GitHub Pages.
+
+```bash
+npm run build:static     # emits a self-contained ./docs folder
+```
+
+Then push and, in your repo, go to **Settings → Pages → Source: Deploy from a branch → `main` / `/docs`**.
+Your cheat sheet is live at `https://<user>.github.io/<repo>/`.
+
+> The static build bundles the seed into `docs/seed-data.js`, uses relative paths (works
+> under a project subpath), and stores everything (categories, notes, write-ups, machines,
+> uploaded screenshots as inline data URIs) in IndexedDB. Export/Import still work. Re-run
+> `npm run build:static` after changing `seed.js` or the frontend.
+
 ### Update to Latest Commands
 
 If you already have the app running and want to pull the latest seed commands:
@@ -251,6 +270,7 @@ cheat-sheet/
 ├── scripts/
 │   ├── update-readme.js    # Regenerate stats + category table from seed.js
 │   ├── validate-content.js # Seed structure/quality validator (runs in CI)
+│   ├── build-static.js     # Emit ./docs — a server-less build for GitHub Pages
 │   └── merge-category.js   # Merge a category JSON into seed.js
 ├── test/                   # API tests (node:test)
 ├── public/
@@ -258,8 +278,10 @@ cheat-sheet/
 │   ├── style.css           # Dark/Light theme styles
 │   ├── app.js              # Frontend logic + CRUD
 │   ├── checklist-templates.js  # Static HTB/THM/OSCP machine playbooks
+│   ├── local-backend.js    # In-browser IndexedDB API (static / offline build)
 │   ├── manifest.json       # PWA manifest
 │   └── service-worker.js   # Offline cache (stale-while-revalidate)
+├── docs/                   # Static build output (npm run build:static) — GitHub Pages
 └── data/                   # Persistent data (auto-generated, git-ignored)
 ```
 

@@ -17,6 +17,7 @@ const browserGlobals = {
   Blob: "readonly", URL: "readonly", alert: "readonly", confirm: "readonly",
   prompt: "readonly", console: "readonly",
   setTimeout: "readonly", clearTimeout: "readonly",
+  indexedDB: "readonly", crypto: "readonly", atob: "readonly",
 };
 
 const swGlobals = {
@@ -36,14 +37,14 @@ const commonRules = {
 };
 
 module.exports = [
-  { ignores: ["node_modules/**", "data/**", "seed.js"] },
+  { ignores: ["node_modules/**", "data/**", "docs/**", "seed.js"] },
   {
     files: ["server.js", "scripts/**/*.js", "test/**/*.js", "eslint.config.js"],
     languageOptions: { ecmaVersion: 2022, sourceType: "commonjs", globals: nodeGlobals },
     rules: commonRules,
   },
   {
-    files: ["public/app.js", "public/checklist-templates.js"],
+    files: ["public/app.js", "public/checklist-templates.js", "public/local-backend.js"],
     languageOptions: { ecmaVersion: 2022, sourceType: "script", globals: browserGlobals },
     rules: commonRules,
   },
