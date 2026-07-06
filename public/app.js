@@ -22,6 +22,7 @@
   let wuQuery = "", wuTagFilter = "all";
   // Machine list dashboard filter/sort state (survives render() re-runs).
   let machineFilter = { q: "", platform: "", status: "", tag: "", sort: "recent" };
+  let machineView = localStorage.getItem("cs-machine-view") || "grid"; // "grid" | "board"
   // Machine metadata enumerations (shared by create modal, detail chips, cards).
   const MACHINE_PLATFORMS = ["HTB", "THM", "PG", "OSCP", "Custom"];
   const MACHINE_DIFFS = ["Easy", "Medium", "Hard", "Insane"];
@@ -2342,9 +2343,18 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const tagSel = mkSel("tag", t("filterTag"), machineFilter.tag, [{ value: "", label: t("filterTag") + ": " + t("filterAll") }].concat(tagsPresent.map(tg => ({ value: tg, label: tg }))));
     const sortSel = mkSel("sort", t("wuSort"), machineFilter.sort, [{ value: "recent", label: t("wuSort") + ": " + t("sortRecent") }, { value: "name", label: t("sortName") }, { value: "progress", label: t("sortProgress") }]);
     controls.appendChild(mSearch); controls.appendChild(platSel); controls.appendChild(statSel); controls.appendChild(tagSel); controls.appendChild(sortSel);
+    // Grid / Board view toggle
+    const viewToggle = document.createElement("div"); viewToggle.className = "machine-view-toggle";
+    const gBtn = document.createElement("button"); gBtn.className = "view-btn" + (machineView === "grid" ? " active" : ""); gBtn.textContent = t("gridView"); gBtn.title = t("gridView");
+    const bBtn = document.createElement("button"); bBtn.className = "view-btn" + (machineView === "board" ? " active" : ""); bBtn.textContent = t("boardView"); bBtn.title = t("boardView");
+    gBtn.addEventListener("click", () => { if (machineView === "grid") return; machineView = "grid"; localStorage.setItem("cs-machine-view", "grid"); gBtn.classList.add("active"); bBtn.classList.remove("active"); statSel.disabled = false; renderView(); });
+    bBtn.addEventListener("click", () => { if (machineView === "board") return; machineView = "board"; localStorage.setItem("cs-machine-view", "board"); bBtn.classList.add("active"); gBtn.classList.remove("active"); statSel.disabled = true; renderView(); });
+    viewToggle.appendChild(gBtn); viewToggle.appendChild(bBtn); controls.appendChild(viewToggle);
+    if (machineView === "board") statSel.disabled = true;
     contentArea.appendChild(controls);
 
     const gridWrap = document.createElement("div"); contentArea.appendChild(gridWrap);
+    function renderView() { if (machineView === "board") renderBoard(); else renderGrid(); }
     function applyMachineView() {
       const q = machineFilter.q.trim().toLowerCase();
       let list = machines.filter(m => {
@@ -2406,10 +2416,61 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       });
       gridWrap.appendChild(grid);
     }
+    function buildBoardCard(m) {
+      const done = (m.checklist || []).filter(c => c.done).length, tot = (m.checklist || []).length;
+      const pct = tot > 0 ? Math.round(done / tot * 100) : 0;
+      const card = document.createElement("div"); card.className = "board-card"; card.draggable = true;
+      card.setAttribute("role", "button"); card.setAttribute("tabindex", "0");
+      card.innerHTML =
+        '<div class="board-card-top"><span class="machine-os-icon">' + osIconFor(m.os) + '</span>' +
+          '<span class="board-card-name">' + escapeHtml(m.name) + '</span>' +
+          (isCaptured(m.userFlag) ? '<span class="flag-chip user" title="' + t("userFlag") + '">🚩</span>' : '') +
+          (isCaptured(m.rootFlag) ? '<span class="flag-chip root" title="' + t("rootFlag") + '">👑</span>' : '') + '</div>' +
+        (m.ip ? '<div class="board-card-ip">' + escapeHtml(m.ip) + '</div>' : '') +
+        (tot > 0 ? '<div class="machine-progress"><div class="machine-progress-bar"><div class="machine-progress-fill" style="width:' + pct + '%"></div></div><span class="machine-progress-text">' + pct + '%</span></div>' : '');
+      card.addEventListener("click", () => { openMachineId = m.id; render(); });
+      card.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openMachineId = m.id; render(); } });
+      card.addEventListener("dragstart", e => { e.dataTransfer.setData("text/plain", m.id); e.dataTransfer.effectAllowed = "move"; card.classList.add("dragging"); });
+      card.addEventListener("dragend", () => card.classList.remove("dragging"));
+      return card;
+    }
+    function renderBoard() {
+      gridWrap.innerHTML = "";
+      const q = machineFilter.q.trim().toLowerCase();
+      const base = machines.filter(m => {
+        if (machineFilter.platform && (m.platform || "Custom") !== machineFilter.platform) return false;
+        if (machineFilter.tag && !(m.tags || []).includes(machineFilter.tag)) return false;
+        if (!q) return true;
+        return [m.name, m.ip, m.os].some(v => (v || "").toLowerCase().includes(q)) || (m.tags || []).some(tg => tg.toLowerCase().includes(q));
+      });
+      const board = document.createElement("div"); board.className = "machine-board";
+      MACHINE_STATUSES.forEach(status => {
+        const col = document.createElement("div"); col.className = "board-col"; col.dataset.status = status;
+        const inCol = base.filter(m => machineStatus(m) === status);
+        const head = document.createElement("div"); head.className = "board-col-head st-" + status;
+        head.innerHTML = '<span>' + escapeHtml(stLabel(status)) + '</span><span class="board-count">' + inCol.length + '</span>';
+        const body = document.createElement("div"); body.className = "board-col-body";
+        inCol.forEach(m => body.appendChild(buildBoardCard(m)));
+        col.appendChild(head); col.appendChild(body);
+        col.addEventListener("dragover", e => { e.preventDefault(); e.dataTransfer.dropEffect = "move"; col.classList.add("drag-over"); });
+        col.addEventListener("dragleave", () => col.classList.remove("drag-over"));
+        col.addEventListener("drop", e => {
+          e.preventDefault(); col.classList.remove("drag-over");
+          const id = e.dataTransfer.getData("text/plain");
+          const m = machines.find(x => x.id === id);
+          if (!m || machineStatus(m) === status) return;
+          m.status = status;
+          const patch = { status }; Object.assign(patch, machineAutoProgress(m));
+          saveMachine(m.id, patch); renderBoard();
+        });
+        board.appendChild(col);
+      });
+      gridWrap.appendChild(board);
+    }
     // Live filter without a full render() so the search box keeps focus.
-    let mST; mSearch.addEventListener("input", () => { clearTimeout(mST); mST = setTimeout(() => { machineFilter.q = mSearch.value; renderGrid(); }, 150); });
-    [platSel, statSel, tagSel, sortSel].forEach(sel => sel.addEventListener("change", () => { machineFilter[sel.dataset.f] = sel.value; renderGrid(); }));
-    renderGrid();
+    let mST; mSearch.addEventListener("input", () => { clearTimeout(mST); mST = setTimeout(() => { machineFilter.q = mSearch.value; renderView(); }, 150); });
+    [platSel, statSel, tagSel, sortSel].forEach(sel => sel.addEventListener("change", () => { machineFilter[sel.dataset.f] = sel.value; renderView(); }));
+    renderView();
   }
 
   // Live, read-only report rendered from the machine's CURRENT data — no stored
