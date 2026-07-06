@@ -631,10 +631,16 @@ body {
     word-break: break-all;
 }
 
-.cmd-copy-btn {
+/* Copy + basket sit in one top-right row so they never overflow a 1-line block */
+.cmd-code-actions {
     position: absolute;
     top: 8px;
     right: 8px;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+.cmd-copy-btn {
     background: var(--bg-tertiary);
     border: 1px solid var(--border-primary);
     border-radius: 4px;
@@ -2264,8 +2270,8 @@ select.cell-input { font-family: 'Inter', sans-serif; cursor: pointer; }
 /* ── Round 5: variable profiles + command basket ── */
 /* Basket button on each command block (below the copy button) */
 .cmd-basket-btn {
-    position: absolute; top: 34px; right: 8px; background: var(--bg-tertiary); border: 1px solid var(--border-primary);
-    border-radius: 4px; color: var(--text-tertiary); cursor: pointer; padding: 4px 8px; font-size: 11px; line-height: 1;
+    background: var(--bg-tertiary); border: 1px solid var(--border-primary);
+    border-radius: 4px; color: var(--text-tertiary); cursor: pointer; padding: 4px 8px; font-size: 11px; line-height: 1.35;
     opacity: 0; transition: all var(--transition);
 }
 .cmd-code-wrapper:hover .cmd-basket-btn { opacity: 1; }
@@ -2324,7 +2330,8 @@ select.cell-input { font-family: 'Inter', sans-serif; cursor: pointer; }
 .tag-filter-attack:hover { border-color: var(--accent-orange); color: var(--accent-orange); }
 .tag-filter-attack.active { background: var(--accent-orange); border-color: var(--accent-orange); color: #1a1a1a; }
 
-/* The basket FAB / panel collide with the bottom Variable Fill Bar (and hide it
-   on narrow screens). Hide the FAB + panel whenever the fill bar is open. */
-.var-bar.active ~ .basket-fab,
-.var-bar.active ~ .basket-panel { display: none; }
+/* The basket FAB / panel collide with the bottom Variable Fill Bar (and get
+   hidden behind it on narrow screens). Hide the FAB + panel whenever the fill
+   bar is open. :has() is order-independent (works regardless of DOM position). */
+body:has(.var-bar.active) .basket-fab,
+body:has(.var-bar.active) .basket-panel { display: none; }

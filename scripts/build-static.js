@@ -26,9 +26,12 @@ fs.mkdirSync(OUT, { recursive: true });
 const COPY = ["style.css", "app.js", "checklist-templates.js", "local-backend.js"];
 for (const f of COPY) fs.copyFileSync(path.join(PUB, f), path.join(OUT, f));
 
-// 2) Bundle the seed data as a browser global.
+// 2) Bundle the seed data as a browser global, plus a content-hash version so the
+//    static build auto-refreshes returning visitors' IndexedDB when the seed changes.
 const seed = require(path.join(ROOT, "seed.js"));
-fs.writeFileSync(path.join(OUT, "seed-data.js"), "window.CS_SEED = " + JSON.stringify(seed) + ";\n");
+const seedJson = JSON.stringify(seed);
+const seedVersion = require("crypto").createHash("md5").update(seedJson).digest("hex").slice(0, 12);
+fs.writeFileSync(path.join(OUT, "seed-data.js"), "window.CS_SEED = " + seedJson + ";\nwindow.CS_SEED_VERSION = " + JSON.stringify(seedVersion) + ";\n");
 
 // 3) index.html — inject the static bootstrap before app.js, relative SW register.
 let html = fs.readFileSync(path.join(PUB, "index.html"), "utf8");
@@ -51,20 +54,22 @@ manifest.id = "./"; manifest.start_url = "./"; manifest.scope = "./";
 if (Array.isArray(manifest.shortcuts)) manifest.shortcuts.forEach(s => { if (typeof s.url === "string") s.url = "." + s.url; });
 fs.writeFileSync(path.join(OUT, "manifest.json"), JSON.stringify(manifest, null, 2));
 
-// 5) service-worker.js — relative-path, cache-first core (no /api branch: the
-//    static build never hits the network for data — IndexedDB serves it).
+// 5) service-worker.js — relative paths, per-build cache name (so a deploy busts
+//    the cache and returning visitors get fresh assets), network-first navigation
+//    (fresh index/assets when online, cached fallback offline). No /api branch —
+//    the static build serves data from IndexedDB, never the network.
+const buildHash = require("crypto").createHash("md5")
+  .update([].concat(COPY, ["seed-data.js", "index.html"]).map(f => fs.readFileSync(path.join(OUT, f))).reduce((a, b) => Buffer.concat([a, b]), Buffer.alloc(0)))
+  .digest("hex").slice(0, 12);
 const sw =
-  "const CACHE_NAME = 'cheatsheet-static-v1';\n" +
+  "const CACHE_NAME = 'cheatsheet-static-" + buildHash + "';\n" +
   "const CORE = ['./', './index.html', './style.css', './app.js', './checklist-templates.js', './local-backend.js', './seed-data.js', './manifest.json'];\n" +
   "self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(CORE))); self.skipWaiting(); });\n" +
   "self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))).then(() => self.clients.claim())); });\n" +
   "self.addEventListener('fetch', e => {\n" +
   "  const { request } = e; if (request.method !== 'GET') return;\n" +
-  "  if (request.mode === 'navigate') { e.respondWith(caches.match('./index.html').then(c => c || fetch(request))); return; }\n" +
-  "  e.respondWith(caches.match(request).then(cached => {\n" +
-  "    const net = fetch(request).then(resp => { if (resp && resp.status === 200 && resp.type === 'basic') { const cl = resp.clone(); caches.open(CACHE_NAME).then(c => c.put(request, cl)).catch(() => {}); } return resp; }).catch(() => cached);\n" +
-  "    return cached || net;\n" +
-  "  }));\n" +
+  "  if (request.mode === 'navigate') { e.respondWith(fetch(request).then(r => { const c = r.clone(); caches.open(CACHE_NAME).then(cc => cc.put('./index.html', c)).catch(() => {}); return r; }).catch(() => caches.match('./index.html'))); return; }\n" +
+  "  e.respondWith(caches.match(request).then(cached => { const net = fetch(request).then(resp => { if (resp && resp.status === 200 && resp.type === 'basic') { const cl = resp.clone(); caches.open(CACHE_NAME).then(c => c.put(request, cl)).catch(() => {}); } return resp; }).catch(() => cached); return cached || net; }));\n" +
   "});\n";
 fs.writeFileSync(path.join(OUT, "service-worker.js"), sw);
 

@@ -70,9 +70,19 @@
 
   async function ensureLoaded() {
     if (cache) return cache;
+    // Auto-refresh the bundled command set when it changes. build-static.js emits
+    // window.CS_SEED_VERSION (a content hash); when it differs from what's stored,
+    // re-seed categories from the new bundle so returning visitors get the latest
+    // commands/ATT&CK tags WITHOUT clearing site data. Notes/write-ups/machines are
+    // preserved. (Custom command edits are replaced — the seed is the source of truth.)
+    const wantVer = window.CS_SEED_VERSION || "";
+    const haveVer = await idbGet("seedVersion");
     let categories = await idbGet("categories");
-    if (!Array.isArray(categories)) { categories = seedCopy(); backfillIds(categories); await idbSet("categories", categories); }
-    else if (backfillIds(categories)) { await idbSet("categories", categories); }
+    if (!Array.isArray(categories) || (wantVer && haveVer !== wantVer)) {
+      categories = seedCopy(); backfillIds(categories);
+      await idbSet("categories", categories);
+      await idbSet("seedVersion", wantVer);
+    } else if (backfillIds(categories)) { await idbSet("categories", categories); }
     const notes = (await idbGet("notes")) || {};
     const writeups = (await idbGet("writeups")) || [];
     const machines = (await idbGet("machines")) || [];

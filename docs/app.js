@@ -3550,7 +3550,10 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     });
     const bk = document.createElement("button"); bk.className = "cmd-basket-btn"; bk.textContent = "🧺"; bk.title = t("basketAdd"); bk.setAttribute("aria-label", t("basketAdd"));
     bk.addEventListener("click", e => { e.stopPropagation(); basketAdd(code); });
-    w.appendChild(c); w.appendChild(b); w.appendChild(bk); return w;
+    // Both actions live in one top-right row so they never overflow a 1-line block.
+    const actions = document.createElement("div"); actions.className = "cmd-code-actions";
+    actions.appendChild(bk); actions.appendChild(b);
+    w.appendChild(c); w.appendChild(actions); return w;
   }
 
   function hlCode(code) {
