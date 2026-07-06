@@ -2233,3 +2233,30 @@ select.cell-input { font-family: 'Inter', sans-serif; cursor: pointer; }
 .board-card-ip { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-tertiary); margin: 4px 0 6px; }
 .board-card .machine-progress { margin-top: 6px; }
 @media (max-width: 900px) { .machine-board { grid-template-columns: repeat(4, minmax(180px, 1fr)); } }
+
+/* CVSS 3.1 calculator */
+.wu-cvss-btn { font-size: 12px !important; width: auto !important; padding: 0 10px !important; margin-left: 4px; }
+.cvss-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center; z-index: 1200; padding: 16px; }
+.cvss-panel { background: var(--bg-card); border: 1px solid var(--border-secondary); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); width: 100%; max-width: 620px; max-height: 90vh; overflow-y: auto; }
+.cvss-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--border-primary); }
+.cvss-head h3 { margin: 0; font-size: 15px; color: var(--text-heading); }
+.cvss-close { background: none; border: none; color: var(--text-secondary); font-size: 16px; cursor: pointer; }
+.cvss-close:hover { color: var(--accent-red); }
+.cvss-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 18px; padding: 18px; }
+.cvss-metric label { display: block; font-size: 11px; color: var(--text-secondary); margin-bottom: 5px; font-weight: 600; }
+.cvss-seg { display: flex; flex-wrap: wrap; gap: 4px; }
+.cvss-opt { flex: 1; min-width: 52px; background: var(--bg-input); border: 1px solid var(--border-primary); color: var(--text-secondary); border-radius: var(--radius-sm); padding: 5px 6px; font-size: 11px; cursor: pointer; transition: all var(--transition); }
+.cvss-opt:hover { border-color: var(--accent-primary); color: var(--text-primary); }
+.cvss-opt.on { background: var(--accent-primary); border-color: var(--accent-primary); color: #fff; }
+.cvss-result { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 0 18px 12px; }
+.cvss-score { display: flex; align-items: baseline; gap: 8px; padding: 8px 16px; border-radius: var(--radius-md); font-weight: 700; }
+.cvss-num { font-size: 30px; line-height: 1; }
+.cvss-sev { font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+.cvss-score.sev-none { background: var(--bg-badge); color: var(--text-secondary); }
+.cvss-score.sev-low { background: rgba(52,211,153,0.15); color: var(--accent-green); }
+.cvss-score.sev-medium { background: rgba(251,191,36,0.15); color: var(--accent-yellow); }
+.cvss-score.sev-high { background: rgba(251,146,60,0.16); color: var(--accent-orange); }
+.cvss-score.sev-critical { background: rgba(248,113,113,0.16); color: var(--accent-red); }
+.cvss-vector { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-code); background: var(--bg-code); padding: 6px 10px; border-radius: var(--radius-sm); word-break: break-all; flex: 1; min-width: 200px; }
+.cvss-foot { padding: 0 18px 18px; text-align: right; }
+@media (max-width: 560px) { .cvss-grid { grid-template-columns: 1fr; } }

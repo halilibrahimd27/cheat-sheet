@@ -1611,6 +1611,66 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
   let wuEditMode = false;
 
+  // ── CVSS 3.1 base-score calculator (offline, no deps) ──
+  const CVSS_METRICS = [
+    { k: "AV", label: "Attack Vector", opts: [["N", "Network"], ["A", "Adjacent"], ["L", "Local"], ["P", "Physical"]] },
+    { k: "AC", label: "Attack Complexity", opts: [["L", "Low"], ["H", "High"]] },
+    { k: "PR", label: "Privileges Required", opts: [["N", "None"], ["L", "Low"], ["H", "High"]] },
+    { k: "UI", label: "User Interaction", opts: [["N", "None"], ["R", "Required"]] },
+    { k: "S", label: "Scope", opts: [["U", "Unchanged"], ["C", "Changed"]] },
+    { k: "C", label: "Confidentiality", opts: [["H", "High"], ["L", "Low"], ["N", "None"]] },
+    { k: "I", label: "Integrity", opts: [["H", "High"], ["L", "Low"], ["N", "None"]] },
+    { k: "A", label: "Availability", opts: [["H", "High"], ["L", "Low"], ["N", "None"]] }
+  ];
+  function cvssRoundup(x) { const i = Math.round(x * 100000); return (i % 10000 === 0) ? i / 100000 : (Math.floor(i / 10000) + 1) / 10; }
+  function cvssSeverity(s) { return s === 0 ? "None" : s < 4 ? "Low" : s < 7 ? "Medium" : s < 9 ? "High" : "Critical"; }
+  function cvssCompute(v) {
+    const AV = { N: 0.85, A: 0.62, L: 0.55, P: 0.2 }[v.AV], AC = { L: 0.77, H: 0.44 }[v.AC], UI = { N: 0.85, R: 0.62 }[v.UI];
+    const PR = (v.S === "C" ? { N: 0.85, L: 0.68, H: 0.5 } : { N: 0.85, L: 0.62, H: 0.27 })[v.PR];
+    const cia = { H: 0.56, L: 0.22, N: 0 };
+    const iss = 1 - (1 - cia[v.C]) * (1 - cia[v.I]) * (1 - cia[v.A]);
+    const impact = v.S === "C" ? 7.52 * (iss - 0.029) - 3.25 * Math.pow(iss - 0.02, 15) : 6.42 * iss;
+    const expl = 8.22 * AV * AC * PR * UI;
+    if (impact <= 0) return 0;
+    return v.S === "C" ? cvssRoundup(Math.min(1.08 * (impact + expl), 10)) : cvssRoundup(Math.min(impact + expl, 10));
+  }
+  function cvssVector(v) { return "CVSS:3.1/AV:" + v.AV + "/AC:" + v.AC + "/PR:" + v.PR + "/UI:" + v.UI + "/S:" + v.S + "/C:" + v.C + "/I:" + v.I + "/A:" + v.A; }
+  function openCvssCalc(onInsert) {
+    const v = { AV: "N", AC: "L", PR: "N", UI: "N", S: "U", C: "H", I: "H", A: "H" };
+    const ov = document.createElement("div"); ov.className = "cvss-overlay";
+    const panel = document.createElement("div"); panel.className = "cvss-panel"; panel.setAttribute("role", "dialog"); panel.setAttribute("aria-modal", "true"); panel.setAttribute("aria-label", t("cvssTitle"));
+    panel.innerHTML = '<div class="cvss-head"><h3>' + t("cvssTitle") + '</h3><button class="cvss-close" aria-label="Close">✕</button></div>';
+    const grid = document.createElement("div"); grid.className = "cvss-grid";
+    CVSS_METRICS.forEach(mt => {
+      const g = document.createElement("div"); g.className = "cvss-metric";
+      const lab = document.createElement("label"); lab.textContent = mt.label + " (" + mt.k + ")";
+      const seg = document.createElement("div"); seg.className = "cvss-seg";
+      mt.opts.forEach(([code, name]) => {
+        const b = document.createElement("button"); b.type = "button"; b.className = "cvss-opt" + (v[mt.k] === code ? " on" : ""); b.textContent = name;
+        b.addEventListener("click", () => { v[mt.k] = code; seg.querySelectorAll(".cvss-opt").forEach(x => x.classList.remove("on")); b.classList.add("on"); update(); });
+        seg.appendChild(b);
+      });
+      g.appendChild(lab); g.appendChild(seg); grid.appendChild(g);
+    });
+    panel.appendChild(grid);
+    const result = document.createElement("div"); result.className = "cvss-result"; panel.appendChild(result);
+    const foot = document.createElement("div"); foot.className = "cvss-foot";
+    const insertBtn = document.createElement("button"); insertBtn.className = "btn btn-primary"; insertBtn.textContent = t("cvssInsert");
+    foot.appendChild(insertBtn); panel.appendChild(foot);
+    function update() {
+      const s = cvssCompute(v), sev = cvssSeverity(s);
+      result.innerHTML = '<div class="cvss-score sev-' + sev.toLowerCase() + '"><span class="cvss-num">' + s.toFixed(1) + '</span><span class="cvss-sev">' + sev + '</span></div><code class="cvss-vector">' + cvssVector(v) + '</code>';
+    }
+    const close = () => { ov.remove(); document.removeEventListener("keydown", onKey); };
+    const onKey = e => { if (e.key === "Escape") close(); };
+    document.addEventListener("keydown", onKey);
+    panel.querySelector(".cvss-close").addEventListener("click", close);
+    ov.addEventListener("click", e => { if (e.target === ov) close(); });
+    insertBtn.addEventListener("click", () => { const s = cvssCompute(v); onInsert(cvssVector(v), s.toFixed(1), cvssSeverity(s)); close(); });
+    update();
+    ov.appendChild(panel); document.body.appendChild(ov);
+  }
+
   function renderWriteupEditor(wu) {
     const page = document.createElement("div"); page.className = "wu-editor-page";
 
@@ -1733,6 +1793,9 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         b.addEventListener("click", () => { fn(); commit(); });
         fmt.appendChild(b);
       });
+      const cvssBtn = document.createElement("button"); cvssBtn.className = "wu-fmt-btn wu-cvss-btn"; cvssBtn.type = "button"; cvssBtn.textContent = t("cvssCalc"); cvssBtn.title = t("cvssTitle");
+      cvssBtn.addEventListener("click", () => openCvssCalc((vec, score, sev) => { insertAtCursor(editor, "\n**CVSS 3.1:** " + score + " (" + sev + ")  \n`" + vec + "`\n"); commit(); }));
+      fmt.appendChild(cvssBtn);
       const wcEl = document.createElement("span"); wcEl.className = "wu-wordcount"; fmt.appendChild(wcEl);
       page.appendChild(fmt);
 
@@ -3540,11 +3603,13 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   }
 
   // ── PDF/Markdown Export for Write-ups ──
-  function exportWriteupMd(wu) {
+  async function exportWriteupMd(wu) {
     let md = "# " + wu.title + "\n\n";
     md += "**Tags:** " + (wu.tags || []).join(", ") + "\n";
     md += "**Date:** " + new Date(wu.updatedAt).toLocaleString() + "\n\n---\n\n";
     md += wu.content || "";
+    // Self-contained MD: inline /uploads images as base64 data URIs (like HTML export).
+    md = await inlineUploadsText(md);
     const blob = new Blob([md], { type: "text/markdown" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
@@ -3587,18 +3652,21 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   // Inline every /uploads/... image as a base64 data URI so an exported HTML file
   // is fully self-contained (works when opened away from the server). Best-effort:
   // a fetch that fails leaves the original URL untouched.
-  async function inlineUploads(html) {
-    const urls = Array.from(new Set(html.match(/\/uploads\/[A-Za-z0-9._-]+/g) || []));
+  // Replace every /uploads/... reference (in HTML attributes OR markdown links)
+  // with a base64 data URI so the exported file is fully self-contained.
+  async function inlineUploadsText(text) {
+    const urls = Array.from(new Set(text.match(/\/uploads\/[A-Za-z0-9._-]+/g) || []));
     for (const u of urls) {
       try {
         const res = await fetch(u); if (!res.ok) continue;
         const blob = await res.blob();
         const dataUri = await new Promise((resolve, reject) => { const fr = new FileReader(); fr.onload = () => resolve(fr.result); fr.onerror = reject; fr.readAsDataURL(blob); });
-        html = html.split('"' + u + '"').join('"' + dataUri + '"');
+        text = text.split(u).join(dataUri);
       } catch { /* leave the URL as-is */ }
     }
-    return html;
+    return text;
   }
+  function inlineUploads(html) { return inlineUploadsText(html); }
   async function exportWriteupHtml(wu) {
     let html = "<!DOCTYPE html><html lang='" + lang + "'><head><meta charset='utf-8'>" +
       "<meta name='viewport' content='width=device-width,initial-scale=1'>" +
