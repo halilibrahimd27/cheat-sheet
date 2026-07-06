@@ -536,7 +536,13 @@
       const up = mk("↑", "Up", i === 0, () => { const x = basket[i - 1]; basket[i - 1] = basket[i]; basket[i] = x; saveBasket(); renderBasketPanel(); });
       const dn = mk("↓", "Down", i === basket.length - 1, () => { const x = basket[i + 1]; basket[i + 1] = basket[i]; basket[i] = x; saveBasket(); renderBasketPanel(); });
       const rm = mk("✕", t("del"), false, () => { basket.splice(i, 1); saveBasket(); renderBasketPanel(); }); rm.classList.add("basket-rm");
-      row.appendChild(pre); row.appendChild(up); row.appendChild(dn); row.appendChild(rm); body.appendChild(row);
+      // Copy just this one command (IP-changer values applied), like the card copy.
+      const cp = mk("⧉", t("basketCopy"), false, () => {
+        const applied = applyIpToCode(code);
+        copyText(applied, () => { recordHistory(applied); cp.textContent = "✓"; cp.classList.add("copied"); announce(t("copied")); toast(t("copied"), "ok"); setTimeout(() => { cp.textContent = "⧉"; cp.classList.remove("copied"); }, 1200); });
+      });
+      cp.classList.add("basket-copy");
+      row.appendChild(pre); row.appendChild(cp); row.appendChild(up); row.appendChild(dn); row.appendChild(rm); body.appendChild(row);
     });
     basketPanel.appendChild(body);
     const foot = document.createElement("div"); foot.className = "basket-foot";

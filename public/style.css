@@ -2307,6 +2307,8 @@ select.cell-input { font-family: 'Inter', sans-serif; cursor: pointer; }
 .basket-mini:hover:not([disabled]) { background: var(--accent-glow); border-color: var(--accent-primary); color: var(--text-primary); }
 .basket-mini[disabled] { opacity: 0.3; cursor: not-allowed; }
 .basket-rm:hover { border-color: var(--accent-red); color: var(--accent-red); }
+.basket-copy:hover:not([disabled]) { border-color: var(--accent-primary); color: var(--accent-primary); }
+.basket-copy.copied { color: var(--accent-green); border-color: var(--accent-green); }
 .basket-foot { display: flex; gap: 8px; flex-wrap: wrap; padding: 10px 16px; border-top: 1px solid var(--border-primary); }
 @media print { .basket-fab, .basket-panel { display: none !important; } }
 
