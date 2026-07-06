@@ -199,6 +199,9 @@
             const command = { id: genId("c"), title, desc: desc || "" };
             if (cmds && cmds.length) command.cmds = cmds; else if (cmd) command.cmd = cmd;
             command.tags = tags || []; if (note) command.note = note;
+            if (Array.isArray(body.attack) ? body.attack.length : body.attack) command.attack = body.attack;
+            if (Array.isArray(body.refs) && body.refs.length) command.refs = body.refs;
+            if (body.ref) command.ref = body.ref;
             sub.commands.push(command); await persist.categories(); return J(201, command);
           }
           const command = sub.commands[parseIndex(r[5])];
@@ -211,6 +214,9 @@
               if (body.cmds) { command.cmds = body.cmds; delete command.cmd; }
               if (body.tags) command.tags = body.tags;
               if (body.note !== undefined) command.note = body.note;
+              if (body.attack !== undefined) { if (Array.isArray(body.attack) ? body.attack.length : body.attack) command.attack = body.attack; else delete command.attack; }
+              if (body.refs !== undefined) { if (Array.isArray(body.refs) && body.refs.length) command.refs = body.refs; else delete command.refs; }
+              if (body.ref !== undefined) { if (body.ref) command.ref = body.ref; else delete command.ref; }
               await persist.categories(); return J(200, command);
             }
             if (method === "DELETE") { sub.commands.splice(parseIndex(r[5]), 1); await persist.categories(); return J(200, { ok: true }); }

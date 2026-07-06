@@ -81,6 +81,26 @@ test("category → subcategory → command CRUD lifecycle", async () => {
   assert.strictEqual((await api("DELETE", `/api/categories/${id}`)).status, 404);
 });
 
+test("command ATT&CK + reference metadata round-trips", async () => {
+  const c = await api("POST", "/api/categories", { name: "Meta Cat" });
+  const id = c.json.id;
+  await api("POST", `/api/categories/${id}/subcategories`, { name: "S" });
+  const cmd = await api("POST", `/api/categories/${id}/subcategories/0/commands`, {
+    title: "Kerberoast", cmd: "GetUserSPNs", tags: ["essential"],
+    attack: ["T1558.003"], ref: "https://attack.mitre.org/techniques/T1558/003/",
+    refs: [{ label: "HackTricks", url: "https://book.hacktricks.xyz" }],
+  });
+  assert.strictEqual(cmd.status, 201);
+  assert.deepStrictEqual(cmd.json.attack, ["T1558.003"]);
+  assert.strictEqual(cmd.json.ref, "https://attack.mitre.org/techniques/T1558/003/");
+  assert.strictEqual(cmd.json.refs[0].label, "HackTricks");
+  // Clearing attack on update removes the field.
+  const upd = await api("PUT", `/api/categories/${id}/subcategories/0/commands/0`, { attack: [] });
+  assert.strictEqual(upd.status, 200);
+  assert.strictEqual(upd.json.attack, undefined);
+  await api("DELETE", `/api/categories/${id}`);
+});
+
 test("POST /api/categories requires a name", async () => {
   const r = await api("POST", "/api/categories", { icon: "x" });
   assert.strictEqual(r.status, 400);

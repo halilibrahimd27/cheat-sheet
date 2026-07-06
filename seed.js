@@ -5583,7 +5583,9 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bash TCP ters bağlantı kabuğu"
+            "desc_tr": "Bash TCP ters bağlantı kabuğu",
+            "attack": "T1059.004",
+            "ref": "https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md"
           },
           {
             "title": "Bash Reverse Shell (Alt)",
@@ -6625,7 +6627,12 @@ module.exports = [
               "tool"
             ],
             "note": "SeDebugPrivilege allows reading any process memory",
-            "desc_tr": "Dump LSASS with debug privilege"
+            "desc_tr": "Dump LSASS with debug privilege",
+            "attack": ["T1003.001", "T1134.002"],
+            "refs": [
+              { "label": "HackTricks — LSASS", "url": "https://book.hacktricks.xyz/windows-hardening/stealing-credentials" },
+              "https://attack.mitre.org/techniques/T1003/001/"
+            ]
           },
           {
             "title": "SeDebugPrivilege Procdump LSASS",
@@ -13149,7 +13156,9 @@ module.exports = [
               "essential"
             ],
             "desc": "Request TGS tickets for all SPNs and save hashes for cracking",
-            "desc_tr": "Request TGS tickets for all SPNs and save hashes for cracking"
+            "desc_tr": "Request TGS tickets for all SPNs and save hashes for cracking",
+            "attack": "T1558.003",
+            "ref": "https://attack.mitre.org/techniques/T1558/003/"
           },
           {
             "title": "Kerberoasting (Rubeus)",

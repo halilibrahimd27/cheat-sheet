@@ -389,6 +389,10 @@ app.post("/api/categories/:id/subcategories/:subIdx/commands", (req, res) => {
   else if (cmd) command.cmd = cmd;
   command.tags = tags || [];
   if (note) command.note = note;
+  // Optional metadata: MITRE ATT&CK technique tag(s) + reference link(s).
+  if (Array.isArray(req.body.attack) ? req.body.attack.length : req.body.attack) command.attack = req.body.attack;
+  if (Array.isArray(req.body.refs) && req.body.refs.length) command.refs = req.body.refs;
+  if (req.body.ref) command.ref = req.body.ref;
   sub.commands.push(command);
   writeData(data);
   res.status(201).json(command);
@@ -409,6 +413,9 @@ app.put("/api/categories/:id/subcategories/:subIdx/commands/:cmdIdx", (req, res)
   if (req.body.cmds) { command.cmds = req.body.cmds; delete command.cmd; }
   if (req.body.tags) command.tags = req.body.tags;
   if (req.body.note !== undefined) command.note = req.body.note;
+  if (req.body.attack !== undefined) { if (Array.isArray(req.body.attack) ? req.body.attack.length : req.body.attack) command.attack = req.body.attack; else delete command.attack; }
+  if (req.body.refs !== undefined) { if (Array.isArray(req.body.refs) && req.body.refs.length) command.refs = req.body.refs; else delete command.refs; }
+  if (req.body.ref !== undefined) { if (req.body.ref) command.ref = req.body.ref; else delete command.ref; }
   writeData(data);
   res.json(command);
 });

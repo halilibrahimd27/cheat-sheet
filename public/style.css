@@ -2303,3 +2303,24 @@ select.cell-input { font-family: 'Inter', sans-serif; cursor: pointer; }
 .basket-rm:hover { border-color: var(--accent-red); color: var(--accent-red); }
 .basket-foot { display: flex; gap: 8px; flex-wrap: wrap; padding: 10px 16px; border-top: 1px solid var(--border-primary); }
 @media print { .basket-fab, .basket-panel { display: none !important; } }
+
+/* ── Round 6: MITRE ATT&CK tags + reference links ── */
+.cmd-meta-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 12px 12px; }
+.cmd-attack-chip {
+    display: inline-flex; align-items: center; gap: 3px; font-size: 10.5px; font-weight: 600; font-family: 'JetBrains Mono', monospace;
+    text-decoration: none; padding: 2px 8px; border-radius: 999px; color: var(--accent-orange);
+    background: rgba(251,146,60,0.12); border: 1px solid rgba(251,146,60,0.35); transition: all var(--transition);
+}
+.cmd-attack-chip:hover { background: var(--accent-orange); color: #1a1a1a; }
+.cmd-ref-link {
+    display: inline-flex; align-items: center; gap: 3px; font-size: 11px; text-decoration: none; padding: 2px 8px;
+    border-radius: 999px; color: var(--accent-cyan); background: var(--bg-tertiary); border: 1px solid var(--border-primary); transition: all var(--transition);
+}
+.cmd-ref-link:hover { border-color: var(--accent-cyan); color: var(--text-primary); }
+
+/* ATT&CK sidebar facet (only rendered when data carries attack tags) */
+.attack-filters { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; padding: 0 16px 10px; }
+.attack-facet-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-tertiary); width: 100%; }
+.attack-chip-btn { font-size: 10.5px; font-family: 'JetBrains Mono', monospace; padding: 2px 8px; border-radius: 999px; background: var(--bg-tertiary); border: 1px solid var(--border-primary); color: var(--text-secondary); cursor: pointer; transition: all var(--transition); }
+.attack-chip-btn:hover { border-color: var(--accent-orange); color: var(--text-primary); }
+.attack-chip-btn.active { background: var(--accent-orange); border-color: var(--accent-orange); color: #1a1a1a; font-weight: 600; }

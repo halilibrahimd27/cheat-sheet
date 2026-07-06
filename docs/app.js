@@ -17,6 +17,21 @@
   let activeTags = new Set();
   function tagFilterActive() { return activeTags.size > 0; }
   function cmdMatchesTags(c) { return activeTags.size === 0 || (c.tags || []).some(tg => activeTags.has(tg)); }
+  // Optional MITRE ATT&CK technique tags on commands (cmd.attack: string|array).
+  let activeAttack = new Set();
+  function cmdAttackList(c) {
+    const a = c && c.attack;
+    if (!a) return [];
+    return (Array.isArray(a) ? a : [a]).map(x => String(x).trim().toUpperCase()).filter(x => /^T\d{4}(\.\d{3})?$/.test(x));
+  }
+  function attackMatches(c) { return activeAttack.size === 0 || cmdAttackList(c).some(id => activeAttack.has(id)); }
+  // Optional per-command reference links (cmd.ref: url | cmd.refs: [url|{label,url}]).
+  function cmdRefList(c) {
+    const out = [];
+    const push = r => { if (!r) return; if (typeof r === "string") out.push({ label: "", url: r }); else if (typeof r === "object" && r.url) out.push({ label: r.label || "", url: r.url }); };
+    if (c) { push(c.ref); (Array.isArray(c.refs) ? c.refs : (c.refs ? [c.refs] : [])).forEach(push); }
+    return out;
+  }
   // Script basket: an ordered scratch buffer of raw commands (with placeholders).
   let basket = JSON.parse(localStorage.getItem("cs-basket") || "[]");
   let categoryNotes = {};
@@ -131,7 +146,10 @@
       cvssCalc: "🧮 CVSS 3.1", cvssTitle: "CVSS 3.1 Base Score", cvssInsert: "Insert into write-up", cvssVector: "Vector", cvssScore: "Score", cvssSeverity: "Severity",
       // — Round 5: variable profiles + basket —
       profiles: "Profiles", profileSave: "Save as profile", profileNew: "Profile name (e.g., Active Box)", profileNone: "No saved profiles", profileApply: "Apply", profileDel: "Delete profile", profileSaved: "Profile saved",
-      basket: "Script basket", basketAdd: "Add to basket", basketNone: "Basket is empty. Add commands to build a script.", basketCopy: "Copy script", basketClear: "Clear", basketExport: "Export .sh", basketTitle: "🧺 Script Basket", basketAdded: "Added to basket", basketCount: "in basket"
+      basket: "Script basket", basketAdd: "Add to basket", basketNone: "Basket is empty. Add commands to build a script.", basketCopy: "Copy script", basketClear: "Clear", basketExport: "Export .sh", basketTitle: "🧺 Script Basket", basketAdded: "Added to basket", basketCount: "in basket",
+      // — Round 6: ATT&CK tags + references —
+      attackFacet: "ATT&CK", attackAll: "All techniques", cardRefs: "References", attackTitle: "MITRE ATT&CK technique",
+      cmdAttack: "MITRE ATT&CK (optional)", cmdAttackHint: "e.g. T1059, T1003.001 (comma-separated)", cmdRefs: "Reference links (optional)", cmdRefsHint: "One URL per line (HackTricks, GTFOBins, docs…)"
     },
     tr: {
       allCommands: "Tum Komutlar", favorites: "Favoriler", search: "Komut ara...",
@@ -221,7 +239,10 @@
       boardView: "▤ Pano", gridView: "▦ Izgara", colDrop: "Buraya birak",
       cvssCalc: "🧮 CVSS 3.1", cvssTitle: "CVSS 3.1 Temel Skor", cvssInsert: "Write-up'a ekle", cvssVector: "Vektor", cvssScore: "Skor", cvssSeverity: "Onem",
       profiles: "Profiller", profileSave: "Profil olarak kaydet", profileNew: "Profil adi (or. Aktif Makine)", profileNone: "Kayitli profil yok", profileApply: "Uygula", profileDel: "Profili sil", profileSaved: "Profil kaydedildi",
-      basket: "Script sepeti", basketAdd: "Sepete ekle", basketNone: "Sepet bos. Script olusturmak icin komut ekleyin.", basketCopy: "Scripti kopyala", basketClear: "Temizle", basketExport: ".sh aktar", basketTitle: "🧺 Script Sepeti", basketAdded: "Sepete eklendi", basketCount: "sepette"
+      basket: "Script sepeti", basketAdd: "Sepete ekle", basketNone: "Sepet bos. Script olusturmak icin komut ekleyin.", basketCopy: "Scripti kopyala", basketClear: "Temizle", basketExport: ".sh aktar", basketTitle: "🧺 Script Sepeti", basketAdded: "Sepete eklendi", basketCount: "sepette",
+      // — Round 6: ATT&CK etiketleri + referanslar —
+      attackFacet: "ATT&CK", attackAll: "Tum teknikler", cardRefs: "Referanslar", attackTitle: "MITRE ATT&CK teknigi",
+      cmdAttack: "MITRE ATT&CK (istege bagli)", cmdAttackHint: "or. T1059, T1003.001 (virgul ile ayirin)", cmdRefs: "Referans baglantilari (istege bagli)", cmdRefsHint: "Her satira bir URL (HackTricks, GTFOBins, dokuman…)"
     }
   };
   function t(key) { return (T[lang] && T[lang][key]) || T.en[key] || key; }
@@ -617,17 +638,28 @@
       { key: "title", label: t("cmdTitle") }, { key: "desc", label: t("cmdDesc") },
       { key: "commands", label: t("cmdCommands"), type: "textarea", rows: 5, hint: t("perLine") },
       { key: "tags", label: t("cmdTags"), placeholder: t("tagComma") },
-      { key: "note", label: t("cmdNote"), type: "textarea", rows: 2 }
+      { key: "note", label: t("cmdNote"), type: "textarea", rows: 2 },
+      { key: "attack", label: t("cmdAttack"), placeholder: t("cmdAttackHint"), hint: t("cmdAttackHint") },
+      { key: "refs", label: t("cmdRefs"), type: "textarea", rows: 2, hint: t("cmdRefsHint") }
     ], {
       title: data.title || "", desc: data.desc || "",
       commands: (data.cmds || (data.cmd ? [data.cmd] : [])).join("\n"),
-      tags: (data.tags || []).join(", "), note: data.note || ""
+      tags: (data.tags || []).join(", "), note: data.note || "",
+      attack: (Array.isArray(data.attack) ? data.attack : (data.attack ? [data.attack] : [])).join(", "),
+      refs: cmdRefList(data).map(r => r.label ? r.label + " " + r.url : r.url).join("\n")
     }, async fd => {
       const lines = fd.commands.split("\n").map(l => l.trim()).filter(Boolean);
       const tags = fd.tags.split(",").map(s => s.trim()).filter(Boolean);
       const p = { title: fd.title, desc: fd.desc, tags };
       if (fd.note) p.note = fd.note;
       if (lines.length > 1) p.cmds = lines; else if (lines.length === 1) p.cmd = lines[0];
+      const attack = (fd.attack || "").split(",").map(s => s.trim()).filter(Boolean);
+      p.attack = attack; // sent even if empty so clearing works on edit
+      const refs = (fd.refs || "").split("\n").map(l => l.trim()).filter(Boolean).map(l => {
+        const sp = l.indexOf(" ");
+        return (sp > 0 && !/^https?:\/\//i.test(l)) ? { label: l.slice(0, sp), url: l.slice(sp + 1).trim() } : { label: "", url: l };
+      });
+      p.refs = refs;
       await cb(p);
     });
   }
@@ -3395,8 +3427,28 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   }
   function handleDragEnd(e) { e.target.classList.remove("dragging"); dragSrcCatIdx = null; }
 
+  // ── MITRE ATT&CK facet — built only when the loaded data actually uses it ──
+  function allAttackIds() {
+    const set = new Set();
+    CATEGORIES.forEach(cat => (cat.subcategories || []).forEach(sub => (sub.commands || []).forEach(c => cmdAttackList(c).forEach(id => set.add(id)))));
+    return Array.from(set).sort();
+  }
+  function buildAttackFacet() {
+    const host = $("attackFilters"); if (!host) return;
+    const ids = allAttackIds();
+    if (!ids.length) { host.hidden = true; host.innerHTML = ""; // drop stale selections if content lost its tags
+      if (activeAttack.size) activeAttack.clear(); return; }
+    host.hidden = false; host.innerHTML = "";
+    const label = document.createElement("span"); label.className = "attack-facet-label"; label.textContent = "🎯 " + t("attackFacet"); host.appendChild(label);
+    const mk = (id, on) => { const b = document.createElement("button"); b.className = "attack-chip-btn" + (on ? " active" : ""); b.textContent = id === "" ? t("attackAll") : id; b.dataset.id = id;
+      b.addEventListener("click", () => { if (id === "") activeAttack.clear(); else { if (activeAttack.has(id)) activeAttack.delete(id); else activeAttack.add(id); } render(); }); return b; };
+    host.appendChild(mk("", activeAttack.size === 0));
+    ids.forEach(id => host.appendChild(mk(id, activeAttack.has(id))));
+  }
+
   // ── Sidebar ──
   function buildSidebar() {
+    buildAttackFacet();
     const s = getStats();
     statsEl.textContent = s.tc + " " + t("commands") + " · " + s.cats + " " + t("categories");
     $("heroSubtitle").textContent = t("heroSubtitle");
@@ -3477,8 +3529,26 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       card.appendChild(m);
     }
     if (cmd.note) { const n = document.createElement("div"); n.className = "cmd-note"; n.innerHTML = "💡 " + escapeHtml(cmd.note).replace(/`([^`]+)`/g, "<code>$1</code>"); card.appendChild(n); }
+    // ATT&CK techniques + reference links (both optional, data-driven).
+    const atk = cmdAttackList(cmd), refs = cmdRefList(cmd);
+    if (atk.length || refs.length) {
+      const meta = document.createElement("div"); meta.className = "cmd-meta-row";
+      atk.forEach(id => {
+        const a = document.createElement("a"); a.className = "cmd-attack-chip"; a.href = "https://attack.mitre.org/techniques/" + id.replace(".", "/") + "/";
+        a.target = "_blank"; a.rel = "noopener noreferrer"; a.textContent = "🎯 " + id; a.title = t("attackTitle") + " " + id;
+        meta.appendChild(a);
+      });
+      refs.forEach(r => {
+        const url = mdSafeUrl(r.url); if (url === "#") return;
+        const a = document.createElement("a"); a.className = "cmd-ref-link"; a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer";
+        a.textContent = "🔗 " + (r.label || refHostLabel(r.url));
+        meta.appendChild(a);
+      });
+      if (meta.children.length) card.appendChild(meta);
+    }
     return card;
   }
+  function refHostLabel(u) { try { return new URL(u, "http://x").hostname.replace(/^www\./, "") || t("cardRefs"); } catch { return t("cardRefs"); } }
 
   function mkCode(code) {
     const w = document.createElement("div"); w.className = "cmd-code-wrapper";
@@ -3646,6 +3716,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   function filterCmds(commands) {
     let r = commands;
     if (tagFilterActive()) r = r.filter(cmdMatchesTags);
+    if (activeAttack.size) r = r.filter(attackMatches);
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       r = r.filter(c => hay(c).includes(q));
@@ -3656,7 +3727,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   // True when any filter (tag chip OR search) is narrowing the list. The content
   // render must then use filterCmds() results, not the raw command arrays — this
   // is the fix for the tag chips doing nothing unless a search was also active.
-  function isFiltering() { return tagFilterActive() || !!searchQuery; }
+  function isFiltering() { return tagFilterActive() || activeAttack.size > 0 || !!searchQuery; }
 
   function render() {
     buildSidebar(); contentArea.innerHTML = ""; focusedCmdIdx = -1;
