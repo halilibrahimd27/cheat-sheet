@@ -2319,8 +2319,12 @@ select.cell-input { font-family: 'Inter', sans-serif; cursor: pointer; }
 .cmd-ref-link:hover { border-color: var(--accent-cyan); color: var(--text-primary); }
 
 /* ATT&CK sidebar facet (only rendered when data carries attack tags) */
-.attack-filters { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; padding: 0 16px 10px; }
-.attack-facet-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-tertiary); width: 100%; }
-.attack-chip-btn { font-size: 10.5px; font-family: 'JetBrains Mono', monospace; padding: 2px 8px; border-radius: 999px; background: var(--bg-tertiary); border: 1px solid var(--border-primary); color: var(--text-secondary); cursor: pointer; transition: all var(--transition); }
-.attack-chip-btn:hover { border-color: var(--accent-orange); color: var(--text-primary); }
-.attack-chip-btn.active { background: var(--accent-orange); border-color: var(--accent-orange); color: #1a1a1a; font-weight: 600; }
+/* Single "ATT&CK" chip in the top filter row (orange accent to distinguish) */
+.tag-filter-attack { border-color: rgba(251,146,60,0.4); color: var(--accent-orange); }
+.tag-filter-attack:hover { border-color: var(--accent-orange); color: var(--accent-orange); }
+.tag-filter-attack.active { background: var(--accent-orange); border-color: var(--accent-orange); color: #1a1a1a; }
+
+/* The basket FAB / panel collide with the bottom Variable Fill Bar (and hide it
+   on narrow screens). Hide the FAB + panel whenever the fill bar is open. */
+.var-bar.active ~ .basket-fab,
+.var-bar.active ~ .basket-panel { display: none; }

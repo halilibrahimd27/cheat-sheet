@@ -18,13 +18,14 @@
   function tagFilterActive() { return activeTags.size > 0; }
   function cmdMatchesTags(c) { return activeTags.size === 0 || (c.tags || []).some(tg => activeTags.has(tg)); }
   // Optional MITRE ATT&CK technique tags on commands (cmd.attack: string|array).
-  let activeAttack = new Set();
+  // Single "ATT&CK" chip in the top filter row = show only commands that carry a
+  // technique tag ("my attacks"). No per-technique sub-facet — keeps one filter row.
+  let attackOnly = false;
   function cmdAttackList(c) {
     const a = c && c.attack;
     if (!a) return [];
     return (Array.isArray(a) ? a : [a]).map(x => String(x).trim().toUpperCase()).filter(x => /^T\d{4}(\.\d{3})?$/.test(x));
   }
-  function attackMatches(c) { return activeAttack.size === 0 || cmdAttackList(c).some(id => activeAttack.has(id)); }
   // Optional per-command reference links (cmd.ref: url | cmd.refs: [url|{label,url}]).
   function cmdRefList(c) {
     const out = [];
@@ -3393,18 +3394,20 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     render();
   });
 
-  // ── Tag Filter (multi-select: chips toggle independently; "All" clears) ──
+  // ── Tag Filter (multi-select chips; "All" clears; "ATT&CK" = has-technique) ──
   function syncTagChips() {
     tagFilters.querySelectorAll(".tag-filter").forEach(b => {
       const tag = b.dataset.tag;
-      if (tag === "all") b.classList.toggle("active", activeTags.size === 0);
+      if (tag === "all") b.classList.toggle("active", activeTags.size === 0 && !attackOnly);
+      else if (tag === "attack") b.classList.toggle("active", attackOnly);
       else b.classList.toggle("active", activeTags.has(tag));
     });
   }
   tagFilters.querySelectorAll(".tag-filter").forEach(btn => {
     btn.addEventListener("click", () => {
       const tag = btn.dataset.tag;
-      if (tag === "all") activeTags.clear();
+      if (tag === "all") { activeTags.clear(); attackOnly = false; }
+      else if (tag === "attack") attackOnly = !attackOnly;
       else { if (activeTags.has(tag)) activeTags.delete(tag); else activeTags.add(tag); }
       syncTagChips();
       render();
@@ -3427,28 +3430,8 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   }
   function handleDragEnd(e) { e.target.classList.remove("dragging"); dragSrcCatIdx = null; }
 
-  // ── MITRE ATT&CK facet — built only when the loaded data actually uses it ──
-  function allAttackIds() {
-    const set = new Set();
-    CATEGORIES.forEach(cat => (cat.subcategories || []).forEach(sub => (sub.commands || []).forEach(c => cmdAttackList(c).forEach(id => set.add(id)))));
-    return Array.from(set).sort();
-  }
-  function buildAttackFacet() {
-    const host = $("attackFilters"); if (!host) return;
-    const ids = allAttackIds();
-    if (!ids.length) { host.hidden = true; host.innerHTML = ""; // drop stale selections if content lost its tags
-      if (activeAttack.size) activeAttack.clear(); return; }
-    host.hidden = false; host.innerHTML = "";
-    const label = document.createElement("span"); label.className = "attack-facet-label"; label.textContent = "🎯 " + t("attackFacet"); host.appendChild(label);
-    const mk = (id, on) => { const b = document.createElement("button"); b.className = "attack-chip-btn" + (on ? " active" : ""); b.textContent = id === "" ? t("attackAll") : id; b.dataset.id = id;
-      b.addEventListener("click", () => { if (id === "") activeAttack.clear(); else { if (activeAttack.has(id)) activeAttack.delete(id); else activeAttack.add(id); } render(); }); return b; };
-    host.appendChild(mk("", activeAttack.size === 0));
-    ids.forEach(id => host.appendChild(mk(id, activeAttack.has(id))));
-  }
-
   // ── Sidebar ──
   function buildSidebar() {
-    buildAttackFacet();
     const s = getStats();
     statsEl.textContent = s.tc + " " + t("commands") + " · " + s.cats + " " + t("categories");
     $("heroSubtitle").textContent = t("heroSubtitle");
@@ -3716,7 +3699,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   function filterCmds(commands) {
     let r = commands;
     if (tagFilterActive()) r = r.filter(cmdMatchesTags);
-    if (activeAttack.size) r = r.filter(attackMatches);
+    if (attackOnly) r = r.filter(c => cmdAttackList(c).length > 0);
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       r = r.filter(c => hay(c).includes(q));
@@ -3727,7 +3710,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   // True when any filter (tag chip OR search) is narrowing the list. The content
   // render must then use filterCmds() results, not the raw command arrays — this
   // is the fix for the tag chips doing nothing unless a search was also active.
-  function isFiltering() { return tagFilterActive() || activeAttack.size > 0 || !!searchQuery; }
+  function isFiltering() { return tagFilterActive() || attackOnly || !!searchQuery; }
 
   function render() {
     buildSidebar(); contentArea.innerHTML = ""; focusedCmdIdx = -1;
@@ -3745,6 +3728,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       currentSection.textContent = t("favorites"); hero.style.display = "none";
       let favs = getFavCommands();
       if (tagFilterActive()) favs = favs.filter(f => cmdMatchesTags(f.cmd));
+      if (attackOnly) favs = favs.filter(f => cmdAttackList(f.cmd).length > 0);
       if (searchQuery) { const q = searchQuery.toLowerCase(); favs = favs.filter(f => hay(f.cmd).includes(q)); }
       if (favs.length === 0) {
         contentArea.innerHTML = '<div class="no-results"><h3>⭐ ' + t("favorites") + '</h3><p>' + (lang === "tr" ? "Henuz favori komut eklemediniz. Komutlardaki ★ ikonuna tiklayin." : "No favorites yet. Click ★ on commands to add them.") + '</p></div>';
@@ -3759,7 +3743,9 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     else {
       currentSection.textContent = searchQuery
         ? t("searchResults") + ': "' + searchQuery + '"'
-        : (tagFilterActive() ? t("allCommands") + " · " + [...activeTags].join(", ") : t("allCommands"));
+        : (tagFilterActive() || attackOnly
+          ? t("allCommands") + " · " + [...activeTags].concat(attackOnly ? ["ATT&CK"] : []).join(", ")
+          : t("allCommands"));
       hero.style.display = isFiltering() ? "none" : "";
     }
 
