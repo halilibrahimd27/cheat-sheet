@@ -748,8 +748,8 @@ body {
    ============================================ */
 .back-to-top {
     position: fixed;
-    bottom: 28px;
-    right: 28px;
+    bottom: 20px;
+    right: 20px;
     width: 42px;
     height: 42px;
     background: var(--accent-primary);
@@ -2284,7 +2284,7 @@ select.cell-input { font-family: 'Inter', sans-serif; cursor: pointer; }
 
 /* Script basket FAB + panel */
 .basket-fab {
-    position: fixed; right: 20px; bottom: 20px; z-index: 900; background: var(--bg-card); color: var(--text-primary);
+    position: fixed; right: 74px; bottom: 20px; z-index: 900; background: var(--bg-card); color: var(--text-primary);
     border: 1px solid var(--border-secondary); border-radius: 999px; padding: 10px 16px; font-size: 15px; cursor: pointer;
     box-shadow: var(--shadow-md); display: flex; align-items: center; gap: 6px; transition: transform var(--transition), border-color var(--transition);
 }
@@ -2334,4 +2334,5 @@ select.cell-input { font-family: 'Inter', sans-serif; cursor: pointer; }
    hidden behind it on narrow screens). Hide the FAB + panel whenever the fill
    bar is open. :has() is order-independent (works regardless of DOM position). */
 body:has(.var-bar.active) .basket-fab,
-body:has(.var-bar.active) .basket-panel { display: none; }
+body:has(.var-bar.active) .basket-panel,
+body:has(.var-bar.active) .back-to-top { display: none; }
