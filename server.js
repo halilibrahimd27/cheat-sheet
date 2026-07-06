@@ -540,7 +540,7 @@ app.post("/api/machines", (req, res) => {
     userFlag: { value: "", capturedAt: null },
     rootFlag: { value: "", capturedAt: null },
     startedAt: null, ownedAt: null,
-    services: [], credentials: [], notes: "",
+    services: [], credentials: [], notes: "", timeline: [], evidence: [],
     checklist: [
       { id: "nmap", label: "Initial Nmap Scan", done: false },
       { id: "services", label: "Service Enumeration", done: false },
@@ -565,7 +565,7 @@ app.put("/api/machines/:id", (req, res) => {
   const m = machines.find(x => x.id === req.params.id);
   if (!m) return res.status(404).json({ error: "not found" });
   for (const key of ["name", "ip", "os", "services", "credentials", "notes", "checklist", "template", "hosts", "attackPath",
-    "platform", "difficulty", "status", "tags", "userFlag", "rootFlag", "startedAt", "ownedAt"]) {
+    "platform", "difficulty", "status", "tags", "userFlag", "rootFlag", "startedAt", "ownedAt", "timeline", "evidence"]) {
     if (req.body[key] !== undefined) m[key] = req.body[key];
   }
   m.updatedAt = new Date().toISOString();

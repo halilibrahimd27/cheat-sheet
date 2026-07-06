@@ -102,7 +102,29 @@
       wuNewTitle: "New Write-up", wuTitleLabel: "Title", wuTitlePh: "Write-up title...", wuStartBlank: "Blank document",
       wuExportHtml: "Export HTML", wuCopyRendered: "Copy rendered",
       wuRelatedMachine: "Related machine", wuOpenMachine: "Open machine",
-      wuEditTags: "Edit Tags", confirmDelWriteup: "Delete this write-up?", back: "Back", imageBtn: "Image", wuTags: "Tags"
+      wuEditTags: "Edit Tags", confirmDelWriteup: "Delete this write-up?", back: "Back", imageBtn: "Image", wuTags: "Tags",
+      // — Round 5: structured machine workspace —
+      svcPort: "Port", svcProto: "Proto", svcName: "Service", svcVersion: "Version", svcState: "State", svcInfo: "Notes",
+      svcAdd: "+ Service", svcNone: "No services yet. Add a row or import nmap output.",
+      importNmap: "⇪ Import nmap", importNmapTitle: "Import nmap output", importNmapPh: "Paste `nmap -sCV`/`-sV` output. Ports, services and versions are parsed automatically.",
+      importDo: "Parse & add", importedN: "Imported {n} services", importedNone: "No services found in that output",
+      rawToggle: "Raw", tableToggle: "Table", scanPort: "Scan this port", scanAll: "Scan all ports",
+      credUser: "User", credSecret: "Secret", credTypeCol: "Type", credSource: "Source", credWorks: "Works on", credState: "State",
+      credAdd: "+ Credential", credNone: "No credentials captured yet.",
+      credCopyUser: "Copy user", credCopySecret: "Copy secret", credCopyPair: "Copy user:pass",
+      timeline: "Activity Timeline", timelineNone: "No activity yet. Commands you copy while this box is the active target are logged here automatically.",
+      timelineAdd: "+ Log entry", timelineNotePh: "Manual entry — finding, decision, milestone…", clearTimeline: "Clear",
+      tlCmd: "command", tlNote: "note", tlEvent: "event", confirmClearTl: "Clear this machine's activity timeline?",
+      activeTarget: "Active target", setActive: "Set as active target", unsetActive: "Unset active target",
+      activeBadge: "ACTIVE", activeHint: "Copied commands log to this box.", activeNowSet: "Active target set — copies now log here",
+      evidence: "Evidence", evidenceNone: "No screenshots yet. Paste (Ctrl+V) or drop an image to attach proof.",
+      evidenceCaption: "Caption / description…", evidenceDrop: "Paste or drop a screenshot here", evidenceDel: "Remove screenshot",
+      boardView: "▤ Board", gridView: "▦ Grid", colDrop: "Drop here",
+      // — Round 5: write-up pro (CVSS) —
+      cvssCalc: "🧮 CVSS 3.1", cvssTitle: "CVSS 3.1 Base Score", cvssInsert: "Insert into write-up", cvssVector: "Vector", cvssScore: "Score", cvssSeverity: "Severity",
+      // — Round 5: variable profiles + basket —
+      profiles: "Profiles", profileSave: "Save as profile", profileNew: "Profile name (e.g., Active Box)", profileNone: "No saved profiles", profileApply: "Apply", profileDel: "Delete profile", profileSaved: "Profile saved",
+      basket: "Script basket", basketAdd: "Add to basket", basketNone: "Basket is empty. Add commands to build a script.", basketCopy: "Copy script", basketClear: "Clear", basketExport: "Export .sh", basketTitle: "🧺 Script Basket", basketAdded: "Added to basket", basketCount: "in basket"
     },
     tr: {
       allCommands: "Tum Komutlar", favorites: "Favoriler", search: "Komut ara...",
@@ -172,7 +194,27 @@
       wuNewTitle: "Yeni Write-up", wuTitleLabel: "Baslik", wuTitlePh: "Write-up basligi...", wuStartBlank: "Bos belge",
       wuExportHtml: "HTML Aktar", wuCopyRendered: "Bicimlendirilmis kopyala",
       wuRelatedMachine: "Ilgili makine", wuOpenMachine: "Makineyi ac",
-      wuEditTags: "Etiketleri Duzenle", confirmDelWriteup: "Bu write-up silinsin mi?", back: "Geri", imageBtn: "Gorsel", wuTags: "Etiketler"
+      wuEditTags: "Etiketleri Duzenle", confirmDelWriteup: "Bu write-up silinsin mi?", back: "Geri", imageBtn: "Gorsel", wuTags: "Etiketler",
+      // — Round 5: yapilandirilmis makine calisma alani —
+      svcPort: "Port", svcProto: "Proto", svcName: "Servis", svcVersion: "Surum", svcState: "Durum", svcInfo: "Not",
+      svcAdd: "+ Servis", svcNone: "Henuz servis yok. Satir ekleyin ya da nmap ciktisi aktarin.",
+      importNmap: "⇪ nmap aktar", importNmapTitle: "nmap ciktisi aktar", importNmapPh: "`nmap -sCV`/`-sV` ciktisini yapistirin. Port, servis ve surumler otomatik ayristirilir.",
+      importDo: "Ayristir ve ekle", importedN: "{n} servis aktarildi", importedNone: "Bu ciktida servis bulunamadi",
+      rawToggle: "Ham", tableToggle: "Tablo", scanPort: "Bu portu tara", scanAll: "Tum portlari tara",
+      credUser: "Kullanici", credSecret: "Parola/Sir", credTypeCol: "Tur", credSource: "Kaynak", credWorks: "Gecerli oldugu", credState: "Durum",
+      credAdd: "+ Kimlik", credNone: "Henuz kimlik bilgisi yok.",
+      credCopyUser: "Kullaniciyi kopyala", credCopySecret: "Sirri kopyala", credCopyPair: "user:pass kopyala",
+      timeline: "Islem Zaman Cizelgesi", timelineNone: "Henuz islem yok. Bu makine aktif hedefken kopyaladiginiz komutlar buraya otomatik islenir.",
+      timelineAdd: "+ Kayit ekle", timelineNotePh: "Manuel kayit — bulgu, karar, kilometre tasi…", clearTimeline: "Temizle",
+      tlCmd: "komut", tlNote: "not", tlEvent: "olay", confirmClearTl: "Bu makinenin zaman cizelgesi temizlensin mi?",
+      activeTarget: "Aktif hedef", setActive: "Aktif hedef yap", unsetActive: "Aktif hedefi kaldir",
+      activeBadge: "AKTIF", activeHint: "Kopyalanan komutlar bu makineye islenir.", activeNowSet: "Aktif hedef ayarlandi — kopyalar artik buraya islenir",
+      evidence: "Kanit", evidenceNone: "Henuz ekran goruntusu yok. Kanit eklemek icin bir gorseli yapistirin (Ctrl+V) ya da surukleyin.",
+      evidenceCaption: "Aciklama…", evidenceDrop: "Ekran goruntusunu buraya yapistirin ya da surukleyin", evidenceDel: "Goruntuyu kaldir",
+      boardView: "▤ Pano", gridView: "▦ Izgara", colDrop: "Buraya birak",
+      cvssCalc: "🧮 CVSS 3.1", cvssTitle: "CVSS 3.1 Temel Skor", cvssInsert: "Write-up'a ekle", cvssVector: "Vektor", cvssScore: "Skor", cvssSeverity: "Onem",
+      profiles: "Profiller", profileSave: "Profil olarak kaydet", profileNew: "Profil adi (or. Aktif Makine)", profileNone: "Kayitli profil yok", profileApply: "Uygula", profileDel: "Profili sil", profileSaved: "Profil kaydedildi",
+      basket: "Script sepeti", basketAdd: "Sepete ekle", basketNone: "Sepet bos. Script olusturmak icin komut ekleyin.", basketCopy: "Scripti kopyala", basketClear: "Temizle", basketExport: ".sh aktar", basketTitle: "🧺 Script Sepeti", basketAdded: "Sepete eklendi", basketCount: "sepette"
     }
   };
   function t(key) { return (T[lang] && T[lang][key]) || T.en[key] || key; }
@@ -1820,7 +1862,76 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   let openHostId = null; // expanded host inside an AD engagement
   let machineTab = "detail", machineTabFor = null; // "detail" | "report", per open machine
   let adConnectMode = false, adConnectSel = null; // graph connection drawing
+  // The "active target": when set, every copied command is appended to this
+  // machine's activity timeline (see logToActiveTarget). Survives reloads.
+  let activeTargetId = localStorage.getItem("cs-active-target") || null;
   async function loadMachines() { machines = await api("GET", "/api/machines") || []; }
+
+  // ── Structured machine data — normalizers (back-compat with old string[] data) ──
+  const CRED_TYPES = ["password", "ntlm", "hash", "ssh-key", "kerberos", "token", "other"];
+  const SVC_STATES = ["open", "filtered", "closed"];
+  function normalizeService(s) {
+    if (s && typeof s === "object") {
+      return { port: String(s.port || ""), proto: s.proto || "tcp", name: s.name || s.service || "", version: s.version || "", state: s.state || "open", info: s.info || "" };
+    }
+    const str = String(s == null ? "" : s).trim();
+    const mm = str.match(/^(\d{1,5})\/(tcp|udp)\s+(?:(open|closed|filtered)\s+)?(\S+)?\s*(.*)$/i);
+    if (mm) return { port: mm[1], proto: mm[2].toLowerCase(), state: (mm[3] || "open").toLowerCase(), name: mm[4] || "", version: (mm[5] || "").trim(), info: "" };
+    return { port: "", proto: "tcp", name: str, version: "", state: "open", info: "" };
+  }
+  function normalizeServices(arr) { return (Array.isArray(arr) ? arr : []).map(normalizeService); }
+
+  function normalizeCred(c) {
+    if (c && typeof c === "object") {
+      return { username: c.username || "", secret: c.secret || "", type: c.type || "password", source: c.source || "", works: c.works || "", valid: c.valid !== false };
+    }
+    const str = String(c == null ? "" : c).trim();
+    let source = "", core = str;
+    const noteM = str.match(/^(.*?)\s*\(([^)]*)\)\s*$/);
+    if (noteM) { core = noteM[1].trim(); source = noteM[2].trim(); }
+    let username = "", secret = core;
+    const i = core.indexOf(":");
+    if (i >= 0) { username = core.slice(0, i).trim(); secret = core.slice(i + 1).trim(); }
+    let type = "password";
+    if (/aad3b435|:[0-9a-f]{32}:[0-9a-f]{32}/i.test(str)) type = "ntlm";
+    else if (/\$krb5|\.kirbi|ticket/i.test(str)) type = "kerberos";
+    else if (/\b[0-9a-f]{32,}\b/i.test(secret)) type = "hash";
+    return { username, secret, type, source, works: "", valid: true };
+  }
+  function normalizeCreds(arr) { return (Array.isArray(arr) ? arr : []).map(normalizeCred); }
+  // Render a credential (object or string) back to a single readable line.
+  function credToStr(c) { if (c && typeof c === "object") return (c.username ? c.username + ":" : "") + (c.secret || "") + (c.source ? " (" + c.source + ")" : ""); return String(c == null ? "" : c); }
+  function credsToText(arr) { return (Array.isArray(arr) ? arr : []).map(credToStr).filter(Boolean).join("\n"); }
+
+  // Parse nmap normal output ("PORT STATE SERVICE VERSION") into service rows.
+  function parseNmapOutput(text) {
+    const seen = {}, out = [];
+    String(text || "").split(/\r?\n/).forEach(line => {
+      const mm = line.match(/^\s*(\d{1,5})\/(tcp|udp)\s+(open\|filtered|open|filtered|closed)\s+(\S+)?\s*(.*)$/i);
+      if (!mm) return;
+      const port = mm[1]; if (+port < 1 || +port > 65535) return;
+      const k = port + "/" + mm[2].toLowerCase(); if (seen[k]) return; seen[k] = 1;
+      out.push({ port, proto: mm[2].toLowerCase(), state: mm[3].toLowerCase(), name: (mm[4] || "").trim(), version: (mm[5] || "").trim(), info: "" });
+    });
+    return out;
+  }
+
+  // Append a copied command to the active target's timeline (single central hook).
+  function logToActiveTarget(text) {
+    if (!activeTargetId) return;
+    const m = machines.find(x => x.id === activeTargetId);
+    if (!m) return;
+    m.timeline = m.timeline || [];
+    const last = m.timeline[m.timeline.length - 1];
+    if (last && last.type === "cmd" && last.text === text) return; // skip repeats
+    m.timeline.push({ ts: Date.now(), type: "cmd", text });
+    if (m.timeline.length > 500) m.timeline = m.timeline.slice(-500);
+    saveMachine(m.id, { timeline: m.timeline });
+    if (openMachineId === m.id && machineTab === "detail") {
+      const tl = document.getElementById("tlBody");
+      if (tl) renderTimelineInto(tl, m);
+    }
+  }
 
   // Static checklist playbooks (from checklist-templates.js — baked, offline).
   function machineTemplates() { return window.CHECKLIST_TEMPLATES || []; }
@@ -2088,10 +2199,23 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     md += "> **" + t("mStatus") + ":** " + stLabel(machineStatus(m)) +
       " · **" + t("userFlag") + ":** " + flagLine(m.userFlag) +
       " · **" + t("rootFlag") + ":** " + flagLine(m.rootFlag) + "\n\n";
+    const cell = v => String(v == null ? "" : v).replace(/\|/g, "\\|").replace(/\n/g, " ");
+    const svcs = normalizeServices(m.services);
     md += "## " + t("services") + "\n\n";
-    md += (m.services || []).length ? "```\n" + (m.services || []).join("\n") + "\n```\n\n" : "_—_\n\n";
+    if (svcs.length) {
+      md += "| " + t("svcPort") + " | " + t("svcProto") + " | " + t("svcState") + " | " + t("svcName") + " | " + t("svcVersion") + " |\n";
+      md += "|---|---|---|---|---|\n";
+      svcs.forEach(s => { md += "| " + cell(s.port) + " | " + cell(s.proto) + " | " + cell(s.state) + " | " + cell(s.name) + " | " + cell(s.version) + " |\n"; });
+      md += "\n";
+    } else md += "_—_\n\n";
+    const creds = normalizeCreds(m.credentials);
     md += "## " + t("credentials") + "\n\n";
-    md += (m.credentials || []).length ? (m.credentials || []).map(c => "- `" + c + "`").join("\n") + "\n\n" : "_—_\n\n";
+    if (creds.length) {
+      md += "| " + t("credUser") + " | " + t("credSecret") + " | " + t("credTypeCol") + " | " + t("credSource") + " | " + t("credWorks") + " | " + t("credState") + " |\n";
+      md += "|---|---|---|---|---|---|\n";
+      creds.forEach(c => { md += "| " + cell(c.username) + " | `" + cell(c.secret) + "` | " + cell(c.type) + " | " + cell(c.source) + " | " + cell(c.works) + " | " + (c.valid ? "✅" : "❌") + " |\n"; });
+      md += "\n";
+    } else md += "_—_\n\n";
     md += "## " + t("attackPath") + "\n\n";
     md += m.attackPath ? "```\n" + m.attackPath + "\n```\n\n" : "_—_\n\n";
     const groups = groupByPhase(m.checklist);
@@ -2105,6 +2229,19 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       });
     }
     if (m.notes) md += "## " + t("notes") + "\n\n" + m.notes + "\n\n";
+    if ((m.timeline || []).length) {
+      md += "## " + t("timeline") + "\n\n";
+      m.timeline.forEach(it => {
+        const ts = new Date(it.ts).toLocaleString();
+        if (it.type === "cmd") md += "- `" + String(it.text).replace(/`/g, "'") + "`  \n  _" + ts + "_\n";
+        else md += "- **" + ts + "** — " + String(it.text).replace(/\n/g, " ") + "\n";
+      });
+      md += "\n";
+    }
+    if ((m.evidence || []).length) {
+      md += "## " + t("evidence") + "\n\n";
+      m.evidence.forEach(ev => { md += "![" + (ev.caption || "evidence").replace(/[[\]]/g, "") + "](" + ev.url + ")\n\n"; });
+    }
     md += "---\n\n";
     // Append the report skeleton (OSCP/PG → oscp; otherwise htb), with the box IP filled in.
     const tplKey = (m.platform === "OSCP" || m.platform === "PG") ? "oscp" : "htb";
@@ -2298,6 +2435,217 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     page.appendChild(wrap);
   }
 
+  // ── Active-target banner: toggle whether copied commands log to this box ──
+  function buildActiveTargetBar(m) {
+    const isActive = activeTargetId === m.id;
+    const bar = document.createElement("div"); bar.className = "active-target-bar" + (isActive ? " on" : "");
+    const label = document.createElement("span"); label.className = "active-target-label";
+    label.innerHTML = isActive
+      ? '<span class="active-dot">●</span> <strong>' + t("activeBadge") + '</strong> — ' + t("activeHint")
+      : '🎯 ' + t("activeTarget");
+    const btn = document.createElement("button"); btn.className = "btn btn-sm " + (isActive ? "btn-secondary" : "btn-primary");
+    btn.textContent = isActive ? t("unsetActive") : t("setActive");
+    btn.addEventListener("click", () => {
+      if (isActive) { activeTargetId = null; localStorage.removeItem("cs-active-target"); }
+      else { activeTargetId = m.id; localStorage.setItem("cs-active-target", m.id); toast(t("activeNowSet"), "ok"); }
+      render();
+    });
+    bar.appendChild(label); bar.appendChild(btn);
+    return bar;
+  }
+
+  // ── Structured services table + inline nmap import + quick-scan chips ──
+  function buildServicesSection(m) {
+    m.services = normalizeServices(m.services);
+    const sec = document.createElement("div"); sec.className = "machine-section";
+    const head = document.createElement("div"); head.className = "machine-section-head";
+    head.innerHTML = '<h3>🔌 ' + t("services") + '</h3>';
+    const actions = document.createElement("div"); actions.className = "svc-actions";
+    const importBtn = document.createElement("button"); importBtn.className = "btn btn-secondary btn-sm"; importBtn.textContent = t("importNmap");
+    const addBtn = document.createElement("button"); addBtn.className = "btn btn-secondary btn-sm"; addBtn.textContent = t("svcAdd");
+    actions.appendChild(importBtn); actions.appendChild(addBtn); head.appendChild(actions);
+    sec.appendChild(head);
+
+    const importPanel = document.createElement("div"); importPanel.className = "svc-import"; importPanel.style.display = "none";
+    const importTa = document.createElement("textarea"); importTa.className = "machine-textarea"; importTa.placeholder = t("importNmapPh"); importTa.rows = 6;
+    const importGo = document.createElement("button"); importGo.className = "btn btn-primary btn-sm"; importGo.textContent = t("importDo");
+    importPanel.appendChild(importTa); importPanel.appendChild(importGo); sec.appendChild(importPanel);
+
+    const tableWrap = document.createElement("div"); tableWrap.className = "data-table-wrap";
+    const quick = document.createElement("div"); quick.className = "svc-quick";
+    sec.appendChild(tableWrap); sec.appendChild(quick);
+
+    const persist = () => { saveMachine(m.id, { services: m.services }); };
+    const ip = () => m.ip || "<TARGET_IP>";
+    const scanCopy = cmd => { const applied = applyIpToCode(cmd); copyText(applied, () => { recordHistory(applied); announce(t("copied")); toast(t("copied"), "ok"); }); };
+
+    function renderQuick() {
+      quick.innerHTML = "";
+      const ports = m.services.map(s => s.port).filter(p => p && +p > 0);
+      if (!ports.length) return;
+      const b = document.createElement("button"); b.className = "svc-chip"; b.textContent = "🔎 nmap -sCV (" + ports.length + ")"; b.title = t("scanAll");
+      b.addEventListener("click", () => scanCopy("nmap -sCV -p" + ports.join(",") + " " + ip()));
+      quick.appendChild(b);
+    }
+    function renderTable() {
+      tableWrap.innerHTML = "";
+      if (!m.services.length) { const e = document.createElement("p"); e.className = "machine-hosts-empty"; e.textContent = t("svcNone"); tableWrap.appendChild(e); renderQuick(); return; }
+      const tbl = document.createElement("table"); tbl.className = "data-table";
+      tbl.innerHTML = "<thead><tr><th class='c-port'>" + t("svcPort") + "</th><th class='c-proto'>" + t("svcProto") + "</th><th class='c-state'>" + t("svcState") + "</th><th>" + t("svcName") + "</th><th>" + t("svcVersion") + "</th><th class='c-act'></th></tr></thead>";
+      const tb = document.createElement("tbody");
+      m.services.forEach((s, i) => {
+        const tr = document.createElement("tr");
+        const textCell = (key, cls) => { const td = document.createElement("td"); const inp = document.createElement("input"); inp.className = "cell-input"; if (cls) inp.classList.add(cls); inp.value = s[key] || ""; inp.setAttribute("aria-label", key); inp.addEventListener("input", () => { s[key] = inp.value; persist(); if (key === "port") renderQuick(); }); td.appendChild(inp); return td; };
+        const selCell = (key, opts) => { const td = document.createElement("td"); const sel = document.createElement("select"); sel.className = "cell-input"; opts.forEach(o => { const op = document.createElement("option"); op.value = o; op.textContent = o; if (s[key] === o) op.selected = true; sel.appendChild(op); }); sel.addEventListener("change", () => { s[key] = sel.value; persist(); }); td.appendChild(sel); return td; };
+        tr.appendChild(textCell("port", "cell-narrow"));
+        tr.appendChild(selCell("proto", ["tcp", "udp"]));
+        tr.appendChild(selCell("state", SVC_STATES));
+        tr.appendChild(textCell("name"));
+        tr.appendChild(textCell("version"));
+        const tdA = document.createElement("td"); tdA.className = "cell-actions";
+        const scan = document.createElement("button"); scan.className = "cell-btn"; scan.textContent = "🔎"; scan.title = t("scanPort");
+        scan.addEventListener("click", () => scanCopy("nmap -sCV -p" + (s.port || "") + " " + ip()));
+        const del = document.createElement("button"); del.className = "cell-btn cell-del"; del.textContent = "✕"; del.title = t("del");
+        del.addEventListener("click", () => { m.services.splice(i, 1); persist(); renderTable(); });
+        tdA.appendChild(scan); tdA.appendChild(del); tr.appendChild(tdA);
+        tb.appendChild(tr);
+      });
+      tbl.appendChild(tb); tableWrap.appendChild(tbl); renderQuick();
+    }
+    addBtn.addEventListener("click", () => { m.services.push({ port: "", proto: "tcp", state: "open", name: "", version: "", info: "" }); persist(); renderTable(); const inputs = tableWrap.querySelectorAll("tbody tr:last-child .cell-input"); if (inputs[0]) inputs[0].focus(); });
+    importBtn.addEventListener("click", () => { const show = importPanel.style.display === "none"; importPanel.style.display = show ? "block" : "none"; if (show) importTa.focus(); });
+    importGo.addEventListener("click", () => {
+      const parsed = parseNmapOutput(importTa.value);
+      if (!parsed.length) { toast(t("importedNone"), "error"); return; }
+      parsed.forEach(p => { const idx = m.services.findIndex(s => s.port === p.port && s.proto === p.proto); if (idx >= 0) m.services[idx] = p; else m.services.push(p); });
+      persist(); importTa.value = ""; importPanel.style.display = "none"; renderTable();
+      toast(t("importedN").replace("{n}", parsed.length), "ok");
+    });
+    renderTable();
+    return sec;
+  }
+
+  // ── Credential vault: structured, per-secret copy, validity toggle ──
+  function buildCredsSection(m) {
+    m.credentials = normalizeCreds(m.credentials);
+    const sec = document.createElement("div"); sec.className = "machine-section";
+    const head = document.createElement("div"); head.className = "machine-section-head";
+    head.innerHTML = '<h3>🔑 ' + t("credentials") + '</h3>';
+    const addBtn = document.createElement("button"); addBtn.className = "btn btn-secondary btn-sm"; addBtn.textContent = t("credAdd");
+    head.appendChild(addBtn); sec.appendChild(head);
+    const tableWrap = document.createElement("div"); tableWrap.className = "data-table-wrap"; sec.appendChild(tableWrap);
+    const persist = () => { saveMachine(m.id, { credentials: m.credentials }); };
+    const cp = (txt, msg) => { if (!txt) return; copyText(txt, () => { toast(msg || t("copied"), "ok"); announce(t("copied")); }); };
+    function renderTable() {
+      tableWrap.innerHTML = "";
+      if (!m.credentials.length) { const e = document.createElement("p"); e.className = "machine-hosts-empty"; e.textContent = t("credNone"); tableWrap.appendChild(e); return; }
+      const tbl = document.createElement("table"); tbl.className = "data-table";
+      tbl.innerHTML = "<thead><tr><th>" + t("credUser") + "</th><th>" + t("credSecret") + "</th><th class='c-type'>" + t("credTypeCol") + "</th><th>" + t("credSource") + "</th><th class='c-works'>" + t("credWorks") + "</th><th class='c-act'></th></tr></thead>";
+      const tb = document.createElement("tbody");
+      m.credentials.forEach((c, i) => {
+        const tr = document.createElement("tr"); if (!c.valid) tr.classList.add("cred-invalid");
+        const textCell = (key) => { const td = document.createElement("td"); const inp = document.createElement("input"); inp.className = "cell-input"; inp.value = c[key] || ""; inp.setAttribute("aria-label", key); inp.addEventListener("input", () => { c[key] = inp.value; persist(); }); td.appendChild(inp); return td; };
+        tr.appendChild(textCell("username"));
+        // secret + copy
+        const tdSec = document.createElement("td"); tdSec.className = "cell-secret";
+        const sInp = document.createElement("input"); sInp.className = "cell-input"; sInp.value = c.secret || ""; sInp.setAttribute("aria-label", "secret"); sInp.addEventListener("input", () => { c.secret = sInp.value; persist(); });
+        const sCopy = document.createElement("button"); sCopy.className = "cell-btn"; sCopy.textContent = "⧉"; sCopy.title = t("credCopySecret"); sCopy.addEventListener("click", () => cp(c.secret, t("credCopySecret")));
+        tdSec.appendChild(sInp); tdSec.appendChild(sCopy); tr.appendChild(tdSec);
+        // type select
+        const tdT = document.createElement("td"); const tsel = document.createElement("select"); tsel.className = "cell-input"; CRED_TYPES.forEach(ct => { const o = document.createElement("option"); o.value = ct; o.textContent = ct; if (c.type === ct) o.selected = true; tsel.appendChild(o); }); tsel.addEventListener("change", () => { c.type = tsel.value; persist(); }); tdT.appendChild(tsel); tr.appendChild(tdT);
+        tr.appendChild(textCell("source"));
+        tr.appendChild(textCell("works"));
+        // actions: copy pair, valid toggle, delete
+        const tdA = document.createElement("td"); tdA.className = "cell-actions";
+        const pair = document.createElement("button"); pair.className = "cell-btn"; pair.textContent = "👤"; pair.title = t("credCopyPair"); pair.addEventListener("click", () => cp((c.username ? c.username + ":" : "") + (c.secret || ""), t("credCopyPair")));
+        const vld = document.createElement("button"); vld.className = "cell-btn cell-valid" + (c.valid ? " on" : ""); vld.textContent = c.valid ? "✓" : "✗"; vld.title = t("credState"); vld.addEventListener("click", () => { c.valid = !c.valid; persist(); renderTable(); });
+        const del = document.createElement("button"); del.className = "cell-btn cell-del"; del.textContent = "✕"; del.title = t("del"); del.addEventListener("click", () => { m.credentials.splice(i, 1); persist(); renderTable(); });
+        tdA.appendChild(pair); tdA.appendChild(vld); tdA.appendChild(del); tr.appendChild(tdA);
+        tb.appendChild(tr);
+      });
+      tbl.appendChild(tb); tableWrap.appendChild(tbl);
+    }
+    addBtn.addEventListener("click", () => { m.credentials.push({ username: "", secret: "", type: "password", source: "", works: "", valid: true }); persist(); renderTable(); const inputs = tableWrap.querySelectorAll("tbody tr:last-child .cell-input"); if (inputs[0]) inputs[0].focus(); });
+    renderTable();
+    return sec;
+  }
+
+  // ── Activity timeline (auto-logged copies + manual notes) ──
+  function tlIcon(type) { return type === "cmd" ? "⌨" : type === "note" ? "📝" : "◆"; }
+  function renderTimelineInto(container, m) {
+    container.innerHTML = "";
+    const items = (m.timeline || []).slice().reverse(); // newest first
+    if (!items.length) { const e = document.createElement("p"); e.className = "machine-hosts-empty"; e.textContent = t("timelineNone"); container.appendChild(e); return; }
+    items.forEach((it, ri) => {
+      const realIdx = m.timeline.length - 1 - ri;
+      const row = document.createElement("div"); row.className = "tl-row tl-" + (it.type || "event");
+      const time = document.createElement("span"); time.className = "tl-time"; time.textContent = new Date(it.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      const icon = document.createElement("span"); icon.className = "tl-icon"; icon.textContent = tlIcon(it.type);
+      const body = document.createElement("div"); body.className = "tl-body";
+      if (it.type === "cmd") { const code = document.createElement("code"); code.className = "tl-cmd"; code.textContent = it.text; body.appendChild(code); }
+      else { body.textContent = it.text; }
+      const del = document.createElement("button"); del.className = "tl-del"; del.textContent = "✕"; del.title = t("del");
+      del.addEventListener("click", () => { m.timeline.splice(realIdx, 1); saveMachine(m.id, { timeline: m.timeline }); renderTimelineInto(container, m); });
+      if (it.type === "cmd") { const cpy = document.createElement("button"); cpy.className = "tl-del"; cpy.textContent = "⧉"; cpy.title = t("copy"); cpy.addEventListener("click", () => copyText(applyIpToCode(it.text), () => toast(t("copied"), "ok"))); row.appendChild(time); row.appendChild(icon); row.appendChild(body); row.appendChild(cpy); row.appendChild(del); }
+      else { row.appendChild(time); row.appendChild(icon); row.appendChild(body); row.appendChild(del); }
+      container.appendChild(row);
+    });
+  }
+  function buildTimelineSection(m) {
+    m.timeline = m.timeline || [];
+    const sec = document.createElement("div"); sec.className = "machine-section";
+    const head = document.createElement("div"); head.className = "machine-section-head";
+    head.innerHTML = '<h3>🕓 ' + t("timeline") + '</h3>';
+    const clearBtn = document.createElement("button"); clearBtn.className = "btn btn-secondary btn-sm"; clearBtn.textContent = t("clearTimeline");
+    clearBtn.addEventListener("click", () => { if (!m.timeline.length || !confirm(t("confirmClearTl"))) return; m.timeline = []; saveMachine(m.id, { timeline: m.timeline }); renderTimelineInto(body, m); });
+    head.appendChild(clearBtn); sec.appendChild(head);
+    const addRow = document.createElement("div"); addRow.className = "tl-add";
+    const inp = document.createElement("input"); inp.className = "checklist-add-input"; inp.placeholder = t("timelineNotePh"); inp.setAttribute("aria-label", t("timelineAdd"));
+    const addBtn = document.createElement("button"); addBtn.className = "btn btn-secondary btn-sm"; addBtn.textContent = t("timelineAdd");
+    const addNote = () => { const v = inp.value.trim(); if (!v) return; m.timeline.push({ ts: Date.now(), type: "note", text: v }); saveMachine(m.id, { timeline: m.timeline }); inp.value = ""; renderTimelineInto(body, m); };
+    addBtn.addEventListener("click", addNote); inp.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); addNote(); } });
+    addRow.appendChild(inp); addRow.appendChild(addBtn); sec.appendChild(addRow);
+    const body = document.createElement("div"); body.className = "tl-list"; body.id = "tlBody"; sec.appendChild(body);
+    renderTimelineInto(body, m);
+    return sec;
+  }
+
+  // ── Evidence: paste/drop screenshots, captioned, stored via /api/upload ──
+  function buildEvidenceSection(m) {
+    m.evidence = m.evidence || [];
+    const sec = document.createElement("div"); sec.className = "machine-section";
+    sec.innerHTML = '<div class="machine-section-head"><h3>📸 ' + t("evidence") + '</h3></div>';
+    const drop = document.createElement("div"); drop.className = "evidence-drop"; drop.tabIndex = 0; drop.textContent = t("evidenceDrop"); drop.setAttribute("aria-label", t("evidenceDrop"));
+    const grid = document.createElement("div"); grid.className = "evidence-grid";
+    sec.appendChild(drop); sec.appendChild(grid);
+    const persist = () => saveMachine(m.id, { evidence: m.evidence });
+    async function addImage(dataUrl) {
+      try {
+        const res = await api("POST", "/api/upload", { data: dataUrl });
+        if (res && res.url) { m.evidence.push({ url: res.url, caption: "", ts: Date.now() }); persist(); renderGrid(); }
+        else toast((res && res.error) || t("copyFail"), "error");
+      } catch { toast(t("netErr"), "error"); }
+    }
+    function handleFiles(files) { Array.from(files || []).forEach(f => { if (!/^image\//.test(f.type)) return; const r = new FileReader(); r.onload = () => addImage(r.result); r.readAsDataURL(f); }); }
+    function renderGrid() {
+      grid.innerHTML = "";
+      if (!m.evidence.length) { const e = document.createElement("p"); e.className = "machine-hosts-empty"; e.textContent = t("evidenceNone"); grid.appendChild(e); return; }
+      m.evidence.forEach((ev, i) => {
+        const fig = document.createElement("figure"); fig.className = "evidence-item";
+        const img = document.createElement("img"); img.src = ev.url; img.loading = "lazy"; img.alt = ev.caption || "evidence";
+        const cap = document.createElement("input"); cap.className = "evidence-caption"; cap.placeholder = t("evidenceCaption"); cap.value = ev.caption || ""; cap.addEventListener("input", () => { ev.caption = cap.value; persist(); });
+        const del = document.createElement("button"); del.className = "evidence-del"; del.textContent = "✕"; del.title = t("evidenceDel"); del.addEventListener("click", () => { m.evidence.splice(i, 1); persist(); renderGrid(); });
+        fig.appendChild(img); fig.appendChild(cap); fig.appendChild(del); grid.appendChild(fig);
+      });
+    }
+    drop.addEventListener("dragover", e => { e.preventDefault(); drop.classList.add("drag"); });
+    drop.addEventListener("dragleave", () => drop.classList.remove("drag"));
+    drop.addEventListener("drop", e => { e.preventDefault(); drop.classList.remove("drag"); handleFiles(e.dataTransfer.files); });
+    drop.addEventListener("paste", e => { const items = (e.clipboardData || {}).items || []; Array.from(items).forEach(it => { if (it.type && it.type.indexOf("image") === 0) { const f = it.getAsFile(); if (f) { const r = new FileReader(); r.onload = () => addImage(r.result); r.readAsDataURL(f); } } }); });
+    renderGrid();
+    return sec;
+  }
+
   function renderMachineDetail(m) {
     const page = document.createElement("div"); page.className = "machine-detail";
     // Reset to the Detail tab whenever a different machine is opened.
@@ -2325,6 +2673,9 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     page.appendChild(tabs);
 
     if (machineTab === "report") { renderMachineReport(m, page); contentArea.appendChild(page); return; }
+
+    // Active-target banner — copied commands log to this box's timeline
+    page.appendChild(buildActiveTargetBar(m));
 
     // Header with editable name / IP / OS + metadata chips (platform/difficulty/status/tags)
     const info = document.createElement("div"); info.className = "machine-info-section";
@@ -2634,7 +2985,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       // Loot + notes (stored on the machine for refs)
       const lootLabel = document.createElement("div"); lootLabel.className = "machine-subhead"; lootLabel.textContent = "🔑 " + t("loot");
       const loot = document.createElement("textarea"); loot.className = "machine-textarea"; loot.placeholder = "admin:Pass | svc_sql: hash | ticket.kirbi";
-      loot.value = n.ref ? ((n.machine.credentials || []).join("\n")) : (h.loot || "");
+      loot.value = n.ref ? credsToText(n.machine.credentials) : (h.loot || "");
       loot.addEventListener("input", () => { if (n.ref) { n.machine.credentials = loot.value.split("\n").filter(Boolean); saveMachine(n.machineId || n.id, { credentials: n.machine.credentials }); } else { h.loot = loot.value; hostPersist(); } });
       body.appendChild(lootLabel); body.appendChild(loot);
 
@@ -2734,44 +3085,17 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     adSection.appendChild(objLabel); adSection.appendChild(objArea);
     page.appendChild(adSection);
 
-    // Services
-    const svcSection = document.createElement("div"); svcSection.className = "machine-section";
-    svcSection.innerHTML = '<h3>🔌 ' + t("services") + '</h3>';
-    const svcArea = document.createElement("textarea"); svcArea.className = "machine-textarea";
-    svcArea.placeholder = "22/tcp  SSH  OpenSSH 7.9\n80/tcp  HTTP Apache 2.4\n445/tcp SMB  Samba 4.9";
-    svcArea.value = (m.services || []).join("\n");
-    const svcQuick = document.createElement("div"); svcQuick.className = "svc-quick";
-    // Parse ports out of the (nmap-style) services text and offer targeted re-scan copies.
-    function parsePorts(text) {
-      const set = []; const seen = {};
-      (text.match(/\b(\d{1,5})\/(?:tcp|udp)\b/gi) || []).forEach(tok => { const p = tok.split("/")[0]; if (!seen[p] && +p > 0 && +p < 65536) { seen[p] = 1; set.push(p); } });
-      return set;
-    }
-    function renderSvcQuick() {
-      svcQuick.innerHTML = "";
-      const ports = parsePorts(svcArea.value);
-      if (!ports.length) return;
-      const ip = m.ip || "<TARGET_IP>";
-      const mkChip = (label, cmd, title) => {
-        const b = document.createElement("button"); b.className = "svc-chip"; b.textContent = label; b.title = title;
-        b.addEventListener("click", () => copyText(cmd, () => { announce(t("copied")); toast(t("copied"), "ok"); }));
-        return b;
-      };
-      svcQuick.appendChild(mkChip("🔎 nmap -sCV (" + ports.length + ")", "nmap -sCV -p" + ports.join(",") + " " + ip, t("svcScanHint")));
-      ports.slice(0, 12).forEach(p => svcQuick.appendChild(mkChip(p, "nmap -sCV -p" + p + " " + ip, t("svcScanHint"))));
-    }
-    svcArea.addEventListener("input", () => { m.services = svcArea.value.split("\n").filter(Boolean); saveMachine(m.id, { services: m.services }); showMachineStatus(); renderSvcQuick(); });
-    svcSection.appendChild(svcArea); svcSection.appendChild(svcQuick); page.appendChild(svcSection);
-    renderSvcQuick();
+    // Services — structured table + nmap import + quick-scan chips
+    page.appendChild(buildServicesSection(m));
 
-    // Credentials / loot
-    const credSection = document.createElement("div"); credSection.className = "machine-section";
-    credSection.innerHTML = '<h3>🔑 ' + t("credentials") + '</h3>';
-    const credArea = document.createElement("textarea"); credArea.className = "machine-textarea";
-    credArea.placeholder = "admin:password123\nsvc_sql:S3cr3t! (kerberoast)\nuser:aad3b435...:hash";
-    credArea.value = (m.credentials || []).join("\n");
-    credArea.addEventListener("input", () => { m.credentials = credArea.value.split("\n").filter(Boolean); saveMachine(m.id, { credentials: m.credentials }); showMachineStatus(); });
-    credSection.appendChild(credArea); page.appendChild(credSection);
+    // Credentials — structured vault
+    page.appendChild(buildCredsSection(m));
+
+    // Activity timeline (auto-logged copies + manual notes)
+    page.appendChild(buildTimelineSection(m));
+
+    // Evidence — screenshots
+    page.appendChild(buildEvidenceSection(m));
 
     // Notes
     const noteSection = document.createElement("div"); noteSection.className = "machine-section";
@@ -3284,6 +3608,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     cmdHistory.unshift({ cmd: text, ts: Date.now() });
     if (cmdHistory.length > 100) cmdHistory = cmdHistory.slice(0, 100);
     localStorage.setItem("cs-history", JSON.stringify(cmdHistory));
+    logToActiveTarget(text);
   }
   function renderHistoryPage() {
     currentSection.textContent = t("history"); hero.style.display = "none"; contentArea.innerHTML = "";
