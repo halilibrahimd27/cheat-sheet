@@ -15,11 +15,115 @@ const HOST = process.env.HOST || "127.0.0.1";
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, "data");
 const DATA_FILE = path.join(DATA_DIR, "commands.json");
 
+// Express advertises itself by default; nothing good comes of that.
+app.disable("x-powered-by");
+
+// ── Origin / Host guard (CSRF + DNS rebinding) ──
+// A localhost-bound server is still reachable from any page the user has open:
+// a cross-site form POST to /api/reset wiped the whole database, and without a
+// Host check a rebound DNS name gave a remote page full read/write — including
+// /api/export, which carries the machine credential vault. Non-browser clients
+// (curl, the test suite) send neither Origin nor Sec-Fetch-Site, so they pass.
+// Behind a reverse proxy the Host arrives as your own domain: list it (comma
+// separated) in ALLOWED_HOSTS, e.g. ALLOWED_HOSTS=cheatsheet.example.com.
+const ALLOWED_HOSTS = (process.env.ALLOWED_HOSTS || "")
+  .split(",").map((h) => h.trim().toLowerCase()).filter(Boolean);
+const LOOPBACK_HOSTS = ["localhost", "127.0.0.1", "[::1]", "::1"];
+// Strip the port without tripping over IPv6 literals ("[::1]:3000").
+function hostnameOf(hostHeader) {
+  const s = String(hostHeader || "").trim().toLowerCase();
+  if (!s) return "";
+  if (s.startsWith("[")) return s.slice(0, s.indexOf("]") + 1) || s;
+  const i = s.indexOf(":");
+  return i === -1 ? s : s.slice(0, i);
+}
+// A bare IP literal in the Host header cannot be rebound: DNS rebinding works by
+// flipping what a NAME resolves to, so an attacker page must address us by a
+// hostname it controls. Accepting literals therefore costs nothing and keeps the
+// documented LAN path (http://192.168.1.10:8899) working without configuration.
+function isIpLiteral(name) {
+  if (name.startsWith("[") && name.endsWith("]")) return /^[0-9a-f:.]+$/.test(name.slice(1, -1));
+  return /^\d{1,3}(\.\d{1,3}){3}$/.test(name);
+}
+function isAllowedHostname(name) {
+  if (!name) return false;
+  if (LOOPBACK_HOSTS.includes(name)) return true;
+  if (ALLOWED_HOSTS.includes(name)) return true;
+  if (isIpLiteral(name)) return true;
+  return HOST !== "0.0.0.0" && name === String(HOST).toLowerCase();
+}
+// Same-origin means: exactly the host this request was addressed to, or one of
+// the loopback spellings on our own port (the SPA is served from all of them).
+function isSelfOrigin(origin, hostHeader) {
+  let host;
+  try { host = new URL(origin).host.toLowerCase(); } catch { return false; }
+  if (!host) return false;
+  if (host === String(hostHeader || "").trim().toLowerCase()) return true;
+  if (LOOPBACK_HOSTS.some((h) => host === h + ":" + PORT)) return true;
+  return ALLOWED_HOSTS.includes(hostnameOf(host));
+}
+// A body-less request carries no attacker-supplied content, and browsers omit
+// Content-Type on those — so only demand JSON when a body is actually present.
+function hasBody(req) {
+  if (req.headers["transfer-encoding"] !== undefined) return true;
+  // Content-Length: 0 is no body. Treating it as one made `curl -X POST
+  // .../api/reset` — the recipe the README prints — fail with 415, since curl
+  // sends the header but no Content-Type.
+  const len = Number(req.headers["content-length"]);
+  return !isNaN(len) && len > 0;
+}
+// Sensitive reads get the same cross-site treatment as writes. /api/export
+// carries the machine credential vault, and a GET is exactly what a rebound or
+// cross-origin page would reach for.
+const GUARDED_READS = ["/api/export", "/api/machines", "/api/exam"];
+app.use((req, res, next) => {
+  // The Host check runs in EVERY configuration, HOST=0.0.0.0 included — that is
+  // the one the Docker image ships, so exempting it left DNS-rebinding
+  // protection off by default in containers, which is precisely backwards.
+  // Loopback names, IP literals and ALLOWED_HOSTS entries all pass; an
+  // attacker-controlled hostname pointed at this port does not.
+  if (!isAllowedHostname(hostnameOf(req.headers.host))) {
+    return res.status(403).json({ error: "forbidden host" });
+  }
+  const mutating = req.method === "POST" || req.method === "PUT" ||
+    req.method === "PATCH" || req.method === "DELETE";
+  const guardedRead = !mutating && GUARDED_READS.includes(req.path.toLowerCase());
+  if (guardedRead) {
+    const site = req.headers["sec-fetch-site"];
+    if (site && site !== "same-origin" && site !== "none")
+      return res.status(403).json({ error: "cross-site request blocked" });
+    if (req.headers.origin && !isSelfOrigin(req.headers.origin, req.headers.host))
+      return res.status(403).json({ error: "cross-site request blocked" });
+  }
+  // Express's router is case-INsensitive by default, so POST /API/reset still
+  // reaches app.post("/api/reset"). Testing req.path case-sensitively therefore
+  // handed any website a one-capital-letter bypass of this entire guard — the
+  // comparison has to be normalised, not the routing (normalising here cannot
+  // break a single existing link).
+  if (mutating && req.path.toLowerCase().startsWith("/api/")) {
+    const site = req.headers["sec-fetch-site"];
+    if (site && site !== "same-origin" && site !== "none")
+      return res.status(403).json({ error: "cross-site request blocked" });
+    if (req.headers.origin && !isSelfOrigin(req.headers.origin, req.headers.host))
+      return res.status(403).json({ error: "cross-site request blocked" });
+    if (hasBody(req) && !req.is("application/json"))
+      return res.status(415).json({ error: "expected application/json" });
+  }
+  next();
+});
+
 // ── Security headers (lightweight, no extra deps) ──
+// The app loads no external scripts, styles or fonts, so the policy can be
+// strict. 'unsafe-inline' stays for styles only — the SPA sets element.style
+// from JS all over the place; scripts are 'self' with no eval.
+const APP_CSP = "default-src 'self'; connect-src 'self'; img-src 'self' data: blob:; " +
+  "style-src 'self' 'unsafe-inline'; script-src 'self'; object-src 'none'; " +
+  "base-uri 'none'; frame-ancestors 'none'; form-action 'self'";
 app.use((req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("X-Frame-Options", "DENY");
   res.setHeader("Referrer-Policy", "no-referrer");
+  res.setHeader("Content-Security-Policy", APP_CSP);
   next();
 });
 
@@ -76,6 +180,42 @@ function safeEqual(a, b) {
   const hb = crypto.createHash("sha256").update(String(b)).digest();
   return crypto.timingSafeEqual(ha, hb);
 }
+
+// The Docker HEALTHCHECK hits this, so it must sit ABOVE the auth gate —
+// otherwise the container is permanently unhealthy whenever AUTH_PASS is set.
+// It exposes nothing but liveness.
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok", uptime: process.uptime() });
+});
+
+// Brute-forcing Basic auth used to cost nothing: 100 guesses in ~50ms, silently.
+// A per-IP failure counter adds a delay once an IP looks like it is guessing.
+// Bounded on purpose (capped size + expiring window) so it cannot be turned into
+// a memory-exhaustion vector by spraying spoofed X-Forwarded-For style traffic.
+const AUTH_FAIL_WINDOW_MS = 5 * 60 * 1000;
+const AUTH_FAIL_THRESHOLD = 5;
+const AUTH_FAIL_DELAY_MS = 1000;
+const AUTH_FAIL_MAX_ENTRIES = 1000;
+const authFails = new Map();
+function noteAuthFailure(ip) {
+  const now = Date.now();
+  for (const [key, e] of authFails) {
+    if (now - e.first > AUTH_FAIL_WINDOW_MS) authFails.delete(key);
+  }
+  let entry = authFails.get(ip);
+  if (!entry || now - entry.first > AUTH_FAIL_WINDOW_MS) {
+    entry = { first: now, count: 0, warned: false };
+    // Map iteration order is insertion order, so the first key is the oldest.
+    if (authFails.size >= AUTH_FAIL_MAX_ENTRIES) authFails.delete(authFails.keys().next().value);
+    authFails.set(ip, entry);
+  }
+  entry.count++;
+  if (entry.count >= AUTH_FAIL_THRESHOLD && !entry.warned) {
+    entry.warned = true;
+    console.warn(`⚠  ${entry.count} failed auth attempts from ${ip} — throttling that address`);
+  }
+  return entry.count >= AUTH_FAIL_THRESHOLD ? AUTH_FAIL_DELAY_MS : 0;
+}
 if (AUTH_PASS) {
   app.use((req, res, next) => {
     const hdr = req.headers.authorization || "";
@@ -86,10 +226,16 @@ if (AUTH_PASS) {
       const i = decoded.indexOf(":");
       const user = i === -1 ? decoded : decoded.slice(0, i);
       const pass = i === -1 ? "" : decoded.slice(i + 1);
-      if (safeEqual(user, AUTH_USER) && safeEqual(pass, AUTH_PASS)) return next();
+      if (safeEqual(user, AUTH_USER) && safeEqual(pass, AUTH_PASS)) {
+        authFails.delete(req.ip || req.socket.remoteAddress || "?");
+        return next();
+      }
     }
-    res.setHeader("WWW-Authenticate", 'Basic realm="cheat-sheet"');
-    return res.status(401).json({ error: "authentication required" });
+    const delay = noteAuthFailure(req.ip || req.socket.remoteAddress || "?");
+    setTimeout(() => {
+      res.setHeader("WWW-Authenticate", 'Basic realm="cheat-sheet"');
+      res.status(401).json({ error: "authentication required" });
+    }, delay);
   });
 }
 
@@ -100,7 +246,15 @@ function atomicWrite(file, str) {
   const dir = path.dirname(file);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
   const tmp = file + ".tmp";
-  fs.writeFileSync(tmp, str, "utf8");
+  // Write + fsync the temp file before renaming: without the fsync a crash can
+  // leave a renamed-but-empty file, which is exactly what "atomic" must prevent.
+  const fd = fs.openSync(tmp, "w");
+  try {
+    fs.writeFileSync(fd, str, "utf8");
+    fs.fsyncSync(fd);
+  } finally {
+    fs.closeSync(fd);
+  }
   if (fs.existsSync(file)) {
     try { fs.copyFileSync(file, file + ".bak"); } catch { /* best effort */ }
   }
@@ -121,11 +275,26 @@ function atomicWrite(file, str) {
 function readJSON(file, fallback) {
   try {
     return JSON.parse(fs.readFileSync(file, "utf8"));
-  } catch {
+  } catch (err) {
+    if (err && err.code === "ENOENT") return fallback; // first run: nothing saved yet
+    // Silently falling back to "empty" turned a corrupt file into an HTTP 200 with
+    // no data, and the user's next edit then wrote that emptiness back over it.
+    console.error(`⚠  cannot parse ${file} (${err.message}) — trying ${file}.bak`);
     const bak = file + ".bak";
     if (fs.existsSync(bak)) {
-      try { return JSON.parse(fs.readFileSync(bak, "utf8")); } catch { /* fall through */ }
+      try {
+        const recovered = JSON.parse(fs.readFileSync(bak, "utf8"));
+        console.error(`   recovered ${file} from its .bak copy`);
+        return recovered;
+      } catch { /* the backup is unreadable too */ }
     }
+    // Keep the unreadable bytes for manual recovery instead of letting the next
+    // save overwrite them.
+    const aside = `${file}.corrupt-${Date.now()}`;
+    try {
+      fs.renameSync(file, aside);
+      console.error(`   moved the unreadable file to ${aside} — starting from defaults`);
+    } catch { /* best effort; a locked file still must not crash the server */ }
     return fallback;
   }
 }
@@ -181,13 +350,42 @@ app.post("/api/upload", (req, res) => {
   res.json({ url: "/uploads/" + fname });
 });
 
+// ── Seed provisioning & versioning ──
+// meta.json remembers WHICH seed build the user's data came from, so an existing
+// install can be told that newer bundled content exists (see /api/seed-status)
+// and can merge it in without a destructive reset (see /api/update).
+const META_FILE = path.join(DATA_DIR, "meta.json");
+// The per-record merge base lives in its own file: one entry per seeded record,
+// far too big to keep in a file the user might reasonably open and read.
+const BASELINE_FILE = path.join(DATA_DIR, "seed-baseline.json");
+function readMeta() { return readJSON(META_FILE, {}); }
+function writeMeta(m) { atomicWrite(META_FILE, JSON.stringify(m, null, 2)); }
+function readBaseline() { const b = readJSON(BASELINE_FILE, {}); return b && typeof b === "object" && !Array.isArray(b) ? b : {}; }
+function writeBaseline(b) { atomicWrite(BASELINE_FILE, JSON.stringify(b)); }
+// Always hash the pristine seed: the same md5-of-JSON scheme build-static.js
+// uses, so the server and the static build agree on a version string. The copy
+// is what callers mutate (backfilled ids must never leak into the hash).
+function loadSeed() {
+  delete require.cache[require.resolve("./seed.js")];
+  const json = JSON.stringify(require("./seed.js"));
+  return {
+    seed: JSON.parse(json),
+    version: crypto.createHash("md5").update(json).digest("hex").slice(0, 12),
+  };
+}
+
 // Ensure data directory and seed file exist
 function ensureDataFile() {
   const dir = path.dirname(DATA_FILE);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
   if (!fs.existsSync(DATA_FILE)) {
-    const seed = require("./seed.js");
+    const { seed, version } = loadSeed();
+    backfillIds(seed); // ids first — the merge baseline is keyed by them
     atomicWrite(DATA_FILE, JSON.stringify(seed, null, 2));
+    try {
+      writeMeta(Object.assign(readMeta(), { seedVersion: version }));
+      writeBaseline(buildBaseline(seed));
+    } catch { /* the data file is what matters; versioning can catch up later */ }
   }
 }
 
@@ -222,20 +420,215 @@ function readData() {
 function writeData(data) {
   ensureDataFile();
   backfillIds(data); // guarantee stable ids after reset / import / reorder / create
-  atomicWrite(DATA_FILE, JSON.stringify(data, null, 2));
-  commandsCache = data;
+  try {
+    atomicWrite(DATA_FILE, JSON.stringify(data, null, 2));
+  } catch (e) {
+    // Handlers mutate the cached objects by reference and only then call us, so a
+    // failed write leaves memory ahead of disk — and the next unrelated save would
+    // cement it. Drop the cache instead; the next read comes from the file again.
+    commandsCache = null;
+    throw e;
+  }
+  commandsCache = data; // publish only after the bytes are safely on disk
+}
+
+// ── Seed merge (identity-based three-way merge, never destructive) ──
+// Match by id where we have one; the bundled seed ships without ids, so records
+// are otherwise paired on a normalised signature — a subcategory by name, a
+// command by title+command text, then by the command text alone, then by title.
+// The command-text-only step is what recognises a RENAMED command: renaming is
+// the most ordinary customisation there is, and title+text plus title-alone both
+// miss it, so every update used to hand the user a second copy of it.
+const CAT_FIELDS = ["name", "icon", "description", "name_tr", "description_tr"];
+const SUB_FIELDS = ["name", "name_tr"];
+const CMD_FIELDS = ["title", "desc", "cmd", "cmds", "tags", "note", "attack", "refs", "ref", "desc_tr"];
+// Marks a baseline entry as "this text is the USER's, not the seed's". Hashes are
+// hex, so the prefix can never collide with one — see applyRecord.
+const USER_BASE = "u:";
+function norm(v) { return String(v == null ? "" : v).replace(/\s+/g, " ").trim().toLowerCase(); }
+function cmdBody(c) {
+  return norm(Array.isArray(c.cmds) ? c.cmds.map((x) => (typeof x === "string" ? x : (x && (x.cmd || x.command)) || "")).join("\n") : (c.cmd || ""));
+}
+function cmdSig(c) { return norm(c.title) + " || " + cmdBody(c); }
+function recordHash(obj, fields) {
+  const pick = {};
+  for (const f of fields) if (obj[f] !== undefined) pick[f] = obj[f];
+  return crypto.createHash("md5").update(JSON.stringify(pick)).digest("hex").slice(0, 8);
+}
+function buildBaseline(data) {
+  const base = {};
+  for (const cat of data) {
+    base[cat.id] = recordHash(cat, CAT_FIELDS);
+    for (const sub of cat.subcategories || []) {
+      base[sub.id] = recordHash(sub, SUB_FIELDS);
+      for (const cmd of sub.commands || []) base[cmd.id] = recordHash(cmd, CMD_FIELDS);
+    }
+  }
+  return base;
+}
+function cloneFrom(seedRec, fields) {
+  const out = {};
+  for (const f of fields) if (seedRec[f] !== undefined) out[f] = JSON.parse(JSON.stringify(seedRec[f]));
+  return out;
+}
+// Returns the baseline hash to record for this id, or undefined to record none.
+function applyRecord(userRec, seedRec, fields, baseline, stats) {
+  const seedHash = recordHash(seedRec, fields);
+  const userHash = recordHash(userRec, fields);
+  if (userHash === seedHash) { stats.unchanged++; return seedHash; }
+  const base = baseline[userRec.id];
+  // A real three-way merge: only a record still byte-equal to what the seed last
+  // wrote is safe to advance. Every install that predates seed-baseline.json has
+  // no merge base at all — which is exactly the population this endpoint was
+  // written for — and the old identity-field fallback declared those records
+  // "unmodified seed content" and overwrote them, silently deleting the user's
+  // edits. No merge base now means: assume the text is the user's and leave it.
+  // The merge base we then record is that user text, tagged USER_BASE so a later
+  // run can never mistake it for something the seed wrote and advance over it.
+  const untouched = base !== undefined && base === userHash;
+  if (!untouched) { stats.skipped++; return base !== undefined ? base : USER_BASE + userHash; }
+  Object.assign(userRec, cloneFrom(seedRec, fields));
+  for (const f of fields) if (seedRec[f] === undefined) delete userRec[f];
+  stats.updated++;
+  return seedHash;
+}
+function mergeSeedInto(data, seed, baseline) {
+  const stats = { added: 0, updated: 0, skipped: 0, unchanged: 0 };
+  const next = {};
+  const keep = (id, hash) => { if (hash !== undefined) next[id] = hash; };
+  const catById = new Map(data.map((c) => [c.id, c]));
+  for (const sCat of seed) {
+    let cat = catById.get(sCat.id);
+    if (!cat) {
+      cat = Object.assign({ id: sCat.id }, cloneFrom(sCat, CAT_FIELDS), { subcategories: [] });
+      if (typeof cat.description !== "string") cat.description = "";
+      data.push(cat);
+      catById.set(cat.id, cat);
+      stats.added++;
+      keep(cat.id, recordHash(sCat, CAT_FIELDS));
+    } else {
+      if (!Array.isArray(cat.subcategories)) cat.subcategories = [];
+      keep(cat.id, applyRecord(cat, sCat, CAT_FIELDS, baseline, stats));
+    }
+    const subByName = new Map();
+    for (const s of cat.subcategories) if (!subByName.has(norm(s.name))) subByName.set(norm(s.name), s);
+    const subById = new Map(cat.subcategories.filter((s) => s.id).map((s) => [s.id, s]));
+    const usedSubs = new Set();
+    for (const sSub of sCat.subcategories || []) {
+      let sub = (sSub.id && subById.get(sSub.id)) || subByName.get(norm(sSub.name));
+      if (sub && usedSubs.has(sub)) sub = null;
+      if (!sub) {
+        sub = Object.assign({ id: genId("s") }, cloneFrom(sSub, SUB_FIELDS), { commands: [] });
+        cat.subcategories.push(sub);
+        subByName.set(norm(sub.name), sub);
+        stats.added++;
+        keep(sub.id, recordHash(sSub, SUB_FIELDS));
+      } else {
+        if (!Array.isArray(sub.commands)) sub.commands = [];
+        keep(sub.id, applyRecord(sub, sSub, SUB_FIELDS, baseline, stats));
+      }
+      usedSubs.add(sub);
+      const bySig = new Map(), byBody = new Map(), byTitle = new Map(), byId = new Map(), byProvenance = new Map();
+      const index = (c) => {
+        if (c.id) byId.set(c.id, c);
+        if (!bySig.has(cmdSig(c))) bySig.set(cmdSig(c), c);
+        const body = cmdBody(c);
+        if (body && !byBody.has(body)) byBody.set(body, c);
+        if (!byTitle.has(norm(c.title))) byTitle.set(norm(c.title), c);
+        // What the seed wrote when it provisioned this record. A user who renamed
+        // a command AND rewrote its body is unreachable by text, but the record
+        // still carries the provenance of the seed entry it came from.
+        const base = baseline[c.id];
+        if (base !== undefined && !base.startsWith(USER_BASE) && !byProvenance.has(base)) byProvenance.set(base, c);
+      };
+      for (const c of sub.commands) index(c);
+      const usedCmds = new Set();
+      for (const sCmd of sSub.commands || []) {
+        const seedHash = recordHash(sCmd, CMD_FIELDS);
+        let cmd = (sCmd.id && byId.get(sCmd.id)) || bySig.get(cmdSig(sCmd)) ||
+          byBody.get(cmdBody(sCmd)) || byTitle.get(norm(sCmd.title)) || byProvenance.get(seedHash);
+        if (cmd && usedCmds.has(cmd)) cmd = null;
+        if (!cmd) {
+          cmd = Object.assign({ id: genId("c") }, cloneFrom(sCmd, CMD_FIELDS));
+          sub.commands.push(cmd);
+          index(cmd);
+          stats.added++;
+          keep(cmd.id, seedHash);
+        } else {
+          keep(cmd.id, applyRecord(cmd, sCmd, CMD_FIELDS, baseline, stats));
+        }
+        usedCmds.add(cmd);
+      }
+    }
+  }
+  return { stats, baseline: next };
+}
+// Reset used to re-mint every id, orphaning 100% of the user's favourites (they
+// are keyed by command id). Carry the existing ids over wherever the record is
+// still recognisably the same one.
+function preserveIds(seed, current) {
+  const catById = new Map(current.map((c) => [c.id, c]));
+  for (const sCat of seed) {
+    const cat = catById.get(sCat.id);
+    if (!cat) continue;
+    const subByName = new Map();
+    for (const s of cat.subcategories || []) if (s.id && !subByName.has(norm(s.name))) subByName.set(norm(s.name), s);
+    const usedSubs = new Set();
+    for (const sSub of sCat.subcategories || []) {
+      const sub = subByName.get(norm(sSub.name));
+      if (!sub || usedSubs.has(sub.id)) continue;
+      usedSubs.add(sub.id);
+      sSub.id = sub.id;
+      const bySig = new Map(), byBody = new Map(), byTitle = new Map();
+      for (const c of sub.commands || []) {
+        if (!c.id) continue;
+        if (!bySig.has(cmdSig(c))) bySig.set(cmdSig(c), c);
+        const body = cmdBody(c);
+        if (body && !byBody.has(body)) byBody.set(body, c);
+        if (!byTitle.has(norm(c.title))) byTitle.set(norm(c.title), c);
+      }
+      const usedCmds = new Set();
+      for (const sCmd of sSub.commands || []) {
+        // Same ladder as the merge: a renamed command must keep its id, or the
+        // favourites keyed to it are orphaned by the reset.
+        const match = bySig.get(cmdSig(sCmd)) || byBody.get(cmdBody(sCmd)) || byTitle.get(norm(sCmd.title));
+        if (!match || usedCmds.has(match.id)) continue;
+        usedCmds.add(match.id);
+        sCmd.id = match.id;
+      }
+    }
+  }
 }
 
 // ── Import validation ──
+// Nested shape matters as much as the top level: a subcategory without a
+// commands array permanently 500s the three /commands routes, and a nested null
+// used to blow up the import itself.
 function isValidCategory(c) {
   return c && typeof c === "object" &&
     typeof c.id === "string" &&
     typeof c.name === "string" &&
-    Array.isArray(c.subcategories);
+    Array.isArray(c.subcategories) &&
+    c.subcategories.every((s) =>
+      s && typeof s === "object" &&
+      typeof s.name === "string" &&
+      Array.isArray(s.commands) &&
+      s.commands.every((cmd) => cmd && typeof cmd === "object"));
 }
 function isValidCategoryArray(arr) {
   return Array.isArray(arr) && arr.every(isValidCategory);
 }
+// machines is the collection that holds the credential vault, so it gets the
+// same treatment as everything else rather than a bare Array.isArray.
+function isValidMachineArray(arr) {
+  return Array.isArray(arr) && arr.every((m) =>
+    m && typeof m === "object" && !Array.isArray(m) &&
+    typeof m.id === "string" &&
+    typeof m.name === "string" &&
+    (m.status === undefined || typeof m.status === "string") &&
+    (m.difficulty === undefined || typeof m.difficulty === "string"));
+}
+function isPlainObject(v) { return !!v && typeof v === "object" && !Array.isArray(v); }
 function isValidWriteupArray(arr) {
   return Array.isArray(arr) && arr.every((w) =>
     w && typeof w === "object" &&
@@ -250,6 +643,29 @@ function isValidNotesMap(m) {
       typeof n.id === "string" && typeof n.text === "string"));
 }
 
+// Ids travel into the DOM as element keys and data- attributes, so an imported
+// id must never be able to carry markup. A legitimate old export may predate
+// stable ids, so a bad one is regenerated rather than rejecting the whole
+// bundle — defence in depth behind the frontend's escaping.
+const ID_SAFE_RE = /^[A-Za-z0-9_-]{1,64}$/;
+function sanitizeImportedIds(categories, machines) {
+  let regenerated = 0;
+  for (const cat of categories || []) {
+    // Category ids double as notes keys, so they keep the slug shape.
+    if (!ID_SAFE_RE.test(cat.id)) { cat.id = genId("cat-"); regenerated++; }
+    for (const sub of cat.subcategories || []) {
+      if (sub.id !== undefined && !(typeof sub.id === "string" && ID_SAFE_RE.test(sub.id))) { sub.id = genId("s"); regenerated++; }
+      for (const cmd of sub.commands || []) {
+        if (cmd.id !== undefined && !(typeof cmd.id === "string" && ID_SAFE_RE.test(cmd.id))) { cmd.id = genId("c"); regenerated++; }
+      }
+    }
+  }
+  for (const m of machines || []) {
+    if (!ID_SAFE_RE.test(m.id)) { m.id = genId("m"); regenerated++; }
+  }
+  return regenerated;
+}
+
 // ── Param & field validation helpers ──
 // Category ids are slugs (lowercase alphanum + dashes). Notes are keyed by
 // catId, so this also blocks __proto__/constructor object-key footguns.
@@ -262,11 +678,6 @@ function parseIndex(v) {
 function isNonEmptyString(v) {
   return typeof v === "string" && v.trim().length > 0;
 }
-
-// ── Health check (used by the Docker HEALTHCHECK) ──
-app.get("/api/health", (req, res) => {
-  res.json({ status: "ok", uptime: process.uptime() });
-});
 
 // ── GET all categories ──
 app.get("/api/categories", (req, res) => {
@@ -407,6 +818,18 @@ app.put("/api/categories/:id/subcategories/:subIdx/commands/:cmdIdx", (req, res)
   if (!sub) return res.status(404).json({ error: "Subcategory not found" });
   const command = sub.commands[parseIndex(req.params.cmdIdx)];
   if (!command) return res.status(404).json({ error: "Command not found" });
+  // Same field checks the POST enforces — a PUT used to accept anything and the
+  // server then exported a bundle its own importer rejects.
+  if (req.body.title !== undefined && !isNonEmptyString(req.body.title))
+    return res.status(400).json({ error: "title must be a non-empty string" });
+  for (const key of ["desc", "cmd", "note"]) {
+    if (req.body[key] !== undefined && typeof req.body[key] !== "string")
+      return res.status(400).json({ error: key + " must be a string" });
+  }
+  if (req.body.cmds !== undefined && !Array.isArray(req.body.cmds))
+    return res.status(400).json({ error: "cmds must be an array" });
+  if (req.body.tags !== undefined && !Array.isArray(req.body.tags))
+    return res.status(400).json({ error: "tags must be an array" });
   if (req.body.title) command.title = req.body.title;
   if (req.body.desc !== undefined) command.desc = req.body.desc;
   if (req.body.cmd !== undefined) { command.cmd = req.body.cmd; delete command.cmds; }
@@ -512,6 +935,17 @@ app.put("/api/writeups/:id", (req, res) => {
   const wups = readWriteups();
   const wu = wups.find(w => w.id === req.params.id);
   if (!wu) return res.status(404).json({ error: "not found" });
+  // The POST validates these; without the same checks here the server happily
+  // stored a write-up that /api/import would later refuse with a 400.
+  if (req.body.title !== undefined && !isNonEmptyString(req.body.title))
+    return res.status(400).json({ error: "title required" });
+  if (req.body.tags !== undefined && !(Array.isArray(req.body.tags) && req.body.tags.every(t => typeof t === "string")))
+    return res.status(400).json({ error: "tags must be an array of strings" });
+  if (req.body.content !== undefined && typeof req.body.content !== "string")
+    return res.status(400).json({ error: "content must be a string" });
+  if (req.body.relatedMachine !== undefined && req.body.relatedMachine !== null &&
+      typeof req.body.relatedMachine !== "string")
+    return res.status(400).json({ error: "relatedMachine must be a string" });
   if (req.body.title !== undefined) wu.title = req.body.title;
   if (req.body.tags !== undefined) wu.tags = req.body.tags;
   if (req.body.content !== undefined) wu.content = req.body.content;
@@ -567,12 +1001,37 @@ app.post("/api/machines", (req, res) => {
   writeMachines(machines);
   res.status(201).json(machine);
 });
+// Field types the PUT accepts. The POST already enforces the string/array shape
+// of the fields it takes; the PUT used to copy whatever arrived, which is how a
+// machine ended up with a non-string status and broke every later read of it.
+const MACHINE_FIELD_TYPES = {
+  name: "nonEmptyString", ip: "string", os: "string", notes: "string", template: "string",
+  platform: "string", difficulty: "string", status: "string", attackPath: "string",
+  startedAt: "stringOrNull", ownedAt: "stringOrNull",
+  services: "array", credentials: "array", checklist: "array", hosts: "array",
+  timeline: "array", evidence: "array", tags: "stringArray",
+  userFlag: "object", rootFlag: "object",
+};
+function checkFieldType(value, kind) {
+  switch (kind) {
+    case "nonEmptyString": return isNonEmptyString(value);
+    case "string": return typeof value === "string";
+    case "stringOrNull": return value === null || typeof value === "string";
+    case "array": return Array.isArray(value);
+    case "stringArray": return Array.isArray(value) && value.every((t) => typeof t === "string");
+    case "object": return isPlainObject(value);
+    default: return true;
+  }
+}
 app.put("/api/machines/:id", (req, res) => {
   const machines = readMachines();
   const m = machines.find(x => x.id === req.params.id);
   if (!m) return res.status(404).json({ error: "not found" });
-  for (const key of ["name", "ip", "os", "services", "credentials", "notes", "checklist", "template", "hosts", "attackPath",
-    "platform", "difficulty", "status", "tags", "userFlag", "rootFlag", "startedAt", "ownedAt", "timeline", "evidence"]) {
+  for (const [key, kind] of Object.entries(MACHINE_FIELD_TYPES)) {
+    if (req.body[key] !== undefined && !checkFieldType(req.body[key], kind))
+      return res.status(400).json({ error: `invalid ${key}` });
+  }
+  for (const key of Object.keys(MACHINE_FIELD_TYPES)) {
     if (req.body[key] !== undefined) m[key] = req.body[key];
   }
   m.updatedAt = new Date().toISOString();
@@ -586,10 +1045,66 @@ app.delete("/api/machines/:id", (req, res) => {
   res.json({ ok: true });
 });
 
+// ── Exam Mode (a single JSON document) ──
+const EXAM_FILE = path.join(DATA_DIR, "exam.json");
+function readExam() { const e = readJSON(EXAM_FILE, {}); return isPlainObject(e) ? e : {}; }
+function writeExam(d) { atomicWrite(EXAM_FILE, JSON.stringify(d, null, 2)); }
+
+app.get("/api/exam", (req, res) => res.json(readExam()));
+app.put("/api/exam", (req, res) => {
+  if (!isPlainObject(req.body)) return res.status(400).json({ error: "exam must be an object" });
+  writeExam(req.body);
+  res.json(req.body);
+});
+
 // ── Export / Import ──
+// Evidence screenshots live as files under DATA_DIR/uploads and are referenced
+// from markdown only as "/uploads/<id>.<ext>" — without shipping the bytes, a
+// restored write-up comes back full of broken images. Only files the exported
+// content actually references are included, so the bundle stays as small as
+// the user's own data.
+const UPLOAD_NAME_RE = /^[A-Za-z0-9]+\.(png|jpg|gif|bmp|webp)$/;
+function collectUploadNames(...sources) {
+  const names = new Set();
+  const hay = JSON.stringify(sources) || "";
+  const re = /\/uploads\/([A-Za-z0-9]+\.(?:png|jpg|gif|bmp|webp))/g;
+  let m;
+  while ((m = re.exec(hay)) !== null) names.add(m[1]);
+  return names;
+}
+function exportUploads(writeups, machines) {
+  const out = {};
+  for (const name of collectUploadNames(writeups, machines)) {
+    const file = path.join(UPLOADS_DIR, name); // the regex rules out traversal
+    try {
+      if (fs.existsSync(file)) out[name] = fs.readFileSync(file).toString("base64");
+    } catch { /* one unreadable screenshot must not fail the whole backup */ }
+  }
+  return out;
+}
+function importUploads(map) {
+  let written = 0;
+  for (const [name, b64] of Object.entries(map)) {
+    if (!UPLOAD_NAME_RE.test(name) || typeof b64 !== "string") continue;
+    let buf;
+    try { buf = Buffer.from(b64, "base64"); } catch { continue; }
+    if (!buf.length || buf.length > MAX_UPLOAD_BYTES) continue;
+    // Trust the bytes, never the name — same rule as /api/upload.
+    const ext = sniffImageExt(buf);
+    if (!ext || !name.toLowerCase().endsWith("." + ext)) continue;
+    try { fs.writeFileSync(path.join(UPLOADS_DIR, name), buf); written++; } catch { /* skip */ }
+  }
+  return written;
+}
+
 app.get("/api/export", (req, res) => {
   res.setHeader("Content-Disposition", "attachment; filename=cheat-sheet-backup.json");
-  res.json({ categories: readData(), notes: readNotes(), writeups: readWriteups(), machines: readMachines() });
+  const writeups = readWriteups();
+  const machines = readMachines();
+  res.json({
+    categories: readData(), notes: readNotes(), writeups, machines,
+    exam: readExam(), uploads: exportUploads(writeups, machines),
+  });
 });
 
 app.post("/api/import", (req, res) => {
@@ -597,10 +1112,11 @@ app.post("/api/import", (req, res) => {
   // Old format: a bare array of categories.
   if (Array.isArray(body)) {
     if (!isValidCategoryArray(body)) return res.status(400).json({ error: "invalid categories format" });
+    const regenerated = sanitizeImportedIds(body, null);
     writeData(body);
-    return res.json({ ok: true, categories: body.length });
+    return res.json({ ok: true, categories: body.length, idsRegenerated: regenerated });
   }
-  // New format: an object with any of categories/notes/writeups/machines.
+  // New format: an object with any of categories/notes/writeups/machines/exam.
   if (!body || typeof body !== "object") return res.status(400).json({ error: "invalid import body" });
   if (body.categories !== undefined && !isValidCategoryArray(body.categories))
     return res.status(400).json({ error: "invalid categories format" });
@@ -608,25 +1124,92 @@ app.post("/api/import", (req, res) => {
     return res.status(400).json({ error: "invalid notes format" });
   if (body.writeups !== undefined && !isValidWriteupArray(body.writeups))
     return res.status(400).json({ error: "invalid writeups format" });
-  if (body.machines !== undefined && !Array.isArray(body.machines))
+  if (body.machines !== undefined && !isValidMachineArray(body.machines))
     return res.status(400).json({ error: "invalid machines format" });
+  if (body.exam !== undefined && !isPlainObject(body.exam))
+    return res.status(400).json({ error: "invalid exam format" });
+  if (body.uploads !== undefined && !isPlainObject(body.uploads))
+    return res.status(400).json({ error: "invalid uploads format" });
   if (body.categories === undefined && body.notes === undefined &&
-      body.writeups === undefined && body.machines === undefined)
+      body.writeups === undefined && body.machines === undefined &&
+      body.exam === undefined)
     return res.status(400).json({ error: "nothing to import" });
 
-  if (body.categories) writeData(body.categories);
-  if (body.notes) writeNotes(body.notes);
-  if (body.writeups) writeWriteups(body.writeups);
-  if (body.machines) writeMachines(body.machines);
-  res.json({ ok: true, categories: body.categories ? body.categories.length : 0 });
+  const regenerated = sanitizeImportedIds(body.categories, body.machines);
+  // Everything is validated by now, so write as one unit: a failure halfway
+  // through used to leave notes keyed to categories that no longer existed.
+  const previous = {
+    categories: readData(), notes: readNotes(), writeups: readWriteups(),
+    machines: readMachines(), exam: readExam(),
+  };
+  const writers = { categories: writeData, notes: writeNotes, writeups: writeWriteups, machines: writeMachines, exam: writeExam };
+  const done = [];
+  try {
+    for (const key of ["categories", "notes", "writeups", "machines", "exam"]) {
+      if (body[key] === undefined) continue;
+      writers[key](body[key]);
+      done.push(key);
+    }
+  } catch (e) {
+    for (const key of done) {
+      try { writers[key](previous[key]); } catch { /* nothing left to do but report */ }
+    }
+    console.error("⚠  import failed and was rolled back:", e.message);
+    return res.status(500).json({ error: "import failed — previous data restored" });
+  }
+  // Uploads are additive files, not state, so they go last and never roll back.
+  const uploads = body.uploads ? importUploads(body.uploads) : 0;
+  res.json({
+    ok: true,
+    categories: body.categories ? body.categories.length : 0,
+    idsRegenerated: regenerated,
+    uploads,
+  });
+});
+
+// ── Seed status / non-destructive content update ──
+// An install used to receive the seed exactly once, at creation: new bundled
+// commands never reached anyone, and the only "update" on offer was /api/reset,
+// which deleted user-created categories and re-minted every id.
+app.get("/api/seed-status", (req, res) => {
+  const current = readMeta().seedVersion || null;
+  const { version } = loadSeed();
+  res.json({ current, latest: version, updateAvailable: current !== version });
+});
+
+app.post("/api/update", (req, res) => {
+  const dryRun = req.query.dryRun === "1" || req.query.dryRun === "true" ||
+    !!(req.body && req.body.dryRun);
+  const { seed, version } = loadSeed();
+  const baseline = readBaseline();
+  // A dry run must not leave a single mutation behind, so it merges into a copy.
+  const target = dryRun ? JSON.parse(JSON.stringify(readData())) : readData();
+  const merged = mergeSeedInto(target, seed, baseline);
+  if (!dryRun) {
+    writeData(target);
+    try {
+      writeMeta(Object.assign(readMeta(), { seedVersion: version }));
+      writeBaseline(merged.baseline);
+    } catch (e) {
+      console.error("⚠  merged the new seed but could not record its version:", e.message);
+    }
+  }
+  res.json(Object.assign({}, merged.stats, { seedVersion: version, dryRun }));
 });
 
 // ── Reset to defaults ──
 app.post("/api/reset", (req, res) => {
-  // Clear require cache so seed is always fresh
-  delete require.cache[require.resolve("./seed.js")];
-  const seed = require("./seed.js");
+  const { seed, version } = loadSeed();
+  // Favourites are keyed by command id, so a reset that re-mints ids orphans all
+  // of them. Carry the existing ids onto every record the seed still contains.
+  preserveIds(seed, readData());
   writeData(seed);
+  try {
+    writeMeta(Object.assign(readMeta(), { seedVersion: version }));
+    writeBaseline(buildBaseline(seed));
+  } catch (e) {
+    console.error("⚠  reset succeeded but could not record the seed version:", e.message);
+  }
   res.json({ ok: true });
 });
 
