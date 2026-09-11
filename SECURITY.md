@@ -21,6 +21,30 @@ malicious code), please follow these rules.
 You are solely responsible for your usage. Authors and contributors
 disclaim liability for misuse.
 
+This statement is the authoritative scope note for the project; the README links
+here from its **Authorised use only** banner.
+
+## ⚠️ Known limitations (by design)
+
+These are not vulnerabilities — they are documented properties of a single-user,
+local-first tool. Please do not report them as findings.
+
+- **The credential vault is plaintext.** Secrets you store against a machine live
+  unencrypted in `DATA_DIR/machines.json` (server build) or in the browser's
+  IndexedDB (static build), and are included verbatim in every export and in a
+  machine's generated report. It is a scratchpad for lab and exam boxes, not a
+  password manager. See the README's *Security* section.
+- **No authentication by default.** The server binds to `127.0.0.1` and has no
+  user model. `AUTH_PASS` adds HTTP Basic Auth and is required before you expose
+  it anywhere else.
+- **Anyone with access to the origin has access to the data.** On a published
+  GitHub Pages deployment the data stays in each visitor's own browser, but it is
+  a public origin — do not put real client or production credentials into it.
+
+What *is* in scope: anything that lets one user's content run script in another
+context, escape the data directory, read files outside `DATA_DIR`, or bypass
+`AUTH_PASS` — plus stored XSS in the command, machine or write-up renderers.
+
 ## 🚨 Reporting security issues
 
 ### App-level vulnerabilities
