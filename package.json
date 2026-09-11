@@ -18,7 +18,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "express": "^4.21.0"
+    "express": "^5.2.1"
   },
   "//overrides": "express@4 pins these transitively at versions with published advisories (path-to-regexp ReDoS GHSA-37ch-88jc-xwx2 is high) and `npm audit fix` cannot lift them without leaving express behind. The pins are patch-level within the same major, so express keeps working; drop an entry once express ships a release that already requires the fixed version.",
   "overrides": {
