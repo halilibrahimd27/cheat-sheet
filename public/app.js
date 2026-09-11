@@ -6,12 +6,30 @@
 (function () {
   "use strict";
 
+  // localStorage is never guaranteed: a private window, a locked-down exam VM or a
+  // blocked-storage policy makes every access throw, and one corrupt key used to
+  // kill the whole module before it rendered a single pixel. Every read and write
+  // in this file goes through these, and every parse falls back to its default.
+  function safeGet(key) { try { return localStorage.getItem(key); } catch { return null; } }
+  function safeSet(key, val) { try { localStorage.setItem(key, val); return true; } catch { return false; } }
+  function safeRemove(key) { try { localStorage.removeItem(key); } catch { /* storage blocked */ } }
+  function safeJson(key, fallback) {
+    const raw = safeGet(key);
+    if (raw == null) return fallback;
+    try { const v = JSON.parse(raw); return v == null ? fallback : v; } catch { return fallback; }
+  }
+  function safeArr(key) { const v = safeJson(key, null); return Array.isArray(v) ? v : []; }
+
   let CATEGORIES = [];
   let activeCategory = null;
   let searchQuery = "";
-  let collapsedSections = new Set();
-  let favorites = JSON.parse(localStorage.getItem("cs-favorites") || "[]");
-  let cmdHistory = JSON.parse(localStorage.getItem("cs-history") || "[]");
+  // Collapsed state persists: the all-commands view starts fully collapsed (see
+  // loadData) so the default page does not build the whole 5040-command tree.
+  let collapsedSections = new Set(safeArr("cs-collapsed"));
+  let collapsedSeeded = safeGet("cs-collapsed") != null;
+  function persistCollapsed() { safeSet("cs-collapsed", JSON.stringify(Array.from(collapsedSections))); }
+  let favorites = safeArr("cs-favorites");
+  let cmdHistory = safeArr("cs-history");
   // Multi-select tag filter: empty Set = "All". A command matches if it carries
   // ANY selected tag (union). Kept as a Set so chips toggle independently.
   let activeTags = new Set();
@@ -34,23 +52,24 @@
     return out;
   }
   // Script basket: an ordered scratch buffer of raw commands (with placeholders).
-  let basket = JSON.parse(localStorage.getItem("cs-basket") || "[]");
+  let basket = safeArr("cs-basket");
   let categoryNotes = {};
   let writeups = [];
   let machines = [];
   // Write-up list view state (pins persist; query/tag are transient per session).
-  let wuPins = JSON.parse(localStorage.getItem("cs-wu-pins") || "[]");
-  let wuSort = localStorage.getItem("cs-wu-sort") || "recent";
+  let wuPins = safeArr("cs-wu-pins");
+  let wuSort = safeGet("cs-wu-sort") || "recent";
   let wuQuery = "", wuTagFilter = "all";
   // Machine list dashboard filter/sort state (survives render() re-runs).
   let machineFilter = { q: "", platform: "", status: "", tag: "", sort: "recent" };
-  let machineView = localStorage.getItem("cs-machine-view") || "grid"; // "grid" | "board"
+  let machineView = safeGet("cs-machine-view") === "board" ? "board" : "grid"; // "grid" | "board"
   // Machine metadata enumerations (shared by create modal, detail chips, cards).
   const MACHINE_PLATFORMS = ["HTB", "THM", "PG", "OSCP", "Custom"];
   const MACHINE_DIFFS = ["Easy", "Medium", "Hard", "Insane"];
   const MACHINE_STATUSES = ["not-started", "in-progress", "owned", "reported"];
   const ST_KEY = { "not-started": "stNotStarted", "in-progress": "stInProgress", "owned": "stOwned", "reported": "stReported" };
-  let lang = localStorage.getItem("cs-lang") || "en";
+  // Clamped to a known table: lang is interpolated into exported <html lang='…'>.
+  let lang = safeGet("cs-lang") === "tr" ? "tr" : "en";
   let dragSrcCatIdx = null;
   let focusedCmdIdx = -1;
   let pendingGo = false; // for g+key combos
@@ -150,7 +169,11 @@
       basket: "Script basket", basketAdd: "Add to basket", basketNone: "Basket is empty. Add commands to build a script.", basketCopy: "Copy script", basketClear: "Clear", basketExport: "Export .sh", basketTitle: "🧺 Script Basket", basketAdded: "Added to basket", basketCount: "in basket",
       // — Round 6: ATT&CK tags + references —
       attackFacet: "ATT&CK", attackAll: "All techniques", cardRefs: "References", attackTitle: "MITRE ATT&CK technique",
-      cmdAttack: "MITRE ATT&CK (optional)", cmdAttackHint: "e.g. T1059, T1003.001 (comma-separated)", cmdRefs: "Reference links (optional)", cmdRefsHint: "One URL per line (HackTricks, GTFOBins, docs…)"
+      cmdAttack: "MITRE ATT&CK (optional)", cmdAttackHint: "e.g. T1059, T1003.001 (comma-separated)", cmdRefs: "Reference links (optional)", cmdRefsHint: "One URL per line (HackTricks, GTFOBins, docs…)",
+      // — Save indicators (report the real result of a write, not a timer) —
+      savingLbl: "saving…", savedOk: "saved", saveFailed: "not saved — retry",
+      // — Exam Mode (optional public/exam.js module) —
+      examMode: "Sessions", examUnavailable: "Sessions is not installed. Add public/session.js to enable it."
     },
     tr: {
       allCommands: "Tum Komutlar", favorites: "Favoriler", search: "Komut ara...",
@@ -243,7 +266,11 @@
       basket: "Script sepeti", basketAdd: "Sepete ekle", basketNone: "Sepet bos. Script olusturmak icin komut ekleyin.", basketCopy: "Scripti kopyala", basketClear: "Temizle", basketExport: ".sh aktar", basketTitle: "🧺 Script Sepeti", basketAdded: "Sepete eklendi", basketCount: "sepette",
       // — Round 6: ATT&CK etiketleri + referanslar —
       attackFacet: "ATT&CK", attackAll: "Tum teknikler", cardRefs: "Referanslar", attackTitle: "MITRE ATT&CK teknigi",
-      cmdAttack: "MITRE ATT&CK (istege bagli)", cmdAttackHint: "or. T1059, T1003.001 (virgul ile ayirin)", cmdRefs: "Referans baglantilari (istege bagli)", cmdRefsHint: "Her satira bir URL (HackTricks, GTFOBins, dokuman…)"
+      cmdAttack: "MITRE ATT&CK (istege bagli)", cmdAttackHint: "or. T1059, T1003.001 (virgul ile ayirin)", cmdRefs: "Referans baglantilari (istege bagli)", cmdRefsHint: "Her satira bir URL (HackTricks, GTFOBins, dokuman…)",
+      // — Kayit gostergeleri —
+      savingLbl: "kaydediliyor…", savedOk: "kaydedildi", saveFailed: "kaydedilemedi — tekrar deneyin",
+      // — Sinav Modu (istege bagli public/exam.js modulu) —
+      examMode: "Oturumlar", examUnavailable: "Oturumlar kurulu degil. Etkinlestirmek icin public/session.js ekleyin."
     }
   };
   function t(key) { return (T[lang] && T[lang][key]) || T.en[key] || key; }
@@ -285,6 +312,28 @@
     el.textContent = msg;
     toastHost.appendChild(el);
     setTimeout(() => { el.classList.add("toast-out"); setTimeout(() => el.remove(), 300); }, 2600);
+  }
+
+  // ── Save indicators ──
+  // The old indicator was a 600 ms timer, so it printed "✓ saved" even when the PUT
+  // 500'd. These reflect the real outcome of the write: pending → ok | failed.
+  // The colour is inline rather than a class because these indicators live in
+  // .wu-editor-status / .note-saved, which hard-code the green "saved" colour.
+  function setSaveStatus(el, state) {
+    if (!el) return;
+    clearTimeout(el._t);
+    el.classList.remove("save-ok", "save-err", "save-pending");
+    if (state === "saving") {
+      el.textContent = t("savingLbl"); el.classList.add("save-pending"); el.style.color = "var(--text-tertiary)";
+      return;
+    }
+    if (state === "ok") {
+      el.textContent = "✓ " + t("savedOk"); el.classList.add("save-ok"); el.style.color = "var(--accent-green)";
+      el._t = setTimeout(() => { el.textContent = ""; el.classList.remove("save-ok"); }, 2000);
+      return;
+    }
+    // A failure stays on screen — it is the only lasting warning the user gets.
+    el.textContent = "⚠ " + t("saveFailed"); el.classList.add("save-err"); el.style.color = "var(--accent-red)";
   }
 
   // ── Clipboard (works on http/LAN without a secure context; never fails silently) ──
@@ -361,8 +410,14 @@
     // Categories are the critical collection — if the server is unreachable, show
     // a retryable error instead of a permanently blank screen.
     const cats = await api("GET", "/api/categories");
-    if (cats == null) { showLoadError(); return; }
+    // A failing endpoint answers with an error PAYLOAD ({error:"…"}), not null, so a
+    // null check alone let an object through and froze the spinner on the first
+    // CATEGORIES.forEach. Only an array is data.
+    if (!Array.isArray(cats)) { showLoadError(); return; }
     CATEGORIES = cats;
+    // First run only: collapse every category so the default view lazily fills
+    // (fillCatContent) instead of building the whole corpus up front.
+    if (!collapsedSeeded) { CATEGORIES.forEach(c => collapsedSections.add(c.id)); collapsedSeeded = true; persistCollapsed(); }
     await Promise.all([loadNotes(), loadWriteups(), loadMachines()]);
     buildSearchIndex();
     migrateFavorites();
@@ -384,10 +439,11 @@
     const k = cmd.id;
     const nowFav = !favorites.includes(k);
     if (nowFav) favorites.push(k); else favorites = favorites.filter(f => f !== k);
-    localStorage.setItem("cs-favorites", JSON.stringify(favorites));
+    safeSet("cs-favorites", JSON.stringify(favorites));
     if (activeCategory === "favs") { render(); return; }
     // Scoped update: flip the matching star(s) + refresh the cheap sidebar.
-    document.querySelectorAll('.fav-btn[data-fav="' + k + '"]').forEach(b => b.classList.toggle("fav-active", nowFav));
+    // Ids come from the data file: escape before splicing into a selector string.
+    document.querySelectorAll('.fav-btn[data-fav="' + cssEsc(k) + '"]').forEach(b => b.classList.toggle("fav-active", nowFav));
     buildSidebar();
   }
   function getFavCommands() {
@@ -419,7 +475,7 @@
     }).filter(Boolean);
     const uniq = [], s = {}; favorites.forEach(k => { if (!s[k]) { s[k] = 1; uniq.push(k); } });
     favorites = uniq;
-    if (changed) localStorage.setItem("cs-favorites", JSON.stringify(favorites));
+    if (changed) safeSet("cs-favorites", JSON.stringify(favorites));
   }
 
   // ── Variable Fill ──
@@ -430,10 +486,10 @@
     if (vars.length === 0) { copyText(code, () => toast(t("copied"), "ok")); return; }
     varBarFields.innerHTML = "";
     vars.forEach(v => {
-      const saved = localStorage.getItem("cs-var-" + v) || "";
+      const saved = safeGet("cs-var-" + v) || "";
       const g = document.createElement("div");
       g.className = "var-field";
-      g.innerHTML = '<label>' + v + '</label><input type="text" data-var="' + v + '" placeholder="' + v.replace(/[<>]/g, '') + '" value="' + escapeHtml(saved) + '">';
+      g.innerHTML = '<label>' + escapeHtml(v) + '</label><input type="text" data-var="' + escapeHtml(v) + '" placeholder="' + escapeHtml(v.replace(/[<>]/g, "")) + '" value="' + escapeHtml(saved) + '">';
       varBarFields.appendChild(g);
     });
     varBar.classList.add("active");
@@ -444,7 +500,7 @@
     let result = varBarCode;
     varBarFields.querySelectorAll("input").forEach(inp => {
       const v = inp.dataset.var, val = inp.value;
-      if (val) { localStorage.setItem("cs-var-" + v, val); result = result.split(v).join(val); }
+      if (val) { safeSet("cs-var-" + v, val); result = result.split(v).join(val); }
     });
     copyText(result, () => {
       recordHistory(result);
@@ -457,19 +513,19 @@
   const ipBar = $("ipChangerBar");
   const ipFields = { LHOST: $("ipLhost"), RHOST: $("ipRhost"), LPORT: $("ipLport"), DOMAIN: $("ipDomain"), USER: $("ipUser") };
   const ipMap = { LHOST: ["<LHOST>", "<ATTACKER_IP>"], RHOST: ["<RHOST>", "<TARGET_IP>", "<RHOST_IP>"], LPORT: ["<LPORT>"], DOMAIN: ["<DOMAIN>", "<TARGET_DOMAIN>"], USER: ["<USER>", "<USERNAME>"] };
-  function loadIpValues() { Object.keys(ipFields).forEach(k => { ipFields[k].value = localStorage.getItem("cs-ip-" + k) || ""; }); }
+  function loadIpValues() { Object.keys(ipFields).forEach(k => { ipFields[k].value = safeGet("cs-ip-" + k) || ""; }); }
   function saveIpValues() {
     Object.keys(ipFields).forEach(k => {
       const v = ipFields[k].value.trim();
-      localStorage.setItem("cs-ip-" + k, v);
+      safeSet("cs-ip-" + k, v);
       // Also sync with var-bar values
-      (ipMap[k] || []).forEach(ph => { if (v) localStorage.setItem("cs-var-" + ph, v); });
+      (ipMap[k] || []).forEach(ph => { if (v) safeSet("cs-var-" + ph, v); });
     });
   }
   function applyIpToCode(code) {
     let result = code;
     Object.keys(ipFields).forEach(k => {
-      const v = localStorage.getItem("cs-ip-" + k);
+      const v = safeGet("cs-ip-" + k);
       if (v) (ipMap[k] || []).forEach(ph => { result = result.split(ph).join(v); });
     });
     return result;
@@ -481,15 +537,15 @@
     $("ipSaveBtn").textContent = "Saved!"; setTimeout(() => $("ipSaveBtn").textContent = "Save", 1200);
   });
   $("ipClearBtn").addEventListener("click", () => {
-    Object.keys(ipFields).forEach(k => { ipFields[k].value = ""; localStorage.removeItem("cs-ip-" + k); });
+    Object.keys(ipFields).forEach(k => { ipFields[k].value = ""; safeRemove("cs-ip-" + k); });
   });
   // Auto-save on Enter in ip fields
   Object.values(ipFields).forEach(inp => inp.addEventListener("keydown", e => { if (e.key === "Enter") { saveIpValues(); $("ipSaveBtn").textContent = "Saved!"; setTimeout(() => $("ipSaveBtn").textContent = "Save", 1200); } }));
 
   // ── Variable profiles: save/apply named sets of the Quick IP Changer values ──
   // Lets you keep one profile per target box and switch between them instantly.
-  function getProfiles() { try { const p = JSON.parse(localStorage.getItem("cs-var-profiles") || "{}"); return (p && typeof p === "object" && !Array.isArray(p)) ? p : {}; } catch { return {}; } }
-  function setProfiles(p) { localStorage.setItem("cs-var-profiles", JSON.stringify(p)); }
+  function getProfiles() { const p = safeJson("cs-var-profiles", {}); return (p && typeof p === "object" && !Array.isArray(p)) ? p : {}; }
+  function setProfiles(p) { safeSet("cs-var-profiles", JSON.stringify(p)); }
   function applyProfile(name) {
     const data = getProfiles()[name]; if (!data) return;
     Object.keys(ipFields).forEach(k => { ipFields[k].value = data[k] || ""; });
@@ -522,7 +578,7 @@
   const basketPanel = document.createElement("div"); basketPanel.className = "basket-panel"; basketPanel.id = "basketPanel"; basketPanel.setAttribute("role", "dialog"); basketPanel.setAttribute("aria-label", t("basketTitle"));
   document.body.appendChild(basketFab); document.body.appendChild(basketPanel);
   function updateBasketFab() { basketFab.innerHTML = '🧺 <span class="basket-fab-count">' + basket.length + '</span>'; basketFab.classList.toggle("has", basket.length > 0); }
-  function saveBasket() { localStorage.setItem("cs-basket", JSON.stringify(basket)); updateBasketFab(); }
+  function saveBasket() { safeSet("cs-basket", JSON.stringify(basket)); updateBasketFab(); }
   function basketAdd(code) { basket.push(code); saveBasket(); toast(t("basketAdded"), "ok"); if (basketPanel.classList.contains("active")) renderBasketPanel(); }
   function basketScript() { return "#!/usr/bin/env bash\n# Generated by cheat-sheet — " + basket.length + " " + t("commands") + "\nset -e\n\n" + basket.map(applyIpToCode).join("\n") + "\n"; }
   function renderBasketPanel() {
@@ -576,6 +632,25 @@
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   }
   modalEl.addEventListener("keydown", e => trapFocus(modalEl, e));
+  // The main modal's contract — remember focus, move into the dialog, keep Tab
+  // inside it, restore on close — packaged so the other aria-modal surfaces
+  // (command palette, CVSS calculator, keyboard-shortcut panel) get exactly it.
+  function makeFocusTrap(container) {
+    let restore = null;
+    const onKey = e => trapFocus(container, e);
+    return {
+      activate() {
+        restore = document.activeElement;
+        container.addEventListener("keydown", onKey);
+        setTimeout(() => { const f = focusableIn(container)[0]; if (f) f.focus(); }, 0);
+      },
+      release() {
+        container.removeEventListener("keydown", onKey);
+        if (restore && restore.focus) restore.focus();
+        restore = null;
+      }
+    };
+  }
   function openModal(title, fields, data, cb) {
     modalTitle.textContent = title; modalCallback = cb; modalBody.innerHTML = "";
     fields.forEach(f => {
@@ -678,7 +753,10 @@
   }
 
   // ── Notes (multiple per category, server-backed) ──
-  async function loadNotes() { categoryNotes = await api("GET", "/api/notes") || {}; }
+  async function loadNotes() {
+    const n = await api("GET", "/api/notes");
+    categoryNotes = (n && typeof n === "object" && !Array.isArray(n)) ? n : {};
+  }
   function getNotes(catId) { return categoryNotes[catId] || []; }
   function getNotesCount(catId) { return (categoryNotes[catId] || []).length; }
   async function addNote(catId) {
@@ -686,9 +764,17 @@
     await loadNotes(); render();
   }
   let noteTimers = {};
-  function saveNoteText(catId, noteId, text) {
+  function saveNoteText(catId, noteId, text, statusEl) {
+    // Write through to the model FIRST. render() re-seeds every note textarea from
+    // categoryNotes, so a model that lags the server means an ordinary re-render
+    // restores the stale text and the next keystroke PUTs it over the good copy.
+    const note = (categoryNotes[catId] || []).find(n => n.id === noteId);
+    if (note) note.text = text;
     clearTimeout(noteTimers[noteId]);
-    noteTimers[noteId] = setTimeout(() => api("PUT", "/api/notes/" + catId + "/" + noteId, { text }), 400);
+    noteTimers[noteId] = setTimeout(async () => {
+      const res = await api("PUT", "/api/notes/" + catId + "/" + noteId, { text });
+      setSaveStatus(statusEl, (res && res.id) ? "ok" : "err");
+    }, 400);
   }
   async function deleteNote(catId, noteId) {
     if (!confirm(lang === "tr" ? "Bu notu silinsin mi?" : "Delete this note?")) return;
@@ -698,7 +784,10 @@
 
   // ── Write-ups (server-backed, file-style) ──
   let openWriteupId = null;
-  async function loadWriteups() { writeups = await api("GET", "/api/writeups") || []; }
+  async function loadWriteups() {
+    const list = await api("GET", "/api/writeups");
+    writeups = Array.isArray(list) ? list : [];
+  }
 
   // Static, offline report boilerplate — inserted client-side, never fetched.
 const WRITEUP_TEMPLATES = {
@@ -1430,21 +1519,60 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 `
   };
 
+  // The templates offered in BOTH the create modal and the editor toolbar. One list,
+  // so adding a report type can never leave the two pickers disagreeing.
+  const WRITEUP_TEMPLATE_OPTS = [
+    { value: "oscp", label: "OSCP exam report" },
+    { value: "htb", label: "HTB / CTF write-up" },
+    { value: "pentest", label: "Pentest report" },
+    { value: "bugbounty", label: "Bug bounty report" },
+    { value: "oswe", label: "OSWE / whitebox report" },
+    { value: "redteam", label: "Red team operation" },
+    { value: "vulndisclosure", label: "Vulnerability disclosure" },
+    { value: "retest", label: "Remediation retest" }
+  ];
+  function writeupTemplateOptionsHtml() {
+    return WRITEUP_TEMPLATE_OPTS.map(o => '<option value="' + escapeHtml(o.value) + '">' + escapeHtml(o.label) + '</option>').join("");
+  }
+
   // Allow only safe URL schemes in rendered markdown (blocks javascript: etc.).
-  function mdSafeUrl(u) {
+  // `kind` is "img" for an <img src>, anything else for an anchor href:
+  //  - protocol-relative "//host" is rejected outright — it silently inherits the
+  //    page scheme, is never a local upload, and reads like a root-relative path.
+  //  - data: is accepted for image sources only; a data: anchor href is a
+  //    navigable document (data:text/html,…) and never legitimate here.
+  function mdSafeUrl(u, kind) {
     u = String(u == null ? "" : u).trim();
-    return /^(https?:\/\/|\/uploads\/|\/|data:image\/)/i.test(u) ? u : "#";
+    if (/^\/\//.test(u)) return "#";
+    if (/^data:/i.test(u)) return (kind === "img" && /^data:image\//i.test(u)) ? u : "#";
+    return /^(https?:\/\/|\/)/i.test(u) ? u : "#";
   }
   // Minimal, XSS-safe Markdown → HTML. Escapes first, then applies formatting;
   // fenced code is pulled out to placeholders so its content is never re-parsed.
   function renderMarkdown(src) {
     const blocks = [];
     let h = escapeHtml(src == null ? "" : src);
-    h = h.replace(/```([^\n`]*)\n?([\s\S]*?)```/g, (m, info, code) => { blocks.push({ lang: info.trim(), code: code.replace(/^\n/, "") }); return "ZZCODEBLOCKZZ" + (blocks.length - 1) + "ZZ"; });
+    // Placeholder tokens carry a per-render nonce: without it a write-up whose own
+    // text reads "ZZCODEBLOCKZZ0ZZ" would be expanded back into markup at restore
+    // time — including from inside an attribute value, which is a break-out.
+    const nonce = "Z" + Math.random().toString(36).slice(2, 10).replace(/[^a-z0-9]/g, "") + "Z";
+    h = h.replace(/```([^\n`]*)\n?([\s\S]*?)```/g, (m, info, code) => { blocks.push({ lang: info.trim(), code: code.replace(/^\n/, "") }); return "ZZCODEBLOCKZZ" + nonce + (blocks.length - 1) + "ZZ"; });
+    // "Escape the whole source first, then format" only holds while every rule emits
+    // into element CONTENT. The image/link rules also emit into ATTRIBUTES, and the
+    // passes below would happily rewrite text sitting inside alt="…" / href="…" and
+    // break out of the quote — which lands in the standalone HTML and PDF reports the
+    // user hands to a client. So attribute values are pulled out to placeholders (same
+    // trick as the fenced blocks above) and spliced back, attribute-escaped, only once
+    // EVERY rule has run — the restore is the last statement before the return.
+    const attrs = [];
+    const stashAttr = v => { attrs.push(String(v == null ? "" : v)); return "ZZATTRZZ" + nonce + (attrs.length - 1) + "ZZ"; };
+    // The value already survived the top-of-function escapeHtml, so this only has to
+    // neutralise what could terminate the attribute — re-escaping & would double it.
+    const attrSafe = v => String(v).replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     h = h.replace(/^(#{1,6})\s+(.*)$/gm, (m, hh, txt) => { const lvl = Math.min(hh.length + 1, 6); return "<h" + lvl + " class=\"wu-heading\">" + txt + "</h" + lvl + ">"; });
     h = h.replace(/^\s*(?:---|\*\*\*)\s*$/gm, "<hr class=\"wu-hr\">");
-    h = h.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (m, alt, url) => "<div class=\"wu-img-container\"><img src=\"" + mdSafeUrl(url) + "\" alt=\"" + alt + "\" class=\"wu-read-img\"><span class=\"wu-img-caption\">" + alt + "</span></div>");
-    h = h.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, txt, url) => "<a href=\"" + mdSafeUrl(url) + "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"wu-link\">" + txt + "</a>");
+    h = h.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (m, alt, url) => "<div class=\"wu-img-container\"><img src=\"" + stashAttr(mdSafeUrl(url, "img")) + "\" alt=\"" + stashAttr(alt) + "\" class=\"wu-read-img\"><span class=\"wu-img-caption\">" + stashAttr(alt) + "</span></div>");
+    h = h.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, txt, url) => "<a href=\"" + stashAttr(mdSafeUrl(url)) + "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"wu-link\">" + txt + "</a>");
     h = h.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
     h = h.replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
     h = h.replace(/~~([^~\n]+)~~/g, "<del>$1</del>");
@@ -1454,7 +1582,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     // preceded by a quote), so existing anchors aren't re-linked; the URL char class
     // stops before "/</>/quotes so it can't break out of an attribute. mdSafeUrl
     // re-validates the scheme and the URL text is already escaped.
-    h = h.replace(/(^|[\s(>])(https?:\/\/[^\s<>"')]+)/g, (m, pre, url) => pre + "<a href=\"" + mdSafeUrl(url) + "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"wu-link\">" + url + "</a>");
+    h = h.replace(/(^|[\s(>])(https?:\/\/[^\s<>"')]+)/g, (m, pre, url) => pre + "<a href=\"" + stashAttr(mdSafeUrl(url)) + "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"wu-link\">" + url + "</a>");
     // Blockquotes ("> " is escaped to "&gt; ").
     h = h.replace(/(?:^|\n)((?:&gt; ?.*(?:\n|$))+)/g, (m, block) => "\n<blockquote class=\"wu-quote\">" + block.trim().split(/\n/).map(l => l.replace(/^&gt; ?/, "")).join("<br>") + "</blockquote>");
     // Nested ordered / unordered / task lists (2 spaces or 1 tab per indent level).
@@ -1488,7 +1616,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     });
     h = h.replace(/\n/g, "<br>");
     h = h.replace(/<br>\s*(<(?:h[1-6]|pre|ul|ol|hr|div|table|blockquote)[^>]*>)/g, "$1").replace(/(<\/(?:h[1-6]|pre|ul|ol|div|table|blockquote)>)\s*<br>/g, "$1").replace(/(<hr[^>]*>)\s*<br>/g, "$1");
-    h = h.replace(/ZZCODEBLOCKZZ(\d+)ZZ/g, (m, i) => {
+    h = h.replace(new RegExp("ZZCODEBLOCKZZ" + nonce + "(\\d+)ZZ", "g"), (m, i) => {
       const b = blocks[+i];
       // b.code is already escaped (from the top-of-function escapeHtml); b.lang is
       // user-controlled, so it MUST pass through escapeHtml to stay XSS-safe.
@@ -1496,6 +1624,14 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       return "<div class=\"wu-code-wrap\"><div class=\"wu-code-head\">" + lang +
         "<button type=\"button\" class=\"wu-code-copy\" title=\"" + t("copy") + "\">⧉ " + t("copy") + "</button></div>" +
         "<pre class=\"wu-code-block\">" + b.code + "</pre></div>";
+    });
+    // LAST statement before the return: every rule that could reach inside a quoted
+    // attribute has now run, so the stashed values go back in attribute-escaped and
+    // nothing downstream can re-open them. A fenced block that ended up inside an alt
+    // is spliced back as its plain (already-escaped) text, never as its markup.
+    h = h.replace(new RegExp("ZZATTRZZ" + nonce + "(\\d+)ZZ", "g"), (m, i) => {
+      const v = String(attrs[+i]).replace(new RegExp("ZZCODEBLOCKZZ" + nonce + "(\\d+)ZZ", "g"), (mm, j) => blocks[+j].code);
+      return attrSafe(v);
     });
     return h;
   }
@@ -1552,7 +1688,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   function toggleWuPin(id, e) {
     if (e) e.stopPropagation();
     wuPins = wuIsPinned(id) ? wuPins.filter(x => x !== id) : wuPins.concat(id);
-    localStorage.setItem("cs-wu-pins", JSON.stringify(wuPins));
+    safeSet("cs-wu-pins", JSON.stringify(wuPins));
     render();
   }
   function allWuTags() {
@@ -1582,17 +1718,8 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     openModal(t("wuNewTitle"), [
       { key: "title", label: t("wuTitleLabel"), placeholder: "e.g., HackTheBox — Lame" },
       { key: "tags", label: t("wuTags"), placeholder: t("tagComma") },
-      { key: "template", label: t("wuTemplate"), type: "select", value: "", options: [
-        { value: "", label: t("wuStartBlank") },
-        { value: "oscp", label: "OSCP exam report" },
-        { value: "htb", label: "HTB / CTF write-up" },
-        { value: "pentest", label: "Pentest report" },
-        { value: "bugbounty", label: "Bug bounty report" },
-        { value: "oswe", label: "OSWE / whitebox report" },
-        { value: "redteam", label: "Red team operation" },
-        { value: "vulndisclosure", label: "Vulnerability disclosure" },
-        { value: "retest", label: "Remediation retest" }
-      ] }
+      { key: "template", label: t("wuTemplate"), type: "select", value: "",
+        options: [{ value: "", label: t("wuStartBlank") }].concat(WRITEUP_TEMPLATE_OPTS) }
     ], {}, async fd => {
       const tags = fd.tags.split(",").map(s => s.trim()).filter(Boolean);
       const content = fd.template && WRITEUP_TEMPLATES[fd.template]
@@ -1615,11 +1742,18 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   // replaced) so a rapid title→content or relatedMachine→content sequence never
   // drops the earlier field. Switching to a different write-up flushes first.
   let wuTimer = null, wuPending = {}, wuPendingId = null;
+  // Returns a promise so leaving the editor (Save / Back) can await the in-flight
+  // write before reloading — otherwise loadWriteups() races the PUT and the reload
+  // hands back the pre-edit copy.
   function flushWu() {
-    if (!wuPendingId) return;
+    if (!wuPendingId) return Promise.resolve(true);
     const id = wuPendingId, data = wuPending;
     wuPendingId = null; wuPending = {}; clearTimeout(wuTimer); wuTimer = null;
-    api("PUT", "/api/writeups/" + id, data);
+    return Promise.resolve(api("PUT", "/api/writeups/" + id, data)).then(res => {
+      const ok = !!(res && res.id);
+      setSaveStatus(document.getElementById("wuStatus"), ok ? "ok" : "err");
+      return ok;
+    });
   }
   function saveWu(id, data) {
     if (wuPendingId && wuPendingId !== id) flushWu();
@@ -1672,7 +1806,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         const s = contentArea.querySelector(".wu-list-search"); if (s) { s.focus(); s.setSelectionRange(s.value.length, s.value.length); }
       }, 180);
     });
-    sortSel.addEventListener("change", () => { wuSort = sortSel.value; localStorage.setItem("cs-wu-sort", wuSort); renderWriteupsPage(); });
+    sortSel.addEventListener("change", () => { wuSort = sortSel.value; safeSet("cs-wu-sort", wuSort); renderWriteupsPage(); });
     controls.appendChild(search); controls.appendChild(sortSel);
     contentArea.appendChild(controls);
 
@@ -1783,7 +1917,8 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const s = cvssCompute(v), sev = cvssSeverity(s);
       result.innerHTML = '<div class="cvss-score sev-' + sev.toLowerCase() + '"><span class="cvss-num">' + s.toFixed(1) + '</span><span class="cvss-sev">' + sev + '</span></div><code class="cvss-vector">' + cvssVector(v) + '</code>';
     }
-    const close = () => { ov.remove(); document.removeEventListener("keydown", onKey); };
+    const trap = makeFocusTrap(panel);
+    const close = () => { ov.remove(); document.removeEventListener("keydown", onKey); trap.release(); };
     const onKey = e => { if (e.key === "Escape") close(); };
     document.addEventListener("keydown", onKey);
     panel.querySelector(".cvss-close").addEventListener("click", close);
@@ -1791,6 +1926,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     insertBtn.addEventListener("click", () => { const s = cvssCompute(v); onInsert(cvssVector(v), s.toFixed(1), cvssSeverity(s)); close(); });
     update();
     ov.appendChild(panel); document.body.appendChild(ov);
+    trap.activate();
   }
 
   function renderWriteupEditor(wu) {
@@ -1814,7 +1950,11 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         ) +
         '<button class="wu-delete-btn" title="' + t("del") + '" aria-label="' + t("del") + '">\uD83D\uDDD1</button>' +
       '</div>';
-    topbar.querySelector(".wu-back-btn").addEventListener("click", () => { openWriteupId = null; wuEditMode = false; render(); });
+    topbar.querySelector(".wu-back-btn").addEventListener("click", async () => {
+      await flushWu(); // leaving the editor must not race the debounced PUT
+      openWriteupId = null; wuEditMode = false;
+      await loadWriteups(); render();
+    });
     topbar.querySelector(".wu-delete-btn").addEventListener("click", () => deleteWriteup(wu.id));
     topbar.querySelector(".wu-pin-btn").addEventListener("click", () => toggleWuPin(wu.id));
     topbar.querySelector(".wu-export-md-btn").addEventListener("click", () => exportWriteupMd(wu));
@@ -1826,6 +1966,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     });
     if (wuEditMode) {
       topbar.querySelector(".wu-save-btn").addEventListener("click", async () => {
+        await flushWu(); // ditto — reload only once the server has the latest text
         wuEditMode = false;
         await loadWriteups(); render();
       });
@@ -1838,7 +1979,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       // ── EDIT MODE (split editor + live preview) ──
       const titleInput = document.createElement("input"); titleInput.className = "wu-page-title";
       titleInput.value = wu.title; titleInput.placeholder = t("wuTitlePh"); titleInput.setAttribute("aria-label", t("wuTitleLabel"));
-      titleInput.addEventListener("input", () => { saveWu(wu.id, { title: titleInput.value }); showStatus(); });
+      titleInput.addEventListener("input", () => { wu.title = titleInput.value; saveWu(wu.id, { title: titleInput.value }); showStatus(); });
       page.appendChild(titleInput);
 
       const tagsRow = document.createElement("div"); tagsRow.className = "wu-page-tags";
@@ -1854,15 +1995,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       // Toolbar: template + machine link + image
       const toolbar = document.createElement("div"); toolbar.className = "wu-toolbar";
       const tplSel = document.createElement("select"); tplSel.className = "form-select wu-tool-select"; tplSel.setAttribute("aria-label", t("wuTemplate"));
-      tplSel.innerHTML = '<option value="">📄 ' + t("wuTemplate") + '…</option>' +
-        '<option value="oscp">OSCP exam report</option>' +
-        '<option value="htb">HTB / CTF write-up</option>' +
-        '<option value="pentest">Pentest report</option>' +
-        '<option value="bugbounty">Bug bounty report</option>' +
-        '<option value="oswe">OSWE / whitebox report</option>' +
-        '<option value="redteam">Red team operation</option>' +
-        '<option value="vulndisclosure">Vulnerability disclosure</option>' +
-        '<option value="retest">Remediation retest</option>';
+      tplSel.innerHTML = '<option value="">📄 ' + t("wuTemplate") + '…</option>' + writeupTemplateOptionsHtml();
       const secSel = document.createElement("select"); secSel.className = "form-select wu-tool-select"; secSel.setAttribute("aria-label", t("wuSection"));
       secSel.innerHTML = '<option value="">➕ ' + t("wuSection") + '…</option>' +
         '<option value="finding">Finding</option>' +
@@ -1881,9 +2014,9 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       // Single machine control: links the write-up to a target AND fills its
       // <TARGET_IP>/<TARGET_URL> placeholders + Box/OS/Difficulty header from the machine.
       const mcSel = document.createElement("select"); mcSel.className = "form-select wu-tool-select"; mcSel.setAttribute("aria-label", t("wuMachine"));
-      mcSel.innerHTML = '<option value="">🔗 ' + t("wuMachine") + '…</option>' + machines.map(mm => '<option value="' + mm.id + '"' + (wu.relatedMachine === mm.id ? " selected" : "") + '>' + escapeHtml(mm.name) + (mm.ip ? " (" + escapeHtml(mm.ip) + ")" : "") + '</option>').join("");
+      mcSel.innerHTML = '<option value="">🔗 ' + t("wuMachine") + '…</option>' + machines.map(mm => '<option value="' + escapeHtml(mm.id) + '"' + (wu.relatedMachine === mm.id ? " selected" : "") + '>' + escapeHtml(mm.name) + (mm.ip ? " (" + escapeHtml(mm.ip) + ")" : "") + '</option>').join("");
       const imgBtn = document.createElement("button"); imgBtn.className = "btn btn-secondary btn-sm"; imgBtn.textContent = "📷 " + t("imageBtn");
-      const imgInput = document.createElement("input"); imgInput.type = "file"; imgInput.accept = "image/*"; imgInput.style.display = "none";
+      const imgInput = document.createElement("input"); imgInput.type = "file"; imgInput.accept = "image/*"; imgInput.style.display = "none"; imgInput.setAttribute("aria-label", t("imageBtn"));
       toolbar.appendChild(tplSel); toolbar.appendChild(secSel); toolbar.appendChild(mcSel); toolbar.appendChild(imgBtn); toolbar.appendChild(imgInput);
       page.appendChild(toolbar);
 
@@ -1895,7 +2028,11 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const preview = document.createElement("div"); preview.className = "wu-preview wu-read-body";
       function syncPreview() { preview.innerHTML = renderMarkdown(editor.value); wireCodeCopies(preview); }
       function updateWc() { const el = page.querySelector(".wu-wordcount"); if (el) el.textContent = wuWordCount(editor.value) + " " + t("wuWords") + " · " + wuReadMins(editor.value) + " " + t("wuMin"); }
-      function commit() { saveWu(wu.id, { content: editor.value }); showStatus(); syncPreview(); updateWc(); }
+      // The edit must land on the model, not only on the wire: render() re-seeds the
+      // textarea from `writeups`, so any ordinary re-render (tag chip, language
+      // toggle, collapsing a header) would otherwise resurrect the pre-edit text and
+      // the next keystroke would PUT it back over the server's good copy.
+      function commit() { wu.content = editor.value; saveWu(wu.id, { content: editor.value }); showStatus(); syncPreview(); updateWc(); }
 
       // Formatting toolbar — inserts markdown at the cursor / around the selection.
       const fmt = document.createElement("div"); fmt.className = "wu-format-toolbar";
@@ -2037,10 +2174,8 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
     contentArea.appendChild(page);
 
-    function showStatus() {
-      const st = document.getElementById("wuStatus");
-      if (st) { st.textContent = "saving..."; clearTimeout(st._t); st._t = setTimeout(() => st.textContent = "✓ saved", 600); }
-    }
+    // Only marks the write as pending; flushWu() reports the actual result.
+    function showStatus() { setSaveStatus(document.getElementById("wuStatus"), "saving"); }
   }
 
   // ── Machines (target tracking) ──
@@ -2050,8 +2185,18 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   let adConnectMode = false, adConnectSel = null; // graph connection drawing
   // The "active target": when set, every copied command is appended to this
   // machine's activity timeline (see logToActiveTarget). Survives reloads.
-  let activeTargetId = localStorage.getItem("cs-active-target") || null;
-  async function loadMachines() { machines = await api("GET", "/api/machines") || []; }
+  let activeTargetId = safeGet("cs-active-target") || null;
+  // Single entry point for the active target so every caller (banner, Exam Mode)
+  // keeps the module state and the persisted key in step.
+  function setActiveTarget(id) {
+    activeTargetId = id || null;
+    if (activeTargetId) safeSet("cs-active-target", activeTargetId); else safeRemove("cs-active-target");
+    return activeTargetId;
+  }
+  async function loadMachines() {
+    const list = await api("GET", "/api/machines");
+    machines = Array.isArray(list) ? list : [];
+  }
 
   // ── Structured machine data — normalizers (back-compat with old string[] data) ──
   const CRED_TYPES = ["password", "ntlm", "hash", "ssh-key", "kerberos", "token", "other"];
@@ -2151,9 +2296,16 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   }
 
   // ── Machine metadata helpers (platform / difficulty / status / flags / timing) ──
-  function machineStatus(m) { return (m && m.status) || "not-started"; }
+  // Status and difficulty end up in class names and <option> values, so they are
+  // clamped to the known enumerations HERE rather than escaped at every use site —
+  // no caller can splice arbitrary stored data into markup.
+  function machineStatus(m) { const v = m && m.status; return MACHINE_STATUSES.indexOf(v) >= 0 ? v : "not-started"; }
+  function machineDiff(v) {
+    const s = String(v == null ? "" : v).toLowerCase();
+    return MACHINE_DIFFS.find(d => d.toLowerCase() === s) || "";
+  }
   function stLabel(v) { return t(ST_KEY[v] || "stNotStarted"); }
-  function diffLabel(v) { return v ? t("diff_" + String(v).toLowerCase()) : ""; }
+  function diffLabel(v) { const d = machineDiff(v); return d ? t("diff_" + d.toLowerCase()) : ""; }
   function isCaptured(f) { return !!(f && f.capturedAt); }
   // Elapsed time between two ISO timestamps (to = now when null), as "Xh Ym".
   function fmtElapsed(fromISO, toISO) {
@@ -2194,6 +2346,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   function hostNode(h) {
     if (h.machineId) {
       const mm = machines.find(x => x.id === h.machineId) || null;
+      // For a ref node `id` IS the machine id — callers persist straight to it.
       return {
         id: h.machineId, ref: true, dangling: !mm, machine: mm, entry: h,
         name: mm ? mm.name : "(deleted machine)", ip: mm ? (mm.ip || "") : "", os: mm ? (mm.os || "") : "",
@@ -2222,7 +2375,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       pw.appendChild(ph);
       g.items.forEach(({ item, i }) => {
         const row = document.createElement("div"); row.className = "checklist-item" + (item.done ? " done" : "");
-        const cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = !!item.done;
+        const cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = !!item.done; cb.setAttribute("aria-label", item.label);
         const toggle = () => { list[i].done = cb.checked; row.classList.toggle("done", cb.checked); onChange(); };
         cb.addEventListener("change", toggle);
         const body = document.createElement("div"); body.className = "checklist-body";
@@ -2369,10 +2522,25 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     await loadMachines(); render();
   }
   // Per-id debounce so saving one machine never cancels another's pending write.
-  const machineTimers = {};
+  // Patches for the SAME machine are MERGED, not replaced: this used to drop the
+  // earlier of any two edits made inside the 400 ms window (rename then re-tag,
+  // a checklist tick then a note) — the same contract saveWu already has.
+  const machineTimers = {}, machinePending = {};
+  function flushMachine(id) {
+    const data = machinePending[id];
+    delete machinePending[id];
+    clearTimeout(machineTimers[id]); delete machineTimers[id];
+    if (!data) return Promise.resolve(true);
+    return Promise.resolve(api("PUT", "/api/machines/" + id, data)).then(res => {
+      const ok = !!(res && res.id);
+      setSaveStatus(document.getElementById("machineStatus"), ok ? "ok" : "err");
+      return ok;
+    });
+  }
   function saveMachine(id, data) {
+    machinePending[id] = Object.assign(machinePending[id] || {}, data);
     clearTimeout(machineTimers[id]);
-    machineTimers[id] = setTimeout(() => api("PUT", "/api/machines/" + id, data), 400);
+    machineTimers[id] = setTimeout(() => flushMachine(id), 400);
   }
 
   // Build a Markdown report body from a tracked machine's structured data.
@@ -2532,8 +2700,8 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const viewToggle = document.createElement("div"); viewToggle.className = "machine-view-toggle";
     const gBtn = document.createElement("button"); gBtn.className = "view-btn" + (machineView === "grid" ? " active" : ""); gBtn.textContent = t("gridView"); gBtn.title = t("gridView");
     const bBtn = document.createElement("button"); bBtn.className = "view-btn" + (machineView === "board" ? " active" : ""); bBtn.textContent = t("boardView"); bBtn.title = t("boardView");
-    gBtn.addEventListener("click", () => { if (machineView === "grid") return; machineView = "grid"; localStorage.setItem("cs-machine-view", "grid"); gBtn.classList.add("active"); bBtn.classList.remove("active"); statSel.disabled = false; renderView(); });
-    bBtn.addEventListener("click", () => { if (machineView === "board") return; machineView = "board"; localStorage.setItem("cs-machine-view", "board"); bBtn.classList.add("active"); gBtn.classList.remove("active"); statSel.disabled = true; renderView(); });
+    gBtn.addEventListener("click", () => { if (machineView === "grid") return; machineView = "grid"; safeSet("cs-machine-view", "grid"); gBtn.classList.add("active"); bBtn.classList.remove("active"); statSel.disabled = false; renderView(); });
+    bBtn.addEventListener("click", () => { if (machineView === "board") return; machineView = "board"; safeSet("cs-machine-view", "board"); bBtn.classList.add("active"); gBtn.classList.remove("active"); statSel.disabled = true; renderView(); });
     viewToggle.appendChild(gBtn); viewToggle.appendChild(bBtn); controls.appendChild(viewToggle);
     if (machineView === "board") statSel.disabled = true;
     contentArea.appendChild(controls);
@@ -2572,7 +2740,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         const tot = (m.checklist || []).length;
         const pct = tot > 0 ? Math.round(done / tot * 100) : 0;
         const st = machineStatus(m);
-        const diff = m.difficulty || "";
+        const diff = machineDiff(m.difficulty);
         const phase = currentPhaseName(m);
         const chips = (m.tags || []).slice(0, 3).map(tg => '<span class="machine-tag">' + escapeHtml(tg) + '</span>').join("");
         const card = document.createElement("div"); card.className = "machine-card";
@@ -2587,9 +2755,9 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
             '<button class="machine-del-btn" title="' + t("del") + '" aria-label="' + t("del") + '">🗑</button>' +
           '</div>' +
           '<div class="machine-card-meta">' +
-            '<span class="machine-status st-' + st + '">' + stLabel(st) + '</span>' +
+            '<span class="machine-status st-' + escapeHtml(st) + '">' + escapeHtml(stLabel(st)) + '</span>' +
             '<span class="machine-plat">' + escapeHtml(m.platform || "Custom") + '</span>' +
-            (diff ? '<span class="diff-badge diff-' + String(diff).toLowerCase() + '">' + escapeHtml(diffLabel(diff)) + '</span>' : '') +
+            (diff ? '<span class="diff-badge diff-' + escapeHtml(diff.toLowerCase()) + '">' + escapeHtml(diffLabel(diff)) + '</span>' : '') +
             chips +
           '</div>' +
           '<div class="machine-progress"><div class="machine-progress-bar"><div class="machine-progress-fill" style="width:' + pct + '%"></div></div><span class="machine-progress-text">' + done + '/' + tot + ' (' + pct + '%)</span></div>' +
@@ -2600,6 +2768,14 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         grid.appendChild(card);
       });
       gridWrap.appendChild(grid);
+    }
+    // Shared by the column's HTML5 drop handler and the pointer/touch fallback.
+    function moveMachineToStatus(id, status) {
+      const m = machines.find(x => x.id === id);
+      if (!m || machineStatus(m) === status) return;
+      m.status = status;
+      const patch = { status }; Object.assign(patch, machineAutoProgress(m));
+      saveMachine(m.id, patch); renderBoard();
     }
     function buildBoardCard(m) {
       const done = (m.checklist || []).filter(c => c.done).length, tot = (m.checklist || []).length;
@@ -2617,6 +2793,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       card.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openMachineId = m.id; render(); } });
       card.addEventListener("dragstart", e => { e.dataTransfer.setData("text/plain", m.id); e.dataTransfer.effectAllowed = "move"; card.classList.add("dragging"); });
       card.addEventListener("dragend", () => card.classList.remove("dragging"));
+      addTouchDrag(card, { target: ".board-col[data-status]", onDrop: col => moveMachineToStatus(m.id, col.dataset.status) });
       return card;
     }
     function renderBoard() {
@@ -2632,7 +2809,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       MACHINE_STATUSES.forEach(status => {
         const col = document.createElement("div"); col.className = "board-col"; col.dataset.status = status;
         const inCol = base.filter(m => machineStatus(m) === status);
-        const head = document.createElement("div"); head.className = "board-col-head st-" + status;
+        const head = document.createElement("div"); head.className = "board-col-head st-" + status; // status ∈ MACHINE_STATUSES
         head.innerHTML = '<span>' + escapeHtml(stLabel(status)) + '</span><span class="board-count">' + inCol.length + '</span>';
         const body = document.createElement("div"); body.className = "board-col-body";
         inCol.forEach(m => body.appendChild(buildBoardCard(m)));
@@ -2641,12 +2818,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         col.addEventListener("dragleave", () => col.classList.remove("drag-over"));
         col.addEventListener("drop", e => {
           e.preventDefault(); col.classList.remove("drag-over");
-          const id = e.dataTransfer.getData("text/plain");
-          const m = machines.find(x => x.id === id);
-          if (!m || machineStatus(m) === status) return;
-          m.status = status;
-          const patch = { status }; Object.assign(patch, machineAutoProgress(m));
-          saveMachine(m.id, patch); renderBoard();
+          moveMachineToStatus(e.dataTransfer.getData("text/plain"), status);
         });
         board.appendChild(col);
       });
@@ -2692,8 +2864,8 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const btn = document.createElement("button"); btn.className = "btn btn-sm " + (isActive ? "btn-secondary" : "btn-primary");
     btn.textContent = isActive ? t("unsetActive") : t("setActive");
     btn.addEventListener("click", () => {
-      if (isActive) { activeTargetId = null; localStorage.removeItem("cs-active-target"); }
-      else { activeTargetId = m.id; localStorage.setItem("cs-active-target", m.id); toast(t("activeNowSet"), "ok"); }
+      if (isActive) setActiveTarget(null);
+      else { setActiveTarget(m.id); toast(t("activeNowSet"), "ok"); }
       render();
     });
     bar.appendChild(label); bar.appendChild(btn);
@@ -2713,7 +2885,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     sec.appendChild(head);
 
     const importPanel = document.createElement("div"); importPanel.className = "svc-import"; importPanel.style.display = "none";
-    const importTa = document.createElement("textarea"); importTa.className = "machine-textarea"; importTa.placeholder = t("importNmapPh"); importTa.rows = 6;
+    const importTa = document.createElement("textarea"); importTa.className = "machine-textarea"; importTa.placeholder = t("importNmapPh"); importTa.rows = 6; importTa.setAttribute("aria-label", t("importNmapTitle"));
     const importGo = document.createElement("button"); importGo.className = "btn btn-primary btn-sm"; importGo.textContent = t("importDo");
     importPanel.appendChild(importTa); importPanel.appendChild(importGo); sec.appendChild(importPanel);
 
@@ -2742,7 +2914,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       m.services.forEach((s, i) => {
         const tr = document.createElement("tr");
         const textCell = (key, cls) => { const td = document.createElement("td"); const inp = document.createElement("input"); inp.className = "cell-input"; if (cls) inp.classList.add(cls); inp.value = s[key] || ""; inp.setAttribute("aria-label", key); inp.addEventListener("input", () => { s[key] = inp.value; persist(); if (key === "port") renderQuick(); }); td.appendChild(inp); return td; };
-        const selCell = (key, opts) => { const td = document.createElement("td"); const sel = document.createElement("select"); sel.className = "cell-input"; opts.forEach(o => { const op = document.createElement("option"); op.value = o; op.textContent = o; if (s[key] === o) op.selected = true; sel.appendChild(op); }); sel.addEventListener("change", () => { s[key] = sel.value; persist(); }); td.appendChild(sel); return td; };
+        const selCell = (key, opts) => { const td = document.createElement("td"); const sel = document.createElement("select"); sel.className = "cell-input"; sel.setAttribute("aria-label", key); opts.forEach(o => { const op = document.createElement("option"); op.value = o; op.textContent = o; if (s[key] === o) op.selected = true; sel.appendChild(op); }); sel.addEventListener("change", () => { s[key] = sel.value; persist(); }); td.appendChild(sel); return td; };
         tr.appendChild(textCell("port", "cell-narrow"));
         tr.appendChild(selCell("proto", ["tcp", "udp"]));
         tr.appendChild(selCell("state", SVC_STATES));
@@ -2798,7 +2970,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         const sCopy = document.createElement("button"); sCopy.className = "cell-btn"; sCopy.textContent = "⧉"; sCopy.title = t("credCopySecret"); sCopy.addEventListener("click", () => cp(c.secret, t("credCopySecret")));
         tdSec.appendChild(sInp); tdSec.appendChild(sCopy); tr.appendChild(tdSec);
         // type select
-        const tdT = document.createElement("td"); const tsel = document.createElement("select"); tsel.className = "cell-input"; CRED_TYPES.forEach(ct => { const o = document.createElement("option"); o.value = ct; o.textContent = ct; if (c.type === ct) o.selected = true; tsel.appendChild(o); }); tsel.addEventListener("change", () => { c.type = tsel.value; persist(); }); tdT.appendChild(tsel); tr.appendChild(tdT);
+        const tdT = document.createElement("td"); const tsel = document.createElement("select"); tsel.className = "cell-input"; tsel.setAttribute("aria-label", t("credTypeCol")); CRED_TYPES.forEach(ct => { const o = document.createElement("option"); o.value = ct; o.textContent = ct; if (c.type === ct) o.selected = true; tsel.appendChild(o); }); tsel.addEventListener("change", () => { c.type = tsel.value; persist(); }); tdT.appendChild(tsel); tr.appendChild(tdT);
         tr.appendChild(textCell("source"));
         tr.appendChild(textCell("works"));
         // actions: copy pair, valid toggle, delete
@@ -2879,7 +3051,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       m.evidence.forEach((ev, i) => {
         const fig = document.createElement("figure"); fig.className = "evidence-item";
         const img = document.createElement("img"); img.src = ev.url; img.loading = "lazy"; img.alt = ev.caption || "evidence";
-        const cap = document.createElement("input"); cap.className = "evidence-caption"; cap.placeholder = t("evidenceCaption"); cap.value = ev.caption || ""; cap.addEventListener("input", () => { ev.caption = cap.value; persist(); });
+        const cap = document.createElement("input"); cap.className = "evidence-caption"; cap.placeholder = t("evidenceCaption"); cap.setAttribute("aria-label", t("evidenceCaption")); cap.value = ev.caption || ""; cap.addEventListener("input", () => { ev.caption = cap.value; persist(); });
         const del = document.createElement("button"); del.className = "evidence-del"; del.textContent = "✕"; del.title = t("evidenceDel"); del.addEventListener("click", () => { m.evidence.splice(i, 1); persist(); renderGrid(); });
         fig.appendChild(img); fig.appendChild(cap); fig.appendChild(del); grid.appendChild(fig);
       });
@@ -2925,9 +3097,9 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
     // Header with editable name / IP / OS + metadata chips (platform/difficulty/status/tags)
     const info = document.createElement("div"); info.className = "machine-info-section";
-    const platOpts = MACHINE_PLATFORMS.map(p => '<option value="' + p + '"' + ((m.platform || "Custom") === p ? " selected" : "") + '>' + p + '</option>').join("");
-    const diffOpts = '<option value="">—</option>' + MACHINE_DIFFS.map(d => '<option value="' + d + '"' + (m.difficulty === d ? " selected" : "") + '>' + escapeHtml(diffLabel(d)) + '</option>').join("");
-    const statOpts = MACHINE_STATUSES.map(v => '<option value="' + v + '"' + (machineStatus(m) === v ? " selected" : "") + '>' + escapeHtml(stLabel(v)) + '</option>').join("");
+    const platOpts = MACHINE_PLATFORMS.map(p => '<option value="' + escapeHtml(p) + '"' + ((m.platform || "Custom") === p ? " selected" : "") + '>' + escapeHtml(p) + '</option>').join("");
+    const diffOpts = '<option value="">—</option>' + MACHINE_DIFFS.map(d => '<option value="' + escapeHtml(d) + '"' + (machineDiff(m.difficulty) === d ? " selected" : "") + '>' + escapeHtml(diffLabel(d)) + '</option>').join("");
+    const statOpts = MACHINE_STATUSES.map(v => '<option value="' + escapeHtml(v) + '"' + (machineStatus(m) === v ? " selected" : "") + '>' + escapeHtml(stLabel(v)) + '</option>').join("");
     info.innerHTML =
       '<div class="machine-detail-header">' +
         '<span class="machine-detail-icon">' + osIconFor(m.os) + '</span>' +
@@ -3168,7 +3340,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
           '<input class="host-f" data-mk="ip" placeholder="ip" value="' + escapeHtml(n.machine.ip || "") + '" aria-label="ip">' +
           '<input class="host-f" data-mk="os" placeholder="os" value="' + escapeHtml(n.machine.os || "") + '" aria-label="os">' +
           '<input class="host-f" data-hk="role" placeholder="role (DC, SQL…)" value="' + escapeHtml(n.role || "") + '" aria-label="role">';
-        meta.querySelectorAll("[data-mk]").forEach(inp => inp.addEventListener("input", () => { n.machine[inp.dataset.mk] = inp.value; saveMachine(n.machineId || n.id, { [inp.dataset.mk]: inp.value }); if (redrawSchem) redrawSchem(); }));
+        meta.querySelectorAll("[data-mk]").forEach(inp => inp.addEventListener("input", () => { n.machine[inp.dataset.mk] = inp.value; saveMachine(n.id, { [inp.dataset.mk]: inp.value }); if (redrawSchem) redrawSchem(); }));
         meta.querySelector("[data-hk]").addEventListener("input", e => { h.role = e.target.value; hostPersist(); });
         const open = document.createElement("button"); open.className = "btn btn-secondary btn-sm host-open-btn"; open.textContent = "↗ " + (lang === "tr" ? "Makineyi aç" : "Open machine");
         open.addEventListener("click", () => { openHostId = null; openMachineId = n.id; render(); window.scrollTo({ top: 0, behavior: motionBehavior() }); });
@@ -3187,12 +3359,12 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const pbRow = document.createElement("div"); pbRow.className = "machine-playbook-row";
       const sel = document.createElement("select"); sel.className = "form-select"; sel.setAttribute("aria-label", t("playbook"));
       const curTpl = n.ref ? (n.machine.template || "") : (h.template || "");
-      sel.innerHTML = '<option value="">' + t("defaultChecklist") + '</option>' + machineTemplates().map(tp => '<option value="' + tp.id + '"' + (curTpl === tp.id ? " selected" : "") + '>' + tp.icon + " " + escapeHtml(tp.name) + '</option>').join("");
+      sel.innerHTML = '<option value="">' + t("defaultChecklist") + '</option>' + machineTemplates().map(tp => '<option value="' + escapeHtml(tp.id) + '"' + (curTpl === tp.id ? " selected" : "") + '>' + escapeHtml(tp.icon) + " " + escapeHtml(tp.name) + '</option>').join("");
       sel.addEventListener("change", () => {
         const id = sel.value;
         if (n.checklist.some(c => c.done) && !confirm(t("replacePlaybook"))) { sel.value = curTpl; return; }
         const cl = id ? templateToChecklist(templateById(id)) : [];
-        if (n.ref) { n.machine.template = id; n.machine.checklist = cl; saveMachine(n.machineId || n.id, { template: id, checklist: cl }); }
+        if (n.ref) { n.machine.template = id; n.machine.checklist = cl; saveMachine(n.id, { template: id, checklist: cl }); }
         else { h.template = id; h.checklist = cl; hostPersist(); }
         render();
       });
@@ -3203,7 +3375,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       // shows on the node ring, the engagement overview AND the main Machines list.
       if (n.checklist.length) {
         body.appendChild(buildChecklistBlock(n.checklist, () => {
-          if (n.ref) saveMachine(n.machineId || n.id, { checklist: n.machine.checklist }); else hostPersist();
+          if (n.ref) saveMachine(n.id, { checklist: n.machine.checklist }); else hostPersist();
           const s2 = checklistStats(n.checklist);
           const hp = head.querySelector(".host-prog"); if (hp) hp.textContent = s2.done + "/" + s2.total + " · " + s2.pct + "%";
           card.classList.toggle("owned", s2.pct >= 100);
@@ -3230,15 +3402,33 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
       // Loot + notes (stored on the machine for refs)
       const lootLabel = document.createElement("div"); lootLabel.className = "machine-subhead"; lootLabel.textContent = "🔑 " + t("loot");
-      const loot = document.createElement("textarea"); loot.className = "machine-textarea"; loot.placeholder = "admin:Pass | svc_sql: hash | ticket.kirbi";
+      const loot = document.createElement("textarea"); loot.className = "machine-textarea"; loot.placeholder = "admin:Pass | svc_sql: hash | ticket.kirbi"; loot.setAttribute("aria-label", t("loot"));
       loot.value = n.ref ? credsToText(n.machine.credentials) : (h.loot || "");
-      loot.addEventListener("input", () => { if (n.ref) { n.machine.credentials = loot.value.split("\n").filter(Boolean); saveMachine(n.machineId || n.id, { credentials: n.machine.credentials }); } else { h.loot = loot.value; hostPersist(); } });
+      loot.addEventListener("input", () => {
+        if (!n.ref) { h.loot = loot.value; hostPersist(); return; }
+        // Parse the text back into the structured credential shape instead of storing
+        // raw strings: a row whose line is unchanged keeps its type / works / valid
+        // fields, which this box used to wipe on every keystroke.
+        const prev = normalizeCreds(n.machine.credentials);
+        n.machine.credentials = loot.value.split("\n").map(l => l.trim()).filter(Boolean).map(line => {
+          const kept = prev.find(c => credToStr(c) === line);
+          if (kept) return kept;
+          const parsed = normalizeCred(line);
+          // Same user, edited secret: carry the metadata over rather than resetting
+          // works/valid to the normalizer's defaults.
+          const sameUser = parsed.username && prev.find(c => c.username === parsed.username);
+          return sameUser
+            ? Object.assign({}, sameUser, { secret: parsed.secret, type: parsed.type, source: parsed.source || sameUser.source })
+            : parsed;
+        });
+        saveMachine(n.id, { credentials: n.machine.credentials });
+      });
       body.appendChild(lootLabel); body.appendChild(loot);
 
       const notesLabel = document.createElement("div"); notesLabel.className = "machine-subhead"; notesLabel.textContent = "📝 " + t("notes");
-      const notes = document.createElement("textarea"); notes.className = "machine-textarea";
+      const notes = document.createElement("textarea"); notes.className = "machine-textarea"; notes.setAttribute("aria-label", t("notes"));
       notes.value = n.ref ? (n.machine.notes || "") : (h.notes || "");
-      notes.addEventListener("input", () => { if (n.ref) { n.machine.notes = notes.value; saveMachine(n.machineId || n.id, { notes: notes.value }); } else { h.notes = notes.value; hostPersist(); } });
+      notes.addEventListener("input", () => { if (n.ref) { n.machine.notes = notes.value; saveMachine(n.id, { notes: notes.value }); } else { h.notes = notes.value; hostPersist(); } });
       body.appendChild(notesLabel); body.appendChild(notes);
 
       card.appendChild(body);
@@ -3251,7 +3441,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const addWrap = document.createElement("div"); addWrap.className = "ad-add";
     const fromSel = document.createElement("select"); fromSel.className = "form-select"; fromSel.setAttribute("aria-label", t("fromMachine"));
     const linkedIds = new Set((m.hosts || []).map(h => h.machineId).filter(Boolean));
-    fromSel.innerHTML = '<option value="">' + t("fromMachine") + '</option>' + machines.filter(x => x.id !== m.id && !linkedIds.has(x.id)).map(x => '<option value="' + x.id + '">' + escapeHtml(x.name) + (x.ip ? " (" + escapeHtml(x.ip) + ")" : "") + '</option>').join("");
+    fromSel.innerHTML = '<option value="">' + t("fromMachine") + '</option>' + machines.filter(x => x.id !== m.id && !linkedIds.has(x.id)).map(x => '<option value="' + escapeHtml(x.id) + '">' + escapeHtml(x.name) + (x.ip ? " (" + escapeHtml(x.ip) + ")" : "") + '</option>').join("");
     const newBtn = document.createElement("button"); newBtn.className = "btn btn-secondary btn-sm"; newBtn.textContent = t("newHost");
     addWrap.appendChild(fromSel); addWrap.appendChild(newBtn); adHead.appendChild(addWrap);
     adSection.appendChild(adHead);
@@ -3324,7 +3514,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     }
 
     const objLabel = document.createElement("div"); objLabel.className = "machine-subhead"; objLabel.textContent = "🧭 " + t("objective");
-    const objArea = document.createElement("textarea"); objArea.className = "machine-textarea";
+    const objArea = document.createElement("textarea"); objArea.className = "machine-textarea"; objArea.setAttribute("aria-label", t("objective"));
     objArea.placeholder = "user@host1 -> kerberoast svc -> WriteDACL -> DCSync -> DA";
     objArea.value = m.attackPath || "";
     objArea.addEventListener("input", () => { m.attackPath = objArea.value; saveMachine(m.id, { attackPath: m.attackPath }); showMachineStatus(); });
@@ -3346,7 +3536,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     // Notes
     const noteSection = document.createElement("div"); noteSection.className = "machine-section";
     noteSection.innerHTML = '<h3>📝 ' + t("notes") + '</h3>';
-    const noteArea = document.createElement("textarea"); noteArea.className = "machine-textarea machine-notes-area";
+    const noteArea = document.createElement("textarea"); noteArea.className = "machine-textarea machine-notes-area"; noteArea.setAttribute("aria-label", t("notes"));
     noteArea.placeholder = lang === "tr" ? "Makine notlari..." : "Machine notes...";
     noteArea.value = m.notes || "";
     noteArea.addEventListener("input", () => { m.notes = noteArea.value; saveMachine(m.id, { notes: m.notes }); showMachineStatus(); });
@@ -3354,10 +3544,8 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
     contentArea.appendChild(page);
 
-    function showMachineStatus() {
-      const st = document.getElementById("machineStatus");
-      if (st) { st.textContent = "saving..."; clearTimeout(st._t); st._t = setTimeout(() => st.textContent = "\u2713 saved", 600); }
-    }
+    // Only marks the write as pending; flushMachine() reports the actual result.
+    function showMachineStatus() { setSaveStatus(document.getElementById("machineStatus"), "saving"); }
   }
 
   // ── Import/Export ──
@@ -3395,7 +3583,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     lang = lang === "en" ? "tr" : "en";
     document.documentElement.setAttribute("data-lang", lang);
     document.documentElement.lang = lang;
-    localStorage.setItem("cs-lang", lang);
+    safeSet("cs-lang", lang);
     searchInput.placeholder = t("search");
     render();
   });
@@ -3421,7 +3609,14 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   });
 
   // ── Drag & Drop (categories) ──
-  function handleDragStart(e, idx) { dragSrcCatIdx = idx; e.dataTransfer.effectAllowed = "move"; e.target.classList.add("dragging"); }
+  // Firefox refuses to start a drag unless dragstart puts something on the
+  // dataTransfer, so category reorder simply never began there.
+  function handleDragStart(e, idx) {
+    dragSrcCatIdx = idx;
+    e.dataTransfer.effectAllowed = "move";
+    try { e.dataTransfer.setData("text/plain", String(idx)); } catch { /* IE-style transfer */ }
+    e.target.classList.add("dragging");
+  }
   function handleDragOver(e) { e.preventDefault(); e.dataTransfer.dropEffect = "move"; }
   async function handleDrop(e, targetIdx) {
     e.preventDefault();
@@ -3435,6 +3630,94 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     dragSrcCatIdx = null;
   }
   function handleDragEnd(e) { e.target.classList.remove("dragging"); dragSrcCatIdx = null; }
+
+  // HTML5 drag events never fire for touch, which left the sidebar reorder and the
+  // Kanban board desktop-only. This is the AD node graph's pattern (pointer capture,
+  // a movement threshold so a tap still counts as a tap, release on up/cancel) with
+  // the drop target resolved from whatever is under the finger.
+  //   opts.target   CSS selector a drop target must match
+  //   opts.ignore   selector whose descendants must not start a drag (buttons)
+  //   opts.onDrop   (targetEl) => void, called only after real movement
+  //
+  // The gesture is LONG-PRESS then drag, not move-then-drag. The AD node graph gets
+  // away with the plain threshold because .ad-node carries touch-action:none, but a
+  // .nav-item lives in a vertically scrolling sidebar and a .board-card in a scrolling
+  // board: with no touch-action the browser claims the very first move for scrolling
+  // and the drag never starts, and blanket touch-action:none would trade away scrolling
+  // on a 20-item sidebar to buy a reorder nobody asked for. So the browser gesture is
+  // only suppressed once a drag is genuinely recognised — a press held past
+  // DRAG_HOLD_MS without moving is unambiguously not a scroll, and at that instant the
+  // scroll has not begun, so touchmove is still cancelable and preventDefault holds it.
+  const DRAG_HOLD_MS = 350;  // press held this long = a drag, not a scroll or a tap
+  const DRAG_HOLD_SLOP = 8;  // px of drift allowed before the hold is read as a scroll
+  function addTouchDrag(el, opts) {
+    let active = false, armed = false, sx = 0, sy = 0, over = null, holdTimer = null;
+    const clearOver = () => { if (over) over.classList.remove("drag-over"); over = null; };
+    const cancelHold = () => { if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; } };
+    const disarm = () => {
+      cancelHold(); active = false; armed = false;
+      el.classList.remove("dragging");
+      el.style.touchAction = "";  // hand scrolling back to the browser
+    };
+    // Non-passive on purpose: while armed this is the only thing that can stop the
+    // page from scrolling under the finger. Registered once per element, and it is
+    // inert (a single boolean test) for every gesture that is not a drag.
+    el.addEventListener("touchmove", ev => { if (armed && ev.cancelable) ev.preventDefault(); }, { passive: false });
+    // A held press is also the platform gesture for the selection / context callout.
+    el.addEventListener("contextmenu", ev => { if (armed) ev.preventDefault(); });
+    el.addEventListener("pointerdown", ev => {
+      if (ev.pointerType === "mouse") return; // mouse keeps the native HTML5 path
+      if (opts.ignore && ev.target.closest && ev.target.closest(opts.ignore)) return;
+      active = true; armed = false; sx = ev.clientX; sy = ev.clientY;
+      cancelHold();
+      holdTimer = setTimeout(() => {
+        holdTimer = null;
+        if (!active) return;
+        armed = true;
+        el.style.touchAction = "none";
+        el.classList.add("dragging");
+        try { el.setPointerCapture(ev.pointerId); } catch { /* ignore */ }
+        if (navigator.vibrate) { try { navigator.vibrate(10); } catch { /* ignore */ } }
+      }, DRAG_HOLD_MS);
+    });
+    el.addEventListener("pointermove", ev => {
+      if (!active) return;
+      if (!armed) {
+        // Movement before the hold completed is a scroll (or a sloppy tap): stand down
+        // entirely so the browser keeps the gesture it already owns.
+        if (Math.abs(ev.clientX - sx) + Math.abs(ev.clientY - sy) >= DRAG_HOLD_SLOP) disarm();
+        return;
+      }
+      ev.preventDefault();
+      // Pointer capture keeps events on `el`, so ask the document what is underneath.
+      const under = document.elementFromPoint(ev.clientX, ev.clientY);
+      const next = under && under.closest ? under.closest(opts.target) : null;
+      if (next !== over) { clearOver(); over = next; if (over && over !== el) over.classList.add("drag-over"); }
+    });
+    const end = ev => {
+      if (!active) return;
+      const wasArmed = armed;
+      disarm();
+      try { el.releasePointerCapture(ev.pointerId); } catch { /* ignore */ }
+      const drop = over; clearOver();
+      if (!wasArmed) return;
+      // A finished drag must not also read as a tap on the element it started from.
+      // A touch pointer that moved usually synthesises NO click, so a bare `once`
+      // listener would stay armed indefinitely and swallow the user's next tap here.
+      // It is therefore torn down by whichever comes first: the click, or the timer.
+      let suppressTimer = null;
+      const suppressClick = e2 => {
+        e2.preventDefault(); e2.stopPropagation();
+        clearTimeout(suppressTimer);
+        el.removeEventListener("click", suppressClick, true);
+      };
+      el.addEventListener("click", suppressClick, true);
+      suppressTimer = setTimeout(() => el.removeEventListener("click", suppressClick, true), 400); // past any synthesised click
+      if (drop && drop !== el) opts.onDrop(drop);
+    };
+    el.addEventListener("pointerup", end);
+    el.addEventListener("pointercancel", end);
+  }
 
   // ── Sidebar ──
   function buildSidebar() {
@@ -3467,10 +3750,15 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const catName = (lang === "tr" && cat.name_tr) ? cat.name_tr : cat.name;
       const item = mkNavItem(cat.icon, catName, label, activeCategory === cat.id, () => { activeCategory = cat.id; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); window.scrollTo({ top: 0, behavior: motionBehavior() }); });
       item.draggable = true;
+      item.dataset.catIdx = String(idx); // read back by the touch-drag drop target
       item.addEventListener("dragstart", e => handleDragStart(e, idx));
       item.addEventListener("dragover", handleDragOver);
       item.addEventListener("drop", e => handleDrop(e, idx));
       item.addEventListener("dragend", handleDragEnd);
+      addTouchDrag(item, {
+        target: ".nav-item[data-cat-idx]", ignore: ".nav-item-count",
+        onDrop: tgt => { dragSrcCatIdx = idx; handleDrop({ preventDefault() {} }, +tgt.dataset.catIdx); }
+      });
     });
   }
   function mkNavItem(icon, text, count, active, onClick) {
@@ -3495,7 +3783,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const hdr = document.createElement("div"); hdr.className = "cmd-card-header";
     hdr.innerHTML = '<div class="cmd-title">' + hl(cmd.title) + '</div>' +
       '<div class="cmd-header-actions">' + tagsH +
-      '<button class="cmd-action-btn fav-btn' + (fav ? " fav-active" : "") + '" data-fav="' + (cmd.id || "") + '" title="Favorite">★</button>' +
+      '<button class="cmd-action-btn fav-btn' + (fav ? " fav-active" : "") + '" data-fav="' + escapeHtml(cmd.id || "") + '" title="Favorite">★</button>' +
       '<button class="cmd-action-btn edit-btn" title="Edit">✎</button>' +
       '<button class="cmd-action-btn delete-btn" title="Delete">✕</button></div>';
     hdr.querySelector(".fav-btn").addEventListener("click", e => { e.stopPropagation(); toggleFav(cmd); });
@@ -3590,27 +3878,41 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   function renderCat(cat, catIdx) {
     const sec = document.createElement("div"); sec.className = "category-section"; sec.id = "cat-" + cat.id;
     let cnt = 0; cat.subcategories.forEach(s => (cnt += s.commands.length));
-    const collapsed = collapsedSections.has(cat.id);
+    // Collapsed is the default on the all-commands view (fillCatContent is lazy, so
+    // the ~100k nodes are only built for what the user opens), but never when the
+    // page has already been narrowed for them: a search / tag filter must show its
+    // matches, and a #cat/<id> deep link must open that category expanded.
+    const collapsed = collapsedSections.has(cat.id) && !isFiltering() && activeCategory !== cat.id;
     // Header - draggable
     const hdr = document.createElement("div"); hdr.className = "category-header" + (collapsed ? " collapsed" : "");
-    hdr.setAttribute("role", "button");
-    hdr.setAttribute("tabindex", "0");
-    hdr.setAttribute("aria-expanded", String(!collapsed));
-    hdr.setAttribute("aria-label", cat.name);
+    // NO role="button" on the header: ARIA makes a button's subtree presentational,
+    // which strips the <h2> below out of the accessibility tree and defeats the whole
+    // point of having headings over 5040 commands. The button role lives on the real
+    // <button class="category-toggle"> instead, so the heading stays a heading and the
+    // control stays a control; the whole header is still clickable via its handler.
     hdr.draggable = true;
     hdr.addEventListener("dragstart", e => handleDragStart(e, catIdx));
     hdr.addEventListener("dragover", handleDragOver);
     hdr.addEventListener("drop", e => handleDrop(e, catIdx));
     hdr.addEventListener("dragend", handleDragEnd);
-    hdr.innerHTML = '<span class="category-icon">' + escapeHtml(cat.icon) + '</span><span class="category-title">' + escapeHtml(cat.name) + '</span><span class="category-count">' + cnt + ' ' + t("commands") + '</span>' +
-      '<div class="category-actions"><button class="cat-action-btn" data-act="term" title="' + t("termCopy") + '">📋</button><button class="cat-action-btn" data-act="sub">' + t("addSub") + '</button><button class="cat-action-btn" data-act="edit">✎</button><button class="cat-action-btn delete-btn" data-act="del">✕</button></div><span class="category-toggle">▼</span>';
+    // A real <h2>: the 5040-command corpus had no heading at any level, so a screen
+    // reader had nothing to navigate by. The class is unchanged; margin:0 is inline
+    // because .category-header is a flex row and the UA heading margin would grow it.
+    hdr.innerHTML = '<span class="category-icon">' + escapeHtml(cat.icon) + '</span><h2 class="category-title" style="margin:0">' + escapeHtml(cat.name) + '</h2><span class="category-count">' + cnt + ' ' + t("commands") + '</span>' +
+      '<div class="category-actions"><button class="cat-action-btn" data-act="term" title="' + t("termCopy") + '">📋</button><button class="cat-action-btn" data-act="sub">' + t("addSub") + '</button><button class="cat-action-btn" data-act="edit">✎</button><button class="cat-action-btn delete-btn" data-act="del">✕</button></div>' +
+      // The toggle is the button. Inline resets only undo the UA button chrome; the
+      // font-size/color/rotation still come from .category-toggle, so it looks the same.
+      '<button type="button" class="category-toggle" aria-expanded="' + String(!collapsed) + '" aria-label="' + escapeHtml(cat.name) + '" style="background:none;border:0;padding:0;line-height:1;font-family:inherit;cursor:pointer">▼</button>';
+    const toggleBtn = hdr.querySelector(".category-toggle");
     hdr.querySelector('[data-act="term"]').addEventListener("click", e => { e.stopPropagation(); copyTerminalFormat(cat.id); });
     hdr.querySelector('[data-act="sub"]').addEventListener("click", e => { e.stopPropagation(); addSubcategory(cat.id); });
     hdr.querySelector('[data-act="edit"]').addEventListener("click", e => { e.stopPropagation(); editCategory(cat); });
     hdr.querySelector('[data-act="del"]').addEventListener("click", e => { e.stopPropagation(); deleteCategory(cat); });
     hdr.addEventListener("click", e => {
       if (e.target.closest(".category-actions")) return;
-      const nowCollapsed = !collapsedSections.has(cat.id);
+      // Read the rendered state, not the Set: while filtering, a category can be in
+      // collapsedSections and still be on screen, and a click there must collapse it.
+      const nowCollapsed = !hdr.classList.contains("collapsed");
       if (nowCollapsed) {
         collapsedSections.add(cat.id);
         hdr.classList.add("collapsed");
@@ -3620,9 +3922,11 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         hdr.classList.remove("collapsed");
         fillCatContent();
       }
-      hdr.setAttribute("aria-expanded", String(!nowCollapsed));
+      persistCollapsed();
+      toggleBtn.setAttribute("aria-expanded", String(!nowCollapsed));
     });
-    hdr.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target === hdr) { e.preventDefault(); hdr.click(); } });
+    // No keydown shim: the toggle is a real <button>, so Enter/Space fire a click that
+    // bubbles to the header handler above — the keyboard path and the mouse path are one.
     sec.appendChild(hdr);
 
     function fillCatContent() {
@@ -3647,12 +3951,10 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         noteCard.appendChild(noteTop);
 
         const noteEditor = document.createElement("textarea"); noteEditor.className = "note-editor";
-        noteEditor.placeholder = t("notePlaceholder"); noteEditor.value = note.text || "";
+        noteEditor.placeholder = t("notePlaceholder"); noteEditor.value = note.text || ""; noteEditor.setAttribute("aria-label", t("notes"));
         noteEditor.addEventListener("input", () => {
-          saveNoteText(cat.id, note.id, noteEditor.value);
-          noteSaved.textContent = "saving...";
-          clearTimeout(noteEditor._st);
-          noteEditor._st = setTimeout(() => { noteSaved.textContent = "✓ saved"; setTimeout(() => noteSaved.textContent = "", 2000); }, 600);
+          saveNoteText(cat.id, note.id, noteEditor.value, noteSaved);
+          setSaveStatus(noteSaved, "saving");
         });
         noteCard.appendChild(noteEditor);
         noteArea.appendChild(noteCard);
@@ -3672,7 +3974,9 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         const filtered = filterCmds(sub.commands);
         if (isFiltering() && filtered.length === 0) return;
         const subDiv = document.createElement("div"); subDiv.className = "subcategory";
-        const subH = document.createElement("div"); subH.className = "subcategory-title";
+        // <h3> under the category's <h2> — same class, margin zeroed inline because
+        // .subcategory-title is a flex row that already carries its own padding.
+        const subH = document.createElement("h3"); subH.className = "subcategory-title"; subH.style.margin = "0";
         const subName = (lang === "tr" && sub.name_tr) ? sub.name_tr : sub.name;
         subH.innerHTML = '<span>' + escapeHtml(subName) + '</span><div class="sub-actions"><button class="sub-action-btn" data-act="cmd">' + t("addCmd") + '</button><button class="sub-action-btn" data-act="edit">✎</button><button class="sub-action-btn delete-btn" data-act="del">✕</button></div>';
         subH.querySelector('[data-act="cmd"]').addEventListener("click", () => addCommand(cat.id, subIdx));
@@ -3691,17 +3995,25 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   // Precomputed lowercased search haystack per command (kept off the objects in a
   // WeakMap so it never leaks into exports/imports). Rebuilt whenever data loads.
   const HAY = new WeakMap();
+  // ONE definition of what a command is searchable by, shared by the index and the
+  // palette. The localized fields belong in it: the card renders desc_tr in TR mode,
+  // so leaving it out meant the user read Turkish and could only search English
+  // ("listele" returned 1 hit while 199 commands displayed it). Category and
+  // subcategory names are folded in so "recon nmap" finds what the sidebar implies.
+  function hayFor(c, cat, sub) {
+    return [c.title, c.title_tr, c.desc, c.desc_tr, c.cmd, c.note, c.note_tr,
+      cat && cat.name, cat && cat.name_tr, sub && sub.name, sub && sub.name_tr]
+      .concat(c.cmds || []).concat(c.tags || [])
+      .filter(Boolean).join(" ").toLowerCase();
+  }
   function hay(c) {
     let h = HAY.get(c);
-    if (h === undefined) {
-      h = [c.title, c.desc, c.cmd, ...(c.cmds || []), ...(c.tags || []), c.note || ""].join(" ").toLowerCase();
-      HAY.set(c, h);
-    }
+    if (h === undefined) { h = hayFor(c, null, null); HAY.set(c, h); }
     return h;
   }
   function buildSearchIndex() {
     CATEGORIES.forEach(cat => (cat.subcategories || []).forEach(sub => (sub.commands || []).forEach(c => {
-      HAY.set(c, [c.title, c.desc, c.cmd, ...(c.cmds || []), ...(c.tags || []), c.note || ""].join(" ").toLowerCase());
+      HAY.set(c, hayFor(c, cat, sub));
     })));
   }
 
@@ -3721,10 +4033,29 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   // is the fix for the tag chips doing nothing unless a search was also active.
   function isFiltering() { return tagFilterActive() || attackOnly || !!searchQuery; }
 
+  // render() is a thin wrapper so the CS_APP.onViewRender hook fires once per view
+  // no matter which of renderCurrentView's many early returns produced the page.
   function render() {
+    renderCurrentView();
+    const hook = window.CS_APP && window.CS_APP.onViewRender;
+    if (typeof hook === "function") {
+      try { hook(activeCategory); } catch (e) { console.error("[CS_APP.onViewRender]", e); }
+    }
+  }
+  function renderCurrentView() {
     buildSidebar(); contentArea.innerHTML = ""; focusedCmdIdx = -1;
     syncHash();
 
+    // Sessions lives in an optional separate script (public/session.js) that
+    // registers itself on window.CS_SESSION — the app must render without it.
+    // CS_EXAM stays accepted because the view shipped under that name first.
+    if (activeCategory === "exam") {
+      currentSection.textContent = t("examMode"); hero.style.display = "none";
+      const mod = window.CS_SESSION || window.CS_EXAM;
+      if (mod && typeof mod.render === "function") mod.render(contentArea);
+      else contentArea.innerHTML = '<div class="no-results"><h3>' + escapeHtml(t("examMode")) + '</h3><p>' + escapeHtml(t("examUnavailable")) + '</p></div>';
+      return;
+    }
     // Write-ups view
     if (activeCategory === "writeups") { renderWriteupsPage(); return; }
     // Machines view
@@ -3833,13 +4164,12 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     }
     return text;
   }
-  function inlineUploads(html) { return inlineUploadsText(html); }
   async function exportWriteupHtml(wu) {
     let html = "<!DOCTYPE html><html lang='" + lang + "'><head><meta charset='utf-8'>" +
       "<meta name='viewport' content='width=device-width,initial-scale=1'>" +
       "<title>" + escapeHtml(wu.title) + "</title><style>" + WU_PRINT_CSS + "</style></head><body>" +
       "<h1>" + escapeHtml(wu.title) + "</h1>" + wuMetaHtml(wu) + renderMarkdown(wu.content || "") + "</body></html>";
-    html = await inlineUploads(html);
+    html = await inlineUploadsText(html);
     const blob = new Blob([html], { type: "text/html" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
@@ -3868,8 +4198,11 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
   // ── Keyboard Navigation ──
   const kbdHelp = $("kbdHelp");
-  $("kbdHelpClose").addEventListener("click", () => kbdHelp.classList.remove("active"));
-  kbdHelp.addEventListener("click", e => { if (e.target === kbdHelp) kbdHelp.classList.remove("active"); });
+  const kbdHelpTrap = makeFocusTrap(kbdHelp.querySelector(".kbd-help-panel") || kbdHelp);
+  function openKbdHelp() { kbdHelp.classList.add("active"); kbdHelpTrap.activate(); }
+  function closeKbdHelp() { kbdHelp.classList.remove("active"); kbdHelpTrap.release(); }
+  $("kbdHelpClose").addEventListener("click", closeKbdHelp);
+  kbdHelp.addEventListener("click", e => { if (e.target === kbdHelp) closeKbdHelp(); });
 
   function getFocusableCards() { return Array.from(contentArea.querySelectorAll(".cmd-card")); }
   function moveFocus(dir) {
@@ -3903,7 +4236,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     cmdHistory = cmdHistory.filter(h => h.cmd !== text);
     cmdHistory.unshift({ cmd: text, ts: Date.now() });
     if (cmdHistory.length > 100) cmdHistory = cmdHistory.slice(0, 100);
-    localStorage.setItem("cs-history", JSON.stringify(cmdHistory));
+    safeSet("cs-history", JSON.stringify(cmdHistory));
     logToActiveTarget(text);
   }
   function renderHistoryPage() {
@@ -3913,7 +4246,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     contentArea.appendChild(hdr);
     hdr.querySelector("#clearHistBtn").addEventListener("click", () => {
       if (!cmdHistory.length || !confirm(t("clearHistory") + "?")) return;
-      cmdHistory = []; localStorage.setItem("cs-history", "[]"); render();
+      cmdHistory = []; safeSet("cs-history", "[]"); render();
     });
     if (!cmdHistory.length) { const e = document.createElement("div"); e.className = "no-results"; e.innerHTML = "<h3>" + t("noHistory") + "</h3>"; contentArea.appendChild(e); return; }
     const list = document.createElement("div"); list.className = "history-list";
@@ -3921,6 +4254,11 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const row = document.createElement("div"); row.className = "history-row";
       const code = document.createElement("pre"); code.className = "cmd-code"; code.innerHTML = hlCode(h.cmd);
       const meta = document.createElement("div"); meta.className = "history-meta"; meta.textContent = new Date(h.ts).toLocaleString();
+      // Structure contract with style.css: the button is a DIRECT child of .history-row
+      // and keeps the plain .cmd-copy-btn class, so `.history-row .cmd-copy-btn` can pin
+      // it open. Everywhere else a .cmd-copy-btn is revealed by `.cmd-code-wrapper:hover`,
+      // and a history row has no such ancestor — do not drop the .history-row class or
+      // re-parent the button without moving that rule with it, or it goes invisible.
       const copyBtn = document.createElement("button"); copyBtn.className = "cmd-copy-btn"; copyBtn.textContent = t("copy"); copyBtn.setAttribute("aria-label", t("copy"));
       copyBtn.addEventListener("click", () => copyText(applyIpToCode(h.cmd), () => { copyBtn.textContent = t("copied"); copyBtn.classList.add("copied"); announce(t("copied")); setTimeout(() => { copyBtn.textContent = t("copy"); copyBtn.classList.remove("copied"); }, 1500); }));
       const body = document.createElement("div"); body.className = "history-body"; body.appendChild(code); body.appendChild(meta);
@@ -3942,18 +4280,48 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   const paletteList = palette.querySelector(".palette-list");
   let paletteItems = [], paletteSel = 0, paletteBase = [];
 
-  function fuzzyScore(hayStr, q) {
-    if (!q) return 0;
-    let score = 0, qi = 0, prev = -2;
-    for (let i = 0; i < hayStr.length && qi < q.length; i++) {
-      if (hayStr[i] === q[qi]) {
-        score += 1;
-        if (prev === i - 1) score += 2;
-        if (i === 0 || /[\s\-_/:.]/.test(hayStr[i - 1])) score += 3;
-        prev = i; qi++;
-      }
+  // ── Palette ranking ──
+  // A subsequence-fuzzy score is useless at 5040 commands: "nmap" matched 3297 of
+  // them (n…m…a…p scattered anywhere) and pushed every real nmap command off the
+  // top 5. Matches are ranked by WHERE they land instead, strongest tier first:
+  //   1000  the command's own name is the query          ("nmap" → `nmap -sCV …`)
+  //    900  an exact word of the title is the query
+  //    800  the command's name starts with the query     ("linp" → linpeas.sh)
+  //    700  a title word starts with the query
+  //    500  a mid-word hit in the title
+  //    300  a word-boundary hit in desc / note / tags
+  //    150  a mid-word hit in desc / note / tags
+  // Shorter candidates win inside a tier, so the plain command beats the variant
+  // with six flags appended.
+  const WORD_BOUND = /[\s\-_/:.,;()[\]{}'"`=|<>]/;
+  function boundaryHit(str, q) {
+    let i = str.indexOf(q);
+    while (i >= 0) {
+      if (i === 0 || WORD_BOUND.test(str.charAt(i - 1))) return true;
+      i = str.indexOf(q, i + 1);
     }
-    return qi === q.length ? score - hayStr.length * 0.002 : -1;
+    return false;
+  }
+  // Precomputed once per palette open so scoring stays pure string work.
+  function paletteRankFields(label, cmdText, extraHay) {
+    const name = String(label || "").toLowerCase();
+    const parts = String(cmdText || "").trim().split(/\s+/);
+    let tok = (parts[0] || "").toLowerCase();
+    if (tok === "sudo" || tok === "doas") tok = (parts[1] || "").toLowerCase();
+    tok = tok.replace(/^.*[/\\]/, ""); // /usr/bin/nmap → nmap
+    return { name, tok, words: name.split(/[^a-z0-9.+#_-]+/).filter(Boolean), rest: String(extraHay || "").toLowerCase() };
+  }
+  function paletteScore(it, q) {
+    let s;
+    if (it.tok && it.tok === q) s = 1000;
+    else if (it.words.indexOf(q) >= 0) s = 900;
+    else if (it.tok && it.tok.indexOf(q) === 0) s = 800;
+    else if (boundaryHit(it.name, q)) s = 700;
+    else if (it.name.indexOf(q) >= 0) s = 500;
+    else if (boundaryHit(it.rest, q)) s = 300;
+    else if (it.rest.indexOf(q) >= 0) s = 150;
+    else return -1;
+    return s - Math.min(it.name.length, 120) * 0.5;
   }
   function navTo(target) { closePalette(); activeCategory = target; searchQuery = ""; searchInput.value = ""; openWriteupId = null; openMachineId = null; render(); }
   // Jump straight to a specific machine / write-up (opens its detail/editor view).
@@ -3961,7 +4329,9 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   function navToWriteup(id) { closePalette(); activeCategory = "writeups"; openWriteupId = id; openMachineId = null; wuEditMode = false; searchQuery = ""; searchInput.value = ""; render(); window.scrollTo({ top: 0, behavior: motionBehavior() }); }
   function buildPaletteBase() {
     const items = [];
-    const act = (icon, label, run, sub, extraHay) => items.push({ type: "action", icon, label, sub, hay: (label + " " + (extraHay || "")).toLowerCase(), run });
+    const act = (icon, label, run, sub, extraHay) => items.push(Object.assign(
+      { type: "action", icon, label, sub, run },
+      paletteRankFields(label, "", label + " " + (extraHay || ""))));
     act("📋", t("goto") + ": " + t("allCommands"), () => navTo(null));
     act("⭐", t("goto") + ": " + t("favorites"), () => navTo("favs"));
     act("📝", t("goto") + ": " + t("writeups"), () => navTo("writeups"));
@@ -3977,7 +4347,10 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       (wu.tags || []).join(" ")));
     CATEGORIES.forEach(cat => cat.subcategories.forEach((sub, si) => sub.commands.forEach((cmd, ci) => {
       const nm = (lang === "tr" && cat.name_tr) ? cat.name_tr : cat.name;
-      items.push({ type: "cmd", icon: "»", label: cmd.title, sub: nm + " › " + sub.name, hay: hay(cmd), cmd: cmd });
+      const first = cmd.cmd || (cmd.cmds && cmd.cmds[0]) || "";
+      items.push(Object.assign(
+        { type: "cmd", icon: "»", label: cmd.title, sub: nm + " › " + sub.name, cmd: cmd },
+        paletteRankFields(cmd.title, first, hay(cmd))));
     })));
     return items;
   }
@@ -3995,9 +4368,19 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     if (!q) { out = paletteBase.filter(x => x.type === "action").slice(0, 40); }
     else {
       const scored = [];
-      for (const it of paletteBase) { const s = fuzzyScore(it.hay, q); if (s >= 0) scored.push({ it: it, s: s }); }
-      scored.sort((a, b) => b.s - a.s);
-      out = scored.slice(0, 50).map(x => x.it);
+      let best = -1;
+      for (const it of paletteBase) {
+        const s = paletteScore(it, q);
+        if (s < 0) continue;
+        scored.push({ it: it, s: s });
+        if (s > best) best = s;
+      }
+      // Cap the candidate set BEFORE sorting: a one-letter query still matches
+      // thousands of commands, and nothing more than one tier below the best match
+      // can reach the visible 50 rows anyway.
+      const top = scored.length > 400 ? scored.filter(x => x.s >= best - 200) : scored;
+      top.sort((a, b) => b.s - a.s);
+      out = top.slice(0, 50).map(x => x.it);
     }
     paletteItems = out; paletteSel = 0;
     paletteList.innerHTML = "";
@@ -4016,14 +4399,15 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     for (let i = 0; i < rows.length; i++) { const on = i === paletteSel; rows[i].classList.toggle("sel", on); rows[i].setAttribute("aria-selected", on ? "true" : "false"); }
     rows[paletteSel].scrollIntoView({ block: "nearest" });
   }
+  const paletteTrap = makeFocusTrap(palette.querySelector(".palette"));
   function openPalette() {
     paletteBase = buildPaletteBase();
     paletteInput.value = "";
     palette.classList.add("active");
     renderPalette();
-    setTimeout(() => paletteInput.focus(), 0);
+    paletteTrap.activate(); // focuses the input (first focusable) and restores on close
   }
-  function closePalette() { palette.classList.remove("active"); }
+  function closePalette() { palette.classList.remove("active"); paletteTrap.release(); }
   paletteInput.addEventListener("input", renderPalette);
   paletteInput.addEventListener("keydown", e => {
     if (e.key === "ArrowDown") { e.preventDefault(); setPaletteSel(paletteSel + 1); }
@@ -4040,6 +4424,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     if (activeCategory === "writeups") return "writeups";
     if (activeCategory === "machines") return openMachineId ? "machines/" + openMachineId : "machines";
     if (activeCategory === "history") return "history";
+    if (activeCategory === "exam") return "exam";
     if (activeCategory) return "cat/" + activeCategory;
     return "";
   }
@@ -4058,6 +4443,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     else if (raw === "machines") target = "machines";
     else if (raw.indexOf("machines/") === 0) { target = "machines"; mid = raw.slice(9); }
     else if (raw === "history") target = "history";
+    else if (raw === "exam" || raw === "session" || raw === "sessions") target = "exam";
     else if (raw.indexOf("cat/") === 0) { const id = raw.slice(4); target = CATEGORIES.some(c => c.id === id) ? id : null; }
     activeCategory = target; searchQuery = ""; searchInput.value = "";
     openWriteupId = null;
@@ -4077,7 +4463,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     // Escape
     if (e.key === "Escape") {
       if (palette.classList.contains("active")) { closePalette(); return; }
-      if (kbdHelp.classList.contains("active")) { kbdHelp.classList.remove("active"); return; }
+      if (kbdHelp.classList.contains("active")) { closeKbdHelp(); return; }
       if (ipBar.classList.contains("active")) { ipBar.classList.remove("active"); return; }
       if (varBar.classList.contains("active")) { varBar.classList.remove("active"); return; }
       if (modalOverlay.classList.contains("active")) { closeModal(); return; }
@@ -4089,7 +4475,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     if (isInput) return;
 
     // ? — show keyboard shortcuts
-    if (e.key === "?") { e.preventDefault(); kbdHelp.classList.toggle("active"); return; }
+    if (e.key === "?") { e.preventDefault(); if (kbdHelp.classList.contains("active")) closeKbdHelp(); else openKbdHelp(); return; }
     // j/k — navigate
     if (e.key === "j") { e.preventDefault(); moveFocus(1); return; }
     if (e.key === "k") { e.preventDefault(); moveFocus(-1); return; }
@@ -4105,6 +4491,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       if (e.key === "f") { activeCategory = "favs"; render(); return; }
       if (e.key === "w") { activeCategory = "writeups"; render(); return; }
       if (e.key === "m") { activeCategory = "machines"; render(); return; }
+      if (e.key === "e") { activeCategory = "exam"; render(); return; }
     }
   });
 
@@ -4112,16 +4499,16 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   $("sidebarOpen").addEventListener("click", () => { sidebar.classList.add("open"); overlay.classList.add("active"); });
   $("sidebarClose").addEventListener("click", closeMobile);
   overlay.addEventListener("click", closeMobile);
-  $("expandAll").addEventListener("click", () => { collapsedSections.clear(); render(); });
-  $("collapseAll").addEventListener("click", () => { CATEGORIES.forEach(c => collapsedSections.add(c.id)); render(); });
+  $("expandAll").addEventListener("click", () => { collapsedSections.clear(); persistCollapsed(); render(); });
+  $("collapseAll").addEventListener("click", () => { CATEGORIES.forEach(c => collapsedSections.add(c.id)); persistCollapsed(); render(); });
 
-  const saved = localStorage.getItem("cheatsheet-theme");
+  const saved = safeGet("cheatsheet-theme");
   if (saved) document.documentElement.setAttribute("data-theme", saved);
   else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) document.documentElement.setAttribute("data-theme", "light");
   // Keep the document language in sync with the UI language for screen readers.
   document.documentElement.lang = lang;
   document.documentElement.setAttribute("data-lang", lang);
-  $("themeToggle").addEventListener("click", () => { const n = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light"; document.documentElement.setAttribute("data-theme", n); localStorage.setItem("cheatsheet-theme", n); });
+  $("themeToggle").addEventListener("click", () => { const n = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light"; document.documentElement.setAttribute("data-theme", n); safeSet("cheatsheet-theme", n); });
 
   const btt = document.createElement("button"); btt.className = "back-to-top"; btt.innerHTML = "↑"; btt.setAttribute("aria-label", "Back to top"); document.body.appendChild(btt);
   btt.addEventListener("click", () => window.scrollTo({ top: 0, behavior: motionBehavior() }));
@@ -4137,15 +4524,34 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
   }
   function escapeRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+  // CSS.escape is unavailable in a few older WebViews; the fallback quotes the two
+  // characters that could terminate an attribute-selector string.
+  function cssEsc(s) {
+    const v = String(s == null ? "" : s);
+    return (window.CSS && window.CSS.escape) ? window.CSS.escape(v) : v.replace(/["\\]/g, "\\$&");
+  }
   // "auto" when the user asked for reduced motion, else "smooth".
   function motionBehavior() { return (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) ? "auto" : "smooth"; }
+
+  // ── Integration surface for optional modules (public/exam.js) ──
+  // Deliberately small and all real functions from above: an add-on reuses this
+  // app's api/i18n/clipboard/markdown plumbing instead of duplicating it. Set
+  // onViewRender to a function to be called after every render() with the view id.
+  window.CS_APP = {
+    api, t, toast, escapeHtml, copyToClipboard: copyText,
+    getLang: () => lang, getMachines: () => machines, reloadMachines: loadMachines,
+    getActiveTargetId: () => activeTargetId, setActiveTarget,
+    applyVars: applyIpToCode,
+    navigate: (hash) => { window.location.hash = hash; },
+    render, renderMarkdown, onViewRender: null
+  };
 
   // ── Init ──
   document.documentElement.setAttribute("data-lang", lang);
   searchInput.placeholder = t("search");
   // Honor a launch hash (PWA shortcuts + deep links, e.g. /#machines, /#cat/recon).
   const launchHash = (window.location.hash || "").replace(/^#/, "");
-  const hashView = { favorites: "favs", favs: "favs", writeups: "writeups", machines: "machines", history: "history" }[launchHash];
+  const hashView = { favorites: "favs", favs: "favs", writeups: "writeups", machines: "machines", history: "history", exam: "exam", session: "exam", sessions: "exam" }[launchHash];
   if (hashView) activeCategory = hashView;
   else if (launchHash.indexOf("machines/") === 0) { activeCategory = "machines"; openMachineId = launchHash.slice(9); }
   else if (launchHash.indexOf("cat/") === 0) activeCategory = launchHash.slice(4);

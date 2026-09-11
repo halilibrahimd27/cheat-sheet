@@ -1,7 +1,12 @@
 // Bump this on any change to the cached static assets so returning users get
 // the update (the old cache is purged on activate).
-const CACHE_NAME = 'cheatsheet-v2';
-const STATIC_ASSETS = ['/', '/index.html', '/style.css', '/app.js', '/manifest.json'];
+const CACHE_NAME = 'cheatsheet-v4';
+// checklist-templates.js and sw-register.js are loaded by index.html too — without
+// them precached, a cold offline load renders an app with no machine playbooks.
+// session-data.js is fetched on demand rather than at load, so it has to be
+// precached explicitly or Sessions is the one view that breaks offline.
+const STATIC_ASSETS = ['/', '/index.html', '/style.css', '/app.js', '/checklist-templates.js',
+  '/sw-register.js', '/manifest.json', '/session.js', '/session-data.js'];
 
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(STATIC_ASSETS)));
@@ -14,11 +19,6 @@ self.addEventListener('activate', event => {
       .then(keys => Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))))
       .then(() => self.clients.claim())
   );
-});
-
-// Let the page trigger an immediate activation of a waiting worker.
-self.addEventListener('message', event => {
-  if (event.data === 'skipWaiting') self.skipWaiting();
 });
 
 self.addEventListener('fetch', event => {

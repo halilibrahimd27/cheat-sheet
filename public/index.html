@@ -6,11 +6,12 @@
     <title>cheat-sheet — Pentest Command Handbook</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0f1117">
+    <!-- Mirrors APP_CSP in server.js, so the static GitHub Pages build — which has
+         no server to set headers — gets the same policy. frame-ancestors is the one
+         directive left out: a meta-delivered CSP ignores it, and the server sends it
+         alongside X-Frame-Options. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
 </head>
 <body>
     <a href="#mainContent" class="skip-link">Skip to content</a>
@@ -139,12 +140,9 @@
 
     <script src="checklist-templates.js"></script>
     <script src="app.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js').catch(() => {});
-            });
-        }
-    </script>
+    <!-- Sessions. Must follow app.js (reads window.CS_APP on load). Its ~600KB
+         data file is NOT listed here: session.js fetches it on first use. -->
+    <script src="session.js"></script>
+    <script src="sw-register.js"></script>
 </body>
 </html>
