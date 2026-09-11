@@ -3738,6 +3738,15 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     // Favorites
     const favCount = getFavCommands().length;
     mkNavItem("⭐", t("favorites"), favCount, activeCategory === "favs", () => { activeCategory = "favs"; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); });
+    // Sessions. Sits high on purpose: it is the entry point to the workbench
+    // loop (pick a preset -> targets -> flags -> report), and a feature nobody
+    // can find is a feature that does not exist. The count is the running
+    // session's target/task progress when session.js has loaded, blank
+    // otherwise — the module and its ~600KB corpus load on demand.
+    const sess = window.CS_SESSION || window.CS_EXAM;
+    let sessLabel = "";
+    try { if (sess && typeof sess.navBadge === "function") sessLabel = sess.navBadge() || ""; } catch { /* never let the badge break the sidebar */ }
+    mkNavItem("🎯", t("examMode"), sessLabel, activeCategory === "exam", () => { activeCategory = "exam"; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); });
     // Write-ups
     mkNavItem("📝", "Write-ups", writeups.length, activeCategory === "writeups", () => { activeCategory = "writeups"; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); });
     // Machines
