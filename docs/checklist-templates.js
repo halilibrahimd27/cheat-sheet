@@ -1,3 +1,4 @@
+/* GENERATED FILE — DO NOT EDIT. Built from public/ + seed.js by scripts/build-static.js. */
 // ============================================================================
 // Static, offline checklist "playbooks" for the Machines tracker.
 // Authored from common HTB / TryHackMe / OSCP methodology. 100% local — this
