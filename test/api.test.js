@@ -8,6 +8,13 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 
+const { scrubProcessEnv } = require("./helpers/env.js");
+
+// A developer with AUTH_PASS (or HOST/PORT/JSON_LIMIT/...) exported in their shell
+// would otherwise reconfigure the app under test — AUTH_PASS alone 401s every
+// request below. server.js snapshots these at require time, so clear them first.
+scrubProcessEnv();
+
 // Isolate persistence BEFORE requiring the app.
 const TMP = fs.mkdtempSync(path.join(os.tmpdir(), "cheatsheet-test-"));
 process.env.DATA_DIR = TMP;
@@ -24,6 +31,19 @@ test.before(async () => {
 test.after(async () => {
   await new Promise((resolve) => server.close(resolve));
   fs.rmSync(TMP, { recursive: true, force: true });
+});
+
+// One mutable database is shared by the whole file, so without this every test
+// inherits whatever the previous one left behind — the import cases in particular
+// replace the seed with a one-category stub and used to break every test declared
+// after them. Restoring before each case makes any single test runnable alone
+// (node --test --test-name-pattern "...").
+test.beforeEach(async () => {
+  await api("POST", "/api/reset");
+  for (const f of ["notes.json", "writeups.json", "machines.json"]) {
+    fs.rmSync(path.join(TMP, f), { force: true });
+    fs.rmSync(path.join(TMP, f + ".bak"), { force: true });
+  }
 });
 
 async function api(method, url, body) {
