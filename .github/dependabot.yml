@@ -1,0 +1,26 @@
+version: 2
+
+# The repo deliberately has one runtime dependency, so the update volume here is
+# tiny — the point is that the SHA-pinned actions and the express transitive tree
+# (which is where every advisory has actually come from) get looked at on a
+# schedule instead of whenever someone happens to run `npm audit`.
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      # One PR for the whole dev toolchain; they move together and nothing ships.
+      dev-dependencies:
+        dependency-type: development
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      github-actions:
+        patterns:
+          - "*"

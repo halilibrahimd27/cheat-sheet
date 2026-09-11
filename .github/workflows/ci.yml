@@ -1,5 +1,8 @@
 name: CI
 
+# Actions are pinned by commit SHA, not by tag. A tag is mutable: whoever can
+# push to the action's repo can repoint v5 at new code and it runs here with the
+# workflow's token. That matters more than usual for a security-tooling repo.
 on:
   push:
     branches: [ main ]
@@ -16,8 +19,8 @@ jobs:
       matrix:
         node-version: [18, 20, 22]
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
@@ -26,11 +29,39 @@ jobs:
         run: npm run lint
       - name: Test
         run: npm test
-      - name: Validate content (seed.js structure)
+      - name: Validate content (seed.js structure + quality ratchet)
         run: npm run validate-content
       - name: Audit production dependencies
-        run: npm audit --omit=dev || true
+        # No `|| true`. This step was named as a gate while being incapable of
+        # failing, and it hid three advisories in express's transitive tree —
+        # including a high-severity path-to-regexp ReDoS. Anything high or worse
+        # now stops the build; the fixes are pinned via package.json overrides.
+        run: npm audit --omit=dev --audit-level=high
       - name: README stats are in sync with seed.js
         run: |
           node scripts/update-readme.js
           git diff --exit-code README.md
+      - name: docs/ is in sync with public/ + seed.js
+        # docs/ is generated, committed, and served straight to GitHub Pages, so a
+        # stale copy publishes code nobody reviewed. The build is byte-reproducible
+        # (.gitattributes normalises line endings, and the service-worker cache
+        # hash normalises them again before hashing), so any diff here is real drift.
+        #
+        # `git status --porcelain`, NOT `git diff --exit-code`: diff only compares
+        # files git already tracks, so a newly generated file that nobody committed
+        # left this gate green while the committed docs/ shipped incomplete.
+        # docs/static-bootstrap.js and docs/sw-register.js both slipped through
+        # exactly that hole. -uall lists files inside new untracked directories
+        # individually instead of collapsing them to one directory entry.
+        run: |
+          node scripts/build-static.js
+          drift="$(git status --porcelain -uall docs/)"
+          if [ -n "$drift" ]; then
+            echo "::error::docs/ is out of sync with public/ + seed.js"
+            echo "$drift"
+            echo "--- diff of tracked files ---"
+            git --no-pager diff --stat -- docs/
+            echo "Fix locally: node scripts/build-static.js && git add -A docs/"
+            exit 1
+          fi
+          echo "docs/ is in sync (no modified, deleted or untracked files)."

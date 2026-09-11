@@ -248,5 +248,12 @@
       ],
       "commands_added": 136
     }
-  ]
+  ],
+  "quality_ratchet": {
+    "_comment": "Upper bounds enforced by scripts/validate-content.js. These may only go DOWN. Lower them with `node scripts/validate-content.js --update-baseline` after a real improvement.",
+    "untranslated": 1666,
+    "garbled": 0,
+    "garbled_suspected": 128,
+    "duplicate_commands": 216
+  }
 }

@@ -1,0 +1,83 @@
+name: 🧪 Workspace / Exam Mode
+description: Feedback on the box-solving workspace, reporting, or the OSCP+ exam cockpit
+title: "[Workspace] "
+labels: ["workspace", "app"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This template is for the parts of the app that make it a **workbench** rather than
+        a command list: the Machines workspace, the report generator, and Exam Mode.
+
+        **Exam Mode is still in development** — see the *Exam Mode* section of the README
+        for the current status. Feedback on the planned scope is welcome here; please
+        don't file bugs against behaviour that hasn't shipped yet.
+
+        🔐 **Never paste a real credential, client name or engagement IP.** Redact your
+        exported data before attaching it.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part?
+      options:
+        - "Machines — dashboard / Kanban / metadata"
+        - "Machines — services table & nmap import"
+        - "Machines — credential vault"
+        - "Machines — activity timeline & active target"
+        - "Machines — evidence & screenshots"
+        - "Machines — checklists & playbooks"
+        - "Machines — Report tab & export"
+        - "Machines — AD engagement mode"
+        - "Exam Mode — countdown & time budgeting"
+        - "Exam Mode — scoring & flag compliance"
+        - "Exam Mode — Metasploit budget tracker"
+        - "Exam Mode — OffSec-format report"
+        - "Write-ups — templates & insertable sections"
+        - "Other"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of feedback is this?
+      options:
+        - "Something is broken"
+        - "Something is missing"
+        - "Something is confusing / gets in the way"
+        - "Idea for the planned Exam Mode"
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: What were you doing?
+      description: The box, the exam, the phase — whatever makes the situation concrete.
+      placeholder: |
+        "Working an HTB box: imported nmap, got a shell, added creds to the vault,
+        then opened the Report tab to hand in..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: detail
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+
+  - type: input
+    id: install
+    attributes:
+      label: How are you running it?
+      placeholder: "Docker / npm start / GitHub Pages static build"
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: Any data I pasted above is redacted — no real credentials, client names or engagement IPs
+          required: true

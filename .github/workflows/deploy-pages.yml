@@ -1,6 +1,6 @@
 name: Deploy Pages
 
-# Publishes the pre-built ./docs (npm run build:static) to GitHub Pages.
+# Publishes the static SPA build to GitHub Pages.
 # Self-managed (build_type = workflow) instead of the auto branch-deploy, which
 # was intermittently failing with "Deployment failed, try again later" under
 # rapid successive pushes. concurrency.cancel-in-progress collapses a burst of
@@ -8,7 +8,16 @@ name: Deploy Pages
 on:
   push:
     branches: [ main ]
-    paths: [ 'docs/**', '.github/workflows/deploy-pages.yml' ]
+    # Everything docs/ is built FROM has to trigger a deploy. Filtering on
+    # 'docs/**' alone meant a change to public/ or seed.js went green in CI and
+    # never reached the published site, so Pages silently served older content
+    # than main until someone happened to commit a rebuilt docs/.
+    paths:
+      - 'docs/**'
+      - 'public/**'
+      - 'seed.js'
+      - 'scripts/build-static.js'
+      - '.github/workflows/deploy-pages.yml'
   workflow_dispatch:
 
 permissions:
@@ -27,10 +36,20 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      # Build rather than trust the committed docs/: what gets published is then
+      # derived from the commit being deployed, not from whatever a contributor
+      # last remembered to regenerate. CI's docs/ drift gate keeps the two equal.
+      - name: Build static site
+        run: node scripts/build-static.js
+      - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
+      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
           path: docs
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5

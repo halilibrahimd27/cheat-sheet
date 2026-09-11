@@ -1,0 +1,42 @@
+name: CodeQL
+
+# Static analysis for the hand-rolled Node backend and the vanilla-JS frontend.
+# There is no framework and no transpiler here, so nothing else is looking for
+# injection sinks, prototype pollution or unsafe DOM writes.
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Weekly, so newly published queries reach an idle repo without a push.
+    - cron: '27 4 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: Analyze JavaScript
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: github/codeql-action/init@faaca9a8f6edddba5725ffe5adefdab6669a2eca # v3.38.0
+        with:
+          languages: javascript-typescript
+          queries: security-and-quality
+          # docs/ is a generated copy of public/ — analysing it would double every
+          # frontend alert. seed.js is a 2.2 MB data literal, not code.
+          config: |
+            paths-ignore:
+              - docs
+              - seed.js
+      # No build step: the project ships the sources it runs, so CodeQL's
+      # JavaScript extractor works straight off the checkout.
+      - uses: github/codeql-action/analyze@faaca9a8f6edddba5725ffe5adefdab6669a2eca # v3.38.0
+        with:
+          category: /language:javascript-typescript

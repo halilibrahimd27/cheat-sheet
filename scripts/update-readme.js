@@ -10,11 +10,19 @@ const ROOT = path.join(__dirname, "..");
 const data = require(path.join(ROOT, "seed.js"));
 const README = path.join(ROOT, "README.md");
 
-let totalCmds = 0, totalSubs = 0;
+let totalCmds = 0, totalSubs = 0, attackTags = 0;
 for (const cat of data) {
   for (const sub of cat.subcategories || []) {
     totalSubs++;
     totalCmds += (sub.commands || []).length;
+    // The ATT&CK tags are published data too, and they are the easiest thing in
+    // the seed to lose silently — a lossy merge dropped 92 of them with every CI
+    // gate green. Publishing the count in a generated README block means the
+    // "README stats are in sync" step turns red the moment any go missing.
+    for (const cmd of sub.commands || []) {
+      if (Array.isArray(cmd.attack)) attackTags += cmd.attack.length;
+      else if (cmd.attack) attackTags++;
+    }
   }
 }
 const totalCats = data.length;
@@ -48,12 +56,13 @@ let md = fs.readFileSync(README, "utf8");
 md = replaceBlock(
   md, "<!-- STATS:BADGES -->", "<!-- /STATS:BADGES -->",
   `[![Commands](https://img.shields.io/badge/commands-${totalCmds}-success?style=flat-square)](#categories)\n` +
-  `[![Categories](https://img.shields.io/badge/categories-${totalCats}-orange?style=flat-square)](#categories)`
+  `[![Categories](https://img.shields.io/badge/categories-${totalCats}-orange?style=flat-square)](#categories)\n` +
+  `[![ATT&CK tags](https://img.shields.io/badge/ATT%26CK%20tags-${attackTags}-blue?style=flat-square)](#categories)`
 );
 
 md = replaceBlock(
   md, "<!-- STATS:START -->", "<!-- STATS:END -->",
-  `**${totalCmds} commands** across **${totalCats} categories** and **${totalSubs} subcategories** — bilingual interface (English + Türkçe).`
+  `**${totalCmds} commands** across **${totalCats} categories** and **${totalSubs} subcategories**, with **${attackTags} MITRE ATT&CK technique tags** — bilingual interface (English + Türkçe).`
 );
 
 md = replaceBlock(
@@ -62,4 +71,4 @@ md = replaceBlock(
 );
 
 fs.writeFileSync(README, md, "utf8");
-console.log(`README updated: ${totalCmds} commands, ${totalCats} categories, ${totalSubs} subcategories.`);
+console.log(`README updated: ${totalCmds} commands, ${totalCats} categories, ${totalSubs} subcategories, ${attackTags} ATT&CK tags.`);

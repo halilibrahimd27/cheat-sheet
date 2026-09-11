@@ -1,12 +1,16 @@
 node_modules
 data
+.backups
 .git
+.gitattributes
 .gitignore
 .github
 test
 scripts
+docs
+assets
 *.md
-image*.png
+*.png
 .env
 .env.example
 .dockerignore

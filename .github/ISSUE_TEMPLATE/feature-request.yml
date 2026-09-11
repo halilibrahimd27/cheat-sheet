@@ -1,0 +1,74 @@
+name: ✨ Feature request
+description: Suggest a new capability in the app (not a new command)
+title: "[Feature] "
+labels: ["enhancement", "app"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Suggesting a **command** instead? Use the *💡 Command suggestion* template.
+        Reporting something **broken**? Use the *🐛 App bug report* template.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part of the app?
+      options:
+        - "Command browsing / search / palette"
+        - "Placeholders, fill bar & IP profiles"
+        - "Script basket"
+        - "Machines workspace"
+        - "Exam Mode"
+        - "Write-ups editor & reports"
+        - "Favorites, history, notes"
+        - "Import / export / backup"
+        - "Static build, offline & PWA"
+        - "Server / API"
+        - "Accessibility"
+        - "Theme, layout & mobile"
+        - "Turkish translation / i18n"
+        - "Other"
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do, and what gets in the way?
+      description: Describe the situation, not the solution. Real workflows beat abstract ideas.
+      placeholder: |
+        "Halfway through a box I want to see every command I copied in the last hour
+        across all targets, but the timeline is per-machine only."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would you like it to do?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What do you do today instead?
+      description: Workarounds, other tools, or "nothing — I just lose the information".
+
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Project constraints
+      description: This project is deliberately dependency-free and local-only.
+      options:
+        - label: This can be built with vanilla JS and no new npm dependency (or I've said why it can't)
+          required: true
+        - label: This does not require sending any data off the user's machine
+          required: true
+
+  - type: checkboxes
+    id: contribute
+    attributes:
+      label: Would you like to build it?
+      options:
+        - label: I'd be willing to open a PR for this

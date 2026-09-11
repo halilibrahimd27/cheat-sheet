@@ -1,4 +1,8 @@
-FROM node:20-alpine
+# Pinned by digest, not by tag: node:20-alpine is republished continuously, so a
+# tag-only FROM means two builds of the same commit can differ. This digest is
+# the multi-arch index, so amd64 and arm64 both still resolve.
+# Refresh with: docker buildx imagetools inspect node:20-alpine
+FROM node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293
 
 WORKDIR /app
 
@@ -7,6 +11,10 @@ ENV NODE_ENV=production
 # in docker-compose.yml is what restricts access to the host.
 ENV HOST=0.0.0.0
 ENV PORT=3000
+# DATA_DIR is where every JSON store and the uploads folder live; it is the one
+# path that must be a volume. Kept explicit so the chown below and the server
+# agree on where it is.
+ENV DATA_DIR=/app/data
 
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev

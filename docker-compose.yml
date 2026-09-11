@@ -3,7 +3,10 @@ services:
     build: .
     container_name: cheat-sheet
     # Publish to localhost only. Change to "8899:3000" to expose on your LAN —
-    # and set AUTH_USER / AUTH_PASS below if you do.
+    # and if you do, set AUTH_USER / AUTH_PASS below. Basic Auth is the only
+    # boundary left once the port is wide: HOST=0.0.0.0 (below, and unavoidable
+    # in a container) turns the server-side Host check OFF entirely. See the
+    # ALLOWED_HOSTS note.
     ports:
       - "127.0.0.1:8899:3000"
     volumes:
@@ -12,8 +15,31 @@ services:
     environment:
       - PORT=3000
       - HOST=0.0.0.0
+      - DATA_DIR=/app/data
+      # ALLOWED_HOSTS — extra Host header values the server will accept.
+      #
+      # The Host check runs in every configuration, HOST=0.0.0.0 included, and
+      # already accepts the loopback names and any bare IP literal. So reaching
+      # this container at http://localhost:8899 or http://192.168.1.10:8899
+      # needs nothing here — an IP literal cannot be DNS-rebound.
+      #
+      # Set it when the container is reached by a NAME: a machine hostname or
+      # the domain a reverse proxy terminates. Anything else gets 403.
+      # - ALLOWED_HOSTS=cheatsheet.example.com,box.lan
+      #
+      # What still guards a mutating /api request is the Origin / Sec-Fetch-Site
+      # check, which does block an ordinary cross-site fetch. It does NOT block
+      # DNS rebinding — after a rebind the browser believes it is talking to its
+      # own origin and sends "Sec-Fetch-Site: same-origin" — and rebinding is the
+      # exact attack the Host check exists to stop. So in this container that
+      # protection is off, and the "127.0.0.1:8899:3000" mapping above is the
+      # real boundary. Widen it and Basic Auth is what protects you:
       # - AUTH_USER=admin
       # - AUTH_PASS=change-me
+      #
+      # ALLOWED_HOSTS only takes effect where HOST is pinned to one address
+      # (a bare `npm start`, or a reverse proxy in front of a HOST-pinned run):
+      # - ALLOWED_HOSTS=192.168.1.10,cheatsheet.example.com
     healthcheck:
       test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:3000/api/health"]
       interval: 30s

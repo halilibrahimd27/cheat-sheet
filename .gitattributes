@@ -1,0 +1,23 @@
+# Normalise line endings. The static build hashes the copied asset bytes to
+# derive the service-worker cache name, so a CRLF checkout and an LF checkout
+# used to produce two different docs/service-worker.js — which made the "docs/ is
+# in sync" CI gate impossible to keep green.
+#
+# What this actually guarantees: every text file is stored in git as LF (content
+# is normalised on the way INTO the index, whatever the worktree holds) and is
+# checked out as LF from here on. It does NOT rewrite the worktree you already
+# have — a clone made before this file existed still holds CRLF copies until
+# those files are next checked out, and git will tell you so ("CRLF will be
+# replaced by LF the next time Git touches it"). That is harmless for the CI
+# gate, because the gate diffs through the index where everything is LF, and
+# because build-static.js normalises line endings again before hashing.
+* text=auto eol=lf
+
+# Screenshots and other binaries must never be EOL-converted.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.pdf binary
