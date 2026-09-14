@@ -128,6 +128,15 @@ const sw =
   "self.addEventListener('fetch', e => {\n" +
   "  const { request } = e; if (request.method !== 'GET') return;\n" +
   "  if (request.mode === 'navigate') { e.respondWith(fetch(request).then(r => { const c = r.clone(); caches.open(CACHE_NAME).then(cc => cc.put('./index.html', c)).catch(() => {}); return r; }).catch(() => caches.match('./index.html'))); return; }\n" +
+  // Application code is network-first. Cache-first served yesterday's app.js
+  // for one entire load after every deploy, so a user told "it is fixed" opened
+  // the page and saw the old build — twice. The 1.4MB seed blob stays
+  // cache-first: it is huge and changes far less often than the code.
+  "  const p = new URL(request.url).pathname;\n" +
+  "  if (/\\.(js|css|html)$/.test(p) && !/seed-data\\.js$/.test(p)) {\n" +
+  "    e.respondWith(fetch(request).then(resp => { if (resp && resp.status === 200 && resp.type === 'basic') { const cl = resp.clone(); caches.open(CACHE_NAME).then(c => c.put(request, cl)).catch(() => {}); } return resp; }).catch(() => caches.match(request)));\n" +
+  "    return;\n" +
+  "  }\n" +
   "  e.respondWith(caches.match(request).then(cached => { const net = fetch(request).then(resp => { if (resp && resp.status === 200 && resp.type === 'basic') { const cl = resp.clone(); caches.open(CACHE_NAME).then(c => c.put(request, cl)).catch(() => {}); } return resp; }).catch(() => cached); return cached || net; }));\n" +
   "});\n";
 writeOut("service-worker.js", sw);

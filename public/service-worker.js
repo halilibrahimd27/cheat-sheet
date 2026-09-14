@@ -42,8 +42,27 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Static: stale-while-revalidate — serve the cached copy instantly, then
-  // refresh it in the background so a shipped fix reaches the user next load.
+  // Application code: network-first. Stale-while-revalidate reads well on paper
+  // — "a shipped fix reaches the user next load" — but *next load* is the
+  // problem: after every deploy the user gets one full session of the previous
+  // build, which is indistinguishable from the fix never having shipped. Falls
+  // back to cache, so offline is unaffected.
+  const isCode = /\.(js|css|html)$/.test(url.pathname) && !/seed-data\.js$/.test(url.pathname);
+  if (isCode) {
+    event.respondWith(
+      fetch(request).then(resp => {
+        if (resp && resp.status === 200 && resp.type === 'basic') {
+          const clone = resp.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(request, clone)).catch(() => {});
+        }
+        return resp;
+      }).catch(() => caches.match(request))
+    );
+    return;
+  }
+
+  // Everything else (the 1.4MB seed blob, icons, uploads): cache-first with a
+  // background refresh. Big, and it changes far less often than the code.
   event.respondWith(
     caches.match(request).then(cached => {
       const network = fetch(request).then(resp => {

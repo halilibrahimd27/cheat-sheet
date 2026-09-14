@@ -1985,7 +1985,10 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   }
 
   function renderWriteupEditor(wu) {
-    const page = document.createElement("div"); page.className = "wu-editor-page";
+    // Edit mode is a two-pane split and wants the whole desk; read mode is
+    // prose and wants a measure. Same container, two jobs, so it says which.
+    const page = document.createElement("div");
+    page.className = "wu-editor-page" + (wuEditMode ? "" : " wu-read-page");
 
     // Top bar
     const topbar = document.createElement("div"); topbar.className = "wu-editor-topbar";

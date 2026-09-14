@@ -16,7 +16,7 @@
     --bg-primary: #0c0d10;
     --bg-secondary: #121317;
     --bg-tertiary: #181a1f;
-    --bg-card: transparent;      /* commands are rows now, not filled cards */
+    --bg-card: #14161b;          /* a real surface: panels, host cards, SVG node faces */
     --bg-card-hover: #131419;
     --bg-code: #08090b;          /* code sits BELOW the page, like a terminal well */
     --bg-sidebar: #08090a;
@@ -108,7 +108,7 @@
     --bg-primary: #f7f5f1;
     --bg-secondary: #ffffff;
     --bg-tertiary: #eeebe4;
-    --bg-card: transparent;
+    --bg-card: #ffffff;
     --bg-card-hover: #f1eee8;
     --bg-code: #f0ede6;
     --bg-sidebar: #f2efe9;
@@ -638,7 +638,7 @@ body {
    the same content in half the height and reads as a list, which is what a
    reference is. */
 .cmd-card {
-    background: var(--bg-card);
+    background: none;   /* the one flat surface — see --bg-card */
     border: 0;
     border-bottom: 1px solid var(--rule);
     border-radius: 0;
@@ -1406,7 +1406,12 @@ body {
 /* ============================================
    Write-ups — Editor Page
    ============================================ */
-.wu-editor-page { max-width: 900px; margin: 0 auto; }
+/* The editor is a two-pane split — source on the left, live preview on the
+   right — so a 900px cap gave each pane ~430px and left a third of the window
+   empty on either side. An editor should use the desk it is given; the READING
+   view below still holds a proper measure, because that one is prose. */
+.wu-editor-page { max-width: 100%; margin: 0; }
+.wu-read-page { max-width: 78ch; margin: 0 auto; }
 .wu-editor-topbar {
     display: flex; align-items: center; justify-content: space-between; gap: 12px;
     padding: 10px 0 16px; border-bottom: 1px solid var(--border-primary); margin-bottom: 20px;
@@ -1454,7 +1459,7 @@ body {
 .wu-page-editor:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 3px var(--accent-glow); }
 
 /* Write-up Read Mode */
-.wu-read-title { font-size: 32px; font-weight: 700; color: var(--text-heading); margin-bottom: 12px; letter-spacing: -0.5px; line-height: 1.3; }
+.wu-read-title { font-size: var(--fs-4xl); font-weight: 700; color: var(--text-heading); margin-bottom: 12px; letter-spacing: -0.5px; line-height: 1.3; }
 .wu-read-body {
     font-size: var(--fs-lg); color: var(--text-primary); line-height: 1.9;
     padding: 20px 0; word-wrap: break-word;
