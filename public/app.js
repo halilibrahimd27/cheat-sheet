@@ -4236,7 +4236,28 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     }
     return card;
   }
-  function refHostLabel(u) { try { return new URL(u, "http://x").hostname.replace(/^www\./, "") || t("cardRefs"); } catch { return t("cardRefs"); } }
+  // The visible label for a reference chip, when the data does not supply one.
+  //
+  // The hostname is the honest default — it says where the link goes before you
+  // click it. It stops being informative on the forges, though: most of the
+  // corpus's tool references are a project repository, and several hundred chips
+  // all reading "github.com" tell the reader nothing about which project. There
+  // the repository name is both more useful and just as honest, so a
+  // /owner/repo URL labels itself with the repo.
+  function refHostLabel(u) {
+    try {
+      // The "http://x" base only exists so a malformed value cannot throw. It
+      // also used to become the answer: a blank ref labelled itself "x".
+      if (!/^[a-z][a-z0-9+.-]*:/i.test(String(u || ""))) return t("cardRefs");
+      const url = new URL(u, "http://x");
+      const host = url.hostname.replace(/^www\./, "");
+      if (/^(github|gitlab)\.com$/.test(host)) {
+        const repo = url.pathname.split("/").filter(Boolean)[1];
+        if (repo) return repo;
+      }
+      return host || t("cardRefs");
+    } catch { return t("cardRefs"); }
+  }
 
   function mkCode(code) {
     const w = document.createElement("div"); w.className = "cmd-code-wrapper";

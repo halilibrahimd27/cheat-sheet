@@ -129,9 +129,22 @@ For multiple commands in one entry:
   commands stay untagged on purpose. `npm run tag:attack` regenerates the curated mapping
   idempotently — prefer it over hand-editing many entries at once.
 - **`ref`** / **`refs`** — a reference link (or an array of `{ label, url }`) rendered as a
-  chip on the command. Only 3 of 5040 commands carry one today, so this is one of the
-  easiest high-value contributions available. Link to the best explanation of the
-  technique; do not copy its text.
+  chip on the command. 82% of commands carry one, pointing at that tool's own
+  documentation. Four rules, all enforced by `test/references.test.js`:
+  1. **Absolute `https://`.** Plain http is refused — the app is served over https on
+     Pages and a plain-http citation is the one a corporate proxy eats silently.
+  2. **The vendor's or the project's own page.** Not a blog, not a shortener, not an SEO
+     aggregator. If a third-party write-up really is the best source, say so in `note`
+     rather than dressing it up as documentation.
+  3. **One tool, one page.** If the tool is already cited elsewhere in the corpus, reuse
+     that url rather than picking a second one.
+  4. **Open it before you commit it.** Nothing in CI can fetch a url — tests run offline
+     — so a dead link only fails in a reader's browser. `scripts/validate-content.js`
+     ratchets the number of *unreferenced* commands, so the gap may shrink but never grow.
+
+  The ~900 commands still without one are shell builtins and payload snippets, where no
+  single honest source exists. If you can name one for a specific command, that is a
+  welcome contribution.
 
 ### Placeholder Convention
 

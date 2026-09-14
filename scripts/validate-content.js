@@ -29,11 +29,25 @@ let translated = 0;
 const cmdSeen = new Map(); // cmd string -> [locations]
 const idSeen = new Map(); // id -> [locations]
 const ids = new Set();
-let totalCmds = 0, totalSubs = 0, attackTags = 0;
+let totalCmds = 0, totalSubs = 0, attackTags = 0, refCount = 0, referencedCmds = 0;
+const refHosts = new Set();
 
 function noteId(id, where) {
   if (!idSeen.has(id)) idSeen.set(id, []);
   idSeen.get(id).push(where);
+}
+
+// Every reference url on one command, whichever of the two shapes app.js
+// accepts it was written in (cmd.ref: url | cmd.refs: [url | {label, url}]).
+function refUrlsOf(c) {
+  const out = [];
+  const push = (r) => {
+    if (r === undefined || r === null) return;
+    out.push(typeof r === "object" ? r.url : r);
+  };
+  push(c.ref);
+  (Array.isArray(c.refs) ? c.refs : (c.refs ? [c.refs] : [])).forEach(push);
+  return out;
 }
 
 if (!Array.isArray(data)) { console.error("seed.js must export an array"); process.exit(1); }
@@ -76,6 +90,22 @@ data.forEach((cat, ci) => {
       }
       if (Array.isArray(c.attack)) attackTags += c.attack.length;
       else if (c.attack) attackTags++;
+      // Reference links. A ref is a citation the reader will click, so the bar
+      // is: an absolute https URL, and nothing that could execute. http:// is
+      // refused too — the app is served over https on Pages, and a plain-http
+      // citation is the one a corporate proxy silently eats.
+      const refs = refUrlsOf(c);
+      if (refs.length) referencedCmds++;
+      refs.forEach((r) => {
+        refCount++;
+        if (typeof r !== "string" || !r.trim()) { errors.push(`${w}: empty reference url`); return; }
+        if (!/^https:\/\/[^\s"'<>]+$/.test(r)) {
+          errors.push(`${w}: reference must be an absolute https url, got ${JSON.stringify(r.slice(0, 60))}`);
+          return;
+        }
+        try { refHosts.add(new URL(r).hostname.replace(/^www\./, "")); }
+        catch { errors.push(`${w}: unparseable reference url ${JSON.stringify(r.slice(0, 60))}`); }
+      });
       if (!c.desc || !String(c.desc).trim()) warnings.push(`${w}: missing desc`);
       const tags = c.tags;
       if (!Array.isArray(tags) || tags.length === 0) warnings.push(`${w}: no tags`);
@@ -124,6 +154,9 @@ console.log(`Residual: ${suspect.length} more of the ${translated} translated st
 console.log(`  A ${RESIDUAL_AUDIT.sample}-string random sample hand-labelled on ${RESIDUAL_AUDIT.date} found ` +
   `${RESIDUAL_AUDIT.garbledInSample} garbled (${(RESIDUAL_AUDIT.rate * 100).toFixed(1)}%), so the real residual is nearer ${estimate}.`);
 suspect.slice(0, 5).forEach((i) => console.log("  ? " + i));
+console.log(`
+References: ${referencedCmds} of ${totalCmds} commands carry one ` +
+  `(${((100 * referencedCmds) / totalCmds).toFixed(1)}%), ${refCount} links across ${refHosts.size} hosts.`);
 console.log(`Duplicate command strings: ${dupes.length} (informational).`);
 dupes.slice(0, 8).forEach(([cmd, locs]) => console.log(`  - x${locs.length}: ${cmd.slice(0, 60)}`));
 
@@ -144,6 +177,9 @@ const METRICS = {
   // was free space: salad it cannot prove could be added back forever at no cost.
   garbled_suspected: suspect.length,
   duplicate_commands: dupes.length,
+  // Same direction as the rest: a command with nowhere to read more is a gap,
+  // and the ratchet is what stops a new batch of commands quietly re-opening it.
+  unreferenced_commands: totalCmds - referencedCmds,
 };
 const progress = JSON.parse(fs.readFileSync(PROGRESS, "utf8"));
 const baseline = progress.quality_ratchet || null;

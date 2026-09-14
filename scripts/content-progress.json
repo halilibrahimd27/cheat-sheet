@@ -254,6 +254,7 @@
     "untranslated": 1202,
     "garbled": 447,
     "garbled_suspected": 128,
-    "duplicate_commands": 216
+    "duplicate_commands": 216,
+    "unreferenced_commands": 901
   }
 }
