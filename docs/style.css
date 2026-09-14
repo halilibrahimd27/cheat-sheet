@@ -3507,3 +3507,56 @@ body:has(.var-bar.active) .back-to-top { display: none; }
     .guide-nav { flex-wrap: wrap; }
     .guide-next, .guide-alldone { margin-left: 0; }
 }
+
+/* ============================================
+   First run
+   Asked once, on the landing view only, never over a deep link. Three routes
+   because the product genuinely does three things, and a newcomer landing on
+   5040 command cards has no way to tell which of them they came for.
+   ============================================ */
+.intro { max-width: 1000px; padding: 48px 4px 24px; }
+.intro-head { margin-bottom: 26px; }
+.intro-title {
+    font-family: var(--font-mono); font-size: var(--fs-3xl); font-weight: 600;
+    color: var(--text-heading); letter-spacing: -0.4px; margin: 0 0 8px;
+}
+.intro-sub { font-size: var(--fs-lg); color: var(--text-tertiary); margin: 0; max-width: 60ch; }
+
+.intro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.intro-card {
+    text-align: left; cursor: pointer;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-left: 3px solid var(--border-secondary);
+    border-radius: var(--radius-md);
+    padding: 16px 18px 18px;
+    font-family: inherit; color: inherit;
+    transition: border-color var(--transition), background var(--transition);
+}
+.intro-card:hover { border-left-color: var(--accent-primary); background: var(--bg-tertiary); }
+.intro-card:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 2px; }
+.intro-card-top {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+    font-family: var(--font-mono); font-size: var(--fs-xl); font-weight: 600;
+    color: var(--text-heading); letter-spacing: -0.2px;
+}
+.intro-card-top .icon { color: var(--accent-primary); }
+.intro-card-desc { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.55; margin: 0; }
+
+.intro-foot {
+    display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+    margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--rule);
+    font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--text-tertiary);
+}
+.intro-skip {
+    margin-left: auto; background: none; border: 0; cursor: pointer;
+    font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--text-tertiary);
+    border-bottom: 1px solid var(--border-secondary); padding: 0 0 1px;
+}
+.intro-skip:hover { color: var(--text-primary); }
+
+@media (max-width: 620px) {
+    .intro { padding-top: 28px; }
+    .intro-title { font-size: var(--fs-2xl); }
+    .intro-skip { margin-left: 0; }
+}

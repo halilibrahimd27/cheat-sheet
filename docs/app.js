@@ -176,6 +176,12 @@
       // — Exam Mode (optional public/exam.js module) —
       mColMachine: "Machine", mColStatus: "Status", mColServices: "Services", mColCreds: "Creds",
       mColFlags: "Flags", mColPhase: "Progress", noIp: "no IP", credOk: "valid",
+      introTitle: "What are you here for?",
+      introSub: "Pick one — this asks once and then gets out of the way.",
+      introBoxTitle: "Solve a box", introBoxDesc: "Start a session. Pick a preset — a lab box, OSCP+, OSWE, CKS — and it walks the methodology, tracks flags and time, and writes the report from what you actually did.",
+      introNextTitle: "I am stuck", introNextDesc: "Tell it what you have — open ports, whether you hold credentials, where you stand — and it ranks what to try next out of 5040 commands.",
+      introBrowseTitle: "Look something up", introBrowseDesc: "The command reference itself. 53 categories, instant search, favourites, and a fill bar that puts your target in every command you copy.",
+      introLocal: "runs entirely in your browser", introSkip: "skip",
       navLayer: "ATT&CK layer", navDone: "techniques exported",
       navNoTimeline: "No commands logged for this machine yet — set it as the active target and copy some.",
       navNoMatch: "None of the logged commands map to a technique in the corpus.",
@@ -280,6 +286,12 @@
       // — Sinav Modu (istege bagli public/exam.js modulu) —
       mColMachine: "Makine", mColStatus: "Durum", mColServices: "Servis", mColCreds: "Kimlik",
       mColFlags: "Flag", mColPhase: "Ilerleme", noIp: "IP yok", credOk: "gecerli",
+      introTitle: "Ne icin geldin?",
+      introSub: "Birini sec — bunu bir kez sorar, sonra yoluna cikmaz.",
+      introBoxTitle: "Kutu coz", introBoxDesc: "Bir oturum baslat. Preset sec — lab kutusu, OSCP+, OSWE, CKS — metodolojiyi adim adim yurutur, flag ve sure tutar, raporu yaptiklarindan yazar.",
+      introNextTitle: "Tikandim", introNextDesc: "Elindekini soyle — acik portlar, kimlik bilgin var mi, neredesin — 5040 komut icinden sirada ne denenmeli siralasin.",
+      introBrowseTitle: "Bir seye bakacagim", introBrowseDesc: "Komut referansinin kendisi. 53 kategori, aninda arama, favoriler ve kopyaladigin her komuta hedefini yazan doldurma cubugu.",
+      introLocal: "tamamen tarayicinda calisir", introSkip: "gec",
       navLayer: "ATT&CK katmani", navDone: "teknik disa aktarildi",
       navNoTimeline: "Bu makine icin kayitli komut yok — aktif hedef yapip birkac komut kopyala.",
       navNoMatch: "Kayitli komutlarin hicbiri korpustaki bir teknige eslesmiyor.",
@@ -4399,6 +4411,53 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
   // render() is a thin wrapper so the CS_APP.onViewRender hook fires once per view
   // no matter which of renderCurrentView's many early returns produced the page.
+  // ── First run ───────────────────────────────────────────────────────────
+  // A first-time visitor used to land on 53 categories and 5040 command cards
+  // with nothing to say which of the three things this tool does they came for.
+  // This asks once, routes them, and never appears again — no tour, no
+  // coachmarks, no second screen. Dismissing it counts as answering.
+  const FIRST_RUN_KEY = "cs-seen-intro";
+  function firstRunDone() { try { return !!localStorage.getItem(FIRST_RUN_KEY); } catch { return true; } }
+  function markFirstRunDone() { try { localStorage.setItem(FIRST_RUN_KEY, "1"); } catch { /* private window: just show it again */ } }
+
+  function renderFirstRun(container) {
+    const wrap = document.createElement("div"); wrap.className = "intro";
+
+    const head = document.createElement("div"); head.className = "intro-head";
+    const h = document.createElement("h1"); h.className = "intro-title"; h.textContent = t("introTitle");
+    const p = document.createElement("p"); p.className = "intro-sub"; p.textContent = t("introSub");
+    head.appendChild(h); head.appendChild(p);
+    wrap.appendChild(head);
+
+    const grid = document.createElement("div"); grid.className = "intro-grid";
+    [
+      { ic: "target", k: "Box", go: () => { markFirstRunDone(); activeCategory = "exam"; render(); } },
+      { ic: "arrow-right", k: "Next", go: () => { markFirstRunDone(); activeCategory = "next"; render(); } },
+      { ic: "list", k: "Browse", go: () => { markFirstRunDone(); activeCategory = null; render(); } }
+    ].forEach(card => {
+      const b = document.createElement("button"); b.className = "intro-card"; b.type = "button";
+      const top = document.createElement("div"); top.className = "intro-card-top";
+      top.appendChild(icon(card.ic, "icon-xl"));
+      top.appendChild(document.createTextNode(t("intro" + card.k + "Title")));
+      const d = document.createElement("p"); d.className = "intro-card-desc"; d.textContent = t("intro" + card.k + "Desc");
+      b.appendChild(top); b.appendChild(d);
+      b.addEventListener("click", card.go);
+      grid.appendChild(b);
+    });
+    wrap.appendChild(grid);
+
+    const foot = document.createElement("div"); foot.className = "intro-foot";
+    const stats = getStats();
+    foot.appendChild(document.createTextNode(stats.tc + " " + t("commands") + " · " + stats.cats + " " + t("categories") + " · " + t("introLocal")));
+    const skip = document.createElement("button"); skip.className = "intro-skip"; skip.type = "button";
+    skip.textContent = t("introSkip");
+    skip.addEventListener("click", () => { markFirstRunDone(); render(); });
+    foot.appendChild(skip);
+    wrap.appendChild(foot);
+
+    container.appendChild(wrap);
+  }
+
   function render() {
     renderCurrentView();
     const hook = window.CS_APP && window.CS_APP.onViewRender;
@@ -4409,6 +4468,14 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   function renderCurrentView() {
     buildSidebar(); contentArea.innerHTML = ""; focusedCmdIdx = -1;
     syncHash();
+
+    // Only on the landing view, only before it has been answered, and never
+    // over a deep link — someone who arrived at #machines asked for machines.
+    if (activeCategory === null && !isFiltering() && !firstRunDone()) {
+      currentSection.textContent = t("introTitle"); hero.style.display = "none";
+      renderFirstRun(contentArea);
+      return;
+    }
 
     // Next Move — optional script (public/nextmove.js) on window.CS_NEXT.
     if (activeCategory === "next") {
