@@ -148,7 +148,7 @@
       // — Round 5: structured machine workspace —
       svcPort: "Port", svcProto: "Proto", svcName: "Service", svcVersion: "Version", svcState: "State", svcInfo: "Notes",
       svcAdd: "+ Service", svcNone: "No services yet. Add a row or import nmap output.",
-      importNmap: "⇪ Import nmap", importNmapTitle: "Import nmap output", importNmapPh: "Paste `nmap -sCV`/`-sV` output. Ports, services and versions are parsed automatically.",
+      importNmap: "Import nmap", importNmapTitle: "Import nmap output", importNmapPh: "Paste `nmap -sCV`/`-sV` output. Ports, services and versions are parsed automatically.",
       importDo: "Parse & add", importedN: "Imported {n} services", importedNone: "No services found in that output",
       rawToggle: "Raw", tableToggle: "Table", scanPort: "Scan this port", scanAll: "Scan all ports",
       credUser: "User", credSecret: "Secret", credTypeCol: "Type", credSource: "Source", credWorks: "Works on", credState: "State",
@@ -161,12 +161,12 @@
       activeBadge: "ACTIVE", activeHint: "Copied commands log to this box.", activeNowSet: "Active target set — copies now log here",
       evidence: "Evidence", evidenceNone: "No screenshots yet. Paste (Ctrl+V) or drop an image to attach proof.",
       evidenceCaption: "Caption / description…", evidenceDrop: "Paste or drop a screenshot here", evidenceDel: "Remove screenshot",
-      boardView: "▤ Board", gridView: "▦ Grid", colDrop: "Drop here",
+      boardView: "Board", gridView: "Grid", colDrop: "Drop here",
       // — Round 5: write-up pro (CVSS) —
-      cvssCalc: "🧮 CVSS 3.1", cvssTitle: "CVSS 3.1 Base Score", cvssInsert: "Insert into write-up", cvssVector: "Vector", cvssScore: "Score", cvssSeverity: "Severity",
+      cvssCalc: "CVSS 3.1", cvssTitle: "CVSS 3.1 Base Score", cvssInsert: "Insert into write-up", cvssVector: "Vector", cvssScore: "Score", cvssSeverity: "Severity",
       // — Round 5: variable profiles + basket —
       profiles: "Profiles", profileSave: "Save as profile", profileNew: "Profile name (e.g., Active Box)", profileNone: "No saved profiles", profileApply: "Apply", profileDel: "Delete profile", profileSaved: "Profile saved",
-      basket: "Script basket", basketAdd: "Add to basket", basketNone: "Basket is empty. Add commands to build a script.", basketCopy: "Copy script", basketClear: "Clear", basketExport: "Export .sh", basketTitle: "🧺 Script Basket", basketAdded: "Added to basket", basketCount: "in basket",
+      basket: "Script basket", basketAdd: "Add to basket", basketNone: "Basket is empty. Add commands to build a script.", basketCopy: "Copy script", basketClear: "Clear", basketExport: "Export .sh", basketTitle: "Script Basket", basketAdded: "Added to basket", basketCount: "in basket",
       // — Round 6: ATT&CK tags + references —
       attackFacet: "ATT&CK", attackAll: "All techniques", cardRefs: "References", attackTitle: "MITRE ATT&CK technique",
       cmdAttack: "MITRE ATT&CK (optional)", cmdAttackHint: "e.g. T1059, T1003.001 (comma-separated)", cmdRefs: "Reference links (optional)", cmdRefsHint: "One URL per line (HackTricks, GTFOBins, docs…)",
@@ -261,7 +261,7 @@
       // — Round 5: yapilandirilmis makine calisma alani —
       svcPort: "Port", svcProto: "Proto", svcName: "Servis", svcVersion: "Surum", svcState: "Durum", svcInfo: "Not",
       svcAdd: "+ Servis", svcNone: "Henuz servis yok. Satir ekleyin ya da nmap ciktisi aktarin.",
-      importNmap: "⇪ nmap aktar", importNmapTitle: "nmap ciktisi aktar", importNmapPh: "`nmap -sCV`/`-sV` ciktisini yapistirin. Port, servis ve surumler otomatik ayristirilir.",
+      importNmap: "nmap aktar", importNmapTitle: "nmap ciktisi aktar", importNmapPh: "`nmap -sCV`/`-sV` ciktisini yapistirin. Port, servis ve surumler otomatik ayristirilir.",
       importDo: "Ayristir ve ekle", importedN: "{n} servis aktarildi", importedNone: "Bu ciktida servis bulunamadi",
       rawToggle: "Ham", tableToggle: "Tablo", scanPort: "Bu portu tara", scanAll: "Tum portlari tara",
       credUser: "Kullanici", credSecret: "Parola/Sir", credTypeCol: "Tur", credSource: "Kaynak", credWorks: "Gecerli oldugu", credState: "Durum",
@@ -274,10 +274,10 @@
       activeBadge: "AKTIF", activeHint: "Kopyalanan komutlar bu makineye islenir.", activeNowSet: "Aktif hedef ayarlandi — kopyalar artik buraya islenir",
       evidence: "Kanit", evidenceNone: "Henuz ekran goruntusu yok. Kanit eklemek icin bir gorseli yapistirin (Ctrl+V) ya da surukleyin.",
       evidenceCaption: "Aciklama…", evidenceDrop: "Ekran goruntusunu buraya yapistirin ya da surukleyin", evidenceDel: "Goruntuyu kaldir",
-      boardView: "▤ Pano", gridView: "▦ Izgara", colDrop: "Buraya birak",
-      cvssCalc: "🧮 CVSS 3.1", cvssTitle: "CVSS 3.1 Temel Skor", cvssInsert: "Write-up'a ekle", cvssVector: "Vektor", cvssScore: "Skor", cvssSeverity: "Onem",
+      boardView: "Pano", gridView: "Izgara", colDrop: "Buraya birak",
+      cvssCalc: "CVSS 3.1", cvssTitle: "CVSS 3.1 Temel Skor", cvssInsert: "Write-up'a ekle", cvssVector: "Vektor", cvssScore: "Skor", cvssSeverity: "Onem",
       profiles: "Profiller", profileSave: "Profil olarak kaydet", profileNew: "Profil adi (or. Aktif Makine)", profileNone: "Kayitli profil yok", profileApply: "Uygula", profileDel: "Profili sil", profileSaved: "Profil kaydedildi",
-      basket: "Script sepeti", basketAdd: "Sepete ekle", basketNone: "Sepet bos. Script olusturmak icin komut ekleyin.", basketCopy: "Scripti kopyala", basketClear: "Temizle", basketExport: ".sh aktar", basketTitle: "🧺 Script Sepeti", basketAdded: "Sepete eklendi", basketCount: "sepette",
+      basket: "Script sepeti", basketAdd: "Sepete ekle", basketNone: "Sepet bos. Script olusturmak icin komut ekleyin.", basketCopy: "Scripti kopyala", basketClear: "Temizle", basketExport: ".sh aktar", basketTitle: "Script Sepeti", basketAdded: "Sepete eklendi", basketCount: "sepette",
       // — Round 6: ATT&CK etiketleri + referanslar —
       attackFacet: "ATT&CK", attackAll: "Tum teknikler", cardRefs: "Referanslar", attackTitle: "MITRE ATT&CK teknigi",
       cmdAttack: "MITRE ATT&CK (istege bagli)", cmdAttackHint: "or. T1059, T1003.001 (virgul ile ayirin)", cmdRefs: "Referans baglantilari (istege bagli)", cmdRefsHint: "Her satira bir URL (HackTricks, GTFOBins, dokuman…)",
@@ -361,12 +361,12 @@
       return;
     }
     if (state === "ok") {
-      el.textContent = "✓ " + t("savedOk"); el.classList.add("save-ok"); el.style.color = "var(--accent-green)";
+      setIconLabel(el, "check", t("savedOk")); el.classList.add("save-ok"); el.style.color = "var(--accent-green)";
       el._t = setTimeout(() => { el.textContent = ""; el.classList.remove("save-ok"); }, 2000);
       return;
     }
     // A failure stays on screen — it is the only lasting warning the user gets.
-    el.textContent = "⚠ " + t("saveFailed"); el.classList.add("save-err"); el.style.color = "var(--accent-red)";
+    setIconLabel(el, "alert", t("saveFailed")); el.classList.add("save-err"); el.style.color = "var(--accent-red)";
   }
 
   // ── Clipboard (works on http/LAN without a secure context; never fails silently) ──
@@ -435,7 +435,7 @@
   }
   function showLoadError() {
     hero.style.display = "none";
-    contentArea.innerHTML = '<div class="app-error"><div class="app-error-icon" aria-hidden="true">⚠️</div><h3>' + t("loadErrTitle") + '</h3><p>' + t("loadErrBody") + '</p><button class="btn btn-primary" id="retryBtn">' + t("retry") + '</button></div>';
+    contentArea.innerHTML = '<div class="app-error"><div class="app-error-icon" aria-hidden="true">' + iconHtml("alert", "icon-xl") + '</div><h3>' + t("loadErrTitle") + '</h3><p>' + t("loadErrBody") + '</p><button class="btn btn-primary" id="retryBtn">' + t("retry") + '</button></div>';
     const b = document.getElementById("retryBtn"); if (b) b.addEventListener("click", loadData);
   }
   async function loadData() {
@@ -537,7 +537,7 @@
     });
     copyText(result, () => {
       recordHistory(result);
-      $("varBarApply").textContent = "✓ " + t("copied");
+      setIconLabel($("varBarApply"), "check", t("copied"));
       setTimeout(() => { $("varBarApply").textContent = t("applyCopy"); varBar.classList.remove("active"); }, 1200);
     });
   });
@@ -585,7 +585,7 @@
     saveIpValues();
   }
   const ipProfilesRow = document.createElement("div"); ipProfilesRow.className = "ip-profiles";
-  const profSave = document.createElement("button"); profSave.className = "btn btn-secondary btn-sm"; profSave.textContent = "💾 " + t("profileSave");
+  const profSave = document.createElement("button"); profSave.className = "btn btn-secondary btn-sm"; setIconLabel(profSave, "save", t("profileSave"));
   const profSel = document.createElement("select"); profSel.className = "form-select ip-profile-select"; profSel.setAttribute("aria-label", t("profiles"));
   const profApply = document.createElement("button"); profApply.className = "btn btn-secondary btn-sm"; profApply.textContent = t("profileApply");
   const profDel = document.createElement("button"); profDel.className = "btn btn-secondary btn-sm"; profDel.appendChild(icon("trash")); profDel.title = t("profileDel"); profDel.setAttribute("aria-label", t("profileDel"));
@@ -610,12 +610,12 @@
   const basketFab = document.createElement("button"); basketFab.className = "basket-fab"; basketFab.id = "basketFab"; basketFab.setAttribute("aria-label", t("basketTitle"));
   const basketPanel = document.createElement("div"); basketPanel.className = "basket-panel"; basketPanel.id = "basketPanel"; basketPanel.setAttribute("role", "dialog"); basketPanel.setAttribute("aria-label", t("basketTitle"));
   document.body.appendChild(basketFab); document.body.appendChild(basketPanel);
-  function updateBasketFab() { basketFab.innerHTML = '🧺 <span class="basket-fab-count">' + basket.length + '</span>'; basketFab.classList.toggle("has", basket.length > 0); }
+  function updateBasketFab() { basketFab.innerHTML = iconHtml("basket") + ' <span class="basket-fab-count">' + basket.length + '</span>'; basketFab.classList.toggle("has", basket.length > 0); }
   function saveBasket() { safeSet("cs-basket", JSON.stringify(basket)); updateBasketFab(); }
   function basketAdd(code) { basket.push(code); saveBasket(); toast(t("basketAdded"), "ok"); if (basketPanel.classList.contains("active")) renderBasketPanel(); }
   function basketScript() { return "#!/usr/bin/env bash\n# Generated by cheat-sheet — " + basket.length + " " + t("commands") + "\nset -e\n\n" + basket.map(applyIpToCode).join("\n") + "\n"; }
   function renderBasketPanel() {
-    basketPanel.innerHTML = '<div class="basket-head"><strong>' + t("basketTitle") + '</strong><button class="basket-close" aria-label="Close">' + iconHtml("x") + '</button></div>';
+    basketPanel.innerHTML = '<div class="basket-head"><strong>' + iconHtml("basket", "icon-sm") + ' ' + t("basketTitle") + '</strong><button class="basket-close" aria-label="Close">' + iconHtml("x") + '</button></div>';
     const body = document.createElement("div"); body.className = "basket-body";
     if (!basket.length) { body.innerHTML = '<p class="machine-hosts-empty">' + t("basketNone") + '</p>'; }
     else basket.forEach((code, i) => {
@@ -1673,7 +1673,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       // user-controlled, so it MUST pass through escapeHtml to stay XSS-safe.
       const lang = b.lang ? "<span class=\"wu-code-lang\">" + escapeHtml(b.lang) + "</span>" : "";
       return "<div class=\"wu-code-wrap\"><div class=\"wu-code-head\">" + lang +
-        "<button type=\"button\" class=\"wu-code-copy\" title=\"" + t("copy") + "\">⧉ " + t("copy") + "</button></div>" +
+        "<button type=\"button\" class=\"wu-code-copy\" title=\"" + t("copy") + "\">" + t("copy") + "</button></div>" +
         "<pre class=\"wu-code-block\">" + b.code + "</pre></div>";
     });
     // LAST statement before the return: every rule that could reach inside a quoted
@@ -1687,15 +1687,23 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     return h;
   }
   // Wire the copy buttons rendered into markdown code blocks (read mode / preview).
+  //
+  // The icon is put on HERE and not in renderMarkdown, which emits the button as
+  // plain text. renderMarkdown runs over write-up content this app did not write,
+  // and the inertness suite it is held to forbids <svg> in its output outright —
+  // a blunt rule, but the right one for a renderer whose input is untrusted. By
+  // the time this runs the markup is already parsed DOM, so the icon is appended
+  // as a node and no markup is being re-parsed.
   function wireCodeCopies(container) {
     container.querySelectorAll(".wu-code-copy").forEach(btn => {
+      setIconLabel(btn, "copy", t("copy"));
       btn.addEventListener("click", () => {
         const wrap = btn.closest(".wu-code-wrap"); const pre = wrap && wrap.querySelector("pre");
         if (!pre) return;
         copyText(pre.textContent, () => {
-          btn.textContent = "✓ " + t("copied");
+          setIconLabel(btn, "check", t("copied"));
           announce(t("copied"));
-          setTimeout(() => { btn.textContent = "⧉ " + t("copy"); }, 1500);
+          setTimeout(() => { setIconLabel(btn, "copy", t("copy")); }, 1500);
         });
       });
     });
@@ -1827,7 +1835,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
     // File list view
     const hdr = document.createElement("div"); hdr.className = "writeups-header";
-    hdr.innerHTML = '<div class="wu-header-top"><h2>📝 ' + t("writeups") + '</h2><button class="btn btn-primary" id="newWuBtn">' + t("newWriteup") + '</button></div>' +
+    hdr.innerHTML = '<div class="wu-header-top"><h2>' + iconHtml("note", "icon-lg") + ' ' + t("writeups") + '</h2><button class="btn btn-primary" id="newWuBtn">' + t("newWriteup") + '</button></div>' +
       '<p>' + t("writeupsDesc") + '</p>';
     contentArea.appendChild(hdr);
     hdr.querySelector("#newWuBtn").addEventListener("click", createWriteup);
@@ -1913,7 +1921,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
       const cTitle = document.createElement("td"); cTitle.className = "col-machine";
       const tw = document.createElement("div"); tw.className = "wurow-titlewrap";
-      if (pinned) { const p = document.createElement("span"); p.className = "wurow-pin"; p.textContent = "📌"; p.title = t("wuPin"); tw.appendChild(p); }
+      if (pinned) { const p = document.createElement("span"); p.className = "wurow-pin"; p.appendChild(icon("pin", "icon-sm")); p.title = t("wuPin"); tw.appendChild(p); }
       const name = document.createElement("div"); name.className = "wurow-name"; name.textContent = wu.title;
       tw.appendChild(name);
       cTitle.appendChild(tw);
@@ -1937,7 +1945,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const cAct = document.createElement("td"); cAct.className = "col-act";
       const pin = document.createElement("button");
       pin.className = "wu-file-pin" + (pinned ? " active" : "");
-      pin.textContent = pinned ? "📌" : "📍";
+      pin.appendChild(icon("pin"));
       pin.title = pinned ? t("wuUnpin") : t("wuPin");
       pin.setAttribute("aria-label", (pinned ? t("wuUnpin") : t("wuPin")) + " " + wu.title);
       pin.addEventListener("click", e => toggleWuPin(wu.id, e));
@@ -2079,7 +2087,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
       const tagsRow = document.createElement("div"); tagsRow.className = "wu-page-tags";
       const tagsH = (wu.tags || []).map(tg => '<span class="wu-tag">' + escapeHtml(tg) + '</span>').join("");
-      tagsRow.innerHTML = tagsH + '<button class="wu-edit-tags-btn">✎ ' + t("wuTags").toLowerCase() + '</button>';
+      tagsRow.innerHTML = tagsH + '<button class="wu-edit-tags-btn">' + iconHtml("pencil", "icon-sm") + ' ' + t("wuTags").toLowerCase() + '</button>';
       tagsRow.querySelector(".wu-edit-tags-btn").addEventListener("click", () => {
         openModal(t("wuEditTags"), [{ key: "tags", label: t("wuTags"), placeholder: "HTB, OSCP, Linux" }],
           { tags: (wu.tags || []).join(", ") },
@@ -2110,7 +2118,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       // <TARGET_IP>/<TARGET_URL> placeholders + Box/OS/Difficulty header from the machine.
       const mcSel = document.createElement("select"); mcSel.className = "form-select wu-tool-select"; mcSel.setAttribute("aria-label", t("wuMachine"));
       mcSel.innerHTML = '<option value="">🔗 ' + t("wuMachine") + '…</option>' + machines.map(mm => '<option value="' + escapeHtml(mm.id) + '"' + (wu.relatedMachine === mm.id ? " selected" : "") + '>' + escapeHtml(mm.name) + (mm.ip ? " (" + escapeHtml(mm.ip) + ")" : "") + '</option>').join("");
-      const imgBtn = document.createElement("button"); imgBtn.className = "btn btn-secondary btn-sm"; imgBtn.textContent = "📷 " + t("imageBtn");
+      const imgBtn = document.createElement("button"); imgBtn.className = "btn btn-secondary btn-sm"; setIconLabel(imgBtn, "camera", t("imageBtn"));
       const imgInput = document.createElement("input"); imgInput.type = "file"; imgInput.accept = "image/*"; imgInput.style.display = "none"; imgInput.setAttribute("aria-label", t("imageBtn"));
       toolbar.appendChild(tplSel); toolbar.appendChild(secSel); toolbar.appendChild(mcSel); toolbar.appendChild(imgBtn); toolbar.appendChild(imgInput);
       page.appendChild(toolbar);
@@ -2131,23 +2139,28 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
       // Formatting toolbar — inserts markdown at the cursor / around the selection.
       const fmt = document.createElement("div"); fmt.className = "wu-format-toolbar";
+      // A text mnemonic stays text when it NAMES the markdown it inserts — B, I,
+      // </>, H and "1." are read, not looked at. The rest were emoji standing in
+      // for an icon, and those are what the sprite is for.
       [
-        ["B", "Bold", () => wuWrap(editor, "**", "**", "bold")],
-        ["I", "Italic", () => wuWrap(editor, "*", "*", "italic")],
-        ["</>", "Code", () => wuWrap(editor, "`", "`", "code")],
-        ["H", "Heading", () => wuLinePrefix(editor, "## ")],
-        ["🔗", "Link", () => wuWrap(editor, "[", "](https://)", "text")],
-        ["•", "Bullet list", () => wuLinePrefix(editor, "- ")],
-        ["1.", "Numbered list", () => wuLinePrefix(editor, "1. ")],
-        ["☑", "Task", () => wuLinePrefix(editor, "- [ ] ")],
-        ["❝", "Quote", () => wuLinePrefix(editor, "> ")],
-        ["▦", "Table", () => insertAtCursor(editor, "\n| Col | Col |\n| --- | --- |\n|  |  |\n")]
-      ].forEach(([label, title, fn]) => {
-        const b = document.createElement("button"); b.className = "wu-fmt-btn"; b.type = "button"; b.textContent = label; b.title = title; b.setAttribute("aria-label", title);
+        [null, "B", "Bold", () => wuWrap(editor, "**", "**", "bold")],
+        [null, "I", "Italic", () => wuWrap(editor, "*", "*", "italic")],
+        [null, "</>", "Code", () => wuWrap(editor, "`", "`", "code")],
+        [null, "H", "Heading", () => wuLinePrefix(editor, "## ")],
+        ["link", "", "Link", () => wuWrap(editor, "[", "](https://)", "text")],
+        ["list", "", "Bullet list", () => wuLinePrefix(editor, "- ")],
+        [null, "1.", "Numbered list", () => wuLinePrefix(editor, "1. ")],
+        ["check", "", "Task", () => wuLinePrefix(editor, "- [ ] ")],
+        ["quote", "", "Quote", () => wuLinePrefix(editor, "> ")],
+        ["table", "", "Table", () => insertAtCursor(editor, "\n| Col | Col |\n| --- | --- |\n|  |  |\n")]
+      ].forEach(([ic, label, title, fn]) => {
+        const b = document.createElement("button"); b.className = "wu-fmt-btn"; b.type = "button";
+        if (ic) b.appendChild(icon(ic, "icon-sm")); else b.textContent = label;
+        b.title = title; b.setAttribute("aria-label", title);
         b.addEventListener("click", () => { fn(); commit(); });
         fmt.appendChild(b);
       });
-      const cvssBtn = document.createElement("button"); cvssBtn.className = "wu-fmt-btn wu-cvss-btn"; cvssBtn.type = "button"; cvssBtn.textContent = t("cvssCalc"); cvssBtn.title = t("cvssTitle");
+      const cvssBtn = document.createElement("button"); cvssBtn.className = "wu-fmt-btn wu-cvss-btn"; cvssBtn.type = "button"; setIconLabel(cvssBtn, "calculator", t("cvssCalc")); cvssBtn.title = t("cvssTitle");
       cvssBtn.addEventListener("click", () => openCvssCalc((vec, score, sev) => { insertAtCursor(editor, "\n**CVSS 3.1:** " + score + " (" + sev + ")  \n`" + vec + "`\n"); commit(); }));
       fmt.appendChild(cvssBtn);
       const wcEl = document.createElement("span"); wcEl.className = "wu-wordcount"; fmt.appendChild(wcEl);
@@ -2240,7 +2253,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const rel = machines.find(x => x.id === wu.relatedMachine);
       if (rel) {
         const link = document.createElement("button"); link.className = "wu-related-machine"; link.type = "button";
-        link.innerHTML = osIconFor(rel.os) + " " + escapeHtml(rel.name) + (rel.ip ? " (" + escapeHtml(rel.ip) + ")" : "");
+        link.innerHTML = osIconHtml(rel.os) + " " + escapeHtml(rel.name) + (rel.ip ? " (" + escapeHtml(rel.ip) + ")" : "");
         link.title = t("wuOpenMachine");
         link.addEventListener("click", () => { openWriteupId = null; wuEditMode = false; openMachineId = rel.id; activeCategory = "machines"; render(); window.scrollTo({ top: 0, behavior: motionBehavior() }); });
         page.appendChild(link);
@@ -2382,13 +2395,17 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     for (const g of groupByPhase(m.checklist)) { if (g.items.some(x => !x.item.done)) return g.phase; }
     return null;
   }
+  // Returns a SPRITE NAME, not a glyph: as emoji these drew a different picture
+  // on every platform, and on most Linux desktops the window and the office
+  // block both came out as a hollow box.
   function osIconFor(os) {
     const s = (os || "").toLowerCase();
-    if (s.includes("windows")) return "🪟";
-    if (s.includes("linux")) return "🐧";
-    if (s.includes("ad") || s.includes("domain") || s.includes("active dir")) return "🏢";
-    return "🖥";
+    if (s.includes("windows")) return "windows";
+    if (s.includes("linux")) return "linux";
+    if (s.includes("ad") || s.includes("domain") || s.includes("active dir")) return "building";
+    return "server";
   }
+  function osIconHtml(os) { return iconHtml(osIconFor(os)); }
 
   // ── Machine metadata helpers (platform / difficulty / status / flags / timing) ──
   // Status and difficulty end up in class names and <option> values, so they are
@@ -2480,7 +2497,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         if (item.hint) {
           const hr = document.createElement("div"); hr.className = "checklist-hint";
           const code = document.createElement("code"); code.textContent = item.hint;
-          const cbn = document.createElement("button"); cbn.className = "checklist-hint-copy"; cbn.textContent = "⧉"; cbn.title = t("copyCmd"); cbn.setAttribute("aria-label", t("copyCmd"));
+          const cbn = document.createElement("button"); cbn.className = "checklist-hint-copy"; cbn.appendChild(icon("copy", "icon-sm")); cbn.title = t("copyCmd"); cbn.setAttribute("aria-label", t("copyCmd"));
           cbn.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); copyText(applyIpToCode(item.hint), () => { announce(t("copied")); toast(t("copied"), "ok"); }); });
           hr.appendChild(code); hr.appendChild(cbn); body.appendChild(hr);
         }
@@ -2937,7 +2954,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     }
 
     const hdr = document.createElement("div"); hdr.className = "writeups-header";
-    hdr.innerHTML = '<div class="wu-header-top"><h2>🖥 ' + t("machines") + '</h2><button class="btn btn-primary" id="newMachineBtn">' + t("addMachine") + '</button></div>' +
+    hdr.innerHTML = '<div class="wu-header-top"><h2>' + iconHtml("server", "icon-lg") + ' ' + t("machines") + '</h2><button class="btn btn-primary" id="newMachineBtn">' + t("addMachine") + '</button></div>' +
       '<p>' + t("addMachineDesc") + '</p>';
     contentArea.appendChild(hdr);
     hdr.querySelector("#newMachineBtn").addEventListener("click", createMachine);
@@ -2980,8 +2997,8 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     controls.appendChild(mSearch); controls.appendChild(platSel); controls.appendChild(statSel); controls.appendChild(tagSel); controls.appendChild(sortSel);
     // Grid / Board view toggle
     const viewToggle = document.createElement("div"); viewToggle.className = "machine-view-toggle";
-    const gBtn = document.createElement("button"); gBtn.className = "view-btn" + (machineView === "grid" ? " active" : ""); gBtn.textContent = t("gridView"); gBtn.title = t("gridView");
-    const bBtn = document.createElement("button"); bBtn.className = "view-btn" + (machineView === "board" ? " active" : ""); bBtn.textContent = t("boardView"); bBtn.title = t("boardView");
+    const gBtn = document.createElement("button"); gBtn.className = "view-btn" + (machineView === "grid" ? " active" : ""); setIconLabel(gBtn, "grid", t("gridView")); gBtn.title = t("gridView");
+    const bBtn = document.createElement("button"); bBtn.className = "view-btn" + (machineView === "board" ? " active" : ""); setIconLabel(bBtn, "board", t("boardView")); bBtn.title = t("boardView");
     gBtn.addEventListener("click", () => { if (machineView === "grid") return; machineView = "grid"; safeSet("cs-machine-view", "grid"); gBtn.classList.add("active"); bBtn.classList.remove("active"); statSel.disabled = false; renderView(); });
     bBtn.addEventListener("click", () => { if (machineView === "board") return; machineView = "board"; safeSet("cs-machine-view", "board"); bBtn.classList.add("active"); gBtn.classList.remove("active"); statSel.disabled = true; renderView(); });
     viewToggle.appendChild(gBtn); viewToggle.appendChild(bBtn); controls.appendChild(viewToggle);
@@ -3048,7 +3065,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         // machine: os glyph + name over ip, plus platform/difficulty as quiet meta
         const cName = document.createElement("td"); cName.className = "col-machine";
         const nameWrap = document.createElement("div"); nameWrap.className = "mrow-name-wrap";
-        const os = document.createElement("span"); os.className = "mrow-os"; os.textContent = osIconFor(m.os); os.setAttribute("aria-hidden", "true");
+        const os = document.createElement("span"); os.className = "mrow-os"; os.appendChild(icon(osIconFor(m.os), "icon-sm")); os.setAttribute("aria-hidden", "true");
         const nameCol = document.createElement("div"); nameCol.className = "mrow-namecol";
         const nm = document.createElement("div"); nm.className = "mrow-name"; nm.textContent = m.name;
         const sub = document.createElement("div"); sub.className = "mrow-sub";
@@ -3085,7 +3102,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
           const f = document.createElement("span");
           f.className = "mrow-flag" + (got ? " got " + k : "");
           f.textContent = k === "user" ? "U" : "R";
-          f.title = label + (got ? " ✓" : "");
+          f.title = label + (got ? " — " + t("captured") : "");
           cFlags.appendChild(f);
         });
         tr.appendChild(cFlags);
@@ -3132,7 +3149,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const card = document.createElement("div"); card.className = "board-card"; card.draggable = true;
       card.setAttribute("role", "button"); card.setAttribute("tabindex", "0");
       card.innerHTML =
-        '<div class="board-card-top"><span class="machine-os-icon">' + osIconFor(m.os) + '</span>' +
+        '<div class="board-card-top"><span class="machine-os-icon">' + osIconHtml(m.os) + '</span>' +
           '<span class="board-card-name">' + escapeHtml(m.name) + '</span>' +
           (isCaptured(m.userFlag) ? '<span class="flag-chip user" title="' + t("userFlag") + '"></span>' : '') +
           (isCaptured(m.rootFlag) ? '<span class="flag-chip root" title="' + t("rootFlag") + '"></span>' : '') + '</div>' +
@@ -3213,8 +3230,8 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const bar = document.createElement("div"); bar.className = "active-target-bar" + (isActive ? " on" : "");
     const label = document.createElement("span"); label.className = "active-target-label";
     label.innerHTML = isActive
-      ? '<span class="active-dot">●</span> <strong>' + t("activeBadge") + '</strong> — ' + t("activeHint")
-      : '🎯 ' + t("activeTarget");
+      ? '<span class="active-dot" aria-hidden="true"></span> <strong>' + t("activeBadge") + '</strong> — ' + t("activeHint")
+      : iconHtml("target") + ' ' + t("activeTarget");
     const btn = document.createElement("button"); btn.className = "btn btn-sm " + (isActive ? "btn-secondary" : "btn-primary");
     btn.textContent = isActive ? t("unsetActive") : t("setActive");
     btn.addEventListener("click", () => {
@@ -3231,9 +3248,9 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     m.services = normalizeServices(m.services);
     const sec = document.createElement("div"); sec.className = "machine-section";
     const head = document.createElement("div"); head.className = "machine-section-head";
-    head.innerHTML = '<h3>🔌 ' + t("services") + '</h3>';
+    head.innerHTML = '<h3>' + iconHtml("plug") + ' ' + t("services") + '</h3>';
     const actions = document.createElement("div"); actions.className = "svc-actions";
-    const importBtn = document.createElement("button"); importBtn.className = "btn btn-secondary btn-sm"; importBtn.textContent = t("importNmap");
+    const importBtn = document.createElement("button"); importBtn.className = "btn btn-secondary btn-sm"; setIconLabel(importBtn, "upload", t("importNmap"));
     const addBtn = document.createElement("button"); addBtn.className = "btn btn-secondary btn-sm"; addBtn.textContent = t("svcAdd");
     actions.appendChild(importBtn); actions.appendChild(addBtn); head.appendChild(actions);
     sec.appendChild(head);
@@ -3255,7 +3272,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       quick.innerHTML = "";
       const ports = m.services.map(s => s.port).filter(p => p && +p > 0);
       if (!ports.length) return;
-      const b = document.createElement("button"); b.className = "svc-chip"; b.textContent = "🔎 nmap -sCV (" + ports.length + ")"; b.title = t("scanAll");
+      const b = document.createElement("button"); b.className = "svc-chip"; setIconLabel(b, "search", "nmap -sCV (" + ports.length + ")"); b.title = t("scanAll");
       b.addEventListener("click", () => scanCopy("nmap -sCV -p" + ports.join(",") + " " + ip()));
       quick.appendChild(b);
     }
@@ -3275,7 +3292,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         tr.appendChild(textCell("name"));
         tr.appendChild(textCell("version"));
         const tdA = document.createElement("td"); tdA.className = "cell-actions";
-        const scan = document.createElement("button"); scan.className = "cell-btn"; scan.textContent = "🔎"; scan.title = t("scanPort");
+        const scan = document.createElement("button"); scan.className = "cell-btn"; scan.appendChild(icon("search", "icon-sm")); scan.title = t("scanPort");
         scan.addEventListener("click", () => scanCopy("nmap -sCV -p" + (s.port || "") + " " + ip()));
         const del = document.createElement("button"); del.className = "cell-btn cell-del"; del.appendChild(icon("x")); del.title = t("del");
         del.addEventListener("click", () => { m.services.splice(i, 1); persist(); renderTable(); });
@@ -3302,7 +3319,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     m.credentials = normalizeCreds(m.credentials);
     const sec = document.createElement("div"); sec.className = "machine-section";
     const head = document.createElement("div"); head.className = "machine-section-head";
-    head.innerHTML = '<h3>🔑 ' + t("credentials") + '</h3>';
+    head.innerHTML = '<h3>' + iconHtml("key") + ' ' + t("credentials") + '</h3>';
     const addBtn = document.createElement("button"); addBtn.className = "btn btn-secondary btn-sm"; addBtn.textContent = t("credAdd");
     head.appendChild(addBtn); sec.appendChild(head);
     const tableWrap = document.createElement("div"); tableWrap.className = "data-table-wrap"; sec.appendChild(tableWrap);
@@ -3321,7 +3338,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         // secret + copy
         const tdSec = document.createElement("td"); tdSec.className = "cell-secret";
         const sInp = document.createElement("input"); sInp.className = "cell-input"; sInp.value = c.secret || ""; sInp.setAttribute("aria-label", "secret"); sInp.addEventListener("input", () => { c.secret = sInp.value; persist(); });
-        const sCopy = document.createElement("button"); sCopy.className = "cell-btn"; sCopy.textContent = "⧉"; sCopy.title = t("credCopySecret"); sCopy.addEventListener("click", () => cp(c.secret, t("credCopySecret")));
+        const sCopy = document.createElement("button"); sCopy.className = "cell-btn"; sCopy.appendChild(icon("copy", "icon-sm")); sCopy.title = t("credCopySecret"); sCopy.addEventListener("click", () => cp(c.secret, t("credCopySecret")));
         tdSec.appendChild(sInp); tdSec.appendChild(sCopy); tr.appendChild(tdSec);
         // type select
         const tdT = document.createElement("td"); const tsel = document.createElement("select"); tsel.className = "cell-input"; tsel.setAttribute("aria-label", t("credTypeCol")); CRED_TYPES.forEach(ct => { const o = document.createElement("option"); o.value = ct; o.textContent = ct; if (c.type === ct) o.selected = true; tsel.appendChild(o); }); tsel.addEventListener("change", () => { c.type = tsel.value; persist(); }); tdT.appendChild(tsel); tr.appendChild(tdT);
@@ -3329,7 +3346,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         tr.appendChild(textCell("works"));
         // actions: copy pair, valid toggle, delete
         const tdA = document.createElement("td"); tdA.className = "cell-actions";
-        const pair = document.createElement("button"); pair.className = "cell-btn"; pair.textContent = "👤"; pair.title = t("credCopyPair"); pair.addEventListener("click", () => cp((c.username ? c.username + ":" : "") + (c.secret || ""), t("credCopyPair")));
+        const pair = document.createElement("button"); pair.className = "cell-btn"; pair.appendChild(icon("user", "icon-sm")); pair.title = t("credCopyPair"); pair.addEventListener("click", () => cp((c.username ? c.username + ":" : "") + (c.secret || ""), t("credCopyPair")));
         const vld = document.createElement("button"); vld.className = "cell-btn cell-valid" + (c.valid ? " on" : ""); vld.appendChild(icon(c.valid ? "check" : "x")); vld.title = t("credState"); vld.addEventListener("click", () => { c.valid = !c.valid; persist(); renderTable(); });
         const del = document.createElement("button"); del.className = "cell-btn cell-del"; del.appendChild(icon("x")); del.title = t("del"); del.addEventListener("click", () => { m.credentials.splice(i, 1); persist(); renderTable(); });
         tdA.appendChild(pair); tdA.appendChild(vld); tdA.appendChild(del); tr.appendChild(tdA);
@@ -3343,7 +3360,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   }
 
   // ── Activity timeline (auto-logged copies + manual notes) ──
-  function tlIcon(type) { return type === "cmd" ? "⌨" : type === "note" ? "📝" : "◆"; }
+  function tlIcon(type) { return type === "cmd" ? "keyboard" : type === "note" ? "note" : "diamond"; }
   function renderTimelineInto(container, m) {
     container.innerHTML = "";
     const items = (m.timeline || []).slice().reverse(); // newest first
@@ -3352,14 +3369,14 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const realIdx = m.timeline.length - 1 - ri;
       const row = document.createElement("div"); row.className = "tl-row tl-" + (it.type || "event");
       const time = document.createElement("span"); time.className = "tl-time"; time.textContent = new Date(it.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-      const icon = document.createElement("span"); icon.className = "tl-icon"; icon.textContent = tlIcon(it.type);
+      const ic = document.createElement("span"); ic.className = "tl-icon"; ic.appendChild(icon(tlIcon(it.type), "icon-sm"));
       const body = document.createElement("div"); body.className = "tl-body";
       if (it.type === "cmd") { const code = document.createElement("code"); code.className = "tl-cmd"; code.textContent = it.text; body.appendChild(code); }
       else { body.textContent = it.text; }
       const del = document.createElement("button"); del.className = "tl-del"; del.appendChild(icon("x")); del.title = t("del");
       del.addEventListener("click", () => { m.timeline.splice(realIdx, 1); saveMachine(m.id, { timeline: m.timeline }); renderTimelineInto(container, m); });
-      if (it.type === "cmd") { const cpy = document.createElement("button"); cpy.className = "tl-del"; cpy.textContent = "⧉"; cpy.title = t("copy"); cpy.addEventListener("click", () => copyText(applyIpToCode(it.text), () => toast(t("copied"), "ok"))); row.appendChild(time); row.appendChild(icon); row.appendChild(body); row.appendChild(cpy); row.appendChild(del); }
-      else { row.appendChild(time); row.appendChild(icon); row.appendChild(body); row.appendChild(del); }
+      if (it.type === "cmd") { const cpy = document.createElement("button"); cpy.className = "tl-del"; cpy.appendChild(icon("copy", "icon-sm")); cpy.title = t("copy"); cpy.addEventListener("click", () => copyText(applyIpToCode(it.text), () => toast(t("copied"), "ok"))); row.appendChild(time); row.appendChild(ic); row.appendChild(body); row.appendChild(cpy); row.appendChild(del); }
+      else { row.appendChild(time); row.appendChild(ic); row.appendChild(body); row.appendChild(del); }
       container.appendChild(row);
     });
   }
@@ -3367,7 +3384,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     m.timeline = m.timeline || [];
     const sec = document.createElement("div"); sec.className = "machine-section";
     const head = document.createElement("div"); head.className = "machine-section-head";
-    head.innerHTML = '<h3>🕓 ' + t("timeline") + '</h3>';
+    head.innerHTML = '<h3>' + iconHtml("clock") + ' ' + t("timeline") + '</h3>';
     const clearBtn = document.createElement("button"); clearBtn.className = "btn btn-secondary btn-sm"; clearBtn.textContent = t("clearTimeline");
     clearBtn.addEventListener("click", () => { if (!m.timeline.length || !confirm(t("confirmClearTl"))) return; m.timeline = []; saveMachine(m.id, { timeline: m.timeline }); renderTimelineInto(body, m); });
     head.appendChild(clearBtn); sec.appendChild(head);
@@ -3386,7 +3403,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   function buildEvidenceSection(m) {
     m.evidence = m.evidence || [];
     const sec = document.createElement("div"); sec.className = "machine-section";
-    sec.innerHTML = '<div class="machine-section-head"><h3>📸 ' + t("evidence") + '</h3></div>';
+    sec.innerHTML = '<div class="machine-section-head"><h3>' + iconHtml("camera") + ' ' + t("evidence") + '</h3></div>';
     const drop = document.createElement("div"); drop.className = "evidence-drop"; drop.tabIndex = 0; drop.textContent = t("evidenceDrop"); drop.setAttribute("aria-label", t("evidenceDrop"));
     const grid = document.createElement("div"); grid.className = "evidence-grid";
     sec.appendChild(drop); sec.appendChild(grid);
@@ -3425,10 +3442,10 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
     // Top bar
     const topbar = document.createElement("div"); topbar.className = "wu-editor-topbar";
-    topbar.innerHTML = '<button class="wu-back-btn">← ' + t("back") + '</button>' +
+    topbar.innerHTML = '<button class="wu-back-btn">' + iconHtml("arrow-left", "icon-sm") + ' ' + t("back") + '</button>' +
       '<div class="wu-editor-status" id="machineStatus"></div>' +
       '<div class="wu-topbar-actions">' +
-        '<button class="wu-delete-btn" title="' + t("del") + '" aria-label="' + t("del") + '">🗑</button>' +
+        '<button class="wu-delete-btn" title="' + t("del") + '" aria-label="' + t("del") + '">' + iconHtml("trash") + '</button>' +
       '</div>';
     topbar.querySelector(".wu-back-btn").addEventListener("click", () => { openMachineId = null; render(); });
     topbar.querySelector(".wu-delete-btn").addEventListener("click", () => deleteMachine(m.id));
@@ -3436,9 +3453,9 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
     // Tab switcher: live Detail workspace vs. the auto-generated Report.
     const tabs = document.createElement("div"); tabs.className = "machine-tabs"; tabs.setAttribute("role", "tablist");
-    [["detail", "🧩 " + t("detailTab")], ["report", "📄 " + t("reportTab")]].forEach(([key, label]) => {
+    [["detail", "puzzle", t("detailTab")], ["report", "file", t("reportTab")]].forEach(([key, ic, label]) => {
       const b = document.createElement("button"); b.className = "machine-tab" + (machineTab === key ? " active" : "");
-      b.type = "button"; b.textContent = label; b.setAttribute("role", "tab"); b.setAttribute("aria-selected", String(machineTab === key));
+      b.type = "button"; setIconLabel(b, ic, label); b.setAttribute("role", "tab"); b.setAttribute("aria-selected", String(machineTab === key));
       b.addEventListener("click", () => { if (machineTab !== key) { machineTab = key; machineTabFor = m.id; render(); } });
       tabs.appendChild(b);
     });
@@ -3456,7 +3473,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const statOpts = MACHINE_STATUSES.map(v => '<option value="' + escapeHtml(v) + '"' + (machineStatus(m) === v ? " selected" : "") + '>' + escapeHtml(stLabel(v)) + '</option>').join("");
     info.innerHTML =
       '<div class="machine-detail-header">' +
-        '<span class="machine-detail-icon">' + osIconFor(m.os) + '</span>' +
+        '<span class="machine-detail-icon">' + osIconHtml(m.os) + '</span>' +
         '<div class="machine-detail-meta">' +
           '<input class="machine-detail-name-input" data-k="name" value="' + escapeHtml(m.name) + '" aria-label="' + t("machineName") + '">' +
           '<div class="machine-meta-fields">' +
@@ -3468,7 +3485,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
             '<label class="machine-chip-field"><span>' + t("mDifficulty") + '</span><select class="form-select machine-chip-sel" data-sk="difficulty">' + diffOpts + '</select></label>' +
             '<label class="machine-chip-field"><span>' + t("mStatus") + '</span><select class="form-select machine-chip-sel" data-sk="status">' + statOpts + '</select></label>' +
           '</div>' +
-          '<div class="machine-tags-row">' + (m.tags || []).map(tg => '<span class="machine-tag">' + escapeHtml(tg) + '</span>').join("") + '<button class="wu-edit-tags-btn machine-edit-tags">✎ ' + t("wuTags").toLowerCase() + '</button></div>' +
+          '<div class="machine-tags-row">' + (m.tags || []).map(tg => '<span class="machine-tag">' + escapeHtml(tg) + '</span>').join("") + '<button class="wu-edit-tags-btn machine-edit-tags">' + iconHtml("pencil", "icon-sm") + ' ' + t("wuTags").toLowerCase() + '</button></div>' +
         '</div>' +
       '</div>';
     info.querySelectorAll(".machine-meta-input, .machine-detail-name-input").forEach(inp => inp.addEventListener("input", () => {
@@ -3490,7 +3507,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
     // Playbook selector — swaps in a situation-aware checklist template
     const pbRow = document.createElement("div"); pbRow.className = "machine-playbook-row";
-    const pbLabel = document.createElement("span"); pbLabel.className = "machine-playbook-label"; pbLabel.textContent = "📖 " + t("playbook");
+    const pbLabel = document.createElement("span"); pbLabel.className = "machine-playbook-label"; setIconLabel(pbLabel, "book", t("playbook"));
     const pbSel = document.createElement("select"); pbSel.className = "form-select machine-playbook-select"; pbSel.setAttribute("aria-label", t("playbook"));
     const optDef = document.createElement("option"); optDef.value = ""; optDef.textContent = t("defaultChecklist");
     if (!m.template) optDef.selected = true; pbSel.appendChild(optDef);
@@ -3515,10 +3532,10 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const startedTs = m.startedAt || m.createdAt;
     const timingHtml =
       '<div class="machine-timing">' +
-        '<span>⏱ ' + t("started") + ': <strong>' + (startedTs ? new Date(startedTs).toLocaleString() : "—") + '</strong></span>' +
+        '<span>' + iconHtml("clock", "icon-sm") + ' ' + t("started") + ': <strong>' + (startedTs ? new Date(startedTs).toLocaleString() : "—") + '</strong></span>' +
         (m.ownedAt
           ? '<span> ' + t("timeToOwn") + ': <strong>' + fmtElapsed(startedTs, m.ownedAt) + '</strong></span>'
-          : '<span>⏳ ' + t("elapsed") + ': <strong>' + fmtElapsed(startedTs, null) + '</strong></span>') +
+          : '<span>' + iconHtml("clock", "icon-sm") + ' ' + t("elapsed") + ': <strong>' + fmtElapsed(startedTs, null) + '</strong></span>') +
       '</div>';
     if (total > 0) {
       const overview = document.createElement("div"); overview.className = "machine-overview";
@@ -3602,7 +3619,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         const ph = document.createElement("div"); ph.className = "checklist-phase-header";
         ph.innerHTML = '<span class="checklist-phase-name">' + escapeHtml(g.phase) + '</span>' +
           '<span class="checklist-phase-right"><span class="checklist-phase-count">' + gDone + '/' + g.items.length + '</span>' +
-          '<button class="checklist-phase-copy" title="' + t("copyPhaseCmds") + '" aria-label="' + t("copyPhaseCmds") + '">⧉</button></span>';
+          '<button class="checklist-phase-copy" title="' + t("copyPhaseCmds") + '" aria-label="' + t("copyPhaseCmds") + '">' + iconHtml("copy", "icon-sm") + '</button></span>';
         ph.querySelector(".checklist-phase-copy").addEventListener("click", ev => {
           ev.stopPropagation();
           const cmds = g.items.map(({ item }) => item.hint).filter(Boolean).map(applyIpToCode);
@@ -3627,7 +3644,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
           if (item.hint) {
             const hintRow = document.createElement("div"); hintRow.className = "checklist-hint";
             const code = document.createElement("code"); code.textContent = item.hint;
-            const copyBtn = document.createElement("button"); copyBtn.className = "checklist-hint-copy"; copyBtn.textContent = "⧉"; copyBtn.title = t("copyCmd"); copyBtn.setAttribute("aria-label", t("copyCmd"));
+            const copyBtn = document.createElement("button"); copyBtn.className = "checklist-hint-copy"; copyBtn.appendChild(icon("copy", "icon-sm")); copyBtn.title = t("copyCmd"); copyBtn.setAttribute("aria-label", t("copyCmd"));
             copyBtn.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); copyText(applyIpToCode(item.hint), () => { announce(t("copied")); toast(t("copied"), "ok"); }); });
             hintRow.appendChild(code); hintRow.appendChild(copyBtn);
             body.appendChild(hintRow);
@@ -3678,14 +3695,14 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const card = document.createElement("div"); card.className = "host-card" + (st.pct >= 100 ? " owned" : "") + (n.id === openHostId ? " open" : ""); card.id = "host-" + n.id;
       const head = document.createElement("div"); head.className = "host-card-head";
       head.innerHTML =
-        '<span class="host-icon" aria-hidden="true">' + (isDcRole(n) ? "★" : osIconFor(n.os)) + '</span>' +
+        '<span class="host-icon" aria-hidden="true">' + (isDcRole(n) ? iconHtml("crown") : osIconHtml(n.os)) + '</span>' +
         '<span class="host-title">' + escapeHtml(n.name || "(host)") + '</span>' +
         '<span class="host-ip">' + escapeHtml(n.ip || "") + '</span>' +
         (n.role ? '<span class="host-role">' + escapeHtml(n.role) + '</span>' : '') +
         (n.ref ? '<span class="host-badge">machine</span>' : '') +
         '<span class="host-prog">' + (n.checklist.length ? st.done + "/" + st.total + " · " + st.pct + "%" : "—") + '</span>' +
-        '<button class="host-expand" aria-label="Toggle">' + (n.id === openHostId ? "▲" : "▼") + '</button>' +
-        '<button class="host-del" title="Remove from engagement" aria-label="Remove host">🗑</button>';
+        '<button class="host-expand" aria-label="Toggle">' + iconHtml(n.id === openHostId ? "chevron-up" : "chevron-down", "icon-sm") + '</button>' +
+        '<button class="host-del" title="Remove from engagement" aria-label="Remove host">' + iconHtml("trash", "icon-sm") + '</button>';
       head.querySelector(".host-del").addEventListener("click", e => { e.stopPropagation(); removeHost(n.id); });
       head.addEventListener("click", e => { if (e.target.closest(".host-del")) return; openHostId = (openHostId === n.id) ? null : n.id; render(); });
       card.appendChild(head);
@@ -3707,7 +3724,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
           '<input class="host-f" data-hk="role" placeholder="role (DC, SQL…)" value="' + escapeHtml(n.role || "") + '" aria-label="role">';
         meta.querySelectorAll("[data-mk]").forEach(inp => inp.addEventListener("input", () => { n.machine[inp.dataset.mk] = inp.value; saveMachine(n.id, { [inp.dataset.mk]: inp.value }); if (redrawSchem) redrawSchem(); }));
         meta.querySelector("[data-hk]").addEventListener("input", e => { h.role = e.target.value; hostPersist(); });
-        const open = document.createElement("button"); open.className = "btn btn-secondary btn-sm host-open-btn"; open.textContent = "↗ " + (lang === "tr" ? "Makineyi aç" : "Open machine");
+        const open = document.createElement("button"); open.className = "btn btn-secondary btn-sm host-open-btn"; setIconLabel(open, "external", lang === "tr" ? "Makineyi aç" : "Open machine");
         open.addEventListener("click", () => { openHostId = null; openMachineId = n.id; render(); window.scrollTo({ top: 0, behavior: motionBehavior() }); });
         body.appendChild(meta); body.appendChild(open);
       } else {
@@ -3733,7 +3750,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         else { h.template = id; h.checklist = cl; hostPersist(); }
         render();
       });
-      pbRow.innerHTML = '<span class="machine-playbook-label">📖 ' + t("playbook") + '</span>';
+      pbRow.innerHTML = '<span class="machine-playbook-label">' + iconHtml("book", "icon-sm") + ' ' + t("playbook") + '</span>';
       pbRow.appendChild(sel); body.appendChild(pbRow);
 
       // Checklist — editing a ref's checklist updates the machine, so progress
@@ -3752,7 +3769,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const others = (m.hosts || []).map(hostNode).filter(o => o.id !== n.id);
       if (others.length) {
         const conn = document.createElement("div"); conn.className = "host-conn";
-        conn.innerHTML = '<div class="machine-subhead">🔗 ' + t("connections") + '</div>';
+        conn.innerHTML = '<div class="machine-subhead">' + iconHtml("link", "icon-sm") + ' ' + t("connections") + '</div>';
         const chips = document.createElement("div"); chips.className = "host-chips";
         others.forEach(o => {
           const chip = document.createElement("button"); chip.className = "host-chip" + ((h.links || []).indexOf(o.id) >= 0 ? " on" : ""); chip.textContent = o.name || o.ip || "host";
@@ -3766,7 +3783,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       }
 
       // Loot + notes (stored on the machine for refs)
-      const lootLabel = document.createElement("div"); lootLabel.className = "machine-subhead"; lootLabel.textContent = "🔑 " + t("loot");
+      const lootLabel = document.createElement("div"); lootLabel.className = "machine-subhead"; setIconLabel(lootLabel, "key", t("loot"));
       const loot = document.createElement("textarea"); loot.className = "machine-textarea"; loot.placeholder = "admin:Pass | svc_sql: hash | ticket.kirbi"; loot.setAttribute("aria-label", t("loot"));
       loot.value = n.ref ? credsToText(n.machine.credentials) : (h.loot || "");
       loot.addEventListener("input", () => {
@@ -3790,7 +3807,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       });
       body.appendChild(lootLabel); body.appendChild(loot);
 
-      const notesLabel = document.createElement("div"); notesLabel.className = "machine-subhead"; notesLabel.textContent = "📝 " + t("notes");
+      const notesLabel = document.createElement("div"); notesLabel.className = "machine-subhead"; setIconLabel(notesLabel, "note", t("notes"));
       const notes = document.createElement("textarea"); notes.className = "machine-textarea"; notes.setAttribute("aria-label", t("notes"));
       notes.value = n.ref ? (n.machine.notes || "") : (h.notes || "");
       notes.addEventListener("input", () => { if (n.ref) { n.machine.notes = notes.value; saveMachine(n.id, { notes: notes.value }); } else { h.notes = notes.value; hostPersist(); } });
@@ -3802,7 +3819,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
     const adSection = document.createElement("div"); adSection.className = "machine-section ad-section";
     const adHead = document.createElement("div"); adHead.className = "machine-section-head";
-    adHead.innerHTML = '<h3>🖧 ' + t("hosts") + ' <span class="ad-sub">· ' + t("engagement") + '</span></h3>';
+    adHead.innerHTML = '<h3>' + iconHtml("network") + ' ' + t("hosts") + ' <span class="ad-sub">· ' + t("engagement") + '</span></h3>';
     const addWrap = document.createElement("div"); addWrap.className = "ad-add";
     const fromSel = document.createElement("select"); fromSel.className = "form-select"; fromSel.setAttribute("aria-label", t("fromMachine"));
     const linkedIds = new Set((m.hosts || []).map(h => h.machineId).filter(Boolean));
@@ -3848,7 +3865,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         '<span class="ad-stat"><strong>' + nodes.length + '</strong> ' + t("hosts").toLowerCase() + '</span>' +
         '<span class="ad-stat"><strong>' + owned + '</strong> ' + t("owned").toLowerCase() + '</span>' +
         '<span class="ad-stat"><strong>' + aggPct + '%</strong> ' + t("progress").toLowerCase() + '</span>';
-      const connBtn = document.createElement("button"); connBtn.className = "btn btn-sm ad-connect-btn " + (adConnectMode ? "btn-primary" : "btn-secondary"); connBtn.textContent = "🔗 " + t("connect");
+      const connBtn = document.createElement("button"); connBtn.className = "btn btn-sm ad-connect-btn " + (adConnectMode ? "btn-primary" : "btn-secondary"); setIconLabel(connBtn, "link", t("connect"));
       connBtn.addEventListener("click", () => { adConnectMode = !adConnectMode; adConnectSel = null; render(); });
       ov.appendChild(connBtn);
       adSection.appendChild(ov);
@@ -4120,7 +4137,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     CATEGORIES.forEach((cat, idx) => {
       let cnt = 0; cat.subcategories.forEach(s => (cnt += s.commands.length));
       const nc = getNotesCount(cat.id);
-      const label = cnt + (nc > 0 ? " + " + nc + "📝" : "");
+      const label = cnt + (nc > 0 ? " + " + nc + iconHtml("note", "icon-sm") : "");
       const catName = (lang === "tr" && cat.name_tr) ? cat.name_tr : cat.name;
       const item = mkNavItem(cat.icon, catName, label, activeCategory === cat.id, () => { activeCategory = cat.id; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); window.scrollTo({ top: 0, behavior: motionBehavior() }); });
       item.draggable = true;
@@ -4176,10 +4193,10 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     else if (cmds.length > 1) {
       const m = document.createElement("div"); m.className = "cmd-multi";
       cmds.forEach(c => m.appendChild(mkCode(c)));
-      const allBtn = document.createElement("button"); allBtn.className = "btn btn-secondary btn-sm cmd-copyall-btn"; allBtn.textContent = "⧉ " + t("copyAll");
+      const allBtn = document.createElement("button"); allBtn.className = "btn btn-secondary btn-sm cmd-copyall-btn"; setIconLabel(allBtn, "copy", t("copyAll"));
       allBtn.addEventListener("click", () => {
         const joined = applyIpToCode(cmds.join("\n"));
-        copyText(joined, () => { recordHistory(joined); announce(t("copied")); allBtn.textContent = "✓ " + t("copied"); setTimeout(() => { allBtn.textContent = "⧉ " + t("copyAll"); }, 1500); });
+        copyText(joined, () => { recordHistory(joined); announce(t("copied")); setIconLabel(allBtn, "check", t("copied")); setTimeout(() => { setIconLabel(allBtn, "copy", t("copyAll")); }, 1500); });
       });
       m.appendChild(allBtn);
       card.appendChild(m);
@@ -4212,7 +4229,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       refs.forEach(r => {
         const url = mdSafeUrl(r.url); if (url === "#") return;
         const a = document.createElement("a"); a.className = "cmd-ref-link"; a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer";
-        a.textContent = "↗ " + (r.label || refHostLabel(r.url));
+        setIconLabel(a, "external", r.label || refHostLabel(r.url));
         meta.appendChild(a);
       });
       if (meta.children.length) card.appendChild(meta);
@@ -4236,7 +4253,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       if (hasVars) { openVarBar(applied); return; }
       copyText(applied, () => { recordHistory(applied); b.textContent = t("copied"); b.classList.add("copied"); announce(t("copied")); setTimeout(() => { b.textContent = t("copy"); b.classList.remove("copied"); }, 1500); });
     });
-    const bk = document.createElement("button"); bk.className = "cmd-basket-btn"; bk.textContent = "🧺"; bk.title = t("basketAdd"); bk.setAttribute("aria-label", t("basketAdd"));
+    const bk = document.createElement("button"); bk.className = "cmd-basket-btn"; bk.appendChild(icon("basket", "icon-sm")); bk.title = t("basketAdd"); bk.setAttribute("aria-label", t("basketAdd"));
     bk.addEventListener("click", e => { e.stopPropagation(); basketAdd(code); });
     // Both actions live in one top-right row so they never overflow a 1-line block.
     const actions = document.createElement("div"); actions.className = "cmd-code-actions";
@@ -4293,10 +4310,10 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     // reader had nothing to navigate by. The class is unchanged; margin:0 is inline
     // because .category-header is a flex row and the UA heading margin would grow it.
     hdr.innerHTML = '<span class="category-icon">' + escapeHtml(cat.icon) + '</span><h2 class="category-title" style="margin:0">' + escapeHtml(cat.name) + '</h2><span class="category-count">' + cnt + ' ' + t("commands") + '</span>' +
-      '<div class="category-actions"><button class="cat-action-btn" data-act="term" title="' + t("termCopy") + '">📋</button><button class="cat-action-btn" data-act="sub">' + t("addSub") + '</button><button class="cat-action-btn" data-act="edit">' + iconHtml("pencil") + '</button><button class="cat-action-btn delete-btn" data-act="del">' + iconHtml("x") + '</button></div>' +
+      '<div class="category-actions"><button class="cat-action-btn" data-act="term" title="' + t("termCopy") + '">' + iconHtml("terminal", "icon-sm") + '</button><button class="cat-action-btn" data-act="sub">' + t("addSub") + '</button><button class="cat-action-btn" data-act="edit">' + iconHtml("pencil") + '</button><button class="cat-action-btn delete-btn" data-act="del">' + iconHtml("x") + '</button></div>' +
       // The toggle is the button. Inline resets only undo the UA button chrome; the
       // font-size/color/rotation still come from .category-toggle, so it looks the same.
-      '<button type="button" class="category-toggle" aria-expanded="' + String(!collapsed) + '" aria-label="' + escapeHtml(cat.name) + '" style="background:none;border:0;padding:0;line-height:1;font-family:inherit;cursor:pointer">▼</button>';
+      '<button type="button" class="category-toggle" aria-expanded="' + String(!collapsed) + '" aria-label="' + escapeHtml(cat.name) + '" style="background:none;border:0;padding:0;line-height:1;font-family:inherit;cursor:pointer">' + iconHtml("chevron-down", "icon-sm") + '</button>';
     const toggleBtn = hdr.querySelector(".category-toggle");
     hdr.querySelector('[data-act="term"]').addEventListener("click", e => { e.stopPropagation(); copyTerminalFormat(cat.id); });
     hdr.querySelector('[data-act="sub"]').addEventListener("click", e => { e.stopPropagation(); addSubcategory(cat.id); });
@@ -4359,7 +4376,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       // Empty state for categories with no subcategories
       if (cat.subcategories.length === 0) {
         const empty = document.createElement("div"); empty.className = "cat-empty-state";
-        empty.innerHTML = '<div class="cat-empty-icon">📂</div><p>' + (lang === "tr" ? "Bu kategoride henuz alt kategori ve komut yok." : "No subcategories or commands yet.") + '</p>' +
+        empty.innerHTML = '<div class="cat-empty-icon">' + iconHtml("folder", "icon-xl") + '</div><p>' + (lang === "tr" ? "Bu kategoride henuz alt kategori ve komut yok." : "No subcategories or commands yet.") + '</p>' +
           '<button class="btn btn-primary btn-sm cat-empty-btn">+ ' + (lang === "tr" ? "Alt Kategori Ekle" : "Add Subcategory") + '</button>';
         empty.querySelector(".cat-empty-btn").addEventListener("click", () => addSubcategory(cat.id));
         body.appendChild(empty);
@@ -4527,7 +4544,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       if (attackOnly) favs = favs.filter(f => cmdAttackList(f.cmd).length > 0);
       if (searchQuery) { const q = searchQuery.toLowerCase(); favs = favs.filter(f => hay(f.cmd).includes(q)); }
       if (favs.length === 0) {
-        contentArea.innerHTML = '<div class="no-results"><h3>⭐ ' + t("favorites") + '</h3><p>' + (lang === "tr" ? "Henuz favori komut eklemediniz. Komutlardaki ★ ikonuna tiklayin." : "No favorites yet. Click ★ on commands to add them.") + '</p></div>';
+        contentArea.innerHTML = '<div class="no-results"><h3>' + iconHtml("star", "icon-lg") + ' ' + t("favorites") + '</h3><p>' + (lang === "tr" ? "Henuz favori komut eklemediniz. Komut kartindaki yildiz dugmesine tiklayin." : "No favorites yet. Use the star button on a command card to add one.") + '</p></div>';
         return;
       }
       favs.forEach(f => contentArea.appendChild(renderCard(f.cmd, f.catId, f.subIdx, f.cmdIdx)));
@@ -4698,7 +4715,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   function renderHistoryPage() {
     currentSection.textContent = t("history"); hero.style.display = "none"; contentArea.innerHTML = "";
     const hdr = document.createElement("div"); hdr.className = "writeups-header";
-    hdr.innerHTML = '<div class="wu-header-top"><h2>🕘 ' + t("history") + '</h2><button class="btn btn-secondary" id="clearHistBtn">' + t("clearHistory") + '</button></div>';
+    hdr.innerHTML = '<div class="wu-header-top"><h2>' + iconHtml("clock", "icon-lg") + ' ' + t("history") + '</h2><button class="btn btn-secondary" id="clearHistBtn">' + t("clearHistory") + '</button></div>';
     contentArea.appendChild(hdr);
     hdr.querySelector("#clearHistBtn").addEventListener("click", () => {
       if (!cmdHistory.length || !confirm(t("clearHistory") + "?")) return;
@@ -4783,22 +4800,27 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   // Jump straight to a specific machine / write-up (opens its detail/editor view).
   function navToMachine(id) { closePalette(); activeCategory = "machines"; openMachineId = id; openWriteupId = null; searchQuery = ""; searchInput.value = ""; render(); window.scrollTo({ top: 0, behavior: motionBehavior() }); }
   function navToWriteup(id) { closePalette(); activeCategory = "writeups"; openWriteupId = id; openMachineId = null; wuEditMode = false; searchQuery = ""; searchInput.value = ""; render(); window.scrollTo({ top: 0, behavior: motionBehavior() }); }
+  // Same rule as mkNavItem: a sprite <svg> written by this file goes in as
+  // markup, a category emoji out of seed.js is the user's data and is escaped.
+  function paletteIcon(ic) {
+    return typeof ic === "string" && ic.slice(0, 5) === "<svg " ? ic : escapeHtml(ic || "");
+  }
   function buildPaletteBase() {
     const items = [];
     const act = (icon, label, run, sub, extraHay) => items.push(Object.assign(
       { type: "action", icon, label, sub, run },
       paletteRankFields(label, "", label + " " + (extraHay || ""))));
-    act("📋", t("goto") + ": " + t("allCommands"), () => navTo(null));
-    act("⭐", t("goto") + ": " + t("favorites"), () => navTo("favs"));
-    act("📝", t("goto") + ": " + t("writeups"), () => navTo("writeups"));
-    act("🖥", t("goto") + ": " + t("machines"), () => navTo("machines"));
-    act("🕘", t("goto") + ": " + t("history"), () => navTo("history"));
+    act(iconHtml("list"), t("goto") + ": " + t("allCommands"), () => navTo(null));
+    act(iconHtml("star"), t("goto") + ": " + t("favorites"), () => navTo("favs"));
+    act(iconHtml("note"), t("goto") + ": " + t("writeups"), () => navTo("writeups"));
+    act(iconHtml("server"), t("goto") + ": " + t("machines"), () => navTo("machines"));
+    act(iconHtml("clock"), t("goto") + ": " + t("history"), () => navTo("history"));
     CATEGORIES.forEach(cat => { const nm = (lang === "tr" && cat.name_tr) ? cat.name_tr : cat.name; act(cat.icon, t("goto") + ": " + nm, () => navTo(cat.id)); });
     // Machines + write-ups are first-class jump targets, searchable by name/ip/os/tags/title.
-    machines.forEach(mm => act(osIconFor(mm.os), mm.name, () => navToMachine(mm.id),
+    machines.forEach(mm => act(osIconHtml(mm.os), mm.name, () => navToMachine(mm.id),
       t("jumpMachine") + " · " + (mm.ip || "—") + (mm.platform ? " · " + mm.platform : ""),
       [mm.ip, mm.os, mm.platform].concat(mm.tags || []).filter(Boolean).join(" ")));
-    writeups.forEach(wu => act("📄", wu.title, () => navToWriteup(wu.id),
+    writeups.forEach(wu => act(iconHtml("file"), wu.title, () => navToWriteup(wu.id),
       t("jumpWriteup") + ((wu.tags || []).length ? " · " + wu.tags.join(", ") : ""),
       (wu.tags || []).join(" ")));
     CATEGORIES.forEach(cat => cat.subcategories.forEach((sub, si) => sub.commands.forEach((cmd, ci) => {
@@ -4843,7 +4865,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     out.forEach((it, idx) => {
       const row = document.createElement("div"); row.className = "palette-item" + (idx === 0 ? " sel" : "");
       row.setAttribute("role", "option"); row.setAttribute("aria-selected", idx === 0 ? "true" : "false");
-      row.innerHTML = '<span class="palette-icon" aria-hidden="true">' + escapeHtml(it.icon || "") + '</span><span class="palette-label">' + escapeHtml(it.label) + '</span>' + (it.sub ? '<span class="palette-sub">' + escapeHtml(it.sub) + '</span>' : '') + '<span class="palette-kind">' + (it.type === "cmd" ? "copy" : "go") + '</span>';
+      row.innerHTML = '<span class="palette-icon" aria-hidden="true">' + paletteIcon(it.icon) + '</span><span class="palette-label">' + escapeHtml(it.label) + '</span>' + (it.sub ? '<span class="palette-sub">' + escapeHtml(it.sub) + '</span>' : '') + '<span class="palette-kind">' + (it.type === "cmd" ? "copy" : "go") + '</span>';
       row.addEventListener("click", () => paletteExec(it));
       row.addEventListener("mousemove", () => setPaletteSel(idx));
       paletteList.appendChild(row);
@@ -4969,7 +4991,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   document.documentElement.setAttribute("data-lang", lang);
   $("themeToggle").addEventListener("click", () => { const n = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light"; document.documentElement.setAttribute("data-theme", n); safeSet("cheatsheet-theme", n); });
 
-  const btt = document.createElement("button"); btt.className = "back-to-top"; btt.innerHTML = "↑"; btt.setAttribute("aria-label", "Back to top"); document.body.appendChild(btt);
+  const btt = document.createElement("button"); btt.className = "back-to-top"; btt.appendChild(icon("arrow-up")); btt.setAttribute("aria-label", "Back to top"); document.body.appendChild(btt);
   btt.addEventListener("click", () => window.scrollTo({ top: 0, behavior: motionBehavior() }));
   window.addEventListener("scroll", () => btt.classList.toggle("visible", window.scrollY > 400));
 
@@ -5000,6 +5022,15 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     return '<svg class="icon' + (cls ? " " + cls : "") + '" aria-hidden="true" focusable="false"><use href="#i-' +
       String(name).replace(/[^a-z-]/g, "") + '"></use></svg>';
   }
+  // Replace an element's content with a sprite icon and a label. Every button
+  // that swaps state ("Copy" -> "Copied", "Start" -> "Stop") used to do it with a
+  // textContent assignment carrying its own glyph, which is how four different
+  // check marks ended up in one interface. The label goes in as a text node, so
+  // it is inert whatever it came from.
+  function setIconLabel(el, name, label) {
+    el.replaceChildren(icon(name));
+    if (label) el.appendChild(document.createTextNode(" " + label));
+  }
 
   function escapeHtml(s) {
     return String(s == null ? "" : s)
@@ -5028,6 +5059,10 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     navigate: (hash) => { window.location.hash = hash; },
     // Next Move parses pasted scan output too; one parser, not two that drift.
     parseNmap: parseNmapOutput,
+    // The sprite lives in index.html and belongs to the whole page, so the two
+    // lazily-loaded view modules draw from the same set rather than each
+    // reintroducing the glyphs this sprite exists to retire.
+    icon, iconHtml,
     recordHistory,
     render, renderMarkdown, onViewRender: null
   };

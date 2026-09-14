@@ -474,7 +474,9 @@ test("an over-budget task row visibly exceeds its budget", async () => {
   const confirm = buttonWith(s.container, /^Confirm context$/);
   assert.ok(confirm, "the context gate must offer a confirm button");
   confirm.click();
-  const start = buttonWith(s.container, /^▶ Start$/);
+  // The play glyph moved into the sprite, so the button reads as its label with
+  // the icon as a sibling node — match the label, not the marker.
+  const start = buttonWith(s.container, /^\s*Start$/);
   assert.ok(start, "a confirmed task must offer its own start button");
   start.click();
 

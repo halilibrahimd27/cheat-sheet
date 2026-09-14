@@ -40,7 +40,7 @@
       derivedTotal: "total derived from the challenges you add",
       hours: "h", mins: "m", tasksN: "tasks",
       cockpit: "Cockpit", report: "Report", retro: "Retrospective", rules: "Ground rules", keys: "Keys",
-      endSession: "End session", back: "← Back", elapsed: "Elapsed", remaining: "Remaining",
+      endSession: "End session", back: "Back", elapsed: "Elapsed", remaining: "Remaining",
       reportDue: "Report due", overdue: "OVERDUE", clockNotStarted: "Not started",
       startClock: "Start the clock", startClockHint: "Nothing here runs until you say so.",
       score: "Score", captured: "captured", objectives: "objectives",
@@ -89,7 +89,7 @@
       contextDiff: "This task declares a different context from the last one you confirmed.",
       taskBudget: "Budget", taskSpent: "spent", taskStart: "Start", taskStop: "Pause",
       taskVerify: "Verification", taskVerifyHint: "What command proves this is actually done? Run it, then tick.",
-      taskVerified: "Verified", taskApplied: "Applied", taskTodo: "Not started", taskSkipped: "Skipped",
+      taskVerified: "Verified", taskApplied: "Applied", taskTodo: "Not started", taskSkipped: "Skipped", taskFailed: "Failed",
       flagReview: "Flag for review", appFeatureNote: "App feature, not an exam-UI feature",
       domainEst: "Weighted domain estimate", domainEstHint: "Your own task-to-domain mapping, weighted by the published curriculum. An estimate, not a score.",
       domains: "domains", domainUntouched: "untouched", legendVerified: "verified", legendApplied: "applied, unverified", legendLost: "skipped", legendOpen: "open",
@@ -127,7 +127,7 @@
       derivedTotal: "toplam ekledigin gorevlerden turetilir",
       hours: "sa", mins: "dk", tasksN: "gorev",
       cockpit: "Kokpit", report: "Rapor", retro: "Degerlendirme", rules: "Temel kurallar", keys: "Tuslar",
-      endSession: "Oturumu bitir", back: "← Geri", elapsed: "Gecen", remaining: "Kalan",
+      endSession: "Oturumu bitir", back: "Geri", elapsed: "Gecen", remaining: "Kalan",
       reportDue: "Rapor teslimi", overdue: "SURESI GECTI", clockNotStarted: "Baslamadi",
       startClock: "Sayaci baslat", startClockHint: "Sen soylemeden hicbir sey islemez.",
       score: "Puan", captured: "alindi", objectives: "hedef",
@@ -176,7 +176,7 @@
       contextDiff: "Bu gorev, en son onayladigindan farkli bir baglam bildiriyor.",
       taskBudget: "Butce", taskSpent: "harcanan", taskStart: "Basla", taskStop: "Duraklat",
       taskVerify: "Dogrulama", taskVerifyHint: "Bunun gercekten bittigini hangi komut kanitliyor? Calistir, sonra isaretle.",
-      taskVerified: "Dogrulandi", taskApplied: "Uygulandi", taskTodo: "Baslamadi", taskSkipped: "Atlandi",
+      taskVerified: "Dogrulandi", taskApplied: "Uygulandi", taskTodo: "Baslamadi", taskSkipped: "Atlandi", taskFailed: "Basarisiz",
       flagReview: "Gozden gecirmek icin isaretle", appFeatureNote: "Uygulama ozelligi, sinav arayuzu ozelligi degil",
       domainEst: "Agirlikli alan tahmini", domainEstHint: "Kendi gorev-alan eslemen, yayinlanan mufredat agirliklariyla. Tahmindir, puan degildir.",
       domains: "alan", domainUntouched: "dokunulmadi", legendVerified: "dogrulandi", legendApplied: "uygulandi, dogrulanmadi", legendLost: "atlandi", legendOpen: "acik",
@@ -249,6 +249,48 @@
     a.target = "_blank";
     a.rel = "noopener noreferrer";
     return a;
+  }
+  // ── Icons ──
+  // The sprite lives in index.html and app.js owns the two builders for it.
+  // Going through APP rather than re-implementing them here is what keeps this
+  // view drawing from the same set as the rest of the app; the fallback is an
+  // empty slot rather than a glyph, because an older app.js that cannot supply
+  // an icon should leave a gap, not reintroduce the character being retired.
+  function ico(name, cls) {
+    if (typeof APP.icon === "function") return APP.icon(name, cls);
+    return el("span", "icon");
+  }
+  // A button labelled with an icon and, optionally, text. An icon-only button
+  // has no accessible name of its own, so `label` is not decoration there.
+  function iconBtn(cls, name, text, onClick, label) {
+    var b = btn(cls, "", onClick, label);
+    b.appendChild(ico(name, "icon-sm"));
+    if (text) b.appendChild(document.createTextNode(" " + text));
+    return b;
+  }
+  // The one button whose icon belongs AFTER the label: "Next" points at where it
+  // is taking you, and an arrow on the left of that word points back.
+  function nextBtn(cls, text, onClick) {
+    var b = btn(cls, text, onClick);
+    b.appendChild(document.createTextNode(" "));
+    b.appendChild(ico("arrow-right", "icon-sm"));
+    return b;
+  }
+  // A preset's icon is data out of session-data.js and stays a character, the
+  // same way a category emoji does. What was ours is the FALLBACK for a preset
+  // that ships none, and that is chrome.
+  function presetIcon(preset) {
+    var span = el("span", "session-preset-icon");
+    if (preset && preset.icon) span.textContent = preset.icon;
+    else span.appendChild(ico("diamond", "icon-sm"));
+    return span;
+  }
+  // Same for a heading or a line of status text.
+  function iconEl(tag, cls, name, text) {
+    var node = el(tag, cls);
+    node.appendChild(ico(name, "icon-sm"));
+    if (text) node.appendChild(document.createTextNode(" " + text));
+    return node;
   }
   function frag() { return document.createDocumentFragment(); }
   function clone(v) { try { return JSON.parse(JSON.stringify(v)); } catch { return null; } }
@@ -992,7 +1034,7 @@
     return "pending";
   }
   function statusLabel(st) {
-    return { pending: S("taskTodo"), active: "…", user: S("captured"), root: S("done"), failed: "✗", skipped: S("taskSkipped") }[st] || st;
+    return { pending: S("taskTodo"), active: "…", user: S("captured"), root: S("done"), failed: S("taskFailed"), skipped: S("taskSkipped") }[st] || st;
   }
 
   // ── Machines integration ──
@@ -1048,10 +1090,15 @@
       e.stopPropagation();
       var text = getText();
       copyCmd(text, target, function () {
-        var was = button.textContent;
-        button.textContent = "✓";
+        // Keep the NODES, not the text. The label is an icon plus a text node
+        // now, and restoring a string would leave the button permanently bare.
+        var was = Array.prototype.slice.call(button.childNodes);
+        button.replaceChildren(ico("check", "icon-sm"));
         button.classList.add("copied");
-        setTimeout(function () { button.textContent = was; button.classList.remove("copied"); }, 1200);
+        setTimeout(function () {
+          button.replaceChildren.apply(button, was);
+          button.classList.remove("copied");
+        }, 1200);
       });
     });
   }
@@ -1142,7 +1189,7 @@
 
   function loadingPane() {
     var w = el("div", "no-results");
-    w.appendChild(el("h3", "", "⏳ " + S("sessions")));
+    w.appendChild(iconEl("h3", "", "clock", S("sessions")));
     w.appendChild(el("p", "", S("loading")));
     return w;
   }
@@ -1154,7 +1201,7 @@
   function errorPane(msg, onRetry, kind) {
     var isDoc = kind === "doc";
     var w = el("div", "no-results");
-    w.appendChild(el("h3", "", "⚠ " + S(isDoc ? "docFail" : "loadFail")));
+    w.appendChild(iconEl("h3", "", "alert", S(isDoc ? "docFail" : "loadFail")));
     w.appendChild(el("p", "", msg));
     w.appendChild(el("p", "", S(isDoc ? "docFailHint" : "loadFailHint")));
     var b = btn("btn btn-primary", S("retry"), onRetry);
@@ -1178,8 +1225,8 @@
     var apply = function (state, message) {
       retry.hidden = state !== "error";
       if (state === "saving") { text.textContent = S("saving"); wrap.style.color = "var(--text-tertiary)"; return; }
-      if (state === "ok") { text.textContent = "✓ " + S("saved"); wrap.style.color = "var(--accent-green)"; return; }
-      if (state === "error") { text.textContent = "⚠ " + (message || S("saveFail")); wrap.style.color = "var(--accent-red)"; return; }
+      if (state === "ok") { text.replaceChildren(ico("check", "icon-sm"), document.createTextNode(" " + S("saved"))); wrap.style.color = "var(--accent-green)"; return; }
+      if (state === "error") { text.replaceChildren(ico("alert", "icon-sm"), document.createTextNode(" " + (message || S("saveFail")))); wrap.style.color = "var(--accent-red)"; return; }
       text.textContent = "";
     };
     apply(saveState, saveMessage);
@@ -1203,7 +1250,8 @@
 
   function sourceLink(url) {
     if (!/^https?:\/\//i.test(String(url || ""))) return null;
-    var a = link(url, "↗", "session-doc-url");
+    var a = link(url, "", "session-doc-url");
+    a.appendChild(ico("external", "icon-sm"));
     a.title = url;
     a.style.marginLeft = "6px";
     return a;
@@ -1218,7 +1266,7 @@
 
     var head = el("div", "exam-header");
     var info = el("div", "exam-header-info");
-    info.appendChild(el("div", "exam-title", "🎯 " + S("sessions")));
+    info.appendChild(iconEl("div", "exam-title", "target", S("sessions")));
     info.appendChild(el("div", "exam-sub", S("pickHint")));
     head.appendChild(info);
     head.appendChild(saveStatusEl());
@@ -1255,7 +1303,7 @@
   function presetCard(preset) {
     var card = btn("session-preset", null, function () { startPreset(preset); });
     var top = el("div", "session-preset-top");
-    top.appendChild(el("span", "session-preset-icon", preset.icon || "▣"));
+    top.appendChild(presetIcon(preset));
     top.appendChild(el("span", "session-preset-name", preset.name));
     if (preset.status === "retired" || hasEnforceable(preset, "banner:retired")) {
       top.appendChild(el("span", "session-preset-tag", "retired"));
@@ -1276,7 +1324,7 @@
       var preset = presetById(s.presetId);
       var row = el("div", "session-task");
       var top = el("div", "session-task-top");
-      top.appendChild(el("span", "session-preset-icon", (preset && preset.icon) || "▣"));
+      top.appendChild(presetIcon(preset));
       top.appendChild(el("span", "session-task-name", (preset && preset.name) || s.presetId));
 
       var sc = sessionScore(s);
@@ -1297,7 +1345,7 @@
         touch();
         paint();
       }));
-      top.appendChild(btn("btn btn-secondary btn-sm", "🗑", function () { confirmInline(row, S("confirmDel"), function () { deleteSession(s); paint(); }); }, S("del")));
+      top.appendChild(iconBtn("btn btn-secondary btn-sm", "trash", "", function () { confirmInline(row, S("confirmDel"), function () { deleteSession(s); paint(); }); }, S("del")));
       row.appendChild(top);
       box.appendChild(row);
     });
@@ -1346,7 +1394,9 @@
   function sessionHeader(s, preset, subtitle) {
     var head = el("div", "exam-header");
     var info = el("div", "exam-header-info");
-    var title = el("div", "exam-title", (preset.icon || "▣") + " " + preset.name);
+    var title = el("div", "exam-title");
+    title.appendChild(presetIcon(preset));
+    title.appendChild(document.createTextNode(" " + preset.name));
     info.appendChild(title);
     info.appendChild(el("div", "exam-sub", subtitle || presetShape(preset)));
     head.appendChild(info);
@@ -1355,20 +1405,20 @@
 
     var actions = el("div", "exam-header-actions");
     if (view.name !== "cockpit") {
-      actions.appendChild(btn("btn btn-secondary btn-sm", S("back"), function () {
+      actions.appendChild(iconBtn("btn btn-secondary btn-sm", "arrow-left", S("back"), function () {
         view.name = "cockpit"; view.targetKey = ""; view.taskId = ""; paint();
       }));
     }
-    actions.appendChild(btn("btn btn-secondary btn-sm", "📄 " + (s.kind === "tasks" ? S("retro") : S("report")), function () {
+    actions.appendChild(iconBtn("btn btn-secondary btn-sm", "file", (s.kind === "tasks" ? S("retro") : S("report")), function () {
       view.name = "report"; paint();
     }));
-    actions.appendChild(btn("btn btn-secondary btn-sm", "⌨ " + S("keys") + " (h)", function () {
+    actions.appendChild(iconBtn("btn btn-secondary btn-sm", "keyboard", S("keys") + " (h)", function () {
       view.keys = !view.keys; paint();
     }));
     actions.appendChild(btn("btn btn-secondary btn-sm", S("endSession"), function () {
       confirmInline(head, S("confirmEnd"), function () { endSession(s); DOC.activeSessionId = ""; view.name = "picker"; touch(); paint(); });
     }));
-    actions.appendChild(btn("btn btn-secondary btn-sm", "☰", function () {
+    actions.appendChild(iconBtn("btn btn-secondary btn-sm", "menu", "", function () {
       DOC.activeSessionId = ""; view.name = "picker"; touch(); paint();
     }, S("pickPreset")));
     head.appendChild(actions);
@@ -1383,7 +1433,7 @@
     var box = el("div", "");
     box.style.textAlign = "right";
     if (!s.startedAt) {
-      var start = btn("btn btn-primary", "▶ " + S("startClock"), function () { s.startedAt = Date.now(); touch(); paint(); });
+      var start = iconBtn("btn btn-primary", "play", S("startClock"), function () { s.startedAt = Date.now(); touch(); paint(); });
       box.appendChild(start);
       box.appendChild(el("div", "exam-clock-label", S("startClockHint")));
       return box;
@@ -1459,7 +1509,7 @@
       // No published maximum, so the bar counts up to the pass mark rather than
       // against a denominator this app would have to make up.
       var p2 = el("div", "exam-score-points", String(sc.earned));
-      p2.appendChild(el("small", "", "→ " + preset.passMark));
+      p2.appendChild(iconEl("small", "", "arrow-right", String(preset.passMark)));
       top.appendChild(p2);
       top.appendChild(el("div", "exam-score-pass" + (sc.earned >= preset.passMark ? " reached" : ""),
         preset.passMark + " " + S("toPass")));
@@ -1487,7 +1537,7 @@
     if (bar.children.length) box.appendChild(bar);
 
     var legend = el("div", "exam-score-legend");
-    [["full", S("done")], ["partial", S("captured")], ["failed", "✗"], ["pending", S("taskTodo")]].forEach(function (pair) {
+    [["full", S("done")], ["partial", S("captured")], ["failed", S("taskFailed")], ["pending", S("taskTodo")]].forEach(function (pair) {
       var sp = el("span", "", "");
       sp.appendChild(el("i", pair[0], ""));
       sp.appendChild(document.createTextNode(pair[1]));
@@ -1516,7 +1566,7 @@
     box.appendChild(el("div", "machine-nextsteps-label", S("routeTitle")));
     var list = el("ul", "", "");
     if (r.reached) {
-      list.appendChild(el("li", "", "✓ " + S("routeReached")));
+      list.appendChild(iconEl("li", "", "check", S("routeReached")));
     } else if (!r.fewest) {
       list.appendChild(el("li", "", S("routeShort") + " " + r.short));
     } else {
@@ -1569,11 +1619,11 @@
       row.appendChild(btn("btn btn-secondary btn-sm", "+", function () {
         state.used += 1; touch(); paint();
       }, S("budgetPlus")));
-      row.appendChild(btn("btn btn-secondary btn-sm", "−", function () {
+      row.appendChild(iconBtn("btn btn-secondary btn-sm", "minus", "", function () {
         state.used = Math.max(0, state.used - 1); touch(); paint();
       }, S("budgetMinus")));
       if (b.resets > 0 && state.resetsUsed < b.resets) {
-        row.appendChild(btn("btn btn-secondary btn-sm", "↺ " + S("budgetReset"), function () {
+        row.appendChild(iconBtn("btn btn-secondary btn-sm", "reset", S("budgetReset"), function () {
           state.resetsUsed += 1; touch(); paint();
         }));
       }
@@ -1630,7 +1680,10 @@
     });
 
     var top = el("div", "exam-card-top");
-    top.appendChild(el("span", "exam-card-icon", index < 9 ? String(index + 1) : "▣"));
+    var cardIcon = el("span", "exam-card-icon");
+      if (index < 9) cardIcon.textContent = String(index + 1);
+      else cardIcon.appendChild(ico("diamond", "icon-sm"));
+      top.appendChild(cardIcon);
     top.appendChild(el("span", "exam-card-name", t.label));
     var flags = targetFlags(t), got = targetCapturedCount(t);
     if (t.pointsUnknown) top.appendChild(el("span", "exam-card-pts", "?"));
@@ -1709,7 +1762,7 @@
       lbl.appendChild(document.createTextNode(m.name + (m.ip ? " · " : "")));
       if (m.ip) lbl.appendChild(el("code", "machine-detail-ip", m.ip));
       bar.appendChild(lbl);
-      bar.appendChild(btn("btn btn-secondary btn-sm", "↗ " + S("openMachine"), function () {
+      bar.appendChild(iconBtn("btn btn-secondary btn-sm", "external", S("openMachine"), function () {
         if (typeof APP.setActiveTarget === "function") APP.setActiveTarget(m.id);
         if (typeof APP.navigate === "function") APP.navigate("#machines/" + m.id);
       }));
@@ -1743,7 +1796,7 @@
         bar.appendChild(sel);
       }
     }
-    bar.appendChild(btn("btn btn-secondary btn-sm", "🆘 " + S("stuck") + " (s)", function () { view.stuck = !view.stuck; paint(); }));
+    bar.appendChild(iconBtn("btn btn-secondary btn-sm", "lifebuoy", S("stuck") + " (s)", function () { view.stuck = !view.stuck; paint(); }));
     return bar;
   }
 
@@ -1762,7 +1815,7 @@
       head.appendChild(el("span", "checklist-phase-name", f.label));
       if (f.pointsUnknown) head.appendChild(el("span", "checklist-phase-count", "? " + S("pointsFromPanel")));
       else if (Number(f.points) > 0) head.appendChild(el("span", "checklist-phase-count", f.points));
-      if (cap.at) head.appendChild(el("span", "session-evidence ok", "✓ " + S("capturedAt") + " " + fmtTime(cap.at)));
+      if (cap.at) head.appendChild(iconEl("span", "session-evidence ok", "check", S("capturedAt") + " " + fmtTime(cap.at)));
       box.appendChild(head);
 
       var body = el("div", "checklist-body");
@@ -1831,11 +1884,11 @@
           cap.at = 0; cap.override = null; touch(); paint();
         }));
         if (cap.override) {
-          actions.appendChild(el("span", "session-flag-note",
-            "⚠ " + S("overrodeAt") + " (" + cap.override.unmet + ") · " + fmtDateTime(cap.override.at)));
+          actions.appendChild(iconEl("span", "session-flag-note", "alert",
+            S("overrodeAt") + " (" + cap.override.unmet + ") · " + fmtDateTime(cap.override.at)));
         }
       } else {
-        actions.appendChild(btn("btn btn-primary btn-sm", "✓ " + S("captureFlag"), function () {
+        actions.appendChild(iconBtn("btn btn-primary btn-sm", "check", S("captureFlag"), function () {
           cap.value = val.value.trim();
           if (unmet.length) {
             // Warn clearly, then let them through. A hard block on a Saturday
@@ -1891,7 +1944,7 @@
       empty.appendChild(el("div", "", S("enumEmpty")));
       empty.appendChild(el("div", "", S("enumImport")));
       if (m) {
-        empty.appendChild(btn("btn btn-secondary btn-sm", "↗ " + S("openMachine"), function () {
+        empty.appendChild(iconBtn("btn btn-secondary btn-sm", "external", S("openMachine"), function () {
           if (typeof APP.navigate === "function") APP.navigate("#machines/" + m.id);
         }));
       }
@@ -1950,7 +2003,7 @@
     always.forEach(function (c) { body.appendChild(cmdRow(c, m, t)); });
 
     if (always.length > 1) {
-      var all = btn("btn btn-secondary btn-sm", "⧉ " + S("copyAll"), null);
+      var all = iconBtn("btn btn-secondary btn-sm", "copy", S("copyAll"), null);
       wireCopy(all, function () {
         return always.map(function (c) { return resolveCmd(c.cmd, m); }).join("\n");
       }, t);
@@ -1994,7 +2047,7 @@
     // attribute sink.
     var code = el("code", "", resolved);
     hint.appendChild(code);
-    var copy = btn("checklist-hint-copy", "⧉", null, S("copy"));
+    var copy = iconBtn("checklist-hint-copy", "copy", "", null, S("copy"));
     wireCopy(copy, function () { return resolved; }, t);
     hint.appendChild(copy);
     body.appendChild(hint);
@@ -2098,7 +2151,10 @@
       var dot = btn("guide-dot" + (i2 === idx ? " current" : "") + (c.complete ? " done" : ""), "", function () {
         t.phase = ph.id; touch(); paint();
       }, ph.name + " — " + c.done + "/" + c.total);
-      dot.appendChild(el("span", "guide-dot-mark", c.complete ? "✓" : String(i2 + 1)));
+      var mark = el("span", "guide-dot-mark");
+      if (c.complete) mark.appendChild(ico("check", "icon-sm"));
+      else mark.textContent = String(i2 + 1);
+      dot.appendChild(mark);
       rail.appendChild(dot);
     });
     sec.appendChild(rail);
@@ -2138,7 +2194,7 @@
         var hint = el("div", "checklist-hint");
         var resolved = resolveCmd(item.hint, m);
         hint.appendChild(el("code", "", resolved));
-        var copy = btn("checklist-hint-copy", "⧉", null, S("copy"));
+        var copy = iconBtn("checklist-hint-copy", "copy", "", null, S("copy"));
         wireCopy(copy, function () { return resolved; }, t);
         hint.appendChild(copy);
         ib.appendChild(hint);
@@ -2149,9 +2205,9 @@
     box.appendChild(steps);
 
     var nav = el("div", "guide-nav");
-    if (idx > 0) nav.appendChild(btn("nm-btn", "← " + S("gPrev"), function () { t.phase = phases[idx - 1].id; touch(); paint(); }));
+    if (idx > 0) nav.appendChild(iconBtn("nm-btn", "arrow-left", S("gPrev"), function () { t.phase = phases[idx - 1].id; touch(); paint(); }));
     if (idx < phases.length - 1) {
-      var next = btn("nm-btn" + (st.complete ? " nm-btn-primary" : ""), S("gNext") + " →", function () {
+      var next = nextBtn("nm-btn" + (st.complete ? " nm-btn-primary" : ""), S("gNext"), function () {
         t.phase = phases[idx + 1].id; touch(); paint();
       });
       next.classList.add("guide-next");
@@ -2187,7 +2243,7 @@
   function stuckPanel(s, preset, t) {
     var box = el("div", "machine-section");
     var head = el("div", "machine-section-head");
-    head.appendChild(el("h3", "", "🆘 " + S("stuck")));
+    head.appendChild(iconEl("h3", "", "lifebuoy", S("stuck")));
     var right = el("div", "exam-header-actions");
 
     var basePhase = stuckPhaseFor(preset, t.phase);
@@ -2260,7 +2316,7 @@
         var hint = el("div", "checklist-hint");
         var resolved = resolveCmd(item.cmd, m);
         hint.appendChild(el("code", "", resolved));
-        var copy = btn("checklist-hint-copy", "⧉", null, S("copy"));
+        var copy = iconBtn("checklist-hint-copy", "copy", "", null, S("copy"));
         wireCopy(copy, function () { return resolved; }, t);
         hint.appendChild(copy);
         body.appendChild(hint);
@@ -2348,7 +2404,7 @@
         row.appendChild(body);
         var out = normOutcome(a.outcome);
         row.appendChild(el("span", "session-attempt-out " + out, S("out" + out.charAt(0).toUpperCase() + out.slice(1))));
-        row.appendChild(btn("btn btn-secondary btn-sm", "🗑", function () {
+        row.appendChild(iconBtn("btn btn-secondary btn-sm", "trash", "", function () {
           s.attempts = all.filter(function (x) { return x.id !== a.id; });
           touch(); paint();
         }, S("del")));
@@ -2375,9 +2431,9 @@
     // screen is exactly the ceremony that closes the tab. One click either way.
     var openByDefault = hasClock(preset) || (preset.rules || []).some(function (r) { return r.kind === "banned" || r.kind === "limited"; });
     body.hidden = !openByDefault;
-    var toggle = btn("btn btn-secondary btn-sm", openByDefault ? "▾" : "▸", function () {
+    var toggle = iconBtn("btn btn-secondary btn-sm", openByDefault ? "chevron-down" : "chevron-right", "", function () {
       body.hidden = !body.hidden;
-      toggle.textContent = body.hidden ? "▸" : "▾";
+      toggle.replaceChildren(ico(body.hidden ? "chevron-right" : "chevron-down", "icon-sm"));
     });
     head.appendChild(toggle);
     wrap.appendChild(head);
@@ -2538,12 +2594,12 @@
     bar.appendChild(lbl);
 
     if (mismatch) {
-      var warn = el("span", "session-flag-note", "⚠ " + S("contextDiff") + " (" + declared + ")");
+      var warn = iconEl("span", "session-flag-note", "alert", S("contextDiff") + " (" + declared + ")");
       bar.appendChild(warn);
     }
     var saver = (preset.timeSavers || []).filter(function (ts) { return /use-context/.test(String(ts.cmd || "")); })[0];
     if (saver) {
-      var copy = btn("btn btn-secondary btn-sm", "⧉ " + S("contextConfirm"), null);
+      var copy = iconBtn("btn btn-secondary btn-sm", "copy", S("contextConfirm"), null);
       wireCopy(copy, function () { return String(saver.cmd).replace(/<CTX>/g, declared || confirmed || "<CTX>"); }, null);
       bar.appendChild(copy);
     }
@@ -2582,7 +2638,7 @@
     box.appendChild(summary);
     box.appendChild(el("p", "machine-report-hint", S("domainEstHint")));
     if (preset.weightsDerived) {
-      box.appendChild(el("p", "machine-report-hint", "⚠ " + S("derivedBy")));
+      box.appendChild(iconEl("p", "machine-report-hint", "alert", S("derivedBy")));
     }
 
     est.rows.forEach(function (row) {
@@ -2681,18 +2737,18 @@
     // Flagging is this app's idea, not something the exam UI documents. Saying so
     // where the control is prevents someone building a habit around a feature
     // that will not be there on the day.
-    var flagBtn = btn("session-flag" + (task.flagged ? " on" : ""), "⚑", function () {
+    var flagBtn = iconBtn("session-flag" + (task.flagged ? " on" : ""), "flag", "", function () {
       task.flagged = !task.flagged; touch(); paint();
     }, S("flagReview"));
     top.appendChild(flagBtn);
 
-    top.appendChild(btn("btn btn-secondary btn-sm", open ? "▾" : "▸", function () {
+    top.appendChild(iconBtn("btn btn-secondary btn-sm", open ? "chevron-down" : "chevron-right", "", function () {
       view.taskId = open ? "" : task.id; paint();
     }));
     row.appendChild(top);
 
     if ((preset.appFeatures || []).length && task.flagged) {
-      preset.appFeatures.forEach(function (note) { row.appendChild(el("div", "session-flag-note", "ⓘ " + note)); });
+      preset.appFeatures.forEach(function (note) { row.appendChild(iconEl("div", "session-flag-note", "info", note)); });
     }
 
     if (budget) {
@@ -2752,7 +2808,7 @@
 
     var ctxRow = el("div", "machine-report-bar");
     if (task.contextConfirmedAt) {
-      ctxRow.appendChild(el("span", "session-evidence ok", "✓ " + S("contextConfirmed") + " " + fmtTime(task.contextConfirmedAt)));
+      ctxRow.appendChild(iconEl("span", "session-evidence ok", "check", S("contextConfirmed") + " " + fmtTime(task.contextConfirmedAt)));
     } else {
       ctxRow.appendChild(el("span", "session-evidence missing", S("contextWarn")));
     }
@@ -2766,8 +2822,8 @@
 
     var run = el("div", "machine-report-bar");
     var canStart = !!task.contextConfirmedAt;
-    var startBtn = btn("btn " + (canStart ? "btn-primary" : "btn-secondary") + " btn-sm",
-      task.startedAt ? "⏸ " + S("taskStop") : "▶ " + S("taskStart"), function () {
+    var startBtn = iconBtn("btn " + (canStart ? "btn-primary" : "btn-secondary") + " btn-sm",
+      task.startedAt ? "pause" : "play", task.startedAt ? S("taskStop") : S("taskStart"), function () {
         if (task.startedAt) { stopTaskClocks(s); touch(); paint(); return; }
         if (!canStart) { toast(S("contextWarn"), "error"); return; }
         startTask(s, task);
@@ -2801,7 +2857,7 @@
     if (task.verifyCmd) {
       var hintRow = el("div", "checklist-hint");
       hintRow.appendChild(el("code", "", task.verifyCmd));
-      var copy = btn("checklist-hint-copy", "⧉", null, S("copy"));
+      var copy = iconBtn("checklist-hint-copy", "copy", "", null, S("copy"));
       wireCopy(copy, function () { return task.verifyCmd; }, null);
       hintRow.appendChild(copy);
       body.appendChild(hintRow);
@@ -2843,7 +2899,7 @@
       if (ts.cmd) {
         var hint = el("div", "checklist-hint");
         hint.appendChild(el("code", "", ts.cmd));
-        var copy = btn("checklist-hint-copy", "⧉", null, S("copy"));
+        var copy = iconBtn("checklist-hint-copy", "copy", "", null, S("copy"));
         wireCopy(copy, function () { return ts.cmd; }, null);
         hint.appendChild(copy);
         body.appendChild(hint);
@@ -2863,7 +2919,7 @@
     (preset.allowedDocs || []).forEach(function (d) {
       var li = el("li", "session-doc", "");
       var allowed = /^https?:\/\//i.test(String(d.url || ""));
-      li.appendChild(el("span", "session-doc-icon", allowed ? "🔖" : "⛔"));
+      li.appendChild(iconEl("span", "session-doc-icon", allowed ? "bookmark" : "ban", ""));
       var body = el("div", "session-doc-body");
       var title = el("div", "session-doc-title", "");
       if (allowed) title.appendChild(link(d.url, d.label));
@@ -2888,7 +2944,7 @@
     (preset.pitfalls || []).forEach(function (p) {
       var li = el("li", "", p.text);
       if (p.cost) li.appendChild(el("div", "session-attempt-why", p.cost));
-      if (p.guard) li.appendChild(el("div", "session-attempt-why", "→ " + p.guard));
+      if (p.guard) li.appendChild(iconEl("div", "session-attempt-why", "arrow-right", p.guard));
       ul.appendChild(li);
     });
     box.appendChild(ul);
@@ -2932,7 +2988,7 @@
         if (item.hint) {
           var hint = el("div", "checklist-hint");
           hint.appendChild(el("code", "", item.hint));
-          var copy = btn("checklist-hint-copy", "⧉", null, S("copy"));
+          var copy = iconBtn("checklist-hint-copy", "copy", "", null, S("copy"));
           wireCopy(copy, function () { return item.hint; }, null);
           hint.appendChild(copy);
           ib.appendChild(hint);
@@ -3192,14 +3248,14 @@
     var md = buildReportMarkdown(s, preset);
 
     var bar = el("div", "machine-report-bar");
-    bar.appendChild(btn("btn btn-secondary btn-sm", "⧉ " + S("reportCopy"), null));
+    bar.appendChild(iconBtn("btn btn-secondary btn-sm", "copy", S("reportCopy"), null));
     wireCopy(bar.firstChild, function () { return md; }, null);
 
     var saveLabel = s.report && s.report.writeupId ? S("reportUpdate") : S("reportSave");
-    bar.appendChild(btn("btn btn-primary btn-sm", "💾 " + saveLabel, function () { saveToWriteups(s, preset, md); }));
+    bar.appendChild(iconBtn("btn btn-primary btn-sm", "save", saveLabel, function () { saveToWriteups(s, preset, md); }));
     if (s.report && s.report.writeupId) {
       bar.appendChild(el("span", "machine-report-hint", S("reportSaved") + " · " + fmtDateTime(s.report.savedAt)));
-      bar.appendChild(btn("btn btn-secondary btn-sm", "↗ " + S("reportOpen"), function () {
+      bar.appendChild(iconBtn("btn btn-secondary btn-sm", "external", S("reportOpen"), function () {
         if (typeof APP.navigate === "function") APP.navigate("#writeups");
       }));
     }
@@ -3464,6 +3520,41 @@
   }
 
   // ══════════════════════════════════════════════════════════════════
+  // Sidebar badge
+  // ══════════════════════════════════════════════════════════════════
+
+  // What the sidebar shows next to "Sessions". app.js calls this on every paint
+  // of the nav, before this module has necessarily loaded its document, so it
+  // must be cheap, must never throw, and must never kick off a fetch — a badge
+  // that triggered the 600KB load would undo the lazy import it is describing.
+  //
+  // The rule for what it prints is the same one the rest of the feature follows:
+  // only report a ratio against a denominator the session actually has. A fresh
+  // OSEP session has no targets until the candidate types in what the control
+  // panel gave them, and "0/0" there is not a progress report, it is a lie with
+  // a slash in it.
+  function navBadge() {
+    var s = activeSession();
+    if (!s) return "";
+    if (s.kind === "tasks") {
+      var tasks = Array.isArray(s.tasks) ? s.tasks : [];
+      if (!tasks.length) return "";
+      // Verified only — the same count the session list prints as "N of M
+      // verified". Two readouts of the same session that disagree is worse than
+      // one that is strict: "applied, unverified" is the gap the CKS retro
+      // exists to expose, so it must not quietly read as done up here.
+      var done = tasks.filter(function (t) { return t.status === "verified"; }).length;
+      return done + "/" + tasks.length;
+    }
+    var score = sessionScore(s);
+    if (score.totalFlags > 0) return score.capturedFlags + "/" + score.totalFlags;
+    // Targets with no flags on them yet — say how many targets are in play
+    // rather than inventing a flag count for them.
+    var targets = Array.isArray(s.targets) ? s.targets : [];
+    return targets.length ? String(targets.length) : "";
+  }
+
+  // ══════════════════════════════════════════════════════════════════
   // Entry point
   // ══════════════════════════════════════════════════════════════════
 
@@ -3504,6 +3595,7 @@
   // route to a pass mark, budget parsing and probe matching are all pure.
   window.CS_SESSION = {
     render: render,
+    navBadge: navBadge,
     startSession: startSession,
     captureFlag: captureFlag,
     logAttempt: logAttempt,

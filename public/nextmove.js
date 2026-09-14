@@ -290,6 +290,25 @@
     b.addEventListener("click", onClick);
     return b;
   }
+  // The page's icon sprite, reached through app.js rather than redrawn here —
+  // session.js carries the same three helpers. The fallback leaves a gap rather
+  // than a glyph: an older app.js should not resurrect the character.
+  function ico(name, cls) {
+    if (typeof APP.icon === "function") return APP.icon(name, cls);
+    return el("span", "icon");
+  }
+  function iconBtn(cls, name, text, onClick, title) {
+    var b = btn(cls, "", onClick, title);
+    b.appendChild(ico(name, "icon-sm"));
+    if (text) b.appendChild(document.createTextNode(" " + text));
+    return b;
+  }
+  function iconEl(tag, cls, name, text) {
+    var node = el(tag, cls);
+    node.appendChild(ico(name, "icon-sm"));
+    if (text) node.appendChild(document.createTextNode(" " + text));
+    return node;
+  }
 
   // ── situation panel ─────────────────────────────────────────────────────
   function situationPanel() {
@@ -301,7 +320,7 @@
       var machines = APP.getMachines() || [], m = null;
       for (var i = 0; i < machines.length; i++) if (machines[i].id === activeId) m = machines[i];
       if (m) {
-        head.appendChild(btn("nm-btn nm-btn-ghost", "◎ " + S("useTarget"), function () {
+        head.appendChild(iconBtn("nm-btn nm-btn-ghost", "target", S("useTarget"), function () {
           state.target = m.ip || state.target;
           if (m.os) state.os = /win/i.test(m.os) ? "windows" : (/linux|nix|unix/i.test(m.os) ? "linux" : state.os);
           var svc = (m.services || []).map(function (s) {
@@ -405,7 +424,7 @@
     f.appendChild(chips);
 
     var tools = el("div", "nm-sit-tools");
-    tools.appendChild(btn("nm-btn nm-btn-ghost", (state.scanOpen ? "▾ " : "▸ ") + S("pasteScan"), function () {
+    tools.appendChild(iconBtn("nm-btn nm-btn-ghost", state.scanOpen ? "chevron-down" : "chevron-right", S("pasteScan"), function () {
       state.scanOpen = !state.scanOpen; save(); paint();
     }));
     f.appendChild(tools);
@@ -454,9 +473,13 @@
       markTried(resolved, true);
     });
     acts.appendChild(copyBtn);
-    acts.appendChild(btn("nm-btn nm-btn-try", isTried(resolved) ? "✓ " + S("tried") : S("markTried"), function () {
-      markTried(resolved, !isTried(resolved));
-    }, isTried(resolved) ? S("untry") : S("markTried")));
+    // Tried carries a tick; not-yet-tried is a plain label, because there is no
+    // "un-ticked" icon that reads as anything other than a second state.
+    var tried = isTried(resolved);
+    var onTry = function () { markTried(resolved, !tried); };
+    acts.appendChild(tried
+      ? iconBtn("nm-btn nm-btn-try", "check", S("tried"), onTry, S("untry"))
+      : btn("nm-btn nm-btn-try", S("markTried"), onTry, S("markTried")));
     head.appendChild(acts);
     row.appendChild(head);
 
@@ -594,7 +617,7 @@
   }
   function errorPane(msg, retry) {
     var d = el("div", "nm-empty");
-    d.appendChild(el("h3", null, "⚠ " + S("loadFail")));
+    d.appendChild(iconEl("h3", null, "alert", S("loadFail")));
     d.appendChild(el("p", null, msg));
     d.appendChild(btn("nm-btn nm-btn-primary", S("retry"), retry));
     return d;
