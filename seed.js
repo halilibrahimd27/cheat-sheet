@@ -364,7 +364,8 @@ module.exports = [
             "attack": [
               "T1590.002"
             ],
-            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1."
+            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1.",
+            "ref": "https://github.com/jaygreig86/dmitry"
           },
           {
             "title": "Fierce DNS Recon",
@@ -7305,7 +7306,8 @@ module.exports = [
               "advanced"
             ],
             "desc_tr": "EDR atlatma yükleyicisi (loader)",
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://github.com/optiv/ScareCrow"
           }
         ],
         "name_tr": "Custom Shellcode"
@@ -7539,7 +7541,8 @@ module.exports = [
             "attack": [
               "T1059.004"
             ],
-            "out": "# (nothing here — the shell appears in your listener, not in this terminal)\n\n# On your `nc -lvnp` the callback shows as \"connect to ... from ...\". If it\n# never arrives: the LHOST is wrong (use your VPN/tun0 address, not eth0),\n# egress is filtered on the port you chose (try 443 or 53), or the target has no\n# bash — /dev/tcp is a bash feature and dash does not have it. Upgrade to a PTY\n# the moment it lands, or the first Ctrl-C kills it."
+            "out": "# (nothing here — the shell appears in your listener, not in this terminal)\n\n# On your `nc -lvnp` the callback shows as \"connect to ... from ...\". If it\n# never arrives: the LHOST is wrong (use your VPN/tun0 address, not eth0),\n# egress is filtered on the port you chose (try 443 or 53), or the target has no\n# bash — /dev/tcp is a bash feature and dash does not have it. Upgrade to a PTY\n# the moment it lands, or the first Ctrl-C kills it.",
+            "ref": "https://man7.org/linux/man-pages/man1/rm.1.html"
           },
           {
             "title": "Socat Reverse Shell",
@@ -7590,7 +7593,8 @@ module.exports = [
               "advanced"
             ],
             "desc_tr": "AWK ters bağlantı kabuğu one-liner",
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/awk.1p.html"
           },
           {
             "title": "Groovy Reverse Shell",
@@ -7663,7 +7667,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "Busybox netcat kabuğu",
-            "out": "root@host:/#\n\n# nsenter into PID 1's namespaces from a privileged container is host root with\n# no exploit: `nsenter -t 1 -m -u -n -i sh`. It needs --pid=host or hostPID\n# plus the right capabilities, so it doubles as the test for whether those were\n# granted. `capsh --print` first tells you whether it will work."
+            "out": "root@host:/#\n\n# nsenter into PID 1's namespaces from a privileged container is host root with\n# no exploit: `nsenter -t 1 -m -u -n -i sh`. It needs --pid=host or hostPID\n# plus the right capabilities, so it doubles as the test for whether those were\n# granted. `capsh --print` first tells you whether it will work.",
+            "ref": "https://www.busybox.net/downloads/BusyBox.html"
           },
           {
             "title": "Groovy Shell (Jenkins)",
@@ -7910,7 +7915,8 @@ module.exports = [
             "attack": [
               "T1059.004"
             ],
-            "out": "# (nothing here — the shell appears in your listener, not in this terminal)\n\n# On your `nc -lvnp` the callback shows as \"connect to ... from ...\". If it\n# never arrives: the LHOST is wrong (use your VPN/tun0 address, not eth0),\n# egress is filtered on the port you chose (try 443 or 53), or the target has no\n# bash — /dev/tcp is a bash feature and dash does not have it. Upgrade to a PTY\n# the moment it lands, or the first Ctrl-C kills it."
+            "out": "# (nothing here — the shell appears in your listener, not in this terminal)\n\n# On your `nc -lvnp` the callback shows as \"connect to ... from ...\". If it\n# never arrives: the LHOST is wrong (use your VPN/tun0 address, not eth0),\n# egress is filtered on the port you chose (try 443 or 53), or the target has no\n# bash — /dev/tcp is a bash feature and dash does not have it. Upgrade to a PTY\n# the moment it lands, or the first Ctrl-C kills it.",
+            "ref": "https://man7.org/linux/man-pages/man1/rm.1.html"
           },
           {
             "title": "Socat Bind Shell",
@@ -8033,7 +8039,8 @@ module.exports = [
             "attack": [
               "T1505.003"
             ],
-            "out": "# (a web shell — drop it where the server executes PHP, then call it with curl)\n\n# Once uploaded, `curl 'http://target/shell.php?cmd=id'` returns command output\n# as www-data. It is loud and it is a file on disk with your fingerprints on it:\n# note the path so you can remove it, and move to a proper reverse shell rather\n# than living in the web shell."
+            "out": "# (a web shell — drop it where the server executes PHP, then call it with curl)\n\n# Once uploaded, `curl 'http://target/shell.php?cmd=id'` returns command output\n# as www-data. It is loud and it is a file on disk with your fingerprints on it:\n# note the path so you can remove it, and move to a proper reverse shell rather\n# than living in the web shell.",
+            "ref": "https://man7.org/linux/man-pages/man1/cp.1.html"
           },
           {
             "title": "Access Web Shell",
@@ -8210,7 +8217,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Bilgisayar adını al",
-            "out": "2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 10.10.10.5/24 brd 10.10.10.255 scope global eth0\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 172.16.5.9/24 brd 172.16.5.255 scope global eth1\n\n# A second interface on a different subnet is the pivot — that network is\n# reachable from here and from nowhere else you have. Note it, then tunnel.\n# `ip neigh` lists hosts this machine has recently talked to, which is a free\n# target list for the new segment."
+            "out": "2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 10.10.10.5/24 brd 10.10.10.255 scope global eth0\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 172.16.5.9/24 brd 172.16.5.255 scope global eth1\n\n# A second interface on a different subnet is the pivot — that network is\n# reachable from here and from nowhere else you have. Note it, then tunnel.\n# `ip neigh` lists hosts this machine has recently talked to, which is a free\n# target list for the new segment.",
+            "ref": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/hostname"
           },
           {
             "title": "Current User",
@@ -8307,7 +8315,8 @@ module.exports = [
             "attack": [
               "T1016"
             ],
-            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate."
+            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate.",
+            "ref": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig"
           },
           {
             "title": "Routing Table",
@@ -8320,7 +8329,8 @@ module.exports = [
             "attack": [
               "T1016"
             ],
-            "out": "2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 10.10.10.5/24 brd 10.10.10.255 scope global eth0\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 172.16.5.9/24 brd 172.16.5.255 scope global eth1\n\n# A second interface on a different subnet is the pivot — that network is\n# reachable from here and from nowhere else you have. Note it, then tunnel.\n# `ip neigh` lists hosts this machine has recently talked to, which is a free\n# target list for the new segment."
+            "out": "2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 10.10.10.5/24 brd 10.10.10.255 scope global eth0\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 172.16.5.9/24 brd 172.16.5.255 scope global eth1\n\n# A second interface on a different subnet is the pivot — that network is\n# reachable from here and from nowhere else you have. Note it, then tunnel.\n# `ip neigh` lists hosts this machine has recently talked to, which is a free\n# target list for the new segment.",
+            "ref": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/route_ws2008"
           },
           {
             "title": "Active Connections",
@@ -8463,7 +8473,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Hariç tutulan yolları görüntüle",
-            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own."
+            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own.",
+            "ref": "https://learn.microsoft.com/en-us/powershell/module/defender/get-mppreference"
           },
           {
             "title": "Firewall Rules",
@@ -8693,7 +8704,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Önbelleğe alınmış kimlik bilgilerini listele",
-            "out": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\n    DefaultUserName    REG_SZ    Administrator\n    DefaultPassword    REG_SZ    S3cr3tP@ssw0rd!\n    AutoAdminLogon     REG_SZ    1\n\n# Autologon credentials are stored in cleartext in the registry and readable by\n# any local user. The other classics with these built-ins: `net user <name>\n# /domain` for group membership, `sc qc <svc>` for an unquoted service path,\n# and `cmdkey /list` for saved credentials you can use without knowing them."
+            "out": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\n    DefaultUserName    REG_SZ    Administrator\n    DefaultPassword    REG_SZ    S3cr3tP@ssw0rd!\n    AutoAdminLogon     REG_SZ    1\n\n# Autologon credentials are stored in cleartext in the registry and readable by\n# any local user. The other classics with these built-ins: `net user <name>\n# /domain` for group membership, `sc qc <svc>` for an unquoted service path,\n# and `cmdkey /list` for saved credentials you can use without knowing them.",
+            "ref": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/cmdkey"
           },
           {
             "title": "RunAs with Saved Creds",
@@ -8739,7 +8751,8 @@ module.exports = [
             "attack": [
               "T1134.001"
             ],
-            "out": "[+] Found privilege: SeImpersonatePrivilege\n[+] Named pipe listening...\n[+] CreateProcessAsUser OK\n\nC:\\Windows\\system32>whoami\nnt authority\\system\n\n# The Potato family all trade SeImpersonatePrivilege for SYSTEM — which is why\n# `whoami /priv` is the check that decides whether to bother. Which one works\n# depends on the Windows build; PrintSpoofer and GodPotato cover most modern\n# targets where the older JuicyPotato no longer does."
+            "out": "[+] Found privilege: SeImpersonatePrivilege\n[+] Named pipe listening...\n[+] CreateProcessAsUser OK\n\nC:\\Windows\\system32>whoami\nnt authority\\system\n\n# The Potato family all trade SeImpersonatePrivilege for SYSTEM — which is why\n# `whoami /priv` is the check that decides whether to bother. Which one works\n# depends on the Windows build; PrintSpoofer and GodPotato cover most modern\n# targets where the older JuicyPotato no longer does.",
+            "ref": "https://github.com/ohpe/juicy-potato"
           },
           {
             "title": "PrintSpoofer",
@@ -8754,7 +8767,8 @@ module.exports = [
             "attack": [
               "T1134.001"
             ],
-            "out": "[+] Found privilege: SeImpersonatePrivilege\n[+] Named pipe listening...\n[+] CreateProcessAsUser OK\n\nC:\\Windows\\system32>whoami\nnt authority\\system\n\n# The Potato family all trade SeImpersonatePrivilege for SYSTEM — which is why\n# `whoami /priv` is the check that decides whether to bother. Which one works\n# depends on the Windows build; PrintSpoofer and GodPotato cover most modern\n# targets where the older JuicyPotato no longer does."
+            "out": "[+] Found privilege: SeImpersonatePrivilege\n[+] Named pipe listening...\n[+] CreateProcessAsUser OK\n\nC:\\Windows\\system32>whoami\nnt authority\\system\n\n# The Potato family all trade SeImpersonatePrivilege for SYSTEM — which is why\n# `whoami /priv` is the check that decides whether to bother. Which one works\n# depends on the Windows build; PrintSpoofer and GodPotato cover most modern\n# targets where the older JuicyPotato no longer does.",
+            "ref": "https://github.com/itm4n/PrintSpoofer"
           },
           {
             "title": "GodPotato",
@@ -8769,7 +8783,8 @@ module.exports = [
             "attack": [
               "T1134.001"
             ],
-            "out": "[+] Found privilege: SeImpersonatePrivilege\n[+] Named pipe listening...\n[+] CreateProcessAsUser OK\n\nC:\\Windows\\system32>whoami\nnt authority\\system\n\n# The Potato family all trade SeImpersonatePrivilege for SYSTEM — which is why\n# `whoami /priv` is the check that decides whether to bother. Which one works\n# depends on the Windows build; PrintSpoofer and GodPotato cover most modern\n# targets where the older JuicyPotato no longer does."
+            "out": "[+] Found privilege: SeImpersonatePrivilege\n[+] Named pipe listening...\n[+] CreateProcessAsUser OK\n\nC:\\Windows\\system32>whoami\nnt authority\\system\n\n# The Potato family all trade SeImpersonatePrivilege for SYSTEM — which is why\n# `whoami /priv` is the check that decides whether to bother. Which one works\n# depends on the Windows build; PrintSpoofer and GodPotato cover most modern\n# targets where the older JuicyPotato no longer does.",
+            "ref": "https://github.com/BeichenDream/GodPotato"
           },
           {
             "title": "SweetPotato",
@@ -9028,7 +9043,8 @@ module.exports = [
             "attack": [
               "T1552.001"
             ],
-            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate."
+            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate.",
+            "ref": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/findstr"
           },
           {
             "title": "PowerShell History",
@@ -9041,7 +9057,8 @@ module.exports = [
             "attack": [
               "T1059.001"
             ],
-            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate."
+            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate.",
+            "ref": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/type"
           },
           {
             "title": "PowerShell History (PS)",
@@ -9054,7 +9071,8 @@ module.exports = [
             "attack": [
               "T1059.001"
             ],
-            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own."
+            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own.",
+            "ref": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-content"
           },
           {
             "title": "WiFi Passwords",
@@ -9115,7 +9133,8 @@ module.exports = [
             "attack": [
               "T1552.001"
             ],
-            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate."
+            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate.",
+            "ref": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/type"
           },
           {
             "title": "Search Registry for Passwords",
@@ -9271,7 +9290,8 @@ module.exports = [
             "attack": [
               "T1552.006"
             ],
-            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate."
+            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate.",
+            "ref": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/findstr"
           },
           {
             "title": "Invoke-PrivescCheck",
@@ -9461,7 +9481,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "Güvenlik odaklı host keşif aracı",
-            "out": "╔══════════╣ Checking sudo tokens\n╚ https://book.hacktricks.xyz/linux-hardening/privilege-escalation\n[+] /usr/bin/find is executable by you and has NOPASSWD\n\n╔══════════╣ Interesting files\n  95% PROBABILITY: /etc/cron.d/backup is writable by www-data\n\n# Red on yellow is 99% a finding; red alone is worth a look; everything else is\n# context. These scripts are LOUD — they touch thousands of files and any EDR\n# will see it. On a detection-aware engagement, check the specific things by\n# hand instead."
+            "out": "╔══════════╣ Checking sudo tokens\n╚ https://book.hacktricks.xyz/linux-hardening/privilege-escalation\n[+] /usr/bin/find is executable by you and has NOPASSWD\n\n╔══════════╣ Interesting files\n  95% PROBABILITY: /etc/cron.d/backup is writable by www-data\n\n# Red on yellow is 99% a finding; red alone is worth a look; everything else is\n# context. These scripts are LOUD — they touch thousands of files and any EDR\n# will see it. On a detection-aware engagement, check the specific things by\n# hand instead.",
+            "ref": "https://github.com/GhostPack/Seatbelt"
           },
           {
             "title": "SharpUp",
@@ -9471,7 +9492,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "PowerUp yetki yükseltme kontrollerinin C# sürümü",
-            "out": "[+] Found privilege: SeImpersonatePrivilege\n[+] Named pipe listening...\n[+] CreateProcessAsUser OK\n\nC:\\Windows\\system32>whoami\nnt authority\\system\n\n# The Potato family all trade SeImpersonatePrivilege for SYSTEM — which is why\n# `whoami /priv` is the check that decides whether to bother. Which one works\n# depends on the Windows build; PrintSpoofer and GodPotato cover most modern\n# targets where the older JuicyPotato no longer does."
+            "out": "[+] Found privilege: SeImpersonatePrivilege\n[+] Named pipe listening...\n[+] CreateProcessAsUser OK\n\nC:\\Windows\\system32>whoami\nnt authority\\system\n\n# The Potato family all trade SeImpersonatePrivilege for SYSTEM — which is why\n# `whoami /priv` is the check that decides whether to bother. Which one works\n# depends on the Windows build; PrintSpoofer and GodPotato cover most modern\n# targets where the older JuicyPotato no longer does.",
+            "ref": "https://github.com/GhostPack/SharpUp"
           },
           {
             "title": "PrivescCheck",
@@ -9498,7 +9520,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "Seatbelt'i hedefli güvenlik kontrolleriyle çalıştır",
-            "out": "╔══════════╣ Checking sudo tokens\n╚ https://book.hacktricks.xyz/linux-hardening/privilege-escalation\n[+] /usr/bin/find is executable by you and has NOPASSWD\n\n╔══════════╣ Interesting files\n  95% PROBABILITY: /etc/cron.d/backup is writable by www-data\n\n# Red on yellow is 99% a finding; red alone is worth a look; everything else is\n# context. These scripts are LOUD — they touch thousands of files and any EDR\n# will see it. On a detection-aware engagement, check the specific things by\n# hand instead."
+            "out": "╔══════════╣ Checking sudo tokens\n╚ https://book.hacktricks.xyz/linux-hardening/privilege-escalation\n[+] /usr/bin/find is executable by you and has NOPASSWD\n\n╔══════════╣ Interesting files\n  95% PROBABILITY: /etc/cron.d/backup is writable by www-data\n\n# Red on yellow is 99% a finding; red alone is worth a look; everything else is\n# context. These scripts are LOUD — they touch thousands of files and any EDR\n# will see it. On a detection-aware engagement, check the specific things by\n# hand instead.",
+            "ref": "https://github.com/GhostPack/Seatbelt"
           },
           {
             "title": "Seatbelt Remote Execution",
@@ -9509,7 +9532,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "Seatbelt'i uzak bir host'a karşı çalıştır",
-            "out": "╔══════════╣ Checking sudo tokens\n╚ https://book.hacktricks.xyz/linux-hardening/privilege-escalation\n[+] /usr/bin/find is executable by you and has NOPASSWD\n\n╔══════════╣ Interesting files\n  95% PROBABILITY: /etc/cron.d/backup is writable by www-data\n\n# Red on yellow is 99% a finding; red alone is worth a look; everything else is\n# context. These scripts are LOUD — they touch thousands of files and any EDR\n# will see it. On a detection-aware engagement, check the specific things by\n# hand instead."
+            "out": "╔══════════╣ Checking sudo tokens\n╚ https://book.hacktricks.xyz/linux-hardening/privilege-escalation\n[+] /usr/bin/find is executable by you and has NOPASSWD\n\n╔══════════╣ Interesting files\n  95% PROBABILITY: /etc/cron.d/backup is writable by www-data\n\n# Red on yellow is 99% a finding; red alone is worth a look; everything else is\n# context. These scripts are LOUD — they touch thousands of files and any EDR\n# will see it. On a detection-aware engagement, check the specific things by\n# hand instead.",
+            "ref": "https://github.com/GhostPack/Seatbelt"
           },
           {
             "title": "SharpUp Specific Checks",
@@ -9519,7 +9543,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "SharpUp'ı belirli zafiyet kontrolleriyle çalıştır",
-            "out": "[+] Found privilege: SeImpersonatePrivilege\n[+] Named pipe listening...\n[+] CreateProcessAsUser OK\n\nC:\\Windows\\system32>whoami\nnt authority\\system\n\n# The Potato family all trade SeImpersonatePrivilege for SYSTEM — which is why\n# `whoami /priv` is the check that decides whether to bother. Which one works\n# depends on the Windows build; PrintSpoofer and GodPotato cover most modern\n# targets where the older JuicyPotato no longer does."
+            "out": "[+] Found privilege: SeImpersonatePrivilege\n[+] Named pipe listening...\n[+] CreateProcessAsUser OK\n\nC:\\Windows\\system32>whoami\nnt authority\\system\n\n# The Potato family all trade SeImpersonatePrivilege for SYSTEM — which is why\n# `whoami /priv` is the check that decides whether to bother. Which one works\n# depends on the Windows build; PrintSpoofer and GodPotato cover most modern\n# targets where the older JuicyPotato no longer does.",
+            "ref": "https://github.com/GhostPack/SharpUp"
           },
           {
             "title": "JAWS Enumeration",
@@ -9663,7 +9688,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Mevcut kullanıcı ve grup üyeliklerini göster",
-            "out": "uid=1000(user) gid=1000(user) groups=1000(user),4(adm),27(sudo),999(docker)\n\n# Groups are the point. docker, lxd, disk, adm and sudo are each a documented\n# path to root — check the group list before anything else."
+            "out": "uid=1000(user) gid=1000(user) groups=1000(user),4(adm),27(sudo),999(docker)\n\n# Groups are the point. docker, lxd, disk, adm and sudo are each a documented\n# path to root — check the group list before anything else.",
+            "ref": "https://man7.org/linux/man-pages/man1/id.1.html"
           },
           {
             "title": "Kernel Version",
@@ -9676,7 +9702,8 @@ module.exports = [
             "attack": [
               "T1082"
             ],
-            "out": "Linux web01 5.15.0-91-generic #101-Ubuntu SMP x86_64 GNU/Linux\n\n# Kernel version plus distribution is a search term, but treat kernel exploits\n# as the last resort: they crash boxes, and a crashed exam target costs more\n# time than the points are worth. Exhaust sudo, SUID, cron and credentials\n# first — on a well-built machine the intended path is one of those."
+            "out": "Linux web01 5.15.0-91-generic #101-Ubuntu SMP x86_64 GNU/Linux\n\n# Kernel version plus distribution is a search term, but treat kernel exploits\n# as the last resort: they crash boxes, and a crashed exam target costs more\n# time than the points are worth. Exhaust sudo, SUID, cron and credentials\n# first — on a well-built machine the intended path is one of those.",
+            "ref": "https://man7.org/linux/man-pages/man1/uname.1.html"
           },
           {
             "title": "OS Release Info",
@@ -9686,7 +9713,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "İşletim sistemi sürüm ayrıntılarını göster",
-            "out": "Linux web01 5.15.0-91-generic #101-Ubuntu SMP x86_64 GNU/Linux\n\n# Kernel version plus distribution is a search term, but treat kernel exploits\n# as the last resort: they crash boxes, and a crashed exam target costs more\n# time than the points are worth. Exhaust sudo, SUID, cron and credentials\n# first — on a well-built machine the intended path is one of those."
+            "out": "Linux web01 5.15.0-91-generic #101-Ubuntu SMP x86_64 GNU/Linux\n\n# Kernel version plus distribution is a search term, but treat kernel exploits\n# as the last resort: they crash boxes, and a crashed exam target costs more\n# time than the points are worth. Exhaust sudo, SUID, cron and credentials\n# first — on a well-built machine the intended path is one of those.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Proc Version",
@@ -9696,7 +9724,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "proc üzerinden çekirdek sürümünü göster",
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Environment Variables",
@@ -9744,7 +9773,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Çalışan tüm süreçleri göster",
-            "out": "USER       PID %CPU %MEM COMMAND\nroot       412  0.0  0.4 /usr/sbin/mysqld --user=root --password=S3cr3t\nwww-data  2104  0.1  1.2 /usr/sbin/apache2 -k start\n\n# `ps aux` is a snapshot: a cron job that runs for two seconds every minute is\n# invisible unless you happen to look at the right moment. pspy watches\n# continuously without root and catches exactly those — which is how you find\n# the scheduled task that is worth hijacking."
+            "out": "USER       PID %CPU %MEM COMMAND\nroot       412  0.0  0.4 /usr/sbin/mysqld --user=root --password=S3cr3t\nwww-data  2104  0.1  1.2 /usr/sbin/apache2 -k start\n\n# `ps aux` is a snapshot: a cron job that runs for two seconds every minute is\n# invisible unless you happen to look at the right moment. pspy watches\n# continuously without root and catches exactly those — which is how you find\n# the scheduled task that is worth hijacking.",
+            "ref": "https://man7.org/linux/man-pages/man1/ps.1.html"
           },
           {
             "title": "Installed Packages (Debian)",
@@ -9754,7 +9784,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Kurulu paketleri listele",
-            "out": "# (silent on success, or the tool's own output)\n\n# A few here are escalation primitives, not housekeeping: `cp /bin/bash` then\n# chmod +s (if you are root already), `debugfs /dev/sda1 -R 'cat /etc/shadow'`\n# to read a raw disk past file permissions, and `unshadow` to merge passwd and\n# shadow into a hash file John can crack. Read what the command touches before\n# running it — cp onto /etc/shadow is not reversible."
+            "out": "# (silent on success, or the tool's own output)\n\n# A few here are escalation primitives, not housekeeping: `cp /bin/bash` then\n# chmod +s (if you are root already), `debugfs /dev/sda1 -R 'cat /etc/shadow'`\n# to read a raw disk past file permissions, and `unshadow` to merge passwd and\n# shadow into a hash file John can crack. Read what the command touches before\n# running it — cp onto /etc/shadow is not reversible.",
+            "ref": "https://man7.org/linux/man-pages/man1/dpkg.1.html"
           },
           {
             "title": "Installed Packages (RHEL)",
@@ -9764,7 +9795,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Kurulu paketleri listele",
-            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1."
+            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1.",
+            "ref": "https://man7.org/linux/man-pages/man8/rpm.8.html"
           },
           {
             "title": "All Users",
@@ -9774,7 +9806,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "passwd dosyasındaki tüm kullanıcıları listele",
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Readable Shadow",
@@ -9787,7 +9820,8 @@ module.exports = [
             "attack": [
               "T1003.008"
             ],
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Home Directories",
@@ -9797,7 +9831,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Ev dizinlerini ve içeriklerini listele",
-            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script."
+            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script.",
+            "ref": "https://man7.org/linux/man-pages/man1/ls.1.html"
           },
           {
             "title": "SSH Keys",
@@ -9810,7 +9845,8 @@ module.exports = [
             "attack": [
               "T1552.001"
             ],
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Bash History",
@@ -9823,7 +9859,8 @@ module.exports = [
             "attack": [
               "T1552.003"
             ],
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Installed Packages (RedHat)",
@@ -9833,7 +9870,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "RPM paketlerini listele",
-            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1."
+            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1.",
+            "ref": "https://man7.org/linux/man-pages/man8/rpm.8.html"
           },
           {
             "title": "Enabled Services",
@@ -9876,7 +9914,8 @@ module.exports = [
             "attack": [
               "T1548.001"
             ],
-            "out": "/usr/bin/sudo\n/usr/bin/passwd\n/usr/bin/chsh\n/usr/bin/pkexec\n/usr/bin/find\n\n# Ignore the standard set (sudo, passwd, chsh, mount, su). What matters is the\n# unusual one — a shell, an interpreter, or anything from GTFOBins."
+            "out": "/usr/bin/sudo\n/usr/bin/passwd\n/usr/bin/chsh\n/usr/bin/pkexec\n/usr/bin/find\n\n# Ignore the standard set (sudo, passwd, chsh, mount, su). What matters is the\n# unusual one — a shell, an interpreter, or anything from GTFOBins.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Find SGID Binaries",
@@ -9886,7 +9925,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Sistemdeki tüm SGID ikili dosyalarını bul",
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Find SUID+SGID",
@@ -9899,7 +9939,8 @@ module.exports = [
             "attack": [
               "T1548.001"
             ],
-            "out": "/usr/bin/sudo\n/usr/bin/passwd\n/usr/bin/chsh\n/usr/bin/pkexec\n/usr/bin/find\n\n# Ignore the standard set (sudo, passwd, chsh, mount, su). What matters is the\n# unusual one — a shell, an interpreter, or anything from GTFOBins."
+            "out": "/usr/bin/sudo\n/usr/bin/passwd\n/usr/bin/chsh\n/usr/bin/pkexec\n/usr/bin/find\n\n# Ignore the standard set (sudo, passwd, chsh, mount, su). What matters is the\n# unusual one — a shell, an interpreter, or anything from GTFOBins.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "SUID bash -p",
@@ -9927,7 +9968,8 @@ module.exports = [
             "attack": [
               "T1548.001"
             ],
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "SUID vim Shell",
@@ -9941,7 +9983,8 @@ module.exports = [
             "attack": [
               "T1548.001"
             ],
-            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1."
+            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1.",
+            "ref": "https://man.archlinux.org/man/vim.1.en"
           },
           {
             "title": "SUID python Shell",
@@ -10047,7 +10090,8 @@ module.exports = [
             "attack": [
               "T1059.004"
             ],
-            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1."
+            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1.",
+            "ref": "https://man.archlinux.org/man/vim.1.en"
           },
           {
             "title": "Sudo find Exec",
@@ -10060,7 +10104,8 @@ module.exports = [
             "attack": [
               "T1059.004"
             ],
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Sudo python Shell",
@@ -10100,7 +10145,8 @@ module.exports = [
             "attack": [
               "T1059.004"
             ],
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/awk.1p.html"
           },
           {
             "title": "Sudo less Shell",
@@ -10180,7 +10226,8 @@ module.exports = [
             "attack": [
               "T1003.008"
             ],
-            "out": "# (silent on success, or the tool's own output)\n\n# A few here are escalation primitives, not housekeeping: `cp /bin/bash` then\n# chmod +s (if you are root already), `debugfs /dev/sda1 -R 'cat /etc/shadow'`\n# to read a raw disk past file permissions, and `unshadow` to merge passwd and\n# shadow into a hash file John can crack. Read what the command touches before\n# running it — cp onto /etc/shadow is not reversible."
+            "out": "# (silent on success, or the tool's own output)\n\n# A few here are escalation primitives, not housekeeping: `cp /bin/bash` then\n# chmod +s (if you are root already), `debugfs /dev/sda1 -R 'cat /etc/shadow'`\n# to read a raw disk past file permissions, and `unshadow` to merge passwd and\n# shadow into a hash file John can crack. Read what the command touches before\n# running it — cp onto /etc/shadow is not reversible.",
+            "ref": "https://man7.org/linux/man-pages/man1/cp.1.html"
           },
           {
             "title": "Sudo env Shell",
@@ -10207,7 +10254,8 @@ module.exports = [
               "T1059.004",
               "T1560"
             ],
-            "out": "x etc/shadow\nx root/.ssh/id_rsa\n\n# Extracting an archive someone else built can write outside the target\n# directory if it contains ../ paths — check with `tar -tzf` before `-xzf`.\n# `wget` leaves the URL in ~/.wget-hsts and the shell history; on an\n# engagement that is evidence you will need to account for."
+            "out": "x etc/shadow\nx root/.ssh/id_rsa\n\n# Extracting an archive someone else built can write outside the target\n# directory if it contains ../ paths — check with `tar -tzf` before `-xzf`.\n# `wget` leaves the URL in ~/.wget-hsts and the shell history; on an\n# engagement that is evidence you will need to account for.",
+            "ref": "https://man7.org/linux/man-pages/man1/tar.1.html"
           },
           {
             "title": "Sudo zip Shell",
@@ -10387,7 +10435,8 @@ module.exports = [
             "attack": [
               "T1059.004"
             ],
-            "out": "RELRO      STACK CANARY  NX         PIE\nFull RELRO Canary found  NX enabled PIE enabled\n\n# These four decide which technique is available before you write a byte of\n# exploit. No canary means a straight stack smash; NX disabled means shellcode\n# on the stack; no PIE means fixed addresses and no leak needed. All four on is\n# the modern default and pushes you toward ROP plus an information leak."
+            "out": "RELRO      STACK CANARY  NX         PIE\nFull RELRO Canary found  NX enabled PIE enabled\n\n# These four decide which technique is available before you write a byte of\n# exploit. No canary means a straight stack smash; NX disabled means shellcode\n# on the stack; no PIE means fixed addresses and no leak needed. All four on is\n# the modern default and pushes you toward ROP plus an information leak.",
+            "ref": "https://man7.org/linux/man-pages/man1/strace.1.html"
           },
           {
             "title": "Sudo strace (sh variant)",
@@ -10397,7 +10446,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "/bin/sh kullanan asgari strace yetki yükseltmesi",
-            "out": "RELRO      STACK CANARY  NX         PIE\nFull RELRO Canary found  NX enabled PIE enabled\n\n# These four decide which technique is available before you write a byte of\n# exploit. No canary means a straight stack smash; NX disabled means shellcode\n# on the stack; no PIE means fixed addresses and no leak needed. All four on is\n# the modern default and pushes you toward ROP plus an information leak."
+            "out": "RELRO      STACK CANARY  NX         PIE\nFull RELRO Canary found  NX enabled PIE enabled\n\n# These four decide which technique is available before you write a byte of\n# exploit. No canary means a straight stack smash; NX disabled means shellcode\n# on the stack; no PIE means fixed addresses and no leak needed. All four on is\n# the modern default and pushes you toward ROP plus an information leak.",
+            "ref": "https://man7.org/linux/man-pages/man1/strace.1.html"
           },
           {
             "title": "Sudo strace Write /etc/passwd",
@@ -10412,7 +10462,8 @@ module.exports = [
               "T1059.004",
               "T1190"
             ],
-            "out": "RELRO      STACK CANARY  NX         PIE\nFull RELRO Canary found  NX enabled PIE enabled\n\n# These four decide which technique is available before you write a byte of\n# exploit. No canary means a straight stack smash; NX disabled means shellcode\n# on the stack; no PIE means fixed addresses and no leak needed. All four on is\n# the modern default and pushes you toward ROP plus an information leak."
+            "out": "RELRO      STACK CANARY  NX         PIE\nFull RELRO Canary found  NX enabled PIE enabled\n\n# These four decide which technique is available before you write a byte of\n# exploit. No canary means a straight stack smash; NX disabled means shellcode\n# on the stack; no PIE means fixed addresses and no leak needed. All four on is\n# the modern default and pushes you toward ROP plus an information leak.",
+            "ref": "https://man7.org/linux/man-pages/man1/strace.1.html"
           }
         ],
         "name_tr": "Sudo Misconfigurations"
@@ -10450,7 +10501,8 @@ module.exports = [
             "attack": [
               "T1053.003"
             ],
-            "out": "* * * * * root /usr/local/bin/backup.sh\n0 3 * * * root tar -czf /backup/www.tgz /var/www/*\n\n# Two classics live here. A cron job running a script you can WRITE is a root\n# shell on the next tick. And a wildcard in a tar or rsync line lets you plant\n# a file named like an option (`--checkpoint-action=exec=sh shell.sh`) in the\n# directory it globs — the wildcard expands your filename into an argument."
+            "out": "* * * * * root /usr/local/bin/backup.sh\n0 3 * * * root tar -czf /backup/www.tgz /var/www/*\n\n# Two classics live here. A cron job running a script you can WRITE is a root\n# shell on the next tick. And a wildcard in a tar or rsync line lets you plant\n# a file named like an option (`--checkpoint-action=exec=sh shell.sh`) in the\n# directory it globs — the wildcard expands your filename into an argument.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Find Writable Cron Scripts",
@@ -10463,7 +10515,8 @@ module.exports = [
             "attack": [
               "T1053.003"
             ],
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Monitor Cron with pspy",
@@ -10475,7 +10528,8 @@ module.exports = [
             ],
             "note": "Upload pspy to target first",
             "desc_tr": "Gizli cron görevlerini bulmak için süreç oluşturmayı izle",
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://github.com/DominicBreuker/pspy"
           },
           {
             "title": "Tar Wildcard Injection",
@@ -10628,7 +10682,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Herkesçe yazılabilir dosyaları bul",
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "World-Writable Directories",
@@ -10638,7 +10693,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Herkesçe yazılabilir dizinleri bul",
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "PATH Hijack via SUID Binary",
@@ -10763,7 +10819,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Hızlı çekirdek sürümü tespiti",
-            "out": "Linux web01 5.15.0-91-generic #101-Ubuntu SMP x86_64 GNU/Linux\n\n# Kernel version plus distribution is a search term, but treat kernel exploits\n# as the last resort: they crash boxes, and a crashed exam target costs more\n# time than the points are worth. Exhaust sudo, SUID, cron and credentials\n# first — on a well-built machine the intended path is one of those."
+            "out": "Linux web01 5.15.0-91-generic #101-Ubuntu SMP x86_64 GNU/Linux\n\n# Kernel version plus distribution is a search term, but treat kernel exploits\n# as the last resort: they crash boxes, and a crashed exam target costs more\n# time than the points are worth. Exhaust sudo, SUID, cron and credentials\n# first — on a well-built machine the intended path is one of those.",
+            "ref": "https://man7.org/linux/man-pages/man1/uname.1.html"
           },
           {
             "title": "CVE-2022-2588 (DirtyCred)",
@@ -10842,7 +10899,8 @@ module.exports = [
             "attack": [
               "T1068"
             ],
-            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script."
+            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script.",
+            "ref": "https://man7.org/linux/man-pages/man1/ls.1.html"
           },
           {
             "title": "Sudo CVE-2019-14287",
@@ -10872,7 +10930,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Mevcut kullanıcının docker grubunda olup olmadığını kontrol et",
-            "out": "uid=33(www-data) gid=33(www-data) groups=33(www-data),999(docker)\n\n# The supplementary groups are the part worth reading. docker means a container\n# that mounts / is a root shell; lxd and disk are equally direct; adm reads the\n# logs. Membership granted after your shell started needs a re-login before it\n# takes effect, which is why `id` can disagree with /etc/group."
+            "out": "uid=33(www-data) gid=33(www-data) groups=33(www-data),999(docker)\n\n# The supplementary groups are the part worth reading. docker means a container\n# that mounts / is a root shell; lxd and disk are equally direct; adm reads the\n# logs. Membership granted after your shell started needs a re-login before it\n# takes effect, which is why `id` can disagree with /etc/group.",
+            "ref": "https://man7.org/linux/man-pages/man1/id.1.html"
           },
           {
             "title": "Docker Group Escape (Mount Host)",
@@ -10918,7 +10977,8 @@ module.exports = [
             ],
             "note": "Need to upload alpine image to target first",
             "desc_tr": "root için lxd grup üyeliğini istismar et",
-            "out": "root@host:/#\n\n# nsenter into PID 1's namespaces from a privileged container is host root with\n# no exploit: `nsenter -t 1 -m -u -n -i sh`. It needs --pid=host or hostPID\n# plus the right capabilities, so it doubles as the test for whether those were\n# granted. `capsh --print` first tells you whether it will work."
+            "out": "root@host:/#\n\n# nsenter into PID 1's namespaces from a privileged container is host root with\n# no exploit: `nsenter -t 1 -m -u -n -i sh`. It needs --pid=host or hostPID\n# plus the right capabilities, so it doubles as the test for whether those were\n# granted. `capsh --print` first tells you whether it will work.",
+            "ref": "https://linuxcontainers.org/lxc/introduction/"
           },
           {
             "title": "Check Container Environment",
@@ -10932,7 +10992,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Bir konteyner içinde çalışılıp çalışılmadığını belirle",
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Privileged Container Escape",
@@ -10955,7 +11016,8 @@ module.exports = [
               "T1059.004",
               "T1611"
             ],
-            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate."
+            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate.",
+            "ref": "https://man7.org/linux/man-pages/man1/mkdir.1.html"
           },
           {
             "title": "Docker Group Escape (Named Image)",
@@ -10979,7 +11041,8 @@ module.exports = [
             "attack": [
               "T1611"
             ],
-            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script."
+            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script.",
+            "ref": "https://man7.org/linux/man-pages/man1/ls.1.html"
           },
           {
             "title": "LXD Group Escape (Quick)",
@@ -10997,7 +11060,8 @@ module.exports = [
             "attack": [
               "T1059.004"
             ],
-            "out": "root@host:/#\n\n# nsenter into PID 1's namespaces from a privileged container is host root with\n# no exploit: `nsenter -t 1 -m -u -n -i sh`. It needs --pid=host or hostPID\n# plus the right capabilities, so it doubles as the test for whether those were\n# granted. `capsh --print` first tells you whether it will work."
+            "out": "root@host:/#\n\n# nsenter into PID 1's namespaces from a privileged container is host root with\n# no exploit: `nsenter -t 1 -m -u -n -i sh`. It needs --pid=host or hostPID\n# plus the right capabilities, so it doubles as the test for whether those were\n# granted. `capsh --print` first tells you whether it will work.",
+            "ref": "https://linuxcontainers.org/lxc/introduction/"
           },
           {
             "title": "LXD Import Alpine Image",
@@ -11021,7 +11085,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Kullanıcının docker, lxd veya disk gruplarında olup olmadığını kontrol et",
-            "out": "uid=33(www-data) gid=33(www-data) groups=33(www-data),999(docker)\n\n# The supplementary groups are the part worth reading. docker means a container\n# that mounts / is a root shell; lxd and disk are equally direct; adm reads the\n# logs. Membership granted after your shell started needs a re-login before it\n# takes effect, which is why `id` can disagree with /etc/group."
+            "out": "uid=33(www-data) gid=33(www-data) groups=33(www-data),999(docker)\n\n# The supplementary groups are the part worth reading. docker means a container\n# that mounts / is a root shell; lxd and disk are equally direct; adm reads the\n# logs. Membership granted after your shell started needs a re-login before it\n# takes effect, which is why `id` can disagree with /etc/group.",
+            "ref": "https://man7.org/linux/man-pages/man1/id.1.html"
           },
           {
             "title": "Disk Group Abuse",
@@ -11045,7 +11110,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "adm grubundaysan hassas logları oku",
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Docker Group Mount Host",
@@ -11091,7 +11157,8 @@ module.exports = [
             ],
             "note": "no_root_squash allows root on client to be root on NFS share",
             "desc_tr": "no_root_squash'lı NFS paylaşımlarını tespit et",
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Mount NFS Share",
@@ -11101,7 +11168,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "NFS paylaşımını saldırgan makinesine bağla",
-            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate."
+            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate.",
+            "ref": "https://man7.org/linux/man-pages/man1/mkdir.1.html"
           },
           {
             "title": "NFS SUID Shell Exploit",
@@ -11156,7 +11224,8 @@ module.exports = [
             "attack": [
               "T1068"
             ],
-            "out": "╔══════════╣ Sudo version\nSudo version 1.8.31\n\n╔══════════╣ SUID - Check easy privesc\n/usr/bin/pkexec  ← 95% PE - CVE-2021-4034\n\n╔══════════╣ Interesting writable files\n/etc/passwd\n\n# Read the RED/YELLOW highlights first — they are ranked by exploitability.\n# Everything else is context you come back to when the obvious path is closed."
+            "out": "╔══════════╣ Sudo version\nSudo version 1.8.31\n\n╔══════════╣ SUID - Check easy privesc\n/usr/bin/pkexec  ← 95% PE - CVE-2021-4034\n\n╔══════════╣ Interesting writable files\n/etc/passwd\n\n# Read the RED/YELLOW highlights first — they are ranked by exploitability.\n# Everything else is context you come back to when the obvious path is closed.",
+            "ref": "https://man7.org/linux/man-pages/man1/chmod.1.html"
           },
           {
             "title": "LinEnum",
@@ -11166,7 +11235,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "Linux listeleme ve yetki yükseltme scripti",
-            "out": "# (silent on success)\n\n# No output is success. chmod +s on a copied shell only works if you are already\n# root — if it seems to succeed as a normal user, check with `ls -l`: the bit\n# is silently dropped. Note that a mount with nosuid ignores the bit entirely."
+            "out": "# (silent on success)\n\n# No output is success. chmod +s on a copied shell only works if you are already\n# root — if it seems to succeed as a normal user, check with `ls -l`: the bit\n# is silently dropped. Note that a mount with nosuid ignores the bit entirely.",
+            "ref": "https://man7.org/linux/man-pages/man1/chmod.1.html"
           },
           {
             "title": "Pspy Process Monitor",
@@ -11178,7 +11248,8 @@ module.exports = [
             ],
             "note": "Excellent for finding cron jobs and hidden processes",
             "desc_tr": "Root ayrıcalığı olmadan süreçleri izle",
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://github.com/DominicBreuker/pspy"
           },
           {
             "title": "Linux Smart Enumeration",
@@ -11188,7 +11259,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "Akıllı Linux listeleme aracı",
-            "out": "# (silent on success)\n\n# No output is success. chmod +s on a copied shell only works if you are already\n# root — if it seems to succeed as a normal user, check with `ls -l`: the bit\n# is silently dropped. Note that a mount with nosuid ignores the bit entirely."
+            "out": "# (silent on success)\n\n# No output is success. chmod +s on a copied shell only works if you are already\n# root — if it seems to succeed as a normal user, check with `ls -l`: the bit\n# is silently dropped. Note that a mount with nosuid ignores the bit entirely.",
+            "ref": "https://man7.org/linux/man-pages/man1/chmod.1.html"
           },
           {
             "title": "LinPEAS Specific Checks",
@@ -11254,7 +11326,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Komut geçmişlerini ara",
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "SSH Keys Search",
@@ -11267,7 +11340,8 @@ module.exports = [
             "attack": [
               "T1552.001"
             ],
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Web App Configs",
@@ -11283,7 +11357,8 @@ module.exports = [
             "attack": [
               "T1552.001"
             ],
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Find Database Files",
@@ -11293,7 +11368,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Veritabanı dosyalarını ara",
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Find Backups",
@@ -11303,7 +11379,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Yedek dosyaları bul",
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Check /opt /srv",
@@ -11313,7 +11390,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Kimlik bilgisi içeren özel uygulamalar",
-            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script."
+            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script.",
+            "ref": "https://man7.org/linux/man-pages/man1/ls.1.html"
           }
         ],
         "name_tr": "Interesting Files & Configs"
@@ -12568,7 +12646,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "RAR arşivinden hash çıkar",
-            "out": "protected.zip:$zip2$*0*3*0*8f21c0a9e3b1d4f5*...*$/zip2$\n\n# These convert a file into a hash line for John or hashcat — nothing is cracked\n# here, so redirect it to a file and feed that to the cracker. An empty result\n# usually means the file is not actually encrypted, which is its own finding.\n# Match the hashcat mode to the prefix ($zip2$ is -m 13600, $krb5tgs$ is 13100)."
+            "out": "protected.zip:$zip2$*0*3*0*8f21c0a9e3b1d4f5*...*$/zip2$\n\n# These convert a file into a hash line for John or hashcat — nothing is cracked\n# here, so redirect it to a file and feed that to the cracker. An empty result\n# usually means the file is not actually encrypted, which is its own finding.\n# Match the hashcat mode to the prefix ($zip2$ is -m 13600, $krb5tgs$ is 13100).",
+            "ref": "https://www.openwall.com/john/doc/"
           },
           {
             "title": "keepass2john Extract Hash",
@@ -12579,7 +12658,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "KeePass veritabanından hash çıkar",
-            "out": "id_rsa:$sshng$1$16$8f21c0a9e3b1d4f5$1200$a2b3c4...\n\n# These convert a file into a hash line John and hashcat understand — nothing is\n# cracked here. Redirect it to a file and feed that to the cracker. An empty\n# result usually means the key or archive is not actually encrypted, which is\n# its own finding."
+            "out": "id_rsa:$sshng$1$16$8f21c0a9e3b1d4f5$1200$a2b3c4...\n\n# These convert a file into a hash line John and hashcat understand — nothing is\n# cracked here. Redirect it to a file and feed that to the cracker. An empty\n# result usually means the key or archive is not actually encrypted, which is\n# its own finding.",
+            "ref": "https://www.openwall.com/john/doc/"
           },
           {
             "title": "office2john Extract Hash",
@@ -12589,7 +12669,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "Office belgesinden hash çıkar",
-            "out": "id_rsa:$sshng$1$16$8f21c0a9e3b1d4f5$1200$a2b3c4...\n\n# These convert a file into a hash line John and hashcat understand — nothing is\n# cracked here. Redirect it to a file and feed that to the cracker. An empty\n# result usually means the key or archive is not actually encrypted, which is\n# its own finding."
+            "out": "id_rsa:$sshng$1$16$8f21c0a9e3b1d4f5$1200$a2b3c4...\n\n# These convert a file into a hash line John and hashcat understand — nothing is\n# cracked here. Redirect it to a file and feed that to the cracker. An empty\n# result usually means the key or archive is not actually encrypted, which is\n# its own finding.",
+            "ref": "https://www.openwall.com/john/doc/"
           },
           {
             "title": "pdf2john Extract Hash",
@@ -12599,7 +12680,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "Parola korumalı PDF'ten hash çıkar",
-            "out": "id_rsa:$sshng$1$16$8f21c0a9e3b1d4f5$1200$a2b3c4...\n\n# These convert a file into a hash line John and hashcat understand — nothing is\n# cracked here. Redirect it to a file and feed that to the cracker. An empty\n# result usually means the key or archive is not actually encrypted, which is\n# its own finding."
+            "out": "id_rsa:$sshng$1$16$8f21c0a9e3b1d4f5$1200$a2b3c4...\n\n# These convert a file into a hash line John and hashcat understand — nothing is\n# cracked here. Redirect it to a file and feed that to the cracker. An empty\n# result usually means the key or archive is not actually encrypted, which is\n# its own finding.",
+            "ref": "https://www.openwall.com/john/doc/"
           },
           {
             "title": "7z2john Extract Hash",
@@ -12639,7 +12721,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "Ansible vault'tan hash çıkar",
-            "out": "id_rsa:$sshng$1$16$8f21c0a9e3b1d4f5$1200$a2b3c4...\n\n# These convert a file into a hash line John and hashcat understand — nothing is\n# cracked here. Redirect it to a file and feed that to the cracker. An empty\n# result usually means the key or archive is not actually encrypted, which is\n# its own finding."
+            "out": "id_rsa:$sshng$1$16$8f21c0a9e3b1d4f5$1200$a2b3c4...\n\n# These convert a file into a hash line John and hashcat understand — nothing is\n# cracked here. Redirect it to a file and feed that to the cracker. An empty\n# result usually means the key or archive is not actually encrypted, which is\n# its own finding.",
+            "ref": "https://www.openwall.com/john/doc/"
           },
           {
             "title": "krb5tgs2john Extract Hash",
@@ -12849,7 +12932,8 @@ module.exports = [
             "attack": [
               "T1110.002"
             ],
-            "out": "id_rsa:$sshng$1$16$8f21c0a9e3b1d4f5$1200$a2b3c4...\n\n# These convert a file into a hash line John and hashcat understand — nothing is\n# cracked here. Redirect it to a file and feed that to the cracker. An empty\n# result usually means the key or archive is not actually encrypted, which is\n# its own finding."
+            "out": "id_rsa:$sshng$1$16$8f21c0a9e3b1d4f5$1200$a2b3c4...\n\n# These convert a file into a hash line John and hashcat understand — nothing is\n# cracked here. Redirect it to a file and feed that to the cracker. An empty\n# result usually means the key or archive is not actually encrypted, which is\n# its own finding.",
+            "ref": "https://github.com/HashPals/Name-That-Hash"
           },
           {
             "title": "Name That Hash from File",
@@ -12859,7 +12943,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "Bir dosyadaki hash'leri tespit et",
-            "out": "id_rsa:$sshng$1$16$8f21c0a9e3b1d4f5$1200$a2b3c4...\n\n# These convert a file into a hash line John and hashcat understand — nothing is\n# cracked here. Redirect it to a file and feed that to the cracker. An empty\n# result usually means the key or archive is not actually encrypted, which is\n# its own finding."
+            "out": "id_rsa:$sshng$1$16$8f21c0a9e3b1d4f5$1200$a2b3c4...\n\n# These convert a file into a hash line John and hashcat understand — nothing is\n# cracked here. Redirect it to a file and feed that to the cracker. An empty\n# result usually means the key or archive is not actually encrypted, which is\n# its own finding.",
+            "ref": "https://github.com/HashPals/Name-That-Hash"
           }
         ],
         "name_tr": "Hash Extraction & Identification"
@@ -13188,7 +13273,8 @@ module.exports = [
             "attack": [
               "T1003.008"
             ],
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Unshadow for John",
@@ -13226,7 +13312,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Parola içeren dosyaları bul",
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           },
           {
             "title": "Check SSH Keys",
@@ -13239,7 +13326,8 @@ module.exports = [
             "attack": [
               "T1552.001"
             ],
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Check Cached Credentials",
@@ -13256,7 +13344,8 @@ module.exports = [
             "attack": [
               "T1552.001"
             ],
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           }
         ],
         "name_tr": "Credential Dumping (Linux)"
@@ -13503,7 +13592,8 @@ module.exports = [
             ],
             "note": "Interactive — choose Auto mode, select target PE, configure payload",
             "desc_tr": "Payload'ı meşru bir PE çalıştırılabiliri içine enjekte et",
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://www.kali.org/tools/shellter/"
           },
           {
             "title": "Donut Shellcode from PE/DLL",
@@ -13650,7 +13740,8 @@ module.exports = [
             "attack": [
               "T1059.001"
             ],
-            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own."
+            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own.",
+            "ref": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-content"
           },
           {
             "title": "Bypass via Encoded Command",
@@ -13735,7 +13826,8 @@ module.exports = [
             "attack": [
               "T1562.001"
             ],
-            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own."
+            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own.",
+            "ref": "https://learn.microsoft.com/en-us/powershell/module/defender/set-mppreference"
           },
           {
             "title": "Defender Exclusion",
@@ -13745,7 +13837,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Yol istisnası ekle",
-            "out": "# (silent on success — Defender simply stops scanning the excluded path)\n\n# `Add-MpPreference -ExclusionPath` carves out a directory Defender ignores,\n# which is where a payload then runs unscanned. It needs local admin, it is\n# logged (event 5007), and adding an exclusion is exactly the kind of change a\n# monitored estate alerts on — so it trades stealth for reliability."
+            "out": "# (silent on success — Defender simply stops scanning the excluded path)\n\n# `Add-MpPreference -ExclusionPath` carves out a directory Defender ignores,\n# which is where a payload then runs unscanned. It needs local admin, it is\n# logged (event 5007), and adding an exclusion is exactly the kind of change a\n# monitored estate alerts on — so it trades stealth for reliability.",
+            "ref": "https://learn.microsoft.com/en-us/powershell/module/defender/add-mppreference"
           },
           {
             "title": "ETW Patch",
@@ -14974,7 +15067,8 @@ module.exports = [
             "attack": [
               "T1059.004"
             ],
-            "out": "# (nothing here — the shell appears in your listener, not in this terminal)\n\n# On your `nc -lvnp` the callback shows as \"connect to ... from ...\". If it\n# never arrives: the LHOST is wrong (use your VPN/tun0 address, not eth0),\n# egress is filtered on the port you chose (try 443 or 53), or the target has no\n# bash — /dev/tcp is a bash feature and dash does not have it. Upgrade to a PTY\n# the moment it lands, or the first Ctrl-C kills it."
+            "out": "# (nothing here — the shell appears in your listener, not in this terminal)\n\n# On your `nc -lvnp` the callback shows as \"connect to ... from ...\". If it\n# never arrives: the LHOST is wrong (use your VPN/tun0 address, not eth0),\n# egress is filtered on the port you chose (try 443 or 53), or the target has no\n# bash — /dev/tcp is a bash feature and dash does not have it. Upgrade to a PTY\n# the moment it lands, or the first Ctrl-C kills it.",
+            "ref": "https://man7.org/linux/man-pages/man1/mkfifo.1.html"
           },
           {
             "title": "Rpivot Server (Attacker)",
@@ -15008,7 +15102,8 @@ module.exports = [
             "attack": [
               "T1048"
             ],
-            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1."
+            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1.",
+            "ref": "https://github.com/iagox86/dnscat2"
           },
           {
             "title": "Dnscat2 Client",
@@ -15022,7 +15117,8 @@ module.exports = [
             "attack": [
               "T1048"
             ],
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://github.com/iagox86/dnscat2"
           },
           {
             "title": "Iodine DNS Tunnel Server",
@@ -15036,7 +15132,8 @@ module.exports = [
             "attack": [
               "T1048"
             ],
-            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1."
+            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1.",
+            "ref": "https://github.com/yarrick/iodine"
           },
           {
             "title": "Iodine DNS Tunnel Client",
@@ -15050,7 +15147,8 @@ module.exports = [
             "attack": [
               "T1048"
             ],
-            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1."
+            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1.",
+            "ref": "https://github.com/yarrick/iodine"
           },
           {
             "title": "ICMP Shell (icmpsh)",
@@ -15911,7 +16009,7 @@ module.exports = [
             "desc": "List all running processes on the target",
             "desc_tr": "Hedefte çalışan tüm süreçleri listele",
             "out": "USER       PID %CPU %MEM COMMAND\nroot       412  0.0  0.4 /usr/sbin/mysqld --user=root --password=S3cr3t\nwww-data  2104  0.1  1.2 /usr/sbin/apache2 -k start\n\n# `ps aux` is a snapshot: a cron job that runs for two seconds every minute is\n# invisible unless you happen to look at the right moment. pspy watches\n# continuously without root and catches exactly those — which is how you find\n# the scheduled task that is worth hijacking.",
-            "ref": "https://docs.metasploit.com/"
+            "ref": "https://man7.org/linux/man-pages/man1/ps.1.html"
           },
           {
             "title": "Migrate to Another Process",
@@ -16799,7 +16897,8 @@ module.exports = [
             "attack": [
               "T1059.001"
             ],
-            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own."
+            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own.",
+            "ref": "https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-addomain"
           },
           {
             "title": "Enum4linux-ng Full Scan",
@@ -16906,7 +17005,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "Active Directory güvenlik değerlendirmesi",
-            "out": "# (tool-specific — a Windows offensive binary, run from cmd or a shell)\n\n# Most of the Sharp/*.exe and Rubeus/Certify/Snaffler family are .NET assemblies\n# you either drop and run or execute in-memory (execute-assembly) to avoid\n# touching disk. Each has its own `--help`; run it once in a lab so you know\n# what success looks like before you need to read failure on a real host."
+            "out": "# (tool-specific — a Windows offensive binary, run from cmd or a shell)\n\n# Most of the Sharp/*.exe and Rubeus/Certify/Snaffler family are .NET assemblies\n# you either drop and run or execute in-memory (execute-assembly) to avoid\n# touching disk. Each has its own `--help`; run it once in a lab so you know\n# what success looks like before you need to read failure on a real host.",
+            "ref": "https://www.pingcastle.com/documentation/"
           },
           {
             "title": "ldapdomaindump",
@@ -17025,7 +17125,8 @@ module.exports = [
             "attack": [
               "T1087"
             ],
-            "out": "DistinguishedName : CN=svc-sql,CN=Users,DC=example,DC=com\nEnabled           : True\nName              : svc-sql\nSamAccountName    : svc-sql\nServicePrincipalName : {MSSQLSvc/db01.example.com:1433}\n\n# The ActiveDirectory module is not on a normal workstation — it comes with RSAT\n# and its absence is why PowerView exists. `-Properties *` is needed for\n# anything beyond the default handful of attributes, including description,\n# which is where passwords get written."
+            "out": "DistinguishedName : CN=svc-sql,CN=Users,DC=example,DC=com\nEnabled           : True\nName              : svc-sql\nSamAccountName    : svc-sql\nServicePrincipalName : {MSSQLSvc/db01.example.com:1433}\n\n# The ActiveDirectory module is not on a normal workstation — it comes with RSAT\n# and its absence is why PowerView exists. `-Properties *` is needed for\n# anything beyond the default handful of attributes, including description,\n# which is where passwords get written.",
+            "ref": "https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-aduser"
           },
           {
             "title": "AD Module Get-ADGroup",
@@ -17038,7 +17139,8 @@ module.exports = [
             "attack": [
               "T1069.002"
             ],
-            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own."
+            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own.",
+            "ref": "https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adgroup"
           },
           {
             "title": "AD Module Get-ADComputer",
@@ -17048,7 +17150,8 @@ module.exports = [
             ],
             "desc": "Enumerate all AD computers with OS and last logon",
             "desc_tr": "İşletim sistemi ve son oturumla tüm AD bilgisayarlarını listele",
-            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own."
+            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own.",
+            "ref": "https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adcomputer"
           },
           {
             "title": "Net User Domain Query",
@@ -17101,7 +17204,8 @@ module.exports = [
             ],
             "desc": "Find machines where the current user has local admin access",
             "desc_tr": "Mevcut kullanıcının yerel admin erişimi olduğu makineleri bul",
-            "out": "ComputerName : WS01.example.com\nName         : jdoe\nIsGroupMember: True\n\n# PowerView lives in a .ps1 you dot-source or Import-Module first — running the\n# function before loading the file gives \"not recognized as a cmdlet\", which is\n# a loading problem, not a permissions one.\n# Find-LocalAdminAccess finds hosts where your current token is admin, which is\n# the fastest lateral-movement question there is."
+            "out": "ComputerName : WS01.example.com\nName         : jdoe\nIsGroupMember: True\n\n# PowerView lives in a .ps1 you dot-source or Import-Module first — running the\n# function before loading the file gives \"not recognized as a cmdlet\", which is\n# a loading problem, not a permissions one.\n# Find-LocalAdminAccess finds hosts where your current token is admin, which is\n# the fastest lateral-movement question there is.",
+            "ref": "https://powersploit.readthedocs.io/en/latest/Recon/"
           },
           {
             "title": "PowerView Get-NetSession",
@@ -17133,7 +17237,8 @@ module.exports = [
             ],
             "desc": "Find accessible network shares across the domain",
             "desc_tr": "Domain genelinde erişilebilir ağ paylaşımlarını bul",
-            "out": "ComputerName : WS01.example.com\nName         : jdoe\nIsGroupMember: True\n\n# PowerView lives in a .ps1 you dot-source or Import-Module first — running the\n# function before loading the file gives \"not recognized as a cmdlet\", which is\n# a loading problem, not a permissions one.\n# Find-LocalAdminAccess finds hosts where your current token is admin, which is\n# the fastest lateral-movement question there is."
+            "out": "ComputerName : WS01.example.com\nName         : jdoe\nIsGroupMember: True\n\n# PowerView lives in a .ps1 you dot-source or Import-Module first — running the\n# function before loading the file gives \"not recognized as a cmdlet\", which is\n# a loading problem, not a permissions one.\n# Find-LocalAdminAccess finds hosts where your current token is admin, which is\n# the fastest lateral-movement question there is.",
+            "ref": "https://powersploit.readthedocs.io/en/latest/Recon/"
           },
           {
             "title": "PowerView Get-DomainSID",
@@ -17154,7 +17259,8 @@ module.exports = [
             ],
             "desc": "Find machines where current user has local admin (threaded)",
             "desc_tr": "Mevcut kullanıcının yerel admin olduğu makineleri bul (çok iş parçacıklı)",
-            "out": "ComputerName : WS01.example.com\nName         : jdoe\nIsGroupMember: True\n\n# PowerView lives in a .ps1 you dot-source or Import-Module first — running the\n# function before loading the file gives \"not recognized as a cmdlet\", which is\n# a loading problem, not a permissions one.\n# Find-LocalAdminAccess finds hosts where your current token is admin, which is\n# the fastest lateral-movement question there is."
+            "out": "ComputerName : WS01.example.com\nName         : jdoe\nIsGroupMember: True\n\n# PowerView lives in a .ps1 you dot-source or Import-Module first — running the\n# function before loading the file gives \"not recognized as a cmdlet\", which is\n# a loading problem, not a permissions one.\n# Find-LocalAdminAccess finds hosts where your current token is admin, which is\n# the fastest lateral-movement question there is.",
+            "ref": "https://powersploit.readthedocs.io/en/latest/Recon/"
           },
           {
             "title": "Windapsearch Groups",
@@ -17278,7 +17384,8 @@ module.exports = [
             ],
             "desc": "Find ACLs with interesting permissions across the domain",
             "desc_tr": "Domain genelinde ilginç izinlere sahip ACL'leri bul",
-            "out": "ComputerName : WS01.example.com\nName         : jdoe\nIsGroupMember: True\n\n# PowerView lives in a .ps1 you dot-source or Import-Module first — running the\n# function before loading the file gives \"not recognized as a cmdlet\", which is\n# a loading problem, not a permissions one.\n# Find-LocalAdminAccess finds hosts where your current token is admin, which is\n# the fastest lateral-movement question there is."
+            "out": "ComputerName : WS01.example.com\nName         : jdoe\nIsGroupMember: True\n\n# PowerView lives in a .ps1 you dot-source or Import-Module first — running the\n# function before loading the file gives \"not recognized as a cmdlet\", which is\n# a loading problem, not a permissions one.\n# Find-LocalAdminAccess finds hosts where your current token is admin, which is\n# the fastest lateral-movement question there is.",
+            "ref": "https://powersploit.readthedocs.io/en/latest/Recon/"
           },
           {
             "title": "Get ACL for Specific User",
@@ -17299,7 +17406,8 @@ module.exports = [
             ],
             "desc": "Find all ACL entries that grant permissions to a specific user",
             "desc_tr": "Belirli bir kullanıcıya izin veren tüm ACL kayıtlarını bul",
-            "out": "ComputerName : WS01.example.com\nName         : jdoe\nIsGroupMember: True\n\n# PowerView lives in a .ps1 you dot-source or Import-Module first — running the\n# function before loading the file gives \"not recognized as a cmdlet\", which is\n# a loading problem, not a permissions one.\n# Find-LocalAdminAccess finds hosts where your current token is admin, which is\n# the fastest lateral-movement question there is."
+            "out": "ComputerName : WS01.example.com\nName         : jdoe\nIsGroupMember: True\n\n# PowerView lives in a .ps1 you dot-source or Import-Module first — running the\n# function before loading the file gives \"not recognized as a cmdlet\", which is\n# a loading problem, not a permissions one.\n# Find-LocalAdminAccess finds hosts where your current token is admin, which is\n# the fastest lateral-movement question there is.",
+            "ref": "https://powersploit.readthedocs.io/en/latest/Recon/"
           },
           {
             "title": "Get ACL on Domain Object",
@@ -17379,7 +17487,8 @@ module.exports = [
             ],
             "desc": "List all AD trust relationships via AD module",
             "desc_tr": "AD modülü ile tüm AD güven ilişkilerini listele",
-            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own."
+            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own.",
+            "ref": "https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adtrust"
           },
           {
             "title": "Map All Domain Trusts",
@@ -17425,7 +17534,8 @@ module.exports = [
             ],
             "desc": "Discover and enumerate network shares across the domain",
             "desc_tr": "Domain genelinde ağ paylaşımlarını keşfet ve listele",
-            "out": "ComputerName : WS01.example.com\nName         : jdoe\nIsGroupMember: True\n\n# PowerView lives in a .ps1 you dot-source or Import-Module first — running the\n# function before loading the file gives \"not recognized as a cmdlet\", which is\n# a loading problem, not a permissions one.\n# Find-LocalAdminAccess finds hosts where your current token is admin, which is\n# the fastest lateral-movement question there is."
+            "out": "ComputerName : WS01.example.com\nName         : jdoe\nIsGroupMember: True\n\n# PowerView lives in a .ps1 you dot-source or Import-Module first — running the\n# function before loading the file gives \"not recognized as a cmdlet\", which is\n# a loading problem, not a permissions one.\n# Find-LocalAdminAccess finds hosts where your current token is admin, which is\n# the fastest lateral-movement question there is.",
+            "ref": "https://powersploit.readthedocs.io/en/latest/Recon/"
           }
         ],
         "name_tr": "Trust Mapping"
@@ -17889,7 +17999,8 @@ module.exports = [
             ],
             "desc": "Coerce authentication via MS-RPRN print spooler service",
             "desc_tr": "MS-RPRN print spooler servisi ile kimlik doğrulamasını zorla",
-            "out": "# (the script's own output)\n\n# Two things bite here. `python` may not exist at all on a modern box — it is\n# python3 — and on a target without your libraries, a one-liner using only the\n# standard library is the difference between working and not.\n# `python3 -c` with single quotes inside a single-quoted shell string needs\n# care: use double quotes outside, or a heredoc."
+            "out": "# (the script's own output)\n\n# Two things bite here. `python` may not exist at all on a modern box — it is\n# python3 — and on a target without your libraries, a one-liner using only the\n# standard library is the difference between working and not.\n# `python3 -c` with single quotes inside a single-quoted shell string needs\n# care: use double quotes outside, or a heredoc.",
+            "ref": "https://github.com/dirkjanm/krbrelayx"
           },
           {
             "title": "Coercer (All Methods)",
@@ -18211,7 +18322,8 @@ module.exports = [
               "T1059.001",
               "T1550.003"
             ],
-            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own."
+            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own.",
+            "ref": "https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adcomputer"
           }
         ],
         "name_tr": "Delegation Exploitation"
@@ -18432,7 +18544,8 @@ module.exports = [
             ],
             "desc": "Abuse writable GPO to add user as local admin on target machines",
             "desc_tr": "Hedef makinelerde kullanıcıyı yerel admin yapmak için yazılabilir GPO'yu kötüye kullan",
-            "out": "[+] Found privilege: SeImpersonatePrivilege\n[+] Named pipe listening...\n[+] CreateProcessAsUser OK\n\nC:\\Windows\\system32>whoami\nnt authority\\system\n\n# The Potato family all trade SeImpersonatePrivilege for SYSTEM — which is why\n# `whoami /priv` is the check that decides whether to bother. Which one works\n# depends on the Windows build; PrintSpoofer and GodPotato cover most modern\n# targets where the older JuicyPotato no longer does."
+            "out": "[+] Found privilege: SeImpersonatePrivilege\n[+] Named pipe listening...\n[+] CreateProcessAsUser OK\n\nC:\\Windows\\system32>whoami\nnt authority\\system\n\n# The Potato family all trade SeImpersonatePrivilege for SYSTEM — which is why\n# `whoami /priv` is the check that decides whether to bother. Which one works\n# depends on the Windows build; PrintSpoofer and GodPotato cover most modern\n# targets where the older JuicyPotato no longer does.",
+            "ref": "https://github.com/FSecureLABS/SharpGPOAbuse"
           },
           {
             "title": "GPO Abuse Scheduled Task",
@@ -18447,7 +18560,8 @@ module.exports = [
               "T1059.003",
               "T1053.005"
             ],
-            "out": "[+] Found privilege: SeImpersonatePrivilege\n[+] Named pipe listening...\n[+] CreateProcessAsUser OK\n\nC:\\Windows\\system32>whoami\nnt authority\\system\n\n# The Potato family all trade SeImpersonatePrivilege for SYSTEM — which is why\n# `whoami /priv` is the check that decides whether to bother. Which one works\n# depends on the Windows build; PrintSpoofer and GodPotato cover most modern\n# targets where the older JuicyPotato no longer does."
+            "out": "[+] Found privilege: SeImpersonatePrivilege\n[+] Named pipe listening...\n[+] CreateProcessAsUser OK\n\nC:\\Windows\\system32>whoami\nnt authority\\system\n\n# The Potato family all trade SeImpersonatePrivilege for SYSTEM — which is why\n# `whoami /priv` is the check that decides whether to bother. Which one works\n# depends on the Windows build; PrintSpoofer and GodPotato cover most modern\n# targets where the older JuicyPotato no longer does.",
+            "ref": "https://github.com/FSecureLABS/SharpGPOAbuse"
           },
           {
             "title": "Shadow Credentials (Whisker)",
@@ -18598,7 +18712,8 @@ module.exports = [
             ],
             "desc": "CVE-2021-42278/42287 - Spoof computer name for domain admin",
             "desc_tr": "CVE-2021-42278/42287 - Domain admin için bilgisayar adını taklit et",
-            "out": "# (the script's own output)\n\n# Two things bite here. `python` may not exist at all on a modern box — it is\n# python3 — and on a target without your libraries, a one-liner using only the\n# standard library is the difference between working and not.\n# `python3 -c` with single quotes inside a single-quoted shell string needs\n# care: use double quotes outside, or a heredoc."
+            "out": "# (the script's own output)\n\n# Two things bite here. `python` may not exist at all on a modern box — it is\n# python3 — and on a target without your libraries, a one-liner using only the\n# standard library is the difference between working and not.\n# `python3 -c` with single quotes inside a single-quoted shell string needs\n# care: use double quotes outside, or a heredoc.",
+            "ref": "https://github.com/Ridter/noPac"
           },
           {
             "title": "Add Domain Admin (PowerView)",
@@ -18662,7 +18777,8 @@ module.exports = [
               "advanced"
             ],
             "desc_tr": "sAMAccountName sahteciliği (spoofing)",
-            "out": "# (the script's own output)\n\n# Two things bite here. `python` may not exist at all on a modern box — it is\n# python3 — and on a target without your libraries, a one-liner using only the\n# standard library is the difference between working and not.\n# `python3 -c` with single quotes inside a single-quoted shell string needs\n# care: use double quotes outside, or a heredoc."
+            "out": "# (the script's own output)\n\n# Two things bite here. `python` may not exist at all on a modern box — it is\n# python3 — and on a target without your libraries, a one-liner using only the\n# standard library is the difference between working and not.\n# `python3 -c` with single quotes inside a single-quoted shell string needs\n# care: use double quotes outside, or a heredoc.",
+            "ref": "https://github.com/Ridter/noPac"
           }
         ],
         "name_tr": "Domain Persistence & Dominance"
@@ -18933,7 +19049,8 @@ module.exports = [
               "T1059.001",
               "T1021.006"
             ],
-            "out": "Id Name    ComputerName    State   Availability\n-- ----    ------------    -----   ------------\n 1 Session WS01            Opened  Available\n\n# PowerShell Remoting over WinRM (5985/5986). `Enter-PSSession` is interactive,\n# `Invoke-Command -ScriptBlock` runs on many hosts at once. It needs the\n# account in Remote Management Users, and \"Access is denied\" here is a\n# membership problem, not a password one. This is the built-in, signed lateral\n# movement path — quieter than psexec."
+            "out": "Id Name    ComputerName    State   Availability\n-- ----    ------------    -----   ------------\n 1 Session WS01            Opened  Available\n\n# PowerShell Remoting over WinRM (5985/5986). `Enter-PSSession` is interactive,\n# `Invoke-Command -ScriptBlock` runs on many hosts at once. It needs the\n# account in Remote Management Users, and \"Access is denied\" here is a\n# membership problem, not a password one. This is the built-in, signed lateral\n# movement path — quieter than psexec.",
+            "ref": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/enter-pssession"
           },
           {
             "title": "Invoke-Command (Single Host)",
@@ -20238,7 +20355,8 @@ module.exports = [
             ],
             "desc": "Lightweight HTTP server via busybox",
             "desc_tr": "busybox ile hafif HTTP sunucusu",
-            "out": "root@host:/#\n\n# nsenter into PID 1's namespaces from a privileged container is host root with\n# no exploit: `nsenter -t 1 -m -u -n -i sh`. It needs --pid=host or hostPID\n# plus the right capabilities, so it doubles as the test for whether those were\n# granted. `capsh --print` first tells you whether it will work."
+            "out": "root@host:/#\n\n# nsenter into PID 1's namespaces from a privileged container is host root with\n# no exploit: `nsenter -t 1 -m -u -n -i sh`. It needs --pid=host or hostPID\n# plus the right capabilities, so it doubles as the test for whether those were\n# granted. `capsh --print` first tells you whether it will work.",
+            "ref": "https://www.busybox.net/downloads/BusyBox.html"
           },
           {
             "title": "Python Upload Server",
@@ -20464,7 +20582,8 @@ module.exports = [
             "attack": [
               "T1059.004"
             ],
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Wget Recursive Download",
@@ -20548,7 +20667,8 @@ module.exports = [
             ],
             "desc": "Download file via BITS service",
             "desc_tr": "BITS servisi ile dosya indir",
-            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate."
+            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate.",
+            "ref": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/bitsadmin"
           },
           {
             "title": "Start-BitsTransfer",
@@ -20674,7 +20794,8 @@ module.exports = [
               "T1048",
               "T1590.002"
             ],
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Exfil via ICMP",
@@ -20687,7 +20808,8 @@ module.exports = [
             "attack": [
               "T1048"
             ],
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Exfil via curl POST",
@@ -20715,7 +20837,8 @@ module.exports = [
             "attack": [
               "T1048"
             ],
-            "out": "x etc/shadow\nx root/.ssh/id_rsa\n\n# Extracting an archive someone else built can write outside the target\n# directory if it contains ../ paths — check with `tar -tzf` before `-xzf`.\n# `wget` leaves the URL in ~/.wget-hsts and the shell history; on an\n# engagement that is evidence you will need to account for."
+            "out": "x etc/shadow\nx root/.ssh/id_rsa\n\n# Extracting an archive someone else built can write outside the target\n# directory if it contains ../ paths — check with `tar -tzf` before `-xzf`.\n# `wget` leaves the URL in ~/.wget-hsts and the shell history; on an\n# engagement that is evidence you will need to account for.",
+            "ref": "https://man7.org/linux/man-pages/man1/tar.1.html"
           },
           {
             "title": "Exfil via OpenSSL Encrypted",
@@ -20731,7 +20854,8 @@ module.exports = [
             "attack": [
               "T1048"
             ],
-            "out": "x etc/shadow\nx root/.ssh/id_rsa\n\n# Extracting an archive someone else built can write outside the target\n# directory if it contains ../ paths — check with `tar -tzf` before `-xzf`.\n# `wget` leaves the URL in ~/.wget-hsts and the shell history; on an\n# engagement that is evidence you will need to account for."
+            "out": "x etc/shadow\nx root/.ssh/id_rsa\n\n# Extracting an archive someone else built can write outside the target\n# directory if it contains ../ paths — check with `tar -tzf` before `-xzf`.\n# `wget` leaves the URL in ~/.wget-hsts and the shell history; on an\n# engagement that is evidence you will need to account for.",
+            "ref": "https://man7.org/linux/man-pages/man1/tar.1.html"
           }
         ],
         "name_tr": "Exfiltration Techniques"
@@ -20747,7 +20871,8 @@ module.exports = [
             ],
             "desc": "Encode a file to base64 for text-based transfer",
             "desc_tr": "Metin tabanlı transfer için bir dosyayı base64 kodla",
-            "out": "Generating public/private ed25519 key pair.\nYour identification has been saved in /root/.ssh/id_ed25519\nThe key fingerprint is:\nSHA256:4jYbHqKp9aXcLm2RTz7vBn4WQw1eRt5Y root@kali\n\n# Append the .pub to a target's ~/.ssh/authorized_keys and you have durable\n# access that survives a password change. The private key needs `chmod 600` or\n# ssh refuses it with an error that blames the key rather than the permissions.\n# `openssl passwd -6` makes a /etc/shadow hash when you can write that file."
+            "out": "Generating public/private ed25519 key pair.\nYour identification has been saved in /root/.ssh/id_ed25519\nThe key fingerprint is:\nSHA256:4jYbHqKp9aXcLm2RTz7vBn4WQw1eRt5Y root@kali\n\n# Append the .pub to a target's ~/.ssh/authorized_keys and you have durable\n# access that survives a password change. The private key needs `chmod 600` or\n# ssh refuses it with an error that blames the key rather than the permissions.\n# `openssl passwd -6` makes a /etc/shadow hash when you can write that file.",
+            "ref": "https://man7.org/linux/man-pages/man1/base64.1.html"
           },
           {
             "title": "Base64 Decode (Linux)",
@@ -20757,7 +20882,8 @@ module.exports = [
             ],
             "desc": "Decode a base64 encoded file",
             "desc_tr": "base64 kodlu bir dosyayı çöz",
-            "out": "Generating public/private ed25519 key pair.\nYour identification has been saved in /root/.ssh/id_ed25519\nThe key fingerprint is:\nSHA256:4jYbHqKp9aXcLm2RTz7vBn4WQw1eRt5Y root@kali\n\n# Append the .pub to a target's ~/.ssh/authorized_keys and you have durable\n# access that survives a password change. The private key needs `chmod 600` or\n# ssh refuses it with an error that blames the key rather than the permissions.\n# `openssl passwd -6` makes a /etc/shadow hash when you can write that file."
+            "out": "Generating public/private ed25519 key pair.\nYour identification has been saved in /root/.ssh/id_ed25519\nThe key fingerprint is:\nSHA256:4jYbHqKp9aXcLm2RTz7vBn4WQw1eRt5Y root@kali\n\n# Append the .pub to a target's ~/.ssh/authorized_keys and you have durable\n# access that survives a password change. The private key needs `chmod 600` or\n# ssh refuses it with an error that blames the key rather than the permissions.\n# `openssl passwd -6` makes a /etc/shadow hash when you can write that file.",
+            "ref": "https://man7.org/linux/man-pages/man1/base64.1.html"
           },
           {
             "title": "Base64 Encode (PowerShell)",
@@ -20795,7 +20921,8 @@ module.exports = [
             ],
             "desc": "Convert file to hex representation for transfer",
             "desc_tr": "Transfer için dosyayı onaltılık gösterime çevir",
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://man.archlinux.org/man/xxd.1.en"
           },
           {
             "title": "xxd Hex Decode",
@@ -20805,7 +20932,8 @@ module.exports = [
             ],
             "desc": "Reconstruct file from hex dump",
             "desc_tr": "Hex dökümünden dosyayı yeniden oluştur",
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://man.archlinux.org/man/xxd.1.en"
           },
           {
             "title": "Steghide Embed Data",
@@ -20815,7 +20943,8 @@ module.exports = [
             ],
             "desc": "Hide a file inside an image using steganography",
             "desc_tr": "Steganografi ile bir dosyayı görüntü içine gizle",
-            "out": "Volatility Foundation Volatility 3 Framework 2.7.0\nPID     PPID    ImageFileName   CreateTime\n2104    412     lsass.exe       2026-09-14 09:12:04\n20114   2104    cmd.exe         2026-09-14 09:41:03\n\n# Start with the process list and look for the parent that does not make sense —\n# a cmd.exe under lsass.exe is not a normal tree. The profile or symbol table\n# has to match the capture's OS build exactly, or every plugin returns nothing\n# and it looks like an empty memory image."
+            "out": "Volatility Foundation Volatility 3 Framework 2.7.0\nPID     PPID    ImageFileName   CreateTime\n2104    412     lsass.exe       2026-09-14 09:12:04\n20114   2104    cmd.exe         2026-09-14 09:41:03\n\n# Start with the process list and look for the parent that does not make sense —\n# a cmd.exe under lsass.exe is not a normal tree. The profile or symbol table\n# has to match the capture's OS build exactly, or every plugin returns nothing\n# and it looks like an empty memory image.",
+            "ref": "https://www.kali.org/tools/steghide/"
           },
           {
             "title": "Steghide Extract Data",
@@ -20825,7 +20954,8 @@ module.exports = [
             ],
             "desc": "Extract hidden data from a steganographic image",
             "desc_tr": "Steganografik bir görüntüden gizli veriyi çıkar",
-            "out": "Volatility Foundation Volatility 3 Framework 2.7.0\nPID     PPID    ImageFileName   CreateTime\n2104    412     lsass.exe       2026-09-14 09:12:04\n20114   2104    cmd.exe         2026-09-14 09:41:03\n\n# Start with the process list and look for the parent that does not make sense —\n# a cmd.exe under lsass.exe is not a normal tree. The profile or symbol table\n# has to match the capture's OS build exactly, or every plugin returns nothing\n# and it looks like an empty memory image."
+            "out": "Volatility Foundation Volatility 3 Framework 2.7.0\nPID     PPID    ImageFileName   CreateTime\n2104    412     lsass.exe       2026-09-14 09:12:04\n20114   2104    cmd.exe         2026-09-14 09:41:03\n\n# Start with the process list and look for the parent that does not make sense —\n# a cmd.exe under lsass.exe is not a normal tree. The profile or symbol table\n# has to match the capture's OS build exactly, or every plugin returns nothing\n# and it looks like an empty memory image.",
+            "ref": "https://www.kali.org/tools/steghide/"
           },
           {
             "title": "Exiftool Embed in Metadata",
@@ -21033,7 +21163,8 @@ module.exports = [
             "attack": [
               "T1048"
             ],
-            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1."
+            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1.",
+            "ref": "https://github.com/iagox86/dnscat2"
           },
           {
             "title": "dnscat2 Client",
@@ -21073,7 +21204,8 @@ module.exports = [
             "attack": [
               "T1048"
             ],
-            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1."
+            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1.",
+            "ref": "https://github.com/yarrick/iodine"
           },
           {
             "title": "Iodine Client",
@@ -21086,7 +21218,8 @@ module.exports = [
             "attack": [
               "T1048"
             ],
-            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1."
+            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1.",
+            "ref": "https://github.com/yarrick/iodine"
           },
           {
             "title": "dns2tcp Server",
@@ -21125,7 +21258,8 @@ module.exports = [
             ],
             "desc": "Start ICMP shell listener (disable kernel ICMP replies first)",
             "desc_tr": "ICMP kabuk dinleyicisi başlat (önce çekirdek ICMP yanıtlarını kapat)",
-            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1."
+            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1.",
+            "ref": "https://man7.org/linux/man-pages/man8/sysctl.8.html"
           },
           {
             "title": "icmpsh Client (Windows Target)",
@@ -21360,7 +21494,8 @@ module.exports = [
             ],
             "desc": "Start Modlishka reverse proxy phishing framework",
             "desc_tr": "Modlishka ters proxy phishing framework'ünü başlat",
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://github.com/drk1wi/Modlishka"
           },
           {
             "title": "Simple HTTPS Phishing Server",
@@ -22582,7 +22717,8 @@ module.exports = [
             "attack": [
               "T1548.001"
             ],
-            "out": "/usr/bin/sudo\n/usr/bin/passwd\n/usr/bin/chsh\n/usr/bin/pkexec\n/usr/bin/find\n\n# Ignore the standard set (sudo, passwd, chsh, mount, su). What matters is the\n# unusual one — a shell, an interpreter, or anything from GTFOBins."
+            "out": "/usr/bin/sudo\n/usr/bin/passwd\n/usr/bin/chsh\n/usr/bin/pkexec\n/usr/bin/find\n\n# Ignore the standard set (sudo, passwd, chsh, mount, su). What matters is the\n# unusual one — a shell, an interpreter, or anything from GTFOBins.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Post-Exploit Step 5: Cron Jobs",
@@ -22601,7 +22737,8 @@ module.exports = [
               "T1053.005",
               "T1053.003"
             ],
-            "out": "* * * * * root /usr/local/bin/backup.sh\n0 3 * * * root tar -czf /backup/www.tgz /var/www/*\n\n# Two classics live here. A cron job running a script you can WRITE is a root\n# shell on the next tick. And a wildcard in a tar or rsync line lets you plant\n# a file named like an option (`--checkpoint-action=exec=sh shell.sh`) in the\n# directory it globs — the wildcard expands your filename into an argument."
+            "out": "* * * * * root /usr/local/bin/backup.sh\n0 3 * * * root tar -czf /backup/www.tgz /var/www/*\n\n# Two classics live here. A cron job running a script you can WRITE is a root\n# shell on the next tick. And a wildcard in a tar or rsync line lets you plant\n# a file named like an option (`--checkpoint-action=exec=sh shell.sh`) in the\n# directory it globs — the wildcard expands your filename into an argument.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Post-Exploit Step 6: Capabilities",
@@ -22626,7 +22763,8 @@ module.exports = [
               "T1082",
               "T1068"
             ],
-            "out": "Linux web01 5.15.0-91-generic #101-Ubuntu SMP x86_64 GNU/Linux\n\n# Kernel version plus distribution is a search term, but treat kernel exploits\n# as the last resort: they crash boxes, and a crashed exam target costs more\n# time than the points are worth. Exhaust sudo, SUID, cron and credentials\n# first — on a well-built machine the intended path is one of those."
+            "out": "Linux web01 5.15.0-91-generic #101-Ubuntu SMP x86_64 GNU/Linux\n\n# Kernel version plus distribution is a search term, but treat kernel exploits\n# as the last resort: they crash boxes, and a crashed exam target costs more\n# time than the points are worth. Exhaust sudo, SUID, cron and credentials\n# first — on a well-built machine the intended path is one of those.",
+            "ref": "https://man7.org/linux/man-pages/man1/uname.1.html"
           },
           {
             "title": "Post-Exploit Step 8: Network Info",
@@ -22665,7 +22803,8 @@ module.exports = [
             "attack": [
               "T1003.008"
             ],
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Windows Post-Exploit: User Info",
@@ -22703,7 +22842,8 @@ module.exports = [
             "attack": [
               "T1552.001"
             ],
-            "out": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\n    DefaultUserName    REG_SZ    Administrator\n    DefaultPassword    REG_SZ    S3cr3tP@ssw0rd!\n    AutoAdminLogon     REG_SZ    1\n\n# Autologon credentials are stored in cleartext in the registry and readable by\n# any local user. The other classics with these built-ins: `net user <name>\n# /domain` for group membership, `sc qc <svc>` for an unquoted service path,\n# and `cmdkey /list` for saved credentials you can use without knowing them."
+            "out": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\n    DefaultUserName    REG_SZ    Administrator\n    DefaultPassword    REG_SZ    S3cr3tP@ssw0rd!\n    AutoAdminLogon     REG_SZ    1\n\n# Autologon credentials are stored in cleartext in the registry and readable by\n# any local user. The other classics with these built-ins: `net user <name>\n# /domain` for group membership, `sc qc <svc>` for an unquoted service path,\n# and `cmdkey /list` for saved credentials you can use without knowing them.",
+            "ref": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/cmdkey"
           }
         ],
         "name_tr": "Phase 3 — Post-Exploitation Checklist"
@@ -22924,7 +23064,8 @@ module.exports = [
             ],
             "desc": "Bundle all engagement data for reporting",
             "desc_tr": "Raporlama için tüm angajman verilerini paketle",
-            "out": "x etc/shadow\nx root/.ssh/id_rsa\n\n# Extracting an archive someone else built can write outside the target\n# directory if it contains ../ paths — check with `tar -tzf` before `-xzf`.\n# `wget` leaves the URL in ~/.wget-hsts and the shell history; on an\n# engagement that is evidence you will need to account for."
+            "out": "x etc/shadow\nx root/.ssh/id_rsa\n\n# Extracting an archive someone else built can write outside the target\n# directory if it contains ../ paths — check with `tar -tzf` before `-xzf`.\n# `wget` leaves the URL in ~/.wget-hsts and the shell history; on an\n# engagement that is evidence you will need to account for.",
+            "ref": "https://man7.org/linux/man-pages/man1/tar.1.html"
           }
         ],
         "name_tr": "Phase 5 — Proof & Reporting"
@@ -23564,7 +23705,8 @@ module.exports = [
             ],
             "desc": "Determine if the current shell is inside a Docker container",
             "desc_tr": "Mevcut kabuğun bir Docker konteyneri içinde olup olmadığını belirle",
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Docker Socket Exploitation",
@@ -23601,7 +23743,8 @@ module.exports = [
             "attack": [
               "T1611"
             ],
-            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate."
+            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate.",
+            "ref": "https://man7.org/linux/man-pages/man1/mkdir.1.html"
           },
           {
             "title": "Mount Host Filesystem",
@@ -23676,7 +23819,8 @@ module.exports = [
             "attack": [
               "T1611"
             ],
-            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate."
+            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate.",
+            "ref": "https://man7.org/linux/man-pages/man1/mkdir.1.html"
           },
           {
             "title": "Deepce Container Escape Scanner",
@@ -23883,7 +24027,8 @@ module.exports = [
             ],
             "desc": "Read the mounted service account token from within a pod",
             "desc_tr": "Bir pod içinden bağlı servis hesabı token'ını oku",
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Kubernetes API from Pod",
@@ -24329,7 +24474,8 @@ module.exports = [
             ],
             "desc": "Extract Docker registry credentials from config files",
             "desc_tr": "Yapılandırma dosyalarından Docker registry kimlik bilgilerini çıkar",
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           }
         ],
         "name_tr": "CI/CD Pipeline Attacks"
@@ -26354,7 +26500,8 @@ module.exports = [
             "attack": [
               "T1033"
             ],
-            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1."
+            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1.",
+            "ref": "https://github.com/AlmondOffSec/PassTheCert"
           },
           {
             "title": "PassTheCert Add DA",
@@ -26367,7 +26514,8 @@ module.exports = [
             "attack": [
               "T1069.002"
             ],
-            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1."
+            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1.",
+            "ref": "https://github.com/AlmondOffSec/PassTheCert"
           }
         ],
         "name_tr": "Certificate Authentication"
@@ -26546,7 +26694,8 @@ module.exports = [
             "attack": [
               "T1552.001"
             ],
-            "out": "# (silent on success)\n\n# No output is success. chmod +s on a copied shell only works if you are already\n# root — if it seems to succeed as a normal user, check with `ls -l`: the bit\n# is silently dropped. Note that a mount with nosuid ignores the bit entirely."
+            "out": "# (silent on success)\n\n# No output is success. chmod +s on a copied shell only works if you are already\n# root — if it seems to succeed as a normal user, check with `ls -l`: the bit\n# is silently dropped. Note that a mount with nosuid ignores the bit entirely.",
+            "ref": "https://man7.org/linux/man-pages/man1/chmod.1.html"
           },
           {
             "title": "Hydra SSH Brute Force",
@@ -27033,7 +27182,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "SMB paylaşımını yerel dizine bağla",
-            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1."
+            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1.",
+            "ref": "https://man7.org/linux/man-pages/man8/mount.8.html"
           },
           {
             "title": "EternalBlue (MS17-010)",
@@ -27723,7 +27873,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "NFS paylaşımını yerele bağla",
-            "out": "Export list for 10.10.10.5:\n/srv/backups   *\n/home/dev      10.10.10.0/24\n\n# An export to * is readable by anything that can reach it. NFS trusts the\n# client's UID, so mounting it and then `sudo useradd -u 1000` gives you that\n# user's files — no_root_squash goes further and lets you write a setuid binary."
+            "out": "Export list for 10.10.10.5:\n/srv/backups   *\n/home/dev      10.10.10.0/24\n\n# An export to * is readable by anything that can reach it. NFS trusts the\n# client's UID, so mounting it and then `sudo useradd -u 1000` gives you that\n# user's files — no_root_squash goes further and lets you write a setuid binary.",
+            "ref": "https://man7.org/linux/man-pages/man8/mount.8.html"
           },
           {
             "title": "Mount NFS v3",
@@ -27733,7 +27884,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "NFS sürüm 3'ü zorla",
-            "out": "Export list for 10.10.10.5:\n/srv/backups   *\n/home/dev      10.10.10.0/24\n\n# An export to * is readable by anything that can reach it. NFS trusts the\n# client's UID, so mounting it and then `sudo useradd -u 1000` gives you that\n# user's files — no_root_squash goes further and lets you write a setuid binary."
+            "out": "Export list for 10.10.10.5:\n/srv/backups   *\n/home/dev      10.10.10.0/24\n\n# An export to * is readable by anything that can reach it. NFS trusts the\n# client's UID, so mounting it and then `sudo useradd -u 1000` gives you that\n# user's files — no_root_squash goes further and lets you write a setuid binary.",
+            "ref": "https://man7.org/linux/man-pages/man8/mount.8.html"
           },
           {
             "title": "NFS no_root_squash Abuse",
@@ -27752,7 +27904,8 @@ module.exports = [
               "T1059.004",
               "T1548.001"
             ],
-            "out": "Export list for 10.10.10.5:\n/srv/backups   *\n/home/dev      10.10.10.0/24\n\n# An export to * is readable by anything that can reach it. NFS trusts the\n# client's UID, so mounting it and then `sudo useradd -u 1000` gives you that\n# user's files — no_root_squash goes further and lets you write a setuid binary."
+            "out": "Export list for 10.10.10.5:\n/srv/backups   *\n/home/dev      10.10.10.0/24\n\n# An export to * is readable by anything that can reach it. NFS trusts the\n# client's UID, so mounting it and then `sudo useradd -u 1000` gives you that\n# user's files — no_root_squash goes further and lets you write a setuid binary.",
+            "ref": "https://man7.org/linux/man-pages/man8/mount.8.html"
           }
         ],
         "name_tr": "NFS (2049)"
@@ -28380,7 +28533,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Mevcut kullanıcı için yerel admin haklarını bul",
-            "out": "ComputerName : WS01.example.com\nName         : jdoe\nIsGroupMember: True\n\n# PowerView lives in a .ps1 you dot-source or Import-Module first — running the\n# function before loading the file gives \"not recognized as a cmdlet\", which is\n# a loading problem, not a permissions one.\n# Find-LocalAdminAccess finds hosts where your current token is admin, which is\n# the fastest lateral-movement question there is."
+            "out": "ComputerName : WS01.example.com\nName         : jdoe\nIsGroupMember: True\n\n# PowerView lives in a .ps1 you dot-source or Import-Module first — running the\n# function before loading the file gives \"not recognized as a cmdlet\", which is\n# a loading problem, not a permissions one.\n# Find-LocalAdminAccess finds hosts where your current token is admin, which is\n# the fastest lateral-movement question there is.",
+            "ref": "https://powersploit.readthedocs.io/en/latest/Recon/"
           },
           {
             "title": "Get Logged On Users",
@@ -28429,7 +28583,8 @@ module.exports = [
               "advanced"
             ],
             "desc_tr": "Paylaşımlarda hassas dosyaları ara",
-            "out": "ComputerName : WS01.example.com\nName         : jdoe\nIsGroupMember: True\n\n# PowerView lives in a .ps1 you dot-source or Import-Module first — running the\n# function before loading the file gives \"not recognized as a cmdlet\", which is\n# a loading problem, not a permissions one.\n# Find-LocalAdminAccess finds hosts where your current token is admin, which is\n# the fastest lateral-movement question there is."
+            "out": "ComputerName : WS01.example.com\nName         : jdoe\nIsGroupMember: True\n\n# PowerView lives in a .ps1 you dot-source or Import-Module first — running the\n# function before loading the file gives \"not recognized as a cmdlet\", which is\n# a loading problem, not a permissions one.\n# Find-LocalAdminAccess finds hosts where your current token is admin, which is\n# the fastest lateral-movement question there is.",
+            "ref": "https://powersploit.readthedocs.io/en/latest/Recon/"
           },
           {
             "title": "Get SPNs (Kerberoast)",
@@ -28457,7 +28612,8 @@ module.exports = [
             "attack": [
               "T1558.003"
             ],
-            "out": "ServicePrincipalName          Name         MemberOf                             PasswordLastSet\n----------------------------  -----------  -----------------------------------  --------------------\nMSSQLSvc/db01.example.com     svc-sql      CN=Domain Admins,CN=Users,DC=example  2019-03-11 09:14:02\n\n$krb5tgs$23$*svc-sql$EXAMPLE.COM$MSSQLSvc/db01*$8f21c0a9...\n\n# Any authenticated user can request these tickets — that is the design, not a\n# flaw. The flaw is a weak password on the account. PasswordLastSet years ago\n# plus Domain Admins membership is the one to crack first (hashcat -m 13100)."
+            "out": "ServicePrincipalName          Name         MemberOf                             PasswordLastSet\n----------------------------  -----------  -----------------------------------  --------------------\nMSSQLSvc/db01.example.com     svc-sql      CN=Domain Admins,CN=Users,DC=example  2019-03-11 09:14:02\n\n$krb5tgs$23$*svc-sql$EXAMPLE.COM$MSSQLSvc/db01*$8f21c0a9...\n\n# Any authenticated user can request these tickets — that is the design, not a\n# flaw. The flaw is a weak password on the account. PasswordLastSet years ago\n# plus Domain Admins membership is the one to crack first (hashcat -m 13100).",
+            "ref": "https://powersploit.readthedocs.io/en/latest/Recon/"
           },
           {
             "title": "Get ASREPRoast Targets",
@@ -28493,7 +28649,8 @@ module.exports = [
               "advanced"
             ],
             "desc_tr": "Tüm nesnelerde yazma/değiştirme haklarını bul",
-            "out": "ComputerName : WS01.example.com\nName         : jdoe\nIsGroupMember: True\n\n# PowerView lives in a .ps1 you dot-source or Import-Module first — running the\n# function before loading the file gives \"not recognized as a cmdlet\", which is\n# a loading problem, not a permissions one.\n# Find-LocalAdminAccess finds hosts where your current token is admin, which is\n# the fastest lateral-movement question there is."
+            "out": "ComputerName : WS01.example.com\nName         : jdoe\nIsGroupMember: True\n\n# PowerView lives in a .ps1 you dot-source or Import-Module first — running the\n# function before loading the file gives \"not recognized as a cmdlet\", which is\n# a loading problem, not a permissions one.\n# Find-LocalAdminAccess finds hosts where your current token is admin, which is\n# the fastest lateral-movement question there is.",
+            "ref": "https://powersploit.readthedocs.io/en/latest/Recon/"
           },
           {
             "title": "Unconstrained Delegation",
@@ -28674,7 +28831,8 @@ module.exports = [
             "attack": [
               "T1562.001"
             ],
-            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own."
+            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own.",
+            "ref": "https://learn.microsoft.com/en-us/powershell/module/defender/set-mppreference"
           },
           {
             "title": "Add Defender Exclusion",
@@ -28684,7 +28842,8 @@ module.exports = [
               "advanced"
             ],
             "desc_tr": "Defender istisna listesine yol ekle",
-            "out": "# (silent on success — Defender simply stops scanning the excluded path)\n\n# `Add-MpPreference -ExclusionPath` carves out a directory Defender ignores,\n# which is where a payload then runs unscanned. It needs local admin, it is\n# logged (event 5007), and adding an exclusion is exactly the kind of change a\n# monitored estate alerts on — so it trades stealth for reliability."
+            "out": "# (silent on success — Defender simply stops scanning the excluded path)\n\n# `Add-MpPreference -ExclusionPath` carves out a directory Defender ignores,\n# which is where a payload then runs unscanned. It needs local admin, it is\n# logged (event 5007), and adding an exclusion is exactly the kind of change a\n# monitored estate alerts on — so it trades stealth for reliability.",
+            "ref": "https://learn.microsoft.com/en-us/powershell/module/defender/add-mppreference"
           },
           {
             "title": "ETW Bypass",
@@ -28727,7 +28886,8 @@ module.exports = [
             "attack": [
               "T1087"
             ],
-            "out": "DistinguishedName : CN=svc-sql,CN=Users,DC=example,DC=com\nEnabled           : True\nName              : svc-sql\nSamAccountName    : svc-sql\nServicePrincipalName : {MSSQLSvc/db01.example.com:1433}\n\n# The ActiveDirectory module is not on a normal workstation — it comes with RSAT\n# and its absence is why PowerView exists. `-Properties *` is needed for\n# anything beyond the default handful of attributes, including description,\n# which is where passwords get written."
+            "out": "DistinguishedName : CN=svc-sql,CN=Users,DC=example,DC=com\nEnabled           : True\nName              : svc-sql\nSamAccountName    : svc-sql\nServicePrincipalName : {MSSQLSvc/db01.example.com:1433}\n\n# The ActiveDirectory module is not on a normal workstation — it comes with RSAT\n# and its absence is why PowerView exists. `-Properties *` is needed for\n# anything beyond the default handful of attributes, including description,\n# which is where passwords get written.",
+            "ref": "https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-aduser"
           },
           {
             "title": "Get-ADGroup Members",
@@ -28750,7 +28910,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Tüm domain bilgisayarlarını listele",
-            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own."
+            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own.",
+            "ref": "https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adcomputer"
           },
           {
             "title": "Get-ADDomainController",
@@ -28770,7 +28931,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "Domain güvenlerini listele",
-            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own."
+            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own.",
+            "ref": "https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adtrust"
           },
           {
             "title": "Set-ADAccountPassword",
@@ -28780,7 +28942,8 @@ module.exports = [
               "advanced"
             ],
             "desc_tr": "Kullanıcı parolasını sıfırla (haklar izin veriyorsa)",
-            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own."
+            "out": "PS C:\\Users\\jdoe> whoami /priv\n\nPRIVILEGES INFORMATION\n----------------------\nPrivilege Name                Description                    State\n============================= ============================== ========\nSeImpersonatePrivilege        Impersonate a client            Enabled\n\n# SeImpersonate or SeAssignPrimaryToken Enabled is a direct path to SYSTEM via\n# the Potato family — worth checking before anything else on a service account.\n# `-ExecutionPolicy Bypass` is not a security control being defeated; it is a\n# preference, and that is why it is not a finding on its own.",
+            "ref": "https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adaccountpassword"
           }
         ],
         "name_tr": "Active Directory Module (Native)"
@@ -29781,7 +29944,8 @@ module.exports = [
             "attack": [
               "T1016"
             ],
-            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate."
+            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate.",
+            "ref": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig"
           },
           {
             "title": "ARP Table",
@@ -29794,7 +29958,8 @@ module.exports = [
             "attack": [
               "T1016"
             ],
-            "out": "2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 10.10.10.5/24 brd 10.10.10.255 scope global eth0\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 172.16.5.9/24 brd 172.16.5.255 scope global eth1\n\n# A second interface on a different subnet is the pivot — that network is\n# reachable from here and from nowhere else you have. Note it, then tunnel.\n# `ip neigh` lists hosts this machine has recently talked to, which is a free\n# target list for the new segment."
+            "out": "2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 10.10.10.5/24 brd 10.10.10.255 scope global eth0\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 172.16.5.9/24 brd 172.16.5.255 scope global eth1\n\n# A second interface on a different subnet is the pivot — that network is\n# reachable from here and from nowhere else you have. Note it, then tunnel.\n# `ip neigh` lists hosts this machine has recently talked to, which is a free\n# target list for the new segment.",
+            "ref": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/arp"
           },
           {
             "title": "Routing Table",
@@ -29807,7 +29972,8 @@ module.exports = [
             "attack": [
               "T1016"
             ],
-            "out": "2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 10.10.10.5/24 brd 10.10.10.255 scope global eth0\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 172.16.5.9/24 brd 172.16.5.255 scope global eth1\n\n# A second interface on a different subnet is the pivot — that network is\n# reachable from here and from nowhere else you have. Note it, then tunnel.\n# `ip neigh` lists hosts this machine has recently talked to, which is a free\n# target list for the new segment."
+            "out": "2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 10.10.10.5/24 brd 10.10.10.255 scope global eth0\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 172.16.5.9/24 brd 172.16.5.255 scope global eth1\n\n# A second interface on a different subnet is the pivot — that network is\n# reachable from here and from nowhere else you have. Note it, then tunnel.\n# `ip neigh` lists hosts this machine has recently talked to, which is a free\n# target list for the new segment.",
+            "ref": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/route_ws2008"
           },
           {
             "title": "Listening Ports",
@@ -29929,7 +30095,8 @@ module.exports = [
             "attack": [
               "T1059.001"
             ],
-            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate."
+            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate.",
+            "ref": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/type"
           },
           {
             "title": "Environment Variables",
@@ -29983,7 +30150,8 @@ module.exports = [
             "attack": [
               "T1552.001"
             ],
-            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate."
+            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate.",
+            "ref": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/findstr"
           },
           {
             "title": "Search Specific Extensions",
@@ -30033,7 +30201,8 @@ module.exports = [
             "attack": [
               "T1552.001"
             ],
-            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate."
+            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate.",
+            "ref": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/type"
           },
           {
             "title": "SAM & SYSTEM Files",
@@ -30112,7 +30281,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "IIS yapılandırmasında kimlik bilgisi ara",
-            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate."
+            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate.",
+            "ref": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/type"
           },
           {
             "title": "Firefox Passwords (firepwd)",
@@ -30352,7 +30522,8 @@ module.exports = [
               "T1059.003",
               "T1134.001"
             ],
-            "out": "[+] Found privilege: SeImpersonatePrivilege\n[+] Named pipe listening...\n[+] CreateProcessAsUser OK\n\nC:\\Windows\\system32>whoami\nnt authority\\system\n\n# The Potato family all trade SeImpersonatePrivilege for SYSTEM — which is why\n# `whoami /priv` is the check that decides whether to bother. Which one works\n# depends on the Windows build; PrintSpoofer and GodPotato cover most modern\n# targets where the older JuicyPotato no longer does."
+            "out": "[+] Found privilege: SeImpersonatePrivilege\n[+] Named pipe listening...\n[+] CreateProcessAsUser OK\n\nC:\\Windows\\system32>whoami\nnt authority\\system\n\n# The Potato family all trade SeImpersonatePrivilege for SYSTEM — which is why\n# `whoami /priv` is the check that decides whether to bother. Which one works\n# depends on the Windows build; PrintSpoofer and GodPotato cover most modern\n# targets where the older JuicyPotato no longer does.",
+            "ref": "https://github.com/itm4n/PrintSpoofer"
           },
           {
             "title": "GodPotato (SeImpersonate)",
@@ -30367,7 +30538,8 @@ module.exports = [
               "T1059.003",
               "T1134.001"
             ],
-            "out": "[+] Found privilege: SeImpersonatePrivilege\n[+] Named pipe listening...\n[+] CreateProcessAsUser OK\n\nC:\\Windows\\system32>whoami\nnt authority\\system\n\n# The Potato family all trade SeImpersonatePrivilege for SYSTEM — which is why\n# `whoami /priv` is the check that decides whether to bother. Which one works\n# depends on the Windows build; PrintSpoofer and GodPotato cover most modern\n# targets where the older JuicyPotato no longer does."
+            "out": "[+] Found privilege: SeImpersonatePrivilege\n[+] Named pipe listening...\n[+] CreateProcessAsUser OK\n\nC:\\Windows\\system32>whoami\nnt authority\\system\n\n# The Potato family all trade SeImpersonatePrivilege for SYSTEM — which is why\n# `whoami /priv` is the check that decides whether to bother. Which one works\n# depends on the Windows build; PrintSpoofer and GodPotato cover most modern\n# targets where the older JuicyPotato no longer does.",
+            "ref": "https://github.com/BeichenDream/GodPotato"
           },
           {
             "title": "JuicyPotatoNG",
@@ -30435,7 +30607,8 @@ module.exports = [
             "attack": [
               "T1033"
             ],
-            "out": "uid=33(www-data) gid=33(www-data) groups=33(www-data),999(docker)\n\n# The supplementary groups are the part worth reading. docker means a container\n# that mounts / is a root shell; lxd and disk are equally direct; adm reads the\n# logs. Membership granted after your shell started needs a re-login before it\n# takes effect, which is why `id` can disagree with /etc/group."
+            "out": "uid=33(www-data) gid=33(www-data) groups=33(www-data),999(docker)\n\n# The supplementary groups are the part worth reading. docker means a container\n# that mounts / is a root shell; lxd and disk are equally direct; adm reads the\n# logs. Membership granted after your shell started needs a re-login before it\n# takes effect, which is why `id` can disagree with /etc/group.",
+            "ref": "https://man7.org/linux/man-pages/man1/id.1.html"
           },
           {
             "title": "System Info",
@@ -30448,7 +30621,8 @@ module.exports = [
             "attack": [
               "T1082"
             ],
-            "out": "Linux web01 5.15.0-91-generic #101-Ubuntu SMP x86_64 GNU/Linux\n\n# Kernel version plus distribution is a search term, but treat kernel exploits\n# as the last resort: they crash boxes, and a crashed exam target costs more\n# time than the points are worth. Exhaust sudo, SUID, cron and credentials\n# first — on a well-built machine the intended path is one of those."
+            "out": "Linux web01 5.15.0-91-generic #101-Ubuntu SMP x86_64 GNU/Linux\n\n# Kernel version plus distribution is a search term, but treat kernel exploits\n# as the last resort: they crash boxes, and a crashed exam target costs more\n# time than the points are worth. Exhaust sudo, SUID, cron and credentials\n# first — on a well-built machine the intended path is one of those.",
+            "ref": "https://man7.org/linux/man-pages/man1/uname.1.html"
           },
           {
             "title": "All Users",
@@ -30458,7 +30632,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Tüm sistem kullanıcılarını listele",
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Sudo Rights",
@@ -30509,7 +30684,8 @@ module.exports = [
             "attack": [
               "T1016"
             ],
-            "out": "2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 10.10.10.5/24 brd 10.10.10.255 scope global eth0\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 172.16.5.9/24 brd 172.16.5.255 scope global eth1\n\n# A second interface on a different subnet is the pivot — that network is\n# reachable from here and from nowhere else you have. Note it, then tunnel.\n# `ip neigh` lists hosts this machine has recently talked to, which is a free\n# target list for the new segment."
+            "out": "2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 10.10.10.5/24 brd 10.10.10.255 scope global eth0\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 172.16.5.9/24 brd 172.16.5.255 scope global eth1\n\n# A second interface on a different subnet is the pivot — that network is\n# reachable from here and from nowhere else you have. Note it, then tunnel.\n# `ip neigh` lists hosts this machine has recently talked to, which is a free\n# target list for the new segment.",
+            "ref": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/arp"
           },
           {
             "title": "Listening Ports",
@@ -30547,7 +30723,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Tüm süreçleri ayrıntılarıyla listele",
-            "out": "USER       PID %CPU %MEM COMMAND\nroot       412  0.0  0.4 /usr/sbin/mysqld --user=root --password=S3cr3t\nwww-data  2104  0.1  1.2 /usr/sbin/apache2 -k start\n\n# `ps aux` is a snapshot: a cron job that runs for two seconds every minute is\n# invisible unless you happen to look at the right moment. pspy watches\n# continuously without root and catches exactly those — which is how you find\n# the scheduled task that is worth hijacking."
+            "out": "USER       PID %CPU %MEM COMMAND\nroot       412  0.0  0.4 /usr/sbin/mysqld --user=root --password=S3cr3t\nwww-data  2104  0.1  1.2 /usr/sbin/apache2 -k start\n\n# `ps aux` is a snapshot: a cron job that runs for two seconds every minute is\n# invisible unless you happen to look at the right moment. pspy watches\n# continuously without root and catches exactly those — which is how you find\n# the scheduled task that is worth hijacking.",
+            "ref": "https://man7.org/linux/man-pages/man1/ps.1.html"
           },
           {
             "title": "Processes as Root",
@@ -30560,7 +30737,8 @@ module.exports = [
             "attack": [
               "T1057"
             ],
-            "out": "USER       PID %CPU %MEM COMMAND\nroot       412  0.0  0.4 /usr/sbin/mysqld --user=root --password=S3cr3t\nwww-data  2104  0.1  1.2 /usr/sbin/apache2 -k start\n\n# `ps aux` is a snapshot: a cron job that runs for two seconds every minute is\n# invisible unless you happen to look at the right moment. pspy watches\n# continuously without root and catches exactly those — which is how you find\n# the scheduled task that is worth hijacking."
+            "out": "USER       PID %CPU %MEM COMMAND\nroot       412  0.0  0.4 /usr/sbin/mysqld --user=root --password=S3cr3t\nwww-data  2104  0.1  1.2 /usr/sbin/apache2 -k start\n\n# `ps aux` is a snapshot: a cron job that runs for two seconds every minute is\n# invisible unless you happen to look at the right moment. pspy watches\n# continuously without root and catches exactly those — which is how you find\n# the scheduled task that is worth hijacking.",
+            "ref": "https://man7.org/linux/man-pages/man1/ps.1.html"
           },
           {
             "title": "Cron Jobs",
@@ -30591,7 +30769,8 @@ module.exports = [
             "attack": [
               "T1552.003"
             ],
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Recently Modified Files",
@@ -30601,7 +30780,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "Son 10 dakikada değiştirilen dosyaları bul",
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Writable Directories",
@@ -30611,7 +30791,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Herkesçe yazılabilir dizinleri bul",
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Mounted Filesystems",
@@ -30621,7 +30802,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "Bağlı tüm dosya sistemlerini göster",
-            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1."
+            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1.",
+            "ref": "https://man7.org/linux/man-pages/man8/mount.8.html"
           },
           {
             "title": "SUID Files",
@@ -30634,7 +30816,8 @@ module.exports = [
             "attack": [
               "T1548.001"
             ],
-            "out": "/usr/bin/sudo\n/usr/bin/passwd\n/usr/bin/chsh\n/usr/bin/pkexec\n/usr/bin/find\n\n# Ignore the standard set (sudo, passwd, chsh, mount, su). What matters is the\n# unusual one — a shell, an interpreter, or anything from GTFOBins."
+            "out": "/usr/bin/sudo\n/usr/bin/passwd\n/usr/bin/chsh\n/usr/bin/pkexec\n/usr/bin/find\n\n# Ignore the standard set (sudo, passwd, chsh, mount, su). What matters is the\n# unusual one — a shell, an interpreter, or anything from GTFOBins.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "SGID Files",
@@ -30644,7 +30827,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "SGID ikili dosyalarını bul",
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Capabilities",
@@ -30671,7 +30855,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Parola dizeleri için özyinelemeli arama",
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           },
           {
             "title": "SSH Private Keys",
@@ -30684,7 +30869,8 @@ module.exports = [
             "attack": [
               "T1552.001"
             ],
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Config Files",
@@ -30694,7 +30880,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "Tüm .conf ve .config dosyalarını bul",
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Web App Configs",
@@ -30707,7 +30894,8 @@ module.exports = [
             "attack": [
               "T1552.001"
             ],
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "MySQL Credentials",
@@ -30717,7 +30905,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "Kimlik bilgisi içeren MySQL yapılandırmasını bul",
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "WordPress Config",
@@ -30727,7 +30916,8 @@ module.exports = [
               "tool"
             ],
             "desc_tr": "WordPress veritabanı kimlik bilgilerini bul",
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Shadow File",
@@ -30740,7 +30930,8 @@ module.exports = [
             "attack": [
               "T1003.008"
             ],
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Stored SSH Keys",
@@ -30753,7 +30944,8 @@ module.exports = [
             "attack": [
               "T1098.004"
             ],
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "History Files",
@@ -30766,7 +30958,8 @@ module.exports = [
             "attack": [
               "T1552.003"
             ],
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Last Login",
@@ -30828,7 +31021,8 @@ module.exports = [
               "T1059.004",
               "T1548.001"
             ],
-            "out": "# (silent on success, or the tool's own output)\n\n# A few here are escalation primitives, not housekeeping: `cp /bin/bash` then\n# chmod +s (if you are root already), `debugfs /dev/sda1 -R 'cat /etc/shadow'`\n# to read a raw disk past file permissions, and `unshadow` to merge passwd and\n# shadow into a hash file John can crack. Read what the command touches before\n# running it — cp onto /etc/shadow is not reversible."
+            "out": "# (silent on success, or the tool's own output)\n\n# A few here are escalation primitives, not housekeeping: `cp /bin/bash` then\n# chmod +s (if you are root already), `debugfs /dev/sda1 -R 'cat /etc/shadow'`\n# to read a raw disk past file permissions, and `unshadow` to merge passwd and\n# shadow into a hash file John can crack. Read what the command touches before\n# running it — cp onto /etc/shadow is not reversible.",
+            "ref": "https://man7.org/linux/man-pages/man1/cp.1.html"
           },
           {
             "title": ".bashrc Persistence",
@@ -31052,7 +31246,8 @@ module.exports = [
               "essential"
             ],
             "desc_tr": "WPS etkin ağları tara",
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://github.com/t6x/reaver-wps-fork-t6x"
           },
           {
             "title": "Reaver WPS PIN Attack",
@@ -31095,7 +31290,8 @@ module.exports = [
               "advanced"
             ],
             "desc_tr": "Kimlik bilgisi yakalama için sahte AP oluştur",
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://github.com/OpenSecurityResearch/hostapd-wpe"
           },
           {
             "title": "Evil Twin (airbase-ng)",
@@ -35929,7 +36125,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           },
           {
             "title": "Add subuid/subgid Mapping",
@@ -36037,7 +36234,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1."
+            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1.",
+            "ref": "https://man7.org/linux/man-pages/man8/sysctl.8.html"
           },
           {
             "title": "Run with new-privileges Disabled",
@@ -36127,7 +36325,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Must be 1 for rootless Docker; enable with 'sysctl -w kernel.unprivileged_userns_clone=1'.",
-            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1."
+            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1.",
+            "ref": "https://man7.org/linux/man-pages/man8/sysctl.8.html"
           },
           {
             "title": "Run Podman Rootless Container",
@@ -36244,7 +36443,8 @@ module.exports = [
               "essential"
             ],
             "note": "CIS 3.15: docker.sock ownership should be root:docker and permissions 660 or stricter.",
-            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script."
+            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script.",
+            "ref": "https://man7.org/linux/man-pages/man1/ls.1.html"
           },
           {
             "title": "Audit Docker daemon files & directories (auditd)",
@@ -36255,7 +36455,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Add rules like '-w /usr/bin/dockerd -k docker' to /etc/audit/rules.d/audit.rules then run 'augenrules --load'.",
-            "out": "+-------+------------------+----------------------------------+\n| pid   | name             | path                             |\n+-------+------------------+----------------------------------+\n| 2104  | apache2          | /usr/sbin/apache2                |\n| 20114 | nc               | /usr/bin/nc                      |\n+-------+------------------+----------------------------------+\n\n# The host as SQL tables — processes, listening ports, users, kernel modules,\n# all queryable. `.tables` lists what is available and `.schema <table>` the\n# columns. It is a point-in-time query unless osqueryd is running on a schedule."
+            "out": "+-------+------------------+----------------------------------+\n| pid   | name             | path                             |\n+-------+------------------+----------------------------------+\n| 2104  | apache2          | /usr/sbin/apache2                |\n| 20114 | nc               | /usr/bin/nc                      |\n+-------+------------------+----------------------------------+\n\n# The host as SQL tables — processes, listening ports, users, kernel modules,\n# all queryable. `.tables` lists what is available and `.schema <table>` the\n# columns. It is a point-in-time query unless osqueryd is running on a schedule.",
+            "ref": "https://man7.org/linux/man-pages/man8/auditctl.8.html"
           },
           {
             "title": "Inspect daemon.json for secure defaults",
@@ -36266,7 +36467,8 @@ module.exports = [
               "essential"
             ],
             "note": "Look for icc:false, userns-remap, no-new-privileges:true, live-restore:true, and userland-proxy:false.",
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Verify ICC (inter-container communication) disabled",
@@ -36468,7 +36670,8 @@ module.exports = [
               "essential"
             ],
             "note": "CIS expects docker.sock 660 root:docker, daemon.json 644 root:root, /etc/docker 755 root:root.",
-            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script."
+            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script.",
+            "ref": "https://man7.org/linux/man-pages/man1/stat.1.html"
           },
           {
             "title": "Run Trivy as a CIS Docker Benchmark compliance scanner",
@@ -36496,7 +36699,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script."
+            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script.",
+            "ref": "https://man7.org/linux/man-pages/man1/ls.1.html"
           },
           {
             "title": "Enumerate Linux Capabilities",
@@ -36519,7 +36723,8 @@ module.exports = [
               "essential"
             ],
             "note": "Seeing host block devices (sda/nvme) usually means --privileged or --device was used.",
-            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script."
+            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script.",
+            "ref": "https://man7.org/linux/man-pages/man1/ls.1.html"
           },
           {
             "title": "release_agent cgroup v1 Escape",
@@ -36537,7 +36742,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Requires CAP_SYS_ADMIN + cgroup v1. release_agent runs as root on the host.",
-            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate."
+            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate.",
+            "ref": "https://man7.org/linux/man-pages/man1/mkdir.1.html"
           },
           {
             "title": "Mount Host Disk (Privileged)",
@@ -36566,7 +36772,8 @@ module.exports = [
               "essential"
             ],
             "note": "If the docker CLI is absent, talk to the API with curl --unix-socket /var/run/docker.sock.",
-            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script."
+            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script.",
+            "ref": "https://man7.org/linux/man-pages/man1/ls.1.html"
           },
           {
             "title": "Docker Socket via Raw API (no CLI)",
@@ -36616,7 +36823,8 @@ module.exports = [
               "advanced"
             ],
             "note": "With --pid=host, /proc/1/root is the host root and /proc/<pid>/environ may leak host secrets.",
-            "out": "USER       PID %CPU %MEM COMMAND\nroot       412  0.0  0.4 /usr/sbin/mysqld --user=root --password=S3cr3t\nwww-data  2104  0.1  1.2 /usr/sbin/apache2 -k start\n\n# `ps aux` is a snapshot: a cron job that runs for two seconds every minute is\n# invisible unless you happen to look at the right moment. pspy watches\n# continuously without root and catches exactly those — which is how you find\n# the scheduled task that is worth hijacking."
+            "out": "USER       PID %CPU %MEM COMMAND\nroot       412  0.0  0.4 /usr/sbin/mysqld --user=root --password=S3cr3t\nwww-data  2104  0.1  1.2 /usr/sbin/apache2 -k start\n\n# `ps aux` is a snapshot: a cron job that runs for two seconds every minute is\n# invisible unless you happen to look at the right moment. pspy watches\n# continuously without root and catches exactly those — which is how you find\n# the scheduled task that is worth hijacking.",
+            "ref": "https://man7.org/linux/man-pages/man1/ps.1.html"
           },
           {
             "title": "Read Host Env via /proc (pid=host)",
@@ -36660,7 +36868,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1."
+            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1.",
+            "ref": "https://man7.org/linux/man-pages/man8/mount.8.html"
           },
           {
             "title": "core_pattern Host Escape",
@@ -36675,7 +36884,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Requires the proc fs to be writable (often with --privileged); core_pattern handler runs in the host init namespace.",
-            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script."
+            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script.",
+            "ref": "https://man7.org/linux/man-pages/man1/ls.1.html"
           },
           {
             "title": "Vulnerable sysfs / uevent_helper Check",
@@ -36686,7 +36896,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Writable uevent_helper (rw /sys + CAP_SYS_ADMIN) is another root-on-host primitive.",
-            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script."
+            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script.",
+            "ref": "https://man7.org/linux/man-pages/man1/ls.1.html"
           },
           {
             "title": "uevent_helper Escape",
@@ -36746,7 +36957,8 @@ module.exports = [
               "essential"
             ],
             "note": "Seccomp:0 means no syscall filtering; 'unconfined' AppArmor widens the escape surface.",
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           },
           {
             "title": "CAP_SYS_PTRACE Host Process Injection",
@@ -36757,7 +36969,8 @@ module.exports = [
               "advanced"
             ],
             "note": "CAP_SYS_PTRACE + shared PID ns lets you inject shellcode into host PID 1.",
-            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script."
+            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script.",
+            "ref": "https://man7.org/linux/man-pages/man1/ls.1.html"
           },
           {
             "title": "CAP_SYS_MODULE Kernel Module Load",
@@ -36796,7 +37009,8 @@ module.exports = [
               "advanced"
             ],
             "note": "After escaping to the node, harvest other pods' SA tokens to pivot across the cluster.",
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "runc CVE-2019-5736 Version Check",
@@ -36818,7 +37032,8 @@ module.exports = [
               "advanced"
             ],
             "note": "A readable /proc/kcore in a privileged container exposes host physical memory.",
-            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script."
+            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script.",
+            "ref": "https://man7.org/linux/man-pages/man1/ls.1.html"
           }
         ]
       },
@@ -36912,7 +37127,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Use 'snapshot' to delegate that key to the server; rotate root only when compromised.",
-            "out": "PASS  2 checks\nFAIL  1 check\n  [CIS-DI-0001] Create a user for the container\n    * Last user should not be root\n\n# Read the check ID, not just the count: an ID maps to a documented control you\n# can quote in a report, where \"1 failure\" does not. Most of these exit non-zero\n# on any failure, which is what makes them usable as a CI gate — and what makes\n# an unpinned version in CI a build that breaks on someone else's release."
+            "out": "PASS  2 checks\nFAIL  1 check\n  [CIS-DI-0001] Create a user for the container\n    * Last user should not be root\n\n# Read the check ID, not just the count: an ID maps to a documented control you\n# can quote in a report, where \"1 failure\" does not. Most of these exit non-zero\n# on any failure, which is what makes them usable as a CI gate — and what makes\n# an unpinned version in CI a build that breaks on someone else's release.",
+            "ref": "https://github.com/notaryproject/notary"
           },
           {
             "title": "List Trusted Tags via Notary CLI",
@@ -36922,7 +37138,8 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "out": "PASS  2 checks\nFAIL  1 check\n  [CIS-DI-0001] Create a user for the container\n    * Last user should not be root\n\n# Read the check ID, not just the count: an ID maps to a documented control you\n# can quote in a report, where \"1 failure\" does not. Most of these exit non-zero\n# on any failure, which is what makes them usable as a CI gate — and what makes\n# an unpinned version in CI a build that breaks on someone else's release."
+            "out": "PASS  2 checks\nFAIL  1 check\n  [CIS-DI-0001] Create a user for the container\n    * Last user should not be root\n\n# Read the check ID, not just the count: an ID maps to a documented control you\n# can quote in a report, where \"1 failure\" does not. Most of these exit non-zero\n# on any failure, which is what makes them usable as a CI gate — and what makes\n# an unpinned version in CI a build that breaks on someone else's release.",
+            "ref": "https://github.com/notaryproject/notary"
           },
           {
             "title": "Verify a Target Hash with Notary",
@@ -36933,7 +37150,8 @@ module.exports = [
               "tool",
               "advanced"
             ],
-            "out": "PASS  2 checks\nFAIL  1 check\n  [CIS-DI-0001] Create a user for the container\n    * Last user should not be root\n\n# Read the check ID, not just the count: an ID maps to a documented control you\n# can quote in a report, where \"1 failure\" does not. Most of these exit non-zero\n# on any failure, which is what makes them usable as a CI gate — and what makes\n# an unpinned version in CI a build that breaks on someone else's release."
+            "out": "PASS  2 checks\nFAIL  1 check\n  [CIS-DI-0001] Create a user for the container\n    * Last user should not be root\n\n# Read the check ID, not just the count: an ID maps to a documented control you\n# can quote in a report, where \"1 failure\" does not. Most of these exit non-zero\n# on any failure, which is what makes them usable as a CI gate — and what makes\n# an unpinned version in CI a build that breaks on someone else's release.",
+            "ref": "https://github.com/notaryproject/notary"
           },
           {
             "title": "Sign Image with Cosign (Key Pair)",
@@ -40169,7 +40387,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Audit mode records violations as the annotation key audit-violations on the audit event.",
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           },
           {
             "title": "Restricted-Compliant securityContext Patch",
@@ -40215,7 +40434,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Referenced via --admission-control-config-file; its defaults apply to namespaces without explicit PSA labels.",
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Explore PodSecurityConfiguration Exemptions",
@@ -40655,7 +40875,8 @@ module.exports = [
               "tool",
               "advanced"
             ],
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://github.com/controlplaneio/netassert"
           },
           {
             "title": "Delete a Network Policy",
@@ -41211,7 +41432,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Edit the static pod manifest to add --encryption-provider-config=/etc/kubernetes/enc/enc.yaml; kubelet restarts the apiserver automatically.",
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           },
           {
             "title": "Verify a Secret Is Encrypted in etcd",
@@ -41293,7 +41515,8 @@ module.exports = [
               "advanced"
             ],
             "note": "KMS v2 (stable in 1.29+) is preferred over static aescbc/aesgcm keys since the data-encryption key never lives in the config file.",
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           }
         ]
       },
@@ -41744,7 +41967,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Install Tetragon via Helm",
@@ -41818,7 +42042,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "List Tetragon TracingPolicies",
@@ -41949,7 +42174,8 @@ module.exports = [
               "essential"
             ],
             "note": "CONFIG_DEBUG_INFO_BTF=y is required for modern eBPF/CO-RE probes used by Falco, Tetragon and Tracee.",
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           },
           {
             "title": "Generate Test Event to Validate Runtime Tooling",
@@ -43002,7 +43228,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Useful in CI; if set, it must match the workspace name or Terraform errors out.",
-            "out": "AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\nKUBERNETES_SERVICE_HOST=10.96.0.1\n\n# `env` inside a container or a CI job is a credential dump — that is how\n# secrets are injected. It is also readable via /proc/<pid>/environ for any\n# process you own, which reaches further than your own shell."
+            "out": "AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\nKUBERNETES_SERVICE_HOST=10.96.0.1\n\n# `env` inside a container or a CI job is a credential dump — that is how\n# secrets are injected. It is also readable via /proc/<pid>/environ for any\n# process you own, which reaches further than your own shell.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Reference Workspace in Configuration",
@@ -43012,7 +43239,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (Terraform HCL — configuration, not a command)\n\n# `terraform.workspace` in an expression is how one config serves many\n# environments — but a typo means prod resources built with dev settings, so the\n# guard `[ \"$(terraform workspace show)\" = \"prod\" ] && terraform apply` is\n# worth the extra line. A `provider_installation` block with dev_overrides\n# points Terraform at a local provider build and silently skips checksum\n# verification — fine for development, a supply-chain hole anywhere else."
+            "out": "# (Terraform HCL — configuration, not a command)\n\n# `terraform.workspace` in an expression is how one config serves many\n# environments — but a typo means prod resources built with dev settings, so the\n# guard `[ \"$(terraform workspace show)\" = \"prod\" ] && terraform apply` is\n# worth the extra line. A `provider_installation` block with dev_overrides\n# points Terraform at a local provider build and silently skips checksum\n# verification — fine for development, a supply-chain hole anywhere else.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Conditional Sizing per Workspace",
@@ -43022,7 +43250,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (Terraform HCL — configuration, not a command)\n\n# `terraform.workspace` in an expression is how one config serves many\n# environments — but a typo means prod resources built with dev settings, so the\n# guard `[ \"$(terraform workspace show)\" = \"prod\" ] && terraform apply` is\n# worth the extra line. A `provider_installation` block with dev_overrides\n# points Terraform at a local provider build and silently skips checksum\n# verification — fine for development, a supply-chain hole anywhere else."
+            "out": "# (Terraform HCL — configuration, not a command)\n\n# `terraform.workspace` in an expression is how one config serves many\n# environments — but a typo means prod resources built with dev settings, so the\n# guard `[ \"$(terraform workspace show)\" = \"prod\" ] && terraform apply` is\n# worth the extra line. A `provider_installation` block with dev_overrides\n# points Terraform at a local provider build and silently skips checksum\n# verification — fine for development, a supply-chain hole anywhere else.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Apply with Per-Environment Var File",
@@ -43127,7 +43356,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>."
+            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Loop Plan Across All Workspaces",
@@ -43137,7 +43367,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "10.10.10.1: OK\n10.10.10.5: OK\n\n# A bash loop is usually faster to write than finding a tool for it. Two habits:\n# quote \"$var\" or a space in a filename splits into two arguments, and test the\n# body on ONE item before letting it run over the whole list."
+            "out": "10.10.10.1: OK\n10.10.10.5: OK\n\n# A bash loop is usually faster to write than finding a tool for it. Two habits:\n# quote \"$var\" or a space in a filename splits into two arguments, and test the\n# body on ONE item before letting it run over the whole list.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Guard Apply Against Wrong Workspace",
@@ -43148,7 +43379,8 @@ module.exports = [
               "advanced"
             ],
             "note": "A simple safety gate to prevent applying prod changes from a dev shell.",
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Terraform Cloud Workspace via CLI Block",
@@ -43176,7 +43408,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (Terraform HCL — configuration, not a command)\n\n# `terraform.workspace` in an expression is how one config serves many\n# environments — but a typo means prod resources built with dev settings, so the\n# guard `[ \"$(terraform workspace show)\" = \"prod\" ] && terraform apply` is\n# worth the extra line. A `provider_installation` block with dev_overrides\n# points Terraform at a local provider build and silently skips checksum\n# verification — fine for development, a supply-chain hole anywhere else."
+            "out": "# (Terraform HCL — configuration, not a command)\n\n# `terraform.workspace` in an expression is how one config serves many\n# environments — but a typo means prod resources built with dev settings, so the\n# guard `[ \"$(terraform workspace show)\" = \"prod\" ] && terraform apply` is\n# worth the extra line. A `provider_installation` block with dev_overrides\n# points Terraform at a local provider build and silently skips checksum\n# verification — fine for development, a supply-chain hole anywhere else.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "List TFC Workspaces via API",
@@ -43209,7 +43442,8 @@ module.exports = [
               "tool"
             ],
             "note": "Terragrunt often replaces workspaces with directory-per-environment isolation for stronger state separation.",
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Migrate Default State into a Workspace",
@@ -43273,7 +43507,8 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Local Path Module Block",
@@ -43283,7 +43518,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>."
+            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Public Registry Module",
@@ -43294,7 +43530,8 @@ module.exports = [
               "essential"
             ],
             "note": "Registry source format: <NAMESPACE>/<NAME>/<PROVIDER>. Always pin 'version' to avoid surprise upgrades.",
-            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>."
+            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Private Registry Module",
@@ -43304,7 +43541,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>."
+            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Git Module over HTTPS",
@@ -43314,7 +43552,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>."
+            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Git Module over SSH",
@@ -43324,7 +43563,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>."
+            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Git Module Pinned to Ref",
@@ -43335,7 +43575,8 @@ module.exports = [
               "essential"
             ],
             "note": "?ref accepts tags (v1.4.0), branches (main), or full commit SHAs. Tags are safest for reproducibility.",
-            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>."
+            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Module from Subdirectory",
@@ -43346,7 +43587,8 @@ module.exports = [
               "advanced"
             ],
             "note": "The double-slash '//' separates the repo URL from the subdirectory path within it.",
-            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>."
+            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Generic Git Subdir + Ref",
@@ -43356,7 +43598,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>."
+            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Module from S3 Bucket",
@@ -43366,7 +43609,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>."
+            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Module from HTTP Archive",
@@ -43376,7 +43620,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>."
+            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Pass Variables into Module",
@@ -43386,7 +43631,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>."
+            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Consume Module Output",
@@ -43396,7 +43642,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>."
+            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Module count Meta-Argument",
@@ -43406,7 +43653,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>."
+            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Module for_each Meta-Argument",
@@ -43416,7 +43664,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>."
+            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Pass Provider into Module",
@@ -43426,7 +43675,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>."
+            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Depends_on for Module",
@@ -43436,7 +43686,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>."
+            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Init Backend-False (Modules Only)",
@@ -43514,7 +43765,8 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "out": "# (subcommand-specific)\n\n# The remainder here is state and provider plumbing. `terraform show -json`\n# turns state or a plan into machine-readable output for jq; `state push` and\n# `state pull` move the state file itself — dangerous, and worth a backup\n# first. Deleting .terraform.lock.hcl forces provider re-selection on the next\n# init, which is how a version constraint change actually takes effect."
+            "out": "# (subcommand-specific)\n\n# The remainder here is state and provider plumbing. `terraform show -json`\n# turns state or a plan into machine-readable output for jq; `state push` and\n# `state pull` move the state file itself — dangerous, and worth a backup\n# first. Deleting .terraform.lock.hcl forces provider re-selection on the next\n# init, which is how a version constraint change actually takes effect.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Publish Module Version (Git Tag)",
@@ -43578,7 +43830,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\nKUBERNETES_SERVICE_HOST=10.96.0.1\n\n# `env` inside a container or a CI job is a credential dump — that is how\n# secrets are injected. It is also readable via /proc/<pid>/environ for any\n# process you own, which reaches further than your own shell."
+            "out": "AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\nKUBERNETES_SERVICE_HOST=10.96.0.1\n\n# `env` inside a container or a CI job is a credential dump — that is how\n# secrets are injected. It is also readable via /proc/<pid>/environ for any\n# process you own, which reaches further than your own shell.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Pass Complex/List Variable on CLI",
@@ -43606,7 +43859,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Variable with Validation Rule",
@@ -43626,7 +43880,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Sensitive Variable",
@@ -43644,7 +43899,8 @@ module.exports = [
               "essential"
             ],
             "note": "Sensitive values are redacted in plan/apply output but still stored in state.",
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Declare an Output",
@@ -43660,7 +43916,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Read All Outputs",
@@ -43722,7 +43979,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Use terraform output -raw token to reveal a sensitive output explicitly.",
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Evaluate Expressions in Console",
@@ -43733,7 +43991,8 @@ module.exports = [
               "tool"
             ],
             "note": "terraform console is the fastest way to experiment with built-in functions.",
-            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads."
+            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "String Interpolation & format()",
@@ -43743,7 +44002,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads."
+            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Collection Functions",
@@ -43753,7 +44013,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads."
+            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "for Expression Transform",
@@ -43763,7 +44024,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads."
+            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Conditional (Ternary) Expression",
@@ -43773,7 +44035,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads."
+            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "try() for Safe Fallback",
@@ -43783,7 +44046,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads."
+            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "coalesce() First Non-Null",
@@ -43793,7 +44057,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads."
+            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "templatefile() Render",
@@ -43804,7 +44069,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Prefer templatefile() over the deprecated template_file data source.",
-            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads."
+            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "jsonencode() / jsondecode()",
@@ -43814,7 +44080,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads."
+            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "cidrsubnet() Network Math",
@@ -43824,7 +44091,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads."
+            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Define and Reference Locals",
@@ -43841,7 +44109,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Validate Configuration Syntax",
@@ -43874,7 +44143,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Use cautiously; this can leak secrets into plan output and state diffs.",
-            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads."
+            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           }
         ]
       },
@@ -43970,7 +44240,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (silent on success, or the tool's own output)\n\n# A few here are escalation primitives, not housekeeping: `cp /bin/bash` then\n# chmod +s (if you are root already), `debugfs /dev/sda1 -R 'cat /etc/shadow'`\n# to read a raw disk past file permissions, and `unshadow` to merge passwd and\n# shadow into a hash file John can crack. Read what the command touches before\n# running it — cp onto /etc/shadow is not reversible."
+            "out": "# (silent on success, or the tool's own output)\n\n# A few here are escalation primitives, not housekeeping: `cp /bin/bash` then\n# chmod +s (if you are root already), `debugfs /dev/sda1 -R 'cat /etc/shadow'`\n# to read a raw disk past file permissions, and `unshadow` to merge passwd and\n# shadow into a hash file John can crack. Read what the command touches before\n# running it — cp onto /etc/shadow is not reversible.",
+            "ref": "https://man7.org/linux/man-pages/man1/rm.1.html"
           },
           {
             "title": "Mirror Providers to Local Directory",
@@ -44014,7 +44285,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (Terraform HCL — configuration, not a command)\n\n# `terraform.workspace` in an expression is how one config serves many\n# environments — but a typo means prod resources built with dev settings, so the\n# guard `[ \"$(terraform workspace show)\" = \"prod\" ] && terraform apply` is\n# worth the extra line. A `provider_installation` block with dev_overrides\n# points Terraform at a local provider build and silently skips checksum\n# verification — fine for development, a supply-chain hole anywhere else."
+            "out": "# (Terraform HCL — configuration, not a command)\n\n# `terraform.workspace` in an expression is how one config serves many\n# environments — but a typo means prod resources built with dev settings, so the\n# guard `[ \"$(terraform workspace show)\" = \"prod\" ] && terraform apply` is\n# worth the extra line. A `provider_installation` block with dev_overrides\n# points Terraform at a local provider build and silently skips checksum\n# verification — fine for development, a supply-chain hole anywhere else.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Replace a Provider Source",
@@ -44035,7 +44307,8 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Enable Global Plugin Cache",
@@ -44049,7 +44322,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Set TF_PLUGIN_CACHE_DIR in your shell profile to persist it.",
-            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate."
+            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate.",
+            "ref": "https://man7.org/linux/man-pages/man1/mkdir.1.html"
           },
           {
             "title": "Override Provider with Dev Build",
@@ -44061,7 +44335,8 @@ module.exports = [
               "tool"
             ],
             "note": "Place this block in ~/.terraformrc; with dev_overrides, terraform init is skipped for that provider.",
-            "out": "# (Terraform HCL — configuration, not a command)\n\n# `terraform.workspace` in an expression is how one config serves many\n# environments — but a typo means prod resources built with dev settings, so the\n# guard `[ \"$(terraform workspace show)\" = \"prod\" ] && terraform apply` is\n# worth the extra line. A `provider_installation` block with dev_overrides\n# points Terraform at a local provider build and silently skips checksum\n# verification — fine for development, a supply-chain hole anywhere else."
+            "out": "# (Terraform HCL — configuration, not a command)\n\n# `terraform.workspace` in an expression is how one config serves many\n# environments — but a typo means prod resources built with dev settings, so the\n# guard `[ \"$(terraform workspace show)\" = \"prod\" ] && terraform apply` is\n# worth the extra line. A `provider_installation` block with dev_overrides\n# points Terraform at a local provider build and silently skips checksum\n# verification — fine for development, a supply-chain hole anywhere else.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Configure Multiple Provider Instances",
@@ -44071,7 +44346,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>."
+            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Reference an Aliased Provider",
@@ -44081,7 +44357,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>."
+            "out": "# (a Terraform configuration block — put it in a .tf file, do not paste it in a shell)\n\n# `terraform init` then `plan` is what turns this into output. A module\n# source pointing at a git URL or an S3 bucket is worth reading closely: it runs\n# with your credentials, and a mutable source is a supply-chain path into your\n# state. Pin it with ?ref=<tag or commit>.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Install Custom Plugin Manually",
@@ -44092,7 +44369,8 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate."
+            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate.",
+            "ref": "https://man7.org/linux/man-pages/man1/mkdir.1.html"
           },
           {
             "title": "Verify Provider Binary Checksum",
@@ -44103,7 +44381,8 @@ module.exports = [
               "tool",
               "advanced"
             ],
-            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1."
+            "out": "# (tool-specific — see the tool's own --help for the exact shape)\n\n# Two habits cover most of these. Run it once against a target you control so\n# you know what SUCCESS looks like before you need to recognise failure. And\n# check the exit code (`echo $?`) when the output is ambiguous — a tool that\n# prints nothing and exits 0 did something different from one that exits 1.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Set Registry via Network Mirror",
@@ -44114,7 +44393,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Add this block to ~/.terraformrc.",
-            "out": "# (Terraform HCL — configuration, not a command)\n\n# `terraform.workspace` in an expression is how one config serves many\n# environments — but a typo means prod resources built with dev settings, so the\n# guard `[ \"$(terraform workspace show)\" = \"prod\" ] && terraform apply` is\n# worth the extra line. A `provider_installation` block with dev_overrides\n# points Terraform at a local provider build and silently skips checksum\n# verification — fine for development, a supply-chain hole anywhere else."
+            "out": "# (Terraform HCL — configuration, not a command)\n\n# `terraform.workspace` in an expression is how one config serves many\n# environments — but a typo means prod resources built with dev settings, so the\n# guard `[ \"$(terraform workspace show)\" = \"prod\" ] && terraform apply` is\n# worth the extra line. A `provider_installation` block with dev_overrides\n# points Terraform at a local provider build and silently skips checksum\n# verification — fine for development, a supply-chain hole anywhere else.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Enforce Read-only Lock File in CI",
@@ -44161,7 +44441,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (silent on success, or the tool's own output)\n\n# A few here are escalation primitives, not housekeeping: `cp /bin/bash` then\n# chmod +s (if you are root already), `debugfs /dev/sda1 -R 'cat /etc/shadow'`\n# to read a raw disk past file permissions, and `unshadow` to merge passwd and\n# shadow into a hash file John can crack. Read what the command touches before\n# running it — cp onto /etc/shadow is not reversible."
+            "out": "# (silent on success, or the tool's own output)\n\n# A few here are escalation primitives, not housekeeping: `cp /bin/bash` then\n# chmod +s (if you are root already), `debugfs /dev/sda1 -R 'cat /etc/shadow'`\n# to read a raw disk past file permissions, and `unshadow` to merge passwd and\n# shadow into a hash file John can crack. Read what the command touches before\n# running it — cp onto /etc/shadow is not reversible.",
+            "ref": "https://man7.org/linux/man-pages/man1/rm.1.html"
           },
           {
             "title": "Authenticate to Private Registry",
@@ -44189,7 +44470,8 @@ module.exports = [
               "essential"
             ],
             "note": "Valid levels: TRACE, DEBUG, INFO, WARN, ERROR. TRACE is the most verbose.",
-            "out": "AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\nKUBERNETES_SERVICE_HOST=10.96.0.1\n\n# `env` inside a container or a CI job is a credential dump — that is how\n# secrets are injected. It is also readable via /proc/<pid>/environ for any\n# process you own, which reaches further than your own shell."
+            "out": "AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\nKUBERNETES_SERVICE_HOST=10.96.0.1\n\n# `env` inside a container or a CI job is a credential dump — that is how\n# secrets are injected. It is also readable via /proc/<pid>/environ for any\n# process you own, which reaches further than your own shell.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Write debug logs to a file",
@@ -44361,7 +44643,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads."
+            "out": "# (exactly the text you passed, with no newline for printf unless you add one)\n\n# echo writing a file is how a web shell, an .htaccess, or an authorized_keys\n# entry gets planted from a limited shell. Watch quoting: single quotes keep\n# `$` and backticks literal, double quotes let the SHELL expand them first —\n# which silently mangles most payloads.",
+            "ref": "https://developer.hashicorp.com/terraform/language"
           },
           {
             "title": "Output plan as machine-readable JSON",
@@ -47588,7 +47871,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Files must be named exactly after the inventory hostname for auto-loading.",
-            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate."
+            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate.",
+            "ref": "https://man7.org/linux/man-pages/man1/mkdir.1.html"
           },
           {
             "title": "Use group_vars Directory",
@@ -47601,7 +47885,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate."
+            "out": "# (output depends on the built-in — copy prints \"1 file(s) copied.\", findstr the\n# matching lines, certutil a transfer progress bar, reg the queried keys)\n\n# These are the living-off-the-land binaries: already present, already signed,\n# and therefore quieter than anything you upload. certutil -urlcache -f\n# downloads a file, mshta and regsvr32 execute remote script, and findstr /si\n# searches file contents recursively — the Windows equivalent of grep -r for\n# passwords. All of them are heavily monitored on a mature estate.",
+            "ref": "https://man7.org/linux/man-pages/man1/mkdir.1.html"
           },
           {
             "title": "group_vars/all for Global Defaults",
@@ -47929,7 +48214,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           },
           {
             "title": "Encrypt Group Vars Secrets File",
@@ -47989,7 +48275,8 @@ module.exports = [
               "advanced"
             ],
             "note": "ansible2john ships with John the Ripper jumbo; use only for authorized security testing of your own vaults.",
-            "out": "id_rsa:$sshng$1$16$8f21c0a9e3b1d4f5$1200$a2b3c4...\n\n# These convert a file into a hash line John and hashcat understand — nothing is\n# cracked here. Redirect it to a file and feed that to the cracker. An empty\n# result usually means the key or archive is not actually encrypted, which is\n# its own finding."
+            "out": "id_rsa:$sshng$1$16$8f21c0a9e3b1d4f5$1200$a2b3c4...\n\n# These convert a file into a hash line John and hashcat understand — nothing is\n# cracked here. Redirect it to a file and feed that to the cracker. An empty\n# result usually means the key or archive is not actually encrypted, which is\n# its own finding.",
+            "ref": "https://www.openwall.com/john/doc/"
           },
           {
             "title": "Audit Vault Format and AES Cipher",
@@ -48933,7 +49220,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           },
           {
             "title": "Verify SSH lockdown on target",
@@ -48970,7 +49258,8 @@ module.exports = [
               "essential"
             ],
             "note": "Set read-all or {} at the top, then grant per-job only what is needed.",
-            "out": "# (a GitHub Actions workflow fragment — it belongs in .github/workflows/*.yml)\n\n# Two things decide whether this is safe: the action is pinned to a full commit\n# SHA rather than a moving tag, and the job's `permissions:` block is set\n# explicitly. The default GITHUB_TOKEN is write-capable on many repositories,\n# and an unpinned third-party action inherits it."
+            "out": "# (a GitHub Actions workflow fragment — it belongs in .github/workflows/*.yml)\n\n# Two things decide whether this is safe: the action is pinned to a full commit\n# SHA rather than a moving tag, and the job's `permissions:` block is set\n# explicitly. The default GITHUB_TOKEN is write-capable on many repositories,\n# and an unpinned third-party action inherits it.",
+            "ref": "https://docs.github.com/en/actions"
           },
           {
             "title": "Read-Only Repo Contents Permission",
@@ -48980,7 +49269,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (a GitHub Actions workflow fragment — it belongs in .github/workflows/*.yml)\n\n# Two things decide whether this is safe: the action is pinned to a full commit\n# SHA rather than a moving tag, and the job's `permissions:` block is set\n# explicitly. The default GITHUB_TOKEN is write-capable on many repositories,\n# and an unpinned third-party action inherits it."
+            "out": "# (a GitHub Actions workflow fragment — it belongs in .github/workflows/*.yml)\n\n# Two things decide whether this is safe: the action is pinned to a full commit\n# SHA rather than a moving tag, and the job's `permissions:` block is set\n# explicitly. The default GITHUB_TOKEN is write-capable on many repositories,\n# and an unpinned third-party action inherits it.",
+            "ref": "https://docs.github.com/en/actions"
           },
           {
             "title": "Job-Level OIDC Permission",
@@ -48991,7 +49281,8 @@ module.exports = [
               "essential"
             ],
             "note": "id-token:write is required to mint an OIDC token for cloud login; keep it scoped to the single job that needs it.",
-            "out": "# (a GitHub Actions workflow fragment — it belongs in .github/workflows/*.yml)\n\n# Two things decide whether this is safe: the action is pinned to a full commit\n# SHA rather than a moving tag, and the job's `permissions:` block is set\n# explicitly. The default GITHUB_TOKEN is write-capable on many repositories,\n# and an unpinned third-party action inherits it."
+            "out": "# (a GitHub Actions workflow fragment — it belongs in .github/workflows/*.yml)\n\n# Two things decide whether this is safe: the action is pinned to a full commit\n# SHA rather than a moving tag, and the job's `permissions:` block is set\n# explicitly. The default GITHUB_TOKEN is write-capable on many repositories,\n# and an unpinned third-party action inherits it.",
+            "ref": "https://docs.github.com/en/actions"
           },
           {
             "title": "Pin Action to Full-Length Commit SHA",
@@ -49181,7 +49472,8 @@ module.exports = [
               "tool"
             ],
             "note": "actionlint's shellcheck integration flags ${{ github.event.* }} used unquoted in run: blocks (template injection).",
-            "out": "PASS  2 checks\nFAIL  1 check\n  [CIS-DI-0001] Create a user for the container\n    * Last user should not be root\n\n# Read the check ID, not just the count: an ID maps to a documented control you\n# can quote in a report, where \"1 failure\" does not. Most of these exit non-zero\n# on any failure, which is what makes them usable as a CI gate — and what makes\n# an unpinned version in CI a build that breaks on someone else's release."
+            "out": "PASS  2 checks\nFAIL  1 check\n  [CIS-DI-0001] Create a user for the container\n    * Last user should not be root\n\n# Read the check ID, not just the count: an ID maps to a documented control you\n# can quote in a report, where \"1 failure\" does not. Most of these exit non-zero\n# on any failure, which is what makes them usable as a CI gate — and what makes\n# an unpinned version in CI a build that breaks on someone else's release.",
+            "ref": "https://github.com/rhysd/actionlint"
           },
           {
             "title": "Audit Org Action Permissions via API",
@@ -49239,7 +49531,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           },
           {
             "title": "Safe Handling of Untrusted Input (Env Var)",
@@ -49261,7 +49554,8 @@ module.exports = [
               "essential"
             ],
             "note": "pull_request_target runs with repo secrets and the base ref's token; never checkout+build untrusted PR head under it.",
-            "out": "# (a GitHub Actions workflow fragment — it belongs in .github/workflows/*.yml)\n\n# Two things decide whether this is safe: the action is pinned to a full commit\n# SHA rather than a moving tag, and the job's `permissions:` block is set\n# explicitly. The default GITHUB_TOKEN is write-capable on many repositories,\n# and an unpinned third-party action inherits it."
+            "out": "# (a GitHub Actions workflow fragment — it belongs in .github/workflows/*.yml)\n\n# Two things decide whether this is safe: the action is pinned to a full commit\n# SHA rather than a moving tag, and the job's `permissions:` block is set\n# explicitly. The default GITHUB_TOKEN is write-capable on many repositories,\n# and an unpinned third-party action inherits it.",
+            "ref": "https://docs.github.com/en/actions"
           },
           {
             "title": "Pin GitHub-Hosted Runner to a Specific Image",
@@ -49271,7 +49565,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://docs.github.com/en/actions"
           },
           {
             "title": "Concurrency Guard Against Race/Replay",
@@ -49505,7 +49800,8 @@ module.exports = [
               "essential"
             ],
             "note": "With a runner token you can register a rogue runner and capture jobs/secrets from the target project.",
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Register a Rogue GitLab Runner",
@@ -50486,7 +50782,8 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "out": "╭─────────────────────────────────────┬──────────┬───────────╮\n│ OSV URL                             │ ECOSYSTEM│ PACKAGE   │\n├─────────────────────────────────────┼──────────┼───────────┤\n│ https://osv.dev/GHSA-4w2v-q235-vp99 │ npm      │ minimist  │\n╰─────────────────────────────────────┴──────────┴───────────╯\n\n# It reads the LOCKFILE, so it reports what is actually installed rather than\n# what the manifest allows. A transitive dependency you never chose is the usual\n# hit; `npm ls <package>` shows which direct dependency pulled it in, which is\n# the one you can actually change."
+            "out": "╭─────────────────────────────────────┬──────────┬───────────╮\n│ OSV URL                             │ ECOSYSTEM│ PACKAGE   │\n├─────────────────────────────────────┼──────────┼───────────┤\n│ https://osv.dev/GHSA-4w2v-q235-vp99 │ npm      │ minimist  │\n╰─────────────────────────────────────┴──────────┴───────────╯\n\n# It reads the LOCKFILE, so it reports what is actually installed rather than\n# what the manifest allows. A transitive dependency you never chose is the usual\n# hit; `npm ls <package>` shows which direct dependency pulled it in, which is\n# the one you can actually change.",
+            "ref": "https://yarnpkg.com/cli/install"
           },
           {
             "title": "pip-audit Python Scan",
@@ -50822,7 +51119,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "Generating public/private ed25519 key pair.\nYour identification has been saved in /root/.ssh/id_ed25519\nThe key fingerprint is:\nSHA256:4jYbHqKp9aXcLm2RTz7vBn4WQw1eRt5Y root@kali\n\n# Append the .pub to a target's ~/.ssh/authorized_keys and you have durable\n# access that survives a password change. The private key needs `chmod 600` or\n# ssh refuses it with an error that blames the key rather than the permissions.\n# `openssl passwd -6` makes a /etc/shadow hash when you can write that file."
+            "out": "Generating public/private ed25519 key pair.\nYour identification has been saved in /root/.ssh/id_ed25519\nThe key fingerprint is:\nSHA256:4jYbHqKp9aXcLm2RTz7vBn4WQw1eRt5Y root@kali\n\n# Append the .pub to a target's ~/.ssh/authorized_keys and you have durable\n# access that survives a password change. The private key needs `chmod 600` or\n# ssh refuses it with an error that blames the key rather than the permissions.\n# `openssl passwd -6` makes a /etc/shadow hash when you can write that file.",
+            "ref": "https://www.gnupg.org/documentation/manpage.html"
           },
           {
             "title": "GPG Verify Detached Signature",
@@ -50832,7 +51130,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "Generating public/private ed25519 key pair.\nYour identification has been saved in /root/.ssh/id_ed25519\nThe key fingerprint is:\nSHA256:4jYbHqKp9aXcLm2RTz7vBn4WQw1eRt5Y root@kali\n\n# Append the .pub to a target's ~/.ssh/authorized_keys and you have durable\n# access that survives a password change. The private key needs `chmod 600` or\n# ssh refuses it with an error that blames the key rather than the permissions.\n# `openssl passwd -6` makes a /etc/shadow hash when you can write that file."
+            "out": "Generating public/private ed25519 key pair.\nYour identification has been saved in /root/.ssh/id_ed25519\nThe key fingerprint is:\nSHA256:4jYbHqKp9aXcLm2RTz7vBn4WQw1eRt5Y root@kali\n\n# Append the .pub to a target's ~/.ssh/authorized_keys and you have durable\n# access that survives a password change. The private key needs `chmod 600` or\n# ssh refuses it with an error that blames the key rather than the permissions.\n# `openssl passwd -6` makes a /etc/shadow hash when you can write that file.",
+            "ref": "https://www.gnupg.org/documentation/manpage.html"
           },
           {
             "title": "Get Image Digest by Tag (crane)",
@@ -50955,7 +51254,8 @@ module.exports = [
               "essential"
             ],
             "note": "Non-ephemeral self-hosted runners on public repos let any fork PR run code on your infrastructure.",
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           },
           {
             "title": "Detect pull_request_target Misuse",
@@ -50966,7 +51266,8 @@ module.exports = [
               "essential"
             ],
             "note": "pull_request_target runs with write token + secrets; checking out PR head is the classic poisoned pipeline vector.",
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           },
           {
             "title": "Grep for GitHub Actions Script Injection Sinks",
@@ -50977,7 +51278,8 @@ module.exports = [
               "essential"
             ],
             "note": "github.event.*.title/body and head_ref are user-controlled; in run: blocks they enable shell injection.",
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           },
           {
             "title": "PPE Injection via Branch Name (head_ref)",
@@ -51067,7 +51369,8 @@ module.exports = [
               "advanced"
             ],
             "note": "GITHUB_EVENT_PATH JSON can contain tokens; RUNNER_TEMP often holds composite-action artifacts.",
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Scan Workflows with Actionlint",
@@ -51078,7 +51381,8 @@ module.exports = [
               "tool"
             ],
             "note": "actionlint flags untrusted ${{ github.event... }} interpolation in run: steps.",
-            "out": "PASS  2 checks\nFAIL  1 check\n  [CIS-DI-0001] Create a user for the container\n    * Last user should not be root\n\n# Read the check ID, not just the count: an ID maps to a documented control you\n# can quote in a report, where \"1 failure\" does not. Most of these exit non-zero\n# on any failure, which is what makes them usable as a CI gate — and what makes\n# an unpinned version in CI a build that breaks on someone else's release."
+            "out": "PASS  2 checks\nFAIL  1 check\n  [CIS-DI-0001] Create a user for the container\n    * Last user should not be root\n\n# Read the check ID, not just the count: an ID maps to a documented control you\n# can quote in a report, where \"1 failure\" does not. Most of these exit non-zero\n# on any failure, which is what makes them usable as a CI gate — and what makes\n# an unpinned version in CI a build that breaks on someone else's release.",
+            "ref": "https://github.com/rhysd/actionlint"
           },
           {
             "title": "Audit Pipelines with Poutine",
@@ -51100,7 +51404,8 @@ module.exports = [
               "essential"
             ],
             "note": "Pin actions to a full commit SHA; tags/branches can be repointed to malicious code.",
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           },
           {
             "title": "Find Workflows Triggered by issue_comment",
@@ -51111,7 +51416,8 @@ module.exports = [
               "advanced"
             ],
             "note": "issue_comment and workflow_run run on the base repo with secrets; common PPE pivots.",
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           },
           {
             "title": "GitLab CI — Inject via .gitlab-ci.yml in MR",
@@ -51214,7 +51520,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Non-ephemeral runners leak prior jobs' artifacts and .credentials; prefer ephemeral runners.",
-            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built."
+            "out": "/var/www/html/config.php\n/home/dev/.ssh/id_rsa\n/opt/backup/db.sql\n\n# `2>/dev/null` is not optional as a non-root user — without it the\n# permission-denied noise hides the results. The four searches that pay:\n# -perm -4000 (SUID), -writable outside /tmp, -name '*.bak' or '*.conf', and\n# -newermt for files changed since the box was built.",
+            "ref": "https://man7.org/linux/man-pages/man1/find.1.html"
           },
           {
             "title": "Hunt Hardcoded Secrets in Pipelines (gitleaks)",
@@ -51247,7 +51554,8 @@ module.exports = [
               "essential"
             ],
             "note": "'secrets: inherit' widens blast radius if a called workflow is compromised.",
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           },
           {
             "title": "Validate Workflow Token Permissions",
@@ -51258,7 +51566,8 @@ module.exports = [
               "essential"
             ],
             "note": "Without an explicit permissions: block the GITHUB_TOKEN may default to write, amplifying PPE impact.",
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           },
           {
             "title": "Detect curl-pipe-shell Patterns in CI",
@@ -51269,7 +51578,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Unpinned remote scripts piped to shell are a common pipeline poisoning entrypoint.",
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           }
         ]
       }
@@ -52720,7 +53030,8 @@ module.exports = [
               "tool"
             ],
             "note": "Use 'yarn audit' on Yarn Classic v1; 'yarn npm audit' on Berry (v2+).",
-            "out": "Successfully installed requests-2.32.3 urllib3-2.2.2\n\n# Installing runs code: a setup.py or an npm postinstall script executes with\n# your privileges at install time, before you ever import the package. On an\n# engagement laptop that is worth a virtualenv or a container; in CI it is worth\n# `--ignore-scripts` and a lockfile."
+            "out": "Successfully installed requests-2.32.3 urllib3-2.2.2\n\n# Installing runs code: a setup.py or an npm postinstall script executes with\n# your privileges at install time, before you ever import the package. On an\n# engagement laptop that is worth a virtualenv or a container; in CI it is worth\n# `--ignore-scripts` and a lockfile.",
+            "ref": "https://yarnpkg.com/cli/install"
           },
           {
             "title": "pnpm audit",
@@ -52730,7 +53041,8 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "out": "Successfully installed requests-2.32.3 urllib3-2.2.2\n\n# Installing runs code: a setup.py or an npm postinstall script executes with\n# your privileges at install time, before you ever import the package. On an\n# engagement laptop that is worth a virtualenv or a container; in CI it is worth\n# `--ignore-scripts` and a lockfile."
+            "out": "Successfully installed requests-2.32.3 urllib3-2.2.2\n\n# Installing runs code: a setup.py or an npm postinstall script executes with\n# your privileges at install time, before you ever import the package. On an\n# engagement laptop that is worth a virtualenv or a container; in CI it is worth\n# `--ignore-scripts` and a lockfile.",
+            "ref": "https://pnpm.io/cli/add"
           },
           {
             "title": "pip-audit scan",
@@ -52788,7 +53100,8 @@ module.exports = [
               "tool"
             ],
             "note": "Legacy 'safety check' is deprecated; newer CLI uses 'safety scan'.",
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://github.com/pyupio/safety"
           },
           {
             "title": "govulncheck",
@@ -52907,7 +53220,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Flags scoped/internal deps not present on the public registry (dependency-confusion risk).",
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://github.com/visma-prodsec/confused"
           },
           {
             "title": "Pin & lock npm install (CI)",
@@ -53469,7 +53783,8 @@ module.exports = [
               "advanced"
             ],
             "note": "With .sops.yaml present you can run 'sops -e -i file' without --age.",
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Encrypt using .sops.yaml rules",
@@ -53645,7 +53960,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Add as a pre-commit hook to block accidental plaintext secret commits.",
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           }
         ]
       },
@@ -53875,7 +54191,8 @@ module.exports = [
               "tool",
               "advanced"
             ],
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Create an ExternalSecret",
@@ -53907,7 +54224,8 @@ module.exports = [
               "tool",
               "essential"
             ],
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Inspect ExternalSecret Sync Status",
@@ -53975,7 +54293,8 @@ module.exports = [
               "tool",
               "advanced"
             ],
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Enable etcd Encryption at Rest",
@@ -55201,7 +55520,8 @@ module.exports = [
               "tool",
               "essential"
             ],
-            "out": "# (an environment variable set for one command — output is the command's own)\n\n# The VAR=value prefix applies to that invocation only and does not persist.\n# It is how a tool's behaviour gets switched without editing config:\n# ETCDCTL_API=3, DOCKER_CONTENT_TRUST=1, TF_LOG=trace. If the setting seems to\n# be ignored, check you did not put it after the command name."
+            "out": "# (an environment variable set for one command — output is the command's own)\n\n# The VAR=value prefix applies to that invocation only and does not persist.\n# It is how a tool's behaviour gets switched without editing config:\n# ETCDCTL_API=3, DOCKER_CONTENT_TRUST=1, TF_LOG=trace. If the setting seems to\n# be ignored, check you did not put it after the command name.",
+            "ref": "https://man7.org/linux/man-pages/man1/uname.1.html"
           },
           {
             "title": "Install Cilium with eBPF Host Routing",
@@ -55331,7 +55651,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding."
+            "out": "root:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n\n# The files worth reading first on any Linux box: /etc/passwd (users and which\n# have shells), ~/.bash_history, ~/.ssh/, /var/www config files for database\n# credentials, and /etc/shadow if you can. \"Permission denied\" on shadow is\n# normal; being able to read it is the finding.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Generate sysdump for Cilium/Tetragon Support",
@@ -56006,7 +56327,8 @@ module.exports = [
               "essential"
             ],
             "note": "Seccomp: 0 means no syscall filtering; 'unconfined' in attr/current means no AppArmor confinement (common escape surface).",
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           },
           {
             "title": "Profile Container Runtime Confinement with amicontained",
@@ -56995,7 +57317,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script."
+            "out": "-rwsr-xr-x 1 root root   55672 Feb  6  2024 /usr/bin/passwd\n-rw-r--r-- 1 root root    2891 Sep 14 09:14 /etc/passwd\ndrwxrwxrwx 2 root root    4096 Sep 14 09:40 /tmp/uploads\n\n# The s in place of x is SUID. World-writable (the trailing rwx) on anything a\n# root process reads or executes is a finding. `ls -la` in a home directory\n# for the dot files — .bash_history, .ssh, .aws, .git-credentials — is often\n# faster than any enumeration script.",
+            "ref": "https://man7.org/linux/man-pages/man1/ls.1.html"
           },
           {
             "title": "Update ScoutSuite to Latest",
@@ -57553,7 +57876,8 @@ module.exports = [
               "advanced"
             ],
             "note": "global-grants flags AllUsers/AuthenticatedUsers ACL grants; pair with a 'set-statements' or 'delete-global-grants' action to remediate.",
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Stop Untagged EC2 Instances (Policy)",
@@ -57575,7 +57899,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Mark-for-Op Garbage Collection",
@@ -57600,7 +57925,8 @@ module.exports = [
               "advanced"
             ],
             "note": "A companion policy filters on 'marked-for-op' to execute the deferred op once the grace window elapses.",
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Deploy a CloudTrail-Event Lambda Policy",
@@ -57628,7 +57954,8 @@ module.exports = [
               "tool"
             ],
             "note": "Running this provisions the Lambda + CloudWatch Event rule; subsequent runs update them in place.",
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Deploy a Periodic (Scheduled) Policy",
@@ -57651,7 +57978,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Run an Azure Policy",
@@ -58195,7 +58523,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://cloud.google.com/storage/docs/gsutil"
           },
           {
             "title": "Check Bucket Public Access Prevention",
@@ -59569,7 +59898,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Helm chart'larinin mediaType'i application/vnd.cncf.helm.config.v1+json olmalidir.",
-            "out": "sha256:0d17b565c37bcbd895e9d92315a05c1c3c9a29f762b011a10c54a66cd53c9b31\n\n# These talk to a registry over its API without a Docker daemon, which is what\n# makes them usable in CI and in a locked-down container. `crane manifest` and\n# `skopeo inspect` read an image's config WITHOUT pulling the layers — fast,\n# and enough to see the entrypoint, the env and the labels."
+            "out": "sha256:0d17b565c37bcbd895e9d92315a05c1c3c9a29f762b011a10c54a66cd53c9b31\n\n# These talk to a registry over its API without a Docker daemon, which is what\n# makes them usable in CI and in a locked-down container. `crane manifest` and\n# `skopeo inspect` read an image's config WITHOUT pulling the layers — fast,\n# and enough to see the entrypoint, the env and the labels.",
+            "ref": "https://oras.land/docs/"
           },
           {
             "title": "Update Dependencies from Repositories",
@@ -59639,7 +59969,8 @@ module.exports = [
               "tool",
               "advanced"
             ],
-            "out": "sha256:0d17b565c37bcbd895e9d92315a05c1c3c9a29f762b011a10c54a66cd53c9b31\n\n# These talk to a registry over its API without a Docker daemon, which is what\n# makes them usable in CI and in a locked-down container. `crane manifest` and\n# `skopeo inspect` read an image's config WITHOUT pulling the layers — fast,\n# and enough to see the entrypoint, the env and the labels."
+            "out": "sha256:0d17b565c37bcbd895e9d92315a05c1c3c9a29f762b011a10c54a66cd53c9b31\n\n# These talk to a registry over its API without a Docker daemon, which is what\n# makes them usable in CI and in a locked-down container. `crane manifest` and\n# `skopeo inspect` read an image's config WITHOUT pulling the layers — fast,\n# and enough to see the entrypoint, the env and the labels.",
+            "ref": "https://oras.land/docs/"
           },
           {
             "title": "Manage Repo Plugins with helm-s3",
@@ -59880,7 +60211,8 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://docs.kubelinter.io/"
           },
           {
             "title": "Audit a chart with Polaris",
@@ -60144,7 +60476,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Applying STRICT to istio-system (root namespace) enforces it mesh-wide; test with PERMISSIVE first to avoid outages.",
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Set Namespace mTLS to Permissive",
@@ -60165,7 +60498,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Verify mTLS with TLS Check",
@@ -60200,7 +60534,8 @@ module.exports = [
               "advanced"
             ],
             "note": "An empty spec ({}) with no rules denies all requests to workloads in the namespace.",
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Allow Traffic from a Service Account",
@@ -60226,7 +60561,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Source principals require mTLS (STRICT/PERMISSIVE) so the identity can be verified from the peer certificate.",
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Restrict by HTTP Method and Path",
@@ -60254,7 +60590,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Require Valid JWT (RequestAuthentication)",
@@ -60280,7 +60617,8 @@ module.exports = [
               "advanced"
             ],
             "note": "RequestAuthentication only validates tokens if present; pair it with an AuthorizationPolicy requiring requestPrincipals to actually enforce auth.",
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Configure Gateway for Ingress",
@@ -60308,7 +60646,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Weighted Traffic Split (Canary)",
@@ -60339,7 +60678,8 @@ module.exports = [
               "essential",
               "advanced"
             ],
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Define Subsets in DestinationRule",
@@ -60365,7 +60705,8 @@ module.exports = [
               "essential"
             ],
             "note": "VirtualService subsets must reference subset names defined in a matching DestinationRule, or routing fails with no healthy upstream.",
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Inject HTTP Fault for Resilience Testing",
@@ -60392,7 +60733,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution."
+            "out": "# (nothing — the heredoc is consumed by whatever it is piped into)\n\n# `cat <<'EOF' | kubectl apply -f -` writes a manifest without touching disk.\n# The quotes around 'EOF' matter: quoted means the body is literal, unquoted\n# means the shell expands $VAR and backticks inside it first. Use quoted unless\n# you specifically want substitution.",
+            "ref": "https://man7.org/linux/man-pages/man1/cat.1.html"
           },
           {
             "title": "Validate Configuration for Conflicts",
@@ -62513,7 +62855,8 @@ module.exports = [
               "advanced"
             ],
             "note": "Requires the Collector to have gRPC reflection enabled, or supply the proto descriptor manually.",
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://github.com/fullstorydev/grpcurl"
           }
         ]
       },
@@ -63285,7 +63628,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits."
+            "out": "config.php:12:$db_pass = 'S3cr3tP@ssw0rd!';\n.env:4:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\n\n# `grep -rniE 'password|passwd|secret|api[_-]?key' .` over a web root or a\n# cloned repo finds more credentials than most dedicated tools. Add\n# `--include='*.php'` to cut the noise and `2>/dev/null` to drop the\n# permission-denied lines that would otherwise bury the hits.",
+            "ref": "https://man7.org/linux/man-pages/man1/grep.1.html"
           },
           {
             "title": "Verify APK signature",
@@ -63295,7 +63639,8 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://developer.android.com/tools/apksigner"
           }
         ]
       },
@@ -63412,7 +63757,8 @@ module.exports = [
               "advanced",
               "tool"
             ],
-            "out": "package:/data/app/com.example.app-1/base.apk\nList of devices attached\nemulator-5554\tdevice\n\n# `adb shell` on a debuggable build is a shell as the app's user; on a rooted\n# device `adb root` makes it uid 0. Pull the APK first\n# (`adb pull <path from pm path>`) and decompile locally — static analysis of\n# the manifest and the strings is faster than poking at the running app."
+            "out": "package:/data/app/com.example.app-1/base.apk\nList of devices attached\nemulator-5554\tdevice\n\n# `adb shell` on a debuggable build is a shell as the app's user; on a rooted\n# device `adb root` makes it uid 0. Pull the APK first\n# (`adb pull <path from pm path>`) and decompile locally — static analysis of\n# the manifest and the strings is faster than poking at the running app.",
+            "ref": "https://frida.re/docs/frida-trace/"
           },
           {
             "title": "Bypass Frida detection (spawn gadget)",
@@ -63485,7 +63831,8 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://github.com/WithSecureLabs/drozer"
           },
           {
             "title": "Launch an exported activity",
@@ -63507,7 +63854,8 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen."
+            "out": "# (this tool's own output — run it once against a target you control first)\n\n# For a specialised tool the fastest way to read its output is to see it succeed\n# once in a lab, so failure is recognisable later. Two universal habits: read\n# `--help` for what the flags actually do, and check the exit code (`echo $?`)\n# when the output is ambiguous — 0 and non-zero often look identical on screen.",
+            "ref": "https://github.com/MobSF/mobsfscan"
           },
           {
             "title": "Run MobSF server (Docker)",

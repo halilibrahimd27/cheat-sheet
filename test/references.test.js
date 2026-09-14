@@ -133,7 +133,12 @@ test("the same tool is cited from the same place everywhere", () => {
   // command there is. Those are not one project cited two ways.
   const NOT_THE_TOOL = new Set([
     "python", "python3", "python2", "perl", "ruby", "java", "node", "php", "bash", "sh", "zsh",
-    "echo", "for", "while", "if", "cat", "env", "exec", "eval", "printf", "time", "nohup", "xargs"
+    "echo", "for", "while", "if", "cat", "env", "exec", "eval", "printf", "time", "nohup", "xargs",
+    // Shell prefixes the resolver steps over before it finds the real tool. The
+    // first word here is not the command's tool, so grouping by it would compare
+    // two unrelated commands: "export TF_VAR=… (terraform)" and "export
+    // KRB5CCNAME=… (bloodhound)" are both `export` and both correct.
+    "export", "run", "set", "cd", "source", "sudo", "doas", "then", "do", "done"
   ]);
   const byTool = new Map();
   for (const cat of seed) {

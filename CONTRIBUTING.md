@@ -129,7 +129,7 @@ For multiple commands in one entry:
   commands stay untagged on purpose. `npm run tag:attack` regenerates the curated mapping
   idempotently — prefer it over hand-editing many entries at once.
 - **`ref`** / **`refs`** — a reference link (or an array of `{ label, url }`) rendered as a
-  chip on the command. 82% of commands carry one, pointing at that tool's own
+  chip on the command. 89% of commands carry one, pointing at that tool's own
   documentation. Four rules, all enforced by `test/references.test.js`:
   1. **Absolute `https://`.** Plain http is refused — the app is served over https on
      Pages and a plain-http citation is the one a corporate proxy eats silently.
@@ -142,9 +142,9 @@ For multiple commands in one entry:
      — so a dead link only fails in a reader's browser. `scripts/validate-content.js`
      ratchets the number of *unreferenced* commands, so the gap may shrink but never grow.
 
-  The ~900 commands still without one are shell builtins and payload snippets, where no
-  single honest source exists. If you can name one for a specific command, that is a
-  welcome contribution.
+  The ~550 commands still without one are code snippets (`import socket`, `<?php …`),
+  language constructs and prose, where no single honest source exists. If you can name
+  one for a specific command, that is a welcome contribution.
 
 ### Placeholder Convention
 
