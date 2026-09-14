@@ -3017,7 +3017,10 @@
     var md = "# " + preset.name + "\n\n";
     md += "> " + presetShape(preset) + "  \n";
     md += "> " + S("sessions") + ": " + fmtDateTime(s.createdAt);
-    if (s.startedAt) md += " · " + S("elapsed") + " " + fmtShort(Date.now() - s.startedAt);
+    // Against finishedAt, not now: a closed session's report is a record of what
+    // happened, and the old form made "elapsed" grow every time the candidate
+    // re-opened the report to copy it.
+    if (s.startedAt) md += " · " + S("elapsed") + " " + fmtShort((s.finishedAt || Date.now()) - s.startedAt);
     md += "\n\n";
 
     if (s.kind === "tasks") return md + retroBody(s, preset);

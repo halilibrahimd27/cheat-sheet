@@ -1,0 +1,21 @@
+Starting Nmap 7.94 ( https://nmap.org ) at 2026-03-14 09:15 UTC
+Nmap scan report for 10.10.11.42
+Host is up (0.031s latency).
+Not shown: 65532 closed tcp ports (reset)
+
+PORT     STATE    SERVICE VERSION
+22/tcp   open     ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey:
+|   3072 9a:1f:c0:24:b7:5e:8d:31:6f:22:04:ae:c9:3b:71:d8 (RSA)
+|   256 4c:ba:e1:97:23:d6:80:5f:11:9c:37:a2:6e:d4:08:bb (ECDSA)
+|_  256 7e:30:5b:92:aa:c7:1d:64:38:f0:95:2c:b1:47:e6:03 (ED25519)
+80/tcp   open     http    Apache httpd 2.4.41 ((Ubuntu))
+|_http-title: Sentinel Asset Portal
+|_http-server-header: Apache/2.4.41 (Ubuntu)
+| http-methods:
+|_  Supported Methods: GET POST OPTIONS HEAD
+3306/tcp filtered mysql
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 41.28 seconds

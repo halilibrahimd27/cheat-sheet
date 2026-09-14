@@ -1,0 +1,515 @@
+{
+  "machines": [
+    {
+      "id": "ex-sentinel",
+      "name": "Sentinel",
+      "ip": "10.10.11.42",
+      "os": "Linux (Ubuntu 20.04)",
+      "platform": "OSCP",
+      "difficulty": "medium",
+      "status": "reported",
+      "tags": [
+        "linux",
+        "web",
+        "sudo",
+        "exam-sim"
+      ],
+      "template": "",
+      "userFlag": {
+        "value": "6f1c4a9e2d7b83f05ac16e94d2b7c308",
+        "capturedAt": "2026-03-14T11:24:00.000Z"
+      },
+      "rootFlag": {
+        "value": "b28d7f4c90e1a536cd82f7409be15a6d",
+        "capturedAt": "2026-03-14T12:54:00.000Z"
+      },
+      "startedAt": "2026-03-14T09:15:00.000Z",
+      "ownedAt": "2026-03-14T12:54:00.000Z",
+      "attackPath": "10.10.11.42:80  Apache 2.4.41\n  └─ /backup/ directory listing left enabled\n       └─ site-config.php.bak  ->  db creds  (svc_web : Str0ngDBPass!2024)\n            └─ password reused for SSH  ->  shell as svc_web\n                 └─ sudo -l  ->  (ALL) NOPASSWD: /usr/bin/tar\n                      └─ tar --checkpoint-action=exec  ->  root",
+      "services": [
+        {
+          "port": "22",
+          "proto": "tcp",
+          "state": "open",
+          "name": "ssh",
+          "version": "OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)",
+          "info": ""
+        },
+        {
+          "port": "80",
+          "proto": "tcp",
+          "state": "open",
+          "name": "http",
+          "version": "Apache httpd 2.4.41 ((Ubuntu))",
+          "info": ""
+        },
+        {
+          "port": "3306",
+          "proto": "tcp",
+          "state": "filtered",
+          "name": "mysql",
+          "version": "",
+          "info": ""
+        }
+      ],
+      "credentials": [
+        {
+          "username": "svc_web",
+          "secret": "Str0ngDBPass!2024",
+          "type": "password",
+          "source": "/backup/site-config.php.bak",
+          "works": "mysql, ssh",
+          "valid": true
+        },
+        {
+          "username": "admin",
+          "secret": "admin",
+          "type": "password",
+          "source": "portal login form — guessed",
+          "works": "nothing",
+          "valid": false
+        },
+        {
+          "username": "root",
+          "secret": "(no password — sudo tar)",
+          "type": "other",
+          "source": "sudo -l misconfiguration",
+          "works": "local root",
+          "valid": true
+        }
+      ],
+      "notes": "The portal login is a dead end: it rate-limits after 5 tries and the only\naccount that exists is `admin`, which is not the way in. The way in is that\n`/backup/` was left indexable — the editor backup of site-config.php is served\nas plain text because Apache does not hand .bak to PHP.\n\nPassword reuse did the rest. The database password was also the SSH password\nfor the same service account, which is the single most common finding in this\nkind of box and the one worth writing up properly in the recommendations.",
+      "timeline": [
+        {
+          "ts": 1773479700000,
+          "type": "cmd",
+          "text": "nmap -sCV -p- --min-rate 2000 -oA sentinel 10.10.11.42"
+        },
+        {
+          "ts": 1773480780000,
+          "type": "note",
+          "text": "22/80 open, 3306 filtered. Apache 2.4.41, no obvious CVE — this is a content problem, not a version problem."
+        },
+        {
+          "ts": 1773481320000,
+          "type": "cmd",
+          "text": "feroxbuster -u http://10.10.11.42 -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -x php,bak,txt"
+        },
+        {
+          "ts": 1773482760000,
+          "type": "note",
+          "text": "/backup/ returns a directory listing. site-config.php.bak is served as text/plain."
+        },
+        {
+          "ts": 1773483480000,
+          "type": "cmd",
+          "text": "curl -s http://10.10.11.42/backup/site-config.php.bak"
+        },
+        {
+          "ts": 1773484200000,
+          "type": "note",
+          "text": "DB creds in the clear: svc_web / Str0ngDBPass!2024"
+        },
+        {
+          "ts": 1773485640000,
+          "type": "cmd",
+          "text": "ssh svc_web@10.10.11.42"
+        },
+        {
+          "ts": 1773487440000,
+          "type": "note",
+          "text": "Password reuse — shell as svc_web. local.txt captured."
+        },
+        {
+          "ts": 1773488160000,
+          "type": "cmd",
+          "text": "sudo -l"
+        },
+        {
+          "ts": 1773488880000,
+          "type": "note",
+          "text": "(ALL) NOPASSWD: /usr/bin/tar — GTFOBins has this one."
+        },
+        {
+          "ts": 1773491400000,
+          "type": "cmd",
+          "text": "sudo tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/sh"
+        },
+        {
+          "ts": 1773492840000,
+          "type": "note",
+          "text": "Root shell. proof.txt captured. Screenshots taken with the whoami/hostname/ip banner in frame."
+        }
+      ],
+      "evidence": [],
+      "checklist": [
+        {
+          "id": "nmap",
+          "label": "Initial Nmap Scan",
+          "done": true
+        },
+        {
+          "id": "services",
+          "label": "Service Enumeration",
+          "done": true
+        },
+        {
+          "id": "web",
+          "label": "Web Application Testing",
+          "done": true
+        },
+        {
+          "id": "vuln",
+          "label": "Vulnerability Identified",
+          "done": true
+        },
+        {
+          "id": "exploit",
+          "label": "Exploit Found",
+          "done": true
+        },
+        {
+          "id": "foothold",
+          "label": "Initial Foothold",
+          "done": true
+        },
+        {
+          "id": "user-flag",
+          "label": "User Flag / local.txt",
+          "done": true
+        },
+        {
+          "id": "privesc",
+          "label": "Privilege Escalation",
+          "done": true
+        },
+        {
+          "id": "root-flag",
+          "label": "Root Flag / proof.txt",
+          "done": true
+        },
+        {
+          "id": "screenshots",
+          "label": "Screenshots Taken",
+          "done": true
+        },
+        {
+          "id": "report",
+          "label": "Documentation Complete",
+          "done": true
+        }
+      ],
+      "createdAt": "2026-03-14T09:12:00.000Z",
+      "updatedAt": "2026-03-14T13:06:00.000Z"
+    }
+  ],
+  "exam": {
+    "sessions": [
+      {
+        "id": "ex-oscp-session",
+        "presetId": "oscp",
+        "kind": "targets",
+        "createdAt": 1773478080000,
+        "startedAt": 1773478800000,
+        "finishedAt": 1773556200000,
+        "activeTargetKey": "independent-3",
+        "targets": [
+          {
+            "key": "independent-1",
+            "label": "Independent target #1",
+            "kind": "standalone",
+            "points": 20,
+            "pointsUnknown": false,
+            "flags": [
+              {
+                "id": "ind1-local",
+                "label": "local.txt — low-privilege access",
+                "points": 10,
+                "pointsUnknown": false
+              },
+              {
+                "id": "ind1-proof",
+                "label": "proof.txt — root / SYSTEM / Administrator",
+                "points": 10,
+                "pointsUnknown": false
+              }
+            ],
+            "machineId": "ex-sentinel",
+            "status": "root",
+            "elapsedMs": 14760000,
+            "enteredAt": 0,
+            "phase": "evidence",
+            "done": {},
+            "captures": {
+              "ind1-local": {
+                "value": "6f1c4a9e2d7b83f05ac16e94d2b7c308",
+                "at": 1773523440000,
+                "via": "ssh as svc_web, password reused from a .bak file",
+                "met": {
+                  "0": true,
+                  "1": true,
+                  "2": true,
+                  "3": true
+                }
+              },
+              "ind1-proof": {
+                "value": "b28d7f4c90e1a536cd82f7409be15a6d",
+                "at": 1773528840000,
+                "via": "sudo tar --checkpoint-action=exec",
+                "met": {
+                  "0": true,
+                  "1": true,
+                  "2": true,
+                  "3": true
+                }
+              }
+            },
+            "notes": "Backup file left indexable; DB password reused for SSH; sudo tar to root. Written up in full."
+          },
+          {
+            "key": "independent-2",
+            "label": "Independent target #2",
+            "kind": "standalone",
+            "points": 20,
+            "pointsUnknown": false,
+            "flags": [
+              {
+                "id": "ind2-local",
+                "label": "local.txt — low-privilege access",
+                "points": 10,
+                "pointsUnknown": false
+              },
+              {
+                "id": "ind2-proof",
+                "label": "proof.txt — root / SYSTEM / Administrator",
+                "points": 10,
+                "pointsUnknown": false
+              }
+            ],
+            "machineId": "",
+            "status": "root",
+            "elapsedMs": 12240000,
+            "enteredAt": 0,
+            "phase": "evidence",
+            "done": {},
+            "captures": {
+              "ind2-local": {
+                "value": "4d9f71c0e3a852bd6417f9c30e5b8a27",
+                "at": 1773538560000,
+                "via": "unauthenticated upload — the filter checked Content-Type only",
+                "met": {
+                  "0": true,
+                  "1": true,
+                  "2": true,
+                  "3": true
+                }
+              },
+              "ind2-proof": {
+                "value": "ae35b0d8c471f62930d5b1e87a4cf026",
+                "at": 1773542880000,
+                "via": "unquoted service path in a third-party service",
+                "met": {
+                  "0": true,
+                  "1": true,
+                  "2": true,
+                  "3": true
+                }
+              }
+            },
+            "notes": "Windows Server 2019. Upload filter trusted the request's own Content-Type header."
+          },
+          {
+            "key": "independent-3",
+            "label": "Independent target #3",
+            "kind": "standalone",
+            "points": 20,
+            "pointsUnknown": false,
+            "flags": [
+              {
+                "id": "ind3-local",
+                "label": "local.txt — low-privilege access",
+                "points": 10,
+                "pointsUnknown": false
+              },
+              {
+                "id": "ind3-proof",
+                "label": "proof.txt — root / SYSTEM / Administrator",
+                "points": 10,
+                "pointsUnknown": false
+              }
+            ],
+            "machineId": "",
+            "status": "failed",
+            "elapsedMs": 7920000,
+            "enteredAt": 0,
+            "phase": "svc-enum",
+            "done": {},
+            "captures": {},
+            "notes": "Never got a foothold. 80 was already banked, so the last two hours went on evidence for the four targets that were done rather than on a fifth attempt here."
+          },
+          {
+            "key": "ad-client-1",
+            "label": "AD set — client #1 (no points on its own)",
+            "kind": "ad-client",
+            "points": 0,
+            "pointsUnknown": false,
+            "flags": [
+              {
+                "id": "legacy-ad-c1",
+                "label": "Client #1 flag — required for the chain, worth 0 by itself",
+                "points": 0,
+                "pointsUnknown": false
+              }
+            ],
+            "machineId": "",
+            "status": "root",
+            "elapsedMs": 9360000,
+            "enteredAt": 0,
+            "phase": "legacy-ad-creds",
+            "done": {},
+            "captures": {
+              "legacy-ad-c1": {
+                "value": "1a4c9e07b3d5f8261c7e0a49bd3f5e82",
+                "at": 1773489960000,
+                "via": "SMB null session → password spray",
+                "met": {
+                  "0": true,
+                  "1": true,
+                  "2": true,
+                  "3": true
+                }
+              }
+            },
+            "notes": "Entry host. A spray of the one password found on the share opened it."
+          },
+          {
+            "key": "ad-client-2",
+            "label": "AD set — client #2 (no points on its own)",
+            "kind": "ad-client",
+            "points": 0,
+            "pointsUnknown": false,
+            "flags": [
+              {
+                "id": "legacy-ad-c2",
+                "label": "Client #2 flag — required for the chain, worth 0 by itself",
+                "points": 0,
+                "pointsUnknown": false
+              }
+            ],
+            "machineId": "",
+            "status": "root",
+            "elapsedMs": 6840000,
+            "enteredAt": 0,
+            "phase": "legacy-ad-lateral",
+            "done": {},
+            "captures": {
+              "legacy-ad-c2": {
+                "value": "5b70e2d1c8a394f6072be51d9ca8f403",
+                "at": 1773498240000,
+                "via": "local admin hash reused — pass-the-hash",
+                "met": {
+                  "0": true,
+                  "1": true,
+                  "2": true,
+                  "3": true
+                }
+              }
+            },
+            "notes": "Same local administrator hash as client #1."
+          },
+          {
+            "key": "ad-dc",
+            "label": "AD set — domain controller (carries the whole 40)",
+            "kind": "ad-dc",
+            "points": 40,
+            "pointsUnknown": false,
+            "flags": [
+              {
+                "id": "legacy-ad-dc",
+                "label": "Full domain exploit chain complete (all three AD hosts) — all-or-nothing 40 points",
+                "points": 40,
+                "pointsUnknown": false
+              }
+            ],
+            "machineId": "",
+            "status": "root",
+            "elapsedMs": 10080000,
+            "enteredAt": 0,
+            "phase": "evidence",
+            "done": {},
+            "captures": {
+              "legacy-ad-dc": {
+                "value": "9e3f81a05c7d24b6e08fa3172d9c4b5e",
+                "at": 1773508320000,
+                "via": "Kerberoast → service account → DCSync",
+                "met": {
+                  "0": true,
+                  "1": true,
+                  "2": true,
+                  "3": true
+                }
+              }
+            },
+            "notes": "The 40 lands only with all three hosts documented, so the chain is written up as one section, in order."
+          }
+        ],
+        "tasks": [],
+        "attempts": [
+          {
+            "id": "a1",
+            "scope": "independent-1",
+            "text": "hydra against the portal login form",
+            "outcome": "failed",
+            "why": "rate-limited after 5 attempts; `admin` is the only account and it is not the way in",
+            "at": 1773519120000
+          },
+          {
+            "id": "a2",
+            "scope": "independent-1",
+            "text": "searchsploit apache 2.4.41",
+            "outcome": "failed",
+            "why": "nothing that applies to a stock Ubuntu build — this box is a content problem, not a version problem",
+            "at": 1773519840000
+          },
+          {
+            "id": "a3",
+            "scope": "ad-dc",
+            "text": "AS-REP roast the whole user list",
+            "outcome": "failed",
+            "why": "no account had pre-authentication disabled; Kerberoasting is what worked",
+            "at": 1773503640000
+          },
+          {
+            "id": "a4",
+            "scope": "independent-3",
+            "text": "linpeas, then pspy for 25 minutes",
+            "outcome": "failed",
+            "why": "no writable cron, no SUID outside the baseline, kernel patched",
+            "at": 1773549360000
+          },
+          {
+            "id": "a5",
+            "scope": "independent-3",
+            "text": "re-ran the full port scan in case the first one missed something",
+            "outcome": "failed",
+            "why": "identical result — rescanning is what running out of ideas looks like, and it cost 20 minutes",
+            "at": 1773551880000
+          }
+        ],
+        "budgets": {},
+        "preflight": {
+          "setup-vpn": true,
+          "setup-scope": true,
+          "setup-screenshot": true
+        },
+        "lastContext": "",
+        "report": {
+          "writeupId": "",
+          "savedAt": 0
+        },
+        "ui": {}
+      }
+    ],
+    "activeSessionId": "ex-oscp-session"
+  }
+}
