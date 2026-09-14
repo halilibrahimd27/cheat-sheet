@@ -19,7 +19,8 @@ module.exports = [
             "desc_tr": "Alan adı kayıt bilgileri için WHOIS sorgula",
             "attack": [
               "T1590.002"
-            ]
+            ],
+            "out": "Domain Name: EXAMPLE.COM\nRegistry Domain ID: 2336799_DOMAIN_COM-VRSN\nRegistrar: RESERVED-Internet Assigned Numbers Authority\nCreation Date: 1995-08-14T04:00:00Z\nRegistry Expiry Date: 2026-08-13T04:00:00Z\nName Server: A.IANA-SERVERS.NET\n\n# The fields that matter for an engagement: registrant org, the abuse contact,\n# and the name servers — they often name the hosting provider."
           },
           {
             "title": "WHOIS IP Lookup",
@@ -44,7 +45,8 @@ module.exports = [
             "desc_tr": "dig ile alan adını IPv4 adresine çözümle",
             "attack": [
               "T1590.002"
-            ]
+            ],
+            "out": ";; ANSWER SECTION:\nexample.com.        3600    IN      A       93.184.216.34\n\n;; Query time: 24 msec\n;; SERVER: 1.1.1.1#53(1.1.1.1)\n\n# NXDOMAIN means it does not exist. An empty ANSWER with NOERROR means the name\n# exists but has no A record — check CNAME, AAAA, or a wildcard."
           },
           {
             "title": "DNS MX Record Lookup",
@@ -104,7 +106,8 @@ module.exports = [
             "desc_tr": "İsim sunucusundan AXFR zone transferi dene",
             "attack": [
               "T1590.002"
-            ]
+            ],
+            "out": "; <<>> DiG 9.18.28 <<>> axfr example.com @ns1.example.com\nexample.com.     604800  IN  SOA   ns1.example.com. admin.example.com. 3 604800 86400 2419200 604800\nexample.com.     604800  IN  NS    ns1.example.com.\ninternal.example.com.  604800 IN A 10.10.10.5\nvpn.example.com.       604800 IN A 10.10.10.9\n\n# A full record dump means the transfer succeeded — that is the finding.\n# \"Transfer failed.\" or \"connection refused\" is the normal, non-vulnerable case."
           },
           {
             "title": "Host DNS Lookup",
@@ -625,7 +628,8 @@ module.exports = [
             "desc_tr": "Scan top UDP ports for common services",
             "attack": [
               "T1046"
-            ]
+            ],
+            "out": "PORT    STATE         SERVICE\n161/udp open          snmp\n500/udp open|filtered isakmp\n69/udp  open|filtered tftp\n\n# \"open|filtered\" is UDP's normal answer — no reply is indistinguishable from a\n# dropped packet. Treat it as \"worth probing\", not as closed."
           },
           {
             "title": "Nmap Quick Top 1000",
@@ -858,7 +862,8 @@ module.exports = [
             "desc_tr": "Scan all ports at moderate speed — good for unstable networks",
             "attack": [
               "T1046"
-            ]
+            ],
+            "out": "Starting Nmap 7.94 ( https://nmap.org )\nNmap scan report for 10.10.10.5\nHost is up (0.031s latency).\nNot shown: 65530 closed tcp ports (reset)\nPORT     STATE SERVICE\n22/tcp   open  ssh\n80/tcp   open  http\n139/tcp  open  netbios-ssn\n445/tcp  open  microsoft-ds\n3389/tcp open  ms-wbt-server\n\nNmap done: 1 IP address (1 host up) scanned in 42.18 seconds\n\n# \"Not shown: 65530 closed\" is the line to read: a host that filtered everything\n# would say \"filtered\" instead, which means the result is not trustworthy."
           },
           {
             "title": "Nmap All Ports (Rate 3000, No Ping)",
@@ -870,7 +875,8 @@ module.exports = [
             "desc_tr": "Hızlı full port taraması skipping aktif host keşfi",
             "attack": [
               "T1046"
-            ]
+            ],
+            "out": "Starting Nmap 7.94 ( https://nmap.org )\nNmap scan report for 10.10.10.5\nHost is up (0.031s latency).\nNot shown: 65530 closed tcp ports (reset)\nPORT     STATE SERVICE\n22/tcp   open  ssh\n80/tcp   open  http\n139/tcp  open  netbios-ssn\n445/tcp  open  microsoft-ds\n3389/tcp open  ms-wbt-server\n\nNmap done: 1 IP address (1 host up) scanned in 42.18 seconds\n\n# \"Not shown: 65530 closed\" is the line to read: a host that filtered everything\n# would say \"filtered\" instead, which means the result is not trustworthy."
           },
           {
             "title": "Nmap UDP Top 100",
@@ -882,7 +888,8 @@ module.exports = [
             "desc_tr": "Hızlı UDP tarama of the 100 most commports üzerinde",
             "attack": [
               "T1046"
-            ]
+            ],
+            "out": "PORT    STATE         SERVICE\n161/udp open          snmp\n500/udp open|filtered isakmp\n69/udp  open|filtered tftp\n\n# \"open|filtered\" is UDP's normal answer — no reply is indistinguishable from a\n# dropped packet. Treat it as \"worth probing\", not as closed."
           },
           {
             "title": "Nmap Aggressive Full Scan",
@@ -912,7 +919,8 @@ module.exports = [
             "desc_tr": "Probe open ports for service versions on discovered ports",
             "attack": [
               "T1046"
-            ]
+            ],
+            "out": "PORT    STATE SERVICE     VERSION\n22/tcp  open  ssh         OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)\n| ssh-hostkey:\n|   3072 9c:1e:aa:eb:... (RSA)\n80/tcp  open  http        Apache httpd 2.4.41 ((Ubuntu))\n|_http-title: Did not follow redirect to http://app.example.htb/\n|_http-server-header: Apache/2.4.41 (Ubuntu)\n\n# The exact version string is what decides which exploit applies.\n# A redirect to a HOSTNAME means add it to /etc/hosts and rescan by name."
           },
           {
             "title": "Nmap Aggressive Scan",
@@ -1155,7 +1163,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Show NFS directories"
+            "desc_tr": "Show NFS directories",
+            "out": "Export list for 10.10.10.5:\n/srv/share  *\n/home       10.10.10.0/24\n\n# \"*\" means anyone may mount it. Mount it and check whether root_squash is on —\n# if it is not, you can write a SUID binary as root from your own box."
           }
         ],
         "name_tr": "Service Fingerprinting"
@@ -1174,7 +1183,8 @@ module.exports = [
             "desc_tr": "Enumerate SMB shares, users, groups, policies",
             "attack": [
               "T1135"
-            ]
+            ],
+            "out": " ==================================( Users on 10.10.10.5 )==================================\nindex: 0x1 RID: 0x450 acb: 0x00000210 Account: svc-alfresco  Name: svc-alfresco  Desc:\nindex: 0x2 RID: 0x455 acb: 0x00000210 Account: sebastien     Name: Sebastien Caron\n\n ==============================( Password Policy Information )==============================\n[+] Minimum password length: 7\n[+] Account lockout threshold: None\n\n# \"Account lockout threshold: None\" is the permission slip for password spraying.\n# Read it BEFORE you spray, not after you lock out the domain."
           },
           {
             "title": "Enum4linux-ng Full Scan",
@@ -1186,7 +1196,8 @@ module.exports = [
             "desc_tr": "Modern Pythrewrite JSON output ile üzerinde",
             "attack": [
               "T1135"
-            ]
+            ],
+            "out": " ==================================( Users on 10.10.10.5 )==================================\nindex: 0x1 RID: 0x450 acb: 0x00000210 Account: svc-alfresco  Name: svc-alfresco  Desc:\nindex: 0x2 RID: 0x455 acb: 0x00000210 Account: sebastien     Name: Sebastien Caron\n\n ==============================( Password Policy Information )==============================\n[+] Minimum password length: 7\n[+] Account lockout threshold: None\n\n# \"Account lockout threshold: None\" is the permission slip for password spraying.\n# Read it BEFORE you spray, not after you lock out the domain."
           },
           {
             "title": "SMBClient List Shares (Null)",
@@ -1198,7 +1209,8 @@ module.exports = [
             "desc_tr": "List SMB shares with null session",
             "attack": [
               "T1135"
-            ]
+            ],
+            "out": "        Sharename       Type      Comment\n        ---------       ----      -------\n        ADMIN$          Disk      Remote Admin\n        C$              Disk      Default share\n        backups         Disk\n        IPC$            IPC       Remote IPC\n\n# A non-default share (here: backups) is the reason you ran this.\n# NT_STATUS_ACCESS_DENIED with no listing means anonymous is refused."
           },
           {
             "title": "SMBClient Connect to Share",
@@ -1393,7 +1405,8 @@ module.exports = [
             "desc_tr": "Next-gen SMB listeleme",
             "attack": [
               "T1135"
-            ]
+            ],
+            "out": " ==================================( Users on 10.10.10.5 )==================================\nindex: 0x1 RID: 0x450 acb: 0x00000210 Account: svc-alfresco  Name: svc-alfresco  Desc:\nindex: 0x2 RID: 0x455 acb: 0x00000210 Account: sebastien     Name: Sebastien Caron\n\n ==============================( Password Policy Information )==============================\n[+] Minimum password length: 7\n[+] Account lockout threshold: None\n\n# \"Account lockout threshold: None\" is the permission slip for password spraying.\n# Read it BEFORE you spray, not after you lock out the domain."
           }
         ],
         "name_tr": "SMB & NetBIOS Probing"
@@ -1408,7 +1421,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Walk the entire SNMP MIB tree community string ile"
+            "desc_tr": "Walk the entire SNMP MIB tree community string ile",
+            "out": "iso.3.6.1.2.1.25.4.2.1.2.1 = STRING: \"systemd\"\niso.3.6.1.2.1.25.4.2.1.2.412 = STRING: \"apache2\"\niso.3.6.1.2.1.25.4.2.1.2.980 = STRING: \"mysqld -u root --password=Summer2023\"\n\n# Process arguments are the prize: service accounts pass passwords on the\n# command line constantly, and SNMP hands you the full argv."
           },
           {
             "title": "SNMPWalk System Info",
@@ -1417,7 +1431,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Retrieve system description"
+            "desc_tr": "Retrieve system description",
+            "out": "iso.3.6.1.2.1.25.4.2.1.2.1 = STRING: \"systemd\"\niso.3.6.1.2.1.25.4.2.1.2.412 = STRING: \"apache2\"\niso.3.6.1.2.1.25.4.2.1.2.980 = STRING: \"mysqld -u root --password=Summer2023\"\n\n# Process arguments are the prize: service accounts pass passwords on the\n# command line constantly, and SNMP hands you the full argv."
           },
           {
             "title": "SNMPWalk Running Processes",
@@ -1426,7 +1441,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate running processes via SNMP"
+            "desc_tr": "Enumerate running processes via SNMP",
+            "out": "iso.3.6.1.2.1.25.4.2.1.2.1 = STRING: \"systemd\"\niso.3.6.1.2.1.25.4.2.1.2.412 = STRING: \"apache2\"\niso.3.6.1.2.1.25.4.2.1.2.980 = STRING: \"mysqld -u root --password=Summer2023\"\n\n# Process arguments are the prize: service accounts pass passwords on the\n# command line constantly, and SNMP hands you the full argv."
           },
           {
             "title": "SNMPWalk Installed Software",
@@ -1435,7 +1451,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Enumerate installed software"
+            "desc_tr": "Enumerate installed software",
+            "out": "iso.3.6.1.2.1.25.4.2.1.2.1 = STRING: \"systemd\"\niso.3.6.1.2.1.25.4.2.1.2.412 = STRING: \"apache2\"\niso.3.6.1.2.1.25.4.2.1.2.980 = STRING: \"mysqld -u root --password=Summer2023\"\n\n# Process arguments are the prize: service accounts pass passwords on the\n# command line constantly, and SNMP hands you the full argv."
           },
           {
             "title": "SNMPWalk TCP Connections",
@@ -1444,7 +1461,8 @@ module.exports = [
             "tags": [
               "advanced"
             ],
-            "desc_tr": "Enumerate active TCP connections"
+            "desc_tr": "Enumerate active TCP connections",
+            "out": "iso.3.6.1.2.1.25.4.2.1.2.1 = STRING: \"systemd\"\niso.3.6.1.2.1.25.4.2.1.2.412 = STRING: \"apache2\"\niso.3.6.1.2.1.25.4.2.1.2.980 = STRING: \"mysqld -u root --password=Summer2023\"\n\n# Process arguments are the prize: service accounts pass passwords on the\n# command line constantly, and SNMP hands you the full argv."
           },
           {
             "title": "SNMPWalk User Accounts",
@@ -1453,7 +1471,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Enumerate Windows user accounts via SNMP"
+            "desc_tr": "Enumerate Windows user accounts via SNMP",
+            "out": "iso.3.6.1.2.1.25.4.2.1.2.1 = STRING: \"systemd\"\niso.3.6.1.2.1.25.4.2.1.2.412 = STRING: \"apache2\"\niso.3.6.1.2.1.25.4.2.1.2.980 = STRING: \"mysqld -u root --password=Summer2023\"\n\n# Process arguments are the prize: service accounts pass passwords on the\n# command line constantly, and SNMP hands you the full argv."
           },
           {
             "title": "OneSixtyOne Community Brute",
@@ -1516,7 +1535,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Attempt anonymous LDAP enumeration"
+            "desc_tr": "Attempt anonymous LDAP enumeration",
+            "out": "dn:\nnamingContexts: DC=corp,DC=htb\nnamingContexts: CN=Configuration,DC=corp,DC=htb\ndnsHostName: DC01.corp.htb\ndomainFunctionality: 7\n\n# rootDSE answers anonymously on most DCs. It hands you the domain name and the\n# DC hostname, which is everything you need to start naming things correctly."
           },
           {
             "title": "LDAPSearch Dump All",
@@ -2350,7 +2370,8 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Tam WordPress tarama plugins, themes, users ile"
+            "desc_tr": "Tam WordPress tarama plugins, themes, users ile",
+            "out": "[+] WordPress version 5.7.1 identified (Insecure, released 2021-04-14)\n[+] WordPress theme in use: twentytwentyone\n[i] Plugin(s) Identified:\n[+] wp-file-manager\n | Version: 6.8 (Vulnerable)\n\n# The plugin list is where the exploit usually is — core WordPress is patched\n# far more often than the plugins bolted onto it."
           },
           {
             "title": "WPScan with API Token",
@@ -2359,7 +2380,8 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "WordPress tarama zafiyet(ler) database lookup ile"
+            "desc_tr": "WordPress tarama zafiyet(ler) database lookup ile",
+            "out": "[+] WordPress version 5.7.1 identified (Insecure, released 2021-04-14)\n[+] WordPress theme in use: twentytwentyone\n[i] Plugin(s) Identified:\n[+] wp-file-manager\n | Version: 6.8 (Vulnerable)\n\n# The plugin list is where the exploit usually is — core WordPress is patched\n# far more often than the plugins bolted onto it."
           },
           {
             "title": "WPScan Password Brute Force",
@@ -2371,7 +2393,8 @@ module.exports = [
             "desc_tr": "Kaba kuvvet: kuvvet saldırısı WordPress logkimlik bilgileri içinde",
             "attack": [
               "T1110.001"
-            ]
+            ],
+            "out": "[+] WordPress version 5.7.1 identified (Insecure, released 2021-04-14)\n[+] WordPress theme in use: twentytwentyone\n[i] Plugin(s) Identified:\n[+] wp-file-manager\n | Version: 6.8 (Vulnerable)\n\n# The plugin list is where the exploit usually is — core WordPress is patched\n# far more often than the plugins bolted onto it."
           },
           {
             "title": "WPScan Enumerate Vulnerable Plugins",
@@ -2381,7 +2404,8 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Enumerate plugins with known vulnerabilities"
+            "desc_tr": "Enumerate plugins with known vulnerabilities",
+            "out": "[+] WordPress version 5.7.1 identified (Insecure, released 2021-04-14)\n[+] WordPress theme in use: twentytwentyone\n[i] Plugin(s) Identified:\n[+] wp-file-manager\n | Version: 6.8 (Vulnerable)\n\n# The plugin list is where the exploit usually is — core WordPress is patched\n# far more often than the plugins bolted onto it."
           },
           {
             "title": "WPScan Enumerate Users",
@@ -2391,7 +2415,8 @@ module.exports = [
               "essential",
               "tool"
             ],
-            "desc_tr": "Enumerate WordPress usernames"
+            "desc_tr": "Enumerate WordPress usernames",
+            "out": "[+] WordPress version 5.7.1 identified (Insecure, released 2021-04-14)\n[+] WordPress theme in use: twentytwentyone\n[i] Plugin(s) Identified:\n[+] wp-file-manager\n | Version: 6.8 (Vulnerable)\n\n# The plugin list is where the exploit usually is — core WordPress is patched\n# far more often than the plugins bolted onto it."
           },
           {
             "title": "WPScan with Custom WP Path",
@@ -2400,7 +2425,8 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Scan WordPress on non-standard path"
+            "desc_tr": "Scan WordPress on non-standard path",
+            "out": "[+] WordPress version 5.7.1 identified (Insecure, released 2021-04-14)\n[+] WordPress theme in use: twentytwentyone\n[i] Plugin(s) Identified:\n[+] wp-file-manager\n | Version: 6.8 (Vulnerable)\n\n# The plugin list is where the exploit usually is — core WordPress is patched\n# far more often than the plugins bolted onto it."
           },
           {
             "title": "JoomScan Full Scan",
@@ -2465,7 +2491,8 @@ module.exports = [
             "desc_tr": "Kaba kuvvet: kuvvet saldırısı directories and files",
             "attack": [
               "T1595.003"
-            ]
+            ],
+            "out": "/images               (Status: 301) [Size: 315] [--> /images/]\n/admin                (Status: 401) [Size: 456]\n/backup               (Status: 200) [Size: 1204]\n/index.php            (Status: 200) [Size: 5104]\n\n# 401 and 403 are findings, not failures — the path exists and is protected.\n# A uniform size across many 200s means a catch-all page: filter it out with\n# --exclude-length / -fs or every result is noise."
           },
           {
             "title": "Gobuster with Extensions",
@@ -2478,7 +2505,8 @@ module.exports = [
             "desc_tr": "Kaba kuvvet: kuvvet saldırısı file extensifilter ile üzerinde",
             "attack": [
               "T1595.003"
-            ]
+            ],
+            "out": "/images               (Status: 301) [Size: 315] [--> /images/]\n/admin                (Status: 401) [Size: 456]\n/backup               (Status: 200) [Size: 1204]\n/index.php            (Status: 200) [Size: 5104]\n\n# 401 and 403 are findings, not failures — the path exists and is protected.\n# A uniform size across many 200s means a catch-all page: filter it out with\n# --exclude-length / -fs or every result is noise."
           },
           {
             "title": "Gobuster DNS Subdomain",
@@ -2514,7 +2542,8 @@ module.exports = [
             "desc_tr": "Directory kaba kuvvet saldırısı sessicookie ile üzerinde",
             "attack": [
               "T1595.003"
-            ]
+            ],
+            "out": "/images               (Status: 301) [Size: 315] [--> /images/]\n/admin                (Status: 401) [Size: 456]\n/backup               (Status: 200) [Size: 1204]\n/index.php            (Status: 200) [Size: 5104]\n\n# 401 and 403 are findings, not failures — the path exists and is protected.\n# A uniform size across many 200s means a catch-all page: filter it out with\n# --exclude-length / -fs or every result is noise."
           },
           {
             "title": "Feroxbuster Recursive",
@@ -2527,7 +2556,8 @@ module.exports = [
             "desc_tr": "Özyinelemeli directory kaba kuvvet saldırısı",
             "attack": [
               "T1595.003"
-            ]
+            ],
+            "out": "/images               (Status: 301) [Size: 315] [--> /images/]\n/admin                (Status: 401) [Size: 456]\n/backup               (Status: 200) [Size: 1204]\n/index.php            (Status: 200) [Size: 5104]\n\n# 401 and 403 are findings, not failures — the path exists and is protected.\n# A uniform size across many 200s means a catch-all page: filter it out with\n# --exclude-length / -fs or every result is noise."
           },
           {
             "title": "Feroxbuster with Depth",
@@ -2539,7 +2569,8 @@ module.exports = [
             "desc_tr": "Control recursidepth üzerinde",
             "attack": [
               "T1595.003"
-            ]
+            ],
+            "out": "/images               (Status: 301) [Size: 315] [--> /images/]\n/admin                (Status: 401) [Size: 456]\n/backup               (Status: 200) [Size: 1204]\n/index.php            (Status: 200) [Size: 5104]\n\n# 401 and 403 are findings, not failures — the path exists and is protected.\n# A uniform size across many 200s means a catch-all page: filter it out with\n# --exclude-length / -fs or every result is noise."
           },
           {
             "title": "FFUF Directory Discovery",
@@ -6285,7 +6316,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Start a basic netcat listener"
+            "desc_tr": "Start a basic netcat listener",
+            "out": "listening on [any] 4444 ...\nconnect to [10.10.14.7] from (UNKNOWN) [10.10.10.5] 54312\n$\n\n# \"connect to ... from\" is the callback landing. If it never arrives, prove the\n# path before blaming the payload: tcpdump on the listener interface."
           },
           {
             "title": "Rlwrap Netcat Listener",
@@ -6294,7 +6326,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Netcat listener readline (arrow keys) ile"
+            "desc_tr": "Netcat listener readline (arrow keys) ile",
+            "out": "listening on [any] 4444 ...\nconnect to [10.10.14.7] from (UNKNOWN) [10.10.10.5] 54312\n$\n\n# \"connect to ... from\" is the callback landing. If it never arrives, prove the\n# path before blaming the payload: tcpdump on the listener interface."
           },
           {
             "title": "Socat Listener",
@@ -6792,7 +6825,8 @@ module.exports = [
             "desc_tr": "Start a bind shell listener on target",
             "attack": [
               "T1059.004"
-            ]
+            ],
+            "out": "listening on [any] 4444 ...\nconnect to [10.10.14.7] from (UNKNOWN) [10.10.10.5] 54312\n$\n\n# \"connect to ... from\" is the callback landing. If it never arrives, prove the\n# path before blaming the payload: tcpdump on the listener interface."
           },
           {
             "title": "Netcat Bind Shell (mkfifo)",
@@ -6947,7 +6981,8 @@ module.exports = [
             "attack": [
               "T1059.004",
               "T1059.006"
-            ]
+            ],
+            "out": "user@target:/var/www$\n\n# The prompt gaining a hostname and a path is the upgrade working. After this,\n# Ctrl-Z, then: stty raw -echo; fg, then reset — now arrows and Ctrl-C work."
           },
           {
             "title": "Python2 PTY Spawn",
@@ -6969,7 +7004,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Spawn a PTY with script command"
+            "desc_tr": "Spawn a PTY with script command",
+            "out": "user@target:/var/www$\n\n# The prompt gaining a hostname and a path is the upgrade working. After this,\n# Ctrl-Z, then: stty raw -echo; fg, then reset — now arrows and Ctrl-C work."
           },
           {
             "title": "Full TTY Upgrade Process",
@@ -6989,7 +7025,8 @@ module.exports = [
             "attack": [
               "T1059.004",
               "T1059.006"
-            ]
+            ],
+            "out": "user@target:/var/www$\n\n# The prompt gaining a hostname and a path is the upgrade working. After this,\n# Ctrl-Z, then: stty raw -echo; fg, then reset — now arrows and Ctrl-C work."
           },
           {
             "title": "Expect PTY Spawn",
@@ -7023,7 +7060,8 @@ module.exports = [
               "essential"
             ],
             "note": "Essential for Windows reverse shells which don't support arrow keys",
-            "desc_tr": "Use rlwrap for arrow key support Windows shells üzerinde"
+            "desc_tr": "Use rlwrap for arrow key support Windows shells üzerinde",
+            "out": "listening on [any] 4444 ...\nconnect to [10.10.14.7] from (UNKNOWN) [10.10.10.5] 54312\n$\n\n# \"connect to ... from\" is the callback landing. If it never arrives, prove the\n# path before blaming the payload: tcpdump on the listener interface."
           },
           {
             "title": "Export TERM Variable",
@@ -7090,7 +7128,8 @@ module.exports = [
             "desc_tr": "Display mevcut username",
             "attack": [
               "T1033"
-            ]
+            ],
+            "out": "uid=1000(user) gid=1000(user) groups=1000(user),4(adm),27(sudo),999(docker)\n\n# Groups are the point. docker, lxd, disk, adm and sudo are each a documented\n# path to root — check the group list before anything else."
           },
           {
             "title": "User Privileges",
@@ -7114,7 +7153,8 @@ module.exports = [
             "desc_tr": "List all group memberships",
             "attack": [
               "T1033"
-            ]
+            ],
+            "out": "uid=1000(user) gid=1000(user) groups=1000(user),4(adm),27(sudo),999(docker)\n\n# Groups are the point. docker, lxd, disk, adm and sudo are each a documented\n# path to root — check the group list before anything else."
           },
           {
             "title": "List Local Users",
@@ -8359,7 +8399,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Mevcut kullanıcı ve grup üyeliklerini göster"
+            "desc_tr": "Mevcut kullanıcı ve grup üyeliklerini göster",
+            "out": "uid=1000(user) gid=1000(user) groups=1000(user),4(adm),27(sudo),999(docker)\n\n# Groups are the point. docker, lxd, disk, adm and sudo are each a documented\n# path to root — check the group list before anything else."
           },
           {
             "title": "Kernel Version",
@@ -8551,7 +8592,8 @@ module.exports = [
             "desc_tr": "Find all SUID binaries on the system",
             "attack": [
               "T1548.001"
-            ]
+            ],
+            "out": "/usr/bin/sudo\n/usr/bin/passwd\n/usr/bin/chsh\n/usr/bin/pkexec\n/usr/bin/find\n\n# Ignore the standard set (sudo, passwd, chsh, mount, su). What matters is the\n# unusual one — a shell, an interpreter, or anything from GTFOBins."
           },
           {
             "title": "Find SGID Binaries",
@@ -8572,7 +8614,8 @@ module.exports = [
             "desc_tr": "Find all SUID and SGID binaries",
             "attack": [
               "T1548.001"
-            ]
+            ],
+            "out": "/usr/bin/sudo\n/usr/bin/passwd\n/usr/bin/chsh\n/usr/bin/pkexec\n/usr/bin/find\n\n# Ignore the standard set (sudo, passwd, chsh, mount, su). What matters is the\n# unusual one — a shell, an interpreter, or anything from GTFOBins."
           },
           {
             "title": "SUID bash -p",
@@ -8687,7 +8730,8 @@ module.exports = [
             "desc_tr": "Show what current user can run as sudo",
             "attack": [
               "T1548.003"
-            ]
+            ],
+            "out": "Matching Defaults entries for user on target:\n    env_reset, mail_badpass, secure_path=/usr/local/sbin\\:/usr/local/bin\n\nUser user may run the following commands on target:\n    (ALL) NOPASSWD: /usr/bin/find\n\n# Every line here is a candidate. Check the binary on GTFOBins before anything\n# else — /usr/bin/find with NOPASSWD is a root shell in one command."
           },
           {
             "title": "Sudo bash",
@@ -8950,7 +8994,8 @@ module.exports = [
             "desc_tr": "Kontrol et: for NOPASSWD entries sudo -l içinde",
             "attack": [
               "T1548.003"
-            ]
+            ],
+            "out": "Matching Defaults entries for user on target:\n    env_reset, mail_badpass, secure_path=/usr/local/sbin\\:/usr/local/bin\n\nUser user may run the following commands on target:\n    (ALL) NOPASSWD: /usr/bin/find\n\n# Every line here is a candidate. Check the binary on GTFOBins before anything\n# else — /usr/bin/find with NOPASSWD is a root shell in one command."
           },
           {
             "title": "Sudo apache2 Shell",
@@ -9650,7 +9695,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "View NFS shares uzak üzerinden"
+            "desc_tr": "View NFS shares uzak üzerinden",
+            "out": "Export list for 10.10.10.5:\n/srv/share  *\n/home       10.10.10.0/24\n\n# \"*\" means anyone may mount it. Mount it and check whether root_squash is on —\n# if it is not, you can write a SUID binary as root from your own box."
           },
           {
             "title": "Check no_root_squash",
@@ -9707,7 +9753,8 @@ module.exports = [
             "desc_tr": "Kapsamlı Linux yetki yükseltme tarayıcı",
             "attack": [
               "T1068"
-            ]
+            ],
+            "out": "╔══════════╣ Sudo version\nSudo version 1.8.31\n\n╔══════════╣ SUID - Check easy privesc\n/usr/bin/pkexec  ← 95% PE - CVE-2021-4034\n\n╔══════════╣ Interesting writable files\n/etc/passwd\n\n# Read the RED/YELLOW highlights first — they are ranked by exploitability.\n# Everything else is context you come back to when the obvious path is closed."
           },
           {
             "title": "LinPEAS (Uploaded)",
@@ -9720,7 +9767,8 @@ module.exports = [
             "desc_tr": "Run LinPEAS after uploading to target",
             "attack": [
               "T1068"
-            ]
+            ],
+            "out": "╔══════════╣ Sudo version\nSudo version 1.8.31\n\n╔══════════╣ SUID - Check easy privesc\n/usr/bin/pkexec  ← 95% PE - CVE-2021-4034\n\n╔══════════╣ Interesting writable files\n/etc/passwd\n\n# Read the RED/YELLOW highlights first — they are ranked by exploitability.\n# Everything else is context you come back to when the obvious path is closed."
           },
           {
             "title": "LinEnum",
@@ -9762,7 +9810,8 @@ module.exports = [
             "desc_tr": "Run LinPEAS with specific check categories",
             "attack": [
               "T1068"
-            ]
+            ],
+            "out": "╔══════════╣ Sudo version\nSudo version 1.8.31\n\n╔══════════╣ SUID - Check easy privesc\n/usr/bin/pkexec  ← 95% PE - CVE-2021-4034\n\n╔══════════╣ Interesting writable files\n/etc/passwd\n\n# Read the RED/YELLOW highlights first — they are ranked by exploitability.\n# Everything else is context you come back to when the obvious path is closed."
           },
           {
             "title": "LinPrivChecker",
@@ -10334,7 +10383,8 @@ module.exports = [
             "desc_tr": "Active Directory kullanıcılarını listele",
             "attack": [
               "T1110.003"
-            ]
+            ],
+            "out": "[+] VALID USERNAME:  svc-alfresco@corp.htb\n[+] VALID USERNAME:  sebastien@corp.htb\nDone! Tested 8500 usernames (2 valid) in 4.203 seconds\n\n# Pre-auth username enumeration is silent and does not touch lockout counters.\n# Spraying does — read the lockout policy first."
           },
           {
             "title": "Kerbrute Password Spray",
@@ -10346,7 +10396,8 @@ module.exports = [
             "desc_tr": "Spray password",
             "attack": [
               "T1110.003"
-            ]
+            ],
+            "out": "[+] VALID USERNAME:  svc-alfresco@corp.htb\n[+] VALID USERNAME:  sebastien@corp.htb\nDone! Tested 8500 usernames (2 valid) in 4.203 seconds\n\n# Pre-auth username enumeration is silent and does not touch lockout counters.\n# Spraying does — read the lockout policy first."
           }
         ],
         "name_tr": "Online Brute Force"
@@ -10507,7 +10558,8 @@ module.exports = [
             "desc_tr": "AS-REP roasting hash'lerini kır",
             "attack": [
               "T1110.002"
-            ]
+            ],
+            "out": "$krb5asrep$23$svc-alfresco@CORP.HTB:1f2e...:s3rvice\n\nSession..........: hashcat\nStatus...........: Cracked\nRecovered........: 1/1 (100.00%) Digests\n\n# \"Status: Exhausted\" means the wordlist ran out without a match — try rules\n# (-r best64.rule) before a bigger list."
           },
           {
             "title": "Hashcat WPA2",
@@ -11339,7 +11391,8 @@ module.exports = [
             "desc_tr": "Dump secrets from remote host (Impacket)",
             "attack": [
               "T1003"
-            ]
+            ],
+            "out": "[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)\nAdministrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::\n[*] Dumping cached domain logon information\n[*] Dumping LSA Secrets\nCORP\\svc-backup:Backup!2023\n\n# LSA Secrets is where cleartext service-account passwords fall out.\n# aad3b435b51404eeaad3b435b51404ee as the LM half just means LM is disabled."
           },
           {
             "title": "Secretsdump with Hash",
@@ -11353,7 +11406,8 @@ module.exports = [
             "attack": [
               "T1003",
               "T1550.002"
-            ]
+            ],
+            "out": "[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)\nAdministrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::\n[*] Dumping cached domain logon information\n[*] Dumping LSA Secrets\nCORP\\svc-backup:Backup!2023\n\n# LSA Secrets is where cleartext service-account passwords fall out.\n# aad3b435b51404eeaad3b435b51404ee as the LM half just means LM is disabled."
           },
           {
             "title": "Secretsdump Local SAM",
@@ -11366,7 +11420,8 @@ module.exports = [
             "desc_tr": "Extract hashes from local SAM/SYSTEM files",
             "attack": [
               "T1003"
-            ]
+            ],
+            "out": "[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)\nAdministrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::\n[*] Dumping cached domain logon information\n[*] Dumping LSA Secrets\nCORP\\svc-backup:Backup!2023\n\n# LSA Secrets is where cleartext service-account passwords fall out.\n# aad3b435b51404eeaad3b435b51404ee as the LM half just means LM is disabled."
           },
           {
             "title": "Pypykatz Live Dump",
@@ -11603,7 +11658,8 @@ module.exports = [
             "desc_tr": "Enumerate valid AD users via Kerberos",
             "attack": [
               "T1110.003"
-            ]
+            ],
+            "out": "[+] VALID USERNAME:  svc-alfresco@corp.htb\n[+] VALID USERNAME:  sebastien@corp.htb\nDone! Tested 8500 usernames (2 valid) in 4.203 seconds\n\n# Pre-auth username enumeration is silent and does not touch lockout counters.\n# Spraying does — read the lockout policy first."
           },
           {
             "title": "Kerbrute Password Spray",
@@ -11616,7 +11672,8 @@ module.exports = [
             "desc_tr": "Spray a password via Kerberos pre-auth",
             "attack": [
               "T1110.003"
-            ]
+            ],
+            "out": "[+] VALID USERNAME:  svc-alfresco@corp.htb\n[+] VALID USERNAME:  sebastien@corp.htb\nDone! Tested 8500 usernames (2 valid) in 4.203 seconds\n\n# Pre-auth username enumeration is silent and does not touch lockout counters.\n# Spraying does — read the lockout policy first."
           },
           {
             "title": "Spray with Hydra",
@@ -12813,7 +12870,8 @@ module.exports = [
               "T1021.006",
               "T1090",
               "T1572"
-            ]
+            ],
+            "out": "Evil-WinRM shell v3.5\nInfo: Establishing connection to remote endpoint\n\n*Evil-WinRM* PS C:\\Users\\svc-alfresco\\Documents>\n\n# The prompt is the success condition. \"WinRMAuthorizationError\" means the\n# credential is valid but the account is not in Remote Management Users."
           },
           {
             "title": "Proxychains CrackMapExec",
@@ -12904,7 +12962,8 @@ module.exports = [
               "T1021.006",
               "T1090",
               "T1572"
-            ]
+            ],
+            "out": "Evil-WinRM shell v3.5\nInfo: Establishing connection to remote endpoint\n\n*Evil-WinRM* PS C:\\Users\\svc-alfresco\\Documents>\n\n# The prompt is the success condition. \"WinRMAuthorizationError\" means the\n# credential is valid but the account is not in Remote Management Users."
           },
           {
             "title": "CME through Proxy",
@@ -14590,7 +14649,8 @@ module.exports = [
             "attack": [
               "T1087.002",
               "T1482"
-            ]
+            ],
+            "out": "INFO: Found 1 domains\nINFO: Found 28 computers\nINFO: Found 112 users\nINFO: Done in 00M 31S\n\n# The counts are the sanity check: 0 computers means the collection failed\n# (usually DNS or clock skew), not that the domain is empty."
           },
           {
             "title": "SharpHound (Stealth)",
@@ -14603,7 +14663,8 @@ module.exports = [
             "attack": [
               "T1087.002",
               "T1482"
-            ]
+            ],
+            "out": "INFO: Found 1 domains\nINFO: Found 28 computers\nINFO: Found 112 users\nINFO: Done in 00M 31S\n\n# The counts are the sanity check: 0 computers means the collection failed\n# (usually DNS or clock skew), not that the domain is empty."
           },
           {
             "title": "BloodHound-Python (Remote)",
@@ -14616,7 +14677,8 @@ module.exports = [
             "attack": [
               "T1087.002",
               "T1482"
-            ]
+            ],
+            "out": "INFO: Found 1 domains\nINFO: Found 28 computers\nINFO: Found 112 users\nINFO: Done in 00M 31S\n\n# The counts are the sanity check: 0 computers means the collection failed\n# (usually DNS or clock skew), not that the domain is empty."
           },
           {
             "title": "Start Neo4j for BloodHound",
@@ -14667,7 +14729,8 @@ module.exports = [
             "desc_tr": "Kapsamlı SMB/LDAP/RPC listeleme",
             "attack": [
               "T1135"
-            ]
+            ],
+            "out": " ==================================( Users on 10.10.10.5 )==================================\nindex: 0x1 RID: 0x450 acb: 0x00000210 Account: svc-alfresco  Name: svc-alfresco  Desc:\nindex: 0x2 RID: 0x455 acb: 0x00000210 Account: sebastien     Name: Sebastien Caron\n\n ==============================( Password Policy Information )==============================\n[+] Minimum password length: 7\n[+] Account lockout threshold: None\n\n# \"Account lockout threshold: None\" is the permission slip for password spraying.\n# Read it BEFORE you spray, not after you lock out the domain."
           },
           {
             "title": "LDAP Domain Dump",
@@ -14706,7 +14769,8 @@ module.exports = [
             "desc_tr": "Enumerate valid domain usernames via Kerberos without authentication",
             "attack": [
               "T1110.003"
-            ]
+            ],
+            "out": "[+] VALID USERNAME:  svc-alfresco@corp.htb\n[+] VALID USERNAME:  sebastien@corp.htb\nDone! Tested 8500 usernames (2 valid) in 4.203 seconds\n\n# Pre-auth username enumeration is silent and does not touch lockout counters.\n# Spraying does — read the lockout policy first."
           },
           {
             "title": "Impacket GetADUsers",
@@ -14736,7 +14800,8 @@ module.exports = [
             "desc_tr": "Attempt a DNS zone transfer from a domain controller",
             "attack": [
               "T1590.002"
-            ]
+            ],
+            "out": "; <<>> DiG 9.18.28 <<>> axfr example.com @ns1.example.com\nexample.com.     604800  IN  SOA   ns1.example.com. admin.example.com. 3 604800 86400 2419200 604800\nexample.com.     604800  IN  NS    ns1.example.com.\ninternal.example.com.  604800 IN A 10.10.10.5\nvpn.example.com.       604800 IN A 10.10.10.9\n\n# A full record dump means the transfer succeeded — that is the finding.\n# \"Transfer failed.\" or \"connection refused\" is the normal, non-vulnerable case."
           },
           {
             "title": "PingCastle",
@@ -15359,7 +15424,8 @@ module.exports = [
             "attack": [
               "T1558.003"
             ],
-            "ref": "https://attack.mitre.org/techniques/T1558/003/"
+            "ref": "https://attack.mitre.org/techniques/T1558/003/",
+            "out": "ServicePrincipalName          Name       MemberOf                     PasswordLastSet\n----------------------------  ---------  ---------------------------  --------------------\nMSSQLSvc/sql01.corp.htb:1433  sqlsvc     CN=Domain Admins,CN=Users...  2023-01-14 09:22:41\n\n$krb5tgs$23$*sqlsvc$CORP.HTB$MSSQLSvc/sql01...*$8f7e6d5c...\n\n# MemberOf is the reason to care: a kerberoastable account in Domain Admins is\n# the whole box. PasswordLastSet tells you whether cracking is realistic —\n# a 2012 password usually is, a rotated one usually is not."
           },
           {
             "title": "Kerberoasting (Rubeus)",
@@ -15408,7 +15474,8 @@ module.exports = [
             "desc_tr": "Extract AS-REP hashes for users without pre-auth",
             "attack": [
               "T1558.004"
-            ]
+            ],
+            "out": "$krb5asrep$23$svc-alfresco@CORP.HTB:1f2e3d4c...$a9b8c7d6e5f4...\n\n# One hash per account with pre-authentication disabled. That is the whole\n# finding — feed it to hashcat -m 18200.\n# \"No entries found!\" means every account requires pre-auth, which is normal."
           },
           {
             "title": "AS-REP Roasting (Rubeus)",
@@ -15421,7 +15488,8 @@ module.exports = [
             "attack": [
               "T1558.004",
               "T1110.002"
-            ]
+            ],
+            "out": "$krb5asrep$23$svc-alfresco@CORP.HTB:1f2e...:s3rvice\n\nSession..........: hashcat\nStatus...........: Cracked\nRecovered........: 1/1 (100.00%) Digests\n\n# \"Status: Exhausted\" means the wordlist ran out without a match — try rules\n# (-r best64.rule) before a bigger list."
           },
           {
             "title": "Crack AS-REP Hashes",
@@ -15434,7 +15502,8 @@ module.exports = [
             "attack": [
               "T1558.004",
               "T1110.002"
-            ]
+            ],
+            "out": "$krb5asrep$23$svc-alfresco@CORP.HTB:1f2e...:s3rvice\n\nSession..........: hashcat\nStatus...........: Cracked\nRecovered........: 1/1 (100.00%) Digests\n\n# \"Status: Exhausted\" means the wordlist ran out without a match — try rules\n# (-r best64.rule) before a bigger list."
           },
           {
             "title": "Overpass the Hash (Rubeus)",
@@ -15780,7 +15849,8 @@ module.exports = [
               "T1059.001",
               "T1021.006",
               "T1550.002"
-            ]
+            ],
+            "out": "Evil-WinRM shell v3.5\nInfo: Establishing connection to remote endpoint\n\n*Evil-WinRM* PS C:\\Users\\svc-alfresco\\Documents>\n\n# The prompt is the success condition. \"WinRMAuthorizationError\" means the\n# credential is valid but the account is not in Remote Management Users."
           },
           {
             "title": "Mimikatz Pass the Hash",
@@ -15907,7 +15977,8 @@ module.exports = [
             "attack": [
               "T1003.003",
               "T1003.006"
-            ]
+            ],
+            "out": "[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)\nAdministrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::\n[*] Dumping cached domain logon information\n[*] Dumping LSA Secrets\nCORP\\svc-backup:Backup!2023\n\n# LSA Secrets is where cleartext service-account passwords fall out.\n# aad3b435b51404eeaad3b435b51404ee as the LM half just means LM is disabled."
           },
           {
             "title": "DCSync Specific User",
@@ -15920,7 +15991,8 @@ module.exports = [
             "attack": [
               "T1003.003",
               "T1003.006"
-            ]
+            ],
+            "out": "[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)\nAdministrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::\n[*] Dumping cached domain logon information\n[*] Dumping LSA Secrets\nCORP\\svc-backup:Backup!2023\n\n# LSA Secrets is where cleartext service-account passwords fall out.\n# aad3b435b51404eeaad3b435b51404ee as the LM half just means LM is disabled."
           },
           {
             "title": "DCSync with Hashes",
@@ -15934,7 +16006,8 @@ module.exports = [
               "T1003.003",
               "T1003.006",
               "T1550.002"
-            ]
+            ],
+            "out": "[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)\nAdministrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::\n[*] Dumping cached domain logon information\n[*] Dumping LSA Secrets\nCORP\\svc-backup:Backup!2023\n\n# LSA Secrets is where cleartext service-account passwords fall out.\n# aad3b435b51404eeaad3b435b51404ee as the LM half just means LM is disabled."
           },
           {
             "title": "Golden Ticket (Mimikatz)",
@@ -16443,7 +16516,8 @@ module.exports = [
             "attack": [
               "T1059.001",
               "T1021.006"
-            ]
+            ],
+            "out": "Evil-WinRM shell v3.5\nInfo: Establishing connection to remote endpoint\n\n*Evil-WinRM* PS C:\\Users\\svc-alfresco\\Documents>\n\n# The prompt is the success condition. \"WinRMAuthorizationError\" means the\n# credential is valid but the account is not in Remote Management Users."
           },
           {
             "title": "Evil-WinRM (Hash)",
@@ -16456,7 +16530,8 @@ module.exports = [
             "attack": [
               "T1021.006",
               "T1550.002"
-            ]
+            ],
+            "out": "Evil-WinRM shell v3.5\nInfo: Establishing connection to remote endpoint\n\n*Evil-WinRM* PS C:\\Users\\svc-alfresco\\Documents>\n\n# The prompt is the success condition. \"WinRMAuthorizationError\" means the\n# credential is valid but the account is not in Remote Management Users."
           },
           {
             "title": "Evil-WinRM (Key-Based)",
@@ -16468,7 +16543,8 @@ module.exports = [
             "desc_tr": "WinRM shell certificate-based kimlik doğrulama ile",
             "attack": [
               "T1021.006"
-            ]
+            ],
+            "out": "Evil-WinRM shell v3.5\nInfo: Establishing connection to remote endpoint\n\n*Evil-WinRM* PS C:\\Users\\svc-alfresco\\Documents>\n\n# The prompt is the success condition. \"WinRMAuthorizationError\" means the\n# credential is valid but the account is not in Remote Management Users."
           },
           {
             "title": "Evil-WinRM Upload File",
@@ -17684,7 +17760,8 @@ module.exports = [
               "essential"
             ],
             "desc": "Listen for incoming file transfer via netcat",
-            "desc_tr": "Listen for incoming file transfer netcat üzerinden"
+            "desc_tr": "Listen for incoming file transfer netcat üzerinden",
+            "out": "listening on [any] 4444 ...\nconnect to [10.10.14.7] from (UNKNOWN) [10.10.10.5] 54312\n$\n\n# \"connect to ... from\" is the callback landing. If it never arrives, prove the\n# path before blaming the payload: tcpdump on the listener interface."
           },
           {
             "title": "Upload Server",
@@ -19444,7 +19521,8 @@ module.exports = [
             "desc_tr": "Step 2: tarama tüm 65535 TCP ports quickly",
             "attack": [
               "T1046"
-            ]
+            ],
+            "out": "Starting Nmap 7.94 ( https://nmap.org )\nNmap scan report for 10.10.10.5\nHost is up (0.031s latency).\nNot shown: 65530 closed tcp ports (reset)\nPORT     STATE SERVICE\n22/tcp   open  ssh\n80/tcp   open  http\n139/tcp  open  netbios-ssn\n445/tcp  open  microsoft-ds\n3389/tcp open  ms-wbt-server\n\nNmap done: 1 IP address (1 host up) scanned in 42.18 seconds\n\n# \"Not shown: 65530 closed\" is the line to read: a host that filtered everything\n# would say \"filtered\" instead, which means the result is not trustworthy."
           },
           {
             "title": "Full Nmap Workflow — Service Enum",
@@ -19456,7 +19534,8 @@ module.exports = [
             "desc_tr": "Step 3: Service versiand default script tarama on açık portlar üzerinde",
             "attack": [
               "T1046"
-            ]
+            ],
+            "out": "PORT    STATE SERVICE     VERSION\n22/tcp  open  ssh         OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)\n| ssh-hostkey:\n|   3072 9c:1e:aa:eb:... (RSA)\n80/tcp  open  http        Apache httpd 2.4.41 ((Ubuntu))\n|_http-title: Did not follow redirect to http://app.example.htb/\n|_http-server-header: Apache/2.4.41 (Ubuntu)\n\n# The exact version string is what decides which exploit applies.\n# A redirect to a HOSTNAME means add it to /etc/hosts and rescan by name."
           },
           {
             "title": "Full Nmap Workflow — Vuln Scan",
@@ -19480,7 +19559,8 @@ module.exports = [
             "desc_tr": "Step 5: Quick tarama of top UDP ports",
             "attack": [
               "T1046"
-            ]
+            ],
+            "out": "PORT    STATE         SERVICE\n161/udp open          snmp\n500/udp open|filtered isakmp\n69/udp  open|filtered tftp\n\n# \"open|filtered\" is UDP's normal answer — no reply is indistinguishable from a\n# dropped packet. Treat it as \"worth probing\", not as closed."
           },
           {
             "title": "Web Enum — Identify Technology",
@@ -19501,7 +19581,8 @@ module.exports = [
             "desc_tr": "Step 2: kaba kuvvet saldırısı directories and files",
             "attack": [
               "T1595.003"
-            ]
+            ],
+            "out": "/images               (Status: 301) [Size: 315] [--> /images/]\n/admin                (Status: 401) [Size: 456]\n/backup               (Status: 200) [Size: 1204]\n/index.php            (Status: 200) [Size: 5104]\n\n# 401 and 403 are findings, not failures — the path exists and is protected.\n# A uniform size across many 200s means a catch-all page: filter it out with\n# --exclude-length / -fs or every result is noise."
           },
           {
             "title": "Web Enum — Nikto Scan",
@@ -19550,7 +19631,8 @@ module.exports = [
             "desc_tr": "Kontrol et: for boş oturum SMB share listing",
             "attack": [
               "T1135"
-            ]
+            ],
+            "out": "        Sharename       Type      Comment\n        ---------       ----      -------\n        ADMIN$          Disk      Remote Admin\n        C$              Disk      Default share\n        backups         Disk\n        IPC$            IPC       Remote IPC\n\n# A non-default share (here: backups) is the reason you ran this.\n# NT_STATUS_ACCESS_DENIED with no listing means anonymous is refused."
           },
           {
             "title": "Quick Win: NFS Shares",
@@ -19562,7 +19644,8 @@ module.exports = [
               "essential"
             ],
             "desc": "Check for exposed NFS shares and mount them",
-            "desc_tr": "Kontrol et: for açık NFS shares and mount them"
+            "desc_tr": "Kontrol et: for açık NFS shares and mount them",
+            "out": "Export list for 10.10.10.5:\n/srv/share  *\n/home       10.10.10.0/24\n\n# \"*\" means anyone may mount it. Mount it and check whether root_squash is on —\n# if it is not, you can write a SUID binary as root from your own box."
           },
           {
             "title": "Quick Win: SMTP User Enum",
@@ -19613,7 +19696,8 @@ module.exports = [
               "essential"
             ],
             "desc": "Check for default SNMP community string 'public'",
-            "desc_tr": "Kontrol et: for default SNMP community string 'public'"
+            "desc_tr": "Kontrol et: for default SNMP community string 'public'",
+            "out": "iso.3.6.1.2.1.25.4.2.1.2.1 = STRING: \"systemd\"\niso.3.6.1.2.1.25.4.2.1.2.412 = STRING: \"apache2\"\niso.3.6.1.2.1.25.4.2.1.2.980 = STRING: \"mysqld -u root --password=Summer2023\"\n\n# Process arguments are the prize: service accounts pass passwords on the\n# command line constantly, and SNMP hands you the full argv."
           },
           {
             "title": "Quick Win: IPMI Hash Dump",
@@ -19646,7 +19730,8 @@ module.exports = [
             "attack": [
               "T1059.004",
               "T1059.006"
-            ]
+            ],
+            "out": "user@target:/var/www$\n\n# The prompt gaining a hostname and a path is the upgrade working. After this,\n# Ctrl-Z, then: stty raw -echo; fg, then reset — now arrows and Ctrl-C work."
           },
           {
             "title": "Post-Exploit Step 2: User Context",
@@ -19676,7 +19761,8 @@ module.exports = [
             "desc_tr": "Kontrol et: what commands the mevcut user can run as sudo",
             "attack": [
               "T1548.003"
-            ]
+            ],
+            "out": "Matching Defaults entries for user on target:\n    env_reset, mail_badpass, secure_path=/usr/local/sbin\\:/usr/local/bin\n\nUser user may run the following commands on target:\n    (ALL) NOPASSWD: /usr/bin/find\n\n# Every line here is a candidate. Check the binary on GTFOBins before anything\n# else — /usr/bin/find with NOPASSWD is a root shell in one command."
           },
           {
             "title": "Post-Exploit Step 4: SUID Binaries",
@@ -19688,7 +19774,8 @@ module.exports = [
             "desc_tr": "Find SUID binaries for potential privilege escalation",
             "attack": [
               "T1548.001"
-            ]
+            ],
+            "out": "/usr/bin/sudo\n/usr/bin/passwd\n/usr/bin/chsh\n/usr/bin/pkexec\n/usr/bin/find\n\n# Ignore the standard set (sudo, passwd, chsh, mount, su). What matters is the\n# unusual one — a shell, an interpreter, or anything from GTFOBins."
           },
           {
             "title": "Post-Exploit Step 5: Cron Jobs",
@@ -19783,7 +19870,8 @@ module.exports = [
               "T1033",
               "T1082",
               "T1087"
-            ]
+            ],
+            "out": "uid=1000(user) gid=1000(user) groups=1000(user),4(adm),27(sudo),999(docker)\n\n# Groups are the point. docker, lxd, disk, adm and sudo are each a documented\n# path to root — check the group list before anything else."
           },
           {
             "title": "Windows Post-Exploit: Stored Creds",
@@ -20024,7 +20112,8 @@ module.exports = [
             "desc_tr": "FTP: version scan, anonymous access, brute force",
             "attack": [
               "T1046"
-            ]
+            ],
+            "out": "PORT    STATE SERVICE     VERSION\n22/tcp  open  ssh         OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)\n| ssh-hostkey:\n|   3072 9c:1e:aa:eb:... (RSA)\n80/tcp  open  http        Apache httpd 2.4.41 ((Ubuntu))\n|_http-title: Did not follow redirect to http://app.example.htb/\n|_http-server-header: Apache/2.4.41 (Ubuntu)\n\n# The exact version string is what decides which exploit applies.\n# A redirect to a HOSTNAME means add it to /etc/hosts and rescan by name."
           },
           {
             "title": "Port 22 — SSH Checks",
@@ -20040,7 +20129,8 @@ module.exports = [
             "desc_tr": "SSH: version scan, algorithm audit, brute force",
             "attack": [
               "T1046"
-            ]
+            ],
+            "out": "PORT    STATE SERVICE     VERSION\n22/tcp  open  ssh         OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)\n| ssh-hostkey:\n|   3072 9c:1e:aa:eb:... (RSA)\n80/tcp  open  http        Apache httpd 2.4.41 ((Ubuntu))\n|_http-title: Did not follow redirect to http://app.example.htb/\n|_http-server-header: Apache/2.4.41 (Ubuntu)\n\n# The exact version string is what decides which exploit applies.\n# A redirect to a HOSTNAME means add it to /etc/hosts and rescan by name."
           },
           {
             "title": "Port 25 — SMTP Checks",
@@ -20088,7 +20178,8 @@ module.exports = [
             "desc_tr": "HTTP: technology identification, vuln scan, directory brute",
             "attack": [
               "T1595.003"
-            ]
+            ],
+            "out": "/images               (Status: 301) [Size: 315] [--> /images/]\n/admin                (Status: 401) [Size: 456]\n/backup               (Status: 200) [Size: 1204]\n/index.php            (Status: 200) [Size: 5104]\n\n# 401 and 403 are findings, not failures — the path exists and is protected.\n# A uniform size across many 200s means a catch-all page: filter it out with\n# --exclude-length / -fs or every result is noise."
           },
           {
             "title": "Port 110/995 — POP3 Checks",
@@ -20120,7 +20211,8 @@ module.exports = [
             "desc_tr": "NFS/RPC: share listeleme and mounting",
             "attack": [
               "T1046"
-            ]
+            ],
+            "out": "Export list for 10.10.10.5:\n/srv/share  *\n/home       10.10.10.0/24\n\n# \"*\" means anyone may mount it. Mount it and check whether root_squash is on —\n# if it is not, you can write a SUID binary as root from your own box."
           },
           {
             "title": "Port 135/139/445 — SMB Checks",
@@ -20138,7 +20230,8 @@ module.exports = [
             "attack": [
               "T1046",
               "T1135"
-            ]
+            ],
+            "out": " ==================================( Users on 10.10.10.5 )==================================\nindex: 0x1 RID: 0x450 acb: 0x00000210 Account: svc-alfresco  Name: svc-alfresco  Desc:\nindex: 0x2 RID: 0x455 acb: 0x00000210 Account: sebastien     Name: Sebastien Caron\n\n ==============================( Password Policy Information )==============================\n[+] Minimum password length: 7\n[+] Account lockout threshold: None\n\n# \"Account lockout threshold: None\" is the permission slip for password spraying.\n# Read it BEFORE you spray, not after you lock out the domain."
           },
           {
             "title": "Port 161 — SNMP Checks",
@@ -20151,7 +20244,8 @@ module.exports = [
               "essential"
             ],
             "desc": "SNMP: community string brute force and enumeration",
-            "desc_tr": "SNMP: community string brute force and enumeration"
+            "desc_tr": "SNMP: community string brute force and enumeration",
+            "out": "iso.3.6.1.2.1.25.4.2.1.2.1 = STRING: \"systemd\"\niso.3.6.1.2.1.25.4.2.1.2.412 = STRING: \"apache2\"\niso.3.6.1.2.1.25.4.2.1.2.980 = STRING: \"mysqld -u root --password=Summer2023\"\n\n# Process arguments are the prize: service accounts pass passwords on the\n# command line constantly, and SNMP hands you the full argv."
           },
           {
             "title": "Port 389/636 — LDAP Checks",
@@ -20212,7 +20306,8 @@ module.exports = [
             "desc_tr": "NFS: share listing and mount options",
             "attack": [
               "T1046"
-            ]
+            ],
+            "out": "Export list for 10.10.10.5:\n/srv/share  *\n/home       10.10.10.0/24\n\n# \"*\" means anyone may mount it. Mount it and check whether root_squash is on —\n# if it is not, you can write a SUID binary as root from your own box."
           },
           {
             "title": "Port 3306 — MySQL Checks",
@@ -20291,7 +20386,8 @@ module.exports = [
             "attack": [
               "T1046",
               "T1021.006"
-            ]
+            ],
+            "out": "Evil-WinRM shell v3.5\nInfo: Establishing connection to remote endpoint\n\n*Evil-WinRM* PS C:\\Users\\svc-alfresco\\Documents>\n\n# The prompt is the success condition. \"WinRMAuthorizationError\" means the\n# credential is valid but the account is not in Remote Management Users."
           },
           {
             "title": "Port 6379 — Redis Checks",
@@ -20323,7 +20419,8 @@ module.exports = [
             "desc_tr": "Web uygulama sunucuları: teknoloji tespiti, dizin keşfi, varsayılan kimlik bilgileri",
             "attack": [
               "T1595.003"
-            ]
+            ],
+            "out": "/images               (Status: 301) [Size: 315] [--> /images/]\n/admin                (Status: 401) [Size: 456]\n/backup               (Status: 200) [Size: 1204]\n/index.php            (Status: 200) [Size: 5104]\n\n# 401 and 403 are findings, not failures — the path exists and is protected.\n# A uniform size across many 200s means a catch-all page: filter it out with\n# --exclude-length / -fs or every result is noise."
           },
           {
             "title": "Port 27017 — MongoDB Checks",
@@ -20414,7 +20511,8 @@ module.exports = [
             "attack": [
               "T1046",
               "T1135"
-            ]
+            ],
+            "out": " ==================================( Users on 10.10.10.5 )==================================\nindex: 0x1 RID: 0x450 acb: 0x00000210 Account: svc-alfresco  Name: svc-alfresco  Desc:\nindex: 0x2 RID: 0x455 acb: 0x00000210 Account: sebastien     Name: Sebastien Caron\n\n ==============================( Password Policy Information )==============================\n[+] Minimum password length: 7\n[+] Account lockout threshold: None\n\n# \"Account lockout threshold: None\" is the permission slip for password spraying.\n# Read it BEFORE you spray, not after you lock out the domain."
           },
           {
             "title": "Port 1433 MSSQL",
@@ -20461,7 +20559,8 @@ module.exports = [
             "desc_tr": "WinRM saldırı kontrol listesi",
             "attack": [
               "T1021.006"
-            ]
+            ],
+            "out": "Evil-WinRM shell v3.5\nInfo: Establishing connection to remote endpoint\n\n*Evil-WinRM* PS C:\\Users\\svc-alfresco\\Documents>\n\n# The prompt is the success condition. \"WinRMAuthorizationError\" means the\n# credential is valid but the account is not in Remote Management Users."
           },
           {
             "title": "Port 6379 Redis",
@@ -21365,7 +21464,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Test et: boş oturum kimlik doğrulama"
+            "desc_tr": "Test et: boş oturum kimlik doğrulama",
+            "out": "SMB    10.10.10.5   445   DC01   [*] Windows Server 2019 Build 17763 x64 (name:DC01) (domain:corp.htb) (signing:True) (SMBv1:False)\nSMB    10.10.10.5   445   DC01   [-] corp.htb\\: STATUS_ACCESS_DENIED\n\n# The banner alone is worth the call: it hands you the hostname, the domain name\n# and the OS build. signing:False would mark this host as a relay target.\n# STATUS_ACCESS_DENIED means null session refused — try guest separately."
           },
           {
             "title": "NXC SMB Guest Session",
@@ -21386,7 +21486,8 @@ module.exports = [
             "desc_tr": "List all SMB shares",
             "attack": [
               "T1135"
-            ]
+            ],
+            "out": "SMB   10.10.10.5  445  DC01  [+] corp.htb\\svc-alfresco:s3rvice\nSMB   10.10.10.5  445  DC01  [*] Enumerated shares\nSMB   10.10.10.5  445  DC01  Share     Permissions   Remark\nSMB   10.10.10.5  445  DC01  -----     -----------   ------\nSMB   10.10.10.5  445  DC01  NETLOGON  READ          Logon server share\nSMB   10.10.10.5  445  DC01  SYSVOL    READ          Logon server share\nSMB   10.10.10.5  445  DC01  IT        READ,WRITE\n\n# [+] means the credential authenticated. \"(Pwn3d!)\" after it means it is local\n# admin — that is the line you are actually hunting for.\n# A READ on SYSVOL almost always leads to a script with a password in it."
           },
           {
             "title": "NXC SMB Enumerate Users",
@@ -21425,7 +21526,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "Get domain password policy"
+            "desc_tr": "Get domain password policy",
+            "out": "SMB  10.10.10.5  445  DC01  [+] corp.htb\\user:Password1\nSMB  10.10.10.5  445  DC01  Minimum password length: 7\nSMB  10.10.10.5  445  DC01  Account Lockout Threshold: None\nSMB  10.10.10.5  445  DC01  Reset Account Lockout Counter: 30 minutes\n\n# Threshold \"None\" means spraying is safe. A threshold of 3 with a 30-minute\n# window means one attempt per 30 minutes per account, or you lock the domain."
           },
           {
             "title": "NXC SMB RID Brute",
@@ -21434,7 +21536,8 @@ module.exports = [
             "tags": [
               "tool"
             ],
-            "desc_tr": "Enumerate users via RID cycling (no creds needed)"
+            "desc_tr": "Enumerate users via RID cycling (no creds needed)",
+            "out": "SMB    10.10.10.5   445   DC01   [*] Windows Server 2019 Build 17763 x64 (name:DC01) (domain:corp.htb) (signing:True) (SMBv1:False)\nSMB    10.10.10.5   445   DC01   [-] corp.htb\\: STATUS_ACCESS_DENIED\n\n# The banner alone is worth the call: it hands you the hostname, the domain name\n# and the OS build. signing:False would mark this host as a relay target.\n# STATUS_ACCESS_DENIED means null session refused — try guest separately."
           },
           {
             "title": "NXC SMB Enumerate Sessions",
@@ -21525,7 +21628,8 @@ module.exports = [
             "attack": [
               "T1033",
               "T1021.002"
-            ]
+            ],
+            "out": "uid=1000(user) gid=1000(user) groups=1000(user),4(adm),27(sudo),999(docker)\n\n# Groups are the point. docker, lxd, disk, adm and sudo are each a documented\n# path to root — check the group list before anything else."
           },
           {
             "title": "NXC SMB PowerShell Exec",
@@ -21727,7 +21831,8 @@ module.exports = [
             "attack": [
               "T1033",
               "T1550.002"
-            ]
+            ],
+            "out": "uid=1000(user) gid=1000(user) groups=1000(user),4(adm),27(sudo),999(docker)\n\n# Groups are the point. docker, lxd, disk, adm and sudo are each a documented\n# path to root — check the group list before anything else."
           },
           {
             "title": "NXC SMB PtH PowerShell",
@@ -21960,7 +22065,8 @@ module.exports = [
             "desc_tr": "Kontrol et: for EternalBlue zafiyet(ler)",
             "attack": [
               "T1210"
-            ]
+            ],
+            "out": "SMB    10.10.10.5   445   DC01   [*] Windows Server 2019 Build 17763 x64 (name:DC01) (domain:corp.htb) (signing:True) (SMBv1:False)\nSMB    10.10.10.5   445   DC01   [-] corp.htb\\: STATUS_ACCESS_DENIED\n\n# The banner alone is worth the call: it hands you the hostname, the domain name\n# and the OS build. signing:False would mark this host as a relay target.\n# STATUS_ACCESS_DENIED means null session refused — try guest separately."
           },
           {
             "title": "NXC Printnightmare Check",
@@ -22259,7 +22365,8 @@ module.exports = [
             "attack": [
               "T1087.002",
               "T1482"
-            ]
+            ],
+            "out": "INFO: Found 1 domains\nINFO: Found 28 computers\nINFO: Found 112 users\nINFO: Done in 00M 31S\n\n# The counts are the sanity check: 0 computers means the collection failed\n# (usually DNS or clock skew), not that the domain is empty."
           },
           {
             "title": "SharpHound Default Collection",
@@ -22272,7 +22379,8 @@ module.exports = [
             "attack": [
               "T1087.002",
               "T1482"
-            ]
+            ],
+            "out": "INFO: Found 1 domains\nINFO: Found 28 computers\nINFO: Found 112 users\nINFO: Done in 00M 31S\n\n# The counts are the sanity check: 0 computers means the collection failed\n# (usually DNS or clock skew), not that the domain is empty."
           },
           {
             "title": "SharpHound DCOnly",
@@ -22285,7 +22393,8 @@ module.exports = [
             "attack": [
               "T1087.002",
               "T1482"
-            ]
+            ],
+            "out": "INFO: Found 1 domains\nINFO: Found 28 computers\nINFO: Found 112 users\nINFO: Done in 00M 31S\n\n# The counts are the sanity check: 0 computers means the collection failed\n# (usually DNS or clock skew), not that the domain is empty."
           },
           {
             "title": "SharpHound with Domain",
@@ -22298,7 +22407,8 @@ module.exports = [
             "attack": [
               "T1087.002",
               "T1482"
-            ]
+            ],
+            "out": "INFO: Found 1 domains\nINFO: Found 28 computers\nINFO: Found 112 users\nINFO: Done in 00M 31S\n\n# The counts are the sanity check: 0 computers means the collection failed\n# (usually DNS or clock skew), not that the domain is empty."
           },
           {
             "title": "SharpHound Custom DC",
@@ -22311,7 +22421,8 @@ module.exports = [
             "attack": [
               "T1087.002",
               "T1482"
-            ]
+            ],
+            "out": "INFO: Found 1 domains\nINFO: Found 28 computers\nINFO: Found 112 users\nINFO: Done in 00M 31S\n\n# The counts are the sanity check: 0 computers means the collection failed\n# (usually DNS or clock skew), not that the domain is empty."
           },
           {
             "title": "SharpHound Stealth Mode",
@@ -22324,7 +22435,8 @@ module.exports = [
             "attack": [
               "T1087.002",
               "T1482"
-            ]
+            ],
+            "out": "INFO: Found 1 domains\nINFO: Found 28 computers\nINFO: Found 112 users\nINFO: Done in 00M 31S\n\n# The counts are the sanity check: 0 computers means the collection failed\n# (usually DNS or clock skew), not that the domain is empty."
           },
           {
             "title": "BloodHound.py Collection",
@@ -22338,7 +22450,8 @@ module.exports = [
             "attack": [
               "T1087.002",
               "T1482"
-            ]
+            ],
+            "out": "INFO: Found 1 domains\nINFO: Found 28 computers\nINFO: Found 112 users\nINFO: Done in 00M 31S\n\n# The counts are the sanity check: 0 computers means the collection failed\n# (usually DNS or clock skew), not that the domain is empty."
           },
           {
             "title": "BloodHound.py via NTLM Hash",
@@ -22352,7 +22465,8 @@ module.exports = [
               "T1087.002",
               "T1482",
               "T1550.002"
-            ]
+            ],
+            "out": "INFO: Found 1 domains\nINFO: Found 28 computers\nINFO: Found 112 users\nINFO: Done in 00M 31S\n\n# The counts are the sanity check: 0 computers means the collection failed\n# (usually DNS or clock skew), not that the domain is empty."
           },
           {
             "title": "BloodHound.py with Nameserver",
@@ -22366,7 +22480,8 @@ module.exports = [
             "attack": [
               "T1087.002",
               "T1482"
-            ]
+            ],
+            "out": "INFO: Found 1 domains\nINFO: Found 28 computers\nINFO: Found 112 users\nINFO: Done in 00M 31S\n\n# The counts are the sanity check: 0 computers means the collection failed\n# (usually DNS or clock skew), not that the domain is empty."
           },
           {
             "title": "BloodHound.py Kerberos Auth",
@@ -22379,7 +22494,8 @@ module.exports = [
             "attack": [
               "T1087.002",
               "T1482"
-            ]
+            ],
+            "out": "INFO: Found 1 domains\nINFO: Found 28 computers\nINFO: Found 112 users\nINFO: Done in 00M 31S\n\n# The counts are the sanity check: 0 computers means the collection failed\n# (usually DNS or clock skew), not that the domain is empty."
           },
           {
             "title": "BloodHound.py DCOnly Collection",
@@ -22392,7 +22508,8 @@ module.exports = [
             "attack": [
               "T1087.002",
               "T1482"
-            ]
+            ],
+            "out": "INFO: Found 1 domains\nINFO: Found 28 computers\nINFO: Found 112 users\nINFO: Done in 00M 31S\n\n# The counts are the sanity check: 0 computers means the collection failed\n# (usually DNS or clock skew), not that the domain is empty."
           },
           {
             "title": "BloodHound.py Specific Collection Methods",
@@ -22406,7 +22523,8 @@ module.exports = [
             "attack": [
               "T1087.002",
               "T1482"
-            ]
+            ],
+            "out": "INFO: Found 1 domains\nINFO: Found 28 computers\nINFO: Found 112 users\nINFO: Done in 00M 31S\n\n# The counts are the sanity check: 0 computers means the collection failed\n# (usually DNS or clock skew), not that the domain is empty."
           },
           {
             "title": "BloodHound.py via Proxychains",
@@ -22421,7 +22539,8 @@ module.exports = [
               "T1482",
               "T1090",
               "T1572"
-            ]
+            ],
+            "out": "INFO: Found 1 domains\nINFO: Found 28 computers\nINFO: Found 112 users\nINFO: Done in 00M 31S\n\n# The counts are the sanity check: 0 computers means the collection failed\n# (usually DNS or clock skew), not that the domain is empty."
           },
           {
             "title": "BloodHound.py Custom Output Directory",
@@ -22434,7 +22553,8 @@ module.exports = [
             "attack": [
               "T1087.002",
               "T1482"
-            ]
+            ],
+            "out": "INFO: Found 1 domains\nINFO: Found 28 computers\nINFO: Found 112 users\nINFO: Done in 00M 31S\n\n# The counts are the sanity check: 0 computers means the collection failed\n# (usually DNS or clock skew), not that the domain is empty."
           },
           {
             "title": "BloodHound.py Disable Pooling",
@@ -22447,7 +22567,8 @@ module.exports = [
             "attack": [
               "T1087.002",
               "T1482"
-            ]
+            ],
+            "out": "INFO: Found 1 domains\nINFO: Found 28 computers\nINFO: Found 112 users\nINFO: Done in 00M 31S\n\n# The counts are the sanity check: 0 computers means the collection failed\n# (usually DNS or clock skew), not that the domain is empty."
           },
           {
             "title": "BloodHound.py DNS Lookup Fix",
@@ -22464,7 +22585,8 @@ module.exports = [
             "attack": [
               "T1087.002",
               "T1482"
-            ]
+            ],
+            "out": "INFO: Found 1 domains\nINFO: Found 28 computers\nINFO: Found 112 users\nINFO: Done in 00M 31S\n\n# The counts are the sanity check: 0 computers means the collection failed\n# (usually DNS or clock skew), not that the domain is empty."
           },
           {
             "title": "RustHound Collection",
@@ -23342,7 +23464,8 @@ module.exports = [
             "desc_tr": "Attempt AXFR zone transfer",
             "attack": [
               "T1590.002"
-            ]
+            ],
+            "out": "; <<>> DiG 9.18.28 <<>> axfr example.com @ns1.example.com\nexample.com.     604800  IN  SOA   ns1.example.com. admin.example.com. 3 604800 86400 2419200 604800\nexample.com.     604800  IN  NS    ns1.example.com.\ninternal.example.com.  604800 IN A 10.10.10.5\nvpn.example.com.       604800 IN A 10.10.10.9\n\n# A full record dump means the transfer succeeded — that is the finding.\n# \"Transfer failed.\" or \"connection refused\" is the normal, non-vulnerable case."
           },
           {
             "title": "DNS Reverse Lookup Zone",
@@ -23354,7 +23477,8 @@ module.exports = [
             "desc_tr": "Attempt reverse zone transfer",
             "attack": [
               "T1590.002"
-            ]
+            ],
+            "out": "; <<>> DiG 9.18.28 <<>> axfr example.com @ns1.example.com\nexample.com.     604800  IN  SOA   ns1.example.com. admin.example.com. 3 604800 86400 2419200 604800\nexample.com.     604800  IN  NS    ns1.example.com.\ninternal.example.com.  604800 IN A 10.10.10.5\nvpn.example.com.       604800 IN A 10.10.10.9\n\n# A full record dump means the transfer succeeded — that is the finding.\n# \"Transfer failed.\" or \"connection refused\" is the normal, non-vulnerable case."
           },
           {
             "title": "DNSChef Spoof",
@@ -23464,7 +23588,8 @@ module.exports = [
             "desc_tr": "List SMB shares (no auth)",
             "attack": [
               "T1135"
-            ]
+            ],
+            "out": "        Sharename       Type      Comment\n        ---------       ----      -------\n        ADMIN$          Disk      Remote Admin\n        C$              Disk      Default share\n        backups         Disk\n        IPC$            IPC       Remote IPC\n\n# A non-default share (here: backups) is the reason you ran this.\n# NT_STATUS_ACCESS_DENIED with no listing means anonymous is refused."
           },
           {
             "title": "SMBClient Connect Share",
@@ -24146,7 +24271,8 @@ module.exports = [
             "tags": [
               "essential"
             ],
-            "desc_tr": "List NFS exported directories"
+            "desc_tr": "List NFS exported directories",
+            "out": "Export list for 10.10.10.5:\n/srv/share  *\n/home       10.10.10.0/24\n\n# \"*\" means anyone may mount it. Mount it and check whether root_squash is on —\n# if it is not, you can write a SUID binary as root from your own box."
           },
           {
             "title": "Mount NFS Share",
@@ -24274,7 +24400,8 @@ module.exports = [
             "desc_tr": "Connect to WinRM with Evil-WinRM",
             "attack": [
               "T1021.006"
-            ]
+            ],
+            "out": "Evil-WinRM shell v3.5\nInfo: Establishing connection to remote endpoint\n\n*Evil-WinRM* PS C:\\Users\\svc-alfresco\\Documents>\n\n# The prompt is the success condition. \"WinRMAuthorizationError\" means the\n# credential is valid but the account is not in Remote Management Users."
           },
           {
             "title": "Evil-WinRM with Hash",
@@ -24287,7 +24414,8 @@ module.exports = [
             "attack": [
               "T1021.006",
               "T1550.002"
-            ]
+            ],
+            "out": "Evil-WinRM shell v3.5\nInfo: Establishing connection to remote endpoint\n\n*Evil-WinRM* PS C:\\Users\\svc-alfresco\\Documents>\n\n# The prompt is the success condition. \"WinRMAuthorizationError\" means the\n# credential is valid but the account is not in Remote Management Users."
           },
           {
             "title": "Evil-WinRM with SSL",
@@ -24299,7 +24427,8 @@ module.exports = [
             "desc_tr": "Connect to WinRM with SSL (5986)",
             "attack": [
               "T1021.006"
-            ]
+            ],
+            "out": "Evil-WinRM shell v3.5\nInfo: Establishing connection to remote endpoint\n\n*Evil-WinRM* PS C:\\Users\\svc-alfresco\\Documents>\n\n# The prompt is the success condition. \"WinRMAuthorizationError\" means the\n# credential is valid but the account is not in Remote Management Users."
           },
           {
             "title": "Evil-WinRM File Upload",
@@ -24311,7 +24440,8 @@ module.exports = [
             "desc_tr": "Upload file to target",
             "attack": [
               "T1021.006"
-            ]
+            ],
+            "out": "Evil-WinRM shell v3.5\nInfo: Establishing connection to remote endpoint\n\n*Evil-WinRM* PS C:\\Users\\svc-alfresco\\Documents>\n\n# The prompt is the success condition. \"WinRMAuthorizationError\" means the\n# credential is valid but the account is not in Remote Management Users."
           },
           {
             "title": "Evil-WinRM Run Script",
@@ -24424,7 +24554,8 @@ module.exports = [
             "attack": [
               "T1558.003",
               "T1021.006"
-            ]
+            ],
+            "out": "Evil-WinRM shell v3.5\nInfo: Establishing connection to remote endpoint\n\n*Evil-WinRM* PS C:\\Users\\svc-alfresco\\Documents>\n\n# The prompt is the success condition. \"WinRMAuthorizationError\" means the\n# credential is valid but the account is not in Remote Management Users."
           },
           {
             "title": "Evil-WinRM Load PS Script (In-Session)",
@@ -24445,7 +24576,8 @@ module.exports = [
               "T1087",
               "T1059.001",
               "T1021.006"
-            ]
+            ],
+            "out": "Evil-WinRM shell v3.5\nInfo: Establishing connection to remote endpoint\n\n*Evil-WinRM* PS C:\\Users\\svc-alfresco\\Documents>\n\n# The prompt is the success condition. \"WinRMAuthorizationError\" means the\n# credential is valid but the account is not in Remote Management Users."
           },
           {
             "title": "Evil-WinRM Services (In-Session)",
@@ -24481,7 +24613,8 @@ module.exports = [
               "T1082",
               "T1016",
               "T1087"
-            ]
+            ],
+            "out": "uid=1000(user) gid=1000(user) groups=1000(user),4(adm),27(sudo),999(docker)\n\n# Groups are the point. docker, lxd, disk, adm and sudo are each a documented\n# path to root — check the group list before anything else."
           },
           {
             "title": "Evil-WinRM WinPEAS from Session",
@@ -24517,7 +24650,8 @@ module.exports = [
               "T1087.002",
               "T1482",
               "T1021.006"
-            ]
+            ],
+            "out": "INFO: Found 1 domains\nINFO: Found 28 computers\nINFO: Found 112 users\nINFO: Done in 00M 31S\n\n# The counts are the sanity check: 0 computers means the collection failed\n# (usually DNS or clock skew), not that the domain is empty."
           }
         ],
         "name_tr": "WinRM (5985/5986)"
@@ -25222,7 +25356,8 @@ module.exports = [
             "desc_tr": "Get TGS tickets for Kerberoasting",
             "attack": [
               "T1558.003"
-            ]
+            ],
+            "out": "ServicePrincipalName          Name       MemberOf                     PasswordLastSet\n----------------------------  ---------  ---------------------------  --------------------\nMSSQLSvc/sql01.corp.htb:1433  sqlsvc     CN=Domain Admins,CN=Users...  2023-01-14 09:22:41\n\n$krb5tgs$23$*sqlsvc$CORP.HTB$MSSQLSvc/sql01...*$8f7e6d5c...\n\n# MemberOf is the reason to care: a kerberoastable account in Domain Admins is\n# the whole box. PasswordLastSet tells you whether cracking is realistic —\n# a 2012 password usually is, a rotated one usually is not."
           },
           {
             "title": "GetUserSPNs with Hash",
@@ -25235,7 +25370,8 @@ module.exports = [
             "attack": [
               "T1558.003",
               "T1550.002"
-            ]
+            ],
+            "out": "ServicePrincipalName          Name       MemberOf                     PasswordLastSet\n----------------------------  ---------  ---------------------------  --------------------\nMSSQLSvc/sql01.corp.htb:1433  sqlsvc     CN=Domain Admins,CN=Users...  2023-01-14 09:22:41\n\n$krb5tgs$23$*sqlsvc$CORP.HTB$MSSQLSvc/sql01...*$8f7e6d5c...\n\n# MemberOf is the reason to care: a kerberoastable account in Domain Admins is\n# the whole box. PasswordLastSet tells you whether cracking is realistic —\n# a 2012 password usually is, a rotated one usually is not."
           },
           {
             "title": "GetNPUsers (ASREPRoast)",
@@ -25249,7 +25385,8 @@ module.exports = [
             "attack": [
               "T1558.004",
               "T1110.002"
-            ]
+            ],
+            "out": "$krb5asrep$23$svc-alfresco@CORP.HTB:1f2e3d4c...$a9b8c7d6e5f4...\n\n# One hash per account with pre-authentication disabled. That is the whole\n# finding — feed it to hashcat -m 18200.\n# \"No entries found!\" means every account requires pre-auth, which is normal."
           },
           {
             "title": "GetNPUsers Single User",
@@ -25262,7 +25399,8 @@ module.exports = [
             "attack": [
               "T1558.004",
               "T1110.002"
-            ]
+            ],
+            "out": "$krb5asrep$23$svc-alfresco@CORP.HTB:1f2e3d4c...$a9b8c7d6e5f4...\n\n# One hash per account with pre-authentication disabled. That is the whole\n# finding — feed it to hashcat -m 18200.\n# \"No entries found!\" means every account requires pre-auth, which is normal."
           },
           {
             "title": "getTGT Get Ticket",
@@ -25332,7 +25470,8 @@ module.exports = [
             "desc_tr": "Dump SAM and LSA secrets remotely",
             "attack": [
               "T1003"
-            ]
+            ],
+            "out": "[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)\nAdministrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::\n[*] Dumping cached domain logon information\n[*] Dumping LSA Secrets\nCORP\\svc-backup:Backup!2023\n\n# LSA Secrets is where cleartext service-account passwords fall out.\n# aad3b435b51404eeaad3b435b51404ee as the LM half just means LM is disabled."
           },
           {
             "title": "SecretsDump with Hash",
@@ -25345,7 +25484,8 @@ module.exports = [
             "attack": [
               "T1003",
               "T1550.002"
-            ]
+            ],
+            "out": "[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)\nAdministrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::\n[*] Dumping cached domain logon information\n[*] Dumping LSA Secrets\nCORP\\svc-backup:Backup!2023\n\n# LSA Secrets is where cleartext service-account passwords fall out.\n# aad3b435b51404eeaad3b435b51404ee as the LM half just means LM is disabled."
           },
           {
             "title": "SecretsDump DCSync",
@@ -25358,7 +25498,8 @@ module.exports = [
             "attack": [
               "T1003.003",
               "T1003.006"
-            ]
+            ],
+            "out": "[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)\nAdministrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::\n[*] Dumping cached domain logon information\n[*] Dumping LSA Secrets\nCORP\\svc-backup:Backup!2023\n\n# LSA Secrets is where cleartext service-account passwords fall out.\n# aad3b435b51404eeaad3b435b51404ee as the LM half just means LM is disabled."
           },
           {
             "title": "SecretsDump Just NTLM",
@@ -25370,7 +25511,8 @@ module.exports = [
             "desc_tr": "Get only NTLM hashes from DC",
             "attack": [
               "T1003"
-            ]
+            ],
+            "out": "[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)\nAdministrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::\n[*] Dumping cached domain logon information\n[*] Dumping LSA Secrets\nCORP\\svc-backup:Backup!2023\n\n# LSA Secrets is where cleartext service-account passwords fall out.\n# aad3b435b51404eeaad3b435b51404ee as the LM half just means LM is disabled."
           },
           {
             "title": "SecretsDump from NTDS",
@@ -25383,7 +25525,8 @@ module.exports = [
             "attack": [
               "T1003.003",
               "T1003.006"
-            ]
+            ],
+            "out": "[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)\nAdministrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::\n[*] Dumping cached domain logon information\n[*] Dumping LSA Secrets\nCORP\\svc-backup:Backup!2023\n\n# LSA Secrets is where cleartext service-account passwords fall out.\n# aad3b435b51404eeaad3b435b51404ee as the LM half just means LM is disabled."
           }
         ],
         "name_tr": "Credential Dumping"
@@ -25885,7 +26028,8 @@ module.exports = [
             "desc_tr": "Mevcut kullanıcı ve grup üyeliklerini göster",
             "attack": [
               "T1033"
-            ]
+            ],
+            "out": "uid=1000(user) gid=1000(user) groups=1000(user),4(adm),27(sudo),999(docker)\n\n# Groups are the point. docker, lxd, disk, adm and sudo are each a documented\n# path to root — check the group list before anything else."
           },
           {
             "title": "Net Users",
@@ -26580,7 +26724,8 @@ module.exports = [
             "desc_tr": "Kontrol et: sudo permissions",
             "attack": [
               "T1548.003"
-            ]
+            ],
+            "out": "Matching Defaults entries for user on target:\n    env_reset, mail_badpass, secure_path=/usr/local/sbin\\:/usr/local/bin\n\nUser user may run the following commands on target:\n    (ALL) NOPASSWD: /usr/bin/find\n\n# Every line here is a candidate. Check the binary on GTFOBins before anything\n# else — /usr/bin/find with NOPASSWD is a root shell in one command."
           },
           {
             "title": "Network Interfaces",
@@ -26725,7 +26870,8 @@ module.exports = [
             "desc_tr": "SUID binary'lerini bul",
             "attack": [
               "T1548.001"
-            ]
+            ],
+            "out": "/usr/bin/sudo\n/usr/bin/passwd\n/usr/bin/chsh\n/usr/bin/pkexec\n/usr/bin/find\n\n# Ignore the standard set (sudo, passwd, chsh, mount, su). What matters is the\n# unusual one — a shell, an interpreter, or anything from GTFOBins."
           },
           {
             "title": "SGID Files",
@@ -27250,7 +27396,8 @@ module.exports = [
             "desc_tr": "Route Gobuster through Burp proxy",
             "attack": [
               "T1595.003"
-            ]
+            ],
+            "out": "/images               (Status: 301) [Size: 315] [--> /images/]\n/admin                (Status: 401) [Size: 456]\n/backup               (Status: 200) [Size: 1204]\n/index.php            (Status: 200) [Size: 5104]\n\n# 401 and 403 are findings, not failures — the path exists and is protected.\n# A uniform size across many 200s means a catch-all page: filter it out with\n# --exclude-length / -fs or every result is noise."
           }
         ],
         "name_tr": "Proxy Setup & Configuration"

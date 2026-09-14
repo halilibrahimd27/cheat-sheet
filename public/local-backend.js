@@ -121,7 +121,7 @@
   // baseline never leaves this browser, so only self-consistency matters.
   const CAT_FIELDS = ["name", "icon", "description", "name_tr", "description_tr"];
   const SUB_FIELDS = ["name", "name_tr"];
-  const CMD_FIELDS = ["title", "desc", "cmd", "cmds", "tags", "note", "attack", "refs", "ref", "desc_tr"];
+  const CMD_FIELDS = ["title", "desc", "cmd", "cmds", "tags", "note", "out", "attack", "refs", "ref", "desc_tr"];
   // Marks a baseline entry as "this text is the USER's, not the seed's". Hashes
   // are hex, so the prefix can never collide with one — see applyRecord.
   const USER_BASE = "u:";
@@ -458,6 +458,7 @@
             const command = { id: genId("c"), title, desc: desc || "" };
             if (cmds && cmds.length) command.cmds = cmds; else if (cmd) command.cmd = cmd;
             command.tags = tags || []; if (note) command.note = note;
+            if (body.out) command.out = body.out;
             if (Array.isArray(body.attack) ? body.attack.length : body.attack) command.attack = body.attack;
             if (Array.isArray(body.refs) && body.refs.length) command.refs = body.refs;
             if (body.ref) command.ref = body.ref;
@@ -468,7 +469,7 @@
             if (!command) return J(404, { error: "Command not found" });
             if (method === "PUT") {
               if (body.title !== undefined && !isNonEmptyString(body.title)) return J(400, { error: "title must be a non-empty string" });
-              for (const k of ["desc", "cmd", "note"]) if (body[k] !== undefined && typeof body[k] !== "string") return J(400, { error: k + " must be a string" });
+              for (const k of ["desc", "cmd", "note", "out"]) if (body[k] !== undefined && typeof body[k] !== "string") return J(400, { error: k + " must be a string" });
               if (body.cmds !== undefined && !Array.isArray(body.cmds)) return J(400, { error: "cmds must be an array" });
               if (body.tags !== undefined && !Array.isArray(body.tags)) return J(400, { error: "tags must be an array" });
               if (body.title) command.title = body.title;
@@ -477,6 +478,8 @@
               if (body.cmds) { command.cmds = body.cmds; delete command.cmd; }
               if (body.tags) command.tags = body.tags;
               if (body.note !== undefined) command.note = body.note;
+              // Expected output: empty clears it, so the field can be emptied on edit.
+              if (body.out !== undefined) { if (body.out) command.out = body.out; else delete command.out; }
               if (body.attack !== undefined) { if (Array.isArray(body.attack) ? body.attack.length : body.attack) command.attack = body.attack; else delete command.attack; }
               if (body.refs !== undefined) { if (Array.isArray(body.refs) && body.refs.length) command.refs = body.refs; else delete command.refs; }
               if (body.ref !== undefined) { if (body.ref) command.ref = body.ref; else delete command.ref; }

@@ -181,6 +181,7 @@
       introNextTitle: "I am stuck", introNextDesc: "Tell it what you have — open ports, whether you hold credentials, where you stand — and it ranks what to try next out of 5040 commands.",
       introBrowseTitle: "Look something up", introBrowseDesc: "The command reference itself. 53 categories, instant search, favourites, and a fill bar that puts your target in every command you copy.",
       introLocal: "runs entirely in your browser", introSkip: "skip",
+      cmdOut: "Expected output", cmdOutHint: "What it looks like when it works — paste a trimmed real run.",
       navLayer: "ATT&CK layer", navDone: "techniques exported",
       navNoTimeline: "No commands logged for this machine yet — set it as the active target and copy some.",
       navNoMatch: "None of the logged commands map to a technique in the corpus.",
@@ -291,6 +292,7 @@
       introNextTitle: "Tikandim", introNextDesc: "Elindekini soyle — acik portlar, kimlik bilgin var mi, neredesin — 5040 komut icinden sirada ne denenmeli siralasin.",
       introBrowseTitle: "Bir seye bakacagim", introBrowseDesc: "Komut referansinin kendisi. 53 kategori, aninda arama, favoriler ve kopyaladigin her komuta hedefini yazan doldurma cubugu.",
       introLocal: "tamamen tarayicinda calisir", introSkip: "gec",
+      cmdOut: "Beklenen cikti", cmdOutHint: "Calistiginda neye benzedigi — gercek bir calistirmadan kisaltilmis ornek yapistir.",
       navLayer: "ATT&CK katmani", navDone: "teknik disa aktarildi",
       navNoTimeline: "Bu makine icin kayitli komut yok — aktif hedef yapip birkac komut kopyala.",
       navNoMatch: "Kayitli komutlarin hicbiri korpustaki bir teknige eslesmiyor.",
@@ -768,12 +770,13 @@
       { key: "commands", label: t("cmdCommands"), type: "textarea", rows: 5, hint: t("perLine") },
       { key: "tags", label: t("cmdTags"), placeholder: t("tagComma") },
       { key: "note", label: t("cmdNote"), type: "textarea", rows: 2 },
+      { key: "out", label: t("cmdOut"), type: "textarea", rows: 4, hint: t("cmdOutHint") },
       { key: "attack", label: t("cmdAttack"), placeholder: t("cmdAttackHint"), hint: t("cmdAttackHint") },
       { key: "refs", label: t("cmdRefs"), type: "textarea", rows: 2, hint: t("cmdRefsHint") }
     ], {
       title: data.title || "", desc: data.desc || "",
       commands: (data.cmds || (data.cmd ? [data.cmd] : [])).join("\n"),
-      tags: (data.tags || []).join(", "), note: data.note || "",
+      tags: (data.tags || []).join(", "), note: data.note || "", out: data.out || "",
       attack: (Array.isArray(data.attack) ? data.attack : (data.attack ? [data.attack] : [])).join(", "),
       refs: cmdRefList(data).map(r => r.label ? r.label + " " + r.url : r.url).join("\n")
     }, async fd => {
@@ -781,6 +784,7 @@
       const tags = fd.tags.split(",").map(s => s.trim()).filter(Boolean);
       const p = { title: fd.title, desc: fd.desc, tags };
       if (fd.note) p.note = fd.note;
+      p.out = fd.out || "";   // sent even when empty so clearing works on edit
       if (lines.length > 1) p.cmds = lines; else if (lines.length === 1) p.cmd = lines[0];
       const attack = (fd.attack || "").split(",").map(s => s.trim()).filter(Boolean);
       p.attack = attack; // sent even if empty so clearing works on edit
@@ -4180,7 +4184,22 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       m.appendChild(allBtn);
       card.appendChild(m);
     }
-    if (cmd.note) { const n = document.createElement("div"); n.className = "cmd-note"; n.innerHTML = "💡 " + escapeHtml(cmd.note).replace(/`([^`]+)`/g, "<code>$1</code>"); card.appendChild(n); }
+    if (cmd.note) { const n = document.createElement("div"); n.className = "cmd-note"; n.innerHTML = escapeHtml(cmd.note).replace(/`([^`]+)`/g, "<code>$1</code>"); card.appendChild(n); }
+    // Expected output, collapsed. It is reference for "did that actually work?",
+    // not something you read while scanning — but knowing what success looks
+    // like is most of knowing whether you have it, which is the one thing a
+    // command list never tells you.
+    if (cmd.out) {
+      const det = document.createElement("details"); det.className = "cmd-out";
+      const sum = document.createElement("summary");
+      sum.appendChild(icon("terminal", "icon-sm"));
+      sum.appendChild(document.createTextNode(" " + t("cmdOut")));
+      det.appendChild(sum);
+      const pre = document.createElement("pre"); pre.className = "cmd-out-body";
+      pre.textContent = cmd.out;
+      det.appendChild(pre);
+      card.appendChild(det);
+    }
     // ATT&CK techniques + reference links (both optional, data-driven).
     const atk = cmdAttackList(cmd), refs = cmdRefList(cmd);
     if (atk.length || refs.length) {

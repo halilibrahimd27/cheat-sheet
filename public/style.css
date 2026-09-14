@@ -713,7 +713,7 @@ body {
 .cmd-card { display: flex; flex-direction: column; }
 .cmd-card-header { order: 1; }
 .cmd-code-wrapper, .cmd-multi { order: 2; }
-.cmd-note, .cmd-meta-row { order: 4; }
+.cmd-note, .cmd-out, .cmd-meta-row { order: 4; }
 
 .cmd-code-wrapper {
     position: relative;
@@ -3558,4 +3558,30 @@ body:has(.var-bar.active) .back-to-top { display: none; }
     .intro { padding-top: 28px; }
     .intro-title { font-size: var(--fs-2xl); }
     .intro-skip { margin-left: 0; }
+}
+
+/* Expected output — collapsed by default. It answers "did that actually work?",
+   which you ask after running something, not while scanning a list. */
+.cmd-out { margin-top: 5px; }
+.cmd-out > summary {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: var(--font-mono); font-size: var(--fs-2xs);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-tertiary); cursor: pointer; list-style: none;
+    padding: 2px 0;
+}
+.cmd-out > summary::-webkit-details-marker { display: none; }
+.cmd-out > summary:hover { color: var(--accent-primary); }
+.cmd-out > summary:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 2px; border-radius: var(--radius-sm); }
+.cmd-out[open] > summary { color: var(--accent-primary); }
+.cmd-out-body {
+    margin: 4px 0 0;
+    padding: 8px 10px;
+    background: var(--bg-code);
+    border-left: 2px solid var(--border-secondary);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono); font-size: var(--fs-xs);
+    color: var(--text-secondary); line-height: 1.5;
+    white-space: pre-wrap; overflow-x: auto;
+    max-height: 260px; overflow-y: auto;
 }

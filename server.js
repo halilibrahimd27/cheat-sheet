@@ -441,7 +441,7 @@ function writeData(data) {
 // miss it, so every update used to hand the user a second copy of it.
 const CAT_FIELDS = ["name", "icon", "description", "name_tr", "description_tr"];
 const SUB_FIELDS = ["name", "name_tr"];
-const CMD_FIELDS = ["title", "desc", "cmd", "cmds", "tags", "note", "attack", "refs", "ref", "desc_tr"];
+const CMD_FIELDS = ["title", "desc", "cmd", "cmds", "tags", "note", "out", "attack", "refs", "ref", "desc_tr"];
 // Marks a baseline entry as "this text is the USER's, not the seed's". Hashes are
 // hex, so the prefix can never collide with one — see applyRecord.
 const USER_BASE = "u:";
@@ -800,6 +800,7 @@ app.post("/api/categories/:id/subcategories/:subIdx/commands", (req, res) => {
   else if (cmd) command.cmd = cmd;
   command.tags = tags || [];
   if (note) command.note = note;
+  if (req.body.out) command.out = req.body.out;
   // Optional metadata: MITRE ATT&CK technique tag(s) + reference link(s).
   if (Array.isArray(req.body.attack) ? req.body.attack.length : req.body.attack) command.attack = req.body.attack;
   if (Array.isArray(req.body.refs) && req.body.refs.length) command.refs = req.body.refs;
@@ -822,7 +823,7 @@ app.put("/api/categories/:id/subcategories/:subIdx/commands/:cmdIdx", (req, res)
   // server then exported a bundle its own importer rejects.
   if (req.body.title !== undefined && !isNonEmptyString(req.body.title))
     return res.status(400).json({ error: "title must be a non-empty string" });
-  for (const key of ["desc", "cmd", "note"]) {
+  for (const key of ["desc", "cmd", "note", "out"]) {
     if (req.body[key] !== undefined && typeof req.body[key] !== "string")
       return res.status(400).json({ error: key + " must be a string" });
   }
@@ -836,6 +837,8 @@ app.put("/api/categories/:id/subcategories/:subIdx/commands/:cmdIdx", (req, res)
   if (req.body.cmds) { command.cmds = req.body.cmds; delete command.cmd; }
   if (req.body.tags) command.tags = req.body.tags;
   if (req.body.note !== undefined) command.note = req.body.note;
+  // Expected output: empty clears it, so the field can be emptied on edit.
+  if (req.body.out !== undefined) { if (req.body.out) command.out = req.body.out; else delete command.out; }
   if (req.body.attack !== undefined) { if (Array.isArray(req.body.attack) ? req.body.attack.length : req.body.attack) command.attack = req.body.attack; else delete command.attack; }
   if (req.body.refs !== undefined) { if (Array.isArray(req.body.refs) && req.body.refs.length) command.refs = req.body.refs; else delete command.refs; }
   if (req.body.ref !== undefined) { if (req.body.ref) command.ref = req.body.ref; else delete command.ref; }
