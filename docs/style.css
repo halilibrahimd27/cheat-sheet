@@ -3389,3 +3389,25 @@ body:has(.var-bar.active) .back-to-top { display: none; }
     letter-spacing: -0.2px;
 }
 .machine-meta-fields .machine-meta-input { font-family: var(--font-mono); font-size: var(--fs-sm); }
+
+/* ============================================
+   Icons
+   One monoline set, drawn in currentColor so an icon always matches the text
+   beside it. Replaces 64 different emoji and glyphs that rendered at different
+   weights, sizes and colours — some full-colour emoji, some bare characters.
+   Category icons stay emoji: those are the user's data, not chrome.
+   ============================================ */
+.icon {
+    width: 16px; height: 16px; flex-shrink: 0;
+    fill: none; stroke: currentColor;
+    stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+    vertical-align: -0.18em;
+}
+.icon-sm { width: 14px; height: 14px; }
+.icon-lg { width: 18px; height: 18px; }
+.icon-xl { width: 22px; height: 22px; }
+
+/* Sprite icons in the sidebar sit on the same 16px slot the category emoji use,
+   so the two kinds of entry line up on one optical grid. */
+.nav-item-icon .icon { width: 15px; height: 15px; opacity: 1; }
+.nav-item-icon:has(.icon) { opacity: 1; filter: none; }
