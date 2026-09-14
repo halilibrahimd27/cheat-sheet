@@ -279,7 +279,12 @@
   // DOM
   const $ = (s) => document.getElementById(s);
   const sidebar = $("sidebar"), sidebarNav = $("sidebarNav"), searchInput = $("searchInput");
-  const contentArea = $("contentArea"), hero = $("hero"), heroStats = $("heroStats");
+  const contentArea = $("contentArea");
+  // The hero section was removed: a reference tool has to open on reference,
+  // and a centred title plus a marketing paragraph plus three 42px stat
+  // numbers filled the whole first screen with nothing the reader came for.
+  // This stub keeps the ~12 `hero.style.display` call sites harmless.
+  const hero = { style: {} };
   const statsEl = $("stats"), currentSection = $("currentSection");
   const modalOverlay = $("modalOverlay"), modalTitle = $("modalTitle");
   const modalBody = $("modalBody"), modalSave = $("modalSave");
@@ -3724,13 +3729,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   function buildSidebar() {
     const s = getStats();
     statsEl.textContent = s.tc + " " + t("commands") + " · " + s.cats + " " + t("categories");
-    $("heroSubtitle").textContent = t("heroSubtitle");
-    $("heroDesc").textContent = t("heroDesc");
     $("disclaimer").innerHTML = t("educational") + "<br>" + t("useResp");
-    heroStats.innerHTML =
-      '<div class="hero-stat"><div class="hero-stat-num">' + s.tc + '</div><div class="hero-stat-label">' + t("commands") + '</div></div>' +
-      '<div class="hero-stat"><div class="hero-stat-num">' + s.cats + '</div><div class="hero-stat-label">' + t("categories") + '</div></div>' +
-      '<div class="hero-stat"><div class="hero-stat-num">' + s.ts + '</div><div class="hero-stat-label">' + t("subcategories") + '</div></div>';
 
     sidebarNav.innerHTML = "";
     // All
@@ -3822,13 +3821,13 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const meta = document.createElement("div"); meta.className = "cmd-meta-row";
       atk.forEach(id => {
         const a = document.createElement("a"); a.className = "cmd-attack-chip"; a.href = "https://attack.mitre.org/techniques/" + id.replace(".", "/") + "/";
-        a.target = "_blank"; a.rel = "noopener noreferrer"; a.textContent = "🎯 " + id; a.title = t("attackTitle") + " " + id;
+        a.target = "_blank"; a.rel = "noopener noreferrer"; a.textContent = id;   // the id IS the label; the emoji only added noise a.title = t("attackTitle") + " " + id;
         meta.appendChild(a);
       });
       refs.forEach(r => {
         const url = mdSafeUrl(r.url); if (url === "#") return;
         const a = document.createElement("a"); a.className = "cmd-ref-link"; a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer";
-        a.textContent = "🔗 " + (r.label || refHostLabel(r.url));
+        a.textContent = "↗ " + (r.label || refHostLabel(r.url));
         meta.appendChild(a);
       });
       if (meta.children.length) card.appendChild(meta);

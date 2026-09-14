@@ -4,48 +4,66 @@
    ============================================ */
 
 :root {
-    /* Dark theme (default) */
-    --bg-primary: #0f1117;
-    --bg-secondary: #161822;
-    --bg-tertiary: #1c1f2e;
-    --bg-card: #1a1d2b;
-    --bg-card-hover: #1f2335;
-    --bg-code: #0d0f17;
-    --bg-sidebar: #0c0e14;
-    --bg-input: #1a1d2b;
-    --bg-badge: #252a3a;
+    /* ── Dark theme (default) ──────────────────────────────────────────────
+       This is a command reference read next to a terminal, so it borrows the
+       terminal's own material: a warm near-black ground, warm off-white text
+       rather than blue-grey, and a single amber accent in the amber-monochrome
+       lineage. The accent appears ONLY on chrome — active nav, focus rings,
+       links, primary buttons — while the syntax colours below live exclusively
+       inside --bg-code wells, so the two never compete.
+       The previous palette was Tailwind indigo-500 on slate, which is the
+       default every generated interface reaches for and says nothing about
+       what this tool is. */
+    --bg-primary: #0c0d10;
+    --bg-secondary: #121317;
+    --bg-tertiary: #181a1f;
+    --bg-card: transparent;      /* commands are rows now, not filled cards */
+    --bg-card-hover: #131419;
+    --bg-code: #08090b;          /* code sits BELOW the page, like a terminal well */
+    --bg-sidebar: #08090a;
+    --bg-input: #131419;
+    --bg-badge: #1b1d23;
 
-    --border-primary: #2a2f42;
-    --border-secondary: #353b52;
-    --border-accent: #4f46e5;
+    /* Hairlines. Structure comes from rules and rhythm, not from boxing every
+       element in a rounded, shadowed container. */
+    --border-primary: #1e2026;
+    --border-secondary: #2a2d35;
+    --border-accent: #d4a04a;
+    --rule: #1a1c21;             /* the quietest separator: row dividers */
 
-    --text-primary: #e2e8f0;
-    --text-secondary: #94a3b8;
-    --text-tertiary: #8792a6; /* lifted for WCAG AA contrast on dark bg */
-    --text-code: #7dd3fc;
-    --text-heading: #f1f5f9;
+    --text-primary: #d7d2c8;
+    --text-secondary: #9c958a;
+    --text-tertiary: #857e74;    /* 4.6:1 on --bg-primary */
+    --text-code: #c9c3b7;
+    --text-heading: #f2ede4;
 
-    --accent-primary: #6366f1;
-    --accent-secondary: #818cf8;
-    --accent-glow: rgba(99, 102, 241, 0.15);
-    --accent-green: #34d399;
-    --accent-yellow: #fbbf24;
-    --accent-red: #f87171;
-    --accent-cyan: #22d3ee;
-    --accent-orange: #fb923c;
-    --accent-pink: #f472b6;
+    --accent-primary: #d4a04a;
+    --accent-secondary: #e3b872;
+    --accent-glow: rgba(212, 160, 74, 0.12);
+
+    /* Syntax palette — warm, terminal-native, and deliberately kept clear of
+       the amber UI accent so a highlighted token never reads as a control. */
+    --accent-green: #a9b665;
+    --accent-yellow: #e3c26b;
+    --accent-red: #ea6962;
+    --accent-cyan: #89b482;
+    --accent-blue: #7daea3;
+    --accent-orange: #e78a4e;
+    --accent-pink: #d3869b;
     --accent-orange-ink: #1a1a1a; /* text laid on a solid --accent-orange fill */
 
-    --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
-    --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+    --shadow-md: 0 4px 14px rgba(0,0,0,0.5);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.6);
 
-    --radius-sm: 6px;
-    --radius-md: 10px;
-    --radius-lg: 14px;
+    /* Technical, not friendly. 14px pills read as a consumer app; 3px reads as
+       a tool. Kept as three steps so the old names still resolve. */
+    --radius-sm: 2px;
+    --radius-md: 3px;
+    --radius-lg: 4px;
 
-    --sidebar-width: 300px;
-    --topbar-height: 52px;
+    --sidebar-width: 272px;
+    --topbar-height: 44px;
 
     --transition: 0.2s ease;
 
@@ -86,46 +104,50 @@
 }
 
 [data-theme="light"] {
-    --bg-primary: #f8fafc;
+    /* Paper, not screen. Warm to match the dark theme's temperature — a
+       blue-white light mode next to a warm dark mode reads as two designs. */
+    --bg-primary: #f7f5f1;
     --bg-secondary: #ffffff;
-    --bg-tertiary: #f1f5f9;
-    --bg-card: #ffffff;
-    --bg-card-hover: #f8fafc;
-    --bg-code: #f1f5f9;
-    --bg-sidebar: #ffffff;
-    --bg-input: #f1f5f9;
-    --bg-badge: #e2e8f0;
+    --bg-tertiary: #eeebe4;
+    --bg-card: transparent;
+    --bg-card-hover: #f1eee8;
+    --bg-code: #f0ede6;
+    --bg-sidebar: #f2efe9;
+    --bg-input: #ffffff;
+    --bg-badge: #e6e2d9;
 
-    --border-primary: #e2e8f0;
-    --border-secondary: #cbd5e1;
-    --border-accent: #6366f1;
+    --border-primary: #ded9cf;
+    --border-secondary: #c8c2b5;
+    --border-accent: #8a5a12;
+    --rule: #e4e0d6;
 
-    --text-primary: #1e293b;
-    --text-secondary: #475569;
-    --text-tertiary: #5f6b7a; /* darkened for WCAG AA contrast on light bg */
-    --text-code: #4338ca;
-    --text-heading: #0f172a;
+    --text-primary: #2b2825;
+    --text-secondary: #5c564e;
+    --text-tertiary: #6e675d; /* 4.8:1 on --bg-primary */
+    --text-code: #34302b;
+    --text-heading: #17140f;
 
-    /* The dark accents are tuned for a near-black ground; on #f1f5f9 they
-       collapse (yellow measured 1.52:1, cyan 1.65:1), which made every
-       syntax-highlighted command unreadable. Darkened so each clears
-       WCAG AA 4.5:1 against both --bg-code and --bg-card. */
-    --accent-primary: #4f46e5;
-    --accent-secondary: #4338ca;
-    --accent-glow: rgba(79, 70, 229, 0.12);
-    --accent-green: #047857;
-    --accent-yellow: #9a5b06; /* the obvious #a16207 measures 4.49:1 — just short */
-    --accent-red: #b91c1c;
-    --accent-cyan: #0e7490;
-    --accent-orange: #c2410c;
-    --accent-pink: #be185d;
+    /* Every one of these is measured to clear WCAG AA 4.5:1 against BOTH
+       --bg-code and --bg-primary. The previous light theme shipped the dark
+       theme's accents unchanged, which put syntax-highlighted commands — the
+       product's entire content — at 1.5:1. */
+    --accent-primary: #8a5a12;
+    --accent-secondary: #6f4809;
+    --accent-glow: rgba(138, 90, 18, 0.10);
+    --accent-green: #4a6112;
+    --accent-yellow: #7a5a08;
+    --accent-red: #b03a34;
+    --accent-cyan: #2f6b4f;
+    --accent-blue: #2d6470;
+    --accent-orange: #a2521c;
+    --accent-pink: #9c3f63;
 
-    /* Dark ink is unreadable on the darkened orange (3.36:1), so flip it */
+    /* White ink on the darkened orange; dark ink measures 3.4:1 there. */
     --accent-orange-ink: #ffffff;
 
-    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-    --shadow-lg: 0 8px 32px rgba(0,0,0,0.1);
+    --shadow-sm: 0 1px 2px rgba(40,35,28,0.06);
+    --shadow-md: 0 4px 14px rgba(40,35,28,0.10);
+    --shadow-lg: 0 12px 40px rgba(40,35,28,0.14);
 }
 
 /* ============================================
@@ -192,27 +214,38 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 20px;
+    padding: 12px 16px;
+    height: var(--topbar-height);
     border-bottom: 1px solid var(--border-primary);
 }
 
 .logo {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    align-items: baseline;
+    gap: 7px;
+    min-width: 0;
 }
 
+/* A shell prompt, not a glowing gem. The old mark was an indigo ◈ with a
+   drop-shadow halo — generic, and the halo is the single most dated effect in
+   the file. This says what the tool is in one character. */
 .logo-icon {
-    font-size: var(--fs-3xl);
+    font-family: var(--font-mono);
+    font-size: var(--fs-lg);
+    font-weight: 500;
     color: var(--accent-primary);
-    filter: drop-shadow(0 0 8px var(--accent-glow));
+    flex-shrink: 0;
 }
 
 .logo-text {
-    font-size: 17px;
-    font-weight: 700;
+    font-family: var(--font-mono);
+    font-size: var(--fs-lg);
+    font-weight: 600;
     color: var(--text-heading);
-    letter-spacing: -0.3px;
+    letter-spacing: -0.2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .sidebar-toggle {
@@ -305,47 +338,66 @@ body {
 .nav-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 8px 20px;
+    gap: 9px;
+    padding: 5px 16px 5px 14px;
     font-size: var(--fs-md);
+    line-height: 1.35;
     color: var(--text-secondary);
     cursor: pointer;
-    transition: all var(--transition);
+    transition: color var(--transition), background var(--transition);
     border-left: 2px solid transparent;
     text-decoration: none;
 }
 
 .nav-item:hover {
-    background: var(--bg-tertiary);
+    background: var(--bg-card-hover);
     color: var(--text-primary);
 }
 
+/* A rule and a colour, not a filled block. 53 of these stacked with tinted
+   backgrounds turned the sidebar into a heat map where nothing stood out. */
 .nav-item.active {
-    background: var(--accent-glow);
-    color: var(--accent-secondary);
+    background: none;
+    color: var(--accent-primary);
     border-left-color: var(--accent-primary);
 }
+.nav-item.active .nav-item-count { color: var(--accent-primary); }
 
+/* The emoji is data (seed.js carries one per category), so it stays — but at a
+   fixed slot and slightly muted, so it reads as wayfinding rather than
+   decoration. At full saturation, 53 of them are the loudest thing on screen. */
 .nav-item-icon {
-    font-size: var(--fs-xl);
-    width: 22px;
+    font-size: 13px;
+    width: 16px;
     text-align: center;
     flex-shrink: 0;
+    opacity: 0.75;
+    filter: saturate(0.8);
 }
+.nav-item:hover .nav-item-icon,
+.nav-item.active .nav-item-icon { opacity: 1; filter: none; }
 
+/* Two lines rather than an ellipsis. "Target Profiling & Network …" and
+   "Defense Evasion & AV Byp…" were unreadable at a glance, which is the only
+   job a sidebar label has. */
 .nav-item-text {
-    white-space: nowrap;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
 }
 
+/* Counts line up as a column of figures, so tabular numerals and no pill. */
 .nav-item-count {
     margin-left: auto;
-    font-size: var(--fs-xs);
+    padding-left: 8px;
+    font-family: var(--font-mono);
+    font-size: var(--fs-2xs);
+    font-variant-numeric: tabular-nums;
     color: var(--text-tertiary);
-    background: var(--bg-badge);
-    padding: 1px 7px;
-    border-radius: 10px;
+    background: none;
     flex-shrink: 0;
 }
 
@@ -449,11 +501,16 @@ body {
     border: 1px solid transparent;
     color: var(--text-tertiary);
     cursor: pointer;
-    padding: 6px;
+    padding: 4px 6px;
     border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
+    /* Some of these carry a text glyph (<IP>) rather than an SVG, so they need
+       the mono face to sit on the same rhythm as the rest of the chrome. */
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    line-height: 1;
     transition: all var(--transition);
     font-size: var(--fs-xl);
 }
@@ -465,100 +522,49 @@ body {
 }
 
 /* ============================================
-   Hero
-   ============================================ */
-.hero {
-    text-align: center;
-    padding: 60px 28px 40px;
-    border-bottom: 1px solid var(--border-primary);
-    background: linear-gradient(180deg, var(--accent-glow) 0%, transparent 100%);
-}
-
-.hero h1 {
-    font-size: var(--fs-6xl);
-    font-weight: 700;
-    color: var(--text-heading);
-    letter-spacing: -1px;
-    margin-bottom: 8px;
-}
-
-.hero-subtitle {
-    font-size: var(--fs-xl);
-    color: var(--accent-secondary);
-    font-weight: 500;
-    margin-bottom: 12px;
-}
-
-.hero-desc {
-    font-size: var(--fs-lg);
-    color: var(--text-tertiary);
-    max-width: 560px;
-    margin: 0 auto 24px;
-    line-height: 1.6;
-}
-
-.hero-stats {
-    display: flex;
-    justify-content: center;
-    gap: 32px;
-    flex-wrap: wrap;
-}
-
-.hero-stat {
-    text-align: center;
-}
-
-.hero-stat-num {
-    font-size: var(--fs-4xl);
-    font-weight: 700;
-    color: var(--accent-primary);
-}
-
-.hero-stat-label {
-    font-size: var(--fs-sm);
-    color: var(--text-tertiary);
-    margin-top: 2px;
-}
-
-/* ============================================
    Content Area
    ============================================ */
 .content-area {
-    padding: 28px;
-    max-width: 1100px;
+    padding: 20px 28px 64px;
+    /* Commands are the content and some of them are long. At 1100px the
+       gobuster and ffuf lines wrapped to two rows while 800px of the window sat
+       empty on either side — the worst trade a command reference can make. */
+    max-width: 1480px;
     width: 100%;
     margin: 0 auto;
 }
 
 /* Category Section */
 .category-section {
-    margin-bottom: 40px;
+    margin-bottom: 18px;
 }
 
 .category-header {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 0;
-    border-bottom: 2px solid var(--border-primary);
-    margin-bottom: 16px;
+    align-items: baseline;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border-secondary);
+    margin-bottom: 4px;
     cursor: pointer;
     user-select: none;
 }
 
-.category-header:hover {
-    border-bottom-color: var(--accent-primary);
-}
+.category-header:hover { border-bottom-color: var(--accent-primary); }
 
 .category-icon {
-    font-size: 24px;
+    font-size: 14px;
+    opacity: 0.8;
+    filter: saturate(0.85);
+    flex-shrink: 0;
 }
 
 .category-title {
-    font-size: var(--fs-3xl);
-    font-weight: 700;
+    font-family: var(--font-mono);
+    font-size: var(--fs-lg);
+    font-weight: 600;
     color: var(--text-heading);
-    letter-spacing: -0.3px;
+    letter-spacing: -0.1px;
     /* Flex children default to min-width:auto, so without this a long category
        name ("Target Profiling & Network Mapping") refuses to shrink and forces
        the whole document to ~504px — the main command list scrolled sideways at
@@ -568,19 +574,21 @@ body {
 }
 
 .category-count {
-    font-size: var(--fs-sm);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    font-variant-numeric: tabular-nums;
     color: var(--text-tertiary);
-    background: var(--bg-badge);
-    padding: 3px 10px;
-    border-radius: 12px;
-    margin-left: 4px;
+    background: none;
+    padding: 0;
+    margin-left: 2px;
 }
 
 .category-toggle {
     margin-left: auto;
     color: var(--text-tertiary);
     transition: transform var(--transition);
-    font-size: var(--fs-2xl);
+    font-size: var(--fs-sm);
+    flex-shrink: 0;
 }
 
 .category-header.collapsed .category-toggle {
@@ -588,126 +596,150 @@ body {
 }
 
 .category-desc {
-    font-size: var(--fs-md);
+    font-size: var(--fs-sm);
     color: var(--text-tertiary);
-    margin-bottom: 16px;
-    line-height: 1.6;
-    padding-left: 2px;
+    margin: 6px 0 10px;
+    line-height: 1.55;
+    max-width: 88ch;
 }
 
+/* No gap: rows carry their own hairline separators, and a grid gap between them
+   would break the continuous rule that makes a dense list scannable. */
 .category-body {
-    display: grid;
-    gap: 12px;
+    display: block;
 }
 
 .category-body.hidden {
     display: none;
 }
 
-/* Subcategory */
+/* Subcategory — an uppercase mono eyebrow over a hairline. It encodes real
+   structure (which phase of the corpus you are in) and costs one line, where
+   the old indigo 14px heading cost three and read as a link. */
 .subcategory {
-    margin-bottom: 8px;
+    margin-bottom: 2px;
 }
 
 .subcategory-title {
-    font-size: var(--fs-lg);
+    font-family: var(--font-mono);
+    font-size: var(--fs-2xs);
     font-weight: 600;
-    color: var(--accent-secondary);
-    padding: 8px 0 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--text-tertiary);
+    padding: 16px 0 5px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 2px;
 }
 
-/* Command Card */
+/* ── Command row ──────────────────────────────────────────────────────────
+   Was a filled, bordered, rounded, shadowed card wrapping a second bordered
+   rounded box for the code — two containers deep for one command, ~120px tall,
+   seven visible per screen out of 5040. A row with a hairline under it holds
+   the same content in half the height and reads as a list, which is what a
+   reference is. */
 .cmd-card {
     background: var(--bg-card);
-    border: 1px solid var(--border-primary);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    transition: all var(--transition);
+    border: 0;
+    border-bottom: 1px solid var(--rule);
+    border-radius: 0;
+    padding: 5px 8px 7px;
+    transition: background var(--transition);
 }
 
 .cmd-card:hover {
-    border-color: var(--border-secondary);
-    box-shadow: var(--shadow-md);
     background: var(--bg-card-hover);
+    box-shadow: none;
 }
 
 .cmd-card-header {
     display: flex;
-    align-items: flex-start;
+    align-items: baseline;
     justify-content: space-between;
-    padding: 14px 16px 8px;
-    gap: 12px;
+    padding: 0 0 3px;
+    gap: 10px;
 }
 
 .cmd-title {
     font-size: var(--fs-md);
-    font-weight: 600;
+    font-weight: 500;
     color: var(--text-heading);
-    line-height: 1.4;
+    line-height: 1.35;
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .cmd-tags {
     display: flex;
-    gap: 5px;
+    gap: 4px;
     flex-shrink: 0;
     flex-wrap: wrap;
     justify-content: flex-end;
 }
 
+/* Square, monospace, quiet. Amber is reserved for chrome — if ~1000 "essential"
+   chips wore the accent it would stop meaning "this is interactive". */
 .cmd-tag {
+    font-family: var(--font-mono);
     font-size: var(--fs-2xs);
-    padding: 2px 8px;
-    border-radius: 10px;
+    line-height: 1.5;
+    padding: 0 5px;
+    border-radius: var(--radius-sm);
     font-weight: 500;
     white-space: nowrap;
+    background: var(--bg-badge);
+    color: var(--text-tertiary);
 }
 
-.cmd-tag.essential {
-    background: rgba(99, 102, 241, 0.15);
-    color: var(--accent-secondary);
-}
-
-.cmd-tag.tool {
-    background: rgba(34, 211, 238, 0.12);
-    color: var(--accent-cyan);
-}
-
-.cmd-tag.advanced {
-    background: rgba(251, 191, 36, 0.12);
-    color: var(--accent-yellow);
-}
+.cmd-tag.essential { color: var(--accent-green); }
+.cmd-tag.tool      { color: var(--accent-blue); }
+.cmd-tag.advanced  { color: var(--accent-orange); }
 
 .cmd-tag.dangerous {
-    background: rgba(248, 113, 113, 0.12);
+    background: color-mix(in srgb, var(--accent-red) 12%, transparent);
     color: var(--accent-red);
 }
 
+/* The description sits UNDER the command, small and quiet. The command is what
+   the reader came for; the sentence explaining it is support. Visual order is
+   set here rather than in app.js so the DOM stays as it is. */
 .cmd-desc {
-    padding: 0 16px 10px;
-    font-size: var(--fs-sm);
-    color: var(--text-secondary);
-    line-height: 1.5;
+    order: 3;
+    padding: 2px 0 0;
+    font-size: var(--fs-xs);
+    color: var(--text-tertiary);
+    line-height: 1.45;
+    max-width: 96ch;
 }
+.cmd-card { display: flex; flex-direction: column; }
+.cmd-card-header { order: 1; }
+.cmd-code-wrapper, .cmd-multi { order: 2; }
+.cmd-note, .cmd-meta-row { order: 4; }
 
 .cmd-code-wrapper {
     position: relative;
-    margin: 0 12px 12px;
+    margin: 0;
     border-radius: var(--radius-sm);
     overflow: hidden;
 }
 
+/* No border: the darker well already separates it, and a rounded bordered box
+   inside a rounded bordered card was two frames around one command. */
 .cmd-code {
     background: var(--bg-code);
-    border: 1px solid var(--border-primary);
+    border: 0;
     border-radius: var(--radius-sm);
-    padding: 12px 48px 12px 14px;
+    padding: 6px 74px 6px 9px;
     font-family: var(--font-mono);
     font-size: 12.5px;
     color: var(--text-code);
-    line-height: 1.6;
+    line-height: 1.55;
     overflow-x: auto;
     white-space: pre-wrap;
-    word-break: break-all;
+    /* break-all splits mid-flag (`-w /usr/sh|are/...`), which makes a command
+       unreadable at exactly the moment it wraps. Break at real boundaries. */
+    word-break: normal;
+    overflow-wrap: anywhere;
 }
 
 /* Copy + basket sit in one top-right row so they never overflow a 1-line block */
@@ -722,12 +754,12 @@ body {
 .cmd-copy-btn {
     background: var(--bg-tertiary);
     border: 1px solid var(--border-primary);
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     color: var(--text-tertiary);
     cursor: pointer;
-    padding: 4px 8px;
-    font-size: var(--fs-xs);
-    font-family: inherit;
+    padding: 1px 6px;
+    font-size: var(--fs-2xs);
+    font-family: var(--font-mono);
     transition: all var(--transition);
     opacity: 0;
 }
@@ -751,31 +783,36 @@ body {
 
 /* Multiple commands in one card */
 .cmd-multi {
-    margin: 0 12px 12px;
+    margin: 0;
     display: grid;
-    gap: 6px;
+    gap: 3px;
 }
 
 .cmd-multi .cmd-code-wrapper {
     margin: 0;
 }
 
+/* A note is an aside, marked by a rule rather than a filled panel — a tinted
+   block here competed with the code well right above it. */
 .cmd-note {
-    padding: 8px 16px 12px;
+    padding: 4px 0 0 9px;
+    margin-top: 4px;
     font-size: var(--fs-xs);
     color: var(--text-tertiary);
-    line-height: 1.5;
-    border-top: 1px solid var(--border-primary);
-    background: var(--bg-tertiary);
+    line-height: 1.45;
+    border-top: 0;
+    border-left: 2px solid var(--border-primary);
+    background: none;
+    max-width: 96ch;
 }
 
 .cmd-note code {
     background: var(--bg-code);
-    padding: 1px 5px;
-    border-radius: 3px;
+    padding: 0 4px;
+    border-radius: var(--radius-sm);
     font-family: var(--font-mono);
     font-size: var(--fs-xs);
-    color: var(--accent-cyan);
+    color: var(--accent-blue);
 }
 
 /* ============================================
@@ -800,7 +837,7 @@ body {
 }
 
 .search-highlight {
-    background: rgba(251, 191, 36, 0.25);
+    background: color-mix(in srgb, var(--accent-yellow) 25%, transparent);
     color: var(--accent-yellow);
     border-radius: 2px;
     padding: 0 2px;
@@ -1304,7 +1341,7 @@ body {
     transition: background 0.15s;
 }
 .placeholder-var:hover {
-    background: rgba(251, 146, 60, 0.15);
+    background: color-mix(in srgb, var(--accent-orange) 15%, transparent);
     border-radius: 2px;
 }
 
@@ -1358,7 +1395,7 @@ body {
 .wu-file-preview { font-size: var(--fs-sm); color: var(--text-tertiary); line-height: 1.4; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .wu-file-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .wu-date { font-size: var(--fs-xs); color: var(--text-tertiary); }
-.wu-tag { font-size: var(--fs-2xs); padding: 2px 8px; border-radius: 10px; background: rgba(99, 102, 241, 0.12); color: var(--accent-secondary); font-weight: 500; }
+.wu-tag { font-size: var(--fs-2xs); padding: 2px 8px; border-radius: 10px; background: color-mix(in srgb, var(--accent-primary) 12%, transparent); color: var(--accent-secondary); font-weight: 500; }
 .wu-file-delete {
     position: absolute; top: 10px; right: 10px;
     background: none; border: none; font-size: var(--fs-lg); cursor: pointer; opacity: 0;
@@ -2017,60 +2054,58 @@ body {
    (additive; safe visual properties only)
    ============================================ */
 
-/* Top bar: subtle depth so it reads as a real app chrome bar */
-.top-bar { box-shadow: 0 1px 0 var(--border-primary), 0 6px 16px -12px rgba(0,0,0,0.5); }
+/* ── Chrome ──────────────────────────────────────────────────────────────
+   This section used to add a "polish" layer — 999px pill nav items, a
+   translateY(-1px) lift with a drop shadow on every card hover, outlines on
+   every tag. Each looked deliberate alone; together they were the decoration
+   that made the interface read as generated. What survives is the part that
+   carries information. */
+.top-bar { box-shadow: 0 1px 0 var(--border-primary); }
 .breadcrumb { font-size: var(--fs-md); }
 #currentSection { color: var(--text-heading); font-weight: 600; }
 
-/* Sidebar navigation: crisper active pill + count badge */
-.nav-item { border-radius: 0 999px 999px 0; margin-right: 10px; }
-.nav-item.active { font-weight: 600; box-shadow: inset 0 0 0 1px var(--accent-glow); }
+/* Rows, not pills. A hover tint and a left rule say everything a 999px capsule
+   with an inset glow said, without competing with the content. */
+.nav-item { border-radius: 0; margin-right: 0; }
+.nav-item.active { font-weight: 500; box-shadow: none; }
 .nav-item-count {
-    margin-left: auto; font-size: var(--fs-xs); min-width: 20px; text-align: center;
-    padding: 1px 7px; border-radius: 999px; background: var(--bg-badge); color: var(--text-tertiary);
-    font-family: var(--font-mono);
+    margin-left: auto; font-size: var(--fs-2xs); min-width: 0; text-align: right;
+    padding: 0 0 0 8px; border-radius: 0; background: none; color: var(--text-tertiary);
+    font-family: var(--font-mono); font-variant-numeric: tabular-nums;
 }
-.nav-item.active .nav-item-count { background: var(--accent-primary); color: #fff; }
-.logo-icon { color: var(--accent-primary); }
+.nav-item.active .nav-item-count { background: none; color: var(--accent-primary); }
 
-/* Command cards: cleaner separation + snappier hover */
-.cmd-card { transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition); }
-.cmd-card:hover { transform: translateY(-1px); border-color: var(--accent-primary); box-shadow: var(--shadow-md); }
-.cmd-card-header { border-bottom: 1px solid transparent; }
+/* A row does not lift off the page. Hover is a background change, nothing more —
+   1-2px of travel on a list of thousands is motion sickness, not feedback. */
+.cmd-card { transition: background var(--transition); }
+.cmd-card:hover { transform: none; border-color: transparent; box-shadow: none; background: var(--bg-card-hover); }
+.cmd-card-header { border-bottom: 0; }
 .cmd-title { letter-spacing: -0.01em; }
-.cmd-desc { color: var(--text-secondary); }
 
-/* Tag chips: crisp outline for a more designed look */
-.cmd-tag { border: 1px solid transparent; letter-spacing: 0.02em; text-transform: lowercase; }
-.cmd-tag.essential { border-color: rgba(99, 102, 241, 0.35); }
-.cmd-tag.tool { border-color: rgba(34, 211, 238, 0.3); }
-.cmd-tag.advanced { border-color: rgba(251, 191, 36, 0.3); }
-.tag-filter { transition: background var(--transition), color var(--transition), border-color var(--transition); }
+/* Both auto margins used to fight: .category-actions claimed the free space
+   first, so the buttons floated in the dead centre of the row and the chevron
+   alone sat right. Only the actions push now. */
+.category-actions { margin-left: auto; }
+.category-toggle { margin-left: 6px; }
+.category-header { border-radius: 0; transition: border-color var(--transition); }
+.category-header:hover { background: none; }
 
-/* Category headers: rounded, subtle hover */
-.category-header { border-radius: var(--radius-md); transition: background var(--transition); }
-.category-header:hover { background: var(--bg-card-hover); }
+.cat-action-btn, .sub-action-btn, .cmd-action-btn { border-radius: var(--radius-sm); }
 
-/* Buttons: consistent hover/press feedback */
-.btn { transition: filter var(--transition), transform 0.05s ease, background var(--transition), border-color var(--transition); }
-.btn-primary:hover { filter: brightness(1.08); }
-.btn:active { transform: translateY(1px); }
+/* Buttons: feedback without theatre. */
+.btn { transition: background var(--transition), border-color var(--transition), color var(--transition); }
+.btn:active { transform: none; }
 
-/* Code blocks: a touch more legible */
-.cmd-code { line-height: 1.55; }
-
-/* Empty states: centered, calm */
+/* Empty states */
 .no-results { text-align: center; padding: 48px 20px; color: var(--text-secondary); }
 .no-results h3 { color: var(--text-heading); margin-bottom: 6px; }
 .cat-empty-state { text-align: center; padding: 28px 16px; color: var(--text-tertiary); }
-.cat-empty-icon { font-size: 32px; opacity: 0.7; margin-bottom: 8px; }
+.cat-empty-icon { font-size: 28px; opacity: 0.5; margin-bottom: 8px; }
 
-/* Toasts: slightly richer shadow */
-.toast { box-shadow: 0 10px 30px -8px rgba(0,0,0,0.5); }
+/* Floating elements keep their shadow — they genuinely sit above the page. */
+.toast { box-shadow: var(--shadow-lg); }
 
-/* Light theme: soften chrome so it doesn't look flat/harsh */
-[data-theme="light"] .top-bar { box-shadow: 0 1px 0 var(--border-primary), 0 6px 16px -14px rgba(0,0,0,0.15); }
-[data-theme="light"] .cmd-card:hover { box-shadow: 0 6px 18px -10px rgba(0,0,0,0.18); }
+[data-theme="light"] .top-bar { box-shadow: 0 1px 0 var(--border-primary); }
 [data-theme="light"] .sidebar { box-shadow: 1px 0 0 var(--border-primary); }
 
 /* ============================================
@@ -2130,16 +2165,16 @@ body {
 .machine-card-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 8px 0; }
 .machine-status { font-size: var(--fs-2xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; padding: 2px 8px; border-radius: 999px; border: 1px solid transparent; }
 .machine-status.st-not-started { background: var(--bg-badge); color: var(--text-tertiary); border-color: var(--border-primary); }
-.machine-status.st-in-progress { background: rgba(251, 191, 36, 0.14); color: var(--accent-yellow); border-color: rgba(251, 191, 36, 0.35); }
-.machine-status.st-owned { background: rgba(52, 211, 153, 0.14); color: var(--accent-green); border-color: rgba(52, 211, 153, 0.4); }
-.machine-status.st-reported { background: rgba(99, 102, 241, 0.16); color: var(--accent-secondary); border-color: rgba(99, 102, 241, 0.4); }
+.machine-status.st-in-progress { background: color-mix(in srgb, var(--accent-yellow) 14%, transparent); color: var(--accent-yellow); border-color: color-mix(in srgb, var(--accent-yellow) 35%, transparent); }
+.machine-status.st-owned { background: color-mix(in srgb, var(--accent-green) 14%, transparent); color: var(--accent-green); border-color: color-mix(in srgb, var(--accent-green) 40%, transparent); }
+.machine-status.st-reported { background: color-mix(in srgb, var(--accent-primary) 16%, transparent); color: var(--accent-secondary); border-color: color-mix(in srgb, var(--accent-primary) 40%, transparent); }
 .machine-plat { font-size: var(--fs-2xs); padding: 2px 8px; border-radius: 999px; background: var(--bg-badge); color: var(--text-secondary); font-family: var(--font-mono); }
 .diff-badge { font-size: var(--fs-2xs); font-weight: 600; padding: 2px 8px; border-radius: 999px; border: 1px solid transparent; }
-.diff-badge.diff-easy { background: rgba(52, 211, 153, 0.14); color: var(--accent-green); border-color: rgba(52, 211, 153, 0.35); }
-.diff-badge.diff-medium { background: rgba(251, 191, 36, 0.14); color: var(--accent-yellow); border-color: rgba(251, 191, 36, 0.35); }
-.diff-badge.diff-hard { background: rgba(251, 146, 60, 0.14); color: var(--accent-orange); border-color: rgba(251, 146, 60, 0.35); }
-.diff-badge.diff-insane { background: rgba(248, 113, 113, 0.14); color: var(--accent-red); border-color: rgba(248, 113, 113, 0.4); }
-.machine-tag { font-size: var(--fs-2xs); padding: 2px 8px; border-radius: 10px; background: rgba(34, 211, 238, 0.12); color: var(--accent-cyan); }
+.diff-badge.diff-easy { background: color-mix(in srgb, var(--accent-green) 14%, transparent); color: var(--accent-green); border-color: color-mix(in srgb, var(--accent-green) 35%, transparent); }
+.diff-badge.diff-medium { background: color-mix(in srgb, var(--accent-yellow) 14%, transparent); color: var(--accent-yellow); border-color: color-mix(in srgb, var(--accent-yellow) 35%, transparent); }
+.diff-badge.diff-hard { background: color-mix(in srgb, var(--accent-orange) 14%, transparent); color: var(--accent-orange); border-color: color-mix(in srgb, var(--accent-orange) 35%, transparent); }
+.diff-badge.diff-insane { background: color-mix(in srgb, var(--accent-red) 14%, transparent); color: var(--accent-red); border-color: color-mix(in srgb, var(--accent-red) 40%, transparent); }
+.machine-tag { font-size: var(--fs-2xs); padding: 2px 8px; border-radius: 10px; background: color-mix(in srgb, var(--accent-cyan) 12%, transparent); color: var(--accent-cyan); }
 .flag-chip { font-size: var(--fs-lg); flex-shrink: 0; }
 .flag-chip.user { filter: saturate(1.2); }
 
@@ -2326,7 +2361,7 @@ select.cell-input { font-family: var(--font-sans); cursor: pointer; }
     transition: background var(--transition), color var(--transition), border-color var(--transition);
 }
 .cell-btn:hover { background: var(--accent-glow); border-color: var(--accent-primary); color: var(--text-primary); }
-.cell-del:hover { border-color: var(--accent-red); color: var(--accent-red); background: rgba(248,113,113,0.1); }
+.cell-del:hover { border-color: var(--accent-red); color: var(--accent-red); background: color-mix(in srgb, var(--accent-red) 10%, transparent); }
 .cell-valid.on { color: var(--accent-green); border-color: var(--accent-green); }
 .cell-valid:not(.on) { color: var(--accent-red); border-color: var(--accent-red); }
 .data-table tr.cred-invalid { opacity: 0.55; }
@@ -2338,7 +2373,7 @@ select.cell-input { font-family: var(--font-sans); cursor: pointer; }
     padding: 8px 14px; margin-bottom: 16px; border-radius: var(--radius-md);
     background: var(--bg-tertiary); border: 1px solid var(--border-primary);
 }
-.active-target-bar.on { background: rgba(52,211,153,0.08); border-color: var(--accent-green); }
+.active-target-bar.on { background: color-mix(in srgb, var(--accent-green) 8%, transparent); border-color: var(--accent-green); }
 .active-target-label { font-size: var(--fs-sm); color: var(--text-secondary); }
 .active-target-bar.on .active-target-label { color: var(--text-primary); }
 .active-dot { color: var(--accent-green); animation: pulse-dot 2s ease-in-out infinite; }
@@ -2421,10 +2456,10 @@ select.cell-input { font-family: var(--font-sans); cursor: pointer; }
 .cvss-num { font-size: 30px; line-height: 1; }
 .cvss-sev { font-size: var(--fs-md); text-transform: uppercase; letter-spacing: 0.5px; }
 .cvss-score.sev-none { background: var(--bg-badge); color: var(--text-secondary); }
-.cvss-score.sev-low { background: rgba(52,211,153,0.15); color: var(--accent-green); }
-.cvss-score.sev-medium { background: rgba(251,191,36,0.15); color: var(--accent-yellow); }
-.cvss-score.sev-high { background: rgba(251,146,60,0.16); color: var(--accent-orange); }
-.cvss-score.sev-critical { background: rgba(248,113,113,0.16); color: var(--accent-red); }
+.cvss-score.sev-low { background: color-mix(in srgb, var(--accent-green) 15%, transparent); color: var(--accent-green); }
+.cvss-score.sev-medium { background: color-mix(in srgb, var(--accent-yellow) 15%, transparent); color: var(--accent-yellow); }
+.cvss-score.sev-high { background: color-mix(in srgb, var(--accent-orange) 16%, transparent); color: var(--accent-orange); }
+.cvss-score.sev-critical { background: color-mix(in srgb, var(--accent-red) 16%, transparent); color: var(--accent-red); }
 .cvss-vector { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--text-code); background: var(--bg-code); padding: 6px 10px; border-radius: var(--radius-sm); word-break: break-all; flex: 1; min-width: 200px; }
 .cvss-foot { padding: 0 18px 18px; text-align: right; }
 @media (max-width: 560px) { .cvss-grid { grid-template-columns: 1fr; } }
@@ -2475,22 +2510,31 @@ select.cell-input { font-family: var(--font-sans); cursor: pointer; }
 @media print { .basket-fab, .basket-panel { display: none !important; } }
 
 /* ── Round 6: MITRE ATT&CK tags + reference links ── */
-.cmd-meta-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 12px 12px; }
+/* Metadata is a footnote, not a headline. As outlined orange capsules with an
+   emoji these were the loudest thing in a command row and cost a full line each
+   — on a corpus where 1164 commands carry one, that is 1164 lines of chrome
+   competing with the commands. Now: quiet monospace ids that light up on hover. */
+.cmd-meta-row { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; margin: 3px 0 0; }
 .cmd-attack-chip {
-    display: inline-flex; align-items: center; gap: 3px; font-size: 10.5px; font-weight: 600; font-family: var(--font-mono);
-    text-decoration: none; padding: 2px 8px; border-radius: 999px; color: var(--accent-orange);
-    background: rgba(251,146,60,0.12); border: 1px solid rgba(251,146,60,0.35); transition: all var(--transition);
+    display: inline-flex; align-items: baseline; gap: 3px;
+    font-size: var(--fs-2xs); font-weight: 500; font-family: var(--font-mono);
+    letter-spacing: 0.02em;
+    text-decoration: none; padding: 0; border: 0; border-radius: 0;
+    background: none; color: var(--text-tertiary);
+    transition: color var(--transition);
 }
-.cmd-attack-chip:hover { background: var(--accent-orange); color: var(--accent-orange-ink); }
+.cmd-attack-chip:hover { background: none; color: var(--accent-orange); text-decoration: underline; }
 .cmd-ref-link {
-    display: inline-flex; align-items: center; gap: 3px; font-size: var(--fs-xs); text-decoration: none; padding: 2px 8px;
-    border-radius: 999px; color: var(--accent-cyan); background: var(--bg-tertiary); border: 1px solid var(--border-primary); transition: all var(--transition);
+    display: inline-flex; align-items: baseline; gap: 3px;
+    font-size: var(--fs-2xs); font-family: var(--font-mono); text-decoration: none;
+    padding: 0; border-radius: 0; border: 0; background: none;
+    color: var(--text-tertiary); transition: color var(--transition);
 }
-.cmd-ref-link:hover { border-color: var(--accent-cyan); color: var(--text-primary); }
+.cmd-ref-link:hover { color: var(--accent-blue); text-decoration: underline; }
 
 /* ATT&CK sidebar facet (only rendered when data carries attack tags) */
 /* Single "ATT&CK" chip in the top filter row (orange accent to distinguish) */
-.tag-filter-attack { border-color: rgba(251,146,60,0.4); color: var(--accent-orange); }
+.tag-filter-attack { border-color: color-mix(in srgb, var(--accent-orange) 40%, transparent); color: var(--accent-orange); }
 .tag-filter-attack:hover { border-color: var(--accent-orange); color: var(--accent-orange); }
 .tag-filter-attack.active { background: var(--accent-orange); border-color: var(--accent-orange); color: var(--accent-orange-ink); }
 
