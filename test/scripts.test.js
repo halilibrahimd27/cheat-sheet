@@ -50,11 +50,13 @@ function run(script, cwdRoot, args) {
 // under test, so it is retried rather than left to fail the run at random.
 function stubborn(fn) {
   let last;
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 20; i++) {
     try { return fn(); } catch (e) {
       last = e;
-      const until = Date.now() + 25;
-      while (Date.now() < until) { /* the shortest backoff that needs no callback */ }
+      // Linear backoff, so a scanner that holds the whole 1.4MB copy for a
+      // moment gets progressively longer to let go before the run gives up.
+      const until = Date.now() + 25 * (i + 1);
+      while (Date.now() < until) { /* a spin wait needs no callback and no import */ }
     }
   }
   throw last;
