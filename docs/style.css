@@ -3323,3 +3323,69 @@ body:has(.var-bar.active) .back-to-top { display: none; }
     .col-phase { min-width: 120px; }
     .writeups-header > p { display: none; }
 }
+
+/* ============================================
+   Machine detail — use the desk
+   Capped at 800px inside a 1480px column, this was a narrow strip of content
+   with a third of the window empty beside it, and every section stacked in one
+   file-long scroll: progress, flags, services, credentials, checklist,
+   timeline, evidence, notes. A box workspace is a dashboard — the things you
+   glance at belong side by side with the thing you are typing into.
+   ============================================ */
+.machine-detail { max-width: 1180px; }
+
+.machine-detail-header {
+    display: flex; align-items: center; gap: 14px; margin-bottom: 18px;
+    padding-bottom: 12px; border-bottom: 1px solid var(--border-secondary);
+}
+/* 48px of emoji was the loudest thing on the page and carried one bit of
+   information (which OS). */
+.machine-detail-icon { font-size: 24px; opacity: 0.85; filter: saturate(0.85); flex-shrink: 0; }
+.machine-detail-name {
+    font-family: var(--font-mono); font-size: var(--fs-2xl); font-weight: 600;
+    color: var(--text-heading); letter-spacing: -0.2px;
+}
+
+/* Two columns once there is room for two. The left column is the work — the
+   checklist you tick and the notes you type; the right is the state you glance
+   at. Below 1080px it collapses to the single column it always was. */
+@media (min-width: 1080px) {
+    .machine-detail-cols {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+        gap: 0 26px;
+        align-items: start;
+    }
+    .machine-detail-cols > .machine-col { min-width: 0; }
+}
+.machine-col { display: flex; flex-direction: column; }
+
+.machine-section { margin-bottom: 18px; }
+.machine-section h3 {
+    font-family: var(--font-mono); font-size: var(--fs-2xs); font-weight: 600;
+    color: var(--text-tertiary); margin-bottom: 8px;
+    text-transform: uppercase; letter-spacing: 0.09em;
+}
+
+/* Flags read as two slots that either hold something or do not, which is the
+   only question anyone asks of them. */
+.machine-flags-row { gap: 8px; }
+
+@media (max-width: 700px) {
+    .machine-detail-icon { font-size: 20px; }
+    .machine-detail-name { font-size: var(--fs-xl); }
+}
+
+/* The header centred a 24px glyph against a four-row meta block, so the OS icon
+   floated halfway down the panel beside the inputs instead of sitting with the
+   name it labels. */
+.machine-detail-header { align-items: flex-start; }
+.machine-detail-icon { margin-top: 3px; }
+.machine-detail-meta { flex: 1; min-width: 0; }
+.machine-detail-name-input {
+    font-family: var(--font-mono);
+    font-size: var(--fs-2xl);
+    font-weight: 600;
+    letter-spacing: -0.2px;
+}
+.machine-meta-fields .machine-meta-input { font-family: var(--font-mono); font-size: var(--fs-sm); }

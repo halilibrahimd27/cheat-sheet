@@ -3339,6 +3339,17 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     });
     page.appendChild(flagSection);
 
+    // Two columns from here down. Left is what you WORK in — the checklist you
+    // tick, the AD path, the notes you type. Right is what you GLANCE at —
+    // services, credentials, what you have already run, evidence. Stacked in
+    // one column these made a page-long scroll where the thing you were typing
+    // into was never on screen with the thing you needed to read.
+    const cols = document.createElement("div"); cols.className = "machine-detail-cols";
+    const colL = document.createElement("div"); colL.className = "machine-col";
+    const colR = document.createElement("div"); colR.className = "machine-col";
+    cols.appendChild(colL); cols.appendChild(colR);
+    page.appendChild(cols);
+
     function updateProgressUI() {
       const tt = (m.checklist || []).length;
       const dd = (m.checklist || []).filter(c => c.done).length;
@@ -3417,7 +3428,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         phaseWrap.appendChild(addRow);
         checkSection.appendChild(phaseWrap);
       });
-      page.appendChild(checkSection);
+      colL.appendChild(checkSection);
     }
 
     // ── AD / network engagement — hosts are real machines linked by machineId ──
@@ -3643,19 +3654,19 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     objArea.value = m.attackPath || "";
     objArea.addEventListener("input", () => { m.attackPath = objArea.value; saveMachine(m.id, { attackPath: m.attackPath }); showMachineStatus(); });
     adSection.appendChild(objLabel); adSection.appendChild(objArea);
-    page.appendChild(adSection);
+    colL.appendChild(adSection);
 
     // Services — structured table + nmap import + quick-scan chips
-    page.appendChild(buildServicesSection(m));
+    colR.appendChild(buildServicesSection(m));
 
     // Credentials — structured vault
-    page.appendChild(buildCredsSection(m));
+    colR.appendChild(buildCredsSection(m));
 
     // Activity timeline (auto-logged copies + manual notes)
-    page.appendChild(buildTimelineSection(m));
+    colR.appendChild(buildTimelineSection(m));
 
     // Evidence — screenshots
-    page.appendChild(buildEvidenceSection(m));
+    colR.appendChild(buildEvidenceSection(m));
 
     // Notes
     const noteSection = document.createElement("div"); noteSection.className = "machine-section";
@@ -3664,7 +3675,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     noteArea.placeholder = lang === "tr" ? "Makine notlari..." : "Machine notes...";
     noteArea.value = m.notes || "";
     noteArea.addEventListener("input", () => { m.notes = noteArea.value; saveMachine(m.id, { notes: m.notes }); showMachineStatus(); });
-    noteSection.appendChild(noteArea); page.appendChild(noteSection);
+    noteSection.appendChild(noteArea); colL.appendChild(noteSection);
 
     contentArea.appendChild(page);
 
