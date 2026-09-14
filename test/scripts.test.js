@@ -195,13 +195,15 @@ function repairTree(seedData) {
   return root;
 }
 
-// A string the shared detector really does call garbled, taken from the
-// detector's own evaluation set rather than invented here — inventing one is how
-// a repair test ends up asserting against a heuristic that never fires.
-const GARBLED = require("./helpers/load-app.js") && (() => {
+// A garbled string, checked against the shared detector at load time rather than
+// trusted. Writing salad that LOOKS garbled and assuming the gate agrees is how
+// a repair test ends up asserting against a heuristic that never fires on it —
+// so if the detector stops flagging this one, this file fails immediately and
+// says to pick another, instead of quietly testing nothing.
+const GARBLED = (() => {
   const detect = require("../scripts/turklish-detect.js");
   const sample = { tr: "Kaba kuvvet: kuvvet saldirisi file extensifilter ile uzerinde", en: "Brute force file extensions with a filter" };
-  if (!detect.looksTurklish(sample.tr, sample.en)) throw new Error("the fixture string is no longer detected as garbled; pick another from turklish-detect.js's own sets");
+  if (!detect.looksTurklish(sample.tr, sample.en)) throw new Error("the fixture string is no longer flagged as garbled — pick another, or this file tests nothing");
   return sample;
 })();
 
