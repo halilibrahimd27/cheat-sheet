@@ -1,5 +1,5 @@
 /* GENERATED FILE — DO NOT EDIT. Built from public/ + seed.js by scripts/build-static.js. */
-const CACHE_NAME = 'cheatsheet-static-3c76ff6da790';
+const CACHE_NAME = 'cheatsheet-static-f465281c96a9';
 const CORE = ['./', './app.js', './checklist-templates.js', './index.html', './local-backend.js', './manifest.json', './nextmove.js', './seed-data.js', './session-data.js', './session.js', './static-bootstrap.js', './style.css', './sw-register.js'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(CORE))); self.skipWaiting(); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))).then(() => self.clients.claim())); });

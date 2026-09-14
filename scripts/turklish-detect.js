@@ -70,10 +70,52 @@ const STRANDED_WORDS = [
 ];
 // A hyphen counts as part of a word here so established loan terms the Turkish
 // text legitimately keeps — "Out-of-band", "man-in-the-middle" — are not flagged.
+// So does a leading "$": "$where" is a MongoDB operator and "$in" a query
+// selector, and reading the tail of one as a stranded English preposition
+// flagged a correct translation of "Inject JavaScript in $where operator".
+// And so does a "/" on either side: a word glued to a slash is a path component
+// or a logical pair, not stranded prose — "group_vars/all" (an Ansible path) and
+// "must/filter" (an Elasticsearch clause pair) are the whole token, and reading
+// the "all" or the "must" out of them flagged two correct translations.
 const STRANDED_EN = new RegExp(
-  "(?<![\\p{L}\\p{N}_-])(?:" + STRANDED_WORDS.join("|") + ")(?![\\p{L}\\p{N}_-])",
+  "(?<![\\p{L}\\p{N}_$/-])(?:" + STRANDED_WORDS.join("|") + ")(?![\\p{L}\\p{N}_/-])",
   "iu"
 );
+const STRANDED_EN_ALL = new RegExp(STRANDED_EN.source, "giu");
+
+// …except when the word is an OPERATOR the English itself spells in capitals.
+//
+// "Boolean test — AND always true" is translated correctly as "Boolean testi —
+// AND her zaman doğru": that AND is the SQL operator being named, not a
+// conjunction left behind. Same for OR, and for SMTP's RCPT TO. The gate flagged
+// all three, and reverting them would have replaced good Turkish with English —
+// the one outcome fix-turklish.js exists to avoid.
+//
+// The exemption is deliberately narrow: the token must be ALL-CAPS in the
+// Turkish AND appear ALL-CAPS in the English source. A lowercase "and" in the
+// same position is still the damage signature, and so is an "AND" the English
+// never used — the translator that produced the salad did not invent capitals.
+function strandedEnglish(tr, en) {
+  STRANDED_EN_ALL.lastIndex = 0;
+  let m;
+  while ((m = STRANDED_EN_ALL.exec(tr)) !== null) {
+    const tok = m[0];
+    if (/^[A-Z]{2,}$/.test(tok) && typeof en === "string" &&
+        new RegExp("(?<![\\p{L}\\p{N}_-])" + tok + "(?![\\p{L}\\p{N}_-])", "u").test(en)) continue;
+    // …or when the lowercase word is sandwiched between two Title-Case words: a
+    // connector inside a proper noun, not a preposition left behind. "Microsoft
+    // Defender for Cloud" is a product name, and its "for" is as much a part of
+    // the name as the words either side of it. Requiring BOTH neighbours to be
+    // capitalised keeps "Check the domain" (the → domain, lowercase) flagged.
+    if (/^[a-z]+$/.test(tok)) {
+      const before = tr.slice(0, m.index).match(/([\p{L}\p{N}]+)\s+$/u);
+      const after = tr.slice(m.index + tok.length).match(/^\s+([\p{L}\p{N}]+)/u);
+      if (before && after && /^\p{Lu}/u.test(before[1]) && /^\p{Lu}/u.test(after[1])) continue;
+    }
+    return true;
+  }
+  return false;
+}
 
 // 3) Merged words. The translator substituted Turkish for English *inside* words,
 //    welding the replacement onto whatever ASCII was left: "substitutiüzerinden"
@@ -203,7 +245,7 @@ function looksTurklish(tr, en) {
   if (typeof tr !== "string" || !tr.trim()) return false;
   if (typeof en === "string" && tr === en) return false;
   // Stranded English function words need no prefix; they are damning anywhere.
-  if (STRANDED_EN.test(tr)) return true;
+  if (strandedEnglish(tr, en)) return true;
   const m = VERB_PREFIX.exec(tr);
   if (!m) return false;
   const [, prefix, tail] = m;
@@ -314,10 +356,24 @@ function englishDominant(tr, en) {
   const shared = toks.filter((t) => /^[a-z0-9][a-z0-9-]*$/.test(t) && vocab.has(t.toLowerCase()));
   return shared.length / toks.length >= 0.7;
 }
+// A CamelCase "weld" that is really a kept proper noun. MERGED_CAMEL hunts a
+// Turkish glue welded onto an English word with no space ("cronile"), but it
+// also fires on any CamelCase name that merely ENDS in a glue syllable —
+// "SeccompProfile" reads as "SeccompProf" + "ile". The tell is that a real weld
+// never appears verbatim in the English source, whereas a kept name (the K8s
+// Kind "SeccompProfile") does. So a MERGED_CAMEL match that is a substring of en
+// is a name, not damage.
+function mergedCamelWeld(tr, en) {
+  const m = MERGED_CAMEL.exec(tr);
+  MERGED_CAMEL.lastIndex = 0;
+  if (!m) return false;
+  if (typeof en === "string" && en.toLowerCase().includes(m[0].toLowerCase())) return false;
+  return true;
+}
 function looksSuspect(tr, en) {
   if (typeof tr !== "string" || !tr.trim()) return false;
   if (typeof en === "string" && tr === en) return false;
-  return looksTurklish(tr, en) || MERGED_WORD.test(tr) || MERGED_CAMEL.test(tr) ||
+  return looksTurklish(tr, en) || MERGED_WORD.test(tr) || mergedCamelWeld(tr, en) ||
     STACKED_POSTPOSITION.test(tr) || englishDominant(tr, en);
 }
 

@@ -251,3 +251,77 @@ test("the shipped corpus does not regress past the ratchet validate-content.js e
     JSON.stringify(bad.slice(0, 5), null, 2)
   );
 });
+
+test("an ALL-CAPS operator the English also capitalises is not a stranded preposition", () => {
+  // "Boolean test — AND always true" translates correctly as "Boolean testi —
+  // AND her zaman doğru": that AND is the SQL operator being named. The gate
+  // flagged it, and fix-turklish.js reverts whatever the gate flags — so this
+  // blind spot would have replaced three pieces of good Turkish with English,
+  // which is the exact outcome the repair script exists to avoid.
+  const keeps = [
+    ["Boolean testi — AND her zaman doğru", "Boolean test — AND always true"],
+    ["Boolean testi — AND her zaman yanlış", "Boolean test — AND always false"],
+    ["Mantıksal OR ile enjekte et", "Inject using logical OR"],
+    ["SMTP RCPT TO ile kullanıcıları listele", "Enumerate users via SMTP RCPT TO"]
+  ];
+  for (const [tr, en] of keeps) {
+    assert.strictEqual(looksTurklish(tr, en), false,
+      JSON.stringify(tr) + " is a correct translation that names an operator — flagging it costs good Turkish");
+  }
+
+  // The exemption is narrow on purpose, and each half of it carries weight.
+  const stillCaught = [
+    // lowercase in the same position is the damage signature
+    ["Boolean testi — and her zaman doğru", "Boolean test — AND always true"],
+    // …and an ALL-CAPS word the English never used is not an operator being named
+    ["AND her zaman doğru", "Boolean test always true"],
+    ["Kaba kuvvet: kuvvet saldırısı TO wordlist", "Brute force a wordlist"]
+  ];
+  for (const [tr, en] of stillCaught) {
+    assert.strictEqual(looksTurklish(tr, en), true,
+      JSON.stringify(tr) + " should still be caught — the exemption must not become a hole");
+  }
+});
+
+test("a $-prefixed operator is one word, not a preposition with a sigil in front", () => {
+  // "$where" is a MongoDB operator and "$in" a query selector. The word-boundary
+  // rule already treats a hyphen as part of the word so "Out-of-band" survives;
+  // a leading "$" is the same situation, and without it the correct translation
+  // of "Inject JavaScript in $where operator" was flagged as salad.
+  assert.strictEqual(looksTurklish("$where operatörüne JavaScript enjekte et", "Inject JavaScript in $where operator"), false);
+  assert.strictEqual(looksTurklish("Birden fazla değeri test etmek için $in kullan", "Use $in to test multiple values"), false);
+  // The bare word is still the damage signature.
+  assert.strictEqual(looksTurklish("Kontrol et: where the file is", "Check where the file is"), true);
+});
+
+test("a word glued to a slash is a path or clause pair, not stranded prose", () => {
+  // "group_vars/all" is an Ansible path and "must/filter" an Elasticsearch
+  // clause pair. The "all" and the "must" are the whole token; reading them out
+  // flagged two correct translations, which fix-turklish.js would then revert.
+  assert.strictEqual(looksTurklish("group_vars/all icindeki degiskenler her hosta uygulanir",
+    "Variables in group_vars/all apply to every host"), false);
+  assert.strictEqual(looksTurklish("must/filter cumlelerini birlestir", "Combine must/filter clauses"), false);
+  // A slash does not launder a genuine stranded run with spaces around it.
+  assert.strictEqual(looksTurklish("Kaba kuvvet: kuvvet saldirisi all files", "Brute force all files"), true);
+});
+
+test("a lowercase connector between two Title-Case words is part of a proper noun", () => {
+  // "Microsoft Defender for Cloud" is a product name; its "for" belongs to the
+  // name as much as the words either side.
+  assert.strictEqual(looksTurklish("Defender for Cloud plan kapsamini kontrol et",
+    "Check Defender for Cloud plan coverage"), false);
+  // Both neighbours must be capitalised — a lowercase target still flags.
+  assert.strictEqual(looksTurklish("Kontrol et: the domain bilgisi", "Check the domain info"), true);
+});
+
+test("a CamelCase name ending in a glue syllable is not a merged-word weld", () => {
+  // MERGED_CAMEL hunts a Turkish glue welded onto an English word ("cronile"),
+  // but "SeccompProfile" (a Kubernetes Kind) reads as "SeccompProf" + "ile". The
+  // tell is that a real weld never appears verbatim in the English source while a
+  // kept name does — so a match that is a substring of en is a name, not damage.
+  assert.strictEqual(looksSuspect(
+    "SPO ile bir iş yükünün sistem çağrılarını bir SeccompProfile CR'ine kaydeder",
+    "Record syscalls from a workload into a SeccompProfile CR via SPO"), false);
+  // A genuine CamelCase weld — glue fused onto a name, not present in en — still flags.
+  assert.strictEqual(looksSuspect("LoadBalancerüzerinden trafiği yönlendir", "Route traffic to the service"), true);
+});
