@@ -107,15 +107,19 @@ test("`e` reaches the enumeration queue — one node, and not the phase checklis
     " — an ambiguous hook is how `e` ended up somewhere else in the first place");
 
   // The node the OLD selector would have won, measured rather than assumed.
+  //
+  // This used to assert a crowd (>50). The guide renders ONE phase at a time
+  // now instead of every phase collapsed, so the checklist contributes a
+  // handful of hints rather than a hundred. The count was never the point —
+  // what this guards is that '.checklist-hint code' still resolves into the
+  // CHECKLIST and not the queue, which is the confusion that sent `e` to the
+  // wrong section.
   const oldMatches = s.container.querySelectorAll(".checklist-hint code");
-  assert.ok(oldMatches.length > 50,
-    "the original selector '.checklist-hint code' should still match a crowd here (" + oldMatches.length +
-    ") — if it matches almost nothing, this test has stopped reproducing the bug");
+  assert.ok(oldMatches.length > 0,
+    "the original selector '.checklist-hint code' must still match something (" + oldMatches.length +
+    ") — if it matches nothing, this test has stopped reproducing the bug");
   assert.ok(!queues[0].contains(oldMatches[0]),
     "the first '.checklist-hint code' is inside the queue now, so this test no longer distinguishes the two sections");
-  assert.match(oldMatches[0].textContent, /^sudo openvpn/,
-    "the first match of the old selector is a pre-flight checklist command (" +
-    JSON.stringify(oldMatches[0].textContent) + ") — that is the section `e` used to jump to");
 
   const scrolled = [];
   s.container.querySelectorAll("*").forEach((n) => { n.scrollIntoView = function () { scrolled.push(this); }; });

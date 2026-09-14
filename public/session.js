@@ -61,7 +61,10 @@
       enumConditional: "conditional", enumShowCond: "Show conditional commands",
       enumHideCond: "Hide conditional commands", copyAll: "Copy the always-run set",
       copy: "Copy", copied: "Copied", note: "Note",
-      checklist: "Phase checklist", stuck: "Stuck?", stuckClose: "Close",
+      checklist: "Guide", stuck: "Stuck?", stuckClose: "Close",
+      gStepOf: "step", gPhaseOf: "of", gGoal: "Goal", gPrev: "Previous", gNext: "Next phase",
+      gDone: "Completed", gLater: "Ahead", gAllDone: "Every phase complete",
+      gAdvanced: "Phase complete — moved to", gReopen: "reopen",
       stuckIntro: "Read them in order. The first one that makes you uncomfortable is the one.",
       stuckMeta: "Whatever the target",
       stuckNone: "No stuck list ships for this focus and phase.",
@@ -145,7 +148,10 @@
       enumConditional: "kosullu", enumShowCond: "Kosullu komutlari goster",
       enumHideCond: "Kosullu komutlari gizle", copyAll: "Her zaman calistirilan seti kopyala",
       copy: "Kopyala", copied: "Kopyalandi", note: "Not",
-      enumQueueShort: "Kuyruk", checklist: "Asama listesi", stuck: "Tikandin mi?", stuckClose: "Kapat",
+      enumQueueShort: "Kuyruk", checklist: "Rehber", stuck: "Tikandin mi?", stuckClose: "Kapat",
+      gStepOf: "adim", gPhaseOf: "/", gGoal: "Hedef", gPrev: "Onceki", gNext: "Sonraki asama",
+      gDone: "Tamamlanan", gLater: "Sirada", gAllDone: "Tum asamalar tamam",
+      gAdvanced: "Asama bitti — gecildi:", gReopen: "yeniden ac",
       stuckIntro: "Sirayla oku. Seni ilk rahatsiz eden madde dogru olandir.",
       stuckMeta: "Hedef ne olursa olsun",
       stuckNone: "Bu odak ve asama icin hazir liste yok.",
@@ -2057,62 +2063,117 @@
   }
 
   // ── Phase checklist ──
+  // ── The guide ───────────────────────────────────────────────────────────
+  // This was a flat list of every phase, all collapsible, all equal. A list of
+  // everything is a reference, not a guide: it never says where you are or what
+  // to do next. One phase is live at a time, with its goal and its steps; the
+  // rest collapse to a rail you can still jump around. Finishing the last step
+  // of a phase advances you, which is the single thing that makes it feel like
+  // being walked through rather than handed a document.
   function phaseSection(s, preset, t) {
-    var sec = el("div", "machine-section");
+    var sec = el("div", "machine-section session-guide");
+    var phases = phasesForTarget(preset, t);
+    if (!phases.length) return sec;
+
+    function stats(ph) {
+      var items = ph.items || [];
+      var done = items.filter(function (_, i) { return t.done[ph.id + ":" + i]; }).length;
+      return { done: done, total: items.length, complete: items.length > 0 && done === items.length };
+    }
+    var idx = 0;
+    for (var i = 0; i < phases.length; i++) if (phases[i].id === t.phase) { idx = i; break; }
+    var cur = phases[idx];
+    var st = stats(cur);
+
     var head = el("div", "machine-section-head");
     head.appendChild(el("h3", "", S("checklist")));
+    head.appendChild(el("span", "guide-counter", (idx + 1) + " " + S("gPhaseOf") + " " + phases.length));
     sec.appendChild(head);
 
-    phasesForTarget(preset, t).forEach(function (ph) {
-      var box = el("div", "checklist-phase" + (t.phase === ph.id ? " current" : ""));
-      var doneN = (ph.items || []).filter(function (item, i) { return t.done[ph.id + ":" + i]; }).length;
-
-      var phHead = el("div", "checklist-phase-header");
-      phHead.style.cursor = "pointer";
-      phHead.appendChild(el("span", "checklist-phase-name", ph.name));
-      var right = el("div", "checklist-phase-right");
-      right.appendChild(el("span", "checklist-phase-count", doneN + "/" + (ph.items || []).length));
-      right.appendChild(btn("btn btn-secondary btn-sm", t.phase === ph.id ? "●" : "○", function (e) {
-        e.stopPropagation();
+    // Rail: every phase as one dot, so the shape of the whole chain stays
+    // visible even though only one of them is open.
+    var rail = el("div", "guide-rail");
+    phases.forEach(function (ph, i2) {
+      var c = stats(ph);
+      var dot = btn("guide-dot" + (i2 === idx ? " current" : "") + (c.complete ? " done" : ""), "", function () {
         t.phase = ph.id; touch(); paint();
-      }, S("phase")));
-      phHead.appendChild(right);
-      box.appendChild(phHead);
-
-      var body = el("div", "");
-      body.hidden = t.phase !== ph.id;
-      phHead.addEventListener("click", function () { body.hidden = !body.hidden; });
-
-      if (ph.goal) {
-        var goal = el("div", "session-attempt-why", ph.goal);
-        goal.style.padding = "8px 12px 0";
-        body.appendChild(goal);
-      }
-      var m = machineFor(t);
-      (ph.items || []).forEach(function (item, i) {
-        var key = ph.id + ":" + i;
-        var row = el("label", "checklist-item" + (t.done[key] ? " done" : ""));
-        row.appendChild(checkbox(!!t.done[key], function (on) {
-          if (on) t.done[key] = true; else delete t.done[key];
-          touch(); paint();
-        }));
-        var ib = el("div", "checklist-body");
-        ib.appendChild(el("span", "checklist-label", item.label));
-        if (item.hint) {
-          var hint = el("div", "checklist-hint");
-          var resolved = resolveCmd(item.hint, m);
-          hint.appendChild(el("code", "", resolved));
-          var copy = btn("checklist-hint-copy", "⧉", null, S("copy"));
-          wireCopy(copy, function () { return resolved; }, t);
-          hint.appendChild(copy);
-          ib.appendChild(hint);
-        }
-        row.appendChild(ib);
-        body.appendChild(row);
-      });
-      box.appendChild(body);
-      sec.appendChild(box);
+      }, ph.name + " — " + c.done + "/" + c.total);
+      dot.appendChild(el("span", "guide-dot-mark", c.complete ? "✓" : String(i2 + 1)));
+      rail.appendChild(dot);
     });
+    sec.appendChild(rail);
+
+    // The live phase
+    var box = el("div", "guide-current");
+    var ch = el("div", "guide-current-head");
+    ch.appendChild(el("h4", "guide-phase-name", cur.name));
+    ch.appendChild(el("span", "guide-phase-count", st.done + "/" + st.total));
+    box.appendChild(ch);
+    if (cur.goal) {
+      var goal = el("p", "guide-goal");
+      goal.appendChild(el("span", "guide-goal-label", S("gGoal")));
+      goal.appendChild(document.createTextNode(" " + cur.goal));
+      box.appendChild(goal);
+    }
+
+    var m = machineFor(t);
+    var steps = el("div", "guide-steps");
+    (cur.items || []).forEach(function (item, i2) {
+      var key = cur.id + ":" + i2;
+      var row = el("label", "checklist-item" + (t.done[key] ? " done" : ""));
+      row.appendChild(checkbox(!!t.done[key], function (on) {
+        if (on) t.done[key] = true; else delete t.done[key];
+        // Advance when the last box is ticked. Never skip backwards, and never
+        // past the end — finishing the final phase just says so.
+        var after = stats(cur);
+        if (on && after.complete && idx < phases.length - 1) {
+          t.phase = phases[idx + 1].id;
+          if (APP.toast) APP.toast(S("gAdvanced") + " " + phases[idx + 1].name, "ok");
+        }
+        touch(); paint();
+      }));
+      var ib = el("div", "checklist-body");
+      ib.appendChild(el("span", "checklist-label", item.label));
+      if (item.hint) {
+        var hint = el("div", "checklist-hint");
+        var resolved = resolveCmd(item.hint, m);
+        hint.appendChild(el("code", "", resolved));
+        var copy = btn("checklist-hint-copy", "⧉", null, S("copy"));
+        wireCopy(copy, function () { return resolved; }, t);
+        hint.appendChild(copy);
+        ib.appendChild(hint);
+      }
+      row.appendChild(ib);
+      steps.appendChild(row);
+    });
+    box.appendChild(steps);
+
+    var nav = el("div", "guide-nav");
+    if (idx > 0) nav.appendChild(btn("nm-btn", "← " + S("gPrev"), function () { t.phase = phases[idx - 1].id; touch(); paint(); }));
+    if (idx < phases.length - 1) {
+      var next = btn("nm-btn" + (st.complete ? " nm-btn-primary" : ""), S("gNext") + " →", function () {
+        t.phase = phases[idx + 1].id; touch(); paint();
+      });
+      next.classList.add("guide-next");
+      nav.appendChild(next);
+    } else if (st.complete) {
+      nav.appendChild(el("span", "guide-alldone", S("gAllDone")));
+    }
+    box.appendChild(nav);
+    sec.appendChild(box);
+
+    // Everything else, one line each, so nothing is hidden — just quiet.
+    function strip(cls, label, list) {
+      if (!list.length) return;
+      var wrap = el("div", "guide-strip " + cls);
+      wrap.appendChild(el("span", "guide-strip-label", label));
+      list.forEach(function (ph) {
+        wrap.appendChild(btn("guide-strip-item", ph.name, function () { t.phase = ph.id; touch(); paint(); }));
+      });
+      sec.appendChild(wrap);
+    }
+    strip("is-done", S("gDone"), phases.slice(0, idx));
+    strip("is-later", S("gLater"), phases.slice(idx + 1));
     return sec;
   }
 

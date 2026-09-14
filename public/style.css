@@ -3429,3 +3429,80 @@ body:has(.var-bar.active) .back-to-top { display: none; }
 .basket-mini { display: inline-flex; align-items: center; justify-content: center; padding: 3px; width: 24px; height: 24px; }
 .basket-mini .icon { width: 14px; height: 14px; }
 .basket-mini.copied { border-color: var(--accent-green); color: var(--accent-green); }
+
+/* ============================================
+   Session guide
+   One phase live at a time. The rail keeps the whole chain visible, the strips
+   keep the rest reachable, and ticking the last box moves you on — which is the
+   difference between a guide and a list of everything.
+   ============================================ */
+.session-guide .machine-section-head { display: flex; align-items: baseline; gap: 10px; }
+.guide-counter {
+    margin-left: auto; font-family: var(--font-mono); font-size: var(--fs-2xs);
+    color: var(--text-tertiary); font-variant-numeric: tabular-nums;
+}
+
+.guide-rail { display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 12px; }
+.guide-dot {
+    width: 24px; height: 24px; padding: 0; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--bg-tertiary); border: 1px solid var(--border-primary);
+    border-radius: var(--radius-sm); color: var(--text-tertiary);
+    font-family: var(--font-mono); font-size: var(--fs-2xs);
+    transition: background var(--transition), border-color var(--transition), color var(--transition);
+}
+.guide-dot:hover { color: var(--text-primary); border-color: var(--border-secondary); }
+.guide-dot.done { color: var(--accent-green); border-color: color-mix(in srgb, var(--accent-green) 45%, transparent); }
+.guide-dot.current {
+    background: var(--accent-primary); border-color: var(--accent-primary);
+    color: var(--bg-primary); font-weight: 700;
+}
+
+.guide-current {
+    border: 1px solid var(--border-secondary);
+    border-left: 3px solid var(--accent-primary);
+    border-radius: var(--radius-md);
+    background: var(--bg-secondary);
+    padding: 12px 14px 12px;
+}
+.guide-current-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; }
+.guide-phase-name {
+    font-family: var(--font-mono); font-size: var(--fs-lg); font-weight: 600;
+    color: var(--text-heading); margin: 0; letter-spacing: -0.1px; min-width: 0;
+}
+.guide-phase-count {
+    margin-left: auto; font-family: var(--font-mono); font-size: var(--fs-xs);
+    color: var(--text-tertiary); font-variant-numeric: tabular-nums;
+}
+.guide-goal { font-size: var(--fs-sm); color: var(--text-secondary); margin: 0 0 10px; line-height: 1.5; max-width: 90ch; }
+.guide-goal-label {
+    font-family: var(--font-mono); font-size: var(--fs-2xs); text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--text-tertiary); margin-right: 2px;
+}
+.guide-steps { display: flex; flex-direction: column; }
+
+.guide-nav { display: flex; gap: 8px; align-items: center; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--rule); }
+.guide-next { margin-left: auto; }
+.guide-alldone {
+    margin-left: auto; font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--accent-green);
+}
+
+.guide-strip { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; margin-top: 10px; }
+.guide-strip-label {
+    font-family: var(--font-mono); font-size: var(--fs-2xs); text-transform: uppercase;
+    letter-spacing: 0.09em; color: var(--text-tertiary); margin-right: 2px;
+}
+.guide-strip-item {
+    background: none; border: 0; padding: 1px 0; cursor: pointer;
+    font-size: var(--fs-xs); color: var(--text-tertiary);
+    border-bottom: 1px solid transparent;
+    transition: color var(--transition), border-color var(--transition);
+}
+.guide-strip-item:hover { color: var(--text-primary); border-bottom-color: var(--border-secondary); }
+.guide-strip.is-done .guide-strip-item { color: color-mix(in srgb, var(--accent-green) 70%, var(--text-tertiary)); }
+.guide-strip-item + .guide-strip-item::before { content: "·"; margin-right: 8px; color: var(--text-tertiary); }
+
+@media (max-width: 600px) {
+    .guide-nav { flex-wrap: wrap; }
+    .guide-next, .guide-alldone { margin-left: 0; }
+}
