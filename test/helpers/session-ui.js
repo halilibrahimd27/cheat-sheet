@@ -75,12 +75,21 @@ function press(s, key, init) {
   return prevented;
 }
 
-// The keys panel, located by its content rather than by class: ".exam-rules" is
-// also the preset's own rule boxes (8 of them on OSCP+), so a class lookup alone
-// would find a rules card and read a rule as a key binding.
+// The keys panel, located by its TITLE rather than by class or by content.
+//
+// ".exam-rules" is also the preset's own rule boxes (8 of them on OSCP+), so a
+// class lookup alone would find a rules card and read a rule as a key binding.
+// The first fix for that looked for a binding starting with "1" — which broke
+// the moment the panel started hiding the per-target keys on a preset that has
+// no targets yet: the panel was there, and the helper reported it missing.
+// The title is the one part that does not depend on which bindings apply.
 function keysPanel(s) {
+  const title = (s.window && s.window.CS_SESSION_STR_KEYS) || "Session keys";
   return s.container.querySelectorAll(".exam-rules")
-    .filter((box) => box.querySelectorAll("li code").some((c) => /^1/.test(c.textContent)))[0] || null;
+    .filter((box) => {
+      const t = box.querySelector(".exam-rules-title");
+      return t && t.textContent.trim() === title;
+    })[0] || null;
 }
 
 // [[code, label], …] exactly as the panel advertises them.

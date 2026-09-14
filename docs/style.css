@@ -3445,6 +3445,56 @@ body:has(.var-bar.active) .back-to-top { display: none; }
 .nav-item-icon .icon { width: 15px; height: 15px; opacity: 1; }
 .nav-item-icon:has(.icon) { opacity: 1; filter: none; }
 
+/* ============================================
+   Touch targets
+   WCAG 2.2 SC 2.5.8 asks for 24x24 CSS px, and most of the icon-only controls
+   in here missed it: an .icon is 16px (14 at icon-sm) and several of these
+   buttons added 2px of padding to it, for a 20px or even a 16px target. That is
+   fine with a mouse and wrong with a thumb, which is the hand this app is used
+   with least often and the one that has no second chance when the control it
+   misses is "delete".
+
+   min-* rather than fixed sizes, so nothing that was already bigger shrinks, and
+   inline-flex so the icon centres in the space that opens up. Where a control
+   carries text as well (Add subcategory, the phase copy buttons) the min-width
+   is simply never the binding constraint.
+
+   Deliberately NOT solved with a ::after hit area: several of these sit in a row
+   of three, and invisible 24px boxes would overlap each other — a bigger target
+   for the wrong button is not an improvement.
+   ============================================ */
+.cmd-action-btn, .cat-action-btn, .sub-action-btn, .cmd-basket-btn,
+.checklist-hint-copy, .checklist-phase-copy, .checklist-item-del,
+.cell-btn, .tl-del, .evidence-del, .note-delete-btn,
+.machine-del-btn, .wu-file-delete, .wu-file-pin, .wu-pin-btn, .wu-delete-btn,
+.wurow-pin, .wu-code-copy, .wu-edit-tags-btn, .wu-fmt-btn,
+.basket-close, .basket-mini, .cvss-close, .modal-close, .var-bar-close,
+.host-expand, .host-del, .session-flag, .sidebar-toggle, .sidebar-toggle-open,
+.btn-icon, .view-btn, .svc-chip {
+    min-width: 24px;
+    min-height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* A pointer with no hover — a phone, a tablet, a touchscreen laptop — gets 32px
+   on the controls that delete something. A mis-tap there is not recoverable by
+   moving the finger; the row is already gone. */
+@media (hover: none) and (pointer: coarse) {
+    .cmd-action-btn, .cat-action-btn, .sub-action-btn, .cmd-basket-btn,
+    .checklist-item-del, .cell-btn, .tl-del, .evidence-del, .note-delete-btn,
+    .machine-del-btn, .wu-file-delete, .wu-file-pin, .wu-delete-btn,
+    .host-del, .modal-close, .var-bar-close, .basket-close, .cvss-close {
+        min-width: 32px;
+        min-height: 32px;
+    }
+    /* These fade in on hover, which a touch device never does — without this the
+       control is a 32px target nobody can see. */
+    .cmd-action-btn, .cmd-basket-btn, .tl-del, .checklist-item-del,
+    .wu-file-delete, .wu-file-pin, .machine-del-btn, .evidence-del { opacity: 1; }
+}
+
 /* Basket rows: the command is the content and the controls are chrome, so the
    command takes the width and the buttons collapse to their icon. */
 .basket-row { align-items: center; gap: 4px; }

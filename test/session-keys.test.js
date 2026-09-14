@@ -515,16 +515,78 @@ test("an over-budget task row visibly exceeds its budget", async () => {
     assert.strictEqual(secs(times[0]), Math.floor(spentMs / 1000), "the first figure is what was actually spent");
     assert.strictEqual(secs(times[0]) - secs(times[1]), OVER_BY_MS / 1000, "and the gap between them is the overrun");
 
-    // The on-screen row has to agree with the document. The screen still shows
-    // whole minutes, so the class is what carries the fact there.
+    // The on-screen row has to agree with the document — and it did not, for a
+    // release. The report was fixed to print clocks while the screen kept
+    // truncating to whole minutes, so the candidate watching the panel still saw
+    // "6m / 6m" in red and only the exported retrospective told the truth.
     s.mod.render(s.container);
     await settle(1);
-    assert.strictEqual(s.container.querySelectorAll(".session-budget-text.over").length, 1,
-      "exactly the over-budget task's figure is marked over");
+    const marked = s.container.querySelectorAll(".session-budget-text.over");
+    assert.strictEqual(marked.length, 1, "exactly the over-budget task's figure is marked over");
     assert.strictEqual(s.container.querySelectorAll(".session-budget-fill.over").length, 1,
       "…and so is its bar");
+
+    const onScreen = marked[0].textContent.trim();
+    const shown = onScreen.match(/\d+:\d{2}:\d{2}/g) || [];
+    assert.strictEqual(shown.length, 2,
+      "an over-budget row must show exact clocks, not truncated minutes — got " + JSON.stringify(onScreen));
+    assert.notStrictEqual(shown[0], shown[1],
+      "the row reads " + JSON.stringify(onScreen) + " — two identical figures under a red 'over budget' bar " +
+      "reads as a bug in the tool rather than a fact about the run");
+    assert.strictEqual(secs(shown[0]) - secs(shown[1]), OVER_BY_MS / 1000,
+      "and the on-screen gap is the same overrun the retrospective prints");
   } finally {
     Date.now = realNow;
     unmount(s);
+  }
+});
+
+// ───────────────── 8. a preset that starts empty ─────────────────
+
+test("an empty preset advertises only the keys that do something", async () => {
+  // OSEP ships no targets — the candidate types in whatever the Exam Control
+  // Panel gave them — and Terraform Associate ships no task count. The panel
+  // used to list all ten bindings anyway, so six of them did nothing at all,
+  // silently. A shortcut panel that lies once is one nobody opens twice, which
+  // costs the keys that do work.
+  for (const preset of ["osep", "terraform-associate"]) {
+    const s = await live(preset);
+    press(s, "h");
+    await settle(1);
+    const advertised = advertisedBindings(s);
+    assert.ok(advertised.length > 0, preset + ": the keys panel did not render");
+    const codes = advertised.map((p) => p[0]);
+    assert.deepStrictEqual(codes.sort(), ["a", "b", "h", "r"],
+      preset + " has nothing in it yet, so only the cockpit-level keys apply — got " + JSON.stringify(codes));
+
+    // And the panel says where the rest went, rather than leaving a short list
+    // that reads as the whole feature.
+    const box = keysPanel(s);
+    assert.match(box.textContent, /appear once this session has a (target|task)/,
+      preset + ": the panel hides bindings without saying why");
+  }
+});
+
+test("the same preset advertises the full set once it has something in it", async () => {
+  // The other half: the filter must not be a permanent amputation.
+  const s = await live("osep");
+  press(s, "h");
+  await settle(1);
+  const before = advertisedBindings(s).map((p) => p[0]);
+
+  // addTargetRow() is what the cockpit's "add target" control calls. Matched on
+  // the whole label: a bare /^\+/ also wins the budget-increment button, which
+  // is a "+" and nothing else.
+  const add = buttonWith(s.container, /^\+\s*Add target$/);
+  assert.ok(add, "OSEP's cockpit must offer a way to add the targets the control panel handed out");
+  add.dispatchEvent({ type: "click", preventDefault() {}, stopPropagation() {} });
+  await settle(1);
+  // No second `h`: view.keys survives the repaint, and pressing it again would
+  // close the panel this assertion is about.
+  const after = advertisedBindings(s).map((p) => p[0]);
+  assert.ok(after.length > before.length,
+    "adding a target must bring the per-target keys back — before " + JSON.stringify(before) + ", after " + JSON.stringify(after));
+  for (const code of ["1…9", "c", "e", "o", "s"]) {
+    assert.ok(after.includes(code), "`" + code + "` should be advertised again once a target exists");
   }
 });

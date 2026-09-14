@@ -500,6 +500,8 @@ cheat-sheet/
 │   ├── references.test.js  # Command reference links: https-only, real docs, coverage ratchet
 │   ├── nav-badge.test.js   # The sidebar badge contract app.js calls into
 │   ├── examples.test.js    # Regenerates examples/ and fails if it drifted
+│   ├── touch-targets.test.js  # Every icon-only control is at least 24x24 (WCAG 2.5.8)
+│   ├── scripts.test.js     # validate-content / fix-turklish / build-static, run as processes
 │   └── helpers/            # DOM/IndexedDB/server harnesses shared by the suites
 ├── public/
 │   ├── index.html          # Main HTML (CSP meta, no inline script)

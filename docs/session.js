@@ -109,6 +109,8 @@
       docFail: "Saved sessions could not be read.",
       docFailHint: "This is the GET /api/exam request, not the command corpus — the presets loaded fine. Check that the backend is reachable and retry; nothing has been written.",
       keysTitle: "Session keys", keysHint: "The app's own keys (Ctrl+K, /, g h, ?) all still work.",
+      keysWhenTargets: "The per-target keys appear once this session has a target.",
+      keysWhenTasks: "The per-task keys appear once this session has a task.",
       confirmEnd: "End this session? It stays in the list and can be reopened.",
       confirmDel: "Delete this session and everything recorded in it?",
       yes: "Yes", no: "Cancel", done: "Done", reopen: "Reopen",
@@ -196,6 +198,8 @@
       docFail: "Kayitli oturumlar okunamadi.",
       docFailHint: "Sorun GET /api/exam isteginde, komut derlemesinde degil — on ayarlar sorunsuz yuklendi. Sunucunun erisilebilir oldugunu dogrulayip yeniden deneyin; hicbir sey yazilmadi.",
       keysTitle: "Oturum tuslari", keysHint: "Uygulamanin kendi tuslari (Ctrl+K, /, g h, ?) calismaya devam eder.",
+      keysWhenTargets: "Hedefe ozel tuslar, bu oturuma bir hedef eklendiginde gorunur.",
+      keysWhenTasks: "Goreve ozel tuslar, bu oturuma bir gorev eklendiginde gorunur.",
       confirmEnd: "Bu oturum bitirilsin mi? Listede kalir ve tekrar acilabilir.",
       confirmDel: "Bu oturum ve icindeki her sey silinsin mi?",
       yes: "Evet", no: "Vazgec", done: "Bitti", reopen: "Tekrar ac",
@@ -1470,7 +1474,7 @@
   function buildCockpit(s, preset) {
     var wrap = frag();
     wrap.appendChild(sessionHeader(s, preset));
-    if (view.keys) wrap.appendChild(keysPanel(s.kind));
+    if (view.keys) wrap.appendChild(keysPanel(s.kind, s));
 
     var score = scoreBlock(s, preset);
     if (score) wrap.appendChild(score);
@@ -1741,7 +1745,7 @@
   function buildTargetPanel(s, preset, t) {
     var wrap = frag();
     wrap.appendChild(sessionHeader(s, preset, t.label));
-    if (view.keys) wrap.appendChild(keysPanel(s.kind));
+    if (view.keys) wrap.appendChild(keysPanel(s.kind, s));
 
     wrap.appendChild(machineBar(s, preset, t));
     if (view.stuck) wrap.appendChild(stuckPanel(s, preset, t));
@@ -2561,7 +2565,7 @@
   function buildTaskMode(s, preset) {
     var wrap = frag();
     wrap.appendChild(sessionHeader(s, preset));
-    if (view.keys) wrap.appendChild(keysPanel(s.kind));
+    if (view.keys) wrap.appendChild(keysPanel(s.kind, s));
 
     wrap.appendChild(contextBanner(s, preset));
 
@@ -2767,8 +2771,17 @@
         fill.style.width = pct + "%";
         fill.classList.toggle("warn", pct >= 75 && pct < 100);
         fill.classList.toggle("over", spent > budget.perTaskMs);
-        text.classList.toggle("over", spent > budget.perTaskMs);
-        text.textContent = fmtShort(spent) + " / " + fmtShort(budget.perTaskMs);
+        var over = spent > budget.perTaskMs;
+        text.classList.toggle("over", over);
+        // Whole minutes while there is still budget left, because that is the
+        // number a candidate glances at. Exact clocks once it is gone: fmtShort
+        // truncates, so a task five seconds past a six-minute budget read
+        // "6m / 6m" in red — a row that contradicts its own colour. The
+        // retrospective already prints these as clocks; this is the same fix on
+        // the screen the candidate is actually looking at.
+        text.textContent = over
+          ? fmtClock(spent) + " / " + fmtClock(budget.perTaskMs)
+          : fmtShort(spent) + " / " + fmtShort(budget.perTaskMs);
       };
       refresh();
       if (task.startedAt) onTick(refresh);
@@ -3247,7 +3260,7 @@
   function buildReport(s, preset) {
     var wrap = frag();
     wrap.appendChild(sessionHeader(s, preset, s.kind === "tasks" ? S("retro") : S("report")));
-    if (view.keys) wrap.appendChild(keysPanel(s.kind));
+    if (view.keys) wrap.appendChild(keysPanel(s.kind, s));
 
     var md = buildReportMarkdown(s, preset);
 
@@ -3304,17 +3317,42 @@
     ["1…9", "tasks"], ["n / p", "next / prev"], ["f", "flagReview"], ["v", "taskVerified"],
     ["a", "attempts"], ["r", "retro"], ["b", "back"], ["h", "keys"]
   ];
-  function keysPanel(kind) {
+  // The four that work with nothing in the session yet: the attempts log and the
+  // report are both on the cockpit, and back and help are always themselves.
+  var KEYS_ALWAYS = ["a", "r", "b", "h"];
+
+  // Advertise only what will actually do something.
+  //
+  // OSEP and Custom ship no targets — the candidate types in whatever the
+  // control panel gave them — and Terraform Associate and the cloud-native lab
+  // ship no task count. On those presets six of the ten keys below were listed
+  // against a session with nothing to apply them to, so pressing one did
+  // nothing at all, with no message. A shortcut panel that lies once is a
+  // shortcut panel nobody opens twice, which costs the keys that do work.
+  function liveKeys(kind, s) {
+    var list = kind === "tasks" ? KEYS_TASKS : KEYS_TARGETS;
+    var items = kind === "tasks" ? ((s && s.tasks) || []) : ((s && s.targets) || []);
+    if (items.length) return list;
+    return list.filter(function (pair) { return KEYS_ALWAYS.indexOf(pair[0]) >= 0; });
+  }
+
+  function keysPanel(kind, s) {
     var box = el("div", "exam-rules");
     box.appendChild(el("div", "exam-rules-title", S("keysTitle")));
+    var shown = liveKeys(kind, s);
     var ul = el("ul", "", "");
-    (kind === "tasks" ? KEYS_TASKS : KEYS_TARGETS).forEach(function (pair) {
+    shown.forEach(function (pair) {
       var li = el("li", "", "");
       li.appendChild(el("code", "", pair[0]));
       li.appendChild(document.createTextNode(" " + S(pair[1])));
       ul.appendChild(li);
     });
     box.appendChild(ul);
+    // Say where the rest went, rather than leaving a short list that looks like
+    // the whole feature.
+    if (shown.length < (kind === "tasks" ? KEYS_TASKS : KEYS_TARGETS).length) {
+      box.appendChild(el("p", "machine-report-hint", S(kind === "tasks" ? "keysWhenTasks" : "keysWhenTargets")));
+    }
     box.appendChild(el("p", "machine-report-hint", S("keysHint")));
     return box;
   }

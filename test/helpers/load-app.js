@@ -43,6 +43,10 @@ const BRIDGE_SOURCE = `
     refHostLabel: (...a) => refHostLabel(...a),
     hlCode: (...a) => hlCode(...a),
     machineToMarkdown: (...a) => machineToMarkdown(...a),
+    // The command card, built by the real builder. Reaching it through render()
+    // would mean standing up the whole view — loadData, the API, the hash — to
+    // assert something about one card.
+    renderCard: (...a) => renderCard(...a),
     wuWordCount: (...a) => wuWordCount(...a),
     cmdAttackList: (...a) => cmdAttackList(...a),
     attackSigOf: (...a) => attackSigOf(...a),
