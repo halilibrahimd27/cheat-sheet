@@ -77,15 +77,15 @@
        session countdown is inserted at its real position (34px, between the
        page title and the hero) rather than bolted on at the end — a scale you
        have to read out of order is not a scale. */
-    --fs-2xs: 10px;  /* micro labels: tags, badges, uppercase eyebrows */
-    --fs-xs: 11px;   /* meta lines: counts, timestamps, hints */
-    --fs-sm: 12px;   /* dense UI: chips, table cells, code chips */
-    --fs-md: 13px;   /* default control + body text */
-    --fs-lg: 14px;   /* emphasised body, small section heads */
-    --fs-xl: 16px;   /* sub-headings, modal titles */
-    --fs-2xl: 18px;  /* panel titles */
-    --fs-3xl: 22px;  /* section titles */
-    --fs-4xl: 28px;  /* page titles */
+    --fs-2xs: 11px;  /* micro labels: tags, badges, uppercase eyebrows */
+    --fs-xs: 12px;   /* meta lines: counts, timestamps, hints */
+    --fs-sm: 13px;   /* dense UI: chips, table cells, code chips */
+    --fs-md: 14px;   /* default control + body text */
+    --fs-lg: 15px;   /* emphasised body, small section heads */
+    --fs-xl: 17px;   /* sub-headings, modal titles */
+    --fs-2xl: 19px;  /* panel titles */
+    --fs-3xl: 23px;  /* section titles */
+    --fs-4xl: 29px;  /* page titles */
     --fs-5xl: 34px;  /* display: countdown clocks (exam / session timers) */
     --fs-6xl: 42px;  /* hero */
 
@@ -730,7 +730,7 @@ body {
     border-radius: var(--radius-sm);
     padding: 6px 74px 6px 9px;
     font-family: var(--font-mono);
-    font-size: 12.5px;
+    font-size: 13.5px;
     color: var(--text-code);
     line-height: 1.55;
     overflow-x: auto;
@@ -1469,7 +1469,7 @@ body {
 }
 .wu-read-body .wu-code-block {
     background: var(--bg-code); border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
-    padding: 14px; margin: 12px 0; font-family: var(--font-mono); font-size: 12.5px;
+    padding: 14px; margin: 12px 0; font-family: var(--font-mono); font-size: 13.5px;
     color: var(--text-code); overflow-x: auto; line-height: 1.6; white-space: pre-wrap;
 }
 .wu-read-body strong { color: var(--text-heading); }
@@ -1531,9 +1531,17 @@ body {
    ============================================ */
 .ip-changer-bar {
     display: none;
+    /* Sticks directly under the top bar. It used to sit in normal document
+       flow, so opening it and scrolling meant it was gone — you had to return
+       to the top of a 5040-command page to change LHOST. It is a control you
+       reach for mid-scroll, so it has to still be there mid-scroll. */
+    position: sticky;
+    top: var(--topbar-height);
+    z-index: var(--z-sticky);
     background: var(--bg-secondary);
     border-bottom: 1px solid var(--border-primary);
-    padding: 10px 24px;
+    box-shadow: 0 1px 0 var(--border-primary), var(--shadow-md);
+    padding: 9px 24px;
     gap: 12px;
     align-items: center;
     flex-wrap: wrap;
@@ -2039,7 +2047,7 @@ body {
 .wu-toc-title { font-size: var(--fs-sm); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-tertiary); margin-bottom: 8px; }
 .wu-toc-item { display: block; width: 100%; text-align: left; background: none; border: none; cursor: pointer; color: var(--accent-secondary); font-size: var(--fs-md); padding: 3px 0; }
 .wu-toc-item:hover { color: var(--accent-primary); text-decoration: underline; }
-.wu-toc-item.lvl-h3 { padding-left: 14px; font-size: 12.5px; color: var(--text-secondary); }
+.wu-toc-item.lvl-h3 { padding-left: 14px; font-size: 13.5px; color: var(--text-secondary); }
 .wu-toc-item.lvl-h4 { padding-left: 28px; font-size: var(--fs-sm); color: var(--text-secondary); }
 
 /* Rich markdown blocks */
@@ -2140,16 +2148,9 @@ body {
    selectors were being silently overridden by later single-class rules. */
 
 /* ── Machines: aggregate stats dashboard ── */
-.machine-stats-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
-.machine-stat {
-    flex: 1; min-width: 110px; display: flex; flex-direction: column; gap: 2px;
-    background: var(--bg-card); border: 1px solid var(--border-primary);
-    border-radius: var(--radius-md); padding: 10px 14px;
-    font-size: var(--fs-sm); color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.4px;
-}
-.machine-stat strong { font-size: var(--fs-3xl); color: var(--accent-primary); font-family: var(--font-mono); }
-.machine-stat strong.s-owned { color: var(--accent-green); }
-.machine-stat strong.s-prog { color: var(--accent-yellow); }
+/* The tile version of this bar lived here; it is now one line of figures,
+   defined once in the list-views section near the end of this file. `flex: 1`
+   was what stretched four small numbers across the whole page. */
 
 /* ── Machines: list controls (search + filters + sort) ── */
 .machine-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
@@ -3119,7 +3120,7 @@ body:has(.var-bar.active) .back-to-top { display: none; }
 .nm-move-cmd {
     background: var(--bg-code); border-radius: var(--radius-sm);
     padding: 6px 9px; margin: 0;
-    font-family: var(--font-mono); font-size: 12.5px; color: var(--text-code);
+    font-family: var(--font-mono); font-size: 13.5px; color: var(--text-code);
     line-height: 1.55; white-space: pre-wrap; word-break: normal; overflow-wrap: anywhere;
 }
 .nm-move-cond { font-size: var(--fs-xs); color: var(--text-tertiary); margin: 4px 0 0; max-width: 92ch; }
@@ -3165,4 +3166,154 @@ body:has(.var-bar.active) .back-to-top { display: none; }
     .nm-add { width: 100%; }
     .nm-moves-meta { margin-left: 0; }
     .nm-move-acts { margin-left: 0; }
+}
+
+/* ============================================
+   List views — Machines & Write-ups
+   Both were card grids: one item floated alone in a 1300px row, the card spent
+   its height on an icon and a preview, and everything that makes an item worth
+   opening (which services, which credentials, which flags) was invisible until
+   you opened it. A table fills the width, sorts, and answers "which one do I go
+   back to" without a click.
+   ============================================ */
+
+/* View header: a title line, not a title plus a sentence explaining the view to
+   someone who already navigated to it. */
+.writeups-header { margin-bottom: 14px; }
+.wu-header-top {
+    display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+    padding-bottom: 9px; border-bottom: 1px solid var(--border-secondary);
+}
+.wu-header-top h2 {
+    font-family: var(--font-mono); font-size: var(--fs-xl); font-weight: 600;
+    color: var(--text-heading); letter-spacing: -0.2px; margin: 0; min-width: 0;
+}
+.wu-header-top .btn { margin-left: auto; }
+.writeups-header > p {
+    font-size: var(--fs-sm); color: var(--text-tertiary);
+    margin: 8px 0 0; max-width: 88ch; line-height: 1.5;
+}
+
+/* Four bordered tiles with 29px figures to carry four small numbers — and it
+   read as parody at one machine. One line of figures, same information. */
+.machine-stats-bar {
+    display: flex; flex-wrap: wrap; gap: 4px 20px; align-items: baseline;
+    margin: 12px 0 14px; padding: 0;
+    background: none; border: 0;
+}
+.machine-stat {
+    display: inline-flex; align-items: baseline; gap: 5px;
+    font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--text-tertiary);
+    background: none; border: 0; padding: 0; text-align: left;
+}
+.machine-stat b {
+    font-size: var(--fs-lg); font-weight: 600; color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+.machine-stat b.s-owned { color: var(--accent-green); }
+.machine-stat b.s-prog { color: var(--accent-primary); }
+
+/* ── shared table shell ── */
+.tablewrap { overflow-x: auto; border: 1px solid var(--border-primary); border-radius: var(--radius-md); }
+.machine-table, .wu-table { min-width: 720px; background: var(--bg-secondary); }
+.machine-table th, .wu-table th {
+    font-family: var(--font-mono); font-size: var(--fs-2xs); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.09em; color: var(--text-tertiary);
+    text-align: left; padding: 8px 12px; white-space: nowrap;
+    background: var(--bg-tertiary); border-bottom: 1px solid var(--border-primary);
+}
+.machine-table td, .wu-table td {
+    padding: 9px 12px; border-bottom: 1px solid var(--rule);
+    vertical-align: middle; font-size: var(--fs-sm); color: var(--text-secondary);
+}
+.machine-table tbody tr:last-child td, .wu-table tbody tr:last-child td { border-bottom: 0; }
+.machine-row, .wu-row { cursor: pointer; transition: background var(--transition); }
+.machine-row:hover, .wu-row:hover { background: var(--bg-card-hover); }
+.machine-row:focus-visible, .wu-row:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: -2px; }
+
+.col-num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.col-act { width: 1%; white-space: nowrap; text-align: right; }
+.col-flags { width: 1%; white-space: nowrap; }
+.col-tags { max-width: 220px; }
+.col-phase { min-width: 170px; }
+
+/* Row actions stay out of the way until the row is under the pointer, but never
+   become unreachable: opacity:0 composites the focus ring away too. */
+.col-act .machine-del-btn, .col-act .wu-file-pin, .col-act .wu-file-delete {
+    background: none; border: 1px solid transparent; border-radius: var(--radius-sm);
+    color: var(--text-tertiary); cursor: pointer; padding: 2px 5px;
+    font-size: var(--fs-sm); opacity: 0; transition: opacity var(--transition), color var(--transition);
+}
+.machine-row:hover .col-act button, .wu-row:hover .col-act button,
+.machine-row:focus-within .col-act button, .wu-row:focus-within .col-act button,
+.col-act button:focus-visible { opacity: 1; }
+.col-act .wu-file-pin.active { opacity: 1; }
+@media (hover: none) { .col-act button { opacity: 1; } }
+.col-act .machine-del-btn:hover, .col-act .wu-file-delete:hover { color: var(--accent-red); }
+
+/* ── machine row ── */
+.mrow-name-wrap { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.mrow-os { font-size: 15px; flex-shrink: 0; opacity: 0.85; filter: saturate(0.85); }
+.mrow-namecol { min-width: 0; }
+.mrow-name {
+    font-size: var(--fs-md); font-weight: 600; color: var(--text-heading);
+    overflow-wrap: anywhere; line-height: 1.3;
+}
+.mrow-sub {
+    font-family: var(--font-mono); font-size: var(--fs-2xs); color: var(--text-tertiary);
+    margin-top: 2px; overflow-wrap: anywhere;
+}
+.mrow-count { font-size: var(--fs-md); color: var(--text-primary); font-weight: 600; }
+.mrow-count.ok { color: var(--accent-green); }
+.mrow-ports {
+    display: block; font-family: var(--font-mono); font-size: var(--fs-2xs);
+    color: var(--text-tertiary); margin-top: 2px;
+}
+
+/* Flags read as two slots that fill in, so an empty one is as informative as a
+   full one — you can see at a glance which boxes are half-done. */
+.mrow-flag {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 20px; height: 20px; margin-right: 4px;
+    font-family: var(--font-mono); font-size: var(--fs-2xs); font-weight: 700;
+    border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
+    color: var(--text-tertiary); background: none;
+}
+.mrow-flag.got {
+    border-color: transparent; color: var(--bg-primary);
+}
+.mrow-flag.got.user { background: var(--accent-blue); }
+.mrow-flag.got.root { background: var(--accent-green); }
+
+.mrow-phase { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.3; }
+.mrow-bar {
+    height: 3px; background: var(--bg-tertiary); border-radius: 2px;
+    overflow: hidden; margin: 5px 0 3px; max-width: 150px;
+}
+.mrow-bar-fill { height: 100%; background: var(--accent-primary); }
+
+/* ── write-up row ── */
+.wurow-titlewrap { display: flex; align-items: baseline; gap: 6px; min-width: 0; }
+.wurow-pin { font-size: var(--fs-xs); flex-shrink: 0; }
+.wurow-name {
+    font-size: var(--fs-md); font-weight: 600; color: var(--text-heading);
+    overflow-wrap: anywhere; line-height: 1.3;
+}
+.wurow-preview {
+    font-size: var(--fs-xs); color: var(--text-tertiary); margin-top: 3px;
+    line-height: 1.4; overflow-wrap: anywhere;
+    display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+}
+.wu-row.pinned .wurow-name { color: var(--accent-primary); }
+.wu-table .wu-tag {
+    display: inline-block; margin: 0 4px 2px 0;
+    font-family: var(--font-mono); font-size: var(--fs-2xs);
+    background: var(--bg-badge); color: var(--text-tertiary);
+    border-radius: var(--radius-sm); padding: 1px 5px;
+}
+
+@media (max-width: 700px) {
+    .machine-table, .wu-table { min-width: 560px; }
+    .col-phase { min-width: 120px; }
+    .writeups-header > p { display: none; }
 }

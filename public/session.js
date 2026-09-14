@@ -890,7 +890,7 @@
           };
         }),
         machineId: "", status: "pending", elapsedMs: 0, enteredAt: 0,
-        phase: (preset.phases && preset.phases[0] && preset.phases[0].id) || "",
+        phase: firstPhaseId(preset, t),
         done: {}, captures: {}, notes: ""
       };
     });
@@ -1664,7 +1664,10 @@
       flags: [{ id: key + "-local", label: "local.txt", points: 0, pointsUnknown: !!preset.pointsUnknown },
         { id: key + "-proof", label: "proof.txt", points: 0, pointsUnknown: !!preset.pointsUnknown }],
       machineId: "", status: "pending", elapsedMs: 0, enteredAt: 0,
-      phase: (preset.phases && preset.phases[0] && preset.phases[0].id) || "",
+      // A hand-added target is a stand-alone host, so it starts on the
+      // stand-alone chain — not on whatever phase the preset happens to list
+      // first, which for OSCP+ is the exam-wide setup block.
+      phase: firstPhaseId(preset, { kind: "standalone" }),
       done: {}, captures: {}, notes: ""
     });
     touch();
@@ -1993,6 +1996,66 @@
     return row;
   }
 
+  // ── Which phases belong to THIS target ─────────────────────────────────
+  // A guide that lists every phase the exam could possibly contain is not a
+  // guide. Before this, all six OSCP+ targets showed the same 15 phases: a
+  // stand-alone box offered "AD — Domain Compromise", and the domain controller
+  // offered "Web Content Discovery". The chain a target belongs to is the whole
+  // point of the chain.
+  //
+  // Driven by phase id rather than a per-preset table, so a preset that ships
+  // no AD phases is unaffected and a new preset needs no code change.
+  var SHARED_PHASE_RE = /^(setup|preflight|triage|evidence|report|proof|sweep|retro|close|task)/i;
+  var AD_PHASE_RE = /^ad[-_]/i;
+  // An AD client still has to be escalated locally — SYSTEM is what gets you
+  // the machine account and the cached hashes — so the local chain stays.
+  var LOCAL_ESC_RE = /^(shell|sitawareness|situational|privesc|local-flag)/i;
+
+  function phasesForTarget(preset, t) {
+    var phases = (preset && preset.phases) || [];
+    var kind = t && t.kind ? String(t.kind) : "";
+    var hasAd = false;
+    for (var i = 0; i < phases.length; i++) if (AD_PHASE_RE.test(phases[i].id)) { hasAd = true; break; }
+    if (!hasAd || !kind) return phases;
+
+    var isAd = kind.indexOf("ad") === 0;
+    var kept = phases.filter(function (ph) {
+      if (SHARED_PHASE_RE.test(ph.id)) return true;
+      var ad = AD_PHASE_RE.test(ph.id);
+      if (!isAd) return !ad;                       // stand-alone: the AD chain is noise
+      if (!ad) return LOCAL_ESC_RE.test(ph.id);    // AD host: keep local escalation only
+      // Inside the AD chain, position matters. The entry and lateral phases
+      // belong to the client machines; domain compromise belongs to the DC.
+      if (kind === "ad-dc") return !/initial|lateral/i.test(ph.id);
+      return !/domain/i.test(ph.id);
+    });
+    if (!isAd) return kept;
+
+    // Filtering preserves the preset's order, which lists the AD chain last —
+    // so an AD host opened on "setup" then "shell". On an assumed-breach set the
+    // work starts at ad-initial, so the chain is re-ordered to how it is
+    // actually walked: enter, harvest, escalate locally, then move.
+    function rank(ph) {
+      if (SHARED_PHASE_RE.test(ph.id) && /^(setup|preflight|triage)/i.test(ph.id)) return 0;
+      if (/initial/i.test(ph.id)) return 1;
+      if (/harvest/i.test(ph.id)) return 2;
+      if (LOCAL_ESC_RE.test(ph.id)) return 3;
+      if (/lateral|domain/i.test(ph.id)) return 4;
+      return 5; // proof, evidence, report — the close-out
+    }
+    return kept.slice().sort(function (a, b) { return rank(a) - rank(b); });
+  }
+  // The per-target starting phase is the first TECHNICAL one. "setup" is
+  // exam-wide — opening every target on it tells the user nothing about where
+  // this particular target begins.
+  function firstPhaseId(preset, t) {
+    var list = phasesForTarget(preset, t);
+    for (var i = 0; i < list.length; i++) {
+      if (!/^(setup|preflight|triage)/i.test(list[i].id)) return list[i].id;
+    }
+    return (list[0] && list[0].id) || (preset.phases && preset.phases[0] && preset.phases[0].id) || "";
+  }
+
   // ── Phase checklist ──
   function phaseSection(s, preset, t) {
     var sec = el("div", "machine-section");
@@ -2000,7 +2063,7 @@
     head.appendChild(el("h3", "", S("checklist")));
     sec.appendChild(head);
 
-    (preset.phases || []).forEach(function (ph) {
+    phasesForTarget(preset, t).forEach(function (ph) {
       var box = el("div", "checklist-phase" + (t.phase === ph.id ? " current" : ""));
       var doneN = (ph.items || []).filter(function (item, i) { return t.done[ph.id + ":" + i]; }).length;
 

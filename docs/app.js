@@ -174,6 +174,9 @@
       // — Save indicators (report the real result of a write, not a timer) —
       savingLbl: "saving…", savedOk: "saved", saveFailed: "not saved — retry",
       // — Exam Mode (optional public/exam.js module) —
+      mColMachine: "Machine", mColStatus: "Status", mColServices: "Services", mColCreds: "Creds",
+      mColFlags: "Flags", mColPhase: "Progress", noIp: "no IP", credOk: "valid",
+      wuColTitle: "Write-up", wuColTags: "Tags", wuColUpdated: "Updated", wuColLength: "Length",
       nextMove: "Next Move", nextUnavailable: "Next Move is not installed. Add public/nextmove.js to enable it.",
       examMode: "Sessions", examUnavailable: "Sessions is not installed. Add public/session.js to enable it."
     },
@@ -272,6 +275,9 @@
       // — Kayit gostergeleri —
       savingLbl: "kaydediliyor…", savedOk: "kaydedildi", saveFailed: "kaydedilemedi — tekrar deneyin",
       // — Sinav Modu (istege bagli public/exam.js modulu) —
+      mColMachine: "Makine", mColStatus: "Durum", mColServices: "Servis", mColCreds: "Kimlik",
+      mColFlags: "Flag", mColPhase: "Ilerleme", noIp: "IP yok", credOk: "gecerli",
+      wuColTitle: "Write-up", wuColTags: "Etiket", wuColUpdated: "Guncelleme", wuColLength: "Uzunluk",
       nextMove: "Siradaki Hamle", nextUnavailable: "Siradaki Hamle kurulu degil. Etkinlestirmek icin public/nextmove.js ekleyin.",
       examMode: "Oturumlar", examUnavailable: "Oturumlar kurulu degil. Etkinlestirmek icin public/session.js ekleyin."
     }
@@ -1844,33 +1850,74 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       return;
     }
 
-    const grid = document.createElement("div"); grid.className = "wu-file-grid";
+    // Same change as the machine list: a table rather than a card grid. One
+    // write-up used to float alone in a 1300px row, and the card spent most of
+    // its height on an icon and a 120-character preview that is never the
+    // reason you open a document — the title, when you touched it and how long
+    // it is are.
+    const wrap = document.createElement("div"); wrap.className = "tablewrap";
+    const table = document.createElement("table"); table.className = "data-table wu-table";
+    const thead = document.createElement("thead");
+    const htr = document.createElement("tr");
+    [t("wuColTitle"), t("wuColTags"), t("wuColUpdated"), t("wuColLength"), ""].forEach((c, i, a) => {
+      const th = document.createElement("th"); th.textContent = c;
+      if (i === a.length - 1) th.className = "col-act";
+      htr.appendChild(th);
+    });
+    thead.appendChild(htr); table.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
     list.forEach(wu => {
       const pinned = wuIsPinned(wu.id);
-      const file = document.createElement("div"); file.className = "wu-file-card" + (pinned ? " pinned" : "");
-      file.setAttribute("role", "button"); file.setAttribute("tabindex", "0");
-      file.setAttribute("aria-label", wu.title);
-      const tagsH = (wu.tags || []).map(tg => '<span class="wu-tag">' + escapeHtml(tg) + '</span>').join("");
-      const date = new Date(wu.updatedAt).toLocaleDateString();
-      const preview = (wu.content || "").substring(0, 120).replace(/\n/g, " ");
-      file.innerHTML =
-        '<div class="wu-file-icon">📄</div>' +
-        '<div class="wu-file-info">' +
-          '<div class="wu-file-name">' + escapeHtml(wu.title) + '</div>' +
-          '<div class="wu-file-preview">' + escapeHtml(preview) + (preview.length >= 120 ? "..." : "") + '</div>' +
-          '<div class="wu-file-meta"><span class="wu-date">' + date + '</span><span class="wu-readtime">' + wuReadMins(wu.content) + ' ' + t("wuMin") + '</span>' + tagsH + '</div>' +
-        '</div>' +
-        '<div class="wu-file-actions">' +
-          '<button class="wu-file-pin' + (pinned ? " active" : "") + '" title="' + (pinned ? t("wuUnpin") : t("wuPin")) + '" aria-label="' + (pinned ? t("wuUnpin") : t("wuPin")) + '">' + (pinned ? "📌" : "📍") + '</button>' +
-          '<button class="wu-file-delete" title="' + t("del") + '" aria-label="' + t("del") + '">🗑</button>' +
-        '</div>';
-      file.addEventListener("click", e => { if (e.target.closest(".wu-file-actions")) return; openWriteupId = wu.id; render(); });
-      file.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target === file) { e.preventDefault(); openWriteupId = wu.id; render(); } });
-      file.querySelector(".wu-file-pin").addEventListener("click", e => toggleWuPin(wu.id, e));
-      file.querySelector(".wu-file-delete").addEventListener("click", e => deleteWriteup(wu.id, e));
-      grid.appendChild(file);
+      const tr = document.createElement("tr");
+      tr.className = "wu-row" + (pinned ? " pinned" : "");
+      tr.setAttribute("role", "button"); tr.setAttribute("tabindex", "0");
+      tr.setAttribute("aria-label", wu.title);
+
+      const cTitle = document.createElement("td"); cTitle.className = "col-machine";
+      const tw = document.createElement("div"); tw.className = "wurow-titlewrap";
+      if (pinned) { const p = document.createElement("span"); p.className = "wurow-pin"; p.textContent = "📌"; p.title = t("wuPin"); tw.appendChild(p); }
+      const name = document.createElement("div"); name.className = "wurow-name"; name.textContent = wu.title;
+      tw.appendChild(name);
+      cTitle.appendChild(tw);
+      const preview = (wu.content || "").replace(/[#*`>_\-]/g, " ").replace(/\s+/g, " ").trim().slice(0, 110);
+      if (preview) { const pv = document.createElement("div"); pv.className = "wurow-preview"; pv.textContent = preview; cTitle.appendChild(pv); }
+      tr.appendChild(cTitle);
+
+      const cTags = document.createElement("td"); cTags.className = "col-tags";
+      (wu.tags || []).slice(0, 4).forEach(tg => { const b = document.createElement("span"); b.className = "wu-tag"; b.textContent = tg; cTags.appendChild(b); });
+      if (!(wu.tags || []).length) cTags.appendChild(document.createTextNode("—"));
+      tr.appendChild(cTags);
+
+      const cDate = document.createElement("td"); cDate.className = "col-num";
+      cDate.textContent = new Date(wu.updatedAt).toLocaleDateString();
+      tr.appendChild(cDate);
+
+      const cLen = document.createElement("td"); cLen.className = "col-num";
+      cLen.textContent = wuWordCount(wu.content) + " " + t("wuWords") + " · " + wuReadMins(wu.content) + " " + t("wuMin");
+      tr.appendChild(cLen);
+
+      const cAct = document.createElement("td"); cAct.className = "col-act";
+      const pin = document.createElement("button");
+      pin.className = "wu-file-pin" + (pinned ? " active" : "");
+      pin.textContent = pinned ? "📌" : "📍";
+      pin.title = pinned ? t("wuUnpin") : t("wuPin");
+      pin.setAttribute("aria-label", (pinned ? t("wuUnpin") : t("wuPin")) + " " + wu.title);
+      pin.addEventListener("click", e => toggleWuPin(wu.id, e));
+      const del = document.createElement("button");
+      del.className = "wu-file-delete"; del.textContent = "🗑";
+      del.title = t("del"); del.setAttribute("aria-label", t("del") + " " + wu.title);
+      del.addEventListener("click", e => deleteWriteup(wu.id, e));
+      cAct.appendChild(pin); cAct.appendChild(del);
+      tr.appendChild(cAct);
+
+      tr.addEventListener("click", e => { if (e.target.closest(".col-act")) return; openWriteupId = wu.id; render(); });
+      tr.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target === tr) { e.preventDefault(); openWriteupId = wu.id; render(); } });
+      tbody.appendChild(tr);
     });
-    contentArea.appendChild(grid);
+    table.appendChild(tbody);
+    wrap.appendChild(table);
+    contentArea.appendChild(wrap);
   }
 
   let wuEditMode = false;
@@ -2682,10 +2729,10 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const avg = total ? Math.round(machines.reduce((s, m) => { const c = m.checklist || []; return s + (c.length ? c.filter(x => x.done).length / c.length * 100 : 0); }, 0) / total) : 0;
     const statsBar = document.createElement("div"); statsBar.className = "machine-stats-bar";
     statsBar.innerHTML =
-      '<div class="machine-stat"><strong>' + total + '</strong>' + t("statTotal") + '</div>' +
-      '<div class="machine-stat"><strong class="s-owned">' + owned + '</strong>' + t("statOwned") + '</div>' +
-      '<div class="machine-stat"><strong class="s-prog">' + inProg + '</strong>' + t("statInProgress") + '</div>' +
-      '<div class="machine-stat"><strong>' + avg + '%</strong>' + t("statAvg") + '</div>';
+      '<span class="machine-stat"><b>' + total + '</b> ' + escapeHtml(t("statTotal")) + '</span>' +
+      '<span class="machine-stat"><b class="s-owned">' + owned + '</b> ' + escapeHtml(t("statOwned")) + '</span>' +
+      '<span class="machine-stat"><b class="s-prog">' + inProg + '</b> ' + escapeHtml(t("statInProgress")) + '</span>' +
+      '<span class="machine-stat"><b>' + avg + '%</b> ' + escapeHtml(t("statAvg")) + '</span>';
     contentArea.appendChild(statsBar);
 
     // ── Controls: search + platform/status/tag filters + sort ──
@@ -2734,6 +2781,11 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       if (cmp) list.sort(cmp);
       return list;
     }
+    // A worklist, not a gallery. The card grid showed a machine's name, IP and a
+    // progress bar and hid everything that makes a box worth opening — which
+    // services you found, whether you hold a credential, which flags are in.
+    // One card also floated alone in a 1300px row. A table fills the width,
+    // sorts, and answers "which box do I go back to" at a glance.
     function renderGrid() {
       gridWrap.innerHTML = "";
       const list = applyMachineView();
@@ -2742,40 +2794,102 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         nr.innerHTML = "<h3>" + t("noResults") + "</h3><p>" + t("noMatches") + "</p>";
         gridWrap.appendChild(nr); return;
       }
-      const grid = document.createElement("div"); grid.className = "machine-grid";
+      const wrap = document.createElement("div"); wrap.className = "tablewrap";
+      const table = document.createElement("table"); table.className = "data-table machine-table";
+      const cols = [t("mColMachine"), t("mColStatus"), t("mColServices"), t("mColCreds"), t("mColFlags"), t("mColPhase"), ""];
+      const thead = document.createElement("thead");
+      const htr = document.createElement("tr");
+      cols.forEach((c, i) => { const th = document.createElement("th"); th.textContent = c; if (i === cols.length - 1) th.className = "col-act"; htr.appendChild(th); });
+      thead.appendChild(htr); table.appendChild(thead);
+
+      const tbody = document.createElement("tbody");
       list.forEach(m => {
         const done = (m.checklist || []).filter(c => c.done).length;
         const tot = (m.checklist || []).length;
-        const pct = tot > 0 ? Math.round(done / tot * 100) : 0;
         const st = machineStatus(m);
         const diff = machineDiff(m.difficulty);
         const phase = currentPhaseName(m);
-        const chips = (m.tags || []).slice(0, 3).map(tg => '<span class="machine-tag">' + escapeHtml(tg) + '</span>').join("");
-        const card = document.createElement("div"); card.className = "machine-card";
-        card.setAttribute("role", "button"); card.setAttribute("tabindex", "0");
-        card.setAttribute("aria-label", m.name + (m.ip ? ", " + m.ip : "") + ", " + stLabel(st));
-        card.innerHTML =
-          '<div class="machine-card-top">' +
-            '<span class="machine-os-icon">' + osIconFor(m.os) + '</span>' +
-            '<div class="machine-info"><div class="machine-name">' + escapeHtml(m.name) + '</div><div class="machine-ip">' + escapeHtml(m.ip || "No IP") + '</div></div>' +
-            (isCaptured(m.userFlag) ? '<span class="flag-chip user" title="' + t("userFlag") + '">🚩</span>' : '') +
-            (isCaptured(m.rootFlag) ? '<span class="flag-chip root" title="' + t("rootFlag") + '">👑</span>' : '') +
-            '<button class="machine-del-btn" title="' + t("del") + '" aria-label="' + t("del") + '">🗑</button>' +
-          '</div>' +
-          '<div class="machine-card-meta">' +
-            '<span class="machine-status st-' + escapeHtml(st) + '">' + escapeHtml(stLabel(st)) + '</span>' +
-            '<span class="machine-plat">' + escapeHtml(m.platform || "Custom") + '</span>' +
-            (diff ? '<span class="diff-badge diff-' + escapeHtml(diff.toLowerCase()) + '">' + escapeHtml(diffLabel(diff)) + '</span>' : '') +
-            chips +
-          '</div>' +
-          '<div class="machine-progress"><div class="machine-progress-bar"><div class="machine-progress-fill" style="width:' + pct + '%"></div></div><span class="machine-progress-text">' + done + '/' + tot + ' (' + pct + '%)</span></div>' +
-          (tot > 0 ? '<div class="machine-card-phase' + (phase ? '' : ' done') + '">' + (phase ? '▸ ' + escapeHtml(phase) : '✅ ' + t("allDone")) + '</div>' : '');
-        card.addEventListener("click", e => { if (e.target.closest(".machine-del-btn")) return; openMachineId = m.id; render(); });
-        card.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target === card) { e.preventDefault(); openMachineId = m.id; render(); } });
-        card.querySelector(".machine-del-btn").addEventListener("click", e => deleteMachine(m.id, e));
-        grid.appendChild(card);
+        const svc = (m.services || []).filter(x => x && x.port);
+        const creds = (m.credentials || []).filter(Boolean);
+        const working = creds.filter(c => c.works || c.valid).length;
+
+        const tr = document.createElement("tr");
+        tr.className = "machine-row";
+        tr.setAttribute("role", "button"); tr.setAttribute("tabindex", "0");
+        tr.setAttribute("aria-label", m.name + (m.ip ? ", " + m.ip : "") + ", " + stLabel(st));
+
+        // machine: os glyph + name over ip, plus platform/difficulty as quiet meta
+        const cName = document.createElement("td"); cName.className = "col-machine";
+        const nameWrap = document.createElement("div"); nameWrap.className = "mrow-name-wrap";
+        const os = document.createElement("span"); os.className = "mrow-os"; os.textContent = osIconFor(m.os); os.setAttribute("aria-hidden", "true");
+        const nameCol = document.createElement("div"); nameCol.className = "mrow-namecol";
+        const nm = document.createElement("div"); nm.className = "mrow-name"; nm.textContent = m.name;
+        const sub = document.createElement("div"); sub.className = "mrow-sub";
+        sub.textContent = [m.ip || t("noIp"), m.platform || "Custom", diff ? diffLabel(diff) : ""].filter(Boolean).join("  ·  ");
+        nameCol.appendChild(nm); nameCol.appendChild(sub);
+        nameWrap.appendChild(os); nameWrap.appendChild(nameCol);
+        cName.appendChild(nameWrap); tr.appendChild(cName);
+
+        const cStatus = document.createElement("td");
+        const pill = document.createElement("span"); pill.className = "machine-status st-" + st; pill.textContent = stLabel(st);
+        cStatus.appendChild(pill); tr.appendChild(cStatus);
+
+        // services: the count is the headline, the ports are the detail
+        const cSvc = document.createElement("td"); cSvc.className = "col-num";
+        if (svc.length) {
+          const n = document.createElement("b"); n.className = "mrow-count"; n.textContent = String(svc.length);
+          cSvc.appendChild(n);
+          const ports = document.createElement("span"); ports.className = "mrow-ports";
+          ports.textContent = svc.slice(0, 5).map(x => x.port).join(" ") + (svc.length > 5 ? " +" + (svc.length - 5) : "");
+          cSvc.appendChild(ports);
+        } else { cSvc.appendChild(document.createTextNode("—")); }
+        tr.appendChild(cSvc);
+
+        const cCred = document.createElement("td"); cCred.className = "col-num";
+        if (creds.length) {
+          const n = document.createElement("b"); n.className = "mrow-count" + (working ? " ok" : ""); n.textContent = String(creds.length);
+          cCred.appendChild(n);
+          if (working) { const w = document.createElement("span"); w.className = "mrow-ports"; w.textContent = working + " " + t("credOk"); cCred.appendChild(w); }
+        } else { cCred.appendChild(document.createTextNode("—")); }
+        tr.appendChild(cCred);
+
+        const cFlags = document.createElement("td"); cFlags.className = "col-flags";
+        [["user", isCaptured(m.userFlag), t("userFlag")], ["root", isCaptured(m.rootFlag), t("rootFlag")]].forEach(([k, got, label]) => {
+          const f = document.createElement("span");
+          f.className = "mrow-flag" + (got ? " got " + k : "");
+          f.textContent = k === "user" ? "U" : "R";
+          f.title = label + (got ? " ✓" : "");
+          cFlags.appendChild(f);
+        });
+        tr.appendChild(cFlags);
+
+        const cPhase = document.createElement("td"); cPhase.className = "col-phase";
+        const ptxt = document.createElement("div"); ptxt.className = "mrow-phase";
+        ptxt.textContent = tot > 0 ? (phase || t("allDone")) : "—";
+        cPhase.appendChild(ptxt);
+        if (tot > 0) {
+          const bar = document.createElement("div"); bar.className = "mrow-bar";
+          const fill = document.createElement("div"); fill.className = "mrow-bar-fill";
+          fill.style.width = (tot ? Math.round(done / tot * 100) : 0) + "%";
+          bar.appendChild(fill); cPhase.appendChild(bar);
+          const cnt = document.createElement("span"); cnt.className = "mrow-ports"; cnt.textContent = done + "/" + tot;
+          cPhase.appendChild(cnt);
+        }
+        tr.appendChild(cPhase);
+
+        const cAct = document.createElement("td"); cAct.className = "col-act";
+        const del = document.createElement("button"); del.className = "machine-del-btn"; del.textContent = "🗑";
+        del.title = t("del"); del.setAttribute("aria-label", t("del") + " " + m.name);
+        del.addEventListener("click", e => deleteMachine(m.id, e));
+        cAct.appendChild(del); tr.appendChild(cAct);
+
+        tr.addEventListener("click", e => { if (e.target.closest(".machine-del-btn")) return; openMachineId = m.id; render(); });
+        tr.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target === tr) { e.preventDefault(); openMachineId = m.id; render(); } });
+        tbody.appendChild(tr);
       });
-      gridWrap.appendChild(grid);
+      table.appendChild(tbody);
+      wrap.appendChild(table);
+      gridWrap.appendChild(wrap);
     }
     // Shared by the column's HTML5 drop handler and the pointer/touch fallback.
     function moveMachineToStatus(id, status) {
