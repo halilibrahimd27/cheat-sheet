@@ -15,7 +15,7 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 <!-- STATS:BADGES -->
 [![Commands](https://img.shields.io/badge/commands-5040-success?style=flat-square)](#categories)
 [![Categories](https://img.shields.io/badge/categories-53-orange?style=flat-square)](#categories)
-[![ATT&CK tags](https://img.shields.io/badge/ATT%26CK%20tags-1477-blue?style=flat-square)](#categories)
+[![ATT&CK tags](https://img.shields.io/badge/ATT%26CK%20tags-1465-blue?style=flat-square)](#categories)
 <!-- /STATS:BADGES -->
 
 > **⭐ If this saved you time, please leave a star.** It's the simplest way to support this work.
@@ -36,7 +36,7 @@ OSCP+ · OSWE · OSEP · OSDA · OSWA · PNPT · CPTS · HTB CPTS  ·  Docker ·
 ---
 
 <!-- STATS:START -->
-**5040 commands** across **53 categories** and **320 subcategories**, with **1477 MITRE ATT&CK technique tags** — bilingual interface (English + Türkçe).
+**5040 commands** across **53 categories** and **320 subcategories**, with **1465 MITRE ATT&CK technique tags** — bilingual interface (English + Türkçe).
 <!-- STATS:END -->
 
 ## What this actually is

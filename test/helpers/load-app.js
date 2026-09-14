@@ -45,6 +45,8 @@ const BRIDGE_SOURCE = `
     machineToMarkdown: (...a) => machineToMarkdown(...a),
     wuWordCount: (...a) => wuWordCount(...a),
     cmdAttackList: (...a) => cmdAttackList(...a),
+    attackSigOf: (...a) => attackSigOf(...a),
+    machineAttackLayer: (...a) => machineAttackLayer(...a),
     t: (...a) => t(...a),
     setCategories: (v) => { CATEGORIES = v; buildSearchIndex(); },
     setMachines: (v) => { machines = v; },

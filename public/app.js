@@ -175,6 +175,9 @@
       // — Exam Mode (optional public/exam.js module) —
       mColMachine: "Machine", mColStatus: "Status", mColServices: "Services", mColCreds: "Creds",
       mColFlags: "Flags", mColPhase: "Progress", noIp: "no IP", credOk: "valid",
+      navLayer: "ATT&CK layer", navDone: "techniques exported",
+      navNoTimeline: "No commands logged for this machine yet — set it as the active target and copy some.",
+      navNoMatch: "None of the logged commands map to a technique in the corpus.",
       wuColTitle: "Write-up", wuColTags: "Tags", wuColUpdated: "Updated", wuColLength: "Length",
       nextMove: "Next Move", nextUnavailable: "Next Move is not installed. Add public/nextmove.js to enable it.",
       examMode: "Sessions", examUnavailable: "Sessions is not installed. Add public/session.js to enable it."
@@ -276,6 +279,9 @@
       // — Sinav Modu (istege bagli public/exam.js modulu) —
       mColMachine: "Makine", mColStatus: "Durum", mColServices: "Servis", mColCreds: "Kimlik",
       mColFlags: "Flag", mColPhase: "Ilerleme", noIp: "IP yok", credOk: "gecerli",
+      navLayer: "ATT&CK katmani", navDone: "teknik disa aktarildi",
+      navNoTimeline: "Bu makine icin kayitli komut yok — aktif hedef yapip birkac komut kopyala.",
+      navNoMatch: "Kayitli komutlarin hicbiri korpustaki bir teknige eslesmiyor.",
       wuColTitle: "Write-up", wuColTags: "Etiket", wuColUpdated: "Guncelleme", wuColLength: "Uzunluk",
       nextMove: "Siradaki Hamle", nextUnavailable: "Siradaki Hamle kurulu degil. Etkinlestirmek icin public/nextmove.js ekleyin.",
       examMode: "Oturumlar", examUnavailable: "Oturumlar kurulu degil. Etkinlestirmek icin public/session.js ekleyin."
@@ -2663,6 +2669,147 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   }
 
   // Build a Markdown report body from a tracked machine's structured data.
+  // ── MITRE ATT&CK Navigator layer ────────────────────────────────────────
+  // 1164 commands in the corpus carry a verified technique id, and every command
+  // you copy while a box is the active target is already logged to its timeline.
+  // Those two facts together are a record of what you actually did on that
+  // host — so the layer is generated from evidence, not from a checklist
+  // someone ticked.
+  //
+  // The timeline stores resolved command TEXT, not ids, so the mapping is a
+  // match back against the corpus. Placeholders are already substituted by the
+  // time a command is logged, which is why matching is on the tool plus the
+  // flag shape rather than on the whole string.
+  function attackSigOf(text) {
+    var t = String(text || "").trim();
+    if (!t) return null;
+    // First pipeline stage only: `nmap … | tee x` is an nmap command.
+    t = t.split("|")[0];
+    var toks = t.split(/\s+/).filter(Boolean);
+    if (!toks.length) return null;
+    var tool = toks[0];
+    if (tool === "sudo" || tool === "doas") { toks = toks.slice(1); tool = toks[0] || ""; }
+    if (!tool) return null;
+    tool = tool.replace(/^.*[/\\]/, "").toLowerCase();
+    // Flags carry the intent — `nmap -sU` is a different technique from
+    // `nmap -sC -sV` — while values are target-specific noise.
+    var flags = toks.filter(function (x) { return /^-{1,2}[A-Za-z]/.test(x); })
+      .map(function (x) { return x.split("=")[0].toLowerCase(); });
+    return { tool: tool, flags: flags, text: t.toLowerCase() };
+  }
+
+  function buildAttackIndex() {
+    var out = [];
+    (CATEGORIES || []).forEach(function (cat) {
+      (cat.subcategories || []).forEach(function (sub) {
+        (sub.commands || []).forEach(function (c) {
+          var ids = cmdAttackList(c);
+          if (!ids.length) return;
+          var cmds = c.cmds || (c.cmd ? [c.cmd] : []);
+          cmds.forEach(function (raw) {
+            var sig = attackSigOf(raw);
+            if (sig) out.push({ sig: sig, ids: ids, title: c.title || "" });
+          });
+        });
+      });
+    });
+    return out;
+  }
+
+  // Same tool, then the best flag overlap. A bare tool match still counts —
+  // `whois example.com` is T1590.002 whatever else is on the line — but a
+  // command whose flags disagree scores lower than one whose flags agree.
+  function matchAttack(index, sig) {
+    var best = null, bestScore = 0, bestFlagGap = Infinity;
+    for (var i = 0; i < index.length; i++) {
+      var e = index[i];
+      if (e.sig.tool !== sig.tool) continue;
+      var shared = 0;
+      for (var j = 0; j < sig.flags.length; j++) if (e.sig.flags.indexOf(sig.flags[j]) >= 0) shared++;
+      var union = sig.flags.length + e.sig.flags.length - shared;
+      var score = 1 + (union ? shared / union : 0);
+      // Both sides carry flags and none agree: these are different uses of the
+      // same tool. `nmap -sC -sV` matched an `nmap --script ssh-brute` entry and
+      // came back as password brute force, purely because it tied on the tool.
+      if (shared === 0 && sig.flags.length && e.sig.flags.length) score -= 0.45;
+      // A tie between a general entry and a specialised one should go to the
+      // general one — it makes the weaker claim.
+      var flagGap = Math.abs(e.sig.flags.length - sig.flags.length);
+      if (score > bestScore + 1e-9 || (Math.abs(score - bestScore) < 1e-9 && flagGap < bestFlagGap)) {
+        bestScore = score; bestFlagGap = flagGap; best = e;
+      }
+    }
+    // A tool match alone is enough (`whois example.com` is T1590.002 whatever
+    // else is on the line), but an actively disagreeing one is not.
+    return bestScore >= 0.8 ? best : null;
+  }
+
+  function machineAttackLayer(m) {
+    var index = buildAttackIndex();
+    var hits = {};       // id -> { count, first, last, why: Set-ish }
+    var unmatched = 0, total = 0;
+    (m.timeline || []).forEach(function (ev) {
+      if (!ev || ev.type !== "cmd") return;
+      total++;
+      var sig = attackSigOf(ev.text);
+      var hit = sig && matchAttack(index, sig);
+      if (!hit) { unmatched++; return; }
+      hit.ids.forEach(function (id) {
+        var h = hits[id] || (hits[id] = { count: 0, first: ev.ts, last: ev.ts, tools: {} });
+        h.count++;
+        if (ev.ts < h.first) h.first = ev.ts;
+        if (ev.ts > h.last) h.last = ev.ts;
+        h.tools[sig.tool] = 1;
+      });
+    });
+
+    var ids = Object.keys(hits);
+    var maxCount = ids.reduce(function (a, id) { return Math.max(a, hits[id].count); }, 0);
+    var techniques = ids.map(function (id) {
+      var h = hits[id];
+      return {
+        techniqueID: id,
+        score: h.count,
+        enabled: true,
+        comment: h.count + "x on " + (m.name || "target") +
+          " · " + Object.keys(h.tools).sort().join(", ") +
+          " · " + new Date(h.first).toISOString().slice(0, 16).replace("T", " "),
+        metadata: [{ name: "host", value: m.ip || m.name || "" }]
+      };
+    }).sort(function (a, b) { return b.score - a.score; });
+
+    return {
+      layer: {
+        name: (m.name || "target") + " — cheat-sheet",
+        versions: { attack: "14", navigator: "4.9.1", layer: "4.5" },
+        domain: "enterprise-attack",
+        description: "Techniques actually exercised on " + (m.name || "this host") +
+          (m.ip ? " (" + m.ip + ")" : "") + ", derived from the command timeline. " +
+          total + " commands logged, " + (total - unmatched) + " mapped.",
+        techniques: techniques,
+        gradient: { colors: ["#2a2d35", "#d4a04a"], minValue: 0, maxValue: Math.max(1, maxCount) },
+        legendItems: [],
+        showTacticRowBackground: false,
+        selectTechniquesAcrossTactics: true,
+        selectSubtechniquesWithParent: false
+      },
+      stats: { total: total, mapped: total - unmatched, techniques: techniques.length }
+    };
+  }
+
+  function exportAttackLayer(m) {
+    const built = machineAttackLayer(m);
+    if (!built.stats.total) { toast(t("navNoTimeline"), "error"); return; }
+    if (!built.stats.techniques) { toast(t("navNoMatch"), "error"); return; }
+    const blob = new Blob([JSON.stringify(built.layer, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = (m.name || "target").replace(/[^A-Za-z0-9_-]+/g, "-").toLowerCase() + "-attack-layer.json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast(built.stats.techniques + " " + t("navDone") + " (" + built.stats.mapped + "/" + built.stats.total + ")", "ok");
+  }
+
   function machineToMarkdown(m) {
     const flagLine = f => (isCaptured(f) ? "✅ " + t("capturedAt") + " " + new Date(f.capturedAt).toLocaleDateString() : "⬜ " + t("notCaptured"));
     let md = "# " + (m.name || "Machine") + " — " + (m.platform || "Custom") + "\n\n";
@@ -3032,6 +3179,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     bar.appendChild(mk("download", t("exportMachineMd"), () => exportMachineMd(m)));
     bar.appendChild(mk("download", t("wuExportHtml"), () => exportMachineHtml(m)));
     bar.appendChild(mk("download", t("exportPdf"), () => exportMachinePdf(m)));
+    bar.appendChild(mk("target", t("navLayer"), () => exportAttackLayer(m)));
     bar.appendChild(mk("save", t("saveAsWriteup"), () => generateWriteupFromMachine(m), true));
     wrap.appendChild(bar);
     const hint = document.createElement("p"); hint.className = "machine-report-hint"; hint.textContent = t("reportLive");

@@ -2464,7 +2464,6 @@ module.exports = [
             ],
             "desc_tr": "Kaba kuvvet: kuvvet saldırısı directories and files",
             "attack": [
-              "T1110.001",
               "T1595.003"
             ]
           },
@@ -2478,7 +2477,6 @@ module.exports = [
             ],
             "desc_tr": "Kaba kuvvet: kuvvet saldırısı file extensifilter ile üzerinde",
             "attack": [
-              "T1110.001",
               "T1595.003"
             ]
           },
@@ -2503,7 +2501,6 @@ module.exports = [
             ],
             "desc_tr": "Kaba kuvvet: kuvvet saldırısı virtual hosts",
             "attack": [
-              "T1110.001",
               "T1595.003"
             ]
           },
@@ -2516,7 +2513,6 @@ module.exports = [
             ],
             "desc_tr": "Directory kaba kuvvet saldırısı sessicookie ile üzerinde",
             "attack": [
-              "T1110.001",
               "T1595.003"
             ]
           },
@@ -2530,7 +2526,6 @@ module.exports = [
             ],
             "desc_tr": "Özyinelemeli directory kaba kuvvet saldırısı",
             "attack": [
-              "T1110.001",
               "T1595.003"
             ]
           },
@@ -2627,7 +2622,6 @@ module.exports = [
             ],
             "desc_tr": "Web content kaba kuvvet saldırısı dirb ile",
             "attack": [
-              "T1110.001",
               "T1595.003"
             ]
           },
@@ -19506,7 +19500,6 @@ module.exports = [
             "desc": "Step 2: Brute force directories and files",
             "desc_tr": "Step 2: kaba kuvvet saldırısı directories and files",
             "attack": [
-              "T1110.001",
               "T1595.003"
             ]
           },
@@ -20030,7 +20023,6 @@ module.exports = [
             "desc": "FTP: version scan, anonymous access, brute force",
             "desc_tr": "FTP: version scan, anonymous access, brute force",
             "attack": [
-              "T1110.001",
               "T1046"
             ]
           },
@@ -20047,7 +20039,6 @@ module.exports = [
             "desc": "SSH: version scan, algorithm audit, brute force",
             "desc_tr": "SSH: version scan, algorithm audit, brute force",
             "attack": [
-              "T1110.001",
               "T1046"
             ]
           },
@@ -20236,7 +20227,6 @@ module.exports = [
             "desc": "MySQL: info, authentication, brute force",
             "desc_tr": "MySQL: info, authentication, brute force",
             "attack": [
-              "T1110.001",
               "T1046"
             ]
           },
@@ -20439,7 +20429,6 @@ module.exports = [
             ],
             "desc_tr": "MSSQL saldırı kontrol listesi",
             "attack": [
-              "T1110.001",
               "T1046"
             ]
           },
@@ -20456,7 +20445,6 @@ module.exports = [
             ],
             "desc_tr": "MySQL saldırı kontrol listesi",
             "attack": [
-              "T1110.001",
               "T1046"
             ]
           },
