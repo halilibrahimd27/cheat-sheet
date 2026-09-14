@@ -174,6 +174,7 @@
       // — Save indicators (report the real result of a write, not a timer) —
       savingLbl: "saving…", savedOk: "saved", saveFailed: "not saved — retry",
       // — Exam Mode (optional public/exam.js module) —
+      nextMove: "Next Move", nextUnavailable: "Next Move is not installed. Add public/nextmove.js to enable it.",
       examMode: "Sessions", examUnavailable: "Sessions is not installed. Add public/session.js to enable it."
     },
     tr: {
@@ -271,6 +272,7 @@
       // — Kayit gostergeleri —
       savingLbl: "kaydediliyor…", savedOk: "kaydedildi", saveFailed: "kaydedilemedi — tekrar deneyin",
       // — Sinav Modu (istege bagli public/exam.js modulu) —
+      nextMove: "Siradaki Hamle", nextUnavailable: "Siradaki Hamle kurulu degil. Etkinlestirmek icin public/nextmove.js ekleyin.",
       examMode: "Oturumlar", examUnavailable: "Oturumlar kurulu degil. Etkinlestirmek icin public/session.js ekleyin."
     }
   };
@@ -3737,6 +3739,12 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     // Favorites
     const favCount = getFavCommands().length;
     mkNavItem("⭐", t("favorites"), favCount, activeCategory === "favs", () => { activeCategory = "favs"; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); });
+    // Next Move. The answer to "what do I run now?", which is the question a
+    // command reference normally makes you already know the answer to.
+    const nextMod = window.CS_NEXT;
+    let nextLabel = "";
+    try { if (nextMod && typeof nextMod.navBadge === "function") nextLabel = nextMod.navBadge() || ""; } catch { /* never let the badge break the sidebar */ }
+    mkNavItem("➤", t("nextMove"), nextLabel, activeCategory === "next", () => { activeCategory = "next"; searchQuery = ""; searchInput.value = ""; render(); closeMobile(); });
     // Sessions. Sits high on purpose: it is the entry point to the workbench
     // loop (pick a preset -> targets -> flags -> report), and a feature nobody
     // can find is a feature that does not exist. The count is the running
@@ -4055,6 +4063,13 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     buildSidebar(); contentArea.innerHTML = ""; focusedCmdIdx = -1;
     syncHash();
 
+    // Next Move — optional script (public/nextmove.js) on window.CS_NEXT.
+    if (activeCategory === "next") {
+      currentSection.textContent = t("nextMove"); hero.style.display = "none";
+      if (window.CS_NEXT && typeof window.CS_NEXT.render === "function") window.CS_NEXT.render(contentArea);
+      else contentArea.innerHTML = '<div class="no-results"><h3>' + escapeHtml(t("nextMove")) + '</h3><p>' + escapeHtml(t("nextUnavailable")) + '</p></div>';
+      return;
+    }
     // Sessions lives in an optional separate script (public/session.js) that
     // registers itself on window.CS_SESSION — the app must render without it.
     // CS_EXAM stays accepted because the view shipped under that name first.
@@ -4433,6 +4448,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     if (activeCategory === "writeups") return "writeups";
     if (activeCategory === "machines") return openMachineId ? "machines/" + openMachineId : "machines";
     if (activeCategory === "history") return "history";
+    if (activeCategory === "next") return "next";
     if (activeCategory === "exam") return "exam";
     if (activeCategory) return "cat/" + activeCategory;
     return "";
@@ -4452,6 +4468,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     else if (raw === "machines") target = "machines";
     else if (raw.indexOf("machines/") === 0) { target = "machines"; mid = raw.slice(9); }
     else if (raw === "history") target = "history";
+    else if (raw === "next" || raw === "nextmove") target = "next";
     else if (raw === "exam" || raw === "session" || raw === "sessions") target = "exam";
     else if (raw.indexOf("cat/") === 0) { const id = raw.slice(4); target = CATEGORIES.some(c => c.id === id) ? id : null; }
     activeCategory = target; searchQuery = ""; searchInput.value = "";
@@ -4501,6 +4518,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       if (e.key === "w") { activeCategory = "writeups"; render(); return; }
       if (e.key === "m") { activeCategory = "machines"; render(); return; }
       if (e.key === "e") { activeCategory = "exam"; render(); return; }
+      if (e.key === "n") { activeCategory = "next"; render(); return; }
     }
   });
 
@@ -4552,6 +4570,9 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     getActiveTargetId: () => activeTargetId, setActiveTarget,
     applyVars: applyIpToCode,
     navigate: (hash) => { window.location.hash = hash; },
+    // Next Move parses pasted scan output too; one parser, not two that drift.
+    parseNmap: parseNmapOutput,
+    recordHistory,
     render, renderMarkdown, onViewRender: null
   };
 
@@ -4560,7 +4581,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   searchInput.placeholder = t("search");
   // Honor a launch hash (PWA shortcuts + deep links, e.g. /#machines, /#cat/recon).
   const launchHash = (window.location.hash || "").replace(/^#/, "");
-  const hashView = { favorites: "favs", favs: "favs", writeups: "writeups", machines: "machines", history: "history", exam: "exam", session: "exam", sessions: "exam" }[launchHash];
+  const hashView = { favorites: "favs", favs: "favs", writeups: "writeups", machines: "machines", history: "history", exam: "exam", session: "exam", sessions: "exam", next: "next", nextmove: "next" }[launchHash];
   if (hashView) activeCategory = hashView;
   else if (launchHash.indexOf("machines/") === 0) { activeCategory = "machines"; openMachineId = launchHash.slice(9); }
   else if (launchHash.indexOf("cat/") === 0) activeCategory = launchHash.slice(4);

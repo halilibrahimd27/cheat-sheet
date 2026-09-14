@@ -45,7 +45,8 @@ module.exports = [
   },
   {
     files: ["public/app.js", "public/checklist-templates.js", "public/local-backend.js",
-      "public/session.js", "public/session-data.js", "public/sw-register.js"],
+      "public/session.js", "public/session-data.js", "public/sw-register.js",
+      "public/nextmove.js"],
     languageOptions: { ecmaVersion: 2022, sourceType: "script", globals: browserGlobals },
     rules: commonRules,
   },

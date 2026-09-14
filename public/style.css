@@ -2973,3 +2973,196 @@ body:has(.var-bar.active) .back-to-top { display: none; }
        at rest, perfectly tappable) — its opacity encodes pinned vs unpinned,
        so forcing it to 1 here would erase the only state the control has. */
 }
+
+/* ============================================
+   Next Move
+   Situation in, ranked commands out. Two stacked panels rather than a wizard:
+   the situation stays on screen and editable while you read the moves, because
+   the whole point is to change one input and watch the ranking move.
+   ============================================ */
+.nm-page { display: flex; flex-direction: column; gap: 18px; }
+
+/* ── situation ── */
+.nm-situation {
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    background: var(--bg-secondary);
+    padding: 12px 14px 14px;
+}
+.nm-sit-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+.nm-sit-title {
+    font-family: var(--font-mono); font-size: var(--fs-2xs); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-tertiary); margin: 0;
+}
+.nm-sit-head .nm-clear { margin-left: auto; }
+
+.nm-sit-grid { display: flex; flex-wrap: wrap; gap: 14px 22px; }
+.nm-field { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.nm-field-wide { width: 100%; margin-top: 12px; }
+.nm-field-label {
+    font-family: var(--font-mono); font-size: var(--fs-2xs); text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--text-tertiary);
+}
+.nm-input {
+    background: var(--bg-input); border: 1px solid var(--border-primary);
+    border-radius: var(--radius-sm); color: var(--text-primary);
+    font-family: var(--font-mono); font-size: var(--fs-md);
+    padding: 5px 8px; outline: none; min-width: 0;
+}
+.nm-input:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 2px var(--accent-glow); }
+.nm-input::placeholder { color: var(--text-tertiary); }
+
+/* Segmented control: every state visible at once, current one in the accent.
+   Radio buttons in disguise, and seeing all of them IS the affordance. */
+.nm-seg {
+    display: flex; flex-wrap: wrap; gap: 0;
+    border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
+    overflow: hidden; width: fit-content;
+}
+.nm-seg-btn {
+    background: var(--bg-input); border: 0; border-right: 1px solid var(--border-primary);
+    color: var(--text-secondary); font-family: var(--font-mono); font-size: var(--fs-xs);
+    padding: 5px 10px; cursor: pointer; white-space: nowrap;
+    transition: background var(--transition), color var(--transition);
+}
+.nm-seg-btn:last-child { border-right: 0; }
+.nm-seg-btn:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+.nm-seg-btn.on { background: var(--accent-primary); color: var(--bg-primary); font-weight: 600; }
+
+.nm-chips { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+.nm-chip {
+    display: inline-flex; align-items: baseline; gap: 5px;
+    background: var(--bg-tertiary); border: 1px solid var(--border-primary);
+    border-radius: var(--radius-sm); padding: 2px 4px 2px 7px;
+    font-family: var(--font-mono); font-size: var(--fs-xs);
+}
+.nm-chip-port { color: var(--accent-primary); font-variant-numeric: tabular-nums; }
+.nm-chip-name { color: var(--text-secondary); }
+.nm-chip-x {
+    background: none; border: 0; color: var(--text-tertiary); cursor: pointer;
+    font-size: var(--fs-md); line-height: 1; padding: 0 3px;
+}
+.nm-chip-x:hover { color: var(--accent-red); }
+.nm-add { width: 150px; }
+
+.nm-sit-tools { display: flex; gap: 8px; margin-top: 8px; }
+.nm-scan { margin-top: 8px; display: flex; flex-direction: column; gap: 8px; }
+.nm-textarea {
+    width: 100%; background: var(--bg-code); border: 1px solid var(--border-primary);
+    border-radius: var(--radius-sm); color: var(--text-code);
+    font-family: var(--font-mono); font-size: var(--fs-sm); padding: 8px 10px;
+    outline: none; resize: vertical; line-height: 1.5;
+}
+.nm-textarea:focus { border-color: var(--accent-primary); }
+.nm-scan-bar { display: flex; gap: 8px; }
+
+.nm-btn {
+    background: var(--bg-tertiary); border: 1px solid var(--border-primary);
+    border-radius: var(--radius-sm); color: var(--text-secondary);
+    font-family: var(--font-mono); font-size: var(--fs-xs);
+    padding: 3px 9px; cursor: pointer;
+    transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+.nm-btn:hover { color: var(--text-primary); border-color: var(--border-secondary); }
+.nm-btn-ghost { background: none; }
+.nm-btn-primary {
+    background: var(--accent-primary); border-color: var(--accent-primary);
+    color: var(--bg-primary); font-weight: 600;
+}
+.nm-btn-primary:hover { background: var(--accent-secondary); border-color: var(--accent-secondary); color: var(--bg-primary); }
+
+/* ── moves ── */
+.nm-moves-head {
+    display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+    padding-bottom: 7px; border-bottom: 1px solid var(--border-secondary);
+}
+.nm-moves-meta { margin-left: auto; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.nm-meta-chip {
+    font-family: var(--font-mono); font-size: var(--fs-2xs);
+    background: var(--bg-badge); color: var(--text-tertiary);
+    border-radius: var(--radius-sm); padding: 1px 6px;
+}
+.nm-meta-count {
+    font-family: var(--font-mono); font-size: var(--fs-2xs);
+    color: var(--text-tertiary); font-variant-numeric: tabular-nums;
+}
+
+.nm-group { margin-top: 16px; }
+.nm-group-title {
+    font-family: var(--font-mono); font-size: var(--fs-2xs); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.09em; color: var(--text-tertiary);
+    display: flex; align-items: baseline; gap: 8px;
+    padding-bottom: 4px; border-bottom: 1px solid var(--rule); margin: 0 0 2px;
+}
+.nm-group-count { font-variant-numeric: tabular-nums; color: var(--text-tertiary); opacity: 0.75; }
+.nm-group-hint { font-size: var(--fs-xs); color: var(--text-tertiary); margin: 6px 0 4px; max-width: 92ch; }
+.nm-group-body { display: block; }
+
+.nm-move { padding: 7px 8px 8px; border-bottom: 1px solid var(--rule); transition: background var(--transition); }
+.nm-move:hover { background: var(--bg-card-hover); }
+.nm-move.is-tried { opacity: 0.55; }
+.nm-move-head { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; margin-bottom: 3px; }
+.nm-move-src { display: inline-flex; align-items: baseline; gap: 5px; flex-shrink: 0; }
+.nm-move-svc {
+    font-family: var(--font-mono); font-size: var(--fs-2xs); text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--accent-primary);
+}
+.nm-move-ports {
+    font-family: var(--font-mono); font-size: var(--fs-2xs);
+    color: var(--text-tertiary); font-variant-numeric: tabular-nums;
+}
+.nm-move-label { font-size: var(--fs-md); color: var(--text-heading); min-width: 0; overflow-wrap: anywhere; }
+.nm-move-acts { margin-left: auto; display: flex; gap: 5px; opacity: 0; transition: opacity var(--transition); }
+.nm-move:hover .nm-move-acts,
+.nm-move:focus-within .nm-move-acts { opacity: 1; }
+@media (hover: none) { .nm-move-acts { opacity: 1; } }
+.nm-move-cmd {
+    background: var(--bg-code); border-radius: var(--radius-sm);
+    padding: 6px 9px; margin: 0;
+    font-family: var(--font-mono); font-size: 12.5px; color: var(--text-code);
+    line-height: 1.55; white-space: pre-wrap; word-break: normal; overflow-wrap: anywhere;
+}
+.nm-move-cond { font-size: var(--fs-xs); color: var(--text-tertiary); margin: 4px 0 0; max-width: 92ch; }
+.nm-cond-tag {
+    font-family: var(--font-mono); font-size: var(--fs-2xs); text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--accent-orange);
+}
+
+/* Stuck hints read as prose, not as commands: they are questions to put to
+   yourself, and the `why` line is what makes them credible to someone who has
+   done this before rather than patronising. */
+.nm-group-stuck .nm-group-body { display: flex; flex-direction: column; }
+.nm-stuck { padding: 8px 0 9px 10px; border-left: 2px solid var(--border-primary); border-bottom: 1px solid var(--rule); }
+.nm-stuck:hover { border-left-color: var(--accent-primary); }
+.nm-stuck-text { font-size: var(--fs-md); color: var(--text-primary); margin: 0; max-width: 92ch; line-height: 1.45; }
+.nm-stuck-why { font-size: var(--fs-xs); color: var(--text-tertiary); margin: 3px 0 0; max-width: 92ch; line-height: 1.45; }
+.nm-stuck-cmd { margin-top: 6px; cursor: pointer; }
+
+.nm-uncovered-row {
+    display: flex; gap: 8px; align-items: baseline;
+    font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--text-tertiary);
+    padding: 3px 0; border-bottom: 1px solid var(--rule);
+}
+
+.nm-tried { margin-top: 18px; border-top: 1px solid var(--rule); }
+.nm-tried > summary {
+    font-family: var(--font-mono); font-size: var(--fs-2xs); text-transform: uppercase;
+    letter-spacing: 0.09em; color: var(--text-tertiary); cursor: pointer; padding: 9px 0;
+}
+.nm-tried > summary:hover { color: var(--text-secondary); }
+
+.nm-empty { padding: 40px 8px; color: var(--text-tertiary); max-width: 68ch; }
+.nm-empty h3 {
+    font-family: var(--font-mono); font-size: var(--fs-lg); color: var(--text-heading);
+    margin: 0 0 8px; font-weight: 600;
+}
+.nm-empty p { font-size: var(--fs-md); line-height: 1.55; margin: 0 0 12px; }
+
+@media (max-width: 600px) {
+    .nm-sit-grid { flex-direction: column; gap: 12px; }
+    .nm-seg { width: 100%; }
+    .nm-seg-btn { flex: 1 1 auto; text-align: center; }
+    .nm-add { width: 100%; }
+    .nm-moves-meta { margin-left: 0; }
+    .nm-move-acts { margin-left: 0; }
+}

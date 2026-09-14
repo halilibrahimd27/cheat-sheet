@@ -55,7 +55,7 @@ const COPY = [
   "style.css", "app.js", "checklist-templates.js", "local-backend.js", "sw-register.js",
   // Sessions. session-data.js is ~600KB and is fetched on demand by session.js,
   // never on first paint — it still has to be copied so the offline build has it.
-  "session.js", "session-data.js",
+  "session.js", "session-data.js", "nextmove.js",
 ];
 const copied = [];
 const missing = [];

@@ -129,6 +129,7 @@
                 <div class="kbd-row"><kbd>g w</kbd><span>Go to Write-ups</span></div>
                 <div class="kbd-row"><kbd>g m</kbd><span>Go to Machines</span></div>
                 <div class="kbd-row"><kbd>g e</kbd><span>Go to Sessions</span></div>
+                <div class="kbd-row"><kbd>g n</kbd><span>Go to Next Move</span></div>
             </div>
         </div>
     </div>
@@ -138,6 +139,9 @@
     <!-- Sessions. Must follow app.js (reads window.CS_APP on load). Its ~600KB
          data file is NOT listed here: session.js fetches it on first use. -->
     <script src="session.js"></script>
+    <!-- Next Move. Same deal: reads window.CS_APP, and pulls session-data.js
+         on demand (the two views share one corpus, loaded at most once). -->
+    <script src="nextmove.js"></script>
     <script src="sw-register.js"></script>
 </body>
 </html>
