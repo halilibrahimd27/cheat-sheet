@@ -602,14 +602,30 @@
     else basket.forEach((code, i) => {
       const row = document.createElement("div"); row.className = "basket-row";
       const pre = document.createElement("code"); pre.className = "basket-cmd"; pre.textContent = code;
-      const mk = (txt, title, disabled, fn) => { const b = document.createElement("button"); b.className = "basket-mini"; b.textContent = txt; b.title = title; b.disabled = !!disabled; b.addEventListener("click", fn); return b; };
-      const up = mk("↑", "Up", i === 0, () => { const x = basket[i - 1]; basket[i - 1] = basket[i]; basket[i] = x; saveBasket(); renderBasketPanel(); });
-      const dn = mk("↓", "Down", i === basket.length - 1, () => { const x = basket[i + 1]; basket[i + 1] = basket[i]; basket[i] = x; saveBasket(); renderBasketPanel(); });
-      const rm = mk(iconHtml("x"), t("del"), false, () => { basket.splice(i, 1); saveBasket(); renderBasketPanel(); }); rm.classList.add("basket-rm");
+      // Takes an ICON NAME, not a label. It used to take text, and passing it
+      // iconHtml() put raw <svg> markup through textContent — the basket rendered
+      // the markup as the command.
+      const mk = (iconName, title, disabled, fn) => {
+        const b = document.createElement("button");
+        b.className = "basket-mini";
+        b.appendChild(icon(iconName));
+        b.title = title; b.setAttribute("aria-label", title);
+        b.disabled = !!disabled;
+        b.addEventListener("click", fn);
+        return b;
+      };
+      const up = mk("chevron-up", "Up", i === 0, () => { const x = basket[i - 1]; basket[i - 1] = basket[i]; basket[i] = x; saveBasket(); renderBasketPanel(); });
+      const dn = mk("chevron-down", "Down", i === basket.length - 1, () => { const x = basket[i + 1]; basket[i + 1] = basket[i]; basket[i] = x; saveBasket(); renderBasketPanel(); });
+      const rm = mk("x", t("del"), false, () => { basket.splice(i, 1); saveBasket(); renderBasketPanel(); }); rm.classList.add("basket-rm");
       // Copy just this one command (IP-changer values applied), like the card copy.
-      const cp = mk("⧉", t("basketCopy"), false, () => {
+      const cp = mk("copy", t("basketCopy"), false, () => {
         const applied = applyIpToCode(code);
-        copyText(applied, () => { recordHistory(applied); cp.appendChild(icon("check")); cp.classList.add("copied"); announce(t("copied")); toast(t("copied"), "ok"); setTimeout(() => { cp.textContent = "⧉"; cp.classList.remove("copied"); }, 1200); });
+        copyText(applied, () => {
+          recordHistory(applied);
+          cp.replaceChildren(icon("check")); cp.classList.add("copied");
+          announce(t("copied")); toast(t("copied"), "ok");
+          setTimeout(() => { cp.replaceChildren(icon("copy")); cp.classList.remove("copied"); }, 1200);
+        });
       });
       cp.classList.add("basket-copy");
       row.appendChild(pre); row.appendChild(cp); row.appendChild(up); row.appendChild(dn); row.appendChild(rm); body.appendChild(row);
@@ -2499,22 +2515,68 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const g = document.createElementNS(NS, "g");
       g.setAttribute("class", "ad-node " + progClass(pct) + (isDcRole(n) ? " dc" : "") + (n.id === openHostId ? " open" : "") + (n.id === adConnectSel ? " picking" : ""));
       g.setAttribute("tabindex", "0"); g.setAttribute("role", "button"); g.setAttribute("aria-label", (n.name || "host") + " " + pct + "%");
-      const bg = document.createElementNS(NS, "circle"); bg.setAttribute("r", 20); bg.setAttribute("class", "ad-ring-bg"); g.appendChild(bg);
+      // Shape encodes ROLE and fill encodes OWNED — the two facts you actually
+      // need off a domain map. Both survive colour-blindness, which a red/green
+      // ring alone does not. A checklist percentage used to be the headline
+      // readout under every node; it is a thin arc on the rim now, because
+      // "62% of a checklist" is not what anyone opens this graph to find out.
+      const dc = isDcRole(n);
+      const R = 19;
+      g.classList.toggle("owned", !!n.owned);
+      g.classList.toggle("host", !dc);
+
+      const bg = document.createElementNS(NS, dc ? "circle" : "rect");
+      bg.setAttribute("class", "ad-ring-bg");
+      if (dc) bg.setAttribute("r", R + 4);
+      else { bg.setAttribute("width", (R + 4) * 2); bg.setAttribute("height", (R + 4) * 2); bg.setAttribute("rx", 7); }
+      g.appendChild(bg);
+
       let ring = null;
-      if (pct >= 100) { ring = document.createElementNS(NS, "circle"); ring.setAttribute("r", 20); ring.setAttribute("class", "ad-ring"); g.appendChild(ring); }
-      else if (pct > 0) { ring = document.createElementNS(NS, "path"); ring.setAttribute("class", "ad-ring"); ring.dataset.arc = "1"; g.appendChild(ring); }
-      const face = document.createElementNS(NS, "circle"); face.setAttribute("r", 15); face.setAttribute("class", "ad-node-face"); g.appendChild(face);
-      const ic = document.createElementNS(NS, "text"); ic.setAttribute("class", "ad-node-icon"); ic.setAttribute("text-anchor", "middle"); ic.setAttribute("dominant-baseline", "central"); ic.textContent = isDcRole(n) ? "★" : osIconFor(n.os); g.appendChild(ic);
-      const lb = document.createElementNS(NS, "text"); lb.setAttribute("class", "ad-node-label"); lb.setAttribute("text-anchor", "middle"); lb.textContent = (n.name || "host").slice(0, 16); g.appendChild(lb);
-      const pt = document.createElementNS(NS, "text"); pt.setAttribute("class", "ad-node-pct"); pt.setAttribute("text-anchor", "middle"); pt.textContent = pct + "%"; g.appendChild(pt);
+      if (pct > 0) {
+        ring = document.createElementNS(NS, "path");
+        ring.setAttribute("class", "ad-ring");
+        g.appendChild(ring);
+      }
+
+      const face = document.createElementNS(NS, dc ? "circle" : "rect");
+      face.setAttribute("class", "ad-node-face");
+      if (dc) face.setAttribute("r", R);
+      else { face.setAttribute("width", R * 2); face.setAttribute("height", R * 2); face.setAttribute("rx", 5); }
+      g.appendChild(face);
+
+      // Same sprite the rest of the chrome uses, so the map is not a second
+      // icon language.
+      const ic = document.createElementNS(NS, "use");
+      ic.setAttribute("class", "ad-node-glyph");
+      ic.setAttribute("href", "#i-" + (dc ? "crown" : "server"));
+      ic.setAttribute("width", 17); ic.setAttribute("height", 17);
+      g.appendChild(ic);
+
+      const lb = document.createElementNS(NS, "text");
+      lb.setAttribute("class", "ad-node-label"); lb.setAttribute("text-anchor", "middle");
+      lb.textContent = (n.name || "host").slice(0, 18);
+      g.appendChild(lb);
+
+      // The IP is the thing you type next, so it belongs on the map.
+      const sub = document.createElementNS(NS, "text");
+      sub.setAttribute("class", "ad-node-sub"); sub.setAttribute("text-anchor", "middle");
+      sub.textContent = n.ip ? String(n.ip).slice(0, 22) : (dc ? "domain controller" : "");
+      g.appendChild(sub);
+
       // Position all of this node's elements at (x, y).
       function place(x, y) {
         pos[n.id] = { x, y };
-        [bg, face].forEach(c => { c.setAttribute("cx", x); c.setAttribute("cy", y); });
-        if (ring) { if (ring.dataset.arc) ring.setAttribute("d", ringArc(x, y, 20, pct)); else { ring.setAttribute("cx", x); ring.setAttribute("cy", y); } }
-        ic.setAttribute("x", x); ic.setAttribute("y", y + 1);
-        lb.setAttribute("x", x); lb.setAttribute("y", y + 36);
-        pt.setAttribute("x", x); pt.setAttribute("y", y + 49);
+        // A circle is placed from its centre and a rect from its corner, so the
+        // same visual position needs different maths per shape.
+        [[bg, R + 4], [face, R]].forEach(function (pair) {
+          const el = pair[0], rr = pair[1];
+          if (el.tagName === "circle") { el.setAttribute("cx", x); el.setAttribute("cy", y); }
+          else { el.setAttribute("x", x - rr); el.setAttribute("y", y - rr); }
+        });
+        if (ring) ring.setAttribute("d", ringArc(x, y, R + 4, pct));
+        ic.setAttribute("x", x - 8.5); ic.setAttribute("y", y - 8.5);
+        lb.setAttribute("x", x); lb.setAttribute("y", y + 38);
+        sub.setAttribute("x", x); sub.setAttribute("y", y + 51);
         updateEdges(n.id);
       }
       place(p.x, p.y);
@@ -2960,14 +3022,18 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   function renderMachineReport(m, page) {
     const wrap = document.createElement("div"); wrap.className = "machine-report";
     const bar = document.createElement("div"); bar.className = "machine-report-bar";
-    const mk = (label, fn, primary) => {
+    // Takes an icon NAME plus a label — the same lesson as the basket: a markup
+    // string through textContent renders as markup.
+    const mk = (iconName, label, fn, primary) => {
       const b = document.createElement("button"); b.className = "btn btn-sm " + (primary ? "btn-primary" : "btn-secondary");
-      b.textContent = label; b.addEventListener("click", fn); return b;
+      if (iconName) b.appendChild(icon(iconName));
+      b.appendChild(document.createTextNode(" " + label));
+      b.addEventListener("click", fn); return b;
     };
-    bar.appendChild(mk(iconHtml("download") + " " + t("exportMachineMd"), () => exportMachineMd(m)));
-    bar.appendChild(mk(iconHtml("download") + " " + t("wuExportHtml"), () => exportMachineHtml(m)));
-    bar.appendChild(mk(iconHtml("download") + " " + t("exportPdf"), () => exportMachinePdf(m)));
-    bar.appendChild(mk("💾 " + t("saveAsWriteup"), () => generateWriteupFromMachine(m), true));
+    bar.appendChild(mk("download", t("exportMachineMd"), () => exportMachineMd(m)));
+    bar.appendChild(mk("download", t("wuExportHtml"), () => exportMachineHtml(m)));
+    bar.appendChild(mk("download", t("exportPdf"), () => exportMachinePdf(m)));
+    bar.appendChild(mk("save", t("saveAsWriteup"), () => generateWriteupFromMachine(m), true));
     wrap.appendChild(bar);
     const hint = document.createElement("p"); hint.className = "machine-report-hint"; hint.textContent = t("reportLive");
     wrap.appendChild(hint);

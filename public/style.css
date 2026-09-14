@@ -1977,23 +1977,34 @@ body {
 /* Schematic node-link diagram */
 .ad-schematic-wrap { background: var(--bg-code); border: 1px solid var(--border-primary); border-radius: var(--radius-md); margin-bottom: 16px; }
 .ad-schematic { width: 100%; height: auto; display: block; }
-.ad-edge { stroke: var(--accent-secondary); stroke-width: 2; opacity: 0.7; }
+.ad-edge { stroke: var(--border-secondary); stroke-width: 1.5; opacity: 1; }
 .ad-node { cursor: grab; touch-action: none; }
 .ad-node.dragging { cursor: grabbing; }
 .ad-node.dragging .ad-node-face { stroke: var(--accent-primary); stroke-width: 3; }
-.ad-node .ad-ring-bg { fill: none; stroke: var(--border-primary); stroke-width: 4; }
-.ad-node .ad-ring { fill: none; stroke-width: 4; stroke-linecap: round; transition: stroke 0.15s; }
-.ad-node.p-low .ad-ring { stroke: var(--accent-red); }
-.ad-node.p-mid .ad-ring { stroke: var(--accent-yellow); }
-.ad-node.p-done .ad-ring { stroke: var(--accent-green); }
-.ad-node .ad-node-face { fill: var(--bg-card); stroke: var(--border-secondary); stroke-width: 1.5; transition: stroke 0.15s; }
+/* The rim is progress and nothing else — quiet, one colour, secondary. Status
+   used to be a red/yellow/green ring, which is both the least accessible
+   encoding available and the wrong fact to put first. */
+.ad-node .ad-ring-bg { fill: none; stroke: var(--border-primary); stroke-width: 2.5; }
+.ad-node .ad-ring { fill: none; stroke: var(--accent-primary); stroke-width: 2.5; stroke-linecap: round; transition: stroke 0.15s; }
+
+/* Fill = owned. An outlined node is a host you have not taken; a filled one is
+   yours. That reads instantly at a glance across a whole domain, and it reads
+   the same to a colour-blind user. */
+.ad-node .ad-node-face { fill: var(--bg-tertiary); stroke: var(--border-secondary); stroke-width: 1.5; transition: fill 0.15s, stroke 0.15s; }
+.ad-node .ad-node-glyph { color: var(--text-tertiary); transition: color 0.15s; }
+.ad-node.owned .ad-node-face { fill: color-mix(in srgb, var(--accent-green) 22%, var(--bg-tertiary)); stroke: var(--accent-green); }
+.ad-node.owned .ad-node-glyph { color: var(--accent-green); }
+.ad-node.dc .ad-node-glyph { color: var(--accent-primary); }
+.ad-node.dc.owned .ad-node-glyph { color: var(--accent-green); }
 .ad-node:hover .ad-node-face { stroke: var(--accent-primary); }
-.ad-node.dc .ad-node-face { stroke: var(--accent-yellow); stroke-width: 2.5; }
+.ad-node.dc .ad-node-face { stroke: var(--accent-primary); stroke-width: 2; }
 .ad-node.open .ad-node-face { stroke: var(--accent-primary); stroke-width: 2.5; }
 .ad-node.picking .ad-node-face { stroke: var(--accent-primary); stroke-width: 3; stroke-dasharray: 3 2; }
-.ad-node-icon { font-size: var(--fs-lg); }
-.ad-node-label { font-size: var(--fs-xs); fill: var(--text-primary); font-family: var(--font-sans); }
-.ad-node-pct { font-size: var(--fs-2xs); fill: var(--text-tertiary); font-family: var(--font-mono); }
+/* Sprite glyph inside a node: <use> inherits stroke from currentColor, which
+   is why these set `color` rather than `fill`. */
+.ad-node-glyph { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+.ad-node-label { font-size: var(--fs-sm); font-weight: 600; fill: var(--text-heading); font-family: var(--font-sans); pointer-events: none; }
+.ad-node-sub { font-size: var(--fs-2xs); fill: var(--text-tertiary); font-family: var(--font-mono); pointer-events: none; }
 .ad-node:focus-visible { outline: none; }
 .ad-node:focus-visible .ad-node-face { stroke: var(--accent-primary); stroke-width: 3; }
 .ad-connect-btn { margin-left: auto; }
@@ -3410,3 +3421,11 @@ body:has(.var-bar.active) .back-to-top { display: none; }
    so the two kinds of entry line up on one optical grid. */
 .nav-item-icon .icon { width: 15px; height: 15px; opacity: 1; }
 .nav-item-icon:has(.icon) { opacity: 1; filter: none; }
+
+/* Basket rows: the command is the content and the controls are chrome, so the
+   command takes the width and the buttons collapse to their icon. */
+.basket-row { align-items: center; gap: 4px; }
+.basket-cmd { font-size: var(--fs-sm); }
+.basket-mini { display: inline-flex; align-items: center; justify-content: center; padding: 3px; width: 24px; height: 24px; }
+.basket-mini .icon { width: 14px; height: 14px; }
+.basket-mini.copied { border-color: var(--accent-green); color: var(--accent-green); }
