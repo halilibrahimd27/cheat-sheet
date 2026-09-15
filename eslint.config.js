@@ -9,6 +9,10 @@ const nodeGlobals = {
   console: "readonly", Buffer: "readonly", URL: "readonly", fetch: "readonly",
   setTimeout: "readonly", clearTimeout: "readonly",
   setInterval: "readonly", clearInterval: "readonly",
+  // Global since Node 22. scripts/screenshots.js speaks the Chrome DevTools
+  // Protocol over it, which is how the README's screenshots get taken without
+  // adding Puppeteer to a project with one runtime dependency.
+  WebSocket: "readonly",
 };
 
 const browserGlobals = {

@@ -1,7 +1,7 @@
 {
   "name": "cheat-sheet",
   "version": "1.1.0",
-  "description": "Offensive Security & DevSecOps Command Reference — Penetration Testing & Cloud-Native Cheat Sheet",
+  "description": "Local-first pentest workbench — 5,040 commands with expected output, a box-solving workspace (services, credential vault, timeline, generated report), 16 exam/lab session presets and a Markdown write-up editor. Runs on Node or fully in the browser.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -11,6 +11,7 @@
     "validate-content": "node scripts/validate-content.js",
     "update-readme": "node scripts/update-readme.js",
     "build:static": "node scripts/build-static.js",
+    "screenshots": "node scripts/screenshots.js",
     "tag:attack": "node scripts/tag-attack.js --report"
   },
   "engines": {
