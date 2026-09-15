@@ -35,7 +35,15 @@ const UPDATE = process.env.UPDATE_EXAMPLES === "1";
 // is hosted. Everything that is NOT a date — the tables, the commands, the
 // flags, the section order, the attempts and their reasons — is compared
 // exactly, and that is the whole substance of a report.
-const DATE = /\b\d{1,4}[./-]\d{1,2}[./-]\d{1,4}(?:,? \d{1,2}:\d{2}(?::\d{2})?(?:\s?[AP]M)?)?/g;
+//
+// The leading boundary is `(?<![0-9A-Za-z])`, NOT `\b`, and that is the whole
+// reason this test worked locally and failed on every CI runner for six commits.
+// The timeline renders each timestamp in markdown italics — `_14.03.2026
+// 12:15:00_` — and `_` is a word character, so `\b` never matched after it.
+// Neither side got scrubbed, and the committed file (Turkish locale, UTC+3)
+// could only ever equal a run on a machine with the same locale AND the same
+// timezone: on ubuntu-latest the generator produces `_3/14/2026, 9:15:00 AM_`.
+const DATE = /(?<![0-9A-Za-z])\d{1,4}[./-]\d{1,2}[./-]\d{1,4}(?:,? \d{1,2}:\d{2}(?::\d{2})?(?:\s?[AP]M)?)?/g;
 const undated = (s) => s.replace(DATE, "<date>");
 
 function boot() {
