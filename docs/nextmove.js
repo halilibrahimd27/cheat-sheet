@@ -54,26 +54,26 @@
       scanPh: "Paste `nmap -sCV` output here, or anything with `22/tcp open ssh` lines."
     },
     tr: {
-      title: "Siradaki Hamle", situation: "Durum", target: "Hedef", os: "Isletim sistemi",
-      access: "Erisim", services: "Acik servisler", addSvc: "port/servis ekle",
-      pasteScan: "tarama ciktisi yapistir", parse: "Ayristir", clear: "Hepsini temizle",
+      title: "Sıradaki Hamle", situation: "Durum", target: "Hedef", os: "İşletim sistemi",
+      access: "Erişim", services: "Açık servisler", addSvc: "port/servis ekle",
+      pasteScan: "tarama çıktısı yapıştır", parse: "Ayrıştır", clear: "Hepsini temizle",
       osUnknown: "bilinmiyor", osLinux: "linux", osWindows: "windows",
-      acNone: "erisim yok", acCreds: "kimlik bilgim var", acFoothold: "kullanici kabugu",
-      acAdmin: "yerel yonetici/root", acDomain: "domain admin",
-      moves: "Siradaki hamleler", nMoves: "oneri", none: "Henuz oneri yok",
-      noneHint: "Buldugun servisleri ekle — nmap ciktisini yapistir ya da port yaz — siralanmis hamleler burada cikar.",
-      gEnum: "Buldugunu listele", gCreds: "Elindeki kimlik bilgileriyle",
-      gCond: "Kosullu — once kosulu oku", gStuck: "Sikistiysan",
-      gUncovered: "Bu portlar icin probe yok",
-      tried: "denendi", untry: "isareti kaldir", markTried: "denendi isaretle",
-      triedN: "denenmisler", copy: "kopyala", copied: "kopyalandi",
+      acNone: "erişim yok", acCreds: "kimlik bilgim var", acFoothold: "kullanıcı kabuğu",
+      acAdmin: "yerel yönetici/root", acDomain: "domain admin",
+      moves: "Sıradaki hamleler", nMoves: "öneri", none: "Henüz öneri yok",
+      noneHint: "Bulduğun servisleri ekle — nmap çıktısını yapıştır ya da port yaz — sıralanmış hamleler burada çıkar.",
+      gEnum: "Bulduğunu listele", gCreds: "Elindeki kimlik bilgileriyle",
+      gCond: "Koşullu — önce koşulu oku", gStuck: "Sıkıştıysan",
+      gUncovered: "Bu portlar için probe yok",
+      tried: "denendi", untry: "işareti kaldır", markTried: "denendi işaretle",
+      triedN: "denenmişler", copy: "kopyala", copied: "kopyalandı",
       why: "neden", phase: "faz", focus: "odak",
-      loadFail: "Hamle verisi yuklenemedi.",
-      retry: "Tekrar dene", loading: "Hamle verisi yukleniyor…",
+      loadFail: "Hamle verisi yüklenemedi.",
+      retry: "Tekrar dene", loading: "Hamle verisi yükleniyor…",
       fromTarget: "aktif hedeften", useTarget: "Aktif hedefi kullan",
-      condNote: "Bu komut bir kosulla birlikte geliyor. Calistirmadan once kosulun gecerli oldugunu dogrula.",
-      uncoveredHint: "Korpusta bunlar icin henuz probe yok — komut listesinde ara.",
-      scanPh: "`nmap -sCV` ciktisini buraya yapistir; `22/tcp open ssh` satiri iceren her sey olur."
+      condNote: "Bu komut bir koşulla birlikte geliyor. Çalıştırmadan önce koşulun geçerli olduğunu doğrula.",
+      uncoveredHint: "Korpusta bunlar için henüz probe yok — komut listesinde ara.",
+      scanPh: "`nmap -sCV` çıktısını buraya yapıştır; `22/tcp open ssh` satırı içeren her şey olur."
     }
   };
   function S(k) {

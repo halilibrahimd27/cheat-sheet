@@ -207,7 +207,7 @@ default top-1000?" — rather than a shrug.
 </p>
 
 <p align="center">
-  <img src="assets/turkish.webp" alt="The Linux Privilege Escalation category with the interface switched to Turkish: the sidebar reads Tum Komutlar, Favoriler, Siradaki Hamle, Oturumlar, Write-ups, Makineler and Gecmis, and each command's description and its BEKLENEN CIKTI panel are in Turkish while the command text itself stays unchanged.">
+  <img src="assets/turkish.webp" alt="The Linux Privilege Escalation category with the interface switched to Turkish: the sidebar reads Tüm Komutlar, Favoriler, Sıradaki Hamle, Oturumlar, Write-ups, Makineler and Geçmiş, and every command's description and its BEKLENEN ÇIKTI panel are in Turkish while the command text itself stays unchanged.">
 </p>
 
 <p align="center">
