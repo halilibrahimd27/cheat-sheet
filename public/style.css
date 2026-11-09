@@ -3180,6 +3180,12 @@ body:has(.var-bar.active) .back-to-top { display: none; }
 .nm-vuln.sev-high .nm-vuln-sev { color: var(--accent-orange); }
 .nm-vuln.sev-medium .nm-vuln-sev { color: var(--accent-yellow); }
 .nm-vuln-note { font-size: var(--fs-xs); color: var(--text-secondary); margin: 5px 0 6px; max-width: 92ch; line-height: 1.5; }
+
+/* Post-foothold menus (scenario.js privescFor/pivotFor/lootFor) — the commands
+   that match the phase Next Move already names once a shell is held. */
+.nm-group-menu .nm-group-title { color: var(--accent-green); }
+.nm-menu-row { padding-left: 10px; border-left: 2px solid var(--accent-green); }
+.nm-menu-row .nm-move-svc { color: var(--accent-green); }
 .nm-stuck-cmd { margin-top: 6px; cursor: pointer; }
 
 .nm-uncovered-row {

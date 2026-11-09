@@ -117,6 +117,18 @@ test("a pasted vulnerable version surfaces a known-exploit callout above the mov
   assert.ok(vg.textContent.includes("10.10.11.9"), "the exploit command is resolved to the target IP");
 });
 
+test("a held shell answers with the post-foothold menus, not silence", () => {
+  const { env, mod, container } = boot({ services: [svc(22, "ssh")], access: "foothold", os: "linux" });
+  env.app.setCategories(require(path.join(__dirname, "..", "seed.js")));
+  // The menus are DB-sourced, so stack the engine on the page like the browser does.
+  vm.runInThisContext(fs.readFileSync(path.join(__dirname, "..", "public", "vuln-map.js"), "utf8"), { filename: "vuln-map.js" });
+  vm.runInThisContext(fs.readFileSync(path.join(__dirname, "..", "public", "scenario.js"), "utf8"), { filename: "scenario.js" });
+  mod.render(container);
+  assert.ok(container.querySelector(".nm-group-menu"), "a foothold on linux surfaces at least one post-foothold menu group");
+  assert.ok(container.querySelectorAll(".nm-menu-row").length >= 3, "several escalation/pivot vectors are listed");
+  assert.ok(container.textContent.includes("sudo -l"), "the classic linux privesc vector is among them");
+});
+
 test("parsing a scan fills the OS toggle when it was still unknown", () => {
   const { mod, container } = boot({ services: [], os: "", scanOpen: true });
   mod.render(container);

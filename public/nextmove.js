@@ -43,6 +43,9 @@
       gCond: "Conditional — read the condition first", gStuck: "If you are stuck",
       gVulns: "Known exploit for a version you pasted",
       vulnsHint: "An exact vulnerable build — this is move #1, before enumeration.",
+      gPrivesc: "Escalate — you hold a shell",
+      gPivot: "Pivot into the network",
+      gLoot: "Loot — you own the box",
       gUncovered: "No probe for these ports",
       tried: "tried", untry: "un-mark", markTried: "mark as tried",
       triedN: "already tried", copy: "copy", copied: "copied",
@@ -67,6 +70,9 @@
       gCond: "Koşullu — önce koşulu oku", gStuck: "Sıkıştıysan",
       gVulns: "Yapıştırdığın sürümde bilinen açık",
       vulnsHint: "Tam savunmasız bir sürüm — bu, enumerasyondan önce 1. hamle.",
+      gPrivesc: "Yükselt — kabuğun var",
+      gPivot: "Ağa pivotla",
+      gLoot: "Ganimet — kutu senin",
       gUncovered: "Bu portlar için probe yok",
       tried: "denendi", untry: "işareti kaldır", markTried: "denendi işaretle",
       triedN: "denenmişler", copy: "kopyala", copied: "kopyalandı",
@@ -540,6 +546,36 @@
     return row;
   }
 
+  // A post-foothold menu item (scenario.js privescFor/pivotFor/lootFor): one
+  // representative command per escalation / pivoting / loot vector, drawn from the
+  // live DB — the same menus the machine Attack Plan shows once a shell is held.
+  // Next Move already names the phase (phaseOf → privesc-linux); these give it the
+  // commands to match, so a foothold situation is no longer answered with silence.
+  function menuRow(p) {
+    var row = el("article", "nm-move nm-menu-row");
+    var head = el("div", "nm-move-head");
+    var src = el("span", "nm-move-src");
+    src.appendChild(el("b", "nm-move-svc", p.group));
+    head.appendChild(src);
+    head.appendChild(el("span", "nm-move-label", p.title));
+    var cmd = p.resolved || p.cmd || "";
+    var acts = el("div", "nm-move-acts");
+    var copyBtn = btn("nm-btn nm-btn-copy", S("copy"), function () {
+      if (typeof APP.copyToClipboard === "function") {
+        APP.copyToClipboard(cmd, function () {
+          copyBtn.textContent = S("copied");
+          if (typeof APP.recordHistory === "function") { try { APP.recordHistory(cmd); } catch { /* history is a convenience */ } }
+          setTimeout(function () { copyBtn.textContent = S("copy"); }, 1200);
+        });
+      }
+    });
+    acts.appendChild(copyBtn);
+    head.appendChild(acts);
+    row.appendChild(head);
+    var pre = el("pre", "nm-move-cmd"); pre.appendChild(el("code", null, cmd)); row.appendChild(pre);
+    return row;
+  }
+
   function markTried(cmd, on) {
     var k = triedKey(cmd);
     if (on) state.tried[k] = 1; else delete state.tried[k];
@@ -592,11 +628,19 @@
 
     // Highest signal first: an exact vulnerable build you pasted is a foothold,
     // not a lead. Same map as the machine Attack Plan (window.CS_SCENARIO).
-    var vulns = (window.CS_SCENARIO && typeof window.CS_SCENARIO.vulnsFor === "function")
-      ? window.CS_SCENARIO.vulnsFor(state.services, { ip: state.target, os: state.os, access: state.access })
-      : [];
+    var eng = window.CS_SCENARIO || {};
+    var ctx = { os: state.os, access: state.access, ip: state.target };
+    var vulns = typeof eng.vulnsFor === "function" ? eng.vulnsFor(state.services, ctx) : [];
+    // Post-foothold menus — the engine self-gates on access/OS, so these are empty
+    // until a shell is held and only ever show the phase you are actually in.
+    var menus = [
+      [S("gPrivesc"), typeof eng.privescFor === "function" ? eng.privescFor(ctx) : []],
+      [S("gPivot"), typeof eng.pivotFor === "function" ? eng.pivotFor(ctx) : []],
+      [S("gLoot"), typeof eng.lootFor === "function" ? eng.lootFor(ctx) : []]
+    ];
+    var menuTotal = menus.reduce(function (n, g) { return n + g[1].length; }, 0);
 
-    if (!total && !vulns.length && !mv.uncovered.length && !mv.stuck) {
+    if (!total && !vulns.length && !menuTotal && !mv.uncovered.length && !mv.stuck) {
       var empty = el("div", "nm-empty");
       empty.appendChild(el("h3", null, S("none")));
       empty.appendChild(el("p", null, S("noneHint")));
@@ -619,6 +663,12 @@
     ].forEach(function (g) {
       var sec = group(g[0], g[1], moveRow, g[2]);
       if (sec) wrap.appendChild(sec);
+    });
+
+    // Once you hold a shell, the next move is local: escalate, pivot, loot.
+    menus.forEach(function (g) {
+      var sec = group(g[0], g[1], menuRow, null);
+      if (sec) { sec.classList.add("nm-group-menu"); wrap.appendChild(sec); }
     });
 
     if (mv.stuck && (mv.stuck.items || []).length) {
