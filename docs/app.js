@@ -2358,6 +2358,28 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     return out;
   }
 
+  // Pull a target OS out of an nmap paste so the OS field (and the OS-aware plan
+  // menus) fill without the user typing it. The `Service Info: OS:` summary rides
+  // along with a plain -sV scan (no -O needed); OS details / Running come from -O;
+  // a CPE is the last resort. Returns "Windows"/"Linux" when it can tell, the raw
+  // first guess for anything else, or "" — never a guess with no evidence.
+  function normOsName(raw) {
+    const s = String(raw || "").trim();
+    if (/windows/i.test(s)) return "Windows";
+    if (/linux/i.test(s)) return "Linux";
+    return s.split(/[,;]/)[0].trim();
+  }
+  function parseNmapOs(text) {
+    const s = String(text || "");
+    let m = s.match(/Service Info:[^\n]*\bOS:\s*([A-Za-z0-9 ._/-]+?)\s*(?:;|$)/im);
+    if (m) return normOsName(m[1]);
+    m = s.match(/OS details:\s*([^\n]+)/i) || s.match(/Running(?: \([^)]*\))?:\s*([^\n]+)/i);
+    if (m) return normOsName(m[1]);
+    if (/cpe:\/o:microsoft:windows/i.test(s)) return "Windows";
+    if (/cpe:\/o:linux:linux_kernel/i.test(s)) return "Linux";
+    return "";
+  }
+
   // Append a copied command to the active target's timeline (single central hook).
   function logToActiveTarget(text) {
     if (!activeTargetId) return;
@@ -3628,11 +3650,18 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     addBtn.addEventListener("click", () => { m.services.push({ port: "", proto: "tcp", state: "open", name: "", version: "", info: "" }); persist(); renderTable(); const inputs = tableWrap.querySelectorAll("tbody tr:last-child .cell-input"); if (inputs[0]) inputs[0].focus(); });
     importBtn.addEventListener("click", () => { const show = importPanel.style.display === "none"; importPanel.style.display = show ? "block" : "none"; if (show) importTa.focus(); });
     importGo.addEventListener("click", () => {
-      const parsed = parseNmapOutput(importTa.value);
+      const raw = importTa.value;
+      const parsed = parseNmapOutput(raw);
       if (!parsed.length) { toast(t("importedNone"), "error"); return; }
       parsed.forEach(p => { const idx = m.services.findIndex(s => s.port === p.port && s.proto === p.proto); if (idx >= 0) m.services[idx] = p; else m.services.push(p); });
-      persist(); importTa.value = ""; importPanel.style.display = "none"; renderTable();
+      // Fill the OS field from the scan when the user never set it — a visible,
+      // persisted value, where the plan's inferOs is only a render-time fallback.
+      let osSet = false;
+      if (!(m.os && String(m.os).trim())) { const dos = parseNmapOs(raw); if (dos) { m.os = dos; osSet = true; } }
+      persist(); if (osSet) saveMachine(m.id, { os: m.os });
+      importTa.value = ""; importPanel.style.display = "none";
       toast(t("importedN").replace("{n}", parsed.length), "ok");
+      if (osSet) render(); else renderTable();
     });
     renderTable();
     return sec;
@@ -5417,7 +5446,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     applyVars: applyIpToCode,
     navigate: (hash) => { window.location.hash = hash; },
     // Next Move parses pasted scan output too; one parser, not two that drift.
-    parseNmap: parseNmapOutput,
+    parseNmap: parseNmapOutput, parseNmapOs,
     // The sprite lives in index.html and belongs to the whole page, so the two
     // lazily-loaded view modules draw from the same set rather than each
     // reintroducing the glyphs this sprite exists to retire.

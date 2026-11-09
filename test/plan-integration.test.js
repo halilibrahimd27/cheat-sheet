@@ -176,6 +176,22 @@ test("an owned machine's exported report carries the loot menu", () => {
   assert.ok(md.includes(env.app.t("planLoot")), "the loot section rides along in the report once the box is owned");
 });
 
+test("importing an nmap paste fills a blank OS field from the scan", () => {
+  const env = boot();
+  env.app.setCategories(require(path.join(PUBLIC_DIR, "..", "seed.js")));
+  const m = machine({ os: "", services: [] });
+  env.app.setMachines([m]);
+  const sec = env.app.buildServicesSection(m);
+  const ta = sec.querySelector("textarea.machine-textarea");
+  assert.ok(ta, "the import textarea is present");
+  ta.value = "PORT     STATE SERVICE VERSION\n22/tcp   open  ssh     OpenSSH 8.2p1\n80/tcp   open  http    Apache httpd 2.4.41\nService Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel\n";
+  const importGo = [...sec.querySelectorAll("button")].find((b) => b.textContent === env.app.t("importDo"));
+  assert.ok(importGo, "the Import button is present");
+  importGo.dispatchEvent({ type: "click", preventDefault() {}, stopPropagation() {} });
+  assert.strictEqual(m.os, "Linux", "the scan's Service Info OS line filled the blank OS field");
+  assert.ok(m.services.some((s) => s.port === "22") && m.services.some((s) => s.port === "80"), "the services were imported alongside it");
+});
+
 test("the panel degrades to an empty-state when there are no services", () => {
   const env = boot();
   const sec = env.app.buildAttackPlanSection(machine({ services: [] }));

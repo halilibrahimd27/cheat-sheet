@@ -29,6 +29,7 @@ const BRIDGE_SOURCE = `
     cvssSeverity: (...a) => cvssSeverity(...a),
     cvssVector: (...a) => cvssVector(...a),
     parseNmapOutput: (...a) => parseNmapOutput(...a),
+    parseNmapOs: (...a) => parseNmapOs(...a),
     normalizeService: (...a) => normalizeService(...a),
     normalizeServices: (...a) => normalizeServices(...a),
     normalizeCred: (...a) => normalizeCred(...a),
@@ -45,6 +46,8 @@ const BRIDGE_SOURCE = `
     machineToMarkdown: (...a) => machineToMarkdown(...a),
     // The Attack Plan panel and the access/findings it derives from a machine.
     buildAttackPlanSection: (...a) => buildAttackPlanSection(...a),
+    // The Services panel, so a test can drive its real nmap-import handler.
+    buildServicesSection: (...a) => buildServicesSection(...a),
     machineAttackCtx: (...a) => machineAttackCtx(...a),
     // The command card, built by the real builder. Reaching it through render()
     // would mean standing up the whole view — loadData, the API, the hash — to

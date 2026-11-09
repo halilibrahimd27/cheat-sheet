@@ -174,6 +174,18 @@ test("the box the session points at is the box in the bundle", () => {
   }
 });
 
+test("parseNmapOs reads the target OS from the scan, or stays silent without evidence", () => {
+  const { app } = boot();
+  assert.strictEqual(app.parseNmapOs("Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel"), "Linux",
+    "the -sV Service Info summary names Linux");
+  assert.strictEqual(app.parseNmapOs("Service Info: Host: WIN-SRV; OS: Windows; CPE: cpe:/o:microsoft:windows"), "Windows",
+    "the -sV Service Info summary names Windows");
+  assert.strictEqual(app.parseNmapOs("OS details: Microsoft Windows Server 2019"), "Windows", "an -O OS details line names Windows");
+  assert.strictEqual(app.parseNmapOs("Running: Linux 4.X|5.X"), "Linux", "an -O Running line names Linux");
+  assert.strictEqual(app.parseNmapOs("cpe:/o:microsoft:windows_server_2016"), "Windows", "a CPE is the last-resort signal");
+  assert.strictEqual(app.parseNmapOs("22/tcp open ssh OpenSSH 8.2p1\n80/tcp open http"), "", "a bare port table carries no OS claim");
+});
+
 test("the nmap paste reproduces the services the bundle already holds", () => {
   // The file is there so a reader can paste it into Import nmap and watch the
   // table fill in. If the parser and the bundle disagree, the walkthrough in
