@@ -207,6 +207,22 @@ test("vulnsFor is deterministic and severity-ordered", () => {
   assert.deepStrictEqual(order, order.slice().sort((x, y) => x - y), "most severe first");
 });
 
+test("the expanded map flags the vulnerable builds and spares the patched ones", () => {
+  const w = load();
+  const ids = (p, n, v) => w.CS_SCENARIO.vulnsFor([svc(p, n, v)], { ip: "10.1.1.1" }).map((x) => x.id);
+  assert.ok(ids(80, "http", "Microsoft IIS httpd 6.0").includes("CVE-2017-7269"), "IIS 6.0 WebDAV is flagged");
+  assert.ok(!ids(80, "http", "Microsoft IIS httpd 10.0").includes("CVE-2017-7269"), "IIS 10 is not");
+  assert.ok(ids(9200, "http", "Elasticsearch REST API 1.1.1").includes("CVE-2014-3120"), "Elasticsearch 1.1.1 is flagged");
+  assert.ok(!ids(9200, "http", "Elasticsearch 1.2.0").includes("CVE-2014-3120"), "Elasticsearch 1.2.0 is patched");
+  assert.ok(ids(8000, "http", "Icecast 2.0.1").includes("CVE-2004-1561"), "Icecast 2.0.1 is flagged");
+  assert.ok(!ids(8000, "http", "Icecast 2.4.4").includes("CVE-2004-1561"), "the modern Icecast line is not");
+  // The accuracy case: a patched point release inside an affected minor must not match.
+  assert.ok(ids(3000, "http", "Grafana 8.2.6").includes("CVE-2021-43798"), "Grafana 8.2.6 is vulnerable");
+  assert.ok(!ids(3000, "http", "Grafana 8.2.7").includes("CVE-2021-43798"), "Grafana 8.2.7 is patched and must NOT be flagged");
+  assert.ok(ids(3000, "http", "Grafana 8.3.0").includes("CVE-2021-43798"), "Grafana 8.3.0 is vulnerable");
+  assert.ok(!ids(3000, "http", "Grafana 8.4.0").includes("CVE-2021-43798"), "Grafana 8.4 is out of range");
+});
+
 // The privesc menu is DB-sourced, so these load the real seed categories the way
 // the running app would have them (window.CS_APP.getCategories).
 const SEED = require(path.join(__dirname, "..", "seed.js"));

