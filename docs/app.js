@@ -4129,7 +4129,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const card = document.createElement("div"); card.className = "host-card" + (st.pct >= 100 ? " owned" : "") + (n.id === openHostId ? " open" : ""); card.id = "host-" + n.id;
       const head = document.createElement("div"); head.className = "host-card-head";
       head.innerHTML =
-        '<span class="host-icon" aria-hidden="true">' + (isDcRole(n) ? iconHtml("crown") : osIconHtml(n.os)) + '</span>' +
+        '<span class="host-icon" aria-hidden="true">' + (isDcRole(n) ? iconHtml("crown") : osIconHtml(n.machine ? machineOsDisplay(n.machine) : n.os)) + '</span>' +
         '<span class="host-title">' + escapeHtml(n.name || "(host)") + '</span>' +
         '<span class="host-ip">' + escapeHtml(n.ip || "") + '</span>' +
         (n.role ? '<span class="host-role">' + escapeHtml(n.role) + '</span>' : '') +
