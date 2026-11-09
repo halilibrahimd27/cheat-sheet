@@ -1999,6 +1999,7 @@ body {
 .ad-node.owned .ad-node-face { fill: color-mix(in srgb, var(--accent-green) 22%, var(--bg-tertiary)); stroke: var(--accent-green); }
 .ad-node.owned .ad-node-glyph { color: var(--accent-green); }
 .ad-node .ad-node-vuln { fill: var(--accent-red); stroke: var(--bg-secondary); stroke-width: 1.5; }
+.ad-node.frontier .ad-ring-bg { stroke: var(--accent-orange); stroke-width: 2.5; stroke-dasharray: 3 3; fill: none; }
 .ad-node.dc .ad-node-glyph { color: var(--accent-primary); }
 .ad-node.dc.owned .ad-node-glyph { color: var(--accent-green); }
 .ad-node:hover .ad-node-face { stroke: var(--accent-primary); }

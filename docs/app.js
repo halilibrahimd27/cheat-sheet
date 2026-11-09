@@ -2554,6 +2554,16 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const NS = "http://www.w3.org/2000/svg";
     const VBW = 420, VBH = 285;
     const nodes = (m.hosts || []).map(hostNode);
+    // Attack-path frontier: a host you own (checklist done or root flag) opens the
+    // hosts it links to. Those reachable-but-not-yet-owned nodes are the ones to
+    // hit next — the graph marks them so the path reads without tracing edges.
+    const ownedIds = new Set(nodes.filter(n => checklistStats(n.checklist).pct >= 100 || (n.machine && isCaptured(n.machine.rootFlag))).map(n => n.id));
+    const frontierIds = new Set();
+    nodes.forEach(n => {
+      if (ownedIds.has(n.id)) return;
+      const nextToOwned = (n.links || []).some(lid => ownedIds.has(lid)) || nodes.some(o => ownedIds.has(o.id) && (o.links || []).indexOf(n.id) >= 0);
+      if (nextToOwned) frontierIds.add(n.id);
+    });
     const svg = document.createElementNS(NS, "svg");
     svg.setAttribute("viewBox", "0 0 " + VBW + " " + VBH); svg.setAttribute("class", "ad-schematic");
     svg.setAttribute("role", "img"); svg.setAttribute("aria-label", "AD engagement host map");
@@ -2588,7 +2598,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     nodes.forEach(n => {
       const p = pos[n.id]; const pct = checklistStats(n.checklist).pct;
       const g = document.createElementNS(NS, "g");
-      g.setAttribute("class", "ad-node " + progClass(pct) + (isDcRole(n) ? " dc" : "") + (n.id === openHostId ? " open" : "") + (n.id === adConnectSel ? " picking" : ""));
+      g.setAttribute("class", "ad-node " + progClass(pct) + (isDcRole(n) ? " dc" : "") + (n.id === openHostId ? " open" : "") + (n.id === adConnectSel ? " picking" : "") + (frontierIds.has(n.id) ? " frontier" : ""));
       g.setAttribute("tabindex", "0"); g.setAttribute("role", "button"); g.setAttribute("aria-label", (n.name || "host") + " " + pct + "%");
       // Shape encodes ROLE and fill encodes OWNED — the two facts you actually
       // need off a domain map. Both survive colour-blindness, which a red/green
@@ -2597,7 +2607,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       // "62% of a checklist" is not what anyone opens this graph to find out.
       const dc = isDcRole(n);
       const R = 19;
-      g.classList.toggle("owned", !!n.owned);
+      g.classList.toggle("owned", ownedIds.has(n.id));
       g.classList.toggle("host", !dc);
 
       const bg = document.createElementNS(NS, dc ? "circle" : "rect");
