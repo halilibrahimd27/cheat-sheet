@@ -3541,7 +3541,14 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       if (!services.length) { const e = document.createElement("p"); e.className = "plan-empty"; e.textContent = t("planEmpty"); body.appendChild(e); return; }
       if (!window.CS_SCENARIO) { const e = document.createElement("p"); e.className = "plan-empty"; e.textContent = "…"; body.appendChild(e); return; }
       const ctx = machineAttackCtx(m);
-      ran = new Set((m.timeline || []).filter(e => e && e.type === "cmd").map(e => e.text));
+      // A copied wave logs its commands as ONE newline-joined entry, so split
+      // multi-line entries back into their lines — otherwise "copy wave" would
+      // leave every step it ran un-ticked.
+      ran = new Set();
+      (m.timeline || []).filter(e => e && e.type === "cmd" && e.text).forEach(e => {
+        ran.add(e.text);
+        if (e.text.indexOf("\n") >= 0) e.text.split("\n").forEach(line => { const s = line.trim(); if (s) ran.add(s); });
+      });
       const plan = window.CS_SCENARIO.plan(services, ctx);
       const stepTotal = plan.waves.reduce((n, w) => n + w.steps.length, 0);
       if (!stepTotal && !plan.locked.length && !plan.uncovered.length) { const e = document.createElement("p"); e.className = "plan-empty"; e.textContent = t("planEmpty"); body.appendChild(e); return; }
