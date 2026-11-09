@@ -4111,6 +4111,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     function buildHostCard(h) {
       const n = hostNode(h);
       const st = checklistStats(n.checklist);
+      const nVuln = (n.machine && window.CS_SCENARIO && typeof window.CS_SCENARIO.vulnsFor === "function") ? window.CS_SCENARIO.vulnsFor(n.machine.services || [], {}).length : 0;
       const card = document.createElement("div"); card.className = "host-card" + (st.pct >= 100 ? " owned" : "") + (n.id === openHostId ? " open" : ""); card.id = "host-" + n.id;
       const head = document.createElement("div"); head.className = "host-card-head";
       head.innerHTML =
@@ -4118,6 +4119,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         '<span class="host-title">' + escapeHtml(n.name || "(host)") + '</span>' +
         '<span class="host-ip">' + escapeHtml(n.ip || "") + '</span>' +
         (n.role ? '<span class="host-role">' + escapeHtml(n.role) + '</span>' : '') +
+        (nVuln ? '<span class="host-vuln" title="' + escapeHtml(t("planVulns") + " (" + nVuln + ")") + '">' + iconHtml("alert", "icon-sm") + ' ' + nVuln + '</span>' : '') +
         (n.ref ? '<span class="host-badge">machine</span>' : '') +
         '<span class="host-prog">' + (n.checklist.length ? st.done + "/" + st.total + " · " + st.pct + "%" : "—") + '</span>' +
         '<button class="host-expand" aria-label="Toggle">' + iconHtml(n.id === openHostId ? "chevron-up" : "chevron-down", "icon-sm") + '</button>' +
