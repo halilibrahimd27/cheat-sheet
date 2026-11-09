@@ -59,6 +59,7 @@
       enumQueue: "Enumeration queue", enumEmpty: "No services recorded yet.",
       enumImport: "Import your nmap output on the machine page — the queue builds itself from it.",
       enumNoProbe: "No enumeration probe ships for these ports",
+      sessVulns: "Known exploits — run these first",
       enumConditional: "conditional", enumShowCond: "Show conditional commands",
       enumHideCond: "Hide conditional commands", copyAll: "Copy the always-run set",
       copy: "Copy", copied: "Copied", note: "Note",
@@ -148,6 +149,7 @@
       enumQueue: "Keşif kuyruğu", enumEmpty: "Henüz kayıtlı servis yok.",
       enumImport: "nmap çıktını makine sayfasında içe aktar — kuyruk kendini ondan kurar.",
       enumNoProbe: "Bu portlar için keşif seti yok",
+      sessVulns: "Bilinen açıklar — önce bunları çalıştır",
       enumConditional: "koşullu", enumShowCond: "Koşullu komutları göster",
       enumHideCond: "Koşullu komutları gizle", copyAll: "Her zaman çalıştırılan seti kopyala",
       copy: "Kopyala", copied: "Kopyalandı", note: "Not",
@@ -1932,6 +1934,41 @@
   // Enumeration queue — the drudgery win
   // ══════════════════════════════════════════════════════════════════
 
+  // Known exploits for the linked machine's banners — the same version→exploit map
+  // the attack plan and Next Move use, surfaced at the TOP of the enum queue because
+  // an exact vulnerable build is a foothold, not something to enumerate toward.
+  function queueVulns(svcs, m, t) {
+    var vulns = (window.CS_SCENARIO && typeof window.CS_SCENARIO.vulnsFor === "function")
+      ? window.CS_SCENARIO.vulnsFor(svcs, { ip: m && m.ip }) : [];
+    if (!vulns.length) return null;
+    var box = el("div", "checklist-phase session-vulns");
+    var head = el("div", "checklist-phase-header");
+    head.appendChild(el("span", "checklist-phase-name", S("sessVulns")));
+    head.appendChild(el("span", "checklist-phase-count", String(vulns.length)));
+    box.appendChild(head);
+    var body = el("div", "checklist-body");
+    body.style.padding = "10px 12px";
+    vulns.forEach(function (v) {
+      var row = el("div", "checklist-item");
+      var rb = el("div", "checklist-body");
+      rb.appendChild(el("span", "checklist-label", (v.sev ? v.sev.toUpperCase() + " " : "") + (v.service || "") + (v.port ? ":" + v.port : "") + " — " + (v.title || "") + (v.id ? " (" + v.id + ")" : "")));
+      if (v.note) rb.appendChild(el("span", "session-attempt-why", v.note));
+      var cmd = v.resolvedExploit || v.exploit || "";
+      if (cmd) {
+        var hint = el("div", "checklist-hint");
+        hint.appendChild(el("code", "", cmd));
+        var copy = iconBtn("checklist-hint-copy", "copy", "", null, S("copy"));
+        wireCopy(copy, function () { return cmd; }, t);
+        hint.appendChild(copy);
+        rb.appendChild(hint);
+      }
+      row.appendChild(rb);
+      body.appendChild(row);
+    });
+    box.appendChild(body);
+    return box;
+  }
+
   function queueSection(s, preset, t) {
     var sec = el("div", "machine-section");
     // `e` targets this section by name. The old selector (".checklist-hint code")
@@ -1959,6 +1996,9 @@
 
     var q = buildQueue(svcs);
     head.appendChild(el("span", "machine-report-hint", q.groups.length + " " + S("enumQueue").toLowerCase()));
+
+    var vb = queueVulns(svcs, m, t);
+    if (vb) sec.appendChild(vb);
 
     q.groups.forEach(function (g) { sec.appendChild(probeGroup(g, t)); });
 

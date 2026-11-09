@@ -3330,6 +3330,8 @@ body:has(.var-bar.active) .back-to-top { display: none; }
 .svc-row-vuln td:first-child { box-shadow: inset 2px 0 0 var(--accent-red); }
 .svc-vuln-mark { display: inline-flex; align-items: center; color: var(--accent-red); margin-right: 2px; }
 .svc-vuln-mark .icon { width: 14px; height: 14px; }
+.session-vulns { border-left: 3px solid var(--accent-red); }
+.session-vulns .checklist-phase-name { color: var(--accent-red); }
 
 /* Flags read as two slots that fill in, so an empty one is as informative as a
    full one — you can see at a glance which boxes are half-done. */
