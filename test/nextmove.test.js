@@ -129,6 +129,9 @@ test("Use active target carries version + access, so the callout and menus light
     credentials: [], userFlag: { value: "u", capturedAt: "t" }, rootFlag: null,
   }]);
   env.window.CS_APP.setActiveTarget("mt1");
+  // Setting the active target also fills the quick-fill RHOST, so commands copied
+  // from the category browser (not just the plan) land on the same IP.
+  assert.strictEqual(env.window.localStorage.getItem("cs-ip-RHOST"), "10.10.11.9", "the active target's IP flows into the var bar");
   vm.runInThisContext(fs.readFileSync(path.join(__dirname, "..", "public", "vuln-map.js"), "utf8"), { filename: "vuln-map.js" });
   vm.runInThisContext(fs.readFileSync(path.join(__dirname, "..", "public", "scenario.js"), "utf8"), { filename: "scenario.js" });
   mod.render(container);

@@ -2302,7 +2302,19 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   // keeps the module state and the persisted key in step.
   function setActiveTarget(id) {
     activeTargetId = id || null;
-    if (activeTargetId) safeSet("cs-active-target", activeTargetId); else safeRemove("cs-active-target");
+    if (activeTargetId) {
+      safeSet("cs-active-target", activeTargetId);
+      // Push the target's IP into the quick-fill so copied REFERENCE commands land
+      // on it too — the attack plan already resolves from the machine directly, but
+      // a command copied from the category browser only knows the var bar.
+      const am = machines.find(x => x.id === activeTargetId);
+      const ip = am && am.ip ? String(am.ip).trim() : "";
+      if (ip) {
+        if (ipFields.RHOST) ipFields.RHOST.value = ip;
+        safeSet("cs-ip-RHOST", ip);
+        (ipMap.RHOST || []).forEach(ph => safeSet("cs-var-" + ph, ip));
+      }
+    } else safeRemove("cs-active-target");
     return activeTargetId;
   }
   async function loadMachines() {
