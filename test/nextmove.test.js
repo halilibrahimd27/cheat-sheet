@@ -117,6 +117,19 @@ test("a pasted vulnerable version surfaces a known-exploit callout above the mov
   assert.ok(vg.textContent.includes("10.10.11.9"), "the exploit command is resolved to the target IP");
 });
 
+test("parsing a scan fills the OS toggle when it was still unknown", () => {
+  const { mod, container } = boot({ services: [], os: "", scanOpen: true });
+  mod.render(container);
+  const ta = container.querySelector("textarea.nm-textarea");
+  assert.ok(ta, "the scan textarea shows when the paste panel is open");
+  ta.value = "21/tcp open ftp vsftpd 2.3.4\nService Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel\n";
+  const parseBtn = container.querySelector(".nm-scan-bar .nm-btn-primary") || container.querySelector(".nm-btn-primary");
+  assert.ok(parseBtn, "the Parse button is present");
+  parseBtn.dispatchEvent({ type: "click", preventDefault() {}, stopPropagation() {} });
+  const linuxBtn = [...container.querySelectorAll(".nm-seg-btn")].find((b) => b.textContent === "linux");
+  assert.ok(linuxBtn && linuxBtn.classList.contains("on"), "the OS toggle is set to linux from the scan's Service Info line");
+});
+
 test("conditional commands are surfaced WITH their condition, never silently dropped", () => {
   const mv = boot({ services: [svc(161, "snmp"), svc(445, "smb"), svc(88, "kerberos")], access: "none" }).mod.buildMoves();
   assert.ok(mv.cond.length > 0, "the probe corpus carries free-text conditions; they belong in their own group");

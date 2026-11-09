@@ -445,6 +445,14 @@
         if (!parsed.length) { if (APP.toast) APP.toast("0", "error"); return; }
         var open = parsed.filter(function (s) { return !s.state || s.state.indexOf("open") === 0; });
         state.services = dedupe(state.services.concat(open));
+        // Fill the OS toggle from the scan when it is still unknown: the explicit
+        // `Service Info: OS:` line first, then banner inference — the same two the
+        // machine import uses, so the OS-dependent phase/ranking light up here too.
+        if (!state.os) {
+          var dos = (typeof APP.parseNmapOs === "function" ? APP.parseNmapOs(ta.value) : "").toLowerCase();
+          if (dos !== "linux" && dos !== "windows" && window.CS_SCENARIO && typeof window.CS_SCENARIO.inferOs === "function") dos = window.CS_SCENARIO.inferOs(open);
+          if (dos === "linux" || dos === "windows") state.os = dos;
+        }
         state.scanOpen = false; save(); paint();
         if (APP.toast) APP.toast("+" + open.length, "ok");
       }));
