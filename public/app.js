@@ -2744,6 +2744,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     if (!confirm(lang === "tr" ? "Bu makineyi silinsin mi?" : "Delete this machine?")) return;
     await api("DELETE", "/api/machines/" + id);
     if (openMachineId === id) openMachineId = null;
+    if (activeTargetId === id) setActiveTarget(null); // don't leave a dead active target (and its stored id)
     await loadMachines(); render();
   }
   // Per-id debounce so saving one machine never cancels another's pending write.
