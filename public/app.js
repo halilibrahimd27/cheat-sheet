@@ -3873,7 +3873,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const head = document.createElement("div"); head.className = "machine-section-head";
     head.innerHTML = '<h3>' + iconHtml("clock") + ' ' + t("timeline") + '</h3>';
     const clearBtn = document.createElement("button"); clearBtn.className = "btn btn-secondary btn-sm"; clearBtn.textContent = t("clearTimeline");
-    clearBtn.addEventListener("click", () => { if (!m.timeline.length || !confirm(t("confirmClearTl"))) return; m.timeline = []; saveMachine(m.id, { timeline: m.timeline }); renderTimelineInto(body, m); });
+    clearBtn.addEventListener("click", () => { if (!m.timeline.length || !confirm(t("confirmClearTl"))) return; m.timeline = []; saveMachine(m.id, { timeline: m.timeline }); renderTimelineInto(body, m); notifyPlan(); });
     head.appendChild(clearBtn); sec.appendChild(head);
     const addRow = document.createElement("div"); addRow.className = "tl-add";
     const inp = document.createElement("input"); inp.className = "checklist-add-input"; inp.placeholder = t("timelineNotePh"); inp.setAttribute("aria-label", t("timelineAdd"));
