@@ -112,6 +112,27 @@ you can drag cards across.
   <img src="assets/board.webp" alt="The Machines Kanban board with four columns — Not started, In progress, Owned and Reported — holding five boxes: Vault, Relay and Beacon, Forge, and Sentinel with a full progress bar. A stats row above reads 5 total, 2 owned, 2 in progress, 20 percent average progress, beside search, platform, status, tag and sort controls and a Grid/Board toggle.">
 </p>
 
+### The attack plan builds itself
+
+Paste a scan and the box gets a **step-by-step plan** — deterministic, offline, no AI.
+The open ports map to a port→technique corpus, and the result is ordered waves of
+copyable commands, each already filled in with the target's IP and port: do these now,
+and once you get X, these open next.
+
+- **Known exploits come first.** An exact vulnerable banner — `vsftpd 2.3.4`,
+  `Samba 3.0.20`, `Apache 2.4.49` — is a foothold, not a lead, so the matching public
+  exploit is surfaced above the recon waves. The machine list flags which boxes have
+  one waiting.
+- **The menus follow your access.** Capture a user flag and an OS-aware
+  **privilege-escalation** menu appears; hold any shell and a **pivoting** menu opens;
+  own the box and a **loot** menu does. Each is one representative command per vector,
+  pointing into the 5040-command reference rather than copying it.
+- **The OS is inferred** from the banners when you never set it, so those menus light
+  up on their own.
+
+The same engine drives [Next Move](#next-move--describe-the-situation-get-ranked-commands),
+and the whole plan folds into the exported report.
+
 ### The report writes itself
 
 The Report tab is not a template you fill in — it is built from what the box currently
