@@ -858,6 +858,11 @@
   function privescPhase(machine, override) {
     if (override) return override;
     var os = String((machine && machine.os) || "").toLowerCase();
+    // OS never set? Infer it from the banners (same engine the plan uses) so a
+    // blank-OS Windows box gets the Windows phase instead of defaulting to Linux.
+    if (!os && machine && window.CS_SCENARIO && typeof window.CS_SCENARIO.inferOs === "function") {
+      os = window.CS_SCENARIO.inferOs(machine.services || []);
+    }
     if (/win/.test(os)) return "privesc-windows";
     return "privesc-linux";
   }
