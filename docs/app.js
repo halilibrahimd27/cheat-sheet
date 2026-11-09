@@ -556,7 +556,9 @@
   // target or typed), so you always see what a copied command will hit.
   function updateIpToggleLabel() {
     const btn = $("ipChangerToggle"); if (!btn) return;
-    const ip = ((ipFields.RHOST && ipFields.RHOST.value.trim()) || safeGet("cs-ip-RHOST") || "").trim();
+    // The SAVED RHOST, not the field's possibly-unsaved text — the label must
+    // match what a copied command actually resolves to.
+    const ip = (safeGet("cs-ip-RHOST") || "").trim();
     btn.textContent = ip ? (ip.length > 20 ? ip.slice(0, 19) + "…" : ip) : "<IP>";
     btn.classList.toggle("ip-set", !!ip);
   }
@@ -589,7 +591,6 @@
   });
   // Auto-save on Enter in ip fields
   Object.values(ipFields).forEach(inp => inp.addEventListener("keydown", e => { if (e.key === "Enter") { saveIpValues(); $("ipSaveBtn").textContent = "Saved!"; setTimeout(() => $("ipSaveBtn").textContent = "Save", 1200); } }));
-  if (ipFields.RHOST) ipFields.RHOST.addEventListener("input", updateIpToggleLabel);
 
   // ── Variable profiles: save/apply named sets of the Quick IP Changer values ──
   // Lets you keep one profile per target box and switch between them instantly.
