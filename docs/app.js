@@ -99,7 +99,7 @@
       educational: "Educational purposes only.", useResp: "Use responsibly and ethically.",
       machines: "Machines", addMachine: "+ New Machine", noMachines: "No machines yet",
       addMachineDesc: "Track target machines, services, credentials, and progress.",
-      machineName: "Machine Name", machineIP: "IP Address", machineOS: "Operating System",
+      machineName: "Machine Name", machineIP: "IP Address", machineOS: "Operating System", osInferred: "inferred",
       services: "Services", credentials: "Credentials", notes: "Notes",
       planTitle: "Attack Plan", planEmpty: "Import an nmap scan above and a step-by-step plan appears here.", planDoNow: "Do now", planUnlock: "once you get:", planLocked: "Locked", planNeed: "need", planUncovered: "No playbook yet for", planMore: "more commands", planSvcCount: "services", planStepCount: "steps", planVulns: "Known exploits", planExport: "Copy plan", planCopied: "Attack plan copied as Markdown", planPrivesc: "Privilege escalation", planPivot: "Lateral movement", planLoot: "Loot & persistence", phRecon: "Recon", phEnum: "Enumerate", phFoothold: "Foothold", phPrivesc: "Privesc", phLateral: "Lateral", phLoot: "Loot",
       exportMd: "Export MD", exportPdf: "Export PDF", termCopy: "Terminal Copy",
@@ -213,7 +213,7 @@
       educational: "Sadece eğitim amaçlıdır.", useResp: "Sorumlu ve etik kullanın.",
       machines: "Makineler", addMachine: "+ Yeni Makine", noMachines: "Henüz makine yok",
       addMachineDesc: "Hedef makineleri, servisleri, kimlik bilgilerini ve ilerlemeyi takip edin.",
-      machineName: "Makine Adı", machineIP: "IP Adresi", machineOS: "İşletim Sistemi",
+      machineName: "Makine Adı", machineIP: "IP Adresi", machineOS: "İşletim Sistemi", osInferred: "tahmin",
       services: "Servisler", credentials: "Kimlik Bilgileri", notes: "Notlar",
       planTitle: "Saldırı Planı", planEmpty: "Yukarıdan bir nmap taraması aktarın; adım adım plan burada belirir.", planDoNow: "Şimdi yap", planUnlock: "şunu elde edince:", planLocked: "Kilitli", planNeed: "gereken", planUncovered: "Henüz playbook yok:", planMore: "daha fazla komut", planSvcCount: "servis", planStepCount: "adım", planVulns: "Bilinen açıklar", planExport: "Planı kopyala", planCopied: "Saldırı planı Markdown olarak kopyalandı", planPrivesc: "Yetki yükseltme", planPivot: "Yanal hareket", planLoot: "Ganimet ve kalıcılık", phRecon: "Keşif", phEnum: "Enumerasyon", phFoothold: "Giriş", phPrivesc: "Yetki", phLateral: "Yanal", phLoot: "Ganimet",
       exportMd: "MD Aktar", exportPdf: "PDF Aktar", termCopy: "Terminal Kopyala",
@@ -3824,6 +3824,14 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const platOpts = MACHINE_PLATFORMS.map(p => '<option value="' + escapeHtml(p) + '"' + ((m.platform || "Custom") === p ? " selected" : "") + '>' + escapeHtml(p) + '</option>').join("");
     const diffOpts = '<option value="">—</option>' + MACHINE_DIFFS.map(d => '<option value="' + escapeHtml(d) + '"' + (machineDiff(m.difficulty) === d ? " selected" : "") + '>' + escapeHtml(diffLabel(d)) + '</option>').join("");
     const statOpts = MACHINE_STATUSES.map(v => '<option value="' + escapeHtml(v) + '"' + (machineStatus(m) === v ? " selected" : "") + '>' + escapeHtml(stLabel(v)) + '</option>').join("");
+    // When the OS was never set, show what the plan inferred from the banners as a
+    // placeholder, so the privesc/loot menus' "· Linux" is explained and a wrong
+    // guess is visible and correctable instead of silently driving the plan.
+    let osPlaceholder = "OS";
+    if (!(m.os && String(m.os).trim()) && window.CS_SCENARIO && typeof window.CS_SCENARIO.inferOs === "function") {
+      const io = window.CS_SCENARIO.inferOs(m.services || []);
+      if (io) osPlaceholder = io.charAt(0).toUpperCase() + io.slice(1) + " (" + t("osInferred") + ")";
+    }
     info.innerHTML =
       '<div class="machine-detail-header">' +
         '<span class="machine-detail-icon">' + osIconHtml(m.os) + '</span>' +
@@ -3831,7 +3839,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
           '<input class="machine-detail-name-input" data-k="name" value="' + escapeHtml(m.name) + '" aria-label="' + t("machineName") + '">' +
           '<div class="machine-meta-fields">' +
             '<input class="machine-meta-input" data-k="ip" placeholder="IP" value="' + escapeHtml(m.ip || "") + '" aria-label="IP">' +
-            '<input class="machine-meta-input" data-k="os" placeholder="OS" value="' + escapeHtml(m.os || "") + '" aria-label="OS">' +
+            '<input class="machine-meta-input" data-k="os" placeholder="' + escapeHtml(osPlaceholder) + '" value="' + escapeHtml(m.os || "") + '" aria-label="OS">' +
           '</div>' +
           '<div class="machine-meta-chips">' +
             '<label class="machine-chip-field"><span>' + t("mPlatform") + '</span><select class="form-select machine-chip-sel" data-sk="platform">' + platOpts + '</select></label>' +
