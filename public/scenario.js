@@ -146,10 +146,14 @@
 
   // ── placeholder resolution ──────────────────────────────────────────────
   var TARGET_PH = ["<TARGET_IP>", "<RHOST_IP>", "<RHOST>", "<IP>", "<TARGET>", "<TARGET_URL>"];
-  function resolve(cmd, ctx) {
+  // `port` is the single scanned port a step's service sits on, passed only when
+  // it is unambiguous — then <PORT> is filled so the command is runnable as-is.
+  // <LPORT> (the attacker's listener) is a different token and is left untouched.
+  function resolve(cmd, ctx, port) {
     var out = String(cmd == null ? "" : cmd);
     var ip = ctx && ctx.ip ? String(ctx.ip).trim() : "";
     if (ip) { TARGET_PH.forEach(function (ph) { out = out.split(ph).join(ip); }); out = out.replace(/\$IP\b/g, ip); }
+    if (port) out = out.split("<PORT>").join(String(port));
     var app = W.CS_APP;
     if (app && typeof app.applyVars === "function") { try { out = app.applyVars(out); } catch { /* a broken var bar must not break the plan */ } }
     return out;
@@ -226,11 +230,14 @@
 
     var allSteps = [];
     resolved.forEach(function (rec) {
+      // When the service was found on exactly one port, <PORT> is unambiguous and
+      // gets filled; on several ports it stays symbolic (which port is meant?).
+      var onePort = rec.ports.length === 1 ? rec.ports[0] : "";
       (rec.row.steps || []).forEach(function (st, i) {
         allSteps.push({
           service: rec.service, ports: rec.ports.join(", "), risk: rec.risk,
           phase: st.phase || "enum", label: st.label || "", cmd: st.cmd || "",
-          resolved: resolve(st.cmd, ctx), when: st.when || "always", bucket: bucketOf(st.when),
+          resolved: resolve(st.cmd, ctx, onePort), when: st.when || "always", bucket: bucketOf(st.when),
           yields: (st.yields || []).slice(), needs: (rec.row.needs || []).slice(), order: i
         });
       });

@@ -122,6 +122,27 @@ test("placeholders resolve to the target IP", () => {
     "every <TARGET_IP> is substituted in the resolved command");
 });
 
+test("a lone service port fills <PORT>; the same service on two ports keeps it symbolic", () => {
+  const w = load();
+  const steps = (plan) => plan.waves.reduce((a, wv) => a.concat(wv.steps), []);
+  const ssh = steps(w.CS_SCENARIO.plan([svc(22, "ssh")], { ip: "10.10.11.9" })).filter((s) => s.service === "ssh");
+  assert.ok(ssh.length, "ssh produced steps");
+  assert.ok(!ssh.some((s) => s.resolved.indexOf("<PORT>") >= 0), "a single ssh port is filled into every step");
+  assert.ok(ssh.some((s) => /(^|[^0-9])22([^0-9]|$)/.test(s.resolved)), "the filled port is the one that was scanned");
+  const http = steps(w.CS_SCENARIO.plan([svc(80, "http"), svc(8080, "http")], { ip: "10.10.11.9" })).filter((s) => s.service === "http");
+  assert.ok(http.some((s) => s.resolved.indexOf("<PORT>") >= 0), "http on two ports leaves <PORT> for the user to pick");
+});
+
+test("filling <PORT> never rewrites <LPORT>, the attacker's listener", () => {
+  const w = load();
+  const all = w.CS_SCENARIO.plan([svc(445, "microsoft-ds")], { ip: "10.10.11.9", os: "windows" })
+    .waves.reduce((a, wv) => a.concat(wv.steps), []).concat(
+      w.CS_SCENARIO.plan([svc(445, "microsoft-ds")], { ip: "10.10.11.9", os: "windows" }).locked);
+  const withLport = all.filter((s) => s.cmd.indexOf("<LPORT>") >= 0);
+  assert.ok(withLport.length, "the smb playbook has a step that sets <LPORT>");
+  assert.ok(withLport.every((s) => s.resolved.indexOf("<LPORT>") >= 0), "<LPORT> survives <PORT> substitution verbatim");
+});
+
 test("dbCommandsFor points into the live command DB by signal", () => {
   const fakeDb = [{
     id: "netexec",
