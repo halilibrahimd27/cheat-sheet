@@ -88,7 +88,7 @@
       cmdCommands: "Command(s)", cmdTags: "Tags", cmdNote: "Note (optional)",
       perLine: "One command per line. Use <PLACEHOLDER> for variables.",
       tagComma: "essential, tool, advanced (comma-separated)",
-      cancel: "Cancel", save: "Save", addSub: "+ Sub", addCmd: "+ Cmd",
+      cancel: "Cancel", save: "Save", addSub: "+ Sub", addCmd: "+ Cmd", copyEssentials: "Copy the essential commands here",
       edit: "Edit", del: "Delete", copy: "Copy", copied: "Copied!",
       confirmDelCat: "Delete this category and all commands?",
       confirmDelSub: "Delete this subcategory?", confirmDelCmd: "Delete this command?",
@@ -203,7 +203,7 @@
       cmdCommands: "Komut(lar)", cmdTags: "Etiketler", cmdNote: "Not (isteğe bağlı)",
       perLine: "Satır başına bir komut. Değişkenler için <PLACEHOLDER> kullanın.",
       tagComma: "essential, tool, advanced (virgül ile ayırın)",
-      cancel: "İptal", save: "Kaydet", addSub: "+ Alt", addCmd: "+ Cmd",
+      cancel: "İptal", save: "Kaydet", addSub: "+ Alt", addCmd: "+ Cmd", copyEssentials: "Buradaki önemli komutları kopyala",
       edit: "Düzenle", del: "Sil", copy: "Kopyala", copied: "Kopyalandı!",
       confirmDelCat: "Bu kategori ve içindeki tüm komutlar silinsin mi?",
       confirmDelSub: "Bu alt kategori silinsin mi?", confirmDelCmd: "Bu komut silinsin mi?",
@@ -4933,6 +4933,19 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         subH.querySelector('[data-act="cmd"]').addEventListener("click", () => addCommand(cat.id, subIdx));
         subH.querySelector('[data-act="edit"]').addEventListener("click", () => editSubcategory(cat.id, subIdx, sub));
         subH.querySelector('[data-act="del"]').addEventListener("click", () => deleteSubcategory(cat.id, subIdx));
+        // Grab the whole technique at once: the essential commands of this
+        // subcategory, newline-joined with the var bar applied — a quick script.
+        const essentials = (sub.commands || []).filter(c => (c.tags || []).includes("essential")).map(c => c.cmd || (c.cmds && c.cmds[0]) || "").filter(Boolean);
+        if (essentials.length >= 2) {
+          const ce = document.createElement("button"); ce.className = "sub-action-btn sub-copy-ess"; ce.title = t("copyEssentials");
+          ce.appendChild(icon("copy", "icon-sm"));
+          ce.addEventListener("click", () => {
+            const joined = applyIpToCode(essentials.join("\n"));
+            copyText(joined, () => { recordHistory(joined); announce(t("copied")); toast(t("copied"), "ok"); });
+          });
+          const acts = subH.querySelector(".sub-actions");
+          acts.insertBefore(ce, acts.firstChild);
+        }
         subDiv.appendChild(subH);
         (isFiltering() ? filtered : sub.commands).forEach(cmd => { subDiv.appendChild(renderCard(cmd, cat.id, subIdx, sub.commands.indexOf(cmd))); });
         body.appendChild(subDiv);
