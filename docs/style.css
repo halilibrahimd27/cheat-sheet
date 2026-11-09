@@ -3871,3 +3871,9 @@ body:has(.var-bar.active) .back-to-top { display: none; }
     font-size: var(--fs-2xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px;
     color: var(--accent-yellow); margin-right: 2px;
 }
+.plan-menu-copy {
+    margin-left: auto; flex: 0 0 auto; background: none; border: none; cursor: pointer;
+    color: inherit; opacity: 0.55; padding: 2px; display: inline-flex; align-items: center;
+}
+.plan-menu-copy:hover { opacity: 1; }
+.plan-menu-copy .icon { width: 13px; height: 13px; }

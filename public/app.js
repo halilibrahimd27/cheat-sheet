@@ -3399,6 +3399,17 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
     const PHASE = { recon: t("phRecon"), enum: t("phEnum"), foothold: t("phFoothold"), privesc: t("phPrivesc"), lateral: t("phLateral"), loot: t("phLoot") };
     const copyCmd = (cmd) => { const applied = applyIpToCode(cmd); copyText(applied, () => { recordHistory(applied); announce(t("copied")); toast(t("copied"), "ok"); }); };
+    // One click grabs a whole menu's commands, newline-joined — the privesc/pivot/
+    // loot twin of the wave copy button, and of Next Move's copy-all.
+    const menuCopyBtn = (items) => {
+      const b = document.createElement("button"); b.type = "button"; b.className = "plan-menu-copy"; b.title = t("planCopyWave");
+      b.appendChild(icon("copy", "icon-sm"));
+      b.addEventListener("click", () => {
+        const block = items.map((p) => applyIpToCode(p.resolved || p.cmd)).join("\n");
+        copyText(block, () => { recordHistory(block); announce(t("copied")); toast(t("copied"), "ok"); });
+      });
+      return b;
+    };
 
     function stepRow(st, locked) {
       const row = document.createElement("div"); row.className = "plan-step phase-" + st.phase + (locked ? " plan-step-locked" : "");
@@ -3517,6 +3528,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         const ph = document.createElement("div"); ph.className = "plan-privesc-head";
         ph.appendChild(icon("crown", "icon-sm"));
         ph.appendChild(document.createTextNode(" " + t("planPrivesc") + " · " + (ctx.os === "windows" ? "Windows" : "Linux")));
+        if (privesc.length > 1) ph.appendChild(menuCopyBtn(privesc));
         pbox.appendChild(ph);
         privesc.forEach((p) => {
           const row = document.createElement("div"); row.className = "plan-pe-row";
@@ -3542,6 +3554,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         const vh = document.createElement("div"); vh.className = "plan-pivot-head";
         vh.appendChild(icon("network", "icon-sm"));
         vh.appendChild(document.createTextNode(" " + t("planPivot")));
+        if (pivot.length > 1) vh.appendChild(menuCopyBtn(pivot));
         vbox.appendChild(vh);
         pivot.forEach((p) => {
           const row = document.createElement("div"); row.className = "plan-pv-row";
@@ -3567,6 +3580,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         const lh = document.createElement("div"); lh.className = "plan-loot-head";
         lh.appendChild(icon("basket", "icon-sm"));
         lh.appendChild(document.createTextNode(" " + t("planLoot") + " · " + (ctx.os === "windows" ? "Windows" : "Linux")));
+        if (loot.length > 1) lh.appendChild(menuCopyBtn(loot));
         lbox.appendChild(lh);
         loot.forEach((p) => {
           const row = document.createElement("div"); row.className = "plan-lt-row";
