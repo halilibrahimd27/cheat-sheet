@@ -221,6 +221,18 @@ test("the expanded map flags the vulnerable builds and spares the patched ones",
   assert.ok(!ids(3000, "http", "Grafana 8.2.7").includes("CVE-2021-43798"), "Grafana 8.2.7 is patched and must NOT be flagged");
   assert.ok(ids(3000, "http", "Grafana 8.3.0").includes("CVE-2021-43798"), "Grafana 8.3.0 is vulnerable");
   assert.ok(!ids(3000, "http", "Grafana 8.4.0").includes("CVE-2021-43798"), "Grafana 8.4 is out of range");
+  // OpenSMTPD: a clean numeric range, patched in 6.6.2.
+  assert.ok(ids(25, "smtp", "OpenSMTPD 6.6.1").includes("CVE-2020-7247"), "OpenSMTPD 6.6.1 is vulnerable");
+  assert.ok(!ids(25, "smtp", "OpenSMTPD 6.6.2").includes("CVE-2020-7247"), "OpenSMTPD 6.6.2 is patched");
+  assert.ok(!ids(25, "smtp", "OpenSMTPD 6.3.0").includes("CVE-2020-7247"), "pre-6.4.0 OpenSMTPD is out of range");
+  // SambaCry: per-branch spelling. The clearly-vulnerable 3.5–4.3 line matches;
+  // the patched branch releases (4.4.14+ / 4.5.10+ / 4.6.4+) must NOT, and the
+  // 3.0.x usermap window must not bleed into this entry.
+  assert.ok(ids(445, "smb", "Samba smbd 3.6.3").includes("CVE-2017-7494"), "Samba 3.6.3 is SambaCry-vulnerable");
+  assert.ok(ids(445, "smb", "Samba smbd 4.3.11").includes("CVE-2017-7494"), "Samba 4.3.11 is SambaCry-vulnerable");
+  assert.ok(!ids(445, "smb", "Samba smbd 4.4.14").includes("CVE-2017-7494"), "patched 4.4.14 must NOT be flagged");
+  assert.ok(!ids(445, "smb", "Samba smbd 4.10.0").includes("CVE-2017-7494"), "modern 4.10 is out of range");
+  assert.ok(!ids(445, "smb", "Samba smbd 3.0.25").includes("CVE-2017-7494"), "the 3.0.x usermap build is not SambaCry");
 });
 
 // The privesc menu is DB-sourced, so these load the real seed categories the way

