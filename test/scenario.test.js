@@ -279,6 +279,28 @@ test("the pivot menu is one representative per vector, with placeholders filled"
   if (ssh) assert.ok(ssh.resolved.indexOf("10.9.9.9") >= 0 && ssh.resolved.indexOf("<TARGET_IP>") < 0, "<TARGET_IP> is resolved in the menu");
 });
 
+test("lootFor surfaces post-exploitation vectors only once you own the box", () => {
+  const w = load({ categories: SEED });
+  const S = w.CS_SCENARIO;
+  assert.strictEqual(S.lootFor({ os: "linux", access: "foothold" }).length, 0, "a foothold is not ownership — nothing to loot yet");
+  assert.strictEqual(S.lootFor({ os: "linux", access: "creds" }).length, 0, "creds alone do not own the box");
+  assert.strictEqual(S.lootFor({ os: "", access: "admin" }).length, 0, "no OS means no category to pull from");
+  const lin = S.lootFor({ os: "linux", access: "admin" });
+  assert.ok(lin.length >= 3, "owning a linux box surfaces several loot vectors, got " + lin.length);
+  assert.ok(/\/etc\/shadow/.test(lin[0].cmd), "the credential-dumping lead (shadow file) headlines the menu");
+  const win = S.lootFor({ os: "windows", access: "domain" });
+  assert.ok(win.length >= 4 && /mimikatz/i.test(win[0].cmd), "a windows box headlines with the mimikatz dump instead");
+});
+
+test("the loot menu is one representative per vector, with placeholders filled", () => {
+  const w = load({ categories: SEED });
+  const lin = w.CS_SCENARIO.lootFor({ os: "linux", access: "admin", ip: "10.9.9.9" });
+  assert.ok(lin.length <= 12, "it is a menu of vectors, not a dump of the whole category");
+  const groups = lin.map((p) => p.group);
+  assert.strictEqual(groups.length, new Set(groups).size, "no two picks share a loot vector");
+  assert.ok(lin.every((p) => p.cmd && p.cmd.trim()), "a vector whose lead command is blank is skipped, never shown empty");
+});
+
 // Resolve a service to its matched corpus service ids.
 function S_names(w, service) {
   return w.CS_SCENARIO.rowsForService(normalize(service), w.CS_PORT_MAP).map((r) => r.service);

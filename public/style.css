@@ -3805,3 +3805,20 @@ body:has(.var-bar.active) .back-to-top { display: none; }
     font-size: var(--fs-2xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px;
     color: var(--accent-cyan); margin-right: 2px;
 }
+.plan-loot { margin: 12px 0 6px; display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--border-primary); padding-top: 12px; }
+.plan-loot-head {
+    display: flex; align-items: center; gap: 6px;
+    font-size: var(--fs-2xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;
+    color: var(--accent-yellow);
+}
+.plan-loot-head .icon { width: 14px; height: 14px; flex: 0 0 auto; }
+.plan-lt-row {
+    padding: 7px 10px; background: var(--bg-card); border: 1px solid var(--border-primary);
+    border-left: 3px solid var(--accent-yellow); border-radius: var(--radius-sm);
+    display: flex; flex-direction: column; gap: 5px;
+}
+.plan-lt-label { font-size: var(--fs-sm); color: var(--text-heading); }
+.plan-lt-group {
+    font-size: var(--fs-2xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px;
+    color: var(--accent-yellow); margin-right: 2px;
+}

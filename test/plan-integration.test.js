@@ -139,6 +139,30 @@ test("a foothold machine's exported report carries the pivot menu", () => {
   assert.ok(md.includes(env.app.t("planPivot")), "the pivoting section rides along in the report once a shell is held");
 });
 
+test("owning the box reveals a post-exploitation loot menu, hidden at a mere foothold", () => {
+  const env = boot();
+  env.app.setCategories(require(path.join(PUBLIC_DIR, "..", "seed.js")));
+  const owned = env.app.buildAttackPlanSection(machine({
+    os: "Linux", rootFlag: { value: "r", capturedAt: "t" },
+    services: [{ port: "22", proto: "tcp", state: "open", name: "ssh", version: "" }],
+  }));
+  const lt = owned.querySelector(".plan-loot");
+  assert.ok(lt, "a captured root flag reveals the loot block");
+  assert.ok(owned.querySelectorAll(".plan-lt-row").length >= 3, "several loot vectors are listed");
+  const foot = env.app.buildAttackPlanSection(machine({
+    os: "Linux", userFlag: { value: "u", capturedAt: "t" },
+    services: [{ port: "22", proto: "tcp", state: "open", name: "ssh", version: "" }],
+  }));
+  assert.strictEqual(foot.querySelector(".plan-loot"), null, "a foothold alone shows no loot block");
+});
+
+test("an owned machine's exported report carries the loot menu", () => {
+  const env = boot();
+  env.app.setCategories(require(path.join(PUBLIC_DIR, "..", "seed.js")));
+  const md = env.app.machineToMarkdown(machine({ os: "Linux", rootFlag: { value: "r", capturedAt: "t" } }));
+  assert.ok(md.includes(env.app.t("planLoot")), "the loot section rides along in the report once the box is owned");
+});
+
 test("the panel degrades to an empty-state when there are no services", () => {
   const env = boot();
   const sec = env.app.buildAttackPlanSection(machine({ services: [] }));

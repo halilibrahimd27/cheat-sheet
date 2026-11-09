@@ -101,7 +101,7 @@
       addMachineDesc: "Track target machines, services, credentials, and progress.",
       machineName: "Machine Name", machineIP: "IP Address", machineOS: "Operating System",
       services: "Services", credentials: "Credentials", notes: "Notes",
-      planTitle: "Attack Plan", planEmpty: "Import an nmap scan above and a step-by-step plan appears here.", planDoNow: "Do now", planUnlock: "once you get:", planLocked: "Locked", planNeed: "need", planUncovered: "No playbook yet for", planMore: "more commands", planSvcCount: "services", planStepCount: "steps", planVulns: "Known exploits", planExport: "Copy plan", planCopied: "Attack plan copied as Markdown", planPrivesc: "Privilege escalation", planPivot: "Lateral movement", phRecon: "Recon", phEnum: "Enumerate", phFoothold: "Foothold", phPrivesc: "Privesc", phLateral: "Lateral", phLoot: "Loot",
+      planTitle: "Attack Plan", planEmpty: "Import an nmap scan above and a step-by-step plan appears here.", planDoNow: "Do now", planUnlock: "once you get:", planLocked: "Locked", planNeed: "need", planUncovered: "No playbook yet for", planMore: "more commands", planSvcCount: "services", planStepCount: "steps", planVulns: "Known exploits", planExport: "Copy plan", planCopied: "Attack plan copied as Markdown", planPrivesc: "Privilege escalation", planPivot: "Lateral movement", planLoot: "Loot & persistence", phRecon: "Recon", phEnum: "Enumerate", phFoothold: "Foothold", phPrivesc: "Privesc", phLateral: "Lateral", phLoot: "Loot",
       exportMd: "Export MD", exportPdf: "Export PDF", termCopy: "Terminal Copy",
       newSub: "New Subcategory", netErr: "Network error - is the server running?",
       copyFail: "Copy failed", termCopied: "Copied in terminal format!",
@@ -215,7 +215,7 @@
       addMachineDesc: "Hedef makineleri, servisleri, kimlik bilgilerini ve ilerlemeyi takip edin.",
       machineName: "Makine Adı", machineIP: "IP Adresi", machineOS: "İşletim Sistemi",
       services: "Servisler", credentials: "Kimlik Bilgileri", notes: "Notlar",
-      planTitle: "Saldırı Planı", planEmpty: "Yukarıdan bir nmap taraması aktarın; adım adım plan burada belirir.", planDoNow: "Şimdi yap", planUnlock: "şunu elde edince:", planLocked: "Kilitli", planNeed: "gereken", planUncovered: "Henüz playbook yok:", planMore: "daha fazla komut", planSvcCount: "servis", planStepCount: "adım", planVulns: "Bilinen açıklar", planExport: "Planı kopyala", planCopied: "Saldırı planı Markdown olarak kopyalandı", planPrivesc: "Yetki yükseltme", planPivot: "Yanal hareket", phRecon: "Keşif", phEnum: "Enumerasyon", phFoothold: "Giriş", phPrivesc: "Yetki", phLateral: "Yanal", phLoot: "Ganimet",
+      planTitle: "Saldırı Planı", planEmpty: "Yukarıdan bir nmap taraması aktarın; adım adım plan burada belirir.", planDoNow: "Şimdi yap", planUnlock: "şunu elde edince:", planLocked: "Kilitli", planNeed: "gereken", planUncovered: "Henüz playbook yok:", planMore: "daha fazla komut", planSvcCount: "servis", planStepCount: "adım", planVulns: "Bilinen açıklar", planExport: "Planı kopyala", planCopied: "Saldırı planı Markdown olarak kopyalandı", planPrivesc: "Yetki yükseltme", planPivot: "Yanal hareket", planLoot: "Ganimet ve kalıcılık", phRecon: "Keşif", phEnum: "Enumerasyon", phFoothold: "Giriş", phPrivesc: "Yetki", phLateral: "Yanal", phLoot: "Ganimet",
       exportMd: "MD Aktar", exportPdf: "PDF Aktar", termCopy: "Terminal Kopyala",
       newSub: "Yeni Alt Kategori", netErr: "Ağ hatası — sunucu çalışıyor mu?",
       copyFail: "Kopyalama başarısız", termCopied: "Terminal formatında kopyalandı!",
@@ -2894,6 +2894,12 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       pivot.forEach(p => { md += "- **" + p.group + "** — " + p.title + "\n  " + code(p.resolved || p.cmd) + "\n"; });
       md += "\n";
     }
+    const loot = window.CS_SCENARIO.lootFor ? window.CS_SCENARIO.lootFor(ctx) : [];
+    if (loot.length) {
+      md += "### " + t("planLoot") + " (" + (ctx.os === "windows" ? "Windows" : "Linux") + ")\n\n";
+      loot.forEach(p => { md += "- **" + p.group + "** — " + p.title + "\n  " + code(p.resolved || p.cmd) + "\n"; });
+      md += "\n";
+    }
     if (plan.locked.length) {
       md += "### " + t("planLocked") + " (" + plan.locked.length + ")\n\n";
       plan.locked.forEach(st => {
@@ -3504,6 +3510,31 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
           vbox.appendChild(row);
         });
         body.appendChild(vbox);
+      }
+
+      // Own the box: a capstone menu of post-exploitation loot — dump creds,
+      // hunt secrets, persist — once a root/SYSTEM flag is banked.
+      const loot = window.CS_SCENARIO.lootFor ? window.CS_SCENARIO.lootFor(ctx) : [];
+      if (loot.length) {
+        const lbox = document.createElement("div"); lbox.className = "plan-loot";
+        const lh = document.createElement("div"); lh.className = "plan-loot-head";
+        lh.appendChild(icon("basket", "icon-sm"));
+        lh.appendChild(document.createTextNode(" " + t("planLoot") + " · " + (ctx.os === "windows" ? "Windows" : "Linux")));
+        lbox.appendChild(lh);
+        loot.forEach((p) => {
+          const row = document.createElement("div"); row.className = "plan-lt-row";
+          const lbl = document.createElement("div"); lbl.className = "plan-lt-label";
+          const g = document.createElement("span"); g.className = "plan-lt-group"; g.textContent = p.group; lbl.appendChild(g);
+          lbl.appendChild(document.createTextNode(" " + p.title));
+          row.appendChild(lbl);
+          const cb = document.createElement("button"); cb.type = "button"; cb.className = "plan-cmd"; cb.title = t("copy");
+          const code = document.createElement("code"); code.textContent = p.resolved || p.cmd; cb.appendChild(code);
+          cb.appendChild(icon("copy", "icon-sm"));
+          cb.addEventListener("click", () => copyCmd(p.resolved || p.cmd));
+          row.appendChild(cb);
+          lbox.appendChild(row);
+        });
+        body.appendChild(lbox);
       }
 
       const hasDb = window.CS_APP && typeof window.CS_APP.getCategories === "function" && (window.CS_APP.getCategories() || []).length;

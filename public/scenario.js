@@ -362,6 +362,47 @@
     return out.slice(0, 12);
   }
 
+  // ── post-admin loot / post-exploitation (OS-aware, DB-sourced) ───────────
+  // Once you own the box (root/SYSTEM), the move is to harvest and hold: dump
+  // credentials to move laterally, then take situational awareness, hunt stored
+  // secrets and (where a write-up wants it) persist. Headlined by the OS
+  // credential-dumping lead (mimikatz / the shadow file — the whole point of
+  // owning the box), then one essential per post-exploitation vector. Gated on
+  // access === "admin"/"domain": there is nothing to loot until you own it, and
+  // this is the capstone the privesc menu was climbing toward.
+  var LOOT_CAT = { windows: "post-exploitation-win", linux: "post-exploitation-linux" };
+  var LOOT_DUMP = { windows: "Credential Dumping (Windows)", linux: "Credential Dumping (Linux)" };
+  function firstEssential(sub, ctx, catId) {
+    var pick = null;
+    (sub.commands || []).some(function (c) {
+      if ((c.tags || []).indexOf("essential") < 0) return false;
+      var body = String(c.cmd || (c.cmds && c.cmds[0]) || "").trim();
+      if (!body) return false;
+      pick = { title: c.title || "", group: sub.name || "", cmd: body, resolved: resolve(body, ctx), catId: catId };
+      return true;
+    });
+    return pick;
+  }
+  function lootFor(ctx) {
+    ctx = ctx || {};
+    if (ctx.access !== "admin" && ctx.access !== "domain") return [];
+    var os = ctx.os === "windows" ? "windows" : (ctx.os === "linux" ? "linux" : "");
+    if (!os) return [];
+    var out = [];
+    // Headline: the OS credential-dumping lead (the reason you rooted the box).
+    var pw = categories().filter(function (c) { return c.id === "password-ops"; })[0];
+    if (pw) (pw.subcategories || []).forEach(function (sub) {
+      if (sub.name !== LOOT_DUMP[os]) return;
+      var p = firstEssential(sub, ctx, "password-ops"); if (p) out.push(p);
+    });
+    // Then the OS post-exploitation menu: awareness, cred hunting, persistence.
+    var cat = categories().filter(function (c) { return c.id === LOOT_CAT[os]; })[0];
+    if (cat) (cat.subcategories || []).forEach(function (sub) {
+      var p = firstEssential(sub, ctx, cat.id); if (p) out.push(p);
+    });
+    return out.slice(0, 12);
+  }
+
   // ── version → known-exploit matching (public/vuln-map.js) ────────────────
   // nmap's version string is the highest-signal input: an exact vulnerable build
   // is a direct foothold, not a lead to chase. parseVer reads the first dotted-
@@ -429,6 +470,7 @@
     vulnsFor: vulnsFor,
     privescFor: privescFor,
     pivotFor: pivotFor,
+    lootFor: lootFor,
     rowsForService: rowsForService,
     bucketOf: bucketOf,
     _corpus: corpus
