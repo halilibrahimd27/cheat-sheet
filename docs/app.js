@@ -5100,6 +5100,18 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         contentArea.innerHTML = '<div class="no-results"><h3>' + iconHtml("star", "icon-lg") + ' ' + t("favorites") + '</h3><p>' + (lang === "tr" ? "Henuz favori komut eklemediniz. Komut kartindaki yildiz dugmesine tiklayin." : "No favorites yet. Use the star button on a command card to add one.") + '</p></div>';
         return;
       }
+      if (favs.length >= 2) {
+        // Your curated set, grabbed at once — the var bar is applied, so a saved
+        // target IP lands in every command.
+        const bar = document.createElement("div"); bar.className = "favs-bar";
+        const ca = document.createElement("button"); ca.className = "btn btn-secondary btn-sm"; setIconLabel(ca, "copy", t("copyAll"));
+        ca.addEventListener("click", () => {
+          const cmds = favs.map(f => f.cmd.cmd || (f.cmd.cmds && f.cmd.cmds[0]) || "").filter(Boolean);
+          const joined = applyIpToCode(cmds.join("\n"));
+          copyText(joined, () => { recordHistory(joined); announce(t("copied")); toast(t("copied"), "ok"); });
+        });
+        bar.appendChild(ca); contentArea.appendChild(bar);
+      }
       favs.forEach(f => contentArea.appendChild(renderCard(f.cmd, f.catId, f.subIdx, f.cmdIdx)));
       return;
     }

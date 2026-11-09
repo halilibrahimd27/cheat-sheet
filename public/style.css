@@ -3342,6 +3342,7 @@ body:has(.var-bar.active) .back-to-top { display: none; }
 .session-ran-tick { color: var(--accent-green); vertical-align: -2px; margin-right: 3px; }
 .session-menu { border-left: 3px solid var(--accent-green); }
 .session-menu .checklist-phase-name { color: var(--accent-green); }
+.favs-bar { display: flex; justify-content: flex-end; margin: 0 0 12px; }
 
 /* Flags read as two slots that fill in, so an empty one is as informative as a
    full one — you can see at a glance which boxes are half-done. */
