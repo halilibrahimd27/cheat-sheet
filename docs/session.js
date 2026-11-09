@@ -1959,6 +1959,7 @@
       rb.appendChild(el("span", "checklist-label", (v.sev ? v.sev.toUpperCase() + " " : "") + (v.service || "") + (v.port ? ":" + v.port : "") + " — " + (v.title || "") + (v.id ? " (" + v.id + ")" : "")));
       if (v.note) rb.appendChild(el("span", "session-attempt-why", v.note));
       var cmd = v.resolvedExploit || v.exploit || "";
+      if (cmd && sessionRan(m)[cmd]) row.classList.add("session-cmd-ran");
       if (cmd) {
         var hint = el("div", "checklist-hint");
         hint.appendChild(el("code", "", cmd));
