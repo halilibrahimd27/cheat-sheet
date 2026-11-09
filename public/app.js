@@ -3641,6 +3641,9 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const tb = document.createElement("tbody");
       m.services.forEach((s, i) => {
         const tr = document.createElement("tr");
+        // Flag a row whose version carries a known exploit, right where you read it.
+        const sv = (window.CS_SCENARIO && typeof window.CS_SCENARIO.vulnsFor === "function") ? window.CS_SCENARIO.vulnsFor([s], {}) : [];
+        if (sv.length) tr.classList.add("svc-row-vuln");
         const textCell = (key, cls) => { const td = document.createElement("td"); const inp = document.createElement("input"); inp.className = "cell-input"; if (cls) inp.classList.add(cls); inp.value = s[key] || ""; inp.setAttribute("aria-label", key); inp.addEventListener("input", () => { s[key] = inp.value; persist(); if (key === "port") renderQuick(); }); td.appendChild(inp); return td; };
         const selCell = (key, opts) => { const td = document.createElement("td"); const sel = document.createElement("select"); sel.className = "cell-input"; sel.setAttribute("aria-label", key); opts.forEach(o => { const op = document.createElement("option"); op.value = o; op.textContent = o; if (s[key] === o) op.selected = true; sel.appendChild(op); }); sel.addEventListener("change", () => { s[key] = sel.value; persist(); }); td.appendChild(sel); return td; };
         tr.appendChild(textCell("port", "cell-narrow"));
@@ -3649,6 +3652,12 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         tr.appendChild(textCell("name"));
         tr.appendChild(textCell("version"));
         const tdA = document.createElement("td"); tdA.className = "cell-actions";
+        if (sv.length) {
+          const warn = document.createElement("span"); warn.className = "svc-vuln-mark";
+          warn.appendChild(icon("alert", "icon-sm"));
+          warn.title = t("planVulns") + ": " + sv.map(v => v.id || v.title).join(", ");
+          tdA.appendChild(warn);
+        }
         const scan = document.createElement("button"); scan.className = "cell-btn"; scan.appendChild(icon("search", "icon-sm")); scan.title = t("scanPort");
         scan.addEventListener("click", () => scanCopy("nmap -sCV -p" + (s.port || "") + " " + ip()));
         const del = document.createElement("button"); del.className = "cell-btn cell-del"; del.appendChild(icon("x")); del.title = t("del");

@@ -3325,6 +3325,9 @@ body:has(.var-bar.active) .back-to-top { display: none; }
     font-size: var(--fs-2xs); font-weight: 700; color: var(--accent-red);
 }
 .mrow-vuln .icon { width: 12px; height: 12px; }
+.svc-row-vuln td:first-child { box-shadow: inset 2px 0 0 var(--accent-red); }
+.svc-vuln-mark { display: inline-flex; align-items: center; color: var(--accent-red); margin-right: 2px; }
+.svc-vuln-mark .icon { width: 14px; height: 14px; }
 
 /* Flags read as two slots that fill in, so an empty one is as informative as a
    full one — you can see at a glance which boxes are half-done. */
