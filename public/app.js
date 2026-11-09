@@ -550,7 +550,15 @@
   const ipBar = $("ipChangerBar");
   const ipFields = { LHOST: $("ipLhost"), RHOST: $("ipRhost"), LPORT: $("ipLport"), DOMAIN: $("ipDomain"), USER: $("ipUser") };
   const ipMap = { LHOST: ["<LHOST>", "<ATTACKER_IP>"], RHOST: ["<RHOST>", "<TARGET_IP>", "<RHOST_IP>"], LPORT: ["<LPORT>"], DOMAIN: ["<DOMAIN>", "<TARGET_DOMAIN>"], USER: ["<USER>", "<USERNAME>"] };
-  function loadIpValues() { Object.keys(ipFields).forEach(k => { ipFields[k].value = safeGet("cs-ip-" + k) || ""; }); }
+  function loadIpValues() { Object.keys(ipFields).forEach(k => { ipFields[k].value = safeGet("cs-ip-" + k) || ""; }); updateIpToggleLabel(); }
+  // The top-bar control shows the target IP once one is set (from the active
+  // target or typed), so you always see what a copied command will hit.
+  function updateIpToggleLabel() {
+    const btn = $("ipChangerToggle"); if (!btn) return;
+    const ip = ((ipFields.RHOST && ipFields.RHOST.value.trim()) || safeGet("cs-ip-RHOST") || "").trim();
+    btn.textContent = ip ? (ip.length > 20 ? ip.slice(0, 19) + "…" : ip) : "<IP>";
+    btn.classList.toggle("ip-set", !!ip);
+  }
   function saveIpValues() {
     Object.keys(ipFields).forEach(k => {
       const v = ipFields[k].value.trim();
@@ -558,6 +566,7 @@
       // Also sync with var-bar values
       (ipMap[k] || []).forEach(ph => { if (v) safeSet("cs-var-" + ph, v); });
     });
+    updateIpToggleLabel();
   }
   function applyIpToCode(code) {
     let result = code;
@@ -575,9 +584,11 @@
   });
   $("ipClearBtn").addEventListener("click", () => {
     Object.keys(ipFields).forEach(k => { ipFields[k].value = ""; safeRemove("cs-ip-" + k); });
+    updateIpToggleLabel();
   });
   // Auto-save on Enter in ip fields
   Object.values(ipFields).forEach(inp => inp.addEventListener("keydown", e => { if (e.key === "Enter") { saveIpValues(); $("ipSaveBtn").textContent = "Saved!"; setTimeout(() => $("ipSaveBtn").textContent = "Save", 1200); } }));
+  if (ipFields.RHOST) ipFields.RHOST.addEventListener("input", updateIpToggleLabel);
 
   // ── Variable profiles: save/apply named sets of the Quick IP Changer values ──
   // Lets you keep one profile per target box and switch between them instantly.
@@ -742,7 +753,7 @@
   $("addCategoryBtn").addEventListener("click", () => {
     openModal(t("newCategory"), [
       { key: "name", label: t("catName"), placeholder: "e.g., Buffer Overflow" },
-      { key: "icon", label: t("catIcon"), placeholder: "💥" },
+      { key: "icon", label: t("catIcon"), placeholder: "💥" }, // emoji-ok: placeholder shows the user what to type
       { key: "description", label: t("catDesc"), type: "textarea" }
     ], {}, async d => { await api("POST", "/api/categories", d); });
   });
@@ -2102,9 +2113,9 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       // Toolbar: template + machine link + image
       const toolbar = document.createElement("div"); toolbar.className = "wu-toolbar";
       const tplSel = document.createElement("select"); tplSel.className = "form-select wu-tool-select"; tplSel.setAttribute("aria-label", t("wuTemplate"));
-      tplSel.innerHTML = '<option value="">📄 ' + t("wuTemplate") + '…</option>' + writeupTemplateOptionsHtml();
+      tplSel.innerHTML = '<option value="">📄 ' + t("wuTemplate") + '…</option>' + writeupTemplateOptionsHtml(); // emoji-ok: <option> label
       const secSel = document.createElement("select"); secSel.className = "form-select wu-tool-select"; secSel.setAttribute("aria-label", t("wuSection"));
-      secSel.innerHTML = '<option value="">➕ ' + t("wuSection") + '…</option>' +
+      secSel.innerHTML = '<option value="">➕ ' + t("wuSection") + '…</option>' + // emoji-ok: <option> label
         '<option value="finding">Finding</option>' +
         '<option value="findingsTable">Findings table</option>' +
         '<option value="target">Target</option>' +
@@ -2121,7 +2132,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       // Single machine control: links the write-up to a target AND fills its
       // <TARGET_IP>/<TARGET_URL> placeholders + Box/OS/Difficulty header from the machine.
       const mcSel = document.createElement("select"); mcSel.className = "form-select wu-tool-select"; mcSel.setAttribute("aria-label", t("wuMachine"));
-      mcSel.innerHTML = '<option value="">🔗 ' + t("wuMachine") + '…</option>' + machines.map(mm => '<option value="' + escapeHtml(mm.id) + '"' + (wu.relatedMachine === mm.id ? " selected" : "") + '>' + escapeHtml(mm.name) + (mm.ip ? " (" + escapeHtml(mm.ip) + ")" : "") + '</option>').join("");
+      mcSel.innerHTML = '<option value="">🔗 ' + t("wuMachine") + '…</option>' + machines.map(mm => '<option value="' + escapeHtml(mm.id) + '"' + (wu.relatedMachine === mm.id ? " selected" : "") + '>' + escapeHtml(mm.name) + (mm.ip ? " (" + escapeHtml(mm.ip) + ")" : "") + '</option>').join(""); // emoji-ok: <option> label
       const imgBtn = document.createElement("button"); imgBtn.className = "btn btn-secondary btn-sm"; setIconLabel(imgBtn, "camera", t("imageBtn"));
       const imgInput = document.createElement("input"); imgInput.type = "file"; imgInput.accept = "image/*"; imgInput.style.display = "none"; imgInput.setAttribute("aria-label", t("imageBtn"));
       toolbar.appendChild(tplSel); toolbar.appendChild(secSel); toolbar.appendChild(mcSel); toolbar.appendChild(imgBtn); toolbar.appendChild(imgInput);
@@ -2313,6 +2324,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         if (ipFields.RHOST) ipFields.RHOST.value = ip;
         safeSet("cs-ip-RHOST", ip);
         (ipMap.RHOST || []).forEach(ph => safeSet("cs-var-" + ph, ip));
+        updateIpToggleLabel();
       }
     } else safeRemove("cs-active-target");
     return activeTargetId;

@@ -210,19 +210,15 @@ const ICON_GLYPH = /[←-⇿⌀-➿⬀-⯿️]|[\u{1F000}-\u{1FAFF}]/u;
 
 // Where a character is still the right answer, by line range. Each entry is
 // about the MEDIUM the string ends up in.
+// Generated Markdown inside multi-line template literals, where an inline
+// `// emoji-ok` tag is impossible (the comment would become string content). A
+// report is text that leaves this app — pasted into a ticket, mailed to a client
+// — and a status glyph survives that trip where an <svg> would not. Everything
+// outside these skeletons uses an inline `// emoji-ok` tag that cannot drift.
 const EXCEPTIONS = [
-  // 1. Generated Markdown. A report is text that leaves this app — pasted into a
-  //    ticket, mailed to a client — and a status glyph survives that trip where
-  //    an <svg> would not.
-  { file: "app.js", from: 840, to: 880, why: "OSCP report skeleton" },
-  { file: "app.js", from: 1130, to: 1185, why: "OSWE report skeleton" },
-  { file: "app.js", from: 1340, to: 1400, why: "retest-status table in the report template" },
-  // 2. <option> labels. A <select> option can hold text and nothing else, so the
-  //    choice there is a glyph or no marker at all.
-  { file: "app.js", from: 2095, to: 2130, why: "<option> labels in the write-up editor" },
-  // 3. The category-icon field's placeholder, which exists to show the user what
-  //    KIND of thing to type. Category icons are their data, not our chrome.
-  { file: "app.js", from: 735, to: 748, why: "placeholder for the user's own category emoji" }
+  { file: "app.js", from: 850, to: 895, why: "OSCP report skeleton" },
+  { file: "app.js", from: 1145, to: 1200, why: "OSWE report skeleton" },
+  { file: "app.js", from: 1385, to: 1412, why: "retest-status table in the report template" },
 ];
 const exempt = (file, line) => EXCEPTIONS.some((e) => e.file === file && line >= e.from && line <= e.to);
 
