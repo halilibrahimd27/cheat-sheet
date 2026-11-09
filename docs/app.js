@@ -3014,6 +3014,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     // just the entry machine.
     const hosts = (m.hosts || []).map(hostNode);
     if (hosts.length) {
+      const ownedHosts = adFrontier(hosts).owned;
       md += "## " + t("hosts") + "\n\n";
       md += "| " + t("machineName") + " | IP | " + t("machineOS") + " | " + t("progress") + " | " + t("planVulns") + " |\n";
       md += "|---|---|---|---|---|\n";
@@ -3022,7 +3023,8 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         const prog = n.checklist.length ? st.done + "/" + st.total : "—";
         const hv = (n.machine && window.CS_SCENARIO && typeof window.CS_SCENARIO.vulnsFor === "function") ? window.CS_SCENARIO.vulnsFor(n.machine.services || [], {}) : [];
         const vids = hv.map(v => v.id || v.title).filter(Boolean).join(", ") || "—";
-        md += "| " + cell(n.name + (n.role ? " (" + n.role + ")" : "")) + " | " + cell(n.ip) + " | " + cell(machineOsDisplay(n.machine || { os: n.os })) + " | " + cell(prog) + " | " + cell(vids) + " |\n";
+        const nm = (ownedHosts.has(n.id) ? "✅ " : "") + n.name + (n.role ? " (" + n.role + ")" : "");
+        md += "| " + cell(nm) + " | " + cell(n.ip) + " | " + cell(machineOsDisplay(n.machine || { os: n.os })) + " | " + cell(prog) + " | " + cell(vids) + " |\n";
       });
       md += "\n";
     }
