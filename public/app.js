@@ -2981,7 +2981,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   }
 
   function machineToMarkdown(m) {
-    const flagLine = f => (isCaptured(f) ? "✅ " + t("capturedAt") + " " + new Date(f.capturedAt).toLocaleDateString() : "⬜ " + t("notCaptured"));
+    const flagLine = f => (isCaptured(f) ? "✅ " + t("capturedAt") + " " + new Date(f.capturedAt).toLocaleDateString() : "⬜ " + t("notCaptured")); // emoji-ok: generated report markdown
     let md = "# " + (m.name || "Machine") + " — " + (m.platform || "Custom") + "\n\n";
     md += "> **" + t("machineName") + ":** " + (m.name || "") + " · **" + t("machineOS") + ":** " + (m.os || "—") +
       " · **" + t("mDifficulty") + ":** " + (diffLabel(m.difficulty) || "—") +
@@ -3004,7 +3004,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     if (creds.length) {
       md += "| " + t("credUser") + " | " + t("credSecret") + " | " + t("credTypeCol") + " | " + t("credSource") + " | " + t("credWorks") + " | " + t("credState") + " |\n";
       md += "|---|---|---|---|---|---|\n";
-      creds.forEach(c => { md += "| " + cell(c.username) + " | `" + cell(c.secret) + "` | " + cell(c.type) + " | " + cell(c.source) + " | " + cell(c.works) + " | " + (c.valid ? "✅" : "❌") + " |\n"; });
+      creds.forEach(c => { md += "| " + cell(c.username) + " | `" + cell(c.secret) + "` | " + cell(c.type) + " | " + cell(c.source) + " | " + cell(c.works) + " | " + (c.valid ? "✅" : "❌") + " |\n"; }); // emoji-ok: generated report markdown
       md += "\n";
     } else md += "_—_\n\n";
     md += "## " + t("attackPath") + "\n\n";
@@ -3023,7 +3023,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         const prog = n.checklist.length ? st.done + "/" + st.total : "—";
         const hv = (n.machine && window.CS_SCENARIO && typeof window.CS_SCENARIO.vulnsFor === "function") ? window.CS_SCENARIO.vulnsFor(n.machine.services || [], {}) : [];
         const vids = hv.map(v => v.id || v.title).filter(Boolean).join(", ") || "—";
-        const nm = (ownedHosts.has(n.id) ? "✅ " : "") + n.name + (n.role ? " (" + n.role + ")" : "");
+        const nm = (ownedHosts.has(n.id) ? "✅ " : "") + n.name + (n.role ? " (" + n.role + ")" : ""); // emoji-ok: generated report markdown
         md += "| " + cell(nm) + " | " + cell(n.ip) + " | " + cell(machineOsDisplay(n.machine || { os: n.os })) + " | " + cell(prog) + " | " + cell(vids) + " |\n";
       });
       md += "\n";

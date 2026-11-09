@@ -217,7 +217,6 @@ const EXCEPTIONS = [
   { file: "app.js", from: 840, to: 880, why: "OSCP report skeleton" },
   { file: "app.js", from: 1130, to: 1185, why: "OSWE report skeleton" },
   { file: "app.js", from: 1340, to: 1400, why: "retest-status table in the report template" },
-  { file: "app.js", from: 2830, to: 3035, why: "machine report generator (plan + report markdown)" },
   { file: "session.js", from: 3000, to: 3305, why: "session report / retrospective generator" },
   // 2. <option> labels. A <select> option can hold text and nothing else, so the
   //    choice there is a glyph or no marker at all.
@@ -244,6 +243,9 @@ test("no emoji or icon glyph survives in code that renders to the DOM", () => {
       if (trimmed.startsWith("//") || trimmed.startsWith("*")) return;
       if (!ICON_GLYPH.test(line)) return;
       if (exempt(file, i + 1)) return;
+      // An inline `// emoji-ok` tags one output line (generated Markdown etc.) at
+      // the line itself, so it cannot drift out of range when code is added above.
+      if (/\/\/\s*emoji-ok\b/.test(lines[i])) return;
       offenders.push(file + ":" + (i + 1) + "  " + trimmed.slice(0, 120));
     });
   }
