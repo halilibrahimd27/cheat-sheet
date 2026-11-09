@@ -3712,6 +3712,12 @@ body:has(.var-bar.active) .back-to-top { display: none; }
 /* A later wave is unlocked by a finding — mark it in the accent so the chain reads. */
 .plan-wave:not(:first-child) .plan-wave-head { color: var(--accent-primary); }
 .plan-wave:not(:first-child) .plan-wave-head::before { background: var(--accent-primary); width: 14px; }
+.plan-wave-copy {
+    flex: 0 0 auto; order: 9; background: none; border: none; cursor: pointer;
+    color: var(--text-tertiary); padding: 2px; display: inline-flex; align-items: center;
+}
+.plan-wave-copy:hover { color: var(--accent-primary); }
+.plan-wave-copy .icon { width: 13px; height: 13px; }
 
 .plan-step { display: flex; gap: 8px; align-items: flex-start; padding: 6px 0; border-top: 1px solid var(--rule); }
 .plan-wave .plan-step:first-of-type { border-top: 0; }
