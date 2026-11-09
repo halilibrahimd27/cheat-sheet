@@ -3123,6 +3123,7 @@ body:has(.var-bar.active) .back-to-top { display: none; }
     padding-bottom: 4px; border-bottom: 1px solid var(--rule); margin: 0 0 2px;
 }
 .nm-group-count { font-variant-numeric: tabular-nums; color: var(--text-tertiary); opacity: 0.75; }
+.nm-group-copy { margin-left: auto; text-transform: none; letter-spacing: 0; font-size: var(--fs-2xs); padding: 2px 8px; }
 .nm-group-hint { font-size: var(--fs-xs); color: var(--text-tertiary); margin: 6px 0 4px; max-width: 92ch; }
 .nm-group-body { display: block; }
 

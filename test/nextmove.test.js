@@ -153,6 +153,7 @@ test("a held shell answers with the post-foothold menus, not silence", () => {
   assert.ok(container.querySelector(".nm-group-menu"), "a foothold on linux surfaces at least one post-foothold menu group");
   assert.ok(container.querySelectorAll(".nm-menu-row").length >= 3, "several escalation/pivot vectors are listed");
   assert.ok(container.textContent.includes("sudo -l"), "the classic linux privesc vector is among them");
+  assert.ok(container.querySelector(".nm-group-copy"), "a multi-command group offers a copy-all button");
 });
 
 test("parsing a scan fills the OS toggle when it was still unknown", () => {

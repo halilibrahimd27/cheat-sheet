@@ -49,7 +49,7 @@
       gLoot: "Loot — you own the box",
       gUncovered: "No probe for these ports",
       tried: "tried", untry: "un-mark", markTried: "mark as tried",
-      triedN: "already tried", copy: "copy", copied: "copied",
+      triedN: "already tried", copy: "copy", copied: "copied", copyAll: "copy all",
       why: "why", phase: "phase", focus: "focus",
       loadFail: "Could not load the move data.",
       retry: "Retry", loading: "Loading move data…",
@@ -76,7 +76,7 @@
       gLoot: "Ganimet — kutu senin",
       gUncovered: "Bu portlar için probe yok",
       tried: "denendi", untry: "işareti kaldır", markTried: "denendi işaretle",
-      triedN: "denenmişler", copy: "kopyala", copied: "kopyalandı",
+      triedN: "denenmişler", copy: "kopyala", copied: "kopyalandı", copyAll: "hepsini kopyala",
       why: "neden", phase: "faz", focus: "odak",
       loadFail: "Hamle verisi yüklenemedi.",
       retry: "Tekrar dene", loading: "Hamle verisi yükleniyor…",
@@ -589,11 +589,26 @@
     save(); repaintMoves();
   }
 
-  function group(title, items, renderItem, hint) {
+  function group(title, items, renderItem, hint, cmdOf) {
     if (!items.length) return null;
     var sec = el("section", "nm-group");
     var h = el("h3", "nm-group-title", title);
     h.appendChild(el("span", "nm-group-count", String(items.length)));
+    // Optional grab-the-batch: one click copies every command in the group, in
+    // order, newline-joined — the Next Move twin of the plan's copy-wave button.
+    if (typeof cmdOf === "function") {
+      var cmds = items.map(cmdOf).filter(Boolean);
+      if (cmds.length > 1) {
+        h.appendChild(btn("nm-btn nm-group-copy", S("copyAll"), function () {
+          if (typeof APP.copyToClipboard !== "function") return;
+          var blob = cmds.join("\n");
+          APP.copyToClipboard(blob, function () {
+            if (typeof APP.recordHistory === "function") { try { APP.recordHistory(blob); } catch { /* history is a convenience */ } }
+            if (APP.toast) APP.toast(S("copied"), "ok");
+          });
+        }));
+      }
+    }
     sec.appendChild(h);
     if (hint) sec.appendChild(el("p", "nm-group-hint", hint));
     var body = el("div", "nm-group-body");
@@ -656,7 +671,7 @@
     }
 
     if (vulns.length) {
-      var vg = group(S("gVulns"), vulns, vulnRow, S("vulnsHint"));
+      var vg = group(S("gVulns"), vulns, vulnRow, S("vulnsHint"), function (v) { return v.resolvedExploit || v.exploit || ""; });
       if (vg) { vg.classList.add("nm-group-vulns"); wrap.appendChild(vg); }
     }
 
@@ -668,13 +683,13 @@
       [S("gCreds"), untried(mv.creds), null],
       [S("gCond"), untried(mv.cond), S("condNote")]
     ].forEach(function (g) {
-      var sec = group(g[0], g[1], moveRow, g[2]);
+      var sec = group(g[0], g[1], moveRow, g[2], function (m) { return resolve(m.raw); });
       if (sec) wrap.appendChild(sec);
     });
 
     // Once you hold a shell, the next move is local: escalate, pivot, loot.
     menus.forEach(function (g) {
-      var sec = group(g[0], g[1], menuRow, null);
+      var sec = group(g[0], g[1], menuRow, null, function (p) { return p.resolved || p.cmd || ""; });
       if (sec) { sec.classList.add("nm-group-menu"); wrap.appendChild(sec); }
     });
 
