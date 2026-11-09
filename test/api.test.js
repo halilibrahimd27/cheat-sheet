@@ -139,6 +139,23 @@ test("/api/import accepts a valid category array", async () => {
   assert.strictEqual(r.json.categories, 1);
 });
 
+test("/api/import re-points engagement host references when a machine id is regenerated", async () => {
+  const mk = (over) => Object.assign({ name: "m", ip: "", os: "", status: "not-started", difficulty: "", services: [], credentials: [], checklist: [] }, over);
+  const bundle = {
+    machines: [
+      mk({ id: "bad id!", name: "DC01" }),
+      mk({ id: "safe-eng", name: "ENG", hosts: [{ machineId: "bad id!", role: "DC", links: ["bad id!"] }] }),
+    ],
+  };
+  assert.strictEqual((await api("POST", "/api/import", bundle)).status, 200);
+  const list = (await api("GET", "/api/machines")).json;
+  const dc = list.find((m) => m.name === "DC01");
+  const eng = list.find((m) => m.name === "ENG");
+  assert.ok(dc && /^[A-Za-z0-9_-]+$/.test(dc.id) && dc.id !== "bad id!", "the unsafe machine id was regenerated to a safe one");
+  assert.strictEqual(eng.hosts[0].machineId, dc.id, "the engagement host reference now points at the regenerated id, not the dead one");
+  assert.deepStrictEqual(eng.hosts[0].links, [dc.id], "and so do the graph links");
+});
+
 test("/api/upload validates by content, not filename", async () => {
   // Real PNG accepted.
   const ok = await api("POST", "/api/upload", { data: PNG_B64, filename: "a.png" });

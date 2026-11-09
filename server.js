@@ -660,8 +660,19 @@ function sanitizeImportedIds(categories, machines) {
       }
     }
   }
+  const idMap = {};
   for (const m of machines || []) {
-    if (!ID_SAFE_RE.test(m.id)) { m.id = genId("m"); regenerated++; }
+    if (!ID_SAFE_RE.test(m.id)) { const old = m.id; m.id = genId("m"); idMap[old] = m.id; regenerated++; }
+  }
+  // Re-point engagement host references (machineId + links, which are machine ids)
+  // at any regenerated machine id, so an import never silently breaks an AD graph.
+  if (Object.keys(idMap).length) {
+    for (const m of machines || []) {
+      for (const h of m.hosts || []) {
+        if (h.machineId && idMap[h.machineId]) h.machineId = idMap[h.machineId];
+        if (Array.isArray(h.links)) h.links = h.links.map((l) => idMap[l] || l);
+      }
+    }
   }
   return regenerated;
 }

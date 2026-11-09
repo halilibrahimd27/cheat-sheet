@@ -101,7 +101,18 @@
         }
       }
     }
-    for (const m of machines || []) { if (!ID_SAFE_RE.test(m.id)) { m.id = genId("m"); regenerated++; } }
+    const idMap = {};
+    for (const m of machines || []) { if (!ID_SAFE_RE.test(m.id)) { const old = m.id; m.id = genId("m"); idMap[old] = m.id; regenerated++; } }
+    // Keep AD engagement host references (machineId + links) pointing at the right
+    // machine after an id is regenerated, so an import never breaks the graph.
+    if (Object.keys(idMap).length) {
+      for (const m of machines || []) {
+        for (const h of m.hosts || []) {
+          if (h.machineId && idMap[h.machineId]) h.machineId = idMap[h.machineId];
+          if (Array.isArray(h.links)) h.links = h.links.map((l) => idMap[l] || l);
+        }
+      }
+    }
     return regenerated;
   }
   function isValidWriteupArray(a) { return Array.isArray(a) && a.every(w => w && typeof w === "object" && (w.tags === undefined || (Array.isArray(w.tags) && w.tags.every(t => typeof t === "string")))); }
