@@ -2631,6 +2631,19 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       lb.textContent = (n.name || "host").slice(0, 18);
       g.appendChild(lb);
 
+      // A red corner dot when this node's machine carries a known exploit — the
+      // engagement graph's at-a-glance twin of the host-card badge.
+      const nv = (n.machine && window.CS_SCENARIO && typeof window.CS_SCENARIO.vulnsFor === "function") ? window.CS_SCENARIO.vulnsFor(n.machine.services || [], {}).length : 0;
+      if (nv) {
+        const dot = document.createElementNS(NS, "circle");
+        dot.setAttribute("class", "ad-node-vuln");
+        dot.setAttribute("cx", R - 1); dot.setAttribute("cy", -(R - 1)); dot.setAttribute("r", 5);
+        const dtitle = document.createElementNS(NS, "title");
+        dtitle.textContent = t("planVulns") + " (" + nv + ")";
+        dot.appendChild(dtitle);
+        g.appendChild(dot);
+      }
+
       // The IP is the thing you type next, so it belongs on the map.
       const sub = document.createElementNS(NS, "text");
       sub.setAttribute("class", "ad-node-sub"); sub.setAttribute("text-anchor", "middle");

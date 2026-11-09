@@ -217,7 +217,7 @@ const EXCEPTIONS = [
   { file: "app.js", from: 840, to: 880, why: "OSCP report skeleton" },
   { file: "app.js", from: 1130, to: 1185, why: "OSWE report skeleton" },
   { file: "app.js", from: 1340, to: 1400, why: "retest-status table in the report template" },
-  { file: "app.js", from: 2830, to: 2985, why: "machine report generator (plan + report markdown)" },
+  { file: "app.js", from: 2830, to: 3000, why: "machine report generator (plan + report markdown)" },
   { file: "session.js", from: 3000, to: 3305, why: "session report / retrospective generator" },
   // 2. <option> labels. A <select> option can hold text and nothing else, so the
   //    choice there is a glyph or no marker at all.
