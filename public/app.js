@@ -100,6 +100,7 @@
       addMachineDesc: "Track target machines, services, credentials, and progress.",
       machineName: "Machine Name", machineIP: "IP Address", machineOS: "Operating System",
       services: "Services", credentials: "Credentials", notes: "Notes",
+      planTitle: "Attack Plan", planEmpty: "Import an nmap scan above and a step-by-step plan appears here.", planDoNow: "Do now", planUnlock: "once you get:", planLocked: "Locked", planNeed: "need", planUncovered: "No playbook yet for", planMore: "more commands", planSvcCount: "services", planStepCount: "steps", phRecon: "Recon", phEnum: "Enumerate", phFoothold: "Foothold", phPrivesc: "Privesc", phLateral: "Lateral", phLoot: "Loot",
       exportMd: "Export MD", exportPdf: "Export PDF", termCopy: "Terminal Copy",
       newSub: "New Subcategory", netErr: "Network error - is the server running?",
       copyFail: "Copy failed", termCopied: "Copied in terminal format!",
@@ -213,6 +214,7 @@
       addMachineDesc: "Hedef makineleri, servisleri, kimlik bilgilerini ve ilerlemeyi takip edin.",
       machineName: "Makine Adı", machineIP: "IP Adresi", machineOS: "İşletim Sistemi",
       services: "Servisler", credentials: "Kimlik Bilgileri", notes: "Notlar",
+      planTitle: "Saldırı Planı", planEmpty: "Yukarıdan bir nmap taraması aktarın; adım adım plan burada belirir.", planDoNow: "Şimdi yap", planUnlock: "şunu elde edince:", planLocked: "Kilitli", planNeed: "gereken", planUncovered: "Henüz playbook yok:", planMore: "daha fazla komut", planSvcCount: "servis", planStepCount: "adım", phRecon: "Keşif", phEnum: "Enumerasyon", phFoothold: "Giriş", phPrivesc: "Yetki", phLateral: "Yanal", phLoot: "Ganimet",
       exportMd: "MD Aktar", exportPdf: "PDF Aktar", termCopy: "Terminal Kopyala",
       newSub: "Yeni Alt Kategori", netErr: "Ağ hatası — sunucu çalışıyor mu?",
       copyFail: "Kopyalama başarısız", termCopied: "Terminal formatında kopyalandı!",
@@ -3244,6 +3246,138 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   }
 
   // ── Structured services table + inline nmap import + quick-scan chips ──
+  // The attack-plan panel re-reads the machine and re-renders when services,
+  // credentials or flags change. planRefresh holds the live panel's debounced
+  // render (reset on every machine render); notifyPlan() is what the data editors
+  // below call so the plan stays in step with what you have entered.
+  let planRefresh = null;
+  function notifyPlan() { if (typeof planRefresh === "function") planRefresh(); }
+
+  // Access level + findings DERIVED from the machine, so the plan advances as you
+  // bank what you find — a filled credential vault means "creds", a captured user
+  // flag means a shell, a root flag means admin — with no separate switch to flip.
+  // This is the "update the scenario from my own notes" loop, done deterministically.
+  function machineAttackCtx(m) {
+    const creds = (m.credentials || []).filter((c) => c && (c.username || c.secret) && c.valid !== false);
+    let access = "none"; const found = [];
+    if (creds.length) { access = "creds"; found.push("creds"); if (creds.some((c) => c.username)) found.push("users"); }
+    if (m.userFlag && m.userFlag.capturedAt) { access = "foothold"; found.push("foothold", "shell"); }
+    if (m.rootFlag && m.rootFlag.capturedAt) { access = "admin"; found.push("admin"); }
+    const os = /win/i.test(m.os || "") ? "windows" : (m.os ? "linux" : "");
+    return { os: os, access: access, found: found, ip: m.ip || "" };
+  }
+
+  // ── Attack Plan: open ports -> ordered, chained next steps ──
+  // The visible half of the engine. Reads the machine's parsed services and its
+  // current standing, asks window.CS_SCENARIO for a sequenced plan, and renders it
+  // as waves of copyable commands — each copy logs to the timeline exactly like the
+  // Services scan buttons. Per service it also offers live pointers into the
+  // 5,040-command reference (the engine guides; the commands already exist).
+  function buildAttackPlanSection(m) {
+    const sec = document.createElement("div"); sec.className = "machine-section machine-plan";
+    const head = document.createElement("div"); head.className = "machine-section-head";
+    head.innerHTML = '<h3>' + iconHtml("target") + ' ' + t("planTitle") + '</h3>';
+    sec.appendChild(head);
+    const sub = document.createElement("div"); sub.className = "plan-sub"; sec.appendChild(sub);
+    const body = document.createElement("div"); body.className = "plan-body"; sec.appendChild(body);
+
+    const PHASE = { recon: t("phRecon"), enum: t("phEnum"), foothold: t("phFoothold"), privesc: t("phPrivesc"), lateral: t("phLateral"), loot: t("phLoot") };
+    const copyCmd = (cmd) => { const applied = applyIpToCode(cmd); copyText(applied, () => { recordHistory(applied); announce(t("copied")); toast(t("copied"), "ok"); }); };
+
+    function stepRow(st, locked) {
+      const row = document.createElement("div"); row.className = "plan-step phase-" + st.phase + (locked ? " plan-step-locked" : "");
+      const badge = document.createElement("span"); badge.className = "plan-phase"; badge.textContent = PHASE[st.phase] || st.phase; row.appendChild(badge);
+      const main = document.createElement("div"); main.className = "plan-step-main";
+      const lbl = document.createElement("div"); lbl.className = "plan-step-label";
+      const svcTag = document.createElement("span"); svcTag.className = "plan-svc"; svcTag.textContent = st.service; lbl.appendChild(svcTag);
+      lbl.appendChild(document.createTextNode(" " + st.label)); main.appendChild(lbl);
+      if (st.bucket === "cond" && st.when && st.when.toLowerCase() !== "always") {
+        const cond = document.createElement("div"); cond.className = "plan-when"; cond.textContent = st.when; main.appendChild(cond);
+      }
+      const cmd = document.createElement("button"); cmd.type = "button"; cmd.className = "plan-cmd"; cmd.title = t("copy");
+      const code = document.createElement("code"); code.textContent = st.resolved || st.cmd; cmd.appendChild(code);
+      cmd.appendChild(icon("copy", "icon-sm"));
+      cmd.addEventListener("click", () => copyCmd(st.resolved || st.cmd));
+      main.appendChild(cmd);
+      if (locked && st.unlockedBy && st.unlockedBy.length) {
+        const need = document.createElement("div"); need.className = "plan-need"; need.textContent = t("planNeed") + ": " + st.unlockedBy.join(", "); main.appendChild(need);
+      }
+      row.appendChild(main);
+      return row;
+    }
+
+    function svcMore(rec) {
+      const wrap = document.createElement("div"); wrap.className = "plan-more";
+      const btn = document.createElement("button"); btn.type = "button"; btn.className = "plan-more-toggle";
+      const list = document.createElement("div"); list.className = "plan-more-list"; list.style.display = "none";
+      let open = false, loaded = false;
+      const relabel = () => setIconLabel(btn, open ? "chevron-down" : "chevron-right", t("planMore") + " · " + rec.service);
+      relabel();
+      btn.addEventListener("click", () => {
+        open = !open; list.style.display = open ? "block" : "none"; relabel();
+        if (open && !loaded) {
+          loaded = true;
+          const refs = (window.CS_SCENARIO && window.CS_SCENARIO.dbCommandsFor) ? window.CS_SCENARIO.dbCommandsFor(rec.row) : [];
+          refs.forEach((r) => {
+            const item = document.createElement("button"); item.type = "button"; item.className = "plan-more-item"; item.title = r.cmd;
+            item.appendChild(document.createTextNode(r.title)); item.appendChild(icon("copy", "icon-sm"));
+            item.addEventListener("click", () => copyCmd(r.cmd));
+            list.appendChild(item);
+          });
+          if (!refs.length) { const e = document.createElement("div"); e.className = "plan-more-empty"; e.textContent = "—"; list.appendChild(e); }
+        }
+      });
+      wrap.appendChild(btn); wrap.appendChild(list);
+      return wrap;
+    }
+
+    function render() {
+      body.innerHTML = ""; sub.textContent = "";
+      const services = m.services || [];
+      if (!services.length) { const e = document.createElement("p"); e.className = "plan-empty"; e.textContent = t("planEmpty"); body.appendChild(e); return; }
+      if (!window.CS_SCENARIO) { const e = document.createElement("p"); e.className = "plan-empty"; e.textContent = "…"; body.appendChild(e); return; }
+      const plan = window.CS_SCENARIO.plan(services, machineAttackCtx(m));
+      const stepTotal = plan.waves.reduce((n, w) => n + w.steps.length, 0);
+      if (!stepTotal && !plan.locked.length && !plan.uncovered.length) { const e = document.createElement("p"); e.className = "plan-empty"; e.textContent = t("planEmpty"); body.appendChild(e); return; }
+      sub.textContent = plan.focus + " · " + plan.resolved.length + " " + t("planSvcCount") + " · " + stepTotal + " " + t("planStepCount");
+
+      plan.waves.forEach((w) => {
+        const wave = document.createElement("div"); wave.className = "plan-wave";
+        const wh = document.createElement("div"); wh.className = "plan-wave-head";
+        wh.textContent = w.index === 0 ? t("planDoNow") : (t("planUnlock") + " " + w.unlockedBy.join(", "));
+        wave.appendChild(wh);
+        w.steps.forEach((st) => wave.appendChild(stepRow(st, false)));
+        body.appendChild(wave);
+      });
+
+      const hasDb = window.CS_APP && typeof window.CS_APP.getCategories === "function" && (window.CS_APP.getCategories() || []).length;
+      if (hasDb && plan.resolved.length) {
+        const more = document.createElement("div"); more.className = "plan-more-wrap";
+        plan.resolved.forEach((rec) => more.appendChild(svcMore(rec)));
+        body.appendChild(more);
+      }
+
+      if (plan.locked.length) {
+        const lk = document.createElement("details"); lk.className = "plan-locked";
+        const sm = document.createElement("summary"); sm.textContent = t("planLocked") + " (" + plan.locked.length + ")"; lk.appendChild(sm);
+        plan.locked.forEach((st) => lk.appendChild(stepRow(st, true)));
+        body.appendChild(lk);
+      }
+
+      if (plan.uncovered.length) {
+        const u = document.createElement("div"); u.className = "plan-uncovered";
+        u.appendChild(icon("alert", "icon-sm"));
+        u.appendChild(document.createTextNode(" " + t("planUncovered") + ": " + plan.uncovered.map((s) => s.port + (s.name ? "/" + s.name : "")).join(", ")));
+        body.appendChild(u);
+      }
+    }
+
+    let timer = null;
+    planRefresh = () => { clearTimeout(timer); timer = setTimeout(render, 140); };
+    render();
+    return sec;
+  }
+
   function buildServicesSection(m) {
     m.services = normalizeServices(m.services);
     const sec = document.createElement("div"); sec.className = "machine-section";
@@ -3264,7 +3398,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const quick = document.createElement("div"); quick.className = "svc-quick";
     sec.appendChild(tableWrap); sec.appendChild(quick);
 
-    const persist = () => { saveMachine(m.id, { services: m.services }); };
+    const persist = () => { saveMachine(m.id, { services: m.services }); notifyPlan(); };
     const ip = () => m.ip || "<TARGET_IP>";
     const scanCopy = cmd => { const applied = applyIpToCode(cmd); copyText(applied, () => { recordHistory(applied); announce(t("copied")); toast(t("copied"), "ok"); }); };
 
@@ -3323,7 +3457,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const addBtn = document.createElement("button"); addBtn.className = "btn btn-secondary btn-sm"; addBtn.textContent = t("credAdd");
     head.appendChild(addBtn); sec.appendChild(head);
     const tableWrap = document.createElement("div"); tableWrap.className = "data-table-wrap"; sec.appendChild(tableWrap);
-    const persist = () => { saveMachine(m.id, { credentials: m.credentials }); };
+    const persist = () => { saveMachine(m.id, { credentials: m.credentials }); notifyPlan(); };
     const cp = (txt, msg) => { if (!txt) return; copyText(txt, () => { toast(msg || t("copied"), "ok"); announce(t("copied")); }); };
     function renderTable() {
       tableWrap.innerHTML = "";
@@ -3578,6 +3712,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         if (it) { it.done = !!val; patch.checklist = m.checklist; }
         Object.assign(patch, machineAutoProgress(m));
         saveMachine(m.id, patch);
+        notifyPlan();
         row.classList.toggle("captured", !!val);
         row.querySelector(".flag-time").textContent = m[fk].capturedAt ? t("capturedAt") + " " + new Date(m[fk].capturedAt).toLocaleString() : t("notCaptured");
         updateProgressUI(); showMachineStatus();
@@ -3905,6 +4040,9 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
     // Services — structured table + nmap import + quick-scan chips
     colR.appendChild(buildServicesSection(m));
+
+    // Attack Plan — auto-generated, port-driven, chained next steps from the scan
+    colR.appendChild(buildAttackPlanSection(m));
 
     // Credentials — structured vault
     colR.appendChild(buildCredsSection(m));
@@ -5084,6 +5222,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
   window.CS_APP = {
     api, t, toast, escapeHtml, copyToClipboard: copyText,
     getLang: () => lang, getMachines: () => machines, reloadMachines: loadMachines,
+    getCategories: () => CATEGORIES,
     getActiveTargetId: () => activeTargetId, setActiveTarget,
     applyVars: applyIpToCode,
     navigate: (hash) => { window.location.hash = hash; },

@@ -51,6 +51,7 @@
     --accent-orange: #e78a4e;
     --accent-pink: #d3869b;
     --accent-orange-ink: #1a1a1a; /* text laid on a solid --accent-orange fill */
+    --on-accent: #1a1a1a;        /* ink on an --accent-primary/secondary fill; white on the ochre is ~2.1:1 */
 
     --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
     --shadow-md: 0 4px 14px rgba(0,0,0,0.5);
@@ -144,6 +145,7 @@
 
     /* White ink on the darkened orange; dark ink measures 3.4:1 there. */
     --accent-orange-ink: #ffffff;
+    --on-accent: #ffffff;
 
     --shadow-sm: 0 1px 2px rgba(40,35,28,0.06);
     --shadow-md: 0 4px 14px rgba(40,35,28,0.10);
@@ -175,7 +177,7 @@ body {
 
 ::selection {
     background: var(--accent-primary);
-    color: white;
+    color: var(--on-accent);
 }
 
 ::-webkit-scrollbar {
@@ -770,13 +772,13 @@ body {
 
 .cmd-copy-btn:hover {
     background: var(--accent-primary);
-    color: white;
+    color: var(--on-accent);
     border-color: var(--accent-primary);
 }
 
 .cmd-copy-btn.copied {
     background: var(--accent-green);
-    color: white;
+    color: var(--on-accent);
     border-color: var(--accent-green);
     opacity: 1;
 }
@@ -869,7 +871,7 @@ body {
     width: 42px;
     height: 42px;
     background: var(--accent-primary);
-    color: white;
+    color: var(--on-accent);
     border: none;
     border-radius: 50%;
     cursor: pointer;
@@ -924,10 +926,6 @@ body {
         padding: 0 16px;
     }
 
-    .hero h1 {
-        font-size: 30px;
-    }
-
     .content-area {
         padding: 16px;
     }
@@ -941,14 +939,6 @@ body {
     /* No `html { font-size }` override lives here any more: the type scale is
        expressed in px, so resizing the root moved nothing. Sizes that need to
        shrink on phones do it per-rule, below. */
-
-    .hero {
-        padding: 40px 16px 28px;
-    }
-
-    .hero-stats {
-        gap: 20px;
-    }
 
     .cmd-card-header {
         flex-direction: column;
@@ -1020,7 +1010,7 @@ body {
 }
 .btn-add-category:hover {
     background: var(--accent-primary);
-    color: white;
+    color: var(--on-accent);
     border-style: solid;
 }
 
@@ -1047,7 +1037,7 @@ body {
 }
 .cat-action-btn:hover, .sub-action-btn:hover, .cmd-action-btn:hover {
     background: var(--accent-primary);
-    color: white;
+    color: var(--on-accent);
     border-color: var(--accent-primary);
 }
 .cat-action-btn.delete-btn:hover, .sub-action-btn.delete-btn:hover, .cmd-action-btn.delete-btn:hover {
@@ -1220,7 +1210,7 @@ body {
 }
 .btn-primary {
     background: var(--accent-primary);
-    color: white;
+    color: var(--on-accent);
 }
 .btn-primary:hover {
     background: var(--accent-secondary);
@@ -1248,7 +1238,7 @@ body {
     transition: all var(--transition);
 }
 .tag-filter:hover { border-color: var(--accent-primary); color: var(--text-primary); }
-.tag-filter.active { background: var(--accent-primary); color: white; border-color: var(--accent-primary); }
+.tag-filter.active { background: var(--accent-primary); color: var(--on-accent); border-color: var(--accent-primary); }
 
 /* ============================================
    Import/Export & Lang Buttons
@@ -1266,7 +1256,7 @@ body {
     font-family: inherit;
     transition: all var(--transition);
 }
-.btn-io:hover { background: var(--accent-primary); color: white; border-color: var(--accent-primary); }
+.btn-io:hover { background: var(--accent-primary); color: var(--on-accent); border-color: var(--accent-primary); }
 .sidebar-lang { margin-bottom: 8px; }
 .btn-lang {
     background: none;
@@ -1425,7 +1415,7 @@ body {
     color: var(--text-secondary); padding: 6px 14px; font-size: var(--fs-md); cursor: pointer; font-family: inherit;
     transition: all var(--transition);
 }
-.wu-back-btn:hover { background: var(--accent-primary); color: white; border-color: var(--accent-primary); }
+.wu-back-btn:hover { background: var(--accent-primary); color: var(--on-accent); border-color: var(--accent-primary); }
 .wu-editor-status { font-size: var(--fs-sm); color: var(--accent-green); }
 .wu-delete-btn {
     background: none; border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
@@ -1762,7 +1752,7 @@ body {
 .skip-link {
     position: fixed; top: -60px; left: 12px;
     z-index: var(--z-skip);
-    background: var(--accent-primary); color: #fff;
+    background: var(--accent-primary); color: var(--on-accent);
     padding: 10px 16px; border-radius: var(--radius-sm);
     font-size: var(--fs-lg); font-weight: 500;
     text-decoration: none;
@@ -2275,7 +2265,7 @@ body {
     transition: background var(--transition), color var(--transition), border-color var(--transition);
 }
 .wu-chip:hover { border-color: var(--accent-primary); color: var(--text-primary); }
-.wu-chip.active { background: var(--accent-primary); color: #fff; border-color: var(--accent-primary); }
+.wu-chip.active { background: var(--accent-primary); color: var(--on-accent); border-color: var(--accent-primary); }
 .wu-stats-line { color: var(--text-tertiary); font-size: var(--fs-sm); margin-bottom: 12px; font-family: var(--font-mono); }
 .wu-readtime { font-size: var(--fs-xs); color: var(--text-tertiary); }
 .wu-file-card.pinned { border-color: var(--accent-primary); box-shadow: inset 3px 0 0 var(--accent-primary); }
@@ -2443,7 +2433,7 @@ select.cell-input { font-family: var(--font-sans); cursor: pointer; }
 .machine-view-toggle { display: inline-flex; border: 1px solid var(--border-primary); border-radius: var(--radius-sm); overflow: hidden; margin-left: auto; }
 .view-btn { background: var(--bg-input); border: none; color: var(--text-secondary); cursor: pointer; padding: 7px 12px; font-size: var(--fs-sm); transition: background var(--transition), color var(--transition); }
 .view-btn + .view-btn { border-left: 1px solid var(--border-primary); }
-.view-btn.active { background: var(--accent-primary); color: #fff; }
+.view-btn.active { background: var(--accent-primary); color: var(--on-accent); }
 
 /* Kanban board */
 .machine-board { display: grid; grid-template-columns: repeat(4, minmax(200px, 1fr)); gap: 12px; overflow-x: auto; padding-bottom: 8px; }
@@ -2479,7 +2469,7 @@ select.cell-input { font-family: var(--font-sans); cursor: pointer; }
 .cvss-seg { display: flex; flex-wrap: wrap; gap: 4px; }
 .cvss-opt { flex: 1; min-width: 52px; background: var(--bg-input); border: 1px solid var(--border-primary); color: var(--text-secondary); border-radius: var(--radius-sm); padding: 5px 6px; font-size: var(--fs-xs); cursor: pointer; transition: all var(--transition); }
 .cvss-opt:hover { border-color: var(--accent-primary); color: var(--text-primary); }
-.cvss-opt.on { background: var(--accent-primary); border-color: var(--accent-primary); color: #fff; }
+.cvss-opt.on { background: var(--accent-primary); border-color: var(--accent-primary); color: var(--on-accent); }
 .cvss-result { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 0 18px 12px; }
 .cvss-score { display: flex; align-items: baseline; gap: 8px; padding: 8px 16px; border-radius: var(--radius-md); font-weight: 700; }
 .cvss-num { font-size: 30px; line-height: 1; }
@@ -2501,7 +2491,7 @@ select.cell-input { font-family: var(--font-sans); cursor: pointer; }
     opacity: 0; transition: all var(--transition);
 }
 .cmd-code-wrapper:hover .cmd-basket-btn { opacity: 1; }
-.cmd-basket-btn:hover { background: var(--accent-primary); color: #fff; border-color: var(--accent-primary); }
+.cmd-basket-btn:hover { background: var(--accent-primary); color: var(--on-accent); border-color: var(--accent-primary); }
 
 /* Variable profiles row in the IP changer bar */
 .ip-profiles { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; width: 100%; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border-primary); }
@@ -2516,7 +2506,7 @@ select.cell-input { font-family: var(--font-sans); cursor: pointer; }
 }
 .basket-fab:hover { transform: translateY(-2px); border-color: var(--accent-primary); }
 .basket-fab.has { border-color: var(--accent-primary); }
-.basket-fab-count { background: var(--accent-primary); color: #fff; border-radius: 999px; font-size: var(--fs-xs); font-weight: 700; min-width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; padding: 0 5px; }
+.basket-fab-count { background: var(--accent-primary); color: var(--on-accent); border-radius: 999px; font-size: var(--fs-xs); font-weight: 700; min-width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; padding: 0 5px; }
 .basket-panel {
     position: fixed; right: 20px; bottom: 74px; z-index: var(--z-panel); width: min(480px, calc(100vw - 40px)); max-height: 70vh;
     background: var(--bg-card); border: 1px solid var(--border-secondary); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
@@ -3658,3 +3648,98 @@ body:has(.var-bar.active) .back-to-top { display: none; }
     white-space: pre-wrap; overflow-x: auto;
     max-height: 260px; overflow-y: auto;
 }
+
+/* ── Attack Plan panel (machine workspace) ──────────────────────────────────
+   The visible half of the scenario engine: open ports rendered as ordered,
+   chained waves of copyable commands. Phase colours come from the syntax palette
+   (held clear of the amber UI accent), command bodies sit in recessed code wells,
+   structure comes from hairlines — the same visual language as the reference. */
+.machine-plan .plan-sub {
+    margin: -2px 0 10px;
+    font-family: var(--font-mono); font-size: var(--fs-2xs);
+    letter-spacing: .04em; text-transform: uppercase; color: var(--text-tertiary);
+}
+.plan-empty { margin: 2px 0; padding: 8px 0; font-size: var(--fs-sm); color: var(--text-tertiary); line-height: 1.5; }
+.plan-wave { margin: 0 0 10px; }
+.plan-wave-head {
+    display: flex; align-items: center; gap: 8px; margin: 0 0 4px;
+    font-family: var(--font-mono); font-size: var(--fs-2xs);
+    letter-spacing: .04em; text-transform: uppercase; color: var(--text-tertiary);
+}
+.plan-wave-head::before { content: ""; width: 10px; height: 1px; background: var(--border-secondary); }
+.plan-wave-head::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+/* A later wave is unlocked by a finding — mark it in the accent so the chain reads. */
+.plan-wave:not(:first-child) .plan-wave-head { color: var(--accent-primary); }
+.plan-wave:not(:first-child) .plan-wave-head::before { background: var(--accent-primary); width: 14px; }
+
+.plan-step { display: flex; gap: 8px; align-items: flex-start; padding: 6px 0; border-top: 1px solid var(--rule); }
+.plan-wave .plan-step:first-of-type { border-top: 0; }
+.plan-phase {
+    flex: 0 0 auto; margin-top: 1px; min-width: 62px; text-align: center;
+    padding: 1px 6px; border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
+    font-family: var(--font-mono); font-size: var(--fs-2xs); letter-spacing: .03em; text-transform: lowercase;
+    color: var(--text-tertiary);
+}
+.phase-recon    .plan-phase { color: var(--accent-blue); }
+.phase-enum     .plan-phase { color: var(--accent-cyan); }
+.phase-foothold .plan-phase { color: var(--accent-yellow); }
+.phase-privesc  .plan-phase { color: var(--accent-red); }
+.phase-lateral  .plan-phase { color: var(--accent-pink); }
+.phase-loot     .plan-phase { color: var(--accent-green); }
+
+.plan-step-main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.plan-step-label { font-size: var(--fs-sm); color: var(--text-primary); line-height: 1.4; }
+.plan-svc {
+    font-family: var(--font-mono); font-size: var(--fs-2xs); color: var(--accent-primary);
+    text-transform: uppercase; letter-spacing: .03em; margin-right: 3px;
+}
+.plan-when { font-size: var(--fs-xs); color: var(--text-tertiary); font-style: italic; }
+.plan-cmd {
+    display: flex; align-items: center; gap: 8px; width: 100%; margin: 1px 0 0; padding: 6px 8px;
+    background: var(--bg-code); border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
+    cursor: pointer; text-align: left; transition: border-color var(--transition), background var(--transition);
+}
+.plan-cmd:hover { border-color: var(--border-accent); background: var(--bg-tertiary); }
+.plan-cmd code {
+    flex: 1 1 auto; min-width: 0; overflow-x: auto; white-space: nowrap;
+    font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-code);
+}
+.plan-cmd .icon { flex: 0 0 auto; width: 14px; height: 14px; color: var(--text-tertiary); }
+.plan-cmd:hover .icon { color: var(--accent-primary); }
+.plan-need { font-size: var(--fs-2xs); font-family: var(--font-mono); color: var(--text-tertiary); }
+
+.plan-more-wrap { margin: 8px 0 2px; display: flex; flex-direction: column; gap: 2px; }
+.plan-more-toggle {
+    display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; padding: 3px 4px;
+    background: none; border: none; cursor: pointer;
+    font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--text-tertiary);
+}
+.plan-more-toggle:hover { color: var(--text-secondary); }
+.plan-more-toggle .icon { width: 13px; height: 13px; }
+.plan-more-list { margin: 0 0 4px 15px; display: flex; flex-direction: column; gap: 1px; }
+.plan-more-item {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; padding: 4px 8px;
+    background: none; border: none; border-left: 1px solid var(--rule); cursor: pointer; text-align: left;
+    font-size: var(--fs-sm); color: var(--text-secondary);
+}
+.plan-more-item:hover { color: var(--text-primary); border-left-color: var(--accent-primary); background: var(--bg-tertiary); }
+.plan-more-item .icon { flex: 0 0 auto; width: 13px; height: 13px; color: var(--text-tertiary); }
+.plan-more-empty { padding: 4px 8px; color: var(--text-tertiary); }
+
+.plan-locked { margin: 8px 0 0; }
+.plan-locked > summary {
+    cursor: pointer; list-style: none; padding: 4px 0;
+    font-family: var(--font-mono); font-size: var(--fs-2xs);
+    letter-spacing: .04em; text-transform: uppercase; color: var(--text-tertiary);
+}
+.plan-locked > summary::-webkit-details-marker { display: none; }
+.plan-locked > summary:hover { color: var(--text-secondary); }
+.plan-step-locked { opacity: .6; }
+.plan-step-locked .plan-cmd { background: transparent; }
+
+.plan-uncovered {
+    display: flex; align-items: center; gap: 6px; margin: 8px 0 0; padding: 6px 8px;
+    background: var(--bg-tertiary); border-left: 2px solid var(--accent-orange); border-radius: var(--radius-sm);
+    font-size: var(--fs-xs); color: var(--text-secondary);
+}
+.plan-uncovered .icon { flex: 0 0 auto; width: 14px; height: 14px; color: var(--accent-orange); }

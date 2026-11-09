@@ -56,6 +56,9 @@ const COPY = [
   // Sessions. session-data.js is ~600KB and is fetched on demand by session.js,
   // never on first paint — it still has to be copied so the offline build has it.
   "session.js", "session-data.js", "nextmove.js",
+  // Attack-plan engine: the comprehensive port/service corpus and the deterministic
+  // sequencer that renders a machine's nmap scan as an ordered, chained plan.
+  "port-map.js", "scenario.js",
 ];
 const copied = [];
 const missing = [];

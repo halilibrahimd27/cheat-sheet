@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>cheat-sheet — Pentest Workbench</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0f1117">
+    <meta name="theme-color" content="#0c0d10">
     <!-- Mirrors APP_CSP in server.js, so the static GitHub Pages build — which has
          no server to set headers — gets the same policy. frame-ancestors is the one
          directive left out: a meta-delivered CSP ignores it, and the server sends it
@@ -223,6 +223,12 @@
     <!-- Next Move. Same deal: reads window.CS_APP, and pulls session-data.js
          on demand (the two views share one corpus, loaded at most once). -->
     <script src="nextmove.js"></script>
+    <!-- Attack-plan engine: the comprehensive port/service corpus (port-map.js)
+         and the deterministic sequencer (scenario.js) that turns a machine's
+         parsed nmap services into an ordered, chained plan. Both read
+         window.CS_APP/CS_PORT_MAP lazily, so load order past app.js is free. -->
+    <script src="port-map.js"></script>
+    <script src="scenario.js"></script>
     <script src="sw-register.js"></script>
 </body>
 </html>

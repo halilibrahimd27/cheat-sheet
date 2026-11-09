@@ -43,6 +43,9 @@ const BRIDGE_SOURCE = `
     refHostLabel: (...a) => refHostLabel(...a),
     hlCode: (...a) => hlCode(...a),
     machineToMarkdown: (...a) => machineToMarkdown(...a),
+    // The Attack Plan panel and the access/findings it derives from a machine.
+    buildAttackPlanSection: (...a) => buildAttackPlanSection(...a),
+    machineAttackCtx: (...a) => machineAttackCtx(...a),
     // The command card, built by the real builder. Reaching it through render()
     // would mean standing up the whole view — loadData, the API, the hash — to
     // assert something about one card.
