@@ -5443,6 +5443,9 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     getLang: () => lang, getMachines: () => machines, reloadMachines: loadMachines,
     getCategories: () => CATEGORIES,
     getActiveTargetId: () => activeTargetId, setActiveTarget,
+    // Next Move reuses the plan's access/OS derivation so "Use active target"
+    // lands the same situation the machine page shows (one source, no drift).
+    machineAttackCtx,
     applyVars: applyIpToCode,
     navigate: (hash) => { window.location.hash = hash; },
     // Next Move parses pasted scan output too; one parser, not two that drift.

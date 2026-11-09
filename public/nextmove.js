@@ -332,9 +332,15 @@
       if (m) {
         head.appendChild(iconBtn("nm-btn nm-btn-ghost", "target", S("useTarget"), function () {
           state.target = m.ip || state.target;
-          if (m.os) state.os = /win/i.test(m.os) ? "windows" : (/linux|nix|unix/i.test(m.os) ? "linux" : state.os);
+          // Pull the SAME situation the machine page derives — OS (inferred when
+          // the field is blank) and access — so the known-exploit callout and the
+          // post-foothold menus light up from the active target, not just ports.
+          var mc = typeof APP.machineAttackCtx === "function" ? APP.machineAttackCtx(m) : null;
+          if (mc && (mc.os === "windows" || mc.os === "linux")) state.os = mc.os;
+          else if (m.os) state.os = /win/i.test(m.os) ? "windows" : (/linux|nix|unix/i.test(m.os) ? "linux" : state.os);
+          if (mc && ACCESS.indexOf(mc.access) >= 0) state.access = mc.access;
           var svc = (m.services || []).map(function (s) {
-            return { port: String(s.port || ""), name: String(s.name || ""), state: "open" };
+            return { port: String(s.port || ""), name: String(s.name || ""), version: String(s.version || ""), state: "open" };
           }).filter(function (s) { return s.port; });
           if (svc.length) state.services = dedupe(state.services.concat(svc));
           save(); paint();

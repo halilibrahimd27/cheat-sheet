@@ -117,6 +117,32 @@ test("a pasted vulnerable version surfaces a known-exploit callout above the mov
   assert.ok(vg.textContent.includes("10.10.11.9"), "the exploit command is resolved to the target IP");
 });
 
+test("Use active target carries version + access, so the callout and menus light up", () => {
+  const { env, mod, container } = boot({});
+  env.app.setCategories(require(path.join(__dirname, "..", "seed.js")));
+  env.app.setMachines([{
+    id: "mt1", ip: "10.10.11.9", os: "",   // OS blank — must be inferred from the banners
+    services: [
+      { port: "21", proto: "tcp", state: "open", name: "ftp", version: "vsftpd 2.3.4" },
+      { port: "22", proto: "tcp", state: "open", name: "ssh", version: "OpenSSH 8.2p1 Ubuntu" },
+    ],
+    credentials: [], userFlag: { value: "u", capturedAt: "t" }, rootFlag: null,
+  }]);
+  env.window.CS_APP.setActiveTarget("mt1");
+  vm.runInThisContext(fs.readFileSync(path.join(__dirname, "..", "public", "vuln-map.js"), "utf8"), { filename: "vuln-map.js" });
+  vm.runInThisContext(fs.readFileSync(path.join(__dirname, "..", "public", "scenario.js"), "utf8"), { filename: "scenario.js" });
+  mod.render(container);
+  const useBtn = [...container.querySelectorAll(".nm-btn-ghost")].find((b) => !b.classList.contains("nm-clear"));
+  assert.ok(useBtn, "the Use active target button is present when a target is active");
+  useBtn.dispatchEvent({ type: "click", preventDefault() {}, stopPropagation() {} });
+  // Version carried → the known-exploit callout fires on vsftpd 2.3.4.
+  const vg = container.querySelector(".nm-group-vulns");
+  assert.ok(vg && vg.textContent.includes("CVE-2011-2523"), "the pulled version surfaces its known exploit");
+  // Access (foothold) + inferred OS (linux) → the post-foothold menus appear.
+  assert.ok(container.querySelector(".nm-group-menu"), "a foothold target lights up the post-foothold menus");
+  assert.ok(container.textContent.includes("sudo -l"), "the linux privesc vector rode in with the mapped access + inferred OS");
+});
+
 test("a held shell answers with the post-foothold menus, not silence", () => {
   const { env, mod, container } = boot({ services: [svc(22, "ssh")], access: "foothold", os: "linux" });
   env.app.setCategories(require(path.join(__dirname, "..", "seed.js")));
