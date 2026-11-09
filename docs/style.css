@@ -2036,6 +2036,8 @@ body {
 .host-role { font-size: var(--fs-xs); padding: 1px 7px; border-radius: 999px; background: var(--bg-badge); color: var(--text-secondary); }
 .host-vuln { display: inline-flex; align-items: center; gap: 2px; font-size: var(--fs-2xs); font-weight: 700; color: var(--accent-red); }
 .host-vuln .icon { width: 12px; height: 12px; }
+.host-via { display: inline-flex; align-items: center; gap: 2px; font-size: var(--fs-2xs); color: var(--accent-orange); white-space: nowrap; }
+.host-via .icon { width: 12px; height: 12px; }
 .host-prog { margin-left: auto; font-size: var(--fs-sm); font-family: var(--font-mono); color: var(--text-tertiary); }
 .host-expand, .host-del { background: none; border: none; cursor: pointer; font-size: var(--fs-md); color: var(--text-secondary); flex-shrink: 0; }
 .host-del:hover { color: var(--accent-red); }

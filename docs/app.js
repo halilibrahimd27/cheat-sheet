@@ -116,7 +116,7 @@
       clearHistory: "Clear", copyAll: "Copy all", paletteHint: "Search commands & actions…", goto: "Go to",
       engagement: "Engagement", connections: "Connections", fromMachine: "Add from machine…",
       newHost: "+ New host", objective: "Objective", loot: "Loot / creds",
-      connect: "Connect", connectHint: "Click a node, then another, to link them. Click Connect again to finish.", hostRole: "Role",
+      connect: "Connect", connectHint: "Click a node, then another, to link them. Click Connect again to finish.", hostRole: "Role", reachableVia: "reach via",
       // — Machines round 3 (metadata, flags, dashboard, timing) —
       mPlatform: "Platform", mDifficulty: "Difficulty", mStatus: "Status",
       mTagsHint: "HTB, Linux, web (comma-separated)",
@@ -231,7 +231,7 @@
       clearHistory: "Temizle", copyAll: "Tümünü kopyala", paletteHint: "Komut ve eylem ara…", goto: "Git",
       engagement: "Operasyon", connections: "Bağlantılar", fromMachine: "Makineden ekle…",
       newHost: "+ Yeni host", objective: "Hedef", loot: "Loot / kimlik",
-      connect: "Bağla", connectHint: "Bir düğüme, sonra diğerine tıklayarak bağla. Bitirmek için tekrar Bağla'ya tıkla.", hostRole: "Rol",
+      connect: "Bağla", connectHint: "Bir düğüme, sonra diğerine tıklayarak bağla. Bitirmek için tekrar Bağla'ya tıkla.", hostRole: "Rol", reachableVia: "şu üzerinden",
       // — Machines round 3 (ASCII-safe TR) —
       mPlatform: "Platform", mDifficulty: "Zorluk", mStatus: "Durum",
       mTagsHint: "HTB, Linux, web (virgül ile ayırın)",
@@ -4215,6 +4215,14 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const n = hostNode(h);
       const st = checklistStats(n.checklist);
       const nVuln = (n.machine && window.CS_SCENARIO && typeof window.CS_SCENARIO.vulnsFor === "function") ? window.CS_SCENARIO.vulnsFor(n.machine.services || [], {}).length : 0;
+      // If this host is the reachable-next frontier, name the owned host(s) that
+      // open it — the pivot route, spelled out next to the box.
+      let viaHtml = "";
+      const _all = (m.hosts || []).map(hostNode); const _fr = adFrontier(_all);
+      if (_fr.frontier.has(n.id)) {
+        const via = _all.filter(o => _fr.owned.has(o.id) && ((o.links || []).indexOf(n.id) >= 0 || (n.links || []).indexOf(o.id) >= 0)).map(o => o.name).filter(Boolean);
+        if (via.length) viaHtml = '<span class="host-via" title="' + escapeHtml(t("reachableVia") + " " + via.join(", ")) + '">' + iconHtml("arrow-right", "icon-sm") + ' ' + escapeHtml(t("reachableVia") + " " + via.join(", ")) + '</span>';
+      }
       const card = document.createElement("div"); card.className = "host-card" + (st.pct >= 100 ? " owned" : "") + (n.id === openHostId ? " open" : ""); card.id = "host-" + n.id;
       const head = document.createElement("div"); head.className = "host-card-head";
       head.innerHTML =
@@ -4223,6 +4231,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         '<span class="host-ip">' + escapeHtml(n.ip || "") + '</span>' +
         (n.role ? '<span class="host-role">' + escapeHtml(n.role) + '</span>' : '') +
         (nVuln ? '<span class="host-vuln" title="' + escapeHtml(t("planVulns") + " (" + nVuln + ")") + '">' + iconHtml("alert", "icon-sm") + ' ' + nVuln + '</span>' : '') +
+        viaHtml +
         (n.ref ? '<span class="host-badge">machine</span>' : '') +
         '<span class="host-prog">' + (n.checklist.length ? st.done + "/" + st.total + " · " + st.pct + "%" : "—") + '</span>' +
         '<button class="host-expand" aria-label="Toggle">' + iconHtml(n.id === openHostId ? "chevron-up" : "chevron-down", "icon-sm") + '</button>' +
