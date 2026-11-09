@@ -908,9 +908,16 @@ body {
         box-shadow: var(--shadow-lg);
     }
 
+    /* The mobile drawer toggles are hidden on desktop (the sidebar is permanent
+       there). They are only shown — and only do anything — at this width. The
+       24px box keeps them a comfortable tap target with the icon centred. */
     .sidebar-toggle,
     .sidebar-toggle-open {
-        display: block;
+        display: inline-flex;
+        min-width: 24px;
+        min-height: 24px;
+        align-items: center;
+        justify-content: center;
     }
 
     .main-content {
@@ -3458,7 +3465,7 @@ body:has(.var-bar.active) .back-to-top { display: none; }
 .machine-del-btn, .wu-file-delete, .wu-file-pin, .wu-pin-btn, .wu-delete-btn,
 .wurow-pin, .wu-code-copy, .wu-edit-tags-btn, .wu-fmt-btn,
 .basket-close, .basket-mini, .cvss-close, .modal-close, .var-bar-close,
-.host-expand, .host-del, .session-flag, .sidebar-toggle, .sidebar-toggle-open,
+.host-expand, .host-del, .session-flag,
 .btn-icon, .view-btn, .svc-chip {
     min-width: 24px;
     min-height: 24px;
