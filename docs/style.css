@@ -2017,6 +2017,7 @@ body {
 .ad-connect-btn { margin-left: auto; }
 .ad-connect-hint { font-size: var(--fs-sm); color: var(--accent-primary); margin-bottom: 8px; }
 .ad-drag-hint { font-size: var(--fs-xs); color: var(--text-tertiary); margin: -8px 0 12px; text-align: center; }
+.ad-frontier-hint { color: var(--accent-orange); margin-top: -8px; }
 .host-badge { font-size: var(--fs-2xs); text-transform: uppercase; letter-spacing: 0.5px; padding: 1px 6px; border-radius: 4px; background: var(--accent-glow); color: var(--accent-secondary); }
 .host-open-btn { margin-bottom: 10px; }
 

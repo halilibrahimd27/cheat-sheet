@@ -129,6 +129,7 @@
       flags: "Flags", genWriteup: "Generate write-up", wuGenerated: "Write-up generated",
       filledFrom: "Placeholders filled from", machineNoIp: "That machine has no IP yet — set one to fill the target.",
       dragHint: "Tip: drag a node to reposition it.",
+      frontierHint: "Dashed orange = reachable next from a host you own.",
       detailTab: "Details", reportTab: "Report", saveAsWriteup: "Save as write-up",
       reportLive: "This report is generated live from the machine's current data. Export it, or save an editable copy as a write-up.",
       loading: "Loading…", loadErrTitle: "Couldn't reach the server", loadErrBody: "The app couldn't load your data. Make sure the server is running, then retry.", retry: "Retry",
@@ -243,6 +244,7 @@
       flags: "Bayraklar", genWriteup: "Write-up oluştur", wuGenerated: "Write-up oluşturuldu",
       filledFrom: "Değişkenler dolduruldu:", machineNoIp: "Bu makinenin IP'si yok — önce IP girin.",
       dragHint: "İpucu: bir düğümü sürükleyerek yeniden konumlandırabilirsiniz.",
+      frontierHint: "Kesikli turuncu = ele geçirdiğin host'tan ulaşılabilir sonraki.",
       detailTab: "Detay", reportTab: "Rapor", saveAsWriteup: "Write-up olarak kaydet",
       reportLive: "Bu rapor makinenin güncel verisinden canlı üretilir. Dışa aktarabilir ya da düzenlenebilir bir write-up olarak kaydedebilirsiniz.",
       loading: "Yükleniyor…", loadErrTitle: "Sunucuya ulaşılamadı", loadErrBody: "Uygulama verilerinizi yükleyemedi. Sunucunun çalıştığından emin olun ve tekrar deneyin.", retry: "Tekrar dene",
@@ -2504,6 +2506,19 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     }
     return { id: h.id, ref: false, machine: null, entry: h, name: h.name, ip: h.ip, os: h.os, role: h.role, checklist: h.checklist || [], links: h.links || [] };
   }
+  // Attack-path sets over engagement nodes: owned (checklist done or root flag),
+  // and the frontier — not-yet-owned hosts linked to an owned one, i.e. the hosts
+  // a held foothold puts within reach. Shared by the graph and its legend.
+  function adFrontier(nodes) {
+    const owned = new Set(nodes.filter(n => checklistStats(n.checklist).pct >= 100 || (n.machine && isCaptured(n.machine.rootFlag))).map(n => n.id));
+    const frontier = new Set();
+    nodes.forEach(n => {
+      if (owned.has(n.id)) return;
+      const nextTo = (n.links || []).some(lid => owned.has(lid)) || nodes.some(o => owned.has(o.id) && (o.links || []).indexOf(n.id) >= 0);
+      if (nextTo) frontier.add(n.id);
+    });
+    return { owned, frontier };
+  }
   // SVG arc geometry for the per-node progress ring.
   function polarXY(cx, cy, r, deg) { const a = (deg - 90) * Math.PI / 180; return { x: cx + r * Math.cos(a), y: cy + r * Math.sin(a) }; }
   function ringArc(cx, cy, r, pct) {
@@ -2554,16 +2569,9 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const NS = "http://www.w3.org/2000/svg";
     const VBW = 420, VBH = 285;
     const nodes = (m.hosts || []).map(hostNode);
-    // Attack-path frontier: a host you own (checklist done or root flag) opens the
-    // hosts it links to. Those reachable-but-not-yet-owned nodes are the ones to
-    // hit next — the graph marks them so the path reads without tracing edges.
-    const ownedIds = new Set(nodes.filter(n => checklistStats(n.checklist).pct >= 100 || (n.machine && isCaptured(n.machine.rootFlag))).map(n => n.id));
-    const frontierIds = new Set();
-    nodes.forEach(n => {
-      if (ownedIds.has(n.id)) return;
-      const nextToOwned = (n.links || []).some(lid => ownedIds.has(lid)) || nodes.some(o => ownedIds.has(o.id) && (o.links || []).indexOf(n.id) >= 0);
-      if (nextToOwned) frontierIds.add(n.id);
-    });
+    // Attack-path frontier: a host you own opens the hosts it links to — those
+    // reachable-but-not-yet-owned nodes are the ones to hit next.
+    const { owned: ownedIds, frontier: frontierIds } = adFrontier(nodes);
     const svg = document.createElementNS(NS, "svg");
     svg.setAttribute("viewBox", "0 0 " + VBW + " " + VBH); svg.setAttribute("class", "ad-schematic");
     svg.setAttribute("role", "img"); svg.setAttribute("aria-label", "AD engagement host map");
@@ -4373,6 +4381,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       redrawSchem();
       adSection.appendChild(schemWrap);
       if (!adConnectMode) { const dh = document.createElement("div"); dh.className = "ad-drag-hint"; dh.textContent = t("dragHint"); adSection.appendChild(dh); }
+      if (adFrontier(m.hosts.map(hostNode)).frontier.size) { const fl = document.createElement("div"); fl.className = "ad-drag-hint ad-frontier-hint"; fl.textContent = t("frontierHint"); adSection.appendChild(fl); }
 
       const cards = document.createElement("div"); cards.className = "host-cards";
       m.hosts.forEach(h => cards.appendChild(buildHostCard(h)));
