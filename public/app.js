@@ -3478,6 +3478,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         const vh = document.createElement("div"); vh.className = "plan-vulns-head";
         vh.appendChild(icon("alert", "icon-sm"));
         vh.appendChild(document.createTextNode(" " + t("planVulns") + " (" + vulns.length + ")"));
+        if (vulns.length > 1) vh.appendChild(menuCopyBtn(vulns.map((v) => ({ resolved: v.resolvedExploit, cmd: v.exploit }))));
         vbox.appendChild(vh);
         vulns.forEach((v) => {
           const vr = document.createElement("div"); vr.className = "plan-vuln sev-" + v.sev;
