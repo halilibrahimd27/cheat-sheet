@@ -103,6 +103,19 @@ test("the privesc menu stays hidden until a shell is actually held", () => {
   assert.strictEqual(sec.querySelector(".plan-privesc"), null, "no foothold, no privesc block");
 });
 
+test("the privesc menu lights up from an inferred OS when the field was never set", () => {
+  const env = boot();
+  env.app.setCategories(require(path.join(PUBLIC_DIR, "..", "seed.js")));
+  const sec = env.app.buildAttackPlanSection(machine({
+    os: "",   // never set by hand, as on a freshly pasted scan
+    userFlag: { value: "u", capturedAt: "t" },
+    services: [{ port: "22", proto: "tcp", state: "open", name: "ssh", version: "OpenSSH 8.2p1 Ubuntu 4ubuntu0.5" }],
+  }));
+  const pe = sec.querySelector(".plan-privesc");
+  assert.ok(pe, "an Ubuntu banner infers Linux and reveals the privesc menu with the OS field blank");
+  assert.ok(/Linux/.test(pe.textContent), "the inferred OS is named in the block");
+});
+
 test("a foothold machine's exported report carries the privesc menu", () => {
   const env = boot();
   env.app.setCategories(require(path.join(PUBLIC_DIR, "..", "seed.js")));

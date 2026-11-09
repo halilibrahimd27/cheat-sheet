@@ -3334,7 +3334,10 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     if (creds.length) { access = "creds"; found.push("creds"); if (creds.some((c) => c.username)) found.push("users"); }
     if (m.userFlag && m.userFlag.capturedAt) { access = "foothold"; found.push("foothold", "shell"); }
     if (m.rootFlag && m.rootFlag.capturedAt) { access = "admin"; found.push("admin"); }
-    const os = /win/i.test(m.os || "") ? "windows" : (m.os ? "linux" : "");
+    let os = /win/i.test(m.os || "") ? "windows" : (m.os ? "linux" : "");
+    // No OS set by hand (common on a freshly pasted scan)? Infer it from the
+    // banners so the OS-aware privesc/loot menus still light up.
+    if (!os && window.CS_SCENARIO && typeof window.CS_SCENARIO.inferOs === "function") os = window.CS_SCENARIO.inferOs(m.services || []);
     return { os: os, access: access, found: found, ip: m.ip || "" };
   }
 

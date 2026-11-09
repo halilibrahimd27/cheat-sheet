@@ -313,6 +313,21 @@ test("the loot menu is one representative per vector, with placeholders filled",
   assert.ok(lin.every((p) => p.cmd && p.cmd.trim()), "a vector whose lead command is blank is skipped, never shown empty");
 });
 
+test("inferOs names the OS from the scan only on a clear signal, never from a shared port", () => {
+  const w = load({ categories: SEED });
+  const io = w.CS_SCENARIO.inferOs;
+  const S = (list) => list.map((x) => ({ port: String(x[0]), name: x[1], version: x[2] || "", state: "open" }));
+  assert.strictEqual(io(S([[135, "msrpc", ""], [3389, "ms-wbt-server", ""], [445, "microsoft-ds", ""]])), "windows",
+    "Windows-only ports (msrpc, rdp) name Windows");
+  assert.strictEqual(io(S([[80, "http", "Microsoft IIS httpd 10.0"]])), "windows", "an IIS banner names Windows");
+  assert.strictEqual(io(S([[22, "ssh", "OpenSSH 8.2p1 Ubuntu 4ubuntu0.5"], [80, "http", "Apache httpd 2.4.41"]])), "linux",
+    "an Ubuntu ssh banner names Linux");
+  // The Samba trap: 139/445 on a Linux host must NOT read as Windows.
+  assert.strictEqual(io(S([[139, "netbios-ssn", ""], [445, "microsoft-ds", ""], [22, "ssh", "OpenSSH Debian"]])), "linux",
+    "SMB ports plus a Debian ssh banner stay Linux");
+  assert.strictEqual(io(S([[21, "ftp", "vsftpd 2.3.4"], [25, "smtp", ""]])), "", "no OS signal returns empty, not a guess");
+});
+
 // Resolve a service to its matched corpus service ids.
 function S_names(w, service) {
   return w.CS_SCENARIO.rowsForService(normalize(service), w.CS_PORT_MAP).map((r) => r.service);

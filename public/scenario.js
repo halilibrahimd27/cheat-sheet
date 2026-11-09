@@ -300,6 +300,31 @@
     return out.slice(0, limit);
   }
 
+  // ── OS inference from the scan (feeds the OS-aware menus) ────────────────
+  // The privesc/loot menus are OS-specific, so they stay dark when a pasted scan
+  // never had its OS field set by hand. This reads the banners for HIGH-CONFIDENCE
+  // signals and names the OS only on a clear majority — never from a shared port.
+  // Deliberately conservative: 445/139 (Samba runs on Linux too) and a bare
+  // "microsoft-ds" banner do NOT vote; only Windows-only ports (135 msrpc, 3389
+  // rdp, 5985/6 winrm, 464 kpasswd) and explicit OS strings do. A tie or no
+  // signal returns "" — better unset than wrong.
+  var RE_WIN_BANNER = /windows|microsoft windows|microsoft iis|\biis\b|ms-wbt|winrm|active directory|\.net framework/;
+  var RE_LIN_BANNER = /ubuntu|debian|\blinux\b|\bunix\b|centos|fedora|red ?hat|raspbian|\bel\d/;
+  var WIN_PORTS = { 135: 1, 3389: 1, 5985: 1, 5986: 1, 464: 1 };
+  function inferOs(services) {
+    var norm = normServices(services);
+    var win = 0, lin = 0;
+    norm.forEach(function (s) {
+      var hay = (s.name + " " + s.version).toLowerCase();
+      if (RE_WIN_BANNER.test(hay)) win++;
+      if (WIN_PORTS[parseInt(s.port, 10)]) win++;
+      if (RE_LIN_BANNER.test(hay)) lin++;
+    });
+    if (win > lin) return "windows";
+    if (lin > win) return "linux";
+    return "";
+  }
+
   // ── post-foothold privilege escalation (OS-aware, DB-sourced) ────────────
   // Once a shell is held the remote waves are spent — the next move is local.
   // This surfaces one essential command per escalation VECTOR (SUID, sudo, cron,
@@ -471,6 +496,7 @@
     privescFor: privescFor,
     pivotFor: pivotFor,
     lootFor: lootFor,
+    inferOs: inferOs,
     rowsForService: rowsForService,
     bucketOf: bucketOf,
     _corpus: corpus
