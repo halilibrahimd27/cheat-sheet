@@ -3338,6 +3338,8 @@ body:has(.var-bar.active) .back-to-top { display: none; }
 .svc-vuln-mark .icon { width: 14px; height: 14px; }
 .session-vulns { border-left: 3px solid var(--accent-red); }
 .session-vulns .checklist-phase-name { color: var(--accent-red); }
+.session-cmd-ran { opacity: .6; }
+.session-ran-tick { color: var(--accent-green); vertical-align: -2px; margin-right: 3px; }
 
 /* Flags read as two slots that fill in, so an empty one is as informative as a
    full one — you can see at a glance which boxes are half-done. */

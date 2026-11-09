@@ -2089,16 +2089,29 @@
     return box;
   }
 
+  // Commands already copied against this machine (its timeline is shared with the
+  // attack plan), so the enum queue shows what you have already run. A copied
+  // batch logs as one newline-joined entry, so split those back into lines.
+  function sessionRan(m) {
+    var s = {};
+    ((m && m.timeline) || []).forEach(function (e) {
+      if (!e || e.type !== "cmd" || !e.text) return;
+      s[e.text] = 1;
+      if (e.text.indexOf("\n") >= 0) e.text.split("\n").forEach(function (l) { var x = l.trim(); if (x) s[x] = 1; });
+    });
+    return s;
+  }
   function cmdRow(c, m, t) {
     var row = el("div", "checklist-item");
     var body = el("div", "checklist-body");
+    var resolved = resolveCmd(c.cmd, m);
     var label = el("span", "checklist-label", c.label);
+    if (sessionRan(m)[resolved]) { row.classList.add("session-cmd-ran"); label.insertBefore(ico("check", "icon-sm session-ran-tick"), label.firstChild); }
     body.appendChild(label);
     if (c.when && c.when !== "always") {
       body.appendChild(el("span", "session-attempt-why", c.when));
     }
     var hint = el("div", "checklist-hint");
-    var resolved = resolveCmd(c.cmd, m);
     // textContent, never innerHTML: this string is half corpus and half the
     // user's own IP / username / domain, and there is no highlighting worth an
     // attribute sink.
