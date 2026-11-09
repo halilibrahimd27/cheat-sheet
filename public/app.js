@@ -3181,6 +3181,16 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
           ports.textContent = svc.slice(0, 5).map(x => x.port).join(" ") + (svc.length > 5 ? " +" + (svc.length - 5) : "");
           cSvc.appendChild(ports);
         } else { cSvc.appendChild(document.createTextNode("—")); }
+        // A known-exploit badge: at a glance, which boxes have a flagged version
+        // waiting. Same map as the plan — no separate scan, just the banners here.
+        const rowVulns = (window.CS_SCENARIO && typeof window.CS_SCENARIO.vulnsFor === "function") ? window.CS_SCENARIO.vulnsFor(m.services || [], {}) : [];
+        if (rowVulns.length) {
+          const vb = document.createElement("span"); vb.className = "mrow-vuln";
+          vb.appendChild(icon("alert", "icon-sm"));
+          vb.appendChild(document.createTextNode(" " + rowVulns.length));
+          vb.title = t("planVulns") + " (" + rowVulns.length + ")";
+          cSvc.appendChild(vb);
+        }
         tr.appendChild(cSvc);
 
         const cCred = document.createElement("td"); cCred.className = "col-num";
