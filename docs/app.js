@@ -107,7 +107,7 @@
       copyFail: "Copy failed", termCopied: "Copied in terminal format!",
       playbook: "Playbook", applyPlaybook: "Apply", progress: "Progress",
       currentPhase: "Current phase", nextSteps: "Next steps", allDone: "All done!",
-      hosts: "Hosts", addHost: "+ Host", owned: "Owned", adFlagged: "flagged", attackPath: "Attack Path",
+      hosts: "Hosts", addHost: "+ Host", owned: "Owned", adFlagged: "flagged", adNext: "next", attackPath: "Attack Path",
       noHosts: "No extra hosts yet. Add domain / network machines here.",
       replacePlaybook: "Replace the current checklist with this playbook? Current progress will be lost.",
       copyCmd: "Copy command", defaultChecklist: "Default checklist",
@@ -222,7 +222,7 @@
       copyFail: "Kopyalama başarısız", termCopied: "Terminal formatında kopyalandı!",
       playbook: "Playbook", applyPlaybook: "Uygula", progress: "İlerleme",
       currentPhase: "Mevcut aşama", nextSteps: "Sonraki adımlar", allDone: "Tamamlandı!",
-      hosts: "Makineler", addHost: "+ Makine", owned: "Ele geçirildi", adFlagged: "açıklı", attackPath: "Saldırı Yolu",
+      hosts: "Makineler", addHost: "+ Makine", owned: "Ele geçirildi", adFlagged: "açıklı", adNext: "sıradaki", attackPath: "Saldırı Yolu",
       noHosts: "Henüz ek makine yok. Domain / ağ makinelerini buraya ekleyin.",
       replacePlaybook: "Mevcut kontrol listesi bu playbook'la değiştirilsin mi? Mevcut ilerleme kaybolur.",
       copyCmd: "Komutu kopyala", defaultChecklist: "Varsayılan liste",
@@ -4351,10 +4351,12 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         if (canVuln && n.machine && window.CS_SCENARIO.vulnsFor(n.machine.services || [], {}).length) flagged++;
       });
       const aggPct = aggT ? Math.round(aggD / aggT * 100) : 0;
+      const nextCount = adFrontier(nodes).frontier.size;
       const ov = document.createElement("div"); ov.className = "ad-overview";
       ov.innerHTML =
         '<span class="ad-stat"><strong>' + nodes.length + '</strong> ' + t("hosts").toLowerCase() + '</span>' +
         '<span class="ad-stat"><strong>' + owned + '</strong> ' + t("owned").toLowerCase() + '</span>' +
+        (nextCount ? '<span class="ad-stat ad-stat-next"><strong>' + nextCount + '</strong> ' + t("adNext") + '</span>' : '') +
         (flagged ? '<span class="ad-stat ad-stat-vuln"><strong>' + flagged + '</strong> ' + t("adFlagged") + '</span>' : '') +
         '<span class="ad-stat"><strong>' + aggPct + '%</strong> ' + t("progress").toLowerCase() + '</span>';
       const connBtn = document.createElement("button"); connBtn.className = "btn btn-sm ad-connect-btn " + (adConnectMode ? "btn-primary" : "btn-secondary"); setIconLabel(connBtn, "link", t("connect"));

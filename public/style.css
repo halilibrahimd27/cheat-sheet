@@ -1977,6 +1977,7 @@ body {
 .ad-stat { font-size: var(--fs-sm); color: var(--text-secondary); }
 .ad-stat strong { font-size: var(--fs-2xl); color: var(--accent-primary); margin-right: 4px; }
 .ad-stat-vuln, .ad-stat-vuln strong { color: var(--accent-red); }
+.ad-stat-next, .ad-stat-next strong { color: var(--accent-orange); }
 
 /* Schematic node-link diagram */
 .ad-schematic-wrap { background: var(--bg-code); border: 1px solid var(--border-primary); border-radius: var(--radius-md); margin-bottom: 16px; }
