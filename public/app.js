@@ -3250,11 +3250,13 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     function buildBoardCard(m) {
       const done = (m.checklist || []).filter(c => c.done).length, tot = (m.checklist || []).length;
       const pct = tot > 0 ? Math.round(done / tot * 100) : 0;
+      const nVuln = (window.CS_SCENARIO && typeof window.CS_SCENARIO.vulnsFor === "function") ? window.CS_SCENARIO.vulnsFor(m.services || [], {}).length : 0;
       const card = document.createElement("div"); card.className = "board-card"; card.draggable = true;
       card.setAttribute("role", "button"); card.setAttribute("tabindex", "0");
       card.innerHTML =
         '<div class="board-card-top"><span class="machine-os-icon">' + osIconHtml(m.os) + '</span>' +
           '<span class="board-card-name">' + escapeHtml(m.name) + '</span>' +
+          (nVuln ? '<span class="board-card-vuln" title="' + escapeHtml(t("planVulns") + " (" + nVuln + ")") + '">' + iconHtml("alert", "icon-sm") + ' ' + nVuln + '</span>' : '') +
           (isCaptured(m.userFlag) ? '<span class="flag-chip user" title="' + t("userFlag") + '"></span>' : '') +
           (isCaptured(m.rootFlag) ? '<span class="flag-chip root" title="' + t("rootFlag") + '"></span>' : '') + '</div>' +
         (m.ip ? '<div class="board-card-ip">' + escapeHtml(m.ip) + '</div>' : '') +

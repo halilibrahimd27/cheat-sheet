@@ -2459,6 +2459,8 @@ select.cell-input { font-family: var(--font-sans); cursor: pointer; }
 .board-card.dragging { opacity: 0.5; }
 .board-card-top { display: flex; align-items: center; gap: 6px; }
 .board-card-name { font-weight: 600; font-size: var(--fs-md); color: var(--text-primary); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.board-card-vuln { display: inline-flex; align-items: center; gap: 2px; flex-shrink: 0; font-size: var(--fs-2xs); font-weight: 700; color: var(--accent-red); }
+.board-card-vuln .icon { width: 12px; height: 12px; }
 .board-card-ip { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--text-tertiary); margin: 4px 0 6px; }
 .board-card .machine-progress { margin-top: 6px; }
 @media (max-width: 900px) { .machine-board { grid-template-columns: repeat(4, minmax(180px, 1fr)); } }
