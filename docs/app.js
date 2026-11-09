@@ -124,7 +124,7 @@
       stNotStarted: "Not started", stInProgress: "In progress", stOwned: "Owned", stReported: "Reported",
       statTotal: "Total", statOwned: "Owned", statInProgress: "In progress", statAvg: "Avg progress",
       mSearch: "Search machines…", filterAll: "All", filterPlatform: "Platform", filterStatus: "Status", filterTag: "Tag",
-      sortRecent: "Recent", sortName: "Name", sortProgress: "Progress", noMatches: "No machines match your filters.",
+      sortRecent: "Recent", sortName: "Name", sortProgress: "Progress", sortFlagged: "Known exploit", noMatches: "No machines match your filters.",
       userFlag: "User flag", rootFlag: "Root flag", capture: "Capture", capturedAt: "Captured", notCaptured: "Not captured",
       flags: "Flags", genWriteup: "Generate write-up", wuGenerated: "Write-up generated",
       filledFrom: "Placeholders filled from", machineNoIp: "That machine has no IP yet — set one to fill the target.",
@@ -238,7 +238,7 @@
       stNotStarted: "Başlanmadı", stInProgress: "Devam ediyor", stOwned: "Ele geçirildi", stReported: "Raporlandı",
       statTotal: "Toplam", statOwned: "Ele geçirilen", statInProgress: "Devam eden", statAvg: "Ort. ilerleme",
       mSearch: "Makine ara…", filterAll: "Tümü", filterPlatform: "Platform", filterStatus: "Durum", filterTag: "Etiket",
-      sortRecent: "Güncel", sortName: "İsim", sortProgress: "İlerleme", noMatches: "Filtrelerle eşleşen makine yok.",
+      sortRecent: "Güncel", sortName: "İsim", sortProgress: "İlerleme", sortFlagged: "Bilinen açık", noMatches: "Filtrelerle eşleşen makine yok.",
       userFlag: "User flag", rootFlag: "Root flag", capture: "Yakala", capturedAt: "Yakalandı", notCaptured: "Yakalanmadı",
       flags: "Bayraklar", genWriteup: "Write-up oluştur", wuGenerated: "Write-up oluşturuldu",
       filledFrom: "Değişkenler dolduruldu:", machineNoIp: "Bu makinenin IP'si yok — önce IP girin.",
@@ -3129,7 +3129,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const platSel = mkSel("platform", t("filterPlatform"), machineFilter.platform, [{ value: "", label: t("filterPlatform") + ": " + t("filterAll") }].concat(platformsPresent.map(p => ({ value: p, label: p }))));
     const statSel = mkSel("status", t("filterStatus"), machineFilter.status, [{ value: "", label: t("filterStatus") + ": " + t("filterAll") }].concat(MACHINE_STATUSES.map(v => ({ value: v, label: stLabel(v) }))));
     const tagSel = mkSel("tag", t("filterTag"), machineFilter.tag, [{ value: "", label: t("filterTag") + ": " + t("filterAll") }].concat(tagsPresent.map(tg => ({ value: tg, label: tg }))));
-    const sortSel = mkSel("sort", t("wuSort"), machineFilter.sort, [{ value: "recent", label: t("wuSort") + ": " + t("sortRecent") }, { value: "name", label: t("sortName") }, { value: "progress", label: t("sortProgress") }]);
+    const sortSel = mkSel("sort", t("wuSort"), machineFilter.sort, [{ value: "recent", label: t("wuSort") + ": " + t("sortRecent") }, { value: "name", label: t("sortName") }, { value: "progress", label: t("sortProgress") }, { value: "flagged", label: t("sortFlagged") }]);
     controls.appendChild(mSearch); controls.appendChild(platSel); controls.appendChild(statSel); controls.appendChild(tagSel); controls.appendChild(sortSel);
     // Grid / Board view toggle
     const viewToggle = document.createElement("div"); viewToggle.className = "machine-view-toggle";
@@ -3153,10 +3153,18 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         return [m.name, m.ip, m.os].some(v => (v || "").toLowerCase().includes(q)) || (m.tags || []).some(tg => tg.toLowerCase().includes(q));
       });
       const pctOf = m => { const c = m.checklist || []; return c.length ? c.filter(x => x.done).length / c.length : 0; };
+      // Precompute known-exploit counts once when sorting by them, rather than
+      // re-running vulnsFor inside the O(n log n) comparator.
+      const vulnCount = {};
+      if (machineFilter.sort === "flagged") {
+        const can = window.CS_SCENARIO && typeof window.CS_SCENARIO.vulnsFor === "function";
+        list.forEach(m => { vulnCount[m.id] = can ? window.CS_SCENARIO.vulnsFor(m.services || [], {}).length : 0; });
+      }
       const cmp = {
         name: (a, b) => (a.name || "").localeCompare(b.name || ""),
         progress: (a, b) => pctOf(b) - pctOf(a),
         recent: (a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0),
+        flagged: (a, b) => (vulnCount[b.id] - vulnCount[a.id]) || (new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0)),
       }[machineFilter.sort] || null;
       if (cmp) list.sort(cmp);
       return list;
