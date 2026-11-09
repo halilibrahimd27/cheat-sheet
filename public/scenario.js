@@ -293,9 +293,71 @@
     return out.slice(0, limit);
   }
 
+  // ── version → known-exploit matching (public/vuln-map.js) ────────────────
+  // nmap's version string is the highest-signal input: an exact vulnerable build
+  // is a direct foothold, not a lead to chase. parseVer reads the first dotted-
+  // numeric run of a banner ("OpenSSH 8.2p1" -> [8,2], "Apache httpd 2.4.49" ->
+  // [2,4,49]); lettered builds that parse identically to their patched sibling
+  // (HFS 2.3b vs 2.3c) are matched by ver.re instead of by number. Pure data plus
+  // comparison — deterministic, offline, and it never claims a vuln it cannot pin
+  // to the version in front of it (a missing hit beats a wrong one in an exam).
+  function parseVer(s) {
+    var m = String(s == null ? "" : s).match(/\d+(?:\.\d+)+|\d+/);
+    return m ? m[0].split(".").map(function (x) { return parseInt(x, 10) || 0; }) : null;
+  }
+  function cmpVer(a, b) {
+    var n = Math.max(a.length, b.length);
+    for (var i = 0; i < n; i++) { var x = a[i] || 0, y = b[i] || 0; if (x !== y) return x < y ? -1 : 1; }
+    return 0;
+  }
+  function verSatisfies(verStr, spec) {
+    if (!spec || spec.any) return true;
+    if (spec.re) return spec.re.test(verStr);
+    var v = parseVer(verStr); if (!v) return false;
+    if (spec.eq != null) return cmpVer(v, parseVer(spec.eq)) === 0;
+    var ok = true;
+    if (spec.lt != null) ok = ok && cmpVer(v, parseVer(spec.lt)) < 0;
+    if (spec.le != null) ok = ok && cmpVer(v, parseVer(spec.le)) <= 0;
+    if (spec.gt != null) ok = ok && cmpVer(v, parseVer(spec.gt)) > 0;
+    if (spec.ge != null) ok = ok && cmpVer(v, parseVer(spec.ge)) >= 0;
+    return ok;
+  }
+  var SEV_ORDER = { critical: 0, high: 1, medium: 2, low: 3 };
+  // Matched vulns for a scan: product regex over the banner, ver spec over the
+  // parsed number, <TARGET_IP>/<PORT> filled from the machine + the matched port.
+  function vulnsFor(services, ctx) {
+    var map = W.CS_VULN_MAP;
+    if (!Array.isArray(map) || !map.length) return [];
+    ctx = ctx || {};
+    var norm = normServices(services).filter(function (s) { return !s.state || s.state === "open" || s.state === "open|filtered"; });
+    var out = [], seen = {};
+    norm.forEach(function (s) {
+      var verStr = String(s.version || "");
+      if (!verStr && !s.name) return;
+      var hay = (s.name || "") + " " + verStr;
+      map.forEach(function (e) {
+        if (!e.product || !e.product.test(hay)) return;
+        if (!verSatisfies(verStr, e.ver)) return;
+        var key = (e.id || e.title) + "@" + s.port;
+        if (seen[key]) return; seen[key] = 1;
+        var port = String(s.port || "");
+        var ex = resolve(e.exploit || "", ctx);
+        if (port) ex = ex.split("<PORT>").join(port);
+        out.push({
+          service: e.svc || s.name || "", port: port, version: verStr,
+          title: e.title || "", id: e.id || "", sev: e.sev || "high",
+          exploit: e.exploit || "", resolvedExploit: ex, note: e.note || ""
+        });
+      });
+    });
+    out.sort(function (a, b) { return (SEV_ORDER[a.sev] - SEV_ORDER[b.sev]) || String(a.port).localeCompare(String(b.port)) || a.title.localeCompare(b.title); });
+    return out;
+  }
+
   W.CS_SCENARIO = {
     plan: plan,
     dbCommandsFor: dbCommandsFor,
+    vulnsFor: vulnsFor,
     rowsForService: rowsForService,
     bucketOf: bucketOf,
     _corpus: corpus

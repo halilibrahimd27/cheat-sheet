@@ -3743,3 +3743,31 @@ body:has(.var-bar.active) .back-to-top { display: none; }
     font-size: var(--fs-xs); color: var(--text-secondary);
 }
 .plan-uncovered .icon { flex: 0 0 auto; width: 14px; height: 14px; color: var(--accent-orange); }
+
+/* Known version-specific exploits — the priority callout above the waves. A
+   matched exact build is a direct foothold, so it leads, and its severity drives
+   the left rail (critical red / high orange / medium yellow). */
+.plan-vulns { margin: 2px 0 14px; display: flex; flex-direction: column; gap: 7px; }
+.plan-vulns-head {
+    display: flex; align-items: center; gap: 6px;
+    font-size: var(--fs-2xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;
+    color: var(--accent-red);
+}
+.plan-vulns-head .icon { width: 14px; height: 14px; flex: 0 0 auto; }
+.plan-vuln {
+    --sev: var(--accent-red);
+    padding: 8px 10px; background: var(--bg-card); border: 1px solid var(--border-primary);
+    border-left: 3px solid var(--sev); border-radius: var(--radius-sm);
+    display: flex; flex-direction: column; gap: 6px;
+}
+.plan-vuln.sev-high { --sev: var(--accent-orange); }
+.plan-vuln.sev-medium { --sev: var(--accent-yellow); }
+.plan-vuln-top { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.plan-vuln-sev {
+    font-size: var(--fs-2xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px;
+    padding: 1px 6px; border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--sev) 16%, transparent); color: var(--sev);
+}
+.plan-vuln-title { font-size: var(--fs-sm); font-weight: 600; color: var(--text-heading); }
+.plan-vuln-id { margin-left: auto; font-family: var(--font-mono); font-size: var(--fs-2xs); color: var(--text-tertiary); white-space: nowrap; }
+.plan-vuln-note { font-size: var(--fs-xs); color: var(--text-secondary); line-height: 1.5; }

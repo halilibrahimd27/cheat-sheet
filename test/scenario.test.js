@@ -14,6 +14,7 @@ const vm = require("node:vm");
 
 const PUBLIC = path.join(__dirname, "..", "public");
 const PORTMAP = fs.readFileSync(path.join(PUBLIC, "port-map.js"), "utf8");
+const VULNMAP = fs.readFileSync(path.join(PUBLIC, "vuln-map.js"), "utf8");
 const SCENARIO = fs.readFileSync(path.join(PUBLIC, "scenario.js"), "utf8");
 
 // A fresh realm per test so one plan can never bleed state into another.
@@ -22,6 +23,7 @@ function load(opts) {
   const ctx = { window: {} };
   vm.createContext(ctx);
   vm.runInContext(PORTMAP, ctx, { filename: "port-map.js" });
+  vm.runInContext(VULNMAP, ctx, { filename: "vuln-map.js" });
   if (o.categories) ctx.window.CS_APP = { getCategories: () => o.categories };
   vm.runInContext(SCENARIO, ctx, { filename: "scenario.js" });
   return ctx.window;
@@ -33,10 +35,11 @@ function allSteps(plan) { return plan.waves.reduce((a, w) => a.concat(w.steps), 
 test("the module registers its public surface", () => {
   const w = load();
   assert.ok(w.CS_SCENARIO, "window.CS_SCENARIO is the entry point app.js calls");
-  for (const fn of ["plan", "dbCommandsFor", "rowsForService"]) {
+  for (const fn of ["plan", "dbCommandsFor", "vulnsFor", "rowsForService"]) {
     assert.strictEqual(typeof w.CS_SCENARIO[fn], "function", fn + " is exported");
   }
   assert.ok(w.CS_PORT_MAP.length > 40, "the comprehensive corpus loaded");
+  assert.ok(w.CS_VULN_MAP.length > 10, "the curated vuln map loaded");
 });
 
 test("canonical service wins a generic banner on a shared port", () => {
@@ -132,6 +135,55 @@ test("dbCommandsFor points into the live command DB by signal", () => {
   const refs = w.CS_SCENARIO.dbCommandsFor(smb);
   assert.ok(refs.some((r) => r.title === "nxc smb shares"), "a signal-matching command is surfaced");
   assert.ok(!refs.some((r) => r.title === "unrelated ping"), "an unrelated command is not");
+});
+
+test("vulnsFor matches an exact vulnerable build and fills the target", () => {
+  const w = load();
+  const V = w.CS_SCENARIO.vulnsFor([svc(21, "ftp", "vsftpd 2.3.4")], { ip: "10.10.11.42" });
+  assert.strictEqual(V.length, 1, "vsftpd 2.3.4 is a known backdoor");
+  assert.strictEqual(V[0].id, "CVE-2011-2523");
+  assert.strictEqual(V[0].sev, "critical");
+  assert.ok(V[0].resolvedExploit.indexOf("10.10.11.42") >= 0 && V[0].resolvedExploit.indexOf("<TARGET_IP>") < 0,
+    "the exploit's <TARGET_IP> is filled from the machine");
+});
+
+test("vulnsFor will not claim a vuln the version does not carry", () => {
+  const w = load();
+  assert.strictEqual(w.CS_SCENARIO.vulnsFor([svc(21, "ftp", "vsftpd 2.3.5")], {}).length, 0, "2.3.5 is not the backdoored build");
+  assert.strictEqual(w.CS_SCENARIO.vulnsFor([svc(21, "ftp", "vsftpd 3.0.3")], {}).length, 0, "a current vsftpd has no entry");
+});
+
+test("numeric version bounds gate the match (OpenSSH enum, Samba usermap)", () => {
+  const w = load();
+  const vuln = (p, n, v) => w.CS_SCENARIO.vulnsFor([svc(p, n, v)], {}).map((x) => x.id);
+  assert.ok(vuln(22, "ssh", "OpenSSH 7.4").includes("CVE-2018-15473"), "7.4 < 7.8 is enumerable");
+  assert.ok(!vuln(22, "ssh", "OpenSSH 8.2p1 Ubuntu").includes("CVE-2018-15473"), "8.2 >= 7.8 is patched");
+  assert.ok(vuln(445, "netbios-ssn", "Samba smbd 3.0.25a").includes("CVE-2007-2447"), "3.0.25 is in the usermap range");
+  assert.ok(!vuln(445, "netbios-ssn", "Samba smbd 4.11.6").includes("CVE-2007-2447"), "4.11 is far past the range");
+});
+
+test("a lettered build is matched by spelling, not number (HFS 2.3b vs 2.3c)", () => {
+  const w = load();
+  const has = (v) => w.CS_SCENARIO.vulnsFor([svc(80, "http", "HttpFileServer httpd " + v)], {}).some((x) => x.id === "CVE-2014-6287");
+  assert.ok(has("2.3b"), "2.3b is vulnerable");
+  assert.ok(!has("2.3c"), "2.3c is the fixed build and must not match");
+});
+
+test("a version-less banner never triggers a version-gated vuln", () => {
+  const w = load();
+  assert.strictEqual(w.CS_SCENARIO.vulnsFor([svc(21, "ftp", "")], {}).length, 0, "no version, no claim");
+});
+
+test("vulnsFor is deterministic and severity-ordered", () => {
+  const w = load();
+  const services = [svc(80, "http", "Apache httpd 2.4.49"), svc(22, "ssh", "OpenSSH 7.4")];
+  const a = w.CS_SCENARIO.vulnsFor(services, { ip: "10.1.1.1" });
+  const b = w.CS_SCENARIO.vulnsFor(services, { ip: "10.1.1.1" });
+  assert.deepStrictEqual(JSON.stringify(a), JSON.stringify(b), "same input, same output");
+  assert.ok(a.length >= 2, "both services hit");
+  const sev = { critical: 0, high: 1, medium: 2, low: 3 };
+  const order = a.map((v) => sev[v.sev]);
+  assert.deepStrictEqual(order, order.slice().sort((x, y) => x - y), "most severe first");
 });
 
 // Resolve a service to its matched corpus service ids.

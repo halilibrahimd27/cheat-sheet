@@ -227,11 +227,13 @@
     <!-- Next Move. Same deal: reads window.CS_APP, and pulls session-data.js
          on demand (the two views share one corpus, loaded at most once). -->
     <script src="nextmove.js"></script>
-    <!-- Attack-plan engine: the comprehensive port/service corpus (port-map.js)
-         and the deterministic sequencer (scenario.js) that turns a machine's
-         parsed nmap services into an ordered, chained plan. Both read
-         window.CS_APP/CS_PORT_MAP lazily, so load order past app.js is free. -->
+    <!-- Attack-plan engine: the comprehensive port/service corpus (port-map.js),
+         the curated version->known-exploit map (vuln-map.js), and the deterministic
+         sequencer (scenario.js) that turns a machine's parsed nmap services into an
+         ordered, chained plan. All read their globals lazily, so load order past
+         app.js is free. -->
     <script src="port-map.js"></script>
+    <script src="vuln-map.js"></script>
     <script src="scenario.js"></script>
     <script src="sw-register.js"></script>
 </body>

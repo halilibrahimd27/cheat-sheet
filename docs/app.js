@@ -101,7 +101,7 @@
       addMachineDesc: "Track target machines, services, credentials, and progress.",
       machineName: "Machine Name", machineIP: "IP Address", machineOS: "Operating System",
       services: "Services", credentials: "Credentials", notes: "Notes",
-      planTitle: "Attack Plan", planEmpty: "Import an nmap scan above and a step-by-step plan appears here.", planDoNow: "Do now", planUnlock: "once you get:", planLocked: "Locked", planNeed: "need", planUncovered: "No playbook yet for", planMore: "more commands", planSvcCount: "services", planStepCount: "steps", phRecon: "Recon", phEnum: "Enumerate", phFoothold: "Foothold", phPrivesc: "Privesc", phLateral: "Lateral", phLoot: "Loot",
+      planTitle: "Attack Plan", planEmpty: "Import an nmap scan above and a step-by-step plan appears here.", planDoNow: "Do now", planUnlock: "once you get:", planLocked: "Locked", planNeed: "need", planUncovered: "No playbook yet for", planMore: "more commands", planSvcCount: "services", planStepCount: "steps", planVulns: "Known exploits", phRecon: "Recon", phEnum: "Enumerate", phFoothold: "Foothold", phPrivesc: "Privesc", phLateral: "Lateral", phLoot: "Loot",
       exportMd: "Export MD", exportPdf: "Export PDF", termCopy: "Terminal Copy",
       newSub: "New Subcategory", netErr: "Network error - is the server running?",
       copyFail: "Copy failed", termCopied: "Copied in terminal format!",
@@ -215,7 +215,7 @@
       addMachineDesc: "Hedef makineleri, servisleri, kimlik bilgilerini ve ilerlemeyi takip edin.",
       machineName: "Makine Adı", machineIP: "IP Adresi", machineOS: "İşletim Sistemi",
       services: "Servisler", credentials: "Kimlik Bilgileri", notes: "Notlar",
-      planTitle: "Saldırı Planı", planEmpty: "Yukarıdan bir nmap taraması aktarın; adım adım plan burada belirir.", planDoNow: "Şimdi yap", planUnlock: "şunu elde edince:", planLocked: "Kilitli", planNeed: "gereken", planUncovered: "Henüz playbook yok:", planMore: "daha fazla komut", planSvcCount: "servis", planStepCount: "adım", phRecon: "Keşif", phEnum: "Enumerasyon", phFoothold: "Giriş", phPrivesc: "Yetki", phLateral: "Yanal", phLoot: "Ganimet",
+      planTitle: "Saldırı Planı", planEmpty: "Yukarıdan bir nmap taraması aktarın; adım adım plan burada belirir.", planDoNow: "Şimdi yap", planUnlock: "şunu elde edince:", planLocked: "Kilitli", planNeed: "gereken", planUncovered: "Henüz playbook yok:", planMore: "daha fazla komut", planSvcCount: "servis", planStepCount: "adım", planVulns: "Bilinen açıklar", phRecon: "Keşif", phEnum: "Enumerasyon", phFoothold: "Giriş", phPrivesc: "Yetki", phLateral: "Yanal", phLoot: "Ganimet",
       exportMd: "MD Aktar", exportPdf: "PDF Aktar", termCopy: "Terminal Kopyala",
       newSub: "Yeni Alt Kategori", netErr: "Ağ hatası — sunucu çalışıyor mu?",
       copyFail: "Kopyalama başarısız", termCopied: "Terminal formatında kopyalandı!",
@@ -3341,6 +3341,36 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const stepTotal = plan.waves.reduce((n, w) => n + w.steps.length, 0);
       if (!stepTotal && !plan.locked.length && !plan.uncovered.length) { const e = document.createElement("p"); e.className = "plan-empty"; e.textContent = t("planEmpty"); body.appendChild(e); return; }
       sub.textContent = plan.focus + " · " + plan.resolved.length + " " + t("planSvcCount") + " · " + stepTotal + " " + t("planStepCount");
+
+      // Known version-specific exploits come FIRST: a vulnerable exact build is a
+      // direct foothold, not something to reach by working through recon/enum.
+      const vulns = window.CS_SCENARIO.vulnsFor ? window.CS_SCENARIO.vulnsFor(services, machineAttackCtx(m)) : [];
+      if (vulns.length) {
+        const vbox = document.createElement("div"); vbox.className = "plan-vulns";
+        const vh = document.createElement("div"); vh.className = "plan-vulns-head";
+        vh.appendChild(icon("alert", "icon-sm"));
+        vh.appendChild(document.createTextNode(" " + t("planVulns") + " (" + vulns.length + ")"));
+        vbox.appendChild(vh);
+        vulns.forEach((v) => {
+          const vr = document.createElement("div"); vr.className = "plan-vuln sev-" + v.sev;
+          const top = document.createElement("div"); top.className = "plan-vuln-top";
+          const sv = document.createElement("span"); sv.className = "plan-vuln-sev"; sv.textContent = v.sev; top.appendChild(sv);
+          const svc = document.createElement("span"); svc.className = "plan-svc"; svc.textContent = v.service + (v.port ? ":" + v.port : ""); top.appendChild(svc);
+          const ttl = document.createElement("span"); ttl.className = "plan-vuln-title"; ttl.textContent = v.title; top.appendChild(ttl);
+          if (v.id) { const idl = document.createElement("span"); idl.className = "plan-vuln-id"; idl.textContent = v.id; top.appendChild(idl); }
+          vr.appendChild(top);
+          if (v.note) { const nt = document.createElement("div"); nt.className = "plan-vuln-note"; nt.textContent = v.note; vr.appendChild(nt); }
+          if (v.exploit) {
+            const cb = document.createElement("button"); cb.type = "button"; cb.className = "plan-cmd"; cb.title = t("copy");
+            const code = document.createElement("code"); code.textContent = v.resolvedExploit || v.exploit; cb.appendChild(code);
+            cb.appendChild(icon("copy", "icon-sm"));
+            cb.addEventListener("click", () => copyCmd(v.resolvedExploit || v.exploit));
+            vr.appendChild(cb);
+          }
+          vbox.appendChild(vr);
+        });
+        body.appendChild(vbox);
+      }
 
       plan.waves.forEach((w) => {
         const wave = document.createElement("div"); wave.className = "plan-wave";

@@ -18,6 +18,7 @@ function boot() {
   // Stack the two page scripts the browser loads after app.js. They assign their
   // globals onto window, which the harness exposes on this realm.
   vm.runInThisContext(fs.readFileSync(path.join(PUBLIC_DIR, "port-map.js"), "utf8"), { filename: "port-map.js" });
+  vm.runInThisContext(fs.readFileSync(path.join(PUBLIC_DIR, "vuln-map.js"), "utf8"), { filename: "vuln-map.js" });
   vm.runInThisContext(fs.readFileSync(path.join(PUBLIC_DIR, "scenario.js"), "utf8"), { filename: "scenario.js" });
   return env;
 }
@@ -43,6 +44,20 @@ test("the machine Attack Plan panel renders real, IP-resolved steps from the sca
   // 4444 has no corpus row, and the panel says so rather than hiding it.
   const uncovered = sec.querySelector(".plan-uncovered");
   assert.ok(uncovered && uncovered.textContent.includes("4444"), "an unmatched port is surfaced as uncovered");
+});
+
+test("a vulnerable version string surfaces a known-exploit callout at the top of the plan", () => {
+  const env = boot();
+  const sec = env.app.buildAttackPlanSection(machine({
+    services: [{ port: "21", proto: "tcp", state: "open", name: "ftp", version: "vsftpd 2.3.4" }],
+  }));
+  const vuln = sec.querySelector(".plan-vuln");
+  assert.ok(vuln, "the panel renders a known-exploit card for vsftpd 2.3.4");
+  assert.ok(vuln.classList.contains("sev-critical"), "it is flagged critical");
+  assert.ok(sec.textContent.includes("CVE-2011-2523"), "the CVE id is shown");
+  const exploit = vuln.querySelector(".plan-cmd");
+  assert.ok(exploit, "the exploit command is copyable");
+  assert.ok(exploit.textContent.includes("10.10.11.5"), "the exploit's target is resolved to the machine IP");
 });
 
 test("the panel degrades to an empty-state when there are no services", () => {
