@@ -3098,7 +3098,7 @@
 
     md += "## " + S("score") + "\n\n";
     if (mode === "denominator") md += sc.earned + " / " + preset.totalPoints + " · " + preset.passMark + " " + S("toPass") + "\n\n";
-    else if (mode === "count-up") md += sc.earned + " → " + preset.passMark + " " + S("toPass") + "\n\n";
+    else if (mode === "count-up") md += sc.earned + " → " + preset.passMark + " " + S("toPass") + "\n\n"; // emoji-ok: generated report markdown
     else if (mode === "derived") md += sc.earned + " / " + sc.possible + " (" + S("derivedTotal") + ")\n\n";
     else if (mode === "unknown") md += sc.capturedFlags + " / " + sc.totalFlags + " " + S("captured") + " — " + S("pointsFromPanel") + "\n\n";
     else md += sc.capturedFlags + " / " + sc.totalFlags + " " + S("objectives") + "\n\n";
@@ -3140,7 +3140,7 @@
         });
         // An override is stated, never hidden. A report that silently claims
         // compliance it does not have is worse than one that says what happened.
-        if (cap.override) md += "  - ⚠ " + S("overrodeAt") + " (" + cap.override.unmet + ") — " + fmtDateTime(cap.override.at) + "\n";
+        if (cap.override) md += "  - ⚠ " + S("overrodeAt") + " (" + cap.override.unmet + ") — " + fmtDateTime(cap.override.at) + "\n"; // emoji-ok: generated report markdown
       });
       md += "\n";
 
@@ -3219,7 +3219,7 @@
     md += "> " + S("domainEstHint") + "\n\n";
     if (preset.passMark > 0) md += "> " + preset.passMark + "% " + S("toPass") + "\n\n";
     else if (preset.passMarkUndisclosed) md += "> " + S("passUndisclosed") + "\n\n";
-    if (preset.weightsDerived) md += "> ⚠ " + S("derivedBy") + "\n\n";
+    if (preset.weightsDerived) md += "> ⚠ " + S("derivedBy") + "\n\n"; // emoji-ok: generated report markdown
 
     md += "| " + S("domainEst") + " | Weight | " + S("legendVerified") + " |\n|---|---|---|\n";
     est.rows.forEach(function (row) {
@@ -3233,8 +3233,8 @@
     md += "| # | " + S("tasks") + " | " + S("context") + " | " + S("taskSpent") + " | " + S("taskBudget") + " | Status |\n|---|---|---|---|---|---|\n";
     (s.tasks || []).forEach(function (t) {
       md += "| " + (t.n || "") + " | " + mdCell(t.title) + " | " + mdCell(t.context) +
-        (t.contextConfirmedAt ? " ✓" : " ⚠") + " | " + fmtShort(taskElapsed(t)) + " | " +
-        (budget ? fmtShort(budget.perTaskMs) : "—") + " | " + t.status + (t.flagged ? " ⚑" : "") + " |\n";
+        (t.contextConfirmedAt ? " ✓" : " ⚠") + " | " + fmtShort(taskElapsed(t)) + " | " + // emoji-ok: generated report markdown
+        (budget ? fmtShort(budget.perTaskMs) : "—") + " | " + t.status + (t.flagged ? " ⚑" : "") + " |\n"; // emoji-ok: generated report markdown
     });
     md += "\n";
 
@@ -3280,7 +3280,7 @@
     var md = "---\n\n## " + S("rules") + "\n\n";
     (preset.rules || []).forEach(function (r) {
       md += "- _(" + r.confidence + (r.advisory === true ? ", advisory" : "") + ")_ **" + r.kind + "** — " + mdCell(r.text);
-      if (r.source) md += " [↗](" + r.source + ")";
+      if (r.source) md += " [↗](" + r.source + ")"; // emoji-ok: generated report markdown
       md += "\n";
     });
     md += "\n";
@@ -3289,7 +3289,7 @@
       preset.evidenceRules.forEach(function (r) {
         md += "- _(" + r.confidence + ")_ " + (r.appliesTo !== "*" ? "`" + r.appliesTo + "` " : "") +
           (r.capturedVia ? "`via " + r.capturedVia + "` " : "") + mdCell(r.requirement);
-        if (r.source) md += " [↗](" + r.source + ")";
+        if (r.source) md += " [↗](" + r.source + ")"; // emoji-ok: generated report markdown
         md += "\n";
       });
       md += "\n";
