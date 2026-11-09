@@ -101,7 +101,7 @@
       addMachineDesc: "Track target machines, services, credentials, and progress.",
       machineName: "Machine Name", machineIP: "IP Address", machineOS: "Operating System", osInferred: "inferred",
       services: "Services", credentials: "Credentials", notes: "Notes",
-      planTitle: "Attack Plan", planEmpty: "Import an nmap scan above and a step-by-step plan appears here.", planDoNow: "Do now", planUnlock: "once you get:", planLocked: "Locked", planNeed: "need", planUncovered: "No playbook yet for", planMore: "more commands", planSvcCount: "services", planStepCount: "steps", planVulns: "Known exploits", planExport: "Copy plan", planCopied: "Attack plan copied as Markdown", planPrivesc: "Privilege escalation", planPivot: "Lateral movement", planLoot: "Loot & persistence", planCopyWave: "Copy these commands", phRecon: "Recon", phEnum: "Enumerate", phFoothold: "Foothold", phPrivesc: "Privesc", phLateral: "Lateral", phLoot: "Loot",
+      planTitle: "Attack Plan", planEmpty: "Import an nmap scan above and a step-by-step plan appears here.", planDoNow: "Do now", planUnlock: "once you get:", planLocked: "Locked", planNeed: "need", planUncovered: "No playbook yet for", planMore: "more commands", planSvcCount: "services", planStepCount: "steps", planVulns: "Known exploits", planExport: "Copy plan", planCopied: "Attack plan copied as Markdown", planPrivesc: "Privilege escalation", planPivot: "Lateral movement", planLoot: "Loot & persistence", planCopyWave: "Copy these commands", planStepsRun: "run", phRecon: "Recon", phEnum: "Enumerate", phFoothold: "Foothold", phPrivesc: "Privesc", phLateral: "Lateral", phLoot: "Loot",
       exportMd: "Export MD", exportPdf: "Export PDF", termCopy: "Terminal Copy",
       newSub: "New Subcategory", netErr: "Network error - is the server running?",
       copyFail: "Copy failed", termCopied: "Copied in terminal format!",
@@ -215,7 +215,7 @@
       addMachineDesc: "Hedef makineleri, servisleri, kimlik bilgilerini ve ilerlemeyi takip edin.",
       machineName: "Makine Adı", machineIP: "IP Adresi", machineOS: "İşletim Sistemi", osInferred: "tahmin",
       services: "Servisler", credentials: "Kimlik Bilgileri", notes: "Notlar",
-      planTitle: "Saldırı Planı", planEmpty: "Yukarıdan bir nmap taraması aktarın; adım adım plan burada belirir.", planDoNow: "Şimdi yap", planUnlock: "şunu elde edince:", planLocked: "Kilitli", planNeed: "gereken", planUncovered: "Henüz playbook yok:", planMore: "daha fazla komut", planSvcCount: "servis", planStepCount: "adım", planVulns: "Bilinen açıklar", planExport: "Planı kopyala", planCopied: "Saldırı planı Markdown olarak kopyalandı", planPrivesc: "Yetki yükseltme", planPivot: "Yanal hareket", planLoot: "Ganimet ve kalıcılık", planCopyWave: "Bu komutları kopyala", phRecon: "Keşif", phEnum: "Enumerasyon", phFoothold: "Giriş", phPrivesc: "Yetki", phLateral: "Yanal", phLoot: "Ganimet",
+      planTitle: "Saldırı Planı", planEmpty: "Yukarıdan bir nmap taraması aktarın; adım adım plan burada belirir.", planDoNow: "Şimdi yap", planUnlock: "şunu elde edince:", planLocked: "Kilitli", planNeed: "gereken", planUncovered: "Henüz playbook yok:", planMore: "daha fazla komut", planSvcCount: "servis", planStepCount: "adım", planVulns: "Bilinen açıklar", planExport: "Planı kopyala", planCopied: "Saldırı planı Markdown olarak kopyalandı", planPrivesc: "Yetki yükseltme", planPivot: "Yanal hareket", planLoot: "Ganimet ve kalıcılık", planCopyWave: "Bu komutları kopyala", planStepsRun: "çalıştırıldı", phRecon: "Keşif", phEnum: "Enumerasyon", phFoothold: "Giriş", phPrivesc: "Yetki", phLateral: "Yanal", phLoot: "Ganimet",
       exportMd: "MD Aktar", exportPdf: "PDF Aktar", termCopy: "Terminal Kopyala",
       newSub: "Yeni Alt Kategori", netErr: "Ağ hatası — sunucu çalışıyor mu?",
       copyFail: "Kopyalama başarısız", termCopied: "Terminal formatında kopyalandı!",
@@ -3524,7 +3524,9 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const plan = window.CS_SCENARIO.plan(services, ctx);
       const stepTotal = plan.waves.reduce((n, w) => n + w.steps.length, 0);
       if (!stepTotal && !plan.locked.length && !plan.uncovered.length) { const e = document.createElement("p"); e.className = "plan-empty"; e.textContent = t("planEmpty"); body.appendChild(e); return; }
-      sub.textContent = plan.focus + " · " + plan.resolved.length + " " + t("planSvcCount") + " · " + stepTotal + " " + t("planStepCount");
+      let runCount = 0;
+      plan.waves.forEach(w => w.steps.forEach(st => { if (ran.has(applyIpToCode(st.resolved || st.cmd))) runCount++; }));
+      sub.textContent = plan.focus + " · " + plan.resolved.length + " " + t("planSvcCount") + " · " + stepTotal + " " + t("planStepCount") + (runCount ? " · " + runCount + " " + t("planStepsRun") : "");
       exportBtn.style.display = "";
 
       // Known version-specific exploits come FIRST: a vulnerable exact build is a
