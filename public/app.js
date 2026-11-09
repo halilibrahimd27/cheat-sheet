@@ -2430,6 +2430,17 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     return "server";
   }
   function osIconHtml(os) { return iconHtml(osIconFor(os)); }
+  // The OS to show a glyph for: the set field, or what the banners imply when it
+  // was never set — so the list/card/header icon matches the inferred OS the plan
+  // and menus already run on, instead of a generic server box.
+  function machineOsDisplay(m) {
+    if (m && m.os && String(m.os).trim()) return m.os;
+    if (m && window.CS_SCENARIO && typeof window.CS_SCENARIO.inferOs === "function") {
+      const io = window.CS_SCENARIO.inferOs(m.services || []);
+      if (io) return io;
+    }
+    return (m && m.os) || "";
+  }
 
   // ── Machine metadata helpers (platform / difficulty / status / flags / timing) ──
   // Status and difficulty end up in class names and <option> values, so they are
@@ -3159,7 +3170,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         // machine: os glyph + name over ip, plus platform/difficulty as quiet meta
         const cName = document.createElement("td"); cName.className = "col-machine";
         const nameWrap = document.createElement("div"); nameWrap.className = "mrow-name-wrap";
-        const os = document.createElement("span"); os.className = "mrow-os"; os.appendChild(icon(osIconFor(m.os), "icon-sm")); os.setAttribute("aria-hidden", "true");
+        const os = document.createElement("span"); os.className = "mrow-os"; os.appendChild(icon(osIconFor(machineOsDisplay(m)), "icon-sm")); os.setAttribute("aria-hidden", "true");
         const nameCol = document.createElement("div"); nameCol.className = "mrow-namecol";
         const nm = document.createElement("div"); nm.className = "mrow-name"; nm.textContent = m.name;
         const sub = document.createElement("div"); sub.className = "mrow-sub";
@@ -3254,7 +3265,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const card = document.createElement("div"); card.className = "board-card"; card.draggable = true;
       card.setAttribute("role", "button"); card.setAttribute("tabindex", "0");
       card.innerHTML =
-        '<div class="board-card-top"><span class="machine-os-icon">' + osIconHtml(m.os) + '</span>' +
+        '<div class="board-card-top"><span class="machine-os-icon">' + osIconHtml(machineOsDisplay(m)) + '</span>' +
           '<span class="board-card-name">' + escapeHtml(m.name) + '</span>' +
           (nVuln ? '<span class="board-card-vuln" title="' + escapeHtml(t("planVulns") + " (" + nVuln + ")") + '">' + iconHtml("alert", "icon-sm") + ' ' + nVuln + '</span>' : '') +
           (isCaptured(m.userFlag) ? '<span class="flag-chip user" title="' + t("userFlag") + '"></span>' : '') +
@@ -3880,7 +3891,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     }
     info.innerHTML =
       '<div class="machine-detail-header">' +
-        '<span class="machine-detail-icon">' + osIconHtml(m.os) + '</span>' +
+        '<span class="machine-detail-icon">' + osIconHtml(machineOsDisplay(m)) + '</span>' +
         '<div class="machine-detail-meta">' +
           '<input class="machine-detail-name-input" data-k="name" value="' + escapeHtml(m.name) + '" aria-label="' + t("machineName") + '">' +
           '<div class="machine-meta-fields">' +
