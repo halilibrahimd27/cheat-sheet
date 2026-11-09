@@ -80,6 +80,36 @@ test("a vulnerable build is flagged in the exported report with its CVE", () => 
   assert.ok(md.includes("[CRITICAL]"), "the severity is labelled in the report");
 });
 
+test("capturing a foothold reveals an OS-aware privilege-escalation menu", () => {
+  const env = boot();
+  env.app.setCategories(require(path.join(PUBLIC_DIR, "..", "seed.js")));
+  const sec = env.app.buildAttackPlanSection(machine({
+    os: "Linux", userFlag: { value: "u", capturedAt: "t" },
+    services: [{ port: "22", proto: "tcp", state: "open", name: "ssh", version: "" }],
+  }));
+  const pe = sec.querySelector(".plan-privesc");
+  assert.ok(pe, "a held shell reveals the privesc block");
+  assert.ok(sec.querySelectorAll(".plan-pe-row").length >= 3, "several escalation vectors are listed");
+  assert.ok(/Linux/.test(pe.textContent), "the block names the target OS");
+});
+
+test("the privesc menu stays hidden until a shell is actually held", () => {
+  const env = boot();
+  env.app.setCategories(require(path.join(PUBLIC_DIR, "..", "seed.js")));
+  const sec = env.app.buildAttackPlanSection(machine({
+    os: "Linux",
+    services: [{ port: "22", proto: "tcp", state: "open", name: "ssh", version: "" }],
+  }));
+  assert.strictEqual(sec.querySelector(".plan-privesc"), null, "no foothold, no privesc block");
+});
+
+test("a foothold machine's exported report carries the privesc menu", () => {
+  const env = boot();
+  env.app.setCategories(require(path.join(PUBLIC_DIR, "..", "seed.js")));
+  const md = env.app.machineToMarkdown(machine({ os: "Linux", userFlag: { value: "u", capturedAt: "t" } }));
+  assert.ok(md.includes(env.app.t("planPrivesc")), "the privilege-escalation section rides along in the report once a shell is held");
+});
+
 test("the panel degrades to an empty-state when there are no services", () => {
   const env = boot();
   const sec = env.app.buildAttackPlanSection(machine({ services: [] }));

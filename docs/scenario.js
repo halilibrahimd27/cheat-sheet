@@ -301,6 +301,37 @@
     return out.slice(0, limit);
   }
 
+  // ── post-foothold privilege escalation (OS-aware, DB-sourced) ────────────
+  // Once a shell is held the remote waves are spent — the next move is local.
+  // This surfaces one essential command per escalation VECTOR (SUID, sudo, cron,
+  // SeImpersonate, services, kernel, a PEAS scanner…) by taking the first
+  // essential-with-a-body command of each subcategory in the matching OS privesc
+  // category, so the block reads as a menu of techniques, not a dump of 90
+  // commands. Gated on access === "foothold": nothing to escalate before a shell,
+  // nothing left to do once you are admin.
+  var PRIVESC_CAT = { windows: "win-escalation", linux: "linux-escalation" };
+  function privescFor(ctx) {
+    ctx = ctx || {};
+    if (ctx.access !== "foothold") return [];
+    var os = ctx.os === "windows" ? "windows" : (ctx.os === "linux" ? "linux" : "");
+    if (!os) return [];
+    var cat = categories().filter(function (c) { return c.id === PRIVESC_CAT[os]; })[0];
+    if (!cat) return [];
+    var out = [];
+    (cat.subcategories || []).forEach(function (sub) {
+      var pick = null;
+      (sub.commands || []).some(function (c) {
+        if ((c.tags || []).indexOf("essential") < 0) return false;
+        var body = String(c.cmd || (c.cmds && c.cmds[0]) || "").trim();
+        if (!body) return false;
+        pick = { title: c.title || "", group: sub.name || "", cmd: body, resolved: resolve(body, ctx), catId: cat.id, os: os };
+        return true;
+      });
+      if (pick) out.push(pick);
+    });
+    return out.slice(0, 14);
+  }
+
   // ── version → known-exploit matching (public/vuln-map.js) ────────────────
   // nmap's version string is the highest-signal input: an exact vulnerable build
   // is a direct foothold, not a lead to chase. parseVer reads the first dotted-
@@ -366,6 +397,7 @@
     plan: plan,
     dbCommandsFor: dbCommandsFor,
     vulnsFor: vulnsFor,
+    privescFor: privescFor,
     rowsForService: rowsForService,
     bucketOf: bucketOf,
     _corpus: corpus

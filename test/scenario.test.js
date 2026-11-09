@@ -207,6 +207,36 @@ test("vulnsFor is deterministic and severity-ordered", () => {
   assert.deepStrictEqual(order, order.slice().sort((x, y) => x - y), "most severe first");
 });
 
+// The privesc menu is DB-sourced, so these load the real seed categories the way
+// the running app would have them (window.CS_APP.getCategories).
+const SEED = require(path.join(__dirname, "..", "seed.js"));
+
+test("privescFor surfaces OS-specific escalation vectors, but only once a shell is held", () => {
+  const w = load({ categories: SEED });
+  const S = w.CS_SCENARIO;
+  assert.strictEqual(S.privescFor({ os: "linux", access: "none" }).length, 0, "nothing to escalate before a foothold");
+  assert.strictEqual(S.privescFor({ os: "linux", access: "admin" }).length, 0, "nothing left once you are admin");
+  assert.strictEqual(S.privescFor({ os: "", access: "foothold" }).length, 0, "no OS means no category to pull from");
+  const lin = S.privescFor({ os: "linux", access: "foothold" });
+  assert.ok(lin.length >= 5, "a shell on linux surfaces several vectors, got " + lin.length);
+  assert.ok(lin.every((p) => p.catId === "linux-escalation"), "every vector is drawn from the linux privesc category");
+  assert.ok(lin.some((p) => /sudo -l/.test(p.cmd)) && lin.some((p) => /-perm -4000/.test(p.cmd)),
+    "the classic linux vectors (sudo -l, SUID find) are present");
+  const win = S.privescFor({ os: "windows", access: "foothold" });
+  assert.ok(win.length >= 5 && win.every((p) => p.catId === "win-escalation"), "a windows shell surfaces windows vectors instead");
+});
+
+test("the privesc menu is one representative per vector, with placeholders filled", () => {
+  const w = load({ categories: SEED });
+  const lin = w.CS_SCENARIO.privescFor({ os: "linux", access: "foothold", ip: "10.9.9.9" });
+  assert.ok(lin.length <= 14, "it is a menu of vectors, not a dump of the whole category");
+  const groups = lin.map((p) => p.group);
+  assert.strictEqual(groups.length, new Set(groups).size, "no two picks share an escalation vector");
+  assert.ok(lin.every((p) => p.cmd && p.cmd.trim()), "a vector whose lead command is blank is skipped, never shown empty");
+  const nfs = lin.find((p) => /showmount/.test(p.cmd));
+  if (nfs) assert.ok(nfs.resolved.indexOf("10.9.9.9") >= 0 && nfs.resolved.indexOf("<TARGET_IP>") < 0, "<TARGET_IP> is resolved in the menu");
+});
+
 // Resolve a service to its matched corpus service ids.
 function S_names(w, service) {
   return w.CS_SCENARIO.rowsForService(normalize(service), w.CS_PORT_MAP).map((r) => r.service);

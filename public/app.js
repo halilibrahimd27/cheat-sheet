@@ -100,7 +100,7 @@
       addMachineDesc: "Track target machines, services, credentials, and progress.",
       machineName: "Machine Name", machineIP: "IP Address", machineOS: "Operating System",
       services: "Services", credentials: "Credentials", notes: "Notes",
-      planTitle: "Attack Plan", planEmpty: "Import an nmap scan above and a step-by-step plan appears here.", planDoNow: "Do now", planUnlock: "once you get:", planLocked: "Locked", planNeed: "need", planUncovered: "No playbook yet for", planMore: "more commands", planSvcCount: "services", planStepCount: "steps", planVulns: "Known exploits", planExport: "Copy plan", planCopied: "Attack plan copied as Markdown", phRecon: "Recon", phEnum: "Enumerate", phFoothold: "Foothold", phPrivesc: "Privesc", phLateral: "Lateral", phLoot: "Loot",
+      planTitle: "Attack Plan", planEmpty: "Import an nmap scan above and a step-by-step plan appears here.", planDoNow: "Do now", planUnlock: "once you get:", planLocked: "Locked", planNeed: "need", planUncovered: "No playbook yet for", planMore: "more commands", planSvcCount: "services", planStepCount: "steps", planVulns: "Known exploits", planExport: "Copy plan", planCopied: "Attack plan copied as Markdown", planPrivesc: "Privilege escalation", phRecon: "Recon", phEnum: "Enumerate", phFoothold: "Foothold", phPrivesc: "Privesc", phLateral: "Lateral", phLoot: "Loot",
       exportMd: "Export MD", exportPdf: "Export PDF", termCopy: "Terminal Copy",
       newSub: "New Subcategory", netErr: "Network error - is the server running?",
       copyFail: "Copy failed", termCopied: "Copied in terminal format!",
@@ -214,7 +214,7 @@
       addMachineDesc: "Hedef makineleri, servisleri, kimlik bilgilerini ve ilerlemeyi takip edin.",
       machineName: "Makine Adı", machineIP: "IP Adresi", machineOS: "İşletim Sistemi",
       services: "Servisler", credentials: "Kimlik Bilgileri", notes: "Notlar",
-      planTitle: "Saldırı Planı", planEmpty: "Yukarıdan bir nmap taraması aktarın; adım adım plan burada belirir.", planDoNow: "Şimdi yap", planUnlock: "şunu elde edince:", planLocked: "Kilitli", planNeed: "gereken", planUncovered: "Henüz playbook yok:", planMore: "daha fazla komut", planSvcCount: "servis", planStepCount: "adım", planVulns: "Bilinen açıklar", planExport: "Planı kopyala", planCopied: "Saldırı planı Markdown olarak kopyalandı", phRecon: "Keşif", phEnum: "Enumerasyon", phFoothold: "Giriş", phPrivesc: "Yetki", phLateral: "Yanal", phLoot: "Ganimet",
+      planTitle: "Saldırı Planı", planEmpty: "Yukarıdan bir nmap taraması aktarın; adım adım plan burada belirir.", planDoNow: "Şimdi yap", planUnlock: "şunu elde edince:", planLocked: "Kilitli", planNeed: "gereken", planUncovered: "Henüz playbook yok:", planMore: "daha fazla komut", planSvcCount: "servis", planStepCount: "adım", planVulns: "Bilinen açıklar", planExport: "Planı kopyala", planCopied: "Saldırı planı Markdown olarak kopyalandı", planPrivesc: "Yetki yükseltme", phRecon: "Keşif", phEnum: "Enumerasyon", phFoothold: "Giriş", phPrivesc: "Yetki", phLateral: "Yanal", phLoot: "Ganimet",
       exportMd: "MD Aktar", exportPdf: "PDF Aktar", termCopy: "Terminal Kopyala",
       newSub: "Yeni Alt Kategori", netErr: "Ağ hatası — sunucu çalışıyor mu?",
       copyFail: "Kopyalama başarısız", termCopied: "Terminal formatında kopyalandı!",
@@ -2881,6 +2881,12 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       });
       md += "\n";
     });
+    const privesc = window.CS_SCENARIO.privescFor ? window.CS_SCENARIO.privescFor(ctx) : [];
+    if (privesc.length) {
+      md += "### " + t("planPrivesc") + " (" + (ctx.os === "windows" ? "Windows" : "Linux") + ")\n\n";
+      privesc.forEach(p => { md += "- **" + p.group + "** — " + p.title + "\n  " + code(p.resolved || p.cmd) + "\n"; });
+      md += "\n";
+    }
     if (plan.locked.length) {
       md += "### " + t("planLocked") + " (" + plan.locked.length + ")\n\n";
       plan.locked.forEach(st => {
@@ -3397,7 +3403,8 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const services = m.services || [];
       if (!services.length) { const e = document.createElement("p"); e.className = "plan-empty"; e.textContent = t("planEmpty"); body.appendChild(e); return; }
       if (!window.CS_SCENARIO) { const e = document.createElement("p"); e.className = "plan-empty"; e.textContent = "…"; body.appendChild(e); return; }
-      const plan = window.CS_SCENARIO.plan(services, machineAttackCtx(m));
+      const ctx = machineAttackCtx(m);
+      const plan = window.CS_SCENARIO.plan(services, ctx);
       const stepTotal = plan.waves.reduce((n, w) => n + w.steps.length, 0);
       if (!stepTotal && !plan.locked.length && !plan.uncovered.length) { const e = document.createElement("p"); e.className = "plan-empty"; e.textContent = t("planEmpty"); body.appendChild(e); return; }
       sub.textContent = plan.focus + " · " + plan.resolved.length + " " + t("planSvcCount") + " · " + stepTotal + " " + t("planStepCount");
@@ -3405,7 +3412,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
 
       // Known version-specific exploits come FIRST: a vulnerable exact build is a
       // direct foothold, not something to reach by working through recon/enum.
-      const vulns = window.CS_SCENARIO.vulnsFor ? window.CS_SCENARIO.vulnsFor(services, machineAttackCtx(m)) : [];
+      const vulns = window.CS_SCENARIO.vulnsFor ? window.CS_SCENARIO.vulnsFor(services, ctx) : [];
       if (vulns.length) {
         const vbox = document.createElement("div"); vbox.className = "plan-vulns";
         const vh = document.createElement("div"); vh.className = "plan-vulns-head";
@@ -3441,6 +3448,31 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         w.steps.forEach((st) => wave.appendChild(stepRow(st, false)));
         body.appendChild(wave);
       });
+
+      // Once a shell is held, the next move is local: an OS-aware menu of privesc
+      // vectors, sourced from the live DB's privilege-escalation category.
+      const privesc = window.CS_SCENARIO.privescFor ? window.CS_SCENARIO.privescFor(ctx) : [];
+      if (privesc.length) {
+        const pbox = document.createElement("div"); pbox.className = "plan-privesc";
+        const ph = document.createElement("div"); ph.className = "plan-privesc-head";
+        ph.appendChild(icon("crown", "icon-sm"));
+        ph.appendChild(document.createTextNode(" " + t("planPrivesc") + " · " + (ctx.os === "windows" ? "Windows" : "Linux")));
+        pbox.appendChild(ph);
+        privesc.forEach((p) => {
+          const row = document.createElement("div"); row.className = "plan-pe-row";
+          const lbl = document.createElement("div"); lbl.className = "plan-pe-label";
+          const g = document.createElement("span"); g.className = "plan-pe-group"; g.textContent = p.group; lbl.appendChild(g);
+          lbl.appendChild(document.createTextNode(" " + p.title));
+          row.appendChild(lbl);
+          const cb = document.createElement("button"); cb.type = "button"; cb.className = "plan-cmd"; cb.title = t("copy");
+          const code = document.createElement("code"); code.textContent = p.resolved || p.cmd; cb.appendChild(code);
+          cb.appendChild(icon("copy", "icon-sm"));
+          cb.addEventListener("click", () => copyCmd(p.resolved || p.cmd));
+          row.appendChild(cb);
+          pbox.appendChild(row);
+        });
+        body.appendChild(pbox);
+      }
 
       const hasDb = window.CS_APP && typeof window.CS_APP.getCategories === "function" && (window.CS_APP.getCategories() || []).length;
       if (hasDb && plan.resolved.length) {
