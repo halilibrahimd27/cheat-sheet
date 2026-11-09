@@ -60,6 +60,26 @@ test("a vulnerable version string surfaces a known-exploit callout at the top of
   assert.ok(exploit.textContent.includes("10.10.11.5"), "the exploit's target is resolved to the machine IP");
 });
 
+test("the exported machine report embeds the attack plan, IP-resolved", () => {
+  const env = boot();
+  const md = env.app.machineToMarkdown(machine());
+  const i = md.indexOf("## " + env.app.t("planTitle"));
+  assert.ok(i >= 0, "the report carries an Attack Plan section");
+  const planPart = md.slice(i);
+  assert.ok(/`[^`\n]*10\.10\.11\.5[^`\n]*`/.test(planPart),
+    "a plan command under the heading is rendered with <TARGET_IP> resolved to the machine IP");
+});
+
+test("a vulnerable build is flagged in the exported report with its CVE", () => {
+  const env = boot();
+  const md = env.app.machineToMarkdown(machine({
+    services: [{ port: "21", proto: "tcp", state: "open", name: "ftp", version: "vsftpd 2.3.4" }],
+  }));
+  assert.ok(md.includes(env.app.t("planVulns")), "the known-exploits subsection is present in the report");
+  assert.ok(md.includes("CVE-2011-2523"), "the CVE id rides along in the report");
+  assert.ok(md.includes("[CRITICAL]"), "the severity is labelled in the report");
+});
+
 test("the panel degrades to an empty-state when there are no services", () => {
   const env = boot();
   const sec = env.app.buildAttackPlanSection(machine({ services: [] }));

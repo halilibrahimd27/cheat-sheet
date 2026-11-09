@@ -100,7 +100,7 @@
       addMachineDesc: "Track target machines, services, credentials, and progress.",
       machineName: "Machine Name", machineIP: "IP Address", machineOS: "Operating System",
       services: "Services", credentials: "Credentials", notes: "Notes",
-      planTitle: "Attack Plan", planEmpty: "Import an nmap scan above and a step-by-step plan appears here.", planDoNow: "Do now", planUnlock: "once you get:", planLocked: "Locked", planNeed: "need", planUncovered: "No playbook yet for", planMore: "more commands", planSvcCount: "services", planStepCount: "steps", planVulns: "Known exploits", phRecon: "Recon", phEnum: "Enumerate", phFoothold: "Foothold", phPrivesc: "Privesc", phLateral: "Lateral", phLoot: "Loot",
+      planTitle: "Attack Plan", planEmpty: "Import an nmap scan above and a step-by-step plan appears here.", planDoNow: "Do now", planUnlock: "once you get:", planLocked: "Locked", planNeed: "need", planUncovered: "No playbook yet for", planMore: "more commands", planSvcCount: "services", planStepCount: "steps", planVulns: "Known exploits", planExport: "Copy plan", planCopied: "Attack plan copied as Markdown", phRecon: "Recon", phEnum: "Enumerate", phFoothold: "Foothold", phPrivesc: "Privesc", phLateral: "Lateral", phLoot: "Loot",
       exportMd: "Export MD", exportPdf: "Export PDF", termCopy: "Terminal Copy",
       newSub: "New Subcategory", netErr: "Network error - is the server running?",
       copyFail: "Copy failed", termCopied: "Copied in terminal format!",
@@ -214,7 +214,7 @@
       addMachineDesc: "Hedef makineleri, servisleri, kimlik bilgilerini ve ilerlemeyi takip edin.",
       machineName: "Makine Adı", machineIP: "IP Adresi", machineOS: "İşletim Sistemi",
       services: "Servisler", credentials: "Kimlik Bilgileri", notes: "Notlar",
-      planTitle: "Saldırı Planı", planEmpty: "Yukarıdan bir nmap taraması aktarın; adım adım plan burada belirir.", planDoNow: "Şimdi yap", planUnlock: "şunu elde edince:", planLocked: "Kilitli", planNeed: "gereken", planUncovered: "Henüz playbook yok:", planMore: "daha fazla komut", planSvcCount: "servis", planStepCount: "adım", planVulns: "Bilinen açıklar", phRecon: "Keşif", phEnum: "Enumerasyon", phFoothold: "Giriş", phPrivesc: "Yetki", phLateral: "Yanal", phLoot: "Ganimet",
+      planTitle: "Saldırı Planı", planEmpty: "Yukarıdan bir nmap taraması aktarın; adım adım plan burada belirir.", planDoNow: "Şimdi yap", planUnlock: "şunu elde edince:", planLocked: "Kilitli", planNeed: "gereken", planUncovered: "Henüz playbook yok:", planMore: "daha fazla komut", planSvcCount: "servis", planStepCount: "adım", planVulns: "Bilinen açıklar", planExport: "Planı kopyala", planCopied: "Saldırı planı Markdown olarak kopyalandı", phRecon: "Keşif", phEnum: "Enumerasyon", phFoothold: "Giriş", phPrivesc: "Yetki", phLateral: "Yanal", phLoot: "Ganimet",
       exportMd: "MD Aktar", exportPdf: "PDF Aktar", termCopy: "Terminal Kopyala",
       newSub: "Yeni Alt Kategori", netErr: "Ağ hatası — sunucu çalışıyor mu?",
       copyFail: "Kopyalama başarısız", termCopied: "Terminal formatında kopyalandı!",
@@ -2845,6 +2845,57 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     toast(built.stats.techniques + " " + t("navDone") + " (" + built.stats.mapped + "/" + built.stats.total + ")", "ok");
   }
 
+  // The attack plan, serialised for the report/notes — same engine the panel
+  // renders, dumped as Markdown so a whole scan's worth of IP-resolved steps lands
+  // in one paste instead of copying commands one at a time. Returns "" when the
+  // engine is absent (non-browser contexts) or there is nothing to say, so callers
+  // can concatenate it unconditionally.
+  function planToMarkdown(m) {
+    if (!window.CS_SCENARIO || typeof window.CS_SCENARIO.plan !== "function") return "";
+    const services = normalizeServices(m.services);
+    if (!services.length) return "";
+    const ctx = machineAttackCtx(m);
+    const plan = window.CS_SCENARIO.plan(services, ctx);
+    const vulns = window.CS_SCENARIO.vulnsFor ? window.CS_SCENARIO.vulnsFor(services, ctx) : [];
+    const stepTotal = plan.waves.reduce((n, w) => n + w.steps.length, 0);
+    if (!stepTotal && !vulns.length && !plan.locked.length && !plan.uncovered.length) return "";
+    const PH = { recon: t("phRecon"), enum: t("phEnum"), foothold: t("phFoothold"), privesc: t("phPrivesc"), lateral: t("phLateral"), loot: t("phLoot") };
+    const code = s => "`" + String(s == null ? "" : s).replace(/`/g, "'") + "`";
+    let md = "## " + t("planTitle") + "\n\n";
+    md += "> " + plan.focus + " · " + plan.resolved.length + " " + t("planSvcCount") + " · " + stepTotal + " " + t("planStepCount") + "\n\n";
+    if (vulns.length) {
+      md += "### " + t("planVulns") + " (" + vulns.length + ")\n\n";
+      vulns.forEach(v => {
+        md += "- **[" + v.sev.toUpperCase() + "] " + v.service + (v.port ? ":" + v.port : "") + "** — " + v.title + (v.id ? " (" + v.id + ")" : "") + "\n";
+        if (v.note) md += "  " + v.note + "\n";
+        if (v.exploit) md += "  " + code(v.resolvedExploit || v.exploit) + "\n";
+      });
+      md += "\n";
+    }
+    plan.waves.forEach(w => {
+      md += "### " + (w.index === 0 ? t("planDoNow") : (t("planUnlock") + " " + w.unlockedBy.join(", "))) + "\n\n";
+      w.steps.forEach(st => {
+        md += "- **[" + (PH[st.phase] || st.phase) + "] " + st.service + "** — " + st.label + "\n";
+        if (st.bucket === "cond" && st.when && st.when.toLowerCase() !== "always") md += "  _" + st.when + "_\n";
+        md += "  " + code(st.resolved || st.cmd) + "\n";
+      });
+      md += "\n";
+    });
+    if (plan.locked.length) {
+      md += "### " + t("planLocked") + " (" + plan.locked.length + ")\n\n";
+      plan.locked.forEach(st => {
+        md += "- **[" + (PH[st.phase] || st.phase) + "] " + st.service + "** — " + st.label +
+          (st.unlockedBy && st.unlockedBy.length ? " _(" + t("planNeed") + ": " + st.unlockedBy.join(", ") + ")_" : "") + "\n";
+        md += "  " + code(st.resolved || st.cmd) + "\n";
+      });
+      md += "\n";
+    }
+    if (plan.uncovered.length) {
+      md += "### " + t("planUncovered") + "\n\n" + plan.uncovered.map(s => s.port + (s.name ? "/" + s.name : "")).join(", ") + "\n\n";
+    }
+    return md;
+  }
+
   function machineToMarkdown(m) {
     const flagLine = f => (isCaptured(f) ? "✅ " + t("capturedAt") + " " + new Date(f.capturedAt).toLocaleDateString() : "⬜ " + t("notCaptured"));
     let md = "# " + (m.name || "Machine") + " — " + (m.platform || "Custom") + "\n\n";
@@ -2863,6 +2914,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       svcs.forEach(s => { md += "| " + cell(s.port) + " | " + cell(s.proto) + " | " + cell(s.state) + " | " + cell(s.name) + " | " + cell(s.version) + " |\n"; });
       md += "\n";
     } else md += "_—_\n\n";
+    md += planToMarkdown(m);
     const creds = normalizeCreds(m.credentials);
     md += "## " + t("credentials") + "\n\n";
     if (creds.length) {
@@ -3277,6 +3329,15 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     const sec = document.createElement("div"); sec.className = "machine-section machine-plan";
     const head = document.createElement("div"); head.className = "machine-section-head";
     head.innerHTML = '<h3>' + iconHtml("target") + ' ' + t("planTitle") + '</h3>';
+    const exportBtn = document.createElement("button"); exportBtn.type = "button"; exportBtn.className = "btn btn-secondary btn-sm plan-export";
+    exportBtn.style.display = "none";
+    setIconLabel(exportBtn, "copy", t("planExport"));
+    exportBtn.addEventListener("click", () => {
+      const md = planToMarkdown(m);
+      if (!md) { toast(t("planEmpty"), "error"); return; }
+      copyText(md, () => { announce(t("planCopied")); toast(t("planCopied"), "ok"); });
+    });
+    head.appendChild(exportBtn);
     sec.appendChild(head);
     const sub = document.createElement("div"); sub.className = "plan-sub"; sec.appendChild(sub);
     const body = document.createElement("div"); body.className = "plan-body"; sec.appendChild(body);
@@ -3332,7 +3393,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     }
 
     function render() {
-      body.innerHTML = ""; sub.textContent = "";
+      body.innerHTML = ""; sub.textContent = ""; exportBtn.style.display = "none";
       const services = m.services || [];
       if (!services.length) { const e = document.createElement("p"); e.className = "plan-empty"; e.textContent = t("planEmpty"); body.appendChild(e); return; }
       if (!window.CS_SCENARIO) { const e = document.createElement("p"); e.className = "plan-empty"; e.textContent = "…"; body.appendChild(e); return; }
@@ -3340,6 +3401,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const stepTotal = plan.waves.reduce((n, w) => n + w.steps.length, 0);
       if (!stepTotal && !plan.locked.length && !plan.uncovered.length) { const e = document.createElement("p"); e.className = "plan-empty"; e.textContent = t("planEmpty"); body.appendChild(e); return; }
       sub.textContent = plan.focus + " · " + plan.resolved.length + " " + t("planSvcCount") + " · " + stepTotal + " " + t("planStepCount");
+      exportBtn.style.display = "";
 
       // Known version-specific exploits come FIRST: a vulnerable exact build is a
       // direct foothold, not something to reach by working through recon/enum.
