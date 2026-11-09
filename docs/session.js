@@ -2023,6 +2023,11 @@
         row.appendChild(rb);
         pbody.appendChild(row);
       });
+      if (g[1].length > 1) {
+        var all = iconBtn("btn btn-secondary btn-sm", "copy", S("copyAll"), null);
+        wireCopy(all, (function (items) { return function () { return items.map(function (p) { return p.resolved || p.cmd || ""; }).filter(Boolean).join("\n"); }; })(g[1]), t);
+        pbody.appendChild(all);
+      }
       phase.appendChild(pbody);
       wrap.appendChild(phase);
     });
