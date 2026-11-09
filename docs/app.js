@@ -3483,6 +3483,8 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     // Commands already copied against THIS box (its timeline) — so the plan shows,
     // automatically, which steps you have already run. No separate tick to keep.
     let ran = new Set();
+    const didRunCmd = (cmd) => ran.has(applyIpToCode(cmd));
+    const markRan = (el, cmd) => { if (didRunCmd(cmd)) el.classList.add("plan-row-ran"); };
     function stepRow(st, locked) {
       const didRun = ran.has(applyIpToCode(st.resolved || st.cmd));
       const row = document.createElement("div"); row.className = "plan-step phase-" + st.phase + (locked ? " plan-step-locked" : "") + (didRun ? " plan-step-ran" : "");
@@ -3558,7 +3560,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         if (vulns.length > 1) vh.appendChild(menuCopyBtn(vulns.map((v) => ({ resolved: v.resolvedExploit, cmd: v.exploit }))));
         vbox.appendChild(vh);
         vulns.forEach((v) => {
-          const vr = document.createElement("div"); vr.className = "plan-vuln sev-" + v.sev;
+          const vr = document.createElement("div"); vr.className = "plan-vuln sev-" + v.sev; markRan(vr, v.resolvedExploit || v.exploit);
           const top = document.createElement("div"); top.className = "plan-vuln-top";
           const sv = document.createElement("span"); sv.className = "plan-vuln-sev"; sv.textContent = v.sev; top.appendChild(sv);
           const svc = document.createElement("span"); svc.className = "plan-svc"; svc.textContent = v.service + (v.port ? ":" + v.port : ""); top.appendChild(svc);
@@ -3609,7 +3611,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         if (privesc.length > 1) ph.appendChild(menuCopyBtn(privesc));
         pbox.appendChild(ph);
         privesc.forEach((p) => {
-          const row = document.createElement("div"); row.className = "plan-pe-row";
+          const row = document.createElement("div"); row.className = "plan-pe-row"; markRan(row, p.resolved || p.cmd);
           const lbl = document.createElement("div"); lbl.className = "plan-pe-label";
           const g = document.createElement("span"); g.className = "plan-pe-group"; g.textContent = p.group; lbl.appendChild(g);
           lbl.appendChild(document.createTextNode(" " + p.title));
@@ -3635,7 +3637,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         if (pivot.length > 1) vh.appendChild(menuCopyBtn(pivot));
         vbox.appendChild(vh);
         pivot.forEach((p) => {
-          const row = document.createElement("div"); row.className = "plan-pv-row";
+          const row = document.createElement("div"); row.className = "plan-pv-row"; markRan(row, p.resolved || p.cmd);
           const lbl = document.createElement("div"); lbl.className = "plan-pv-label";
           const g = document.createElement("span"); g.className = "plan-pv-group"; g.textContent = p.group; lbl.appendChild(g);
           lbl.appendChild(document.createTextNode(" " + p.title));
@@ -3661,7 +3663,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         if (loot.length > 1) lh.appendChild(menuCopyBtn(loot));
         lbox.appendChild(lh);
         loot.forEach((p) => {
-          const row = document.createElement("div"); row.className = "plan-lt-row";
+          const row = document.createElement("div"); row.className = "plan-lt-row"; markRan(row, p.resolved || p.cmd);
           const lbl = document.createElement("div"); lbl.className = "plan-lt-label";
           const g = document.createElement("span"); g.className = "plan-lt-group"; g.textContent = p.group; lbl.appendChild(g);
           lbl.appendChild(document.createTextNode(" " + p.title));
