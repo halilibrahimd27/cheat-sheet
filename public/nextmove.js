@@ -41,6 +41,8 @@
       noneHint: "Add the services you found — paste nmap output or type a port — and the ranked moves appear here.",
       gEnum: "Enumerate what you found", gCreds: "With the credentials you hold",
       gCond: "Conditional — read the condition first", gStuck: "If you are stuck",
+      gVulns: "Known exploit for a version you pasted",
+      vulnsHint: "An exact vulnerable build — this is move #1, before enumeration.",
       gUncovered: "No probe for these ports",
       tried: "tried", untry: "un-mark", markTried: "mark as tried",
       triedN: "already tried", copy: "copy", copied: "copied",
@@ -63,6 +65,8 @@
       noneHint: "Bulduğun servisleri ekle — nmap çıktısını yapıştır ya da port yaz — sıralanmış hamleler burada çıkar.",
       gEnum: "Bulduğunu listele", gCreds: "Elindeki kimlik bilgileriyle",
       gCond: "Koşullu — önce koşulu oku", gStuck: "Sıkıştıysan",
+      gVulns: "Yapıştırdığın sürümde bilinen açık",
+      vulnsHint: "Tam savunmasız bir sürüm — bu, enumerasyondan önce 1. hamle.",
       gUncovered: "Bu portlar için probe yok",
       tried: "denendi", untry: "işareti kaldır", markTried: "denendi işaretle",
       triedN: "denenmişler", copy: "kopyala", copied: "kopyalandı",
@@ -496,6 +500,38 @@
     return row;
   }
 
+  // A matched known-exploit (scenario.js vulnsFor over the pasted versions). The
+  // version → exploit map is shared with the machine Attack Plan — one source, so
+  // the two surfaces cannot drift apart on which build is vulnerable.
+  function vulnRow(v) {
+    var row = el("article", "nm-vuln sev-" + (v.sev || "high"));
+    var head = el("div", "nm-move-head");
+    var src = el("span", "nm-move-src");
+    src.appendChild(el("b", "nm-vuln-sev", v.sev || "high"));
+    src.appendChild(el("b", "nm-move-svc", v.service + (v.port ? ":" + v.port : "")));
+    head.appendChild(src);
+    head.appendChild(el("span", "nm-move-label", v.title + (v.id ? " (" + v.id + ")" : "")));
+    var cmd = v.resolvedExploit || v.exploit || "";
+    if (cmd) {
+      var acts = el("div", "nm-move-acts");
+      var copyBtn = btn("nm-btn nm-btn-copy", S("copy"), function () {
+        if (typeof APP.copyToClipboard === "function") {
+          APP.copyToClipboard(cmd, function () {
+            copyBtn.textContent = S("copied");
+            if (typeof APP.recordHistory === "function") { try { APP.recordHistory(cmd); } catch { /* history is a convenience */ } }
+            setTimeout(function () { copyBtn.textContent = S("copy"); }, 1200);
+          });
+        }
+      });
+      acts.appendChild(copyBtn);
+      head.appendChild(acts);
+    }
+    row.appendChild(head);
+    if (v.note) row.appendChild(el("p", "nm-vuln-note", v.note));
+    if (cmd) { var pre = el("pre", "nm-move-cmd"); pre.appendChild(el("code", null, cmd)); row.appendChild(pre); }
+    return row;
+  }
+
   function markTried(cmd, on) {
     var k = triedKey(cmd);
     if (on) state.tried[k] = 1; else delete state.tried[k];
@@ -546,12 +582,23 @@
     head.appendChild(meta);
     wrap.appendChild(head);
 
-    if (!total && !mv.uncovered.length && !mv.stuck) {
+    // Highest signal first: an exact vulnerable build you pasted is a foothold,
+    // not a lead. Same map as the machine Attack Plan (window.CS_SCENARIO).
+    var vulns = (window.CS_SCENARIO && typeof window.CS_SCENARIO.vulnsFor === "function")
+      ? window.CS_SCENARIO.vulnsFor(state.services, { ip: state.target, os: state.os, access: state.access })
+      : [];
+
+    if (!total && !vulns.length && !mv.uncovered.length && !mv.stuck) {
       var empty = el("div", "nm-empty");
       empty.appendChild(el("h3", null, S("none")));
       empty.appendChild(el("p", null, S("noneHint")));
       wrap.appendChild(empty);
       return wrap;
+    }
+
+    if (vulns.length) {
+      var vg = group(S("gVulns"), vulns, vulnRow, S("vulnsHint"));
+      if (vg) { vg.classList.add("nm-group-vulns"); wrap.appendChild(vg); }
     }
 
     var untried = function (list) { return list.filter(function (m) { return !isTried(resolve(m.raw)); }); };

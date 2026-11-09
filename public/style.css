@@ -3162,6 +3162,24 @@ body:has(.var-bar.active) .back-to-top { display: none; }
 .nm-stuck:hover { border-left-color: var(--accent-primary); }
 .nm-stuck-text { font-size: var(--fs-md); color: var(--text-primary); margin: 0; max-width: 92ch; line-height: 1.45; }
 .nm-stuck-why { font-size: var(--fs-xs); color: var(--text-tertiary); margin: 3px 0 0; max-width: 92ch; line-height: 1.45; }
+
+/* Known exploit (scenario.js vulnsFor) — the same callout the machine Attack
+   Plan shows, mirrored here so a pasted vulnerable version jumps to the top. */
+.nm-group-vulns .nm-group-title { color: var(--accent-red); }
+.nm-vuln {
+    padding: 9px 11px; margin-top: 8px;
+    background: var(--bg-card); border: 1px solid var(--border-primary);
+    border-left: 3px solid var(--accent-red); border-radius: var(--radius-sm);
+}
+.nm-vuln.sev-high { border-left-color: var(--accent-orange); }
+.nm-vuln.sev-medium { border-left-color: var(--accent-yellow); }
+.nm-vuln-sev {
+    font-size: var(--fs-2xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    color: var(--accent-red); margin-right: 8px;
+}
+.nm-vuln.sev-high .nm-vuln-sev { color: var(--accent-orange); }
+.nm-vuln.sev-medium .nm-vuln-sev { color: var(--accent-yellow); }
+.nm-vuln-note { font-size: var(--fs-xs); color: var(--text-secondary); margin: 5px 0 6px; max-width: 92ch; line-height: 1.5; }
 .nm-stuck-cmd { margin-top: 6px; cursor: pointer; }
 
 .nm-uncovered-row {

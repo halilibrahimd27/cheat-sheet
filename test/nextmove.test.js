@@ -102,6 +102,21 @@ test("every offered move carries a command and a source service", () => {
   }
 });
 
+test("a pasted vulnerable version surfaces a known-exploit callout above the moves", () => {
+  const vulnSvc = { port: "21", name: "ftp", version: "vsftpd 2.3.4", proto: "tcp", state: "open" };
+  const { mod, container } = boot({ services: [vulnSvc], target: "10.10.11.9" });
+  // Stack the version→exploit map + engine the browser also loads on the page,
+  // so the callout is proven to reuse the SAME map as the machine Attack Plan.
+  vm.runInThisContext(fs.readFileSync(path.join(__dirname, "..", "public", "vuln-map.js"), "utf8"), { filename: "vuln-map.js" });
+  vm.runInThisContext(fs.readFileSync(path.join(__dirname, "..", "public", "scenario.js"), "utf8"), { filename: "scenario.js" });
+  mod.render(container);
+  const vg = container.querySelector(".nm-group-vulns");
+  assert.ok(vg, "the known-exploit group renders for vsftpd 2.3.4");
+  assert.ok(vg.textContent.includes("CVE-2011-2523"), "the CVE id rides along");
+  assert.ok(container.querySelector(".nm-vuln.sev-critical"), "it carries the critical severity class");
+  assert.ok(vg.textContent.includes("10.10.11.9"), "the exploit command is resolved to the target IP");
+});
+
 test("conditional commands are surfaced WITH their condition, never silently dropped", () => {
   const mv = boot({ services: [svc(161, "snmp"), svc(445, "smb"), svc(88, "kerberos")], access: "none" }).mod.buildMoves();
   assert.ok(mv.cond.length > 0, "the probe corpus carries free-text conditions; they belong in their own group");
