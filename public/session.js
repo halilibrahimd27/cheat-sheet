@@ -1969,6 +1969,13 @@
       row.appendChild(rb);
       body.appendChild(row);
     });
+    if (vulns.length > 1) {
+      var all = iconBtn("btn btn-secondary btn-sm", "copy", S("copyAll"), null);
+      wireCopy(all, function () {
+        return vulns.map(function (v) { return v.resolvedExploit || v.exploit || ""; }).filter(Boolean).join("\n");
+      }, t);
+      body.appendChild(all);
+    }
     box.appendChild(body);
     return box;
   }
