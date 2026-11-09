@@ -106,7 +106,7 @@
       copyFail: "Copy failed", termCopied: "Copied in terminal format!",
       playbook: "Playbook", applyPlaybook: "Apply", progress: "Progress",
       currentPhase: "Current phase", nextSteps: "Next steps", allDone: "All done!",
-      hosts: "Hosts", addHost: "+ Host", owned: "Owned", attackPath: "Attack Path",
+      hosts: "Hosts", addHost: "+ Host", owned: "Owned", adFlagged: "flagged", attackPath: "Attack Path",
       noHosts: "No extra hosts yet. Add domain / network machines here.",
       replacePlaybook: "Replace the current checklist with this playbook? Current progress will be lost.",
       copyCmd: "Copy command", defaultChecklist: "Default checklist",
@@ -220,7 +220,7 @@
       copyFail: "Kopyalama başarısız", termCopied: "Terminal formatında kopyalandı!",
       playbook: "Playbook", applyPlaybook: "Uygula", progress: "İlerleme",
       currentPhase: "Mevcut aşama", nextSteps: "Sonraki adımlar", allDone: "Tamamlandı!",
-      hosts: "Makineler", addHost: "+ Makine", owned: "Ele geçirildi", attackPath: "Saldırı Yolu",
+      hosts: "Makineler", addHost: "+ Makine", owned: "Ele geçirildi", adFlagged: "açıklı", attackPath: "Saldırı Yolu",
       noHosts: "Henüz ek makine yok. Domain / ağ makinelerini buraya ekleyin.",
       replacePlaybook: "Mevcut kontrol listesi bu playbook'la değiştirilsin mi? Mevcut ilerleme kaybolur.",
       copyCmd: "Komutu kopyala", defaultChecklist: "Varsayılan liste",
@@ -4291,13 +4291,18 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const e = document.createElement("p"); e.className = "machine-hosts-empty"; e.textContent = t("noHosts"); adSection.appendChild(e);
     } else {
       const nodes = m.hosts.map(hostNode);
-      let aggT = 0, aggD = 0, owned = 0;
-      nodes.forEach(n => { const s = checklistStats(n.checklist); aggT += s.total; aggD += s.done; if (s.pct >= 100) owned++; });
+      const canVuln = window.CS_SCENARIO && typeof window.CS_SCENARIO.vulnsFor === "function";
+      let aggT = 0, aggD = 0, owned = 0, flagged = 0;
+      nodes.forEach(n => {
+        const s = checklistStats(n.checklist); aggT += s.total; aggD += s.done; if (s.pct >= 100) owned++;
+        if (canVuln && n.machine && window.CS_SCENARIO.vulnsFor(n.machine.services || [], {}).length) flagged++;
+      });
       const aggPct = aggT ? Math.round(aggD / aggT * 100) : 0;
       const ov = document.createElement("div"); ov.className = "ad-overview";
       ov.innerHTML =
         '<span class="ad-stat"><strong>' + nodes.length + '</strong> ' + t("hosts").toLowerCase() + '</span>' +
         '<span class="ad-stat"><strong>' + owned + '</strong> ' + t("owned").toLowerCase() + '</span>' +
+        (flagged ? '<span class="ad-stat ad-stat-vuln"><strong>' + flagged + '</strong> ' + t("adFlagged") + '</span>' : '') +
         '<span class="ad-stat"><strong>' + aggPct + '%</strong> ' + t("progress").toLowerCase() + '</span>';
       const connBtn = document.createElement("button"); connBtn.className = "btn btn-sm ad-connect-btn " + (adConnectMode ? "btn-primary" : "btn-secondary"); setIconLabel(connBtn, "link", t("connect"));
       connBtn.addEventListener("click", () => { adConnectMode = !adConnectMode; adConnectSel = null; render(); });
