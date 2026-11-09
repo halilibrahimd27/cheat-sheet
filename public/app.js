@@ -3258,7 +3258,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         const working = creds.filter(c => c.works || c.valid).length;
 
         const tr = document.createElement("tr");
-        tr.className = "machine-row";
+        tr.className = "machine-row" + (m.id === activeTargetId ? " is-active-target" : "");
         tr.setAttribute("role", "button"); tr.setAttribute("tabindex", "0");
         tr.setAttribute("aria-label", m.name + (m.ip ? ", " + m.ip : "") + ", " + stLabel(st));
 
@@ -3357,7 +3357,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const done = (m.checklist || []).filter(c => c.done).length, tot = (m.checklist || []).length;
       const pct = tot > 0 ? Math.round(done / tot * 100) : 0;
       const nVuln = (window.CS_SCENARIO && typeof window.CS_SCENARIO.vulnsFor === "function") ? window.CS_SCENARIO.vulnsFor(m.services || [], {}).length : 0;
-      const card = document.createElement("div"); card.className = "board-card"; card.draggable = true;
+      const card = document.createElement("div"); card.className = "board-card" + (m.id === activeTargetId ? " is-active-target" : ""); card.draggable = true;
       card.setAttribute("role", "button"); card.setAttribute("tabindex", "0");
       card.innerHTML =
         '<div class="board-card-top"><span class="machine-os-icon">' + osIconHtml(machineOsDisplay(m)) + '</span>' +
