@@ -2989,6 +2989,23 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     } else md += "_—_\n\n";
     md += "## " + t("attackPath") + "\n\n";
     md += m.attackPath ? "```\n" + m.attackPath + "\n```\n\n" : "_—_\n\n";
+    // A multi-host (AD) engagement: the linked hosts, each with its role, progress
+    // and any known exploit — so the report captures the whole engagement, not
+    // just the entry machine.
+    const hosts = (m.hosts || []).map(hostNode);
+    if (hosts.length) {
+      md += "## " + t("hosts") + "\n\n";
+      md += "| " + t("machineName") + " | IP | " + t("machineOS") + " | " + t("progress") + " | " + t("planVulns") + " |\n";
+      md += "|---|---|---|---|---|\n";
+      hosts.forEach(n => {
+        const st = checklistStats(n.checklist);
+        const prog = n.checklist.length ? st.done + "/" + st.total : "—";
+        const hv = (n.machine && window.CS_SCENARIO && typeof window.CS_SCENARIO.vulnsFor === "function") ? window.CS_SCENARIO.vulnsFor(n.machine.services || [], {}) : [];
+        const vids = hv.map(v => v.id || v.title).filter(Boolean).join(", ") || "—";
+        md += "| " + cell(n.name + (n.role ? " (" + n.role + ")" : "")) + " | " + cell(n.ip) + " | " + cell(machineOsDisplay(n.machine || { os: n.os })) + " | " + cell(prog) + " | " + cell(vids) + " |\n";
+      });
+      md += "\n";
+    }
     const groups = groupByPhase(m.checklist);
     if (groups.length) {
       md += "## " + t("progress") + "\n\n";

@@ -192,6 +192,22 @@ test("importing an nmap paste fills a blank OS field from the scan", () => {
   assert.ok(m.services.some((s) => s.port === "22") && m.services.some((s) => s.port === "80"), "the services were imported alongside it");
 });
 
+test("the exported report captures a multi-host engagement with each host's known exploit", () => {
+  const env = boot();
+  env.app.setCategories(require(path.join(PUBLIC_DIR, "..", "seed.js")));
+  const dc = {
+    id: "dc1", name: "DC01", ip: "10.10.10.20", os: "Windows",
+    services: [{ port: "445", proto: "tcp", state: "open", name: "smb", version: "Samba smbd 3.0.20" }],
+    credentials: [], userFlag: null, rootFlag: null, checklist: [],
+  };
+  const eng = machine({ id: "eng1", hosts: [{ machineId: "dc1", role: "DC", links: [] }] });
+  env.app.setMachines([dc, eng]);
+  const md = env.app.machineToMarkdown(eng);
+  assert.ok(md.includes("## " + env.app.t("hosts")), "the report has an engagement hosts section");
+  assert.ok(md.includes("DC01") && md.includes("(DC)"), "each linked host is listed with its role");
+  assert.ok(md.includes("CVE-2007-2447"), "a host's known exploit rides along in the report");
+});
+
 test("the panel degrades to an empty-state when there are no services", () => {
   const env = boot();
   const sec = env.app.buildAttackPlanSection(machine({ services: [] }));
