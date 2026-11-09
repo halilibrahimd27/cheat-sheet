@@ -3789,6 +3789,9 @@ body:has(.var-bar.active) .back-to-top { display: none; }
 .plan-locked > summary:hover { color: var(--text-secondary); }
 .plan-step-locked { opacity: .6; }
 .plan-step-locked .plan-cmd { background: transparent; }
+.plan-step-ran { opacity: .62; }
+.plan-step-ran .plan-step-label { color: var(--text-secondary); }
+.plan-step-ran-tick { color: var(--accent-green); vertical-align: -2px; margin-right: 3px; }
 
 .plan-uncovered {
     display: flex; align-items: center; gap: 6px; margin: 8px 0 0; padding: 6px 8px;

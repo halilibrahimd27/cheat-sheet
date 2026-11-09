@@ -2393,6 +2393,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     if (openMachineId === m.id && machineTab === "detail") {
       const tl = document.getElementById("tlBody");
       if (tl) renderTimelineInto(tl, m);
+      notifyPlan(); // a newly-run command ticks its step in the plan
     }
   }
 
@@ -3460,11 +3461,16 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       return b;
     };
 
+    // Commands already copied against THIS box (its timeline) — so the plan shows,
+    // automatically, which steps you have already run. No separate tick to keep.
+    let ran = new Set();
     function stepRow(st, locked) {
-      const row = document.createElement("div"); row.className = "plan-step phase-" + st.phase + (locked ? " plan-step-locked" : "");
+      const didRun = ran.has(applyIpToCode(st.resolved || st.cmd));
+      const row = document.createElement("div"); row.className = "plan-step phase-" + st.phase + (locked ? " plan-step-locked" : "") + (didRun ? " plan-step-ran" : "");
       const badge = document.createElement("span"); badge.className = "plan-phase"; badge.textContent = PHASE[st.phase] || st.phase; row.appendChild(badge);
       const main = document.createElement("div"); main.className = "plan-step-main";
       const lbl = document.createElement("div"); lbl.className = "plan-step-label";
+      if (didRun) { lbl.appendChild(icon("check", "icon-sm plan-step-ran-tick")); lbl.firstChild.setAttribute("aria-label", "already run"); }
       const svcTag = document.createElement("span"); svcTag.className = "plan-svc"; svcTag.textContent = st.service; lbl.appendChild(svcTag);
       lbl.appendChild(document.createTextNode(" " + st.label)); main.appendChild(lbl);
       if (st.bucket === "cond" && st.when && st.when.toLowerCase() !== "always") {
@@ -3513,6 +3519,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       if (!services.length) { const e = document.createElement("p"); e.className = "plan-empty"; e.textContent = t("planEmpty"); body.appendChild(e); return; }
       if (!window.CS_SCENARIO) { const e = document.createElement("p"); e.className = "plan-empty"; e.textContent = "…"; body.appendChild(e); return; }
       const ctx = machineAttackCtx(m);
+      ran = new Set((m.timeline || []).filter(e => e && e.type === "cmd").map(e => e.text));
       const plan = window.CS_SCENARIO.plan(services, ctx);
       const stepTotal = plan.waves.reduce((n, w) => n + w.steps.length, 0);
       if (!stepTotal && !plan.locked.length && !plan.uncovered.length) { const e = document.createElement("p"); e.className = "plan-empty"; e.textContent = t("planEmpty"); body.appendChild(e); return; }
