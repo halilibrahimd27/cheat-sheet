@@ -253,6 +253,32 @@ test("the privesc menu is one representative per vector, with placeholders fille
   if (nfs) assert.ok(nfs.resolved.indexOf("10.9.9.9") >= 0 && nfs.resolved.indexOf("<TARGET_IP>") < 0, "<TARGET_IP> is resolved in the menu");
 });
 
+test("pivotFor surfaces routing vectors once a shell is held — and stays after you own the box", () => {
+  const w = load({ categories: SEED });
+  const S = w.CS_SCENARIO;
+  assert.strictEqual(S.pivotFor({ access: "none" }).length, 0, "no shell, nothing to pivot through");
+  assert.strictEqual(S.pivotFor({ access: "creds" }).length, 0, "creds alone are not a shell on the box");
+  const foot = S.pivotFor({ access: "foothold" });
+  assert.ok(foot.length >= 4, "a shell surfaces several pivoting routes, got " + foot.length);
+  assert.ok(foot.every((p) => p.catId === "pivoting"), "every route is drawn from the pivoting category");
+  assert.ok(foot.some((p) => /chisel/i.test(p.cmd)) && foot.some((p) => /ligolo/i.test(p.cmd)),
+    "the classic pivot tools (chisel, ligolo) are present");
+  // Unlike privesc, pivoting is still the move after you own the box.
+  assert.ok(S.pivotFor({ access: "admin" }).length >= 4, "admin still gets the pivot menu");
+  assert.ok(S.pivotFor({ access: "domain" }).length >= 4, "a domain foothold still gets the pivot menu");
+});
+
+test("the pivot menu is one representative per vector, with placeholders filled", () => {
+  const w = load({ categories: SEED });
+  const piv = w.CS_SCENARIO.pivotFor({ access: "foothold", ip: "10.9.9.9" });
+  assert.ok(piv.length <= 12, "it is a menu of routes, not a dump of the whole category");
+  const groups = piv.map((p) => p.group);
+  assert.strictEqual(groups.length, new Set(groups).size, "no two picks share a pivoting vector");
+  assert.ok(piv.every((p) => p.cmd && p.cmd.trim()), "a vector whose lead command is blank is skipped, never shown empty");
+  const ssh = piv.find((p) => /ssh -L/.test(p.cmd));
+  if (ssh) assert.ok(ssh.resolved.indexOf("10.9.9.9") >= 0 && ssh.resolved.indexOf("<TARGET_IP>") < 0, "<TARGET_IP> is resolved in the menu");
+});
+
 // Resolve a service to its matched corpus service ids.
 function S_names(w, service) {
   return w.CS_SCENARIO.rowsForService(normalize(service), w.CS_PORT_MAP).map((r) => r.service);

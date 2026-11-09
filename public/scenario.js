@@ -331,6 +331,37 @@
     return out.slice(0, 14);
   }
 
+  // ── post-foothold pivoting / lateral movement (DB-sourced) ───────────────
+  // A held shell turns the box into a gateway: route attacker traffic through it
+  // to reach hosts the scan could never see. This surfaces one essential command
+  // per pivoting VECTOR (SSH forward, Chisel, Ligolo-ng, SOCKS proxy, Windows
+  // port-forward, double pivot) from the live DB's pivoting category — a menu of
+  // routes, not a dump of 45 commands. Gated on a shell being held
+  // (foothold/admin/domain): you cannot tunnel through a box you are not on, and
+  // unlike privesc, pivoting stays relevant after you own the box, so it shows at
+  // every shell level (foothold through domain), not just foothold.
+  var PIVOT_CAT = "pivoting";
+  var SHELL_ACCESS = { foothold: 1, admin: 1, domain: 1 };
+  function pivotFor(ctx) {
+    ctx = ctx || {};
+    if (!SHELL_ACCESS[ctx.access]) return [];
+    var cat = categories().filter(function (c) { return c.id === PIVOT_CAT; })[0];
+    if (!cat) return [];
+    var out = [];
+    (cat.subcategories || []).forEach(function (sub) {
+      var pick = null;
+      (sub.commands || []).some(function (c) {
+        if ((c.tags || []).indexOf("essential") < 0) return false;
+        var body = String(c.cmd || (c.cmds && c.cmds[0]) || "").trim();
+        if (!body) return false;
+        pick = { title: c.title || "", group: sub.name || "", cmd: body, resolved: resolve(body, ctx), catId: cat.id };
+        return true;
+      });
+      if (pick) out.push(pick);
+    });
+    return out.slice(0, 12);
+  }
+
   // ── version → known-exploit matching (public/vuln-map.js) ────────────────
   // nmap's version string is the highest-signal input: an exact vulnerable build
   // is a direct foothold, not a lead to chase. parseVer reads the first dotted-
@@ -397,6 +428,7 @@
     dbCommandsFor: dbCommandsFor,
     vulnsFor: vulnsFor,
     privescFor: privescFor,
+    pivotFor: pivotFor,
     rowsForService: rowsForService,
     bucketOf: bucketOf,
     _corpus: corpus

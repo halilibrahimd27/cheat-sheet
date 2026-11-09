@@ -100,7 +100,7 @@
       addMachineDesc: "Track target machines, services, credentials, and progress.",
       machineName: "Machine Name", machineIP: "IP Address", machineOS: "Operating System",
       services: "Services", credentials: "Credentials", notes: "Notes",
-      planTitle: "Attack Plan", planEmpty: "Import an nmap scan above and a step-by-step plan appears here.", planDoNow: "Do now", planUnlock: "once you get:", planLocked: "Locked", planNeed: "need", planUncovered: "No playbook yet for", planMore: "more commands", planSvcCount: "services", planStepCount: "steps", planVulns: "Known exploits", planExport: "Copy plan", planCopied: "Attack plan copied as Markdown", planPrivesc: "Privilege escalation", phRecon: "Recon", phEnum: "Enumerate", phFoothold: "Foothold", phPrivesc: "Privesc", phLateral: "Lateral", phLoot: "Loot",
+      planTitle: "Attack Plan", planEmpty: "Import an nmap scan above and a step-by-step plan appears here.", planDoNow: "Do now", planUnlock: "once you get:", planLocked: "Locked", planNeed: "need", planUncovered: "No playbook yet for", planMore: "more commands", planSvcCount: "services", planStepCount: "steps", planVulns: "Known exploits", planExport: "Copy plan", planCopied: "Attack plan copied as Markdown", planPrivesc: "Privilege escalation", planPivot: "Lateral movement", phRecon: "Recon", phEnum: "Enumerate", phFoothold: "Foothold", phPrivesc: "Privesc", phLateral: "Lateral", phLoot: "Loot",
       exportMd: "Export MD", exportPdf: "Export PDF", termCopy: "Terminal Copy",
       newSub: "New Subcategory", netErr: "Network error - is the server running?",
       copyFail: "Copy failed", termCopied: "Copied in terminal format!",
@@ -214,7 +214,7 @@
       addMachineDesc: "Hedef makineleri, servisleri, kimlik bilgilerini ve ilerlemeyi takip edin.",
       machineName: "Makine Adı", machineIP: "IP Adresi", machineOS: "İşletim Sistemi",
       services: "Servisler", credentials: "Kimlik Bilgileri", notes: "Notlar",
-      planTitle: "Saldırı Planı", planEmpty: "Yukarıdan bir nmap taraması aktarın; adım adım plan burada belirir.", planDoNow: "Şimdi yap", planUnlock: "şunu elde edince:", planLocked: "Kilitli", planNeed: "gereken", planUncovered: "Henüz playbook yok:", planMore: "daha fazla komut", planSvcCount: "servis", planStepCount: "adım", planVulns: "Bilinen açıklar", planExport: "Planı kopyala", planCopied: "Saldırı planı Markdown olarak kopyalandı", planPrivesc: "Yetki yükseltme", phRecon: "Keşif", phEnum: "Enumerasyon", phFoothold: "Giriş", phPrivesc: "Yetki", phLateral: "Yanal", phLoot: "Ganimet",
+      planTitle: "Saldırı Planı", planEmpty: "Yukarıdan bir nmap taraması aktarın; adım adım plan burada belirir.", planDoNow: "Şimdi yap", planUnlock: "şunu elde edince:", planLocked: "Kilitli", planNeed: "gereken", planUncovered: "Henüz playbook yok:", planMore: "daha fazla komut", planSvcCount: "servis", planStepCount: "adım", planVulns: "Bilinen açıklar", planExport: "Planı kopyala", planCopied: "Saldırı planı Markdown olarak kopyalandı", planPrivesc: "Yetki yükseltme", planPivot: "Yanal hareket", phRecon: "Keşif", phEnum: "Enumerasyon", phFoothold: "Giriş", phPrivesc: "Yetki", phLateral: "Yanal", phLoot: "Ganimet",
       exportMd: "MD Aktar", exportPdf: "PDF Aktar", termCopy: "Terminal Kopyala",
       newSub: "Yeni Alt Kategori", netErr: "Ağ hatası — sunucu çalışıyor mu?",
       copyFail: "Kopyalama başarısız", termCopied: "Terminal formatında kopyalandı!",
@@ -2887,6 +2887,12 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       privesc.forEach(p => { md += "- **" + p.group + "** — " + p.title + "\n  " + code(p.resolved || p.cmd) + "\n"; });
       md += "\n";
     }
+    const pivot = window.CS_SCENARIO.pivotFor ? window.CS_SCENARIO.pivotFor(ctx) : [];
+    if (pivot.length) {
+      md += "### " + t("planPivot") + "\n\n";
+      pivot.forEach(p => { md += "- **" + p.group + "** — " + p.title + "\n  " + code(p.resolved || p.cmd) + "\n"; });
+      md += "\n";
+    }
     if (plan.locked.length) {
       md += "### " + t("planLocked") + " (" + plan.locked.length + ")\n\n";
       plan.locked.forEach(st => {
@@ -3472,6 +3478,31 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
           pbox.appendChild(row);
         });
         body.appendChild(pbox);
+      }
+
+      // With a shell held, the box is a gateway: a menu of pivoting / lateral-
+      // movement routes (SSH forward, Chisel, Ligolo, SOCKS…) into the network.
+      const pivot = window.CS_SCENARIO.pivotFor ? window.CS_SCENARIO.pivotFor(ctx) : [];
+      if (pivot.length) {
+        const vbox = document.createElement("div"); vbox.className = "plan-pivot";
+        const vh = document.createElement("div"); vh.className = "plan-pivot-head";
+        vh.appendChild(icon("network", "icon-sm"));
+        vh.appendChild(document.createTextNode(" " + t("planPivot")));
+        vbox.appendChild(vh);
+        pivot.forEach((p) => {
+          const row = document.createElement("div"); row.className = "plan-pv-row";
+          const lbl = document.createElement("div"); lbl.className = "plan-pv-label";
+          const g = document.createElement("span"); g.className = "plan-pv-group"; g.textContent = p.group; lbl.appendChild(g);
+          lbl.appendChild(document.createTextNode(" " + p.title));
+          row.appendChild(lbl);
+          const cb = document.createElement("button"); cb.type = "button"; cb.className = "plan-cmd"; cb.title = t("copy");
+          const code = document.createElement("code"); code.textContent = p.resolved || p.cmd; cb.appendChild(code);
+          cb.appendChild(icon("copy", "icon-sm"));
+          cb.addEventListener("click", () => copyCmd(p.resolved || p.cmd));
+          row.appendChild(cb);
+          vbox.appendChild(row);
+        });
+        body.appendChild(vbox);
       }
 
       const hasDb = window.CS_APP && typeof window.CS_APP.getCategories === "function" && (window.CS_APP.getCategories() || []).length;

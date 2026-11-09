@@ -110,6 +110,35 @@ test("a foothold machine's exported report carries the privesc menu", () => {
   assert.ok(md.includes(env.app.t("planPrivesc")), "the privilege-escalation section rides along in the report once a shell is held");
 });
 
+test("a held shell also reveals a pivoting / lateral-movement menu", () => {
+  const env = boot();
+  env.app.setCategories(require(path.join(PUBLIC_DIR, "..", "seed.js")));
+  const sec = env.app.buildAttackPlanSection(machine({
+    os: "Linux", userFlag: { value: "u", capturedAt: "t" },
+    services: [{ port: "22", proto: "tcp", state: "open", name: "ssh", version: "" }],
+  }));
+  const pv = sec.querySelector(".plan-pivot");
+  assert.ok(pv, "a foothold reveals the pivot block");
+  assert.ok(sec.querySelectorAll(".plan-pv-row").length >= 3, "several routing vectors are listed");
+});
+
+test("the pivot menu stays hidden until a shell is held", () => {
+  const env = boot();
+  env.app.setCategories(require(path.join(PUBLIC_DIR, "..", "seed.js")));
+  const sec = env.app.buildAttackPlanSection(machine({
+    os: "Linux",
+    services: [{ port: "22", proto: "tcp", state: "open", name: "ssh", version: "" }],
+  }));
+  assert.strictEqual(sec.querySelector(".plan-pivot"), null, "no shell, no pivot block");
+});
+
+test("a foothold machine's exported report carries the pivot menu", () => {
+  const env = boot();
+  env.app.setCategories(require(path.join(PUBLIC_DIR, "..", "seed.js")));
+  const md = env.app.machineToMarkdown(machine({ os: "Linux", userFlag: { value: "u", capturedAt: "t" } }));
+  assert.ok(md.includes(env.app.t("planPivot")), "the pivoting section rides along in the report once a shell is held");
+});
+
 test("the panel degrades to an empty-state when there are no services", () => {
   const env = boot();
   const sec = env.app.buildAttackPlanSection(machine({ services: [] }));
