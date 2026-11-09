@@ -126,12 +126,14 @@ test("Use active target carries version + access, so the callout and menus light
       { port: "21", proto: "tcp", state: "open", name: "ftp", version: "vsftpd 2.3.4" },
       { port: "22", proto: "tcp", state: "open", name: "ssh", version: "OpenSSH 8.2p1 Ubuntu" },
     ],
-    credentials: [], userFlag: { value: "u", capturedAt: "t" }, rootFlag: null,
+    credentials: [{ username: "svc_sql", secret: "x", valid: true }], userFlag: { value: "u", capturedAt: "t" }, rootFlag: null,
   }]);
   env.window.CS_APP.setActiveTarget("mt1");
-  // Setting the active target also fills the quick-fill RHOST, so commands copied
-  // from the category browser (not just the plan) land on the same IP.
+  // Setting the active target also fills the quick-fill RHOST (and a banked
+  // username), so commands copied from the category browser — not just the plan —
+  // land on the same IP and user.
   assert.strictEqual(env.window.localStorage.getItem("cs-ip-RHOST"), "10.10.11.9", "the active target's IP flows into the var bar");
+  assert.strictEqual(env.window.localStorage.getItem("cs-ip-USER"), "svc_sql", "a vault username flows into the var bar too");
   vm.runInThisContext(fs.readFileSync(path.join(__dirname, "..", "public", "vuln-map.js"), "utf8"), { filename: "vuln-map.js" });
   vm.runInThisContext(fs.readFileSync(path.join(__dirname, "..", "public", "scenario.js"), "utf8"), { filename: "scenario.js" });
   mod.render(container);

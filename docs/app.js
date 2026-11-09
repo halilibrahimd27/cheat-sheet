@@ -2328,6 +2328,16 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         (ipMap.RHOST || []).forEach(ph => safeSet("cs-var-" + ph, ip));
         updateIpToggleLabel();
       }
+      // Carry a banked username into the var bar too, but only when it is empty —
+      // a sprayed username you typed must never be clobbered. Lets creds-gated
+      // commands (nxc, evil-winrm…) fill <USER> as far as the vault allows.
+      const cred = am && (am.credentials || []).find(c => c && c.username && c.valid !== false);
+      const curUser = ((ipFields.USER && ipFields.USER.value.trim()) || safeGet("cs-ip-USER") || "").trim();
+      if (cred && !curUser) {
+        if (ipFields.USER) ipFields.USER.value = cred.username;
+        safeSet("cs-ip-USER", cred.username);
+        (ipMap.USER || []).forEach(ph => safeSet("cs-var-" + ph, cred.username));
+      }
     } else safeRemove("cs-active-target");
     return activeTargetId;
   }
