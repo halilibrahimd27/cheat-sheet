@@ -59,6 +59,7 @@
       enumImport: "Import your nmap output on the machine page — the queue builds itself from it.",
       enumNoProbe: "No enumeration probe ships for these ports",
       sessVulns: "Known exploits — run these first",
+      sessPrivesc: "Escalate — you hold a shell", sessPivot: "Pivot into the network", sessLoot: "Loot — you own the box",
       enumConditional: "conditional", enumShowCond: "Show conditional commands",
       enumHideCond: "Hide conditional commands", copyAll: "Copy the always-run set",
       copy: "Copy", copied: "Copied", note: "Note",
@@ -149,6 +150,7 @@
       enumImport: "nmap çıktını makine sayfasında içe aktar — kuyruk kendini ondan kurar.",
       enumNoProbe: "Bu portlar için keşif seti yok",
       sessVulns: "Bilinen açıklar — önce bunları çalıştır",
+      sessPrivesc: "Yükselt — kabuğun var", sessPivot: "Ağa pivotla", sessLoot: "Ganimet — kutu senin",
       enumConditional: "koşullu", enumShowCond: "Koşullu komutları göster",
       enumHideCond: "Koşullu komutları gizle", copyAll: "Her zaman çalıştırılan seti kopyala",
       copy: "Kopyala", copied: "Kopyalandı", note: "Not",
@@ -1981,6 +1983,51 @@
     return box;
   }
 
+  // Post-foothold menus for the linked machine — the SAME engine the attack plan
+  // and Next Move use (privescFor/pivotFor/lootFor), self-gated on access/OS. The
+  // session names the privesc phase; this gives it the commands to match.
+  function queueMenus(m, t) {
+    var eng = window.CS_SCENARIO || {};
+    var ctx = (typeof APP.machineAttackCtx === "function") ? APP.machineAttackCtx(m) : null;
+    if (!ctx) return null;
+    var groups = [
+      ["sessPrivesc", typeof eng.privescFor === "function" ? eng.privescFor(ctx) : []],
+      ["sessPivot", typeof eng.pivotFor === "function" ? eng.pivotFor(ctx) : []],
+      ["sessLoot", typeof eng.lootFor === "function" ? eng.lootFor(ctx) : []]
+    ];
+    if (!groups.some(function (g) { return g[1].length; })) return null;
+    var wrap = el("div", "");
+    groups.forEach(function (g) {
+      if (!g[1].length) return;
+      var phase = el("div", "checklist-phase session-menu");
+      var head = el("div", "checklist-phase-header");
+      head.appendChild(el("span", "checklist-phase-name", S(g[0])));
+      head.appendChild(el("span", "checklist-phase-count", String(g[1].length)));
+      phase.appendChild(head);
+      var pbody = el("div", "checklist-body"); pbody.style.padding = "10px 12px";
+      g[1].forEach(function (p) {
+        var row = el("div", "checklist-item");
+        var rb = el("div", "checklist-body");
+        rb.appendChild(el("span", "checklist-label", (p.group || "") + " — " + (p.title || "")));
+        var cmd = p.resolved || p.cmd || "";
+        if (cmd) {
+          if (sessionRan(m)[cmd]) row.classList.add("session-cmd-ran");
+          var hint = el("div", "checklist-hint");
+          hint.appendChild(el("code", "", cmd));
+          var copy = iconBtn("checklist-hint-copy", "copy", "", null, S("copy"));
+          wireCopy(copy, function () { return cmd; }, t);
+          hint.appendChild(copy);
+          rb.appendChild(hint);
+        }
+        row.appendChild(rb);
+        pbody.appendChild(row);
+      });
+      phase.appendChild(pbody);
+      wrap.appendChild(phase);
+    });
+    return wrap;
+  }
+
   function queueSection(s, preset, t) {
     var sec = el("div", "machine-section");
     // `e` targets this section by name. The old selector (".checklist-hint code")
@@ -2013,6 +2060,11 @@
     if (vb) sec.appendChild(vb);
 
     q.groups.forEach(function (g) { sec.appendChild(probeGroup(g, t)); });
+
+    // Once the linked machine holds a shell, the next move is local: escalate,
+    // pivot, loot — the same engine menus the plan and Next Move show.
+    var mb = queueMenus(m, t);
+    if (mb) sec.appendChild(mb);
 
     if (q.uncovered.length) {
       // Said out loud on purpose. A queue that silently drops the ports it has
