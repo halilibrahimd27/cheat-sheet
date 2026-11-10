@@ -3318,6 +3318,19 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
           vb.title = t("planVulns") + " (" + rowVulns.length + ")";
           cSvc.appendChild(vb);
         }
+        // An engagement (a machine with linked hosts): flag how many frontier
+        // hosts are reachable-next from a box you already own, so the list shows
+        // where the attack path can advance — not just which boxes have exploits.
+        if ((m.hosts || []).length) {
+          const fNext = adFrontier((m.hosts || []).map(hostNode)).frontier.size;
+          if (fNext) {
+            const nb = document.createElement("span"); nb.className = "mrow-next";
+            nb.appendChild(icon("arrow-right", "icon-sm"));
+            nb.appendChild(document.createTextNode(" " + fNext + " " + t("adNext")));
+            nb.title = t("frontierHint");
+            cSvc.appendChild(nb);
+          }
+        }
         tr.appendChild(cSvc);
 
         const cCred = document.createElement("td"); cCred.className = "col-num";
@@ -3378,12 +3391,14 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       const done = (m.checklist || []).filter(c => c.done).length, tot = (m.checklist || []).length;
       const pct = tot > 0 ? Math.round(done / tot * 100) : 0;
       const nVuln = (window.CS_SCENARIO && typeof window.CS_SCENARIO.vulnsFor === "function") ? window.CS_SCENARIO.vulnsFor(m.services || [], {}).length : 0;
+      const nNext = (m.hosts || []).length ? adFrontier((m.hosts || []).map(hostNode)).frontier.size : 0;
       const card = document.createElement("div"); card.className = "board-card" + (m.id === activeTargetId ? " is-active-target" : ""); card.draggable = true;
       card.setAttribute("role", "button"); card.setAttribute("tabindex", "0");
       card.innerHTML =
         '<div class="board-card-top"><span class="machine-os-icon">' + osIconHtml(machineOsDisplay(m)) + '</span>' +
           '<span class="board-card-name">' + escapeHtml(m.name) + '</span>' +
           (nVuln ? '<span class="board-card-vuln" title="' + escapeHtml(t("planVulns") + " (" + nVuln + ")") + '">' + iconHtml("alert", "icon-sm") + ' ' + nVuln + '</span>' : '') +
+          (nNext ? '<span class="board-card-next" title="' + escapeHtml(t("frontierHint")) + '">' + iconHtml("arrow-right", "icon-sm") + ' ' + nNext + '</span>' : '') +
           (isCaptured(m.userFlag) ? '<span class="flag-chip user" title="' + t("userFlag") + '"></span>' : '') +
           (isCaptured(m.rootFlag) ? '<span class="flag-chip root" title="' + t("rootFlag") + '"></span>' : '') + '</div>' +
         (m.ip ? '<div class="board-card-ip">' + escapeHtml(m.ip) + '</div>' : '') +
