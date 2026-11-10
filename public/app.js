@@ -3073,7 +3073,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
           const pivIp = piv ? (piv.ip || (piv.machine && piv.machine.ip) || "") : "";
           const tgtIp = n.ip || (n.machine && n.machine.ip) || "";
           md += "### " + t("pivotRoute") + " — " + (piv ? (piv.name || pivIp || "pivot") : "pivot") + " -> " + (n.name || tgtIp || "target") + "\n\n";
-          md += "```\n" + window.CS_SCENARIO.pivotRoute(pivIp, tgtIp).map(r => r.cmd).join("\n") + "\n```\n\n";
+          md += "```\n" + window.CS_SCENARIO.pivotRoute(pivIp, tgtIp).map(r => applyIpToCode(r.cmd)).join("\n") + "\n```\n\n";
         });
       }
     }
@@ -4291,10 +4291,13 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         rh.appendChild(document.createTextNode(" " + (n.name || targetIp || "target")));
         const ca = document.createElement("button"); ca.type = "button"; ca.className = "host-route-copy"; ca.title = t("planCopyWave");
         ca.appendChild(icon("copy", "icon-sm"));
-        ca.addEventListener("click", () => copyText(route.map(r => r.cmd).join("\n"), () => toast(t("copied"))));
+        // <ATTACKER_IP> is the one placeholder the two host IPs don't cover; fill
+        // it from the saved LHOST var so the route is paste-ready when it's set.
+        const routeCmds = route.map(r => ({ group: r.group, title: r.title, cmd: applyIpToCode(r.cmd) }));
+        ca.addEventListener("click", () => copyText(routeCmds.map(r => r.cmd).join("\n"), () => toast(t("copied"))));
         rh.appendChild(ca);
         rbox.appendChild(rh);
-        route.forEach(r => {
+        routeCmds.forEach(r => {
           const row = document.createElement("div"); row.className = "host-route-row";
           const lbl = document.createElement("div"); lbl.className = "host-route-label";
           const g = document.createElement("span"); g.className = "host-route-group"; g.textContent = r.group; lbl.appendChild(g);

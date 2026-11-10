@@ -302,6 +302,7 @@ test("pivotRoute fills both hops of an AD pivot with concrete IPs", () => {
   const scan = route.find((r) => /proxychains/.test(r.cmd));
   assert.ok(scan && scan.cmd.indexOf("172.16.1.20") >= 0, "the proxychains scan points at the target IP");
   assert.ok(route.some((r) => /chisel/.test(r.cmd)) && route.some((r) => /ligolo|agent/.test(r.cmd)), "the self-hosted relays are offered too");
+  assert.ok(route.some((r) => r.cmd.indexOf("<ATTACKER_IP>") >= 0), "the operator's own IP stays a fillable <ATTACKER_IP> var, not a baked token");
   const blank = S.pivotRoute("", "");
   assert.ok(blank.every((r) => /PIVOT_IP|TARGET_IP|ATTACKER_IP|chisel server/.test(r.cmd)), "missing IPs degrade to named placeholders, never empty");
 });
