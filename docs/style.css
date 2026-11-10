@@ -3346,7 +3346,23 @@ body:has(.var-bar.active) .back-to-top { display: none; }
 /* ── machine row ── */
 .mrow-name-wrap { display: flex; align-items: center; gap: 9px; min-width: 0; }
 .mrow-os { display: inline-flex; flex-shrink: 0; opacity: 0.85; }
-.mrow-namecol { min-width: 0; }
+.mrow-namecol { min-width: 0; flex: 1 1 auto; }
+.mrow-target-btn {
+    flex: 0 0 auto; margin-left: auto; background: none; border: 1px solid transparent;
+    border-radius: var(--radius-sm); cursor: pointer; padding: 3px; display: inline-flex;
+    align-items: center; color: var(--text-muted); opacity: 0.45; transition: opacity 0.12s, color 0.12s;
+}
+.mrow-target-btn:hover { opacity: 1; color: var(--accent-cyan); }
+.mrow-target-btn.on { opacity: 1; color: var(--accent-cyan); border-color: color-mix(in srgb, var(--accent-cyan) 40%, transparent); }
+.mrow-target-btn .icon { width: 14px; height: 14px; }
+.board-card-target {
+    flex: 0 0 auto; margin-left: auto; background: none; border: 1px solid transparent;
+    border-radius: var(--radius-sm); cursor: pointer; padding: 2px; display: inline-flex;
+    align-items: center; color: var(--text-muted); opacity: 0.45; transition: opacity 0.12s, color 0.12s;
+}
+.board-card-target:hover { opacity: 1; color: var(--accent-cyan); }
+.board-card-target.on { opacity: 1; color: var(--accent-cyan); border-color: color-mix(in srgb, var(--accent-cyan) 40%, transparent); }
+.board-card-target .icon { width: 13px; height: 13px; }
 .mrow-name {
     font-size: var(--fs-md); font-weight: 600; color: var(--text-heading);
     overflow-wrap: anywhere; line-height: 1.3;

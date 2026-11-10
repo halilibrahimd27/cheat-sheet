@@ -3294,6 +3294,21 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         sub.textContent = [m.ip || t("noIp"), m.platform || "Custom", diff ? diffLabel(diff) : ""].filter(Boolean).join("  ·  ");
         nameCol.appendChild(nm); nameCol.appendChild(sub);
         nameWrap.appendChild(os); nameWrap.appendChild(nameCol);
+        // Set this box as the active target straight from the list — it drives
+        // the var bar's RHOST/USER fill, so switching targets is a frequent move
+        // that shouldn't need opening the machine first.
+        const rowIsActive = m.id === activeTargetId;
+        const tgtBtn = document.createElement("button"); tgtBtn.type = "button";
+        tgtBtn.className = "mrow-target-btn" + (rowIsActive ? " on" : "");
+        tgtBtn.title = rowIsActive ? t("unsetActive") : t("setActive");
+        tgtBtn.setAttribute("aria-label", tgtBtn.title);
+        tgtBtn.appendChild(icon("target", "icon-sm"));
+        tgtBtn.addEventListener("click", e => {
+          e.stopPropagation();
+          if (rowIsActive) setActiveTarget(null); else { setActiveTarget(m.id); toast(t("activeNowSet"), "ok"); }
+          render();
+        });
+        nameWrap.appendChild(tgtBtn);
         cName.appendChild(nameWrap); tr.appendChild(cName);
 
         const cStatus = document.createElement("td");
@@ -3404,6 +3419,19 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
           (isCaptured(m.rootFlag) ? '<span class="flag-chip root" title="' + t("rootFlag") + '"></span>' : '') + '</div>' +
         (m.ip ? '<div class="board-card-ip">' + escapeHtml(m.ip) + '</div>' : '') +
         (tot > 0 ? '<div class="machine-progress"><div class="machine-progress-bar"><div class="machine-progress-fill" style="width:' + pct + '%"></div></div><span class="machine-progress-text">' + pct + '%</span></div>' : '');
+      // Quick active-target toggle, same as the list row — no need to open the box.
+      const bIsActive = m.id === activeTargetId;
+      const bTgt = document.createElement("button"); bTgt.type = "button";
+      bTgt.className = "board-card-target" + (bIsActive ? " on" : "");
+      bTgt.title = bIsActive ? t("unsetActive") : t("setActive");
+      bTgt.setAttribute("aria-label", bTgt.title);
+      bTgt.appendChild(icon("target", "icon-sm"));
+      bTgt.addEventListener("click", e => {
+        e.stopPropagation();
+        if (bIsActive) setActiveTarget(null); else { setActiveTarget(m.id); toast(t("activeNowSet"), "ok"); }
+        render();
+      });
+      const top = card.querySelector(".board-card-top"); if (top) top.appendChild(bTgt);
       card.addEventListener("click", () => { openMachineId = m.id; render(); });
       card.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openMachineId = m.id; render(); } });
       card.addEventListener("dragstart", e => { e.dataTransfer.setData("text/plain", m.id); e.dataTransfer.effectAllowed = "move"; card.classList.add("dragging"); });
