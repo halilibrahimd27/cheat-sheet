@@ -4354,7 +4354,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
           if (pivUser) c = c.replace(/\buser@/g, pivUser + "@");
           return { group: r.group, title: r.title, cmd: c };
         });
-        ca.addEventListener("click", () => copyText(routeCmds.map(r => r.cmd).join("\n"), () => toast(t("copied"))));
+        ca.addEventListener("click", () => { const block = routeCmds.map(r => r.cmd).join("\n"); copyText(block, () => { recordHistory(block); announce(t("copied")); toast(t("copied"), "ok"); }); });
         rh.appendChild(ca);
         rbox.appendChild(rh);
         routeCmds.forEach(r => {
@@ -4366,7 +4366,7 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
           const cb = document.createElement("button"); cb.type = "button"; cb.className = "plan-cmd"; cb.title = t("copy");
           const code = document.createElement("code"); code.textContent = r.cmd; cb.appendChild(code);
           cb.appendChild(icon("copy", "icon-sm"));
-          cb.addEventListener("click", () => copyText(r.cmd, () => toast(t("copied"))));
+          cb.addEventListener("click", () => copyText(r.cmd, () => { recordHistory(r.cmd); announce(t("copied")); toast(t("copied"), "ok"); }));
           row.appendChild(cb);
           rbox.appendChild(row);
         });
