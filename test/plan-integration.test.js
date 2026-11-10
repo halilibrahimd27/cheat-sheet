@@ -221,12 +221,14 @@ test("the report spells out the pivot route to each frontier host", () => {
     id: "tg1", name: "TARGET20", ip: "172.16.1.20", os: "Windows",
     services: [], credentials: [], userFlag: null, rootFlag: null, checklist: [],
   };
+  // Insert the frontier host FIRST — the report must still order owned before it.
   const eng = machine({ id: "eng2", hosts: [
-    { machineId: "pv1", role: "", links: ["tg1"] },
     { machineId: "tg1", role: "", links: ["pv1"] },
+    { machineId: "pv1", role: "", links: ["tg1"] },
   ] });
   env.app.setMachines([pivot, target, eng]);
   const md = env.app.machineToMarkdown(eng);
+  assert.ok(md.indexOf("PIVOT01") < md.indexOf("| TARGET20"), "the owned box is listed before the reachable-next one (attack-path order, not insertion order)");
   assert.ok(md.includes("### " + env.app.t("pivotRoute") + " — PIVOT01 -> TARGET20"), "the route is headed pivot -> frontier");
   assert.ok(md.includes("ssh -D 1080 -N svc_backup@10.10.10.5"), "the SOCKS hop logs in as the pivot's banked user at its IP");
   assert.ok(md.includes("172.16.1.20"), "the frontier target's IP is filled into the route");

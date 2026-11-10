@@ -3049,11 +3049,17 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
     // just the entry machine.
     const hosts = (m.hosts || []).map(hostNode);
     if (hosts.length) {
-      const ownedHosts = adFrontier(hosts).owned;
+      const adState = adFrontier(hosts);
+      const ownedHosts = adState.owned;
+      // Order the table as an attack path: boxes you own first, then the ones
+      // reachable-next (frontier), then everything not yet in reach — so the
+      // report reads as the progression it is, not raw insertion order.
+      const rankOf = n => ownedHosts.has(n.id) ? 0 : (adState.frontier.has(n.id) ? 1 : 2);
+      const orderedHosts = hosts.map((n, i) => ({ n, i })).sort((a, b) => (rankOf(a.n) - rankOf(b.n)) || (a.i - b.i)).map(x => x.n);
       md += "## " + t("hosts") + "\n\n";
       md += "| " + t("machineName") + " | IP | " + t("machineOS") + " | " + t("progress") + " | " + t("planVulns") + " |\n";
       md += "|---|---|---|---|---|\n";
-      hosts.forEach(n => {
+      orderedHosts.forEach(n => {
         const st = checklistStats(n.checklist);
         const prog = n.checklist.length ? st.done + "/" + st.total : "—";
         const hv = (n.machine && window.CS_SCENARIO && typeof window.CS_SCENARIO.vulnsFor === "function") ? window.CS_SCENARIO.vulnsFor(n.machine.services || [], {}) : [];
@@ -3065,11 +3071,10 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       // For each frontier host — one you can reach from a box you already own —
       // spell out the pivot route with both IPs filled in, so the path to the
       // next host travels in the report alongside the findings.
-      const fr = adFrontier(hosts);
-      if (fr.frontier.size && window.CS_SCENARIO && typeof window.CS_SCENARIO.pivotRoute === "function") {
-        hosts.forEach(n => {
-          if (!fr.frontier.has(n.id)) return;
-          const piv = hosts.find(o => fr.owned.has(o.id) && ((o.links || []).indexOf(n.id) >= 0 || (n.links || []).indexOf(o.id) >= 0));
+      if (adState.frontier.size && window.CS_SCENARIO && typeof window.CS_SCENARIO.pivotRoute === "function") {
+        orderedHosts.forEach(n => {
+          if (!adState.frontier.has(n.id)) return;
+          const piv = hosts.find(o => adState.owned.has(o.id) && ((o.links || []).indexOf(n.id) >= 0 || (n.links || []).indexOf(o.id) >= 0));
           const pivIp = piv ? (piv.ip || (piv.machine && piv.machine.ip) || "") : "";
           const tgtIp = n.ip || (n.machine && n.machine.ip) || "";
           const pivCreds = (piv && piv.machine && piv.machine.credentials) || [];
