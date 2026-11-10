@@ -214,7 +214,8 @@ test("the report spells out the pivot route to each frontier host", () => {
   // PIVOT is owned (root flag captured); TARGET is one hop away, linked to it.
   const pivot = {
     id: "pv1", name: "PIVOT01", ip: "10.10.10.5", os: "Linux",
-    services: [], credentials: [], userFlag: null, rootFlag: { value: "x", capturedAt: "2026-01-01" }, checklist: [],
+    services: [], credentials: [{ username: "svc_backup", secret: "pw", valid: true }],
+    userFlag: null, rootFlag: { value: "x", capturedAt: "2026-01-01" }, checklist: [],
   };
   const target = {
     id: "tg1", name: "TARGET20", ip: "172.16.1.20", os: "Windows",
@@ -227,7 +228,7 @@ test("the report spells out the pivot route to each frontier host", () => {
   env.app.setMachines([pivot, target, eng]);
   const md = env.app.machineToMarkdown(eng);
   assert.ok(md.includes("### " + env.app.t("pivotRoute") + " — PIVOT01 -> TARGET20"), "the route is headed pivot -> frontier");
-  assert.ok(md.includes("ssh -D 1080 -N user@10.10.10.5"), "the SOCKS hop tunnels through the owned pivot's IP");
+  assert.ok(md.includes("ssh -D 1080 -N svc_backup@10.10.10.5"), "the SOCKS hop logs in as the pivot's banked user at its IP");
   assert.ok(md.includes("172.16.1.20"), "the frontier target's IP is filled into the route");
   // the owned pivot is not itself a frontier, so it gets no route heading of its own
   assert.ok(!md.includes("-> PIVOT01"), "an owned host is not treated as a frontier");

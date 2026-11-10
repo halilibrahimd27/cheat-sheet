@@ -3072,8 +3072,14 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
           const piv = hosts.find(o => fr.owned.has(o.id) && ((o.links || []).indexOf(n.id) >= 0 || (n.links || []).indexOf(o.id) >= 0));
           const pivIp = piv ? (piv.ip || (piv.machine && piv.machine.ip) || "") : "";
           const tgtIp = n.ip || (n.machine && n.machine.ip) || "";
+          const pivCreds = (piv && piv.machine && piv.machine.credentials) || [];
+          const pivUser = ((pivCreds.find(c => c && c.username && c.valid !== false) || {}).username || "").trim();
           md += "### " + t("pivotRoute") + " — " + (piv ? (piv.name || pivIp || "pivot") : "pivot") + " -> " + (n.name || tgtIp || "target") + "\n\n";
-          md += "```\n" + window.CS_SCENARIO.pivotRoute(pivIp, tgtIp).map(r => applyIpToCode(r.cmd)).join("\n") + "\n```\n\n";
+          md += "```\n" + window.CS_SCENARIO.pivotRoute(pivIp, tgtIp).map(r => {
+            let c = applyIpToCode(r.cmd);
+            if (pivUser) c = c.replace(/\buser@/g, pivUser + "@");
+            return c;
+          }).join("\n") + "\n```\n\n";
         });
       }
     }
@@ -4293,7 +4299,15 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         ca.appendChild(icon("copy", "icon-sm"));
         // <ATTACKER_IP> is the one placeholder the two host IPs don't cover; fill
         // it from the saved LHOST var so the route is paste-ready when it's set.
-        const routeCmds = route.map(r => ({ group: r.group, title: r.title, cmd: applyIpToCode(r.cmd) }));
+        // The ssh hops log in as the pivot's user, so fill that from the pivot
+        // machine's own vault (its first usable credential) when one is banked.
+        const pivCreds = (pivotNode && pivotNode.machine && pivotNode.machine.credentials) || [];
+        const pivUser = ((pivCreds.find(c => c && c.username && c.valid !== false) || {}).username || "").trim();
+        const routeCmds = route.map(r => {
+          let c = applyIpToCode(r.cmd);
+          if (pivUser) c = c.replace(/\buser@/g, pivUser + "@");
+          return { group: r.group, title: r.title, cmd: c };
+        });
         ca.addEventListener("click", () => copyText(routeCmds.map(r => r.cmd).join("\n"), () => toast(t("copied"))));
         rh.appendChild(ca);
         rbox.appendChild(rh);
