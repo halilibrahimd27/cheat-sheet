@@ -2037,6 +2037,34 @@ body {
 .host-vuln .icon { width: 12px; height: 12px; }
 .host-via { display: inline-flex; align-items: center; gap: 2px; font-size: var(--fs-2xs); color: var(--accent-orange); white-space: nowrap; }
 .host-via .icon { width: 12px; height: 12px; }
+.host-route {
+    margin: 0 0 12px; display: flex; flex-direction: column; gap: 6px;
+    padding: 10px; background: color-mix(in srgb, var(--accent-orange) 7%, var(--bg-card));
+    border: 1px solid color-mix(in srgb, var(--accent-orange) 30%, var(--border-primary));
+    border-radius: var(--radius-sm);
+}
+.host-route-head {
+    display: flex; align-items: center; gap: 6px;
+    font-size: var(--fs-2xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;
+    color: var(--accent-orange);
+}
+.host-route-head .icon { width: 14px; height: 14px; flex: 0 0 auto; }
+.host-route-copy {
+    margin-left: auto; flex: 0 0 auto; background: none; border: none; cursor: pointer;
+    color: inherit; opacity: 0.6; padding: 2px; display: inline-flex; align-items: center;
+}
+.host-route-copy:hover { opacity: 1; }
+.host-route-copy .icon { width: 13px; height: 13px; }
+.host-route-row {
+    padding: 7px 10px; background: var(--bg-card); border: 1px solid var(--border-primary);
+    border-left: 3px solid var(--accent-orange); border-radius: var(--radius-sm);
+    display: flex; flex-direction: column; gap: 5px;
+}
+.host-route-label { font-size: var(--fs-sm); color: var(--text-heading); }
+.host-route-group {
+    font-size: var(--fs-2xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px;
+    color: var(--accent-orange); margin-right: 2px;
+}
 .host-prog { margin-left: auto; font-size: var(--fs-sm); font-family: var(--font-mono); color: var(--text-tertiary); }
 .host-expand, .host-del { background: none; border: none; cursor: pointer; font-size: var(--fs-md); color: var(--text-secondary); flex-shrink: 0; }
 .host-del:hover { color: var(--accent-red); }

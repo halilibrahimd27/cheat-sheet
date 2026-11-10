@@ -291,6 +291,21 @@ test("the pivot menu is one representative per vector, with placeholders filled"
   if (ssh) assert.ok(ssh.resolved.indexOf("10.9.9.9") >= 0 && ssh.resolved.indexOf("<TARGET_IP>") < 0, "<TARGET_IP> is resolved in the menu");
 });
 
+test("pivotRoute fills both hops of an AD pivot with concrete IPs", () => {
+  const w = load({ categories: SEED });
+  const S = w.CS_SCENARIO;
+  const route = S.pivotRoute("10.10.10.5", "172.16.1.20");
+  assert.ok(route.length >= 4, "a route is several canonical relay one-liners, got " + route.length);
+  assert.ok(route.every((r) => r.cmd && r.cmd.trim() && r.title), "every step has a command and a title");
+  const socks = route.find((r) => /ssh -D/.test(r.cmd));
+  assert.ok(socks && socks.cmd.indexOf("10.10.10.5") >= 0, "the SOCKS proxy tunnels through the pivot IP");
+  const scan = route.find((r) => /proxychains/.test(r.cmd));
+  assert.ok(scan && scan.cmd.indexOf("172.16.1.20") >= 0, "the proxychains scan points at the target IP");
+  assert.ok(route.some((r) => /chisel/.test(r.cmd)) && route.some((r) => /ligolo|agent/.test(r.cmd)), "the self-hosted relays are offered too");
+  const blank = S.pivotRoute("", "");
+  assert.ok(blank.every((r) => /PIVOT_IP|TARGET_IP|ATTACKER_IP|chisel server/.test(r.cmd)), "missing IPs degrade to named placeholders, never empty");
+});
+
 test("lootFor surfaces post-exploitation vectors only once you own the box", () => {
   const w = load({ categories: SEED });
   const S = w.CS_SCENARIO;

@@ -116,7 +116,7 @@
       clearHistory: "Clear", copyAll: "Copy all", paletteHint: "Search commands & actions…", goto: "Go to",
       engagement: "Engagement", connections: "Connections", fromMachine: "Add from machine…",
       newHost: "+ New host", objective: "Objective", loot: "Loot / creds",
-      connect: "Connect", connectHint: "Click a node, then another, to link them. Click Connect again to finish.", hostRole: "Role", reachableVia: "reach via",
+      connect: "Connect", connectHint: "Click a node, then another, to link them. Click Connect again to finish.", hostRole: "Role", reachableVia: "reach via", pivotRoute: "Pivot route",
       // — Machines round 3 (metadata, flags, dashboard, timing) —
       mPlatform: "Platform", mDifficulty: "Difficulty", mStatus: "Status",
       mTagsHint: "HTB, Linux, web (comma-separated)",
@@ -231,7 +231,7 @@
       clearHistory: "Temizle", copyAll: "Tümünü kopyala", paletteHint: "Komut ve eylem ara…", goto: "Git",
       engagement: "Operasyon", connections: "Bağlantılar", fromMachine: "Makineden ekle…",
       newHost: "+ Yeni host", objective: "Hedef", loot: "Loot / kimlik",
-      connect: "Bağla", connectHint: "Bir düğüme, sonra diğerine tıklayarak bağla. Bitirmek için tekrar Bağla'ya tıkla.", hostRole: "Rol", reachableVia: "şu üzerinden",
+      connect: "Bağla", connectHint: "Bir düğüme, sonra diğerine tıklayarak bağla. Bitirmek için tekrar Bağla'ya tıkla.", hostRole: "Rol", reachableVia: "şu üzerinden", pivotRoute: "Pivot rotası",
       // — Machines round 3 (ASCII-safe TR) —
       mPlatform: "Platform", mDifficulty: "Zorluk", mStatus: "Durum",
       mTagsHint: "HTB, Linux, web (virgül ile ayırın)",
@@ -4228,9 +4228,13 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       // If this host is the reachable-next frontier, name the owned host(s) that
       // open it — the pivot route, spelled out next to the box.
       let viaHtml = "";
+      let pivotNode = null;
       const _all = (m.hosts || []).map(hostNode); const _fr = adFrontier(_all);
-      if (_fr.frontier.has(n.id)) {
-        const via = _all.filter(o => _fr.owned.has(o.id) && ((o.links || []).indexOf(n.id) >= 0 || (n.links || []).indexOf(o.id) >= 0)).map(o => o.name).filter(Boolean);
+      const isFrontierHost = _fr.frontier.has(n.id);
+      if (isFrontierHost) {
+        const viaNodes = _all.filter(o => _fr.owned.has(o.id) && ((o.links || []).indexOf(n.id) >= 0 || (n.links || []).indexOf(o.id) >= 0));
+        pivotNode = viaNodes[0] || null;
+        const via = viaNodes.map(o => o.name).filter(Boolean);
         if (via.length) viaHtml = '<span class="host-via" title="' + escapeHtml(t("reachableVia") + " " + via.join(", ")) + '">' + iconHtml("arrow-right", "icon-sm") + ' ' + escapeHtml(t("reachableVia") + " " + via.join(", ")) + '</span>';
       }
       const card = document.createElement("div"); card.className = "host-card" + (st.pct >= 100 ? " owned" : "") + (n.id === openHostId ? " open" : ""); card.id = "host-" + n.id;
@@ -4255,6 +4259,42 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       if (n.ref && n.dangling) {
         const w = document.createElement("p"); w.className = "machine-hosts-empty"; w.textContent = lang === "tr" ? "Bağlı makine silinmiş — host'u çıkarın." : "Linked machine was deleted — remove this host.";
         body.appendChild(w); card.appendChild(body); return card;
+      }
+
+      // Frontier host: it is one hop from a box you own, so spell out the pivot
+      // route — the canonical relay one-liners with the pivot's and this host's
+      // IPs filled in, ready to paste. Sits at the top of the body because
+      // reaching the box is the first move once it is on the attack path.
+      if (isFrontierHost && window.CS_SCENARIO && typeof window.CS_SCENARIO.pivotRoute === "function") {
+        const pivotIp = pivotNode ? (pivotNode.ip || (pivotNode.machine && pivotNode.machine.ip) || "") : "";
+        const targetIp = n.ip || (n.machine && n.machine.ip) || "";
+        const route = window.CS_SCENARIO.pivotRoute(pivotIp, targetIp);
+        const rbox = document.createElement("div"); rbox.className = "host-route";
+        const rh = document.createElement("div"); rh.className = "host-route-head";
+        rh.appendChild(icon("network", "icon-sm"));
+        const pivName = pivotNode ? (pivotNode.name || pivotIp || "pivot") : "pivot";
+        rh.appendChild(document.createTextNode(" " + t("pivotRoute") + " — " + pivName + " "));
+        rh.appendChild(icon("arrow-right", "icon-sm"));
+        rh.appendChild(document.createTextNode(" " + (n.name || targetIp || "target")));
+        const ca = document.createElement("button"); ca.type = "button"; ca.className = "host-route-copy"; ca.title = t("planCopyWave");
+        ca.appendChild(icon("copy", "icon-sm"));
+        ca.addEventListener("click", () => copyText(route.map(r => r.cmd).join("\n"), () => toast(t("copied"))));
+        rh.appendChild(ca);
+        rbox.appendChild(rh);
+        route.forEach(r => {
+          const row = document.createElement("div"); row.className = "host-route-row";
+          const lbl = document.createElement("div"); lbl.className = "host-route-label";
+          const g = document.createElement("span"); g.className = "host-route-group"; g.textContent = r.group; lbl.appendChild(g);
+          lbl.appendChild(document.createTextNode(" " + r.title));
+          row.appendChild(lbl);
+          const cb = document.createElement("button"); cb.type = "button"; cb.className = "plan-cmd"; cb.title = t("copy");
+          const code = document.createElement("code"); code.textContent = r.cmd; cb.appendChild(code);
+          cb.appendChild(icon("copy", "icon-sm"));
+          cb.addEventListener("click", () => copyText(r.cmd, () => toast(t("copied"))));
+          row.appendChild(cb);
+          rbox.appendChild(row);
+        });
+        body.appendChild(rbox);
       }
 
       // Meta: machine fields (ref) live on the machine; role lives on the host entry.
