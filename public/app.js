@@ -3075,7 +3075,8 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
           const pivCreds = (piv && piv.machine && piv.machine.credentials) || [];
           const pivUser = ((pivCreds.find(c => c && c.username && c.valid !== false) || {}).username || "").trim();
           md += "### " + t("pivotRoute") + " — " + (piv ? (piv.name || pivIp || "pivot") : "pivot") + " -> " + (n.name || tgtIp || "target") + "\n\n";
-          md += "```\n" + window.CS_SCENARIO.pivotRoute(pivIp, tgtIp).map(r => {
+          const pivOs = piv ? machineOsDisplay(piv.machine || { os: piv.os }) : "";
+          md += "```\n" + window.CS_SCENARIO.pivotRoute(pivIp, tgtIp, pivOs).map(r => {
             let c = applyIpToCode(r.cmd);
             if (pivUser) c = c.replace(/\buser@/g, pivUser + "@");
             return c;
@@ -4287,7 +4288,8 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
       if (isFrontierHost && window.CS_SCENARIO && typeof window.CS_SCENARIO.pivotRoute === "function") {
         const pivotIp = pivotNode ? (pivotNode.ip || (pivotNode.machine && pivotNode.machine.ip) || "") : "";
         const targetIp = n.ip || (n.machine && n.machine.ip) || "";
-        const route = window.CS_SCENARIO.pivotRoute(pivotIp, targetIp);
+        const pivotOs = pivotNode ? machineOsDisplay(pivotNode.machine || { os: pivotNode.os }) : "";
+        const route = window.CS_SCENARIO.pivotRoute(pivotIp, targetIp, pivotOs);
         const rbox = document.createElement("div"); rbox.className = "host-route";
         const rh = document.createElement("div"); rh.className = "host-route-head";
         rh.appendChild(icon("network", "icon-sm"));

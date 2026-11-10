@@ -305,6 +305,11 @@ test("pivotRoute fills both hops of an AD pivot with concrete IPs", () => {
   assert.ok(route.some((r) => r.cmd.indexOf("<ATTACKER_IP>") >= 0), "the operator's own IP stays a fillable <ATTACKER_IP> var, not a baked token");
   const blank = S.pivotRoute("", "");
   assert.ok(blank.every((r) => /PIVOT_IP|TARGET_IP|ATTACKER_IP|chisel server/.test(r.cmd)), "missing IPs degrade to named placeholders, never empty");
+  // a Windows pivot rarely has sshd: no ssh hops, netsh portproxy instead, .exe relays
+  const winR = S.pivotRoute("10.10.10.5", "172.16.1.20", "Windows Server 2019");
+  assert.ok(!winR.some((r) => /^ssh /.test(r.cmd)), "a Windows pivot drops the ssh hops");
+  assert.ok(winR.some((r) => /netsh interface portproxy/.test(r.cmd) && r.cmd.indexOf("172.16.1.20") >= 0), "it forwards through netsh portproxy to the target");
+  assert.ok(winR.some((r) => /chisel\.exe/.test(r.cmd)) && winR.some((r) => /agent\.exe/.test(r.cmd)), "the relays are the .exe builds on Windows");
 });
 
 test("lootFor surfaces post-exploitation vectors only once you own the box", () => {
