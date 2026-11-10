@@ -208,6 +208,31 @@ test("the exported report captures a multi-host engagement with each host's know
   assert.ok(md.includes("CVE-2007-2447"), "a host's known exploit rides along in the report");
 });
 
+test("the report spells out the pivot route to each frontier host", () => {
+  const env = boot();
+  env.app.setCategories(require(path.join(PUBLIC_DIR, "..", "seed.js")));
+  // PIVOT is owned (root flag captured); TARGET is one hop away, linked to it.
+  const pivot = {
+    id: "pv1", name: "PIVOT01", ip: "10.10.10.5", os: "Linux",
+    services: [], credentials: [], userFlag: null, rootFlag: { value: "x", capturedAt: "2026-01-01" }, checklist: [],
+  };
+  const target = {
+    id: "tg1", name: "TARGET20", ip: "172.16.1.20", os: "Windows",
+    services: [], credentials: [], userFlag: null, rootFlag: null, checklist: [],
+  };
+  const eng = machine({ id: "eng2", hosts: [
+    { machineId: "pv1", role: "", links: ["tg1"] },
+    { machineId: "tg1", role: "", links: ["pv1"] },
+  ] });
+  env.app.setMachines([pivot, target, eng]);
+  const md = env.app.machineToMarkdown(eng);
+  assert.ok(md.includes("### " + env.app.t("pivotRoute") + " — PIVOT01 -> TARGET20"), "the route is headed pivot -> frontier");
+  assert.ok(md.includes("ssh -D 1080 -N user@10.10.10.5"), "the SOCKS hop tunnels through the owned pivot's IP");
+  assert.ok(md.includes("172.16.1.20"), "the frontier target's IP is filled into the route");
+  // the owned pivot is not itself a frontier, so it gets no route heading of its own
+  assert.ok(!md.includes("-> PIVOT01"), "an owned host is not treated as a frontier");
+});
+
 test("the panel degrades to an empty-state when there are no services", () => {
   const env = boot();
   const sec = env.app.buildAttackPlanSection(machine({ services: [] }));

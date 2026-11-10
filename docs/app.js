@@ -3063,6 +3063,20 @@ Non-technical overview of the engagement, overall risk, and key takeaways.
         md += "| " + cell(nm) + " | " + cell(n.ip) + " | " + cell(machineOsDisplay(n.machine || { os: n.os })) + " | " + cell(prog) + " | " + cell(vids) + " |\n";
       });
       md += "\n";
+      // For each frontier host — one you can reach from a box you already own —
+      // spell out the pivot route with both IPs filled in, so the path to the
+      // next host travels in the report alongside the findings.
+      const fr = adFrontier(hosts);
+      if (fr.frontier.size && window.CS_SCENARIO && typeof window.CS_SCENARIO.pivotRoute === "function") {
+        hosts.forEach(n => {
+          if (!fr.frontier.has(n.id)) return;
+          const piv = hosts.find(o => fr.owned.has(o.id) && ((o.links || []).indexOf(n.id) >= 0 || (n.links || []).indexOf(o.id) >= 0));
+          const pivIp = piv ? (piv.ip || (piv.machine && piv.machine.ip) || "") : "";
+          const tgtIp = n.ip || (n.machine && n.machine.ip) || "";
+          md += "### " + t("pivotRoute") + " — " + (piv ? (piv.name || pivIp || "pivot") : "pivot") + " -> " + (n.name || tgtIp || "target") + "\n\n";
+          md += "```\n" + window.CS_SCENARIO.pivotRoute(pivIp, tgtIp).map(r => r.cmd).join("\n") + "\n```\n\n";
+        });
+      }
     }
     const groups = groupByPhase(m.checklist);
     if (groups.length) {
